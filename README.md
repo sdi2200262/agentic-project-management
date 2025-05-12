@@ -1,6 +1,6 @@
 # agentic-project-management (APM)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Version](https://img.shields.io/badge/version-v0.1.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.1.0)
 
 *Manage your projects with a team of AI Agents like in real life... without using a million requests!*
 
@@ -10,7 +10,7 @@
 
 It addresses the common challenges of managing large tasks with AI, such as maintaining context, handling the limitations of Large Language Model (LLM), avoiding model hallucinations and more. This is a more streamlined and user-defined approach to utilizing AI tools without burning through countless API requests and rising costs exponentially.
 
-APM is for developers, students, researchers, and anyone leveraging AI coding assistants for their projects.
+APM is designed for developers, students, researchers, and anyone leveraging AI coding assistants for their projects.
 
 ## APM Workflow
 
@@ -19,19 +19,17 @@ graph LR
     User["👤 User"]
     MA["🤖 Manager Agent(s)"]
     SA_I["🛠️ Implementation Agent(s)"]
-    SA_D["🐞 Debugger Agent(s)"]
-    SA_T["🧑‍🏫 Tutor Agent(s)"]
+    SA["🕵️‍♂️ Specialized Agents 
+    (🐞 Debugger, 👨‍🏫 Tutor etc)"]
     MB["📚 Memory Bank(s)"]
 
     User <--> MA
     MA --> SA_I
-    MA --> SA_D
-    MA --> SA_T
+    MA --> SA
 
     MA <--> MB
     SA_I <--> MB
-    SA_D <--> MB
-    SA_T <--> MB
+    SA <--> MB
 
     %% Styling
     classDef user fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px,color:#0D47A1;
@@ -45,7 +43,7 @@ graph LR
     class MB memoryBank;
 ```
 
-## The Core Idea
+## Core Idea
 
 APM revolves around a few key components and roles, mirroring an efficient real-life project team:
 
@@ -91,3 +89,9 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<p align="center">
+  <img src="assets/cobuter-man.png" alt="CobuterMan" width="150"/>
+</p>
