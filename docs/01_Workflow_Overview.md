@@ -1,4 +1,4 @@
- # APM Workflow Overview
+# APM Workflow Overview
 
 This document provides a visual overview of the key processes and interactions within the Agentic Project Management (APM) framework using Mermaid diagrams. It complements the detailed textual explanations found in other documentation files.
 
@@ -17,9 +17,9 @@ graph LR
     F -- Blocker/Issue Needs Re-prompt --> A;
     F -- Project/Phase Complete --> G[End/Next Phase];
 
-    classDef manager fill:#f9f,stroke:#333,stroke-width:1.5px;
-    classDef user fill:#9cf,stroke:#333,stroke-width:1.5px;
-    classDef implementer fill:#ccf,stroke:#333,stroke-width:1.5px;
+    classDef manager fill:#AFEEEE,stroke:#333,stroke-width:1.5px; 
+    classDef user fill:#FAFAD2,stroke:#333,stroke-width:1.5px; 
+    classDef implementer fill:#98FB98,stroke:#333,stroke-width:1.5px; 
 
     class A,F manager;
     class B,E user;
@@ -50,10 +50,10 @@ graph LR
     H_D -- Reads Artifacts --> H_E{Confirm Understanding};
     H_E -- Ready --> H_F[Resume Tasks];
 
-    style H_A fill:#f9f,stroke:#333,stroke-width:1px;
-    style H_D fill:#ccf,stroke:#333,stroke-width:1px;
-    style H_C fill:#9cf,stroke:#333,stroke-width:2px;
-    style H_F fill:#dfd,stroke:#333,stroke-width:1px;
+    style H_A fill:#AFEEEE,stroke:#333,stroke-width:1px; 
+    style H_D fill:#98FB98,stroke:#333,stroke-width:1px; 
+    style H_C fill:#FAFAD2,stroke:#333,stroke-width:2px; 
+    style H_F fill:#D3D3D3,stroke:#333,stroke-width:1px; 
 ```
 
 **Explanation:**
@@ -90,13 +90,13 @@ graph LR
     IB -- Logs --> MB;
     ID -- Logs --> MB;
     
-    style sg_agents fill:#ffffde,stroke:#cc0,stroke-width:2px;
-    style sg_context fill:#ffffde,stroke:#cc0,stroke-width:2px;
-    style MA fill:#e3d7ff,stroke:#8a2be2;
-    style IA fill:#e3d7ff,stroke:#8a2be2;
-    style IB fill:#e3d7ff,stroke:#8a2be2;
-    style ID fill:#e3d7ff,stroke:#8a2be2;
-    style MB fill:#dfffe3,stroke:#228b22,stroke-width:2px;
+    
+    
+    style MA fill:#AFEEEE,stroke:#5F9EA0; 
+    style IA fill:#98FB98,stroke:#3CB371; 
+    style IB fill:#98FB98,stroke:#3CB371; 
+    style ID fill:#98FB98,stroke:#3CB371; 
+    style MB fill:#FAFAD2,stroke:#BDB76B,stroke-width:2px; 
 
 ```
 
