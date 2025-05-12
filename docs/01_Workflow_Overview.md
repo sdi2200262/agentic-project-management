@@ -17,14 +17,16 @@ graph LR
     F -- Blocker/Issue Needs Re-prompt --> A;
     F -- Project/Phase Complete --> G[End/Next Phase];
 
-    classDef manager fill:#AFEEEE,stroke:#333,stroke-width:1.5px; 
-    classDef user fill:#FAFAD2,stroke:#333,stroke-width:1.5px; 
-    classDef implementer fill:#98FB98,stroke:#333,stroke-width:1.5px; 
+    classDef manager fill:#87CEFA,stroke:#333,stroke-width:1.5px,color:#000; 
+    classDef user fill:#F0E68C,stroke:#333,stroke-width:1.5px,color:#000; 
+    classDef implementer fill:#00FA9A,stroke:#333,stroke-width:1.5px,color:#000; 
 
     class A,F manager;
     class B,E user;
     class C,D implementer;
     class G default;
+
+    linkStyle default stroke:#ccc,stroke-width:1px;
 ```
 
 **Explanation:**
@@ -50,10 +52,12 @@ graph LR
     H_D -- Reads Artifacts --> H_E{Confirm Understanding};
     H_E -- Ready --> H_F[Resume Tasks];
 
-    style H_A fill:#AFEEEE,stroke:#333,stroke-width:1px; 
-    style H_D fill:#98FB98,stroke:#333,stroke-width:1px; 
-    style H_C fill:#FAFAD2,stroke:#333,stroke-width:2px; 
-    style H_F fill:#D3D3D3,stroke:#333,stroke-width:1px; 
+    style H_A fill:#87CEFA,stroke:#333,stroke-width:1px,color:#000; 
+    style H_D fill:#00FA9A,stroke:#333,stroke-width:1px,color:#000; 
+    style H_C fill:#F0E68C,stroke:#333,stroke-width:2px,color:#000; 
+    style H_F fill:#C0C0C0,stroke:#333,stroke-width:1px,color:#000; 
+
+    linkStyle default stroke:#ccc,stroke-width:1px;
 ```
 
 **Explanation:**
@@ -92,12 +96,13 @@ graph LR
     
     
     
-    style MA fill:#AFEEEE,stroke:#5F9EA0; 
-    style IA fill:#98FB98,stroke:#3CB371; 
-    style IB fill:#98FB98,stroke:#3CB371; 
-    style ID fill:#98FB98,stroke:#3CB371; 
-    style MB fill:#FAFAD2,stroke:#BDB76B,stroke-width:2px; 
+    style MA fill:#87CEFA,stroke:#5F9EA0,color:#000; 
+    style IA fill:#00FA9A,stroke:#3CB371,color:#000; 
+    style IB fill:#00FA9A,stroke:#3CB371,color:#000; 
+    style ID fill:#00FA9A,stroke:#3CB371,color:#000; 
+    style MB fill:#F5DEB3,stroke:#BDB76B,stroke-width:2px,color:#000; 
 
+    linkStyle default stroke:#ccc,stroke-width:1px;
 ```
 
 **Explanation:**
