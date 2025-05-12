@@ -20,7 +20,7 @@ graph LR
     MA["🤖 Manager Agent(s)"]
     SA_I["🛠️ Implementation Agent(s)"]
     SA["🕵️‍♂️ Specialized Agents 
-    (🐞 Debugger, 👨‍🏫 Tutor etc)"]
+    (eg. 🐞 Debugger, 👨‍🏫 Tutor)"]
     MB["📚 Memory Bank(s)"]
 
     User <--> MA
@@ -90,7 +90,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
 
 <p align="center">
   <img src="assets/cobuter-man.png" alt="CobuterMan" width="150"/>
