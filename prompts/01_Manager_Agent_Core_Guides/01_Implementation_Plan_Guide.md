@@ -2,9 +2,9 @@
 
 ## 1. Purpose
 
-This guide provides the definitive formatting standard and best practices for constructing the `Implementation_Plan.md` file within the Agentic Project Management (APM) framework. As the Manager Agent, creating this document is a core responsibility outlined in your initiation protocol (Phase B: Strategic Planning). It translates the high-level project structure, previously agreed upon with the User, into a detailed, actionable blueprint for all agents.
+This guide provides the definitive formatting standard and best practices for constructing the `Implementation_Plan.md` file within the Agentic Project Management (APM) framework. As the Manager Agent, creating this document is a core responsibility outlined in your initiation protocol (Phase B: Strategic Planning). Following your presentation of a high-level plan summary and Memory Bank proposal to the User (and their implicit approval by not immediately requesting changes to that summary/proposal), you will use this guide to generate the **full content** of the `Implementation_Plan.md` file. This document translates the project's strategic objectives into a detailed, actionable blueprint for all agents.
 
-Adherence to this standard ensures clarity, consistency, effective task tracking, and seamless integration with other APM processes like task assignment and review throughout the project lifecycle. You are to consult and apply these guidelines *only after* receiving explicit User approval on the proposed high-level plan structure (phases, tasks, conceptual agent assignments) developed during the discovery phase.
+Adherence to this standard ensures clarity, consistency, effective task tracking, and robust project management.
 
 ## 2. Core Principles
 
@@ -177,16 +177,19 @@ Objective: Build the user interface components for interacting with the backend 
 ## 5. Final Considerations
 
 *   **Consistency is Key:** Ensure uniform application of headings, lists, agent assignments, and formatting throughout the document.
-*   **Approved Structure First:** Generate this file's content based *strictly* on the plan structure previously proposed to and formally approved by the User. Do not introduce structural changes at this formatting stage.
-*   **Living Document:** While this guide defines the format, remember the plan itself might be updated later *in consultation with the User*. Maintain structural and formatting consistency during any such updates.
-*   **File Location:** Create this file (`Implementation_Plan.md`) in the directory specified by the User (defaulting to the project root if unspecified), only after the content is finalized based on the approved structure and this guide.
+*   **Generate After High-Level Summary:** Generate this file's full content based on the high-level plan structure and Memory Bank concept you have already summarized to the User. The User will be invited to review and suggest modifications to *this generated file* subsequently.
+*   **Clarity and Detail:** While the initial summary to the User is high-level, *this file* must contain sufficient detail for Implementation Agents to understand their tasks, scope, and objectives clearly.
+*   **Memory Bank Structure Record:** Crucially, after the Memory Bank system (single-file or multi-file directory) has been determined and proposed by you (the Manager Agent) by following `prompts/01_Manager_Agent_Core_Guides/02_Memory_Bank_Guide.md`, and subsequently agreed upon with the User, you **must** include a dedicated subsection within this `Implementation_Plan.md` (e.g., under "General Project Notes" or as a distinct section if complex). This subsection must explicitly state the agreed-upon Memory Bank structure (e.g., "Memory Bank System: Single file `Memory_Bank.md`" or "Memory Bank System: Directory `/Memory/` with log files per phase, such as `Memory/Phase1_Design_Log.md`, as detailed in `Memory/README.md`."). This ensures all agents are aware of the established logging structure and where to find or create log entries.
+*   **Iterative Refinement:** Be prepared to update this document based on User feedback or as the project evolves (following appropriate change management discussions).
+
+By following this guide, you will produce `Implementation_Plan.md` files that are comprehensive, clear, and serve as a reliable foundation for project execution.
 
 ## 6. Post-Plan Generation: Next Steps & Ongoing Management
 
 Once the `Implementation_Plan.md` is created and approved:
 
-*   **Task Assignment Prompt Generation:** For each task assigned to an Implementation Agent, you will assist the User in crafting a precise prompt. Refer to the `02_Task_Assignment_Prompts_Guide.md` (if available) for detailed instructions on structuring these prompts effectively. If the guide is unavailable, generate clear, actionable prompts based on the task and sub-task details in this plan.
-*   **Review and Feedback Cycle:** As Implementation Agents complete tasks and log their work to the Memory Bank, you are responsible for reviewing their outputs. Refer to the `03_Review_And_Feedback_Guide.md` (if available) for guidance on conducting reviews and providing constructive feedback. If unavailable, perform reviews based on the task objectives and general best practices.
+*   **Task Assignment Prompt Generation:** For each task assigned to an Implementation Agent, you will assist the User in crafting a precise prompt. Refer to the `prompts/01_Manager_Agent_Core_Guides/03_Task_Assignment_Prompts_Guide.md` (if available) for detailed instructions on structuring these prompts effectively. If the guide is unavailable, generate clear, actionable prompts based on the task and sub-task details in this plan.
+*   **Review and Feedback Cycle:** As Implementation Agents complete tasks and log their work to the Memory Bank, you are responsible for reviewing their outputs. Refer to the `prompts/01_Manager_Agent_Core_Guides/04_Review_And_Feedback_Guide.md` (if available) for guidance on conducting reviews and providing constructive feedback. If unavailable, perform reviews based on the task objectives and general best practices.
 *   **Handover Protocol Reference (Crucial):** To ensure project continuity and awareness of context management procedures, you **must include** a dedicated section at the *end* of the generated `Implementation_Plan.md` file itself. This section should briefly explain the purpose of the Handover Protocol and provide an explicit reference to its detailed guide.
     *   **Example text to include in `Implementation_Plan.md`:**
         ```markdown
@@ -195,7 +198,7 @@ Once the `Implementation_Plan.md` is created and approved:
 
         For long-running projects or situations requiring context transfer (e.g., exceeding LLM context limits, changing specialized agents), the APM Handover Protocol should be initiated. This ensures smooth transitions and preserves project knowledge. Detailed procedures are outlined in the framework guide:
 
-        `prompts/01_Manager_Agent_Core_Guides/04_Handover_Protocol_Guide.md`
+        `prompts/01_Manager_Agent_Core_Guides/05_Handover_Protocol_Guide.md`
 
         The current Manager Agent or the User should initiate this protocol as needed.
         ```

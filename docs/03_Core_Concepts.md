@@ -7,9 +7,9 @@ This document provides concise definitions for the key terms used within the Age
 **Agent Handover / Handover Protocol**
 
 The defined procedure for transferring project context and responsibilities between AI agent instances (e.g., Manager to new Manager, or between Specialized Agents). It utilizes a `Handover_File.md` and `Handover_Prompt.md` to ensure project continuity, especially when dealing with LLM context limits.
-*   *See procedure:* `prompts/01_Manager_Agent_Core_Guides/04_Handover_Protocol_Guide.md`
+*   *See procedure:* `prompts/01_Manager_Agent_Core_Guides/05_Handover_Protocol_Guide.md`
 *   *See artifact formats:* `prompts/02_Utility_Prompts_And_Format_Definitions/Handover_Artifact_Formats.md`
-*   *See practical steps:* `docs/02_Getting_Started.md` (Step 5)
+*   *See practical steps:* `docs/02_Getting_Started.md` (Step 6)
 *   *See visual overview:* `docs/01_Workflow_Overview.md` (Handover Protocol Flow)
 
 **APM (Agentic Project Management)**
@@ -21,19 +21,19 @@ The overall framework, consisting of prompts, format definitions, protocols, and
 
 The main iterative loop of activity in an APM project: Manager prepares prompt -> User delivers -> Implementer executes -> Implementer reports -> User confirms log -> Implementer logs -> User informs Manager -> Manager reviews -> Repeat.
 *   *See visual overview:* `docs/01_Workflow_Overview.md` (Core APM Cycle)
-*   *See practical steps:* `docs/02_Getting_Started.md` (Step 4)
+*   *See practical steps:* `docs/02_Getting_Started.md` (Step 5)
 
 **Handover File (`Handover_File.md`)**
 
 A structured Markdown document created during the Handover Protocol. It serves as a comprehensive context dump, containing the current project state, plan status, recent logs, decisions, and other critical information needed by the incoming agent.
 *   *See format definition:* `prompts/02_Utility_Prompts_And_Format_Definitions/Handover_Artifact_Formats.md` (Section 2)
-*   *See procedure context:* `prompts/01_Manager_Agent_Core_Guides/04_Handover_Protocol_Guide.md` (Section 3.1)
+*   *See procedure context:* `prompts/01_Manager_Agent_Core_Guides/05_Handover_Protocol_Guide.md` (Section 3.1)
 
 **Handover Prompt (`Handover_Prompt.md`)**
 
 A Markdown prompt used to initialize a new agent instance during a handover. It includes standard APM onboarding information (if applicable), instructions to process the `Handover_File.md`, and specifies the immediate next steps for the incoming agent.
 *   *See format definition:* `prompts/02_Utility_Prompts_And_Format_Definitions/Handover_Artifact_Formats.md` (Section 3)
-*   *See procedure context:* `prompts/01_Manager_Agent_Core_Guides/04_Handover_Protocol_Guide.md` (Section 3.2)
+*   *See procedure context:* `prompts/01_Manager_Agent_Core_Guides/05_Handover_Protocol_Guide.md` (Section 3.2)
 
 **Implementation Agent**
 
@@ -45,7 +45,7 @@ An AI agent instance responsible for executing specific, assigned tasks based on
 
 A detailed, structured Markdown document created by the Manager Agent (after User approval of the structure). It breaks down the project into phases (optional), tasks, and granular sub-tasks, assigning responsibility to specific Implementation Agents. It serves as the blueprint for project execution.
 *   *See formatting guide:* `prompts/01_Manager_Agent_Core_Guides/01_Implementation_Plan_Guide.md`
-*   *See creation process:* `docs/02_Getting_Started.md` (Step 3)
+*   *See creation process:* `docs/02_Getting_Started.md` (Step 4)
 
 **Manager Agent**
 
@@ -57,9 +57,10 @@ The central AI agent instance responsible for overall project coordination. Its 
 **Memory Bank (`Memory_Bank.md`)**
 
 One or more designated Markdown files acting as the project's persistent, chronological logbook. Implementation and Specialized Agents record their actions, outputs, results, and issues here in a standardized format after User confirmation. It provides shared context and an audit trail.
-*   *See log format definition:* `prompts/02_Utility_Prompts_And_Format_Definitions/Memory_Bank_Log_Format.md`
+*   *See system setup guide:* `prompts/01_Manager_Agent_Core_Guides/02_Memory_Bank_Guide.md`
+*   *See log entry format definition:* `prompts/02_Utility_Prompts_And_Format_Definitions/Memory_Bank_Log_Format.md`
 *   *See conceptual overview:* `docs/01_Workflow_Overview.md` (Memory Bank Concept)
-*   *See setup:* `docs/02_Getting_Started.md` (Step 1 & Step 3)
+*   *See setup in practice:* `docs/02_Getting_Started.md` (Step 4)
 
 **Specialized Agent**
 
@@ -69,8 +70,8 @@ An AI agent instance assigned to perform specific, specialized functions beyond 
 **Task Assignment Prompt**
 
 A prompt, typically drafted by the Manager Agent and delivered by the User, used to assign a specific task from the `Implementation_Plan.md` to an Implementation or Specialized Agent. It includes the task objective, detailed steps, necessary context, expected outputs, and mandatory logging instructions.
-*   *See crafting guide:* `prompts/01_Manager_Agent_Core_Guides/02_Task_Assignment_Prompts_Guide.md`
-*   *See usage in workflow:* `docs/02_Getting_Started.md` (Step 4)
+*   *See crafting guide:* `prompts/01_Manager_Agent_Core_Guides/03_Task_Assignment_Prompts_Guide.md`
+*   *See usage in workflow:* `docs/02_Getting_Started.md` (Step 5)
 
 **User**
 

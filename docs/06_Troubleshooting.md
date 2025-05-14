@@ -8,7 +8,7 @@ This guide addresses common issues, questions, and challenges that users might e
 
 *   **Cause A: Context Window Limit Approaching (Especially Manager Agent)**
     *   **Solution:** This is the primary reason for the **Handover Protocol**. If the Manager Agent (or any long-running agent) starts to lose track of earlier decisions, plan details, or overall project context, it's time to initiate a handover. Don't wait until context is completely lost; be proactive.
-    *   *See:* `prompts/01_Manager_Agent_Core_Guides/04_Handover_Protocol_Guide.md` and `docs/02_Getting_Started.md` (Step 5).
+    *   *See:* `prompts/01_Manager_Agent_Core_Guides/05_Handover_Protocol_Guide.md` and `docs/02_Getting_Started.md` (Step 6).
 *   **Cause B: Incorrect Agent Session/Tab Used**
     *   **Solution:** Ensure you are interacting with the correct agent in its designated chat tab (e.g., providing implementation details to an Implementation Agent, not the Manager). Mixing up tabs can happen very often in a multi-agent workflow when the User has to manage many AI assistant sessions concurrently! This however, can severely confuse an agent's context.
 *   **Cause C: Prompt Lacks Sufficient Context for a Specific Task**
@@ -28,7 +28,7 @@ This guide addresses common issues, questions, and challenges that users might e
 *   **Cause A: Overly Chatty Interactions**
     *   **Solution:** While APM structures interaction, aim for concise communication. Provide all necessary information in a single, well-structured prompt where possible, rather than many small back-and-forth messages for a single conceptual step (e.g., provide all requirements for a task in one go to the Manager).
 *   **Cause B: Not Leveraging Manager Agent Fully for Prompt Crafting**
-    *   **Solution:** The Manager Agent is there to help you draft effective prompts for Implementation Agents, including recalling context from the plan. Use its expertise (guided by `02_Task_Assignment_Prompts_Guide.md`).
+    *   **Solution:** The Manager Agent is there to help you draft effective prompts for Implementation Agents, including recalling context from the plan. Use its expertise (guided by `prompts/01_Manager_Agent_Core_Guides/03_Task_Assignment_Prompts_Guide.md`).
 
 ## Memory Bank Specific Issues
 
@@ -44,7 +44,7 @@ This guide addresses common issues, questions, and challenges that users might e
 
 *   **Cause:** A single log file for a very large or long-running project accumulates too much text for the AI's context window when trying to process it (e.g., during reviews or handovers).
 *   **Solution: Multiple Memory Banks.**
-    *   As discussed during the initial project setup with the Manager Agent (guided by `02_Codebase_Guidance.md`), for complex projects, establish multiple, more focused Memory Bank files from the outset or as the project grows.
+    *   The choice of Memory Bank system (single file vs. a multi-file directory) is determined during the initial project setup with the Manager Agent, guided by `prompts/01_Manager_Agent_Core_Guides/02_Memory_Bank_Guide.md`. For complex projects, this guide helps establish multiple, more focused Memory Bank files from the outset or as the project grows.
     *   **Strategy:** Create separate `Memory_Bank.md` files within a `/Memory` directory, for example:
         *   `Memory/Phase1_Bank.md`
         *   `Memory/Backend_API_Bank.md`
@@ -60,7 +60,7 @@ This guide addresses common issues, questions, and challenges that users might e
     *   **Solution:** Ensure every new Implementation/Specialized Agent receives the `Implementation_Agent_Onboarding.md` prompt, which references the `Memory_Bank_Log_Format.md`.
 *   **Cause B: Task Assignment Prompt Lacks Reminder**
     *   **Solution:** Ensure the Manager includes a clear instruction in every `Task Assignment Prompt` to log work according to the standard format, referencing `Memory_Bank_Log_Format.md`.
-    *   *See:* `prompts/01_Manager_Agent_Core_Guides/02_Task_Assignment_Prompts_Guide.md` (Section 5).
+    *   *See:* `prompts/01_Manager_Agent_Core_Guides/03_Task_Assignment_Prompts_Guide.md` (Section 5).
 *   **Corrective Action:** If an agent logs incorrectly, provide feedback (via the User), show them the correct format example from `Memory_Bank_Log_Format.md`, and ask them to re-log or edit their last entry.
 
 ## Handover Specific Issues
