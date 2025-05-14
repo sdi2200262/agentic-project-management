@@ -42,6 +42,7 @@ APM is designed for:
 
 *   `/prompts`: Contains the core prompts for initializing agents (Manager & Implementation Agents), guides for key Manager actions (planning, task assignment, review, handover guides), and format & protocol definitions for critical artifacts (Memory Bank logs, Handover files). These are designed to be copied and used directly or adapted on the User's needs.
 *   `/docs`: Comprehensive documentation (like this file!) explaining the framework, core concepts, getting started procedures, customization options, and troubleshooting tips.
+*   `/rules`: (Optional) Provides a collection of pre-defined [Cursor Rules](https://docs.cursor.com/context/rules) (`.mdc` files) designed to enhance APM workflow reliability and agent consistency when used within the Cursor IDE. See the [Cursor Integration Guide](04_Cursor_Integration_Guide.md) for usage.
 *   `/.github`: Includes standard GitHub community health files.
 
 ## Getting Started & Next Steps
