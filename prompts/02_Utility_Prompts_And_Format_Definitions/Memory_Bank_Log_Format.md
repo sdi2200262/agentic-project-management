@@ -1,5 +1,9 @@
 # APM Memory Bank Log Format & Logging Instructions
 
+## Purpose and Guiding Principles
+
+Log entries are crucial for project tracking, context preservation, and effective handover between agents or project phases. They must be **concise yet informative**. The goal is to provide a clear summary of actions undertaken, key decisions made, critical outputs generated, and any significant issues encountered along with their resolutions. Logs are not intended to be an exhaustive transcript of all activities or a verbatim copy of all generated code or data.
+
 ## 1. Purpose
 
 This document defines the standard format for all entries made to the project's `Memory_Bank.md` file(s) within the Agentic Project Management (APM) framework. It also provides direct instructions for any agent tasked with logging their work.
@@ -73,7 +77,7 @@ Implemented the backend API endpoint for user registration (`POST /api/users/reg
 - Ensured only non-sensitive user data (ID, email, name) is returned upon successful registration to prevent data leakage. Tested endpoint locally with sample valid and invalid data.
 
 **Output/Result:**
-```javascript
+```start of cell
 // Snippet from routes/user.js showing validation and hashing logic
 router.post(
   '/register',
@@ -102,7 +106,7 @@ router.post(
     }
   }
 );
-```
+```end of cell
 
 **Status:** Completed
 
@@ -114,3 +118,54 @@ Ready to proceed with Task A / Item 3 (Implement Login Endpoint).
 ```
 
 ---
+
+## Achieving Conciseness and Informativeness
+
+To ensure logs are valuable without being overwhelming, adhere to the following principles:
+
+*   **Summarize, Don't Transcribe:** Instead of detailing every minor step or internal thought process, summarize the overall action and its outcome. 
+    *   *Less Effective:* "I decided to look at the data file. I opened the `train.csv` file. I then ran the `.head()` command to see the first few rows. Then I ran `.info()` to see the data types. Then I ran `.describe()`."
+    *   *More Effective:* "Loaded `train.csv`. Initial inspection using `.head()`, `.info()`, and `.describe()` revealed [key observation, e.g., data types, presence of nulls, basic stats distribution]."
+
+*   **Focus on Key Information:** Prioritize information that is critical for another agent or a human reviewer to understand:
+    *   What was the objective of this task segment?
+    *   What were the key actions taken to achieve it?
+    *   What were the significant findings or outputs?
+    *   What decisions were made, and what was the brief rationale?
+    *   Were there any unexpected issues, and how were they addressed?
+
+*   **Code Snippets - Use Sparingly:**
+    *   Include code snippets *only if* they are short, essential for understanding a specific, novel, or complex solution, or represent a critical configuration. 
+    *   Do NOT include lengthy blocks of boilerplate code, common library calls that can be easily inferred, or extensive script outputs.
+    *   If extensive code needs to be referenced (e.g., a utility function written), state that it was created/modified and committed to the relevant script file, then reference that file.
+
+*   **Avoid Redundancy:** If information is clearly documented and accessible in another primary project artifact (e.g., the `Implementation_Plan.md` outlines the task goal, a committed script contains the full code), briefly reference that artifact instead of repeating its content extensively in the log.
+    *   *Example:* "Implemented the preprocessing steps as defined in Task 2.3 of `Implementation_Plan.md`. The core function `preprocess_text()` was added to `scripts/preprocessing_utils.py`."
+
+## Examples of Log Entry Detail
+
+Consider the task: "Load and inspect training and validation datasets."
+
+**1. Good Concise Log Entry:**
+
+```
+### Log Entry
+
+*   **Status:** Completed
+*   **Summary:** Loaded `train_dataset.csv` (10000x3) and `val_dataset.csv` (2000x3). Initial inspection shows 'text' and 'sentiment' columns. No missing values in 'sentiment'. 'text' column has a few nulls in train (5) and val (2) that will need handling. Sentiment distribution appears balanced in train, slightly skewed towards positive in val. Average text length is X characters.
+*   **Outputs:** train_df, val_df shapes logged. Null value counts recorded.
+*   **Decisions:** Confirmed data loading successful. Noted nulls for next preprocessing step.
+*   **Issues:** None.
+```
+
+**2. Overly Verbose Log Entry (To Avoid):**
+
+```
+### Log Entry
+
+*   **Status:** Completed
+*   **Summary:** I started by thinking about loading the data. The plan said to load `train_dataset.csv`. So I wrote `train_df = pd.read_csv('data/train_dataset.csv')`. This command ran successfully. Then I wanted to see the data, so I did `print(train_df.head())`. The output was [outputs head]. Then I ran `print(train_df.info())` which showed [outputs info]. I also checked for nulls with `train_df.isnull().sum()` which showed [outputs nulls]. I did the same for `val_dataset.csv`. I wrote `val_df = pd.read_csv('data/val_dataset.csv')`. This also worked. I printed its head and info too. It seems the data is okay. The shapes are (10000,3) and (2000,3). 
+*   **Outputs:** Printed head of train_df, info of train_df, nulls of train_df. Printed head of val_df, info of val_df, nulls of val_df.
+*   **Decisions:** Decided the files loaded correctly.
+*   **Issues:** Took a while to type all the print statements.
+```
