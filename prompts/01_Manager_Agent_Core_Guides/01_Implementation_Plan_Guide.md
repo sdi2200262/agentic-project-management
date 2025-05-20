@@ -40,17 +40,28 @@ Utilize standard Markdown syntax. The following structure is mandated:
 *   Use Level 3 Headings (`###`) for each major task within a phase (or directly under the main heading if not phased).
 *   Include a task identifier (e.g., `Task A`, `Task B`, `Task 1.1`) and a concise, descriptive title.
     *   Use a consistent identifier scheme distinct from Implementation Agent IDs.
-*   **Crucially, explicitly assign the primary Implementation Agent(s)** responsible for executing the task. This designation is vital for workflow clarity and subsequent prompt generation in the multi-agent system.
-    *   **Format (Single Agent):** `### Task A - Agent A: [Descriptive Task Title]`
-    *   **Format (Multiple Agents):** `### Task B (Complex) - Agents A & B: [Descriptive Task Title]`
+*   **CRITICAL: Explicit Agent Assignment per Task:**
+    *   For EVERY task, you *MUST* explicitly assign one or more Implementation Agents responsible for its execution. This is non-negotiable for a functional multi-agent workflow.
+    *   **Consider Task Distribution:** Reflect on the project's needs. Does the task require a specific skill (e.g., frontend, data analysis, testing)? Could different tasks be handled by different specialized agents for efficiency or to parallelize work? Avoid defaulting all tasks to a single generic agent if the project benefits from specialization or distribution. Define clear, distinct agent identifiers (e.g., `Agent_Frontend_Dev`, `Agent_Data_Processor`, `Agent_QA`).
+    *   The assigned agent identifier(s) become integral to task tracking and prompt generation.
+    *   **Format (Single Agent):** `### Task A - Agent_XYZ: [Descriptive Task Title]` (e.g., `### Task 1.1 - Agent_Setup_Specialist: Environment Configuration`)
+    *   **Format (Multiple Cooperating Agents on the Same Task):** `### Task B (Complex) - Agent_ABC & Agent_DEF: [Descriptive Task Title]`
 *   Follow the heading with a brief (1-2 sentence) description stating the task's objective.
 
 ### 3.4. Sub-Task Decomposition
 
 *   Use Markdown ordered lists (`1.`, `2.`, `3.`) for logical sub-components or stages within each main task.
-*   **Detailed Action Steps:** Within each numbered sub-component, use nested bullet points (`-` or `*`) to list the specific, fine-grained actions, technical considerations, checks required, or outputs expected. **This detailed breakdown is crucial as it directly informs the content of the `Task Assignment Prompts` you will later help generate (see `02_Task_Assignment_Prompts_Guide.md`).**
-*   Each nested bullet point should represent a distinct, actionable step or check for the Implementation Agent.
-*   **Appropriate Detail and Context:** Ensure the nested action steps reflect specifics derived from the project discovery, requirements, and approved plan. Incorporate necessary details like error handling specifics, validation rules, integration points, or references to external documentation.
+*   **Detailed Action Steps with Critical Guidance:** Within each numbered sub-component, use nested bullet points (`-` or `*`) to list the specific, fine-grained actions. 
+    *   **Crucial Detail for Consistency:** For these nested action steps, if a specific method, library, algorithm, parameter, or approach is critical for the task's success or for consistency with subsequent tasks, include a *brief guiding note*. This is not meant to be a full instruction set (that belongs in the task assignment prompt) but rather a key constraint or pointer.
+    *   **Example of Guiding Note:**
+        *   `- Implement data tokenization for user reviews.`
+            *   `Guidance: Use DistilBERT tokenizer ('distilbert-base-uncased') to align with the planned sentiment model.`
+        *   `- Store processed data.`
+            *   `Guidance: Output to a Parquet file named 'processed_reviews.parquet'.`
+    *   These guiding notes ensure that subsequent agents don't have to guess critical choices made earlier or go down an incompatible path.
+    *   The detailed breakdown and these guiding notes are crucial as they directly inform the content of the `Task Assignment Prompts` (see `03_Task_Assignment_Prompts_Guide.md`).
+*   Each nested bullet point (and its optional guiding note) should represent a distinct, actionable step or check for the Implementation Agent.
+*   **Appropriate Detail and Context:** Ensure the nested action steps (and their guiding notes) reflect specifics derived from the project discovery, requirements, and approved plan. Incorporate necessary high-level details like critical error handling specifics to be considered, key validation rules, or integration points.
 *   For tasks with multiple assigned agents, clearly mark which agent is responsible for each **numbered sub-component** using parentheses.
 *   **Format Examples:**
     *   **Single Agent Task:**
