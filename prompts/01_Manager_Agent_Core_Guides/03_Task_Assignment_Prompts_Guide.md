@@ -39,16 +39,20 @@ Below is a recommended structure. You should adapt this template, adding, removi
 ## 3. Task Assignment
 
 *   **Reference Implementation Plan:** Explicitly link the task to the `Implementation_Plan.md`. Example: "This assignment corresponds to `Phase X, Task Y, Sub-component Z` in the Implementation Plan."
-*   **Objective:** Clearly restate the specific objective of this task or sub-component.
-*   **Detailed Action Steps:**
-    *   List the specific, fine-grained actions the Implementation Agent needs to perform, drawing directly from the nested bullet points in the relevant section of the `Implementation_Plan.md`.
-    *   Example: "Your specific actions are:
-        - Implement the `calculate_discount` function in `pricing_module.py`.
-        - Ensure the function handles negative input values by returning an error.
-        - Add unit tests covering standard cases and edge cases (negative input, zero input)."
+*   **Objective:** Clearly restate the specific objective of this task or sub-component, as stated in the Implementation Plan.
+*   **Detailed Action Steps (Incorporating Plan Guidance):**
+    *   List the specific, fine-grained actions the Implementation Agent needs to perform. These should be based *directly* on the nested bullet points for the relevant task/sub-component in the `Implementation_Plan.md`.
+    *   **Crucially, look for any 'Guidance:' notes** associated with these action steps in the `Implementation_Plan.md`. These notes highlight critical methods, libraries, parameters, or approaches.
+    *   **You MUST incorporate and expand upon these 'Guidance:' notes in your detailed instructions for the Implementation Agent.** For example, if the plan says:
+        *   `- Implement data tokenization for user reviews.`
+            *   `Guidance: Use DistilBERT tokenizer ('distilbert-base-uncased').`
+    *   Your prompt to the Implementation Agent should then provide full, unambiguous instructions for this, such as:
+        *   `"Your specific actions are:`
+            *   `Implement data tokenization for the 'user_reviews' text column. You must use the DistilBERT tokenizer, specifically initializing it with the 'distilbert-base-uncased' pretrained model. Ensure the output includes 'input_ids' and 'attention_mask'."`
+    *   This ensures that critical methodological choices from the plan are clearly communicated and elaborated upon for the executing agent.
 *   **Provide Necessary Context/Assets:**
-    *   Include relevant code snippets, file paths, API documentation links, or data structure definitions needed to complete the task.
-    *   Specify any constraints or requirements not immediately obvious from the action steps.
+    *   Include any *additional* relevant code snippets, file paths, API documentation links, or data structure definitions needed to complete the task, beyond what was in the plan's guidance notes.
+    *   Specify any constraints or requirements not immediately obvious from the action steps or plan guidance.
 
 ## 4. Expected Output & Deliverables
 
@@ -81,5 +85,12 @@ Below is a recommended structure. You should adapt this template, adding, removi
 *   **File Paths:** Always provide clear, relative (or absolute, if necessary) paths to relevant files.
 *   **Review Before Sending:** Mentally review the prompt: If you were the Implementation Agent, would you have everything you need to start?
 *   **Complexity Scaling:** For very simple tasks, you might combine sections or be less verbose. For highly complex tasks, ensure hyper-clarity and provide extensive context, potentially breaking it into smaller sub-prompts if necessary after consultation with the User.
+
+### Ensuring Adherence to Memory and Logging Standards
+
+When assigning tasks to specialized agents, especially those involving file/directory creation or substantive work requiring documentation, explicitly remind them of their obligations regarding the Memory Bank and logging procedures:
+
+*   **Memory Bank Structure:** "Ensure all Memory Bank directory and file creations strictly adhere to the naming conventions and structural guidelines detailed in the `02_Memory_Bank_Guide.md`. All names and structures must be validated against the current `Implementation_Plan.md` **before** creation. If there is any ambiguity, consult back with the Manager Agent."
+*   **Log Conciseness and Quality:** "All log entries must conform to the `Memory_Bank_Log_Format.md`. Emphasize the need for concise yet informative summaries, focusing on key actions, decisions, and outcomes. Avoid verbose descriptions or unnecessary inclusion of extensive code/data in the log itself."
 
 Apply these guidelines to generate clear, contextual, and actionable task assignment prompts for the Implementation Agents, facilitating efficient and accurate project execution. 
