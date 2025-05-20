@@ -1,6 +1,6 @@
 # Agentic Project Management (APM)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Version](https://img.shields.io/badge/version-v0.1.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.1.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Version](https://img.shields.io/badge/version-v0.3.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.3.0)
 
 *Manage complex projects with a team of AI assistants, smoothly and efficiently.*
 
@@ -102,3 +102,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <p align="center">
   <img src="assets/cobuter-man.png" alt="CobuterMan" width="150"/>
 </p>
+
+## Key Improvements in Version 0.3.0
+
+Version 0.3.0 focuses on enhancing robustness, agent output consistency, the clarity of planning, and the reliability of context transfer during handovers. Key changes include:
+
+*   **Enhanced Memory System:** 
+    *   Stricter validation of Memory Bank structures (directories, log files) against the `Implementation_Plan.md` to ensure consistency and prevent mismanagement (see `prompts/01_Manager_Agent_Core_Guides/02_Memory_Bank_Guide.md`).
+    *   Improved log quality guidelines in `prompts/02_Utility_Prompts_And_Format_Definitions/Memory_Bank_Log_Format.md` emphasizing concise, informative entries with clear examples.
+*   **More Detailed and Consistent Implementation Planning & Task Assignment:**
+    *   The `prompts/01_Manager_Agent_Core_Guides/01_Implementation_Plan_Guide.md` now mandates:
+        *   Stronger emphasis on explicit agent assignment for every task to ensure balanced workload distribution and clarity.
+        *   Inclusion of brief "Guiding Notes" (e.g., key methods, libraries, parameters) within each task's action steps. This provides crucial direction directly in the plan to ensure methodological consistency across tasks and agents.
+    *   The `prompts/01_Manager_Agent_Core_Guides/03_Task_Assignment_Prompts_Guide.md` has been updated to ensure Manager Agents explicitly use and expand upon these "Guiding Notes" from the `Implementation_Plan.md` when creating detailed, actionable prompts for Implementation Agents.
+*   **More Robust Handover Protocol:**
+    *   The handover process now includes a step for the outgoing agent to explicitly capture and transfer the most recent conversational context and unlogged user directives, ensuring the incoming agent has the freshest layer of user intent (see `prompts/01_Manager_Agent_Core_Guides/05_Handover_Protocol_Guide.md`).
+    *   The `prompts/02_Utility_Prompts_And_Format_Definitions/Handover_Artifact_Format.md` has been restructured for enhanced clarity and usability in documenting handover context.

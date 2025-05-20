@@ -84,3 +84,26 @@ While the primary focus is on the Manager Agent, the protocol can be adapted for
 *   **Iterative Process:** The User may request revisions to the Handover File or Prompt before finalizing them.
 
 This protocol provides the standardized mechanism for maintaining project momentum and knowledge continuity within the APM framework.
+
+### Step X: Incorporate Recent Conversational Context (Outgoing MA)
+
+**Objective:** To ensure the handover captures not only the formally documented project state but also the most recent, potentially unlogged, user intent and directives.
+
+**Actions:**
+
+1.  **Review Recent Interactions:** Before finalizing the `Handover_File.md` and the `Handover_Prompt.md`, the Outgoing Manager Agent (OMA) MUST explicitly review the transcript of the last N (e.g., 5-10, or a reasonable span covering the latest significant interactions) conversational turns with the User.
+
+2.  **Identify Key Unlogged Information:** From this review, identify:
+    *   Any critical user directives or instructions.
+    *   Subtle shifts in project priority or focus.
+    *   New ideas or requirements expressed by the User.
+    *   Contextual clarifications that significantly impact ongoing or upcoming tasks.
+    *   Any information that is vital for the Incoming Manager Agent (IMA) to know but might not have been formally logged in the Memory Bank or updated in the `Implementation_Plan.md` with the same immediacy.
+
+3.  **Summarize Findings:** Prepare a concise, bullet-point summary of this "freshest layer of user intent." Focus on actionable information or critical context.
+
+4.  **Update Handover Artifacts:**
+    *   This summary MUST be included in the dedicated section (e.g., "Section 7: Recent Conversational Context & Key User Directives") within the `Handover_File.md`. Refer to the `Handover_Artifact_Format.md` for the precise structure.
+    *   The insights from this summary should also be used to inform and refine the `Handover_Prompt.md`, ensuring the IMA is explicitly briefed on these recent nuances.
+
+**Rationale:** This step is crucial for bridging any potential gap between the formal, logged project state and the immediate, evolving conversational context. It provides the IMA with the most current and complete understanding of the User's expectations and the project's micro-dynamics, leading to a smoother and more effective transition.

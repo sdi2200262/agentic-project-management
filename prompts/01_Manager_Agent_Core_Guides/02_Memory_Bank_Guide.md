@@ -145,4 +145,26 @@ This process aligns with the "Consolidated Proposal & Creation" step of your ini
 *   All *actual log entries* made by Implementation Agents (after User confirmation) into these files **must** strictly adhere to the formatting rules defined in `prompts/02_Utility_Prompts_And_Format_Definitions/Memory_Bank_Log_Format.md`.
 *   As new tasks are defined or phases initiated in an evolving `Implementation_Plan.md`, you (the MA) may need to guide the creation of new log files within the established multi-file system, maintaining the same naming conventions and header formats.
 
-By following this guide, you will establish a Memory Bank system that is well-organized, scalable, and effectively supports the APM workflow. 
+By following this guide, you will establish a Memory Bank system that is well-organized, scalable, and effectively supports the APM workflow.
+
+## Strict Adherence to Implementation Plan
+
+The integrity of the Memory Bank relies on its faithful reflection of the project's planned structure and progress as defined in the `Implementation_Plan.md`.
+
+*   **Authoritative Source:** All Memory Bank directory and file names MUST precisely mirror the Phase and Task identifiers and descriptions found in the *current, authoritative* `Implementation_Plan.md`.
+*   **Verification Obligation:** Before creating any directory or file, the responsible agent (whether Manager Agent or a specialized agent) MUST verify the proposed name and location against the `Implementation_Plan.md`.
+*   **Phase Directory Naming:** Phase directory names MUST follow the exact naming convention: `Memory/Phase_X_Title_From_Plan/`.
+    *   `X` is the phase number (e.g., 1, 2, 3).
+    *   `Title_From_Plan` is the exact title string used for that phase in the `Implementation_Plan.md`. Spaces in the plan's phase title should be replaced with underscores in the directory name.
+    *   Example: If Phase 1 is titled "Project Setup & Data Exploration" in the plan, the directory will be `Memory/Phase_1_Project_Setup_Data_Exploration/`.
+*   **Task Log File Naming:** Task log file names MUST follow the exact naming convention: `Task_[Phase.Task]_Short_Task_Description_Log.md`.
+    *   `[Phase.Task]` is the precise identifier from the plan (e.g., 1.1, 2.3).
+    *   `Short_Task_Description` is a concise, underscore_separated version of the task's title or primary objective from the `Implementation_Plan.md`.
+    *   Example: If Task 1.1 is "Environment, Constants & Initial Notebook Setup", the log file could be `Task_1.1_Env_Init_Notebook_Setup_Log.md`. Strive for clarity and direct correlation with the plan.
+
+## Validation Before Creation
+
+To prevent errors arising from outdated information or misunderstandings:
+
+*   **Clarification Protocol:** If an agent is tasked with creating a memory structure and finds that the `Implementation_Plan.md` is unclear regarding the specific naming, if the plan has recently undergone changes, or if a proposed name appears inconsistent with the current plan, the agent MUST seek clarification from the Manager Agent BEFORE proceeding with creation.
+*   **Dynamic but Verified Creation:** The dynamic, incremental creation of memory structures is encouraged as it allows the Memory Bank to adapt to the project's evolution. However, this dynamism must always be rooted in the *actively confirmed and current* state of the `Implementation_Plan.md` at the moment of creation. Do not create structures based on anticipated or outdated plan versions. 
