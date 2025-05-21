@@ -76,11 +76,28 @@ This design ensures APM remains functional even if rules are not used or if APM 
 
 Initially, rules are provided to support the Manager Agent's **Initiation Phase**. These are in `agentic-project-management/rules/`:
 
-*   `apm_discovery_synthesis_reminder.mdc`: Helps the MA synthesize information and transition to planning after extensive discovery.
-*   `apm_plan_format_source.mdc`: Reminds the MA of the correct guide for `Implementation_Plan.md` formatting.
-*   `apm_memory_system_format_source.mdc`: Reminds the MA of the correct guide for Memory Bank formatting.
+*   **`apm_discovery_synthesis_reminder.mdc`**
+    *   **Purpose:** Helps the MA synthesize information and transition to planning after extensive discovery.
 
-Refer to `rules/README.md` for detailed descriptions of each rule.
+*   **`apm_plan_format_source.mdc`**
+    *   **Purpose:** Reminds the MA of the correct guide for `Implementation_Plan.md` formatting.
+
+*   **`apm_memory_system_format_source.mdc`**
+    *   **Purpose:** Reminds the MA of the correct guide for Memory Bank formatting.
+
+*   **`apm_impl_plan_critical_elements_reminder.mdc`**
+    *   **Purpose:** Reminds the MA to ensure that the `Implementation_Plan.md` includes: 1) Explicit Agent Assignment for every task (considering task distribution), and 2) "Guiding Notes" for critical action steps to ensure methodological consistency.
+    
+
+*   **`apm_memory_naming_validation_reminder.mdc`**
+    *   **Purpose:** Prompts the MA to validate all Memory Bank file/directory names against the `Implementation_Plan.md` *before* their creation and to strictly adhere to defined naming conventions.
+    
+
+*   **`apm_task_prompt_plan_guidance_incorporation_reminder.mdc`**
+    *   **Purpose:** Ensures that when the MA is crafting `Task Assignment Prompts`, it explicitly incorporates and expands upon any "Guiding Notes" found in the `Implementation_Plan.md` for the relevant task steps.
+
+
+Refer to `rules/README.md` for detailed descriptions of each rule and their suggestive descriptions for the agent.
 
 ### 5.4. Activating APM Project Rules in Your Project
 

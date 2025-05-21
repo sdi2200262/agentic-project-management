@@ -13,27 +13,39 @@ This approach ensures:
 2.  **Targeted Assistance:** Rules are invoked only when potentially beneficial for specific, fragile parts of the workflow.
 3.  **Contextual Relevance:** The AI (Manager Agent) uses the rule's description and its current operational context to decide if activating the rule is appropriate.
 
-## Current Rules 
+## Available Rules (Supporting Manager Agent)
 
-The following rules are initially provided to support the Manager Agent during the critical **Initiation Phase**:
+### General Initiation & Planning Phase
 
-1.  **`apm_discovery_synthesis_reminder.mdc`**
-    *   **Type:** `Agent Requested`
-    *   **Purpose:** Provides a reminder to the agent managing project discovery (typically the Manager Agent using `02_Codebase_Guidance.md`) to focus on synthesizing gathered information and correctly transitioning to Phase B (Strategic Planning).
-    *   **Trigger:** The Manager Agent is prompted in `02_Codebase_Guidance.md` to consider requesting this rule if information gathering has been extensive or complex and it needs to ensure it stays on track with the APM protocol for synthesis and transition.
-    *   **Key Benefit:** Helps prevent context drift or the agent getting bogged down after processing large amounts of information during project discovery.
+*   **`apm_discovery_synthesis_reminder.mdc`**
+    *   **Description (from rule):** "When the MA has gathered extensive info (e.g., via `codebase_search`, `read_file`), this rule prompts it to synthesize findings, identify next steps for planning, and explicitly consult the User before deep-diving into `Implementation_Plan.md` generation. Helps prevent premature planning based on incomplete synthesis."
+    *   **Purpose:** Aids the Manager Agent in transitioning from information gathering (Discovery) to structured planning, ensuring user alignment before committing to a detailed plan.
 
-2.  **`apm_plan_format_source.mdc`**
-    *   **Type:** `Agent Requested`
-    *   **Purpose:** A concise reminder that the definitive guide for creating/formatting `Implementation_Plan.md` is `prompts/01_Manager_Agent_Core_Guides/01_Implementation_Plan_Guide.md`.
-    *   **Trigger:** The Manager Agent is prompted in `01_Initiation_Prompt.md` (during Phase B, when stating it will create the `Implementation_Plan.md`) to consider requesting this rule if it needs to re-confirm the correct source guide, especially if the User is providing prompt content manually.
-    *   **Key Benefit:** Ensures the MA refers to the correct formatting standard, maintaining consistency.
+*   **`apm_plan_format_source.mdc`**
+    *   **Description (from rule):** "Reminds MA that `01_Implementation_Plan_Guide.md` is the authoritative source for formatting the `Implementation_Plan.md`."
+    *   **Purpose:** Ensures the MA uses the correct guide when tasked with generating or modifying the Implementation Plan, promoting consistency.
 
-3.  **`apm_memory_system_format_source.mdc`**
-    *   **Type:** `Agent Requested`
-    *   **Purpose:** A concise reminder that the definitive guide for proposing, deciding, and setting up the Memory Bank *system* (including choosing between single-file vs. multi-file, directory structure, and initial file/directory headers) is `prompts/01_Manager_Agent_Core_Guides/02_Memory_Bank_Guide.md`.
-    *   **Trigger:** The Manager Agent is prompted in `01_Initiation_Prompt.md` (during Phase B, when stating it will create the Memory Bank system) to consider requesting this rule if it needs to re-confirm the correct source guide for system setup.
-    *   **Key Benefit:** Ensures the MA refers to the correct guide for Memory Bank system architecture and initial setup, maintaining consistency with APM protocols.
+*   **`apm_memory_system_format_source.mdc`**
+    *   **Description (from rule):** "Reminds MA that `02_Memory_Bank_Guide.md` is the authoritative source for Memory Bank system setup (single vs multi-file) and initial file headers."
+    *   **Purpose:** Ensures the MA uses the correct guide for proposing and setting up the project's Memory Bank, aligning with project complexity.
+
+### Implementation Plan Integrity
+
+*   **`apm_impl_plan_critical_elements_reminder.mdc`** (New)
+    *   **Description (from rule):** "Reminder for Implementation Plan: Ensure 1) Explicit Agent Assignment (consider distribution) and 2) 'Guiding Notes' for critical action steps are defined for ALL tasks."
+    *   **Purpose:** Reinforces the necessity of assigning agents to every task and including crucial "Guiding Notes" for methodological consistency directly within the `Implementation_Plan.md`. Helps prevent ambiguity and ensures tasks are well-defined for subsequent agent assignment.
+
+### Memory System Integrity
+
+*   **`apm_memory_naming_validation_reminder.mdc`** (New)
+    *   **Description (from rule):** "Reminder: Validate ALL Memory Bank file/directory names against the Implementation Plan BEFORE creation. Adhere to conventions in 02_Memory_Bank_Guide.md."
+    *   **Purpose:** Promotes strict adherence to Memory Bank naming conventions and validation against the `Implementation_Plan.md` *before* any file or directory is created. This is crucial for preventing structural errors in the Memory Bank.
+
+### Task Assignment Consistency
+
+*   **`apm_task_prompt_plan_guidance_incorporation_reminder.mdc`** (New)
+    *   **Description (from rule):** "Reminder for Task Assignment Prompts: Explicitly incorporate and expand upon any 'Guiding Notes' found in the Implementation Plan's action steps."
+    *   **Purpose:** Ensures that when the Manager Agent generates detailed `Task Assignment Prompts`, it correctly uses and elaborates on the "Guiding Notes" provided in the `Implementation_Plan.md`. This maintains a consistent line of instruction from high-level plan to detailed task execution.
 
 ## Using These Rules in Cursor
 
