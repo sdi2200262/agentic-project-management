@@ -6,45 +6,22 @@
 
 ## What is APM?
 
-**Agentic Project Management (APM)** is a framework that brings real-world project management principles into your AI-assisted workflows. If you're using AI coding assistants (like in Cursor, ChatGPT, or Claude) for development, research, or any complex task, APM provides a structured yet flexible way to coordinate a team of specialized AI agents.
+**Agentic Project Management (APM)** is a framework that brings real-world project management principles into your AI-assisted workflows. It addresses a fundamental challenge of LLMs: context window limitations. APM uses various context retention techniques, coordinating a team of specialized AI agents in a structured way so that you can maintain productive AI-assisted work for longer periods before facing model hallucinations and needing to start over. When context window does fill up, APM ensures a smooth transition to a "fresh" chat session without important context loss.
 
 Think of it like having a project manager, developers, and specialists, all powered by AI, working in concert under your guidance.
 
-```mermaid
-graph LR
-    User["👤 User (You!)"]
-    MA["🤖 Manager Agent"] 
-    SA_I["🛠️ Implementation Agent(s)"]
-    SA["🕵️‍♂️ Specialized Agents <br/> (e.g., Debugger, Tutor)"]
-    MB["📚 Memory Bank(s)"]
-
-    User <--> MA
-    MA --> SA_I
-    MA --> SA
-
-    MA <--> MB
-    SA_I <--> MB
-    SA <--> MB
-
-    classDef user fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px,color:#0D47A1;
-    classDef manager fill:#EDE7F6,stroke:#5E35B1,stroke-width:2px,color:#311B92;
-    classDef specializedAgent fill:#FCE4EC,stroke:#AD1457,stroke-width:2px,color:#880E4F; 
-    classDef memoryBank fill:#E8F5E9,stroke:#388E3C,stroke-width:2px,color:#1B5E20;
-
-    class User user;
-    class MA manager;
-    class SA_I,SA specializedAgent;
-    class MB memoryBank;
-```
+<p align="center">
+  <img src="assets/apm-graph.png" alt="apm-graph" width="full"/>
+</p>
 
 ## Why APM?
 
 Working with AI on big projects can get messy. Context gets lost, agents forget instructions, and it can feel like you're repeating yourself endlessly, often leading to high token usage and costs. APM tackles this by:
 
 *   **Mimicking Real Teams:** It uses clear roles (Manager, Implementer) and proven processes, making AI collaboration more intuitive.
-*   **Smart Agent Management:** APM incorporates techniques like a **Memory Bank** (a shared project logbook), detailed **Markdown Prompts** for consistent agent behavior, and the concept of **Specialized Agents** for focused tasks. This provides a sophisticated workflow with robust error handling.
+*   **Smart Agent Management:** APM incorporates techniques like a **Memory Bank** (a shared project logbook), detailed **Markdown Task Assignment Prompts** for consistent agent behavior, and **Specialized Agents** for focused, scoped tasks. This provides a sophisticated workflow with robust error handling.
 *   **Efficient & Budget-friendly :** APM aims for a balance. It's designed to be streamlined and cost-effective, helping you get great results without "burning" through your tokens or API requests.
-*   **User-Centric Control:** This system puts you in the driver's seat. It emphasizes user guidance and oversight at critical points. If an agent struggles or context limits are hit, APM provides clear solutions like **Handover Protocols** (to smoothly switch to "fresh" agents) and relies on the **Memory Bank System** to keep the entire workflow aligned.
+*   **User-Centric Control:** This system puts you in the driver's seat. It emphasizes user guidance and oversight at any critical step. If an agent struggles or context limits are hit, APM provides clear solutions like **Handover Protocols** (to smoothly switch to "fresh" agents) and relies on the **Memory Bank System** to keep the entire workflow aligned.
 
 ## Getting Started: 
 
@@ -67,10 +44,10 @@ Here's how to get the core APM framework up and running for your project:
 
 **Initiating APM within your Project:**
 
-1.  **Initial Prompt for Your Manager:** Navigate to `prompts/00_Initial_Manager_Setup/01_Initiation_Prompt.md` (either in your cloned APM repo, your template-based repo, or from the GitHub website).
-2.  **Copy & Paste:** Copy its *entire content*.
-3.  **Launch Your Manager Agent:** Paste this content as the very first message to your primary AI assistant (e.g., in a new Cursor chat tab). This AI will now become your first APM Manager Agent!
-4.  **Follow the Lead:** Your new Manager Agent, guided by this prompt, will then ask you questions to understand your project and start setting up your Implementation Plan and a Memory Bank System.
+1.  **Initiating Your Manager Agent:** Navigate to `prompts/00_Initial_Manager_Setup/01_Initiation_Prompt.md` (either in your cloned APM repo, your template-based repo, or from the GitHub website).
+2.  **Copy & Paste or Add as Context:** Copy its *entire content* and paste it to a new chat session (e.g., in a new Cursor chat tab) or pass it as context in whatever way your IDE allows.
+3.  **Launch Your Manager Agent:** Send this content as the very first message to your AI assistant. This AI will now become your first APM Manager Agent!
+4.  **Follow the Lead:** Your new Manager Agent, guided by this initiation prompt, will then ask you questions to understand your project and start setting up your Implementation Plan and a Memory Bank System.
 
 **Optional: Boosting APM with Cursor Rules (Recommended for Cursor Users)**
 
@@ -102,6 +79,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <p align="center">
   <img src="assets/cobuter-man.png" alt="CobuterMan" width="150"/>
 </p>
+
+---
 
 ## Key Improvements in Version 0.3.0
 
