@@ -38,6 +38,9 @@ Below is a recommended structure. You should adapt this template, adding, removi
 
 ## 3. Task Assignment
 
+*   **Mandatory First Step: Sanity Check Protocol:** You must instruct the Implementation Agent to perform the "Sanity Check Protocol" as its first action.
+    *   **Example Instruction:** `"Before you begin, perform the Sanity Check Protocol on this task. Analyze it for ambiguity, propose a clear sub-task breakdown if necessary, and wait for my approval before writing any code. If the task is already clear and unambiguous, state that and proceed."`
+    *   **Reference:** The agent's instructions for this protocol are defined in `prompts/01_Manager_Agent_Core_Guides/06_Sanity_Check_Protocol_Guide.md`.
 *   **Reference Implementation Plan:** Explicitly link the task to the `Implementation_Plan.md`. Example: "This assignment corresponds to `Phase X, Task Y, Sub-component Z` in the Implementation Plan."
 *   **Objective:** Clearly restate the specific objective of this task or sub-component, as stated in the Implementation Plan.
 *   **Detailed Action Steps (Incorporating Plan Guidance):**
