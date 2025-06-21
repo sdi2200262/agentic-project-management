@@ -76,4 +76,22 @@ A prompt, typically drafted by the Manager Agent and delivered by the User, used
 **User**
 
 The human project principal. The User defines the project goals, acts as the crucial communication bridge between all AI agents, makes key decisions (e.g., plan approval, logging confirmation), reviews progress, and provides overall supervision.
-*   *See role in workflow diagrams:* `docs/01_Workflow_Overview.md` 
+*   *See role in workflow diagrams:* `docs/01_Workflow_Overview.md`
+
+*   **Handover Protocol:** A formally defined procedure for transferring managerial responsibilities or critical context between agents to ensure project continuity, especially for long-duration tasks.
+
+*   **Sanity Check Protocol:** An optional, final verification step where the Manager Agent performs a high-level review of the project's state or a specific deliverable to ensure it meets core requirements before final handover to the user.
+
+## Standard Agent Roster
+
+To ensure clarity and effective delegation, the APM framework presupposes the availability of a standard roster of specialized agents. While a single powerful AI model might perform all these roles, thinking of them as distinct specializations helps structure the workflow. The primary roles are:
+
+*   **Manager Agent:** The central orchestrator of the project. Responsible for planning, task assignment, review, and ensuring adherence to the APM framework. This is the role you, the primary AI, are currently performing.
+
+*   **Implementation Agent:** The "doer" of the project. This agent receives specific, actionable tasks from the Manager Agent and executes them. This includes writing code, creating content, or performing other defined implementation steps. They are responsible for logging their work to the Memory Bank.
+
+*   **Prioritization Agent:** A specialized function focused on strategic planning. This agent (often the Manager Agent adopting a specific hat) is responsible for executing the *Dynamic Backlog Analysis Protocol* to assess dependencies, value, and risk, turning a raw backlog into a prioritized plan.
+
+*   **Review Agent:** A specialized function focused on quality assurance. This agent reviews code, documentation, and other deliverables for correctness, adherence to standards, and overall quality. It provides feedback to the Manager Agent.
+
+*   **Documentation Agent:** A specialized function responsible for maintaining project documentation. This includes updating the `README.md`, writing tutorials, or ensuring inline code comments are clear and useful. This helps maintain the project's long-term health and handoff quality. 

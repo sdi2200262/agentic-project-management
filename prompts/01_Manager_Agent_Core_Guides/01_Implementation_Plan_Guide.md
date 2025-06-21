@@ -19,23 +19,67 @@ Adherence to this standard ensures clarity, consistency, effective task tracking
 
 **CRITICAL:** Before applying the detailed formatting rules below, you **must** have presented the proposed *structure* of the implementation plan (including phases, major tasks, and conceptual agent assignments) to the User and received their explicit approval. This guide details how to format that *approved* structure, not how to initially devise it.
 
-## 3. Formatting Standard (Markdown)
+## 3. Core Components of the Implementation Plan
+
+The `Implementation_Plan.md` file must be structured with the following sections.
+
+### 3.1. Document Header
+
+*   **Content:** A header indicating the document's purpose and the project it pertains to.
+*   **Format:**
+    ```markdown
+    # Implementation Plan: [Project Name]
+    **Version:** 1.0
+    **Date:** YYYY-MM-DD
+    **Status:** [Draft, In Review, Approved, In Progress, Completed]
+    ```
+
+### 3.2. Project Overview
+
+*   **Content:** A brief, high-level summary of the project's goals and objectives, as understood by the Manager Agent. This sets the context for the plan.
+*   **Source:** This should be a distillation of the information gathered during the initial project discovery phase.
+
+### 3.3. Memory Bank Configuration
+
+*   **Content:** A concise statement specifying the agreed-upon structure for the project's Memory Bank.
+*   **Source:** This decision is made by the Manager Agent, guided by `02_Memory_Bank_Guide.md`, and confirmed with the User.
+*   **Format Examples:**
+    *   `**Memory Bank Structure:** A single file named Memory_Bank.md will be used for this project.`
+    *   `**Memory Bank Structure:** A directory-based system located at /Memory_Bank/ will be used.`
+
+### 3.4. Prioritization Analysis Summary
+
+*   **Content:** A reference to the formal backlog analysis performed before the creation of this plan.
+*   **Source:** This is the output of the process defined in `07_Dynamic_Backlog_Analysis_Guide.md`.
+*   **Format:**
+    ```markdown
+    **Backlog Analysis Reference:** The task prioritization for this plan was determined by a formal, collaborative analysis conducted on [Date]. The detailed analysis and justification for the task ordering are logged in the Memory Bank under the "Prioritization Analysis" entry.
+    ```
+
+### 3.5. Phases and Tasks
+
+*   **Primary Objective:** To break down the project into a logical sequence of phases and discrete, actionable tasks, based on the results of the **confirmed** Prioritization Analysis.
+*   **Structure:**
+    *   The project should be divided into logical `## Phase [Number]: [Phase Name]` sections (e.g., `## Phase 1: Foundational Setup`).
+    *   Each phase must contain one or more `### Task: [Task Name]` subsections.
+
+## 4. Formatting Standard (Markdown)
 
 Utilize standard Markdown syntax. The following structure is mandated:
 
-### 3.1. Overall Structure
+### 4.1. Overall Structure
 
 *   The document must start with a Level 1 Heading (`# Implementation Plan`).
 *   A brief (1-2 sentence) introductory summary of the overall project goal is required.
 
-### 3.2. Phased Structure (For Large/Complex Projects)
+### 4.2. Phased Structure (For Large/Complex Projects)
 
 *   If the project warrants division into phases (as determined during discovery and approved by the User), use Level 2 Headings (`##`) for each phase.
 *   Include the phase number and a descriptive title (e.g., `## Phase 1: Backend Setup`).
 *   **Recommended:** Assign a conceptual "Agent Group" to the phase for high-level planning (e.g., `Agent Group Alpha`). This assignment is illustrative and aids planning.
     *   **Format Example:** `## Phase 1: Core Backend Setup - Agent Group Alpha (Agent A, Agent B)`
 
-### 3.3. Task Definition
+### 4.3. Task Definition
 
 *   Use Level 3 Headings (`###`) for each major task within a phase (or directly under the main heading if not phased).
 *   Include a task identifier (e.g., `Task A`, `Task B`, `Task 1.1`) and a concise, descriptive title.
@@ -48,7 +92,7 @@ Utilize standard Markdown syntax. The following structure is mandated:
     *   **Format (Multiple Cooperating Agents on the Same Task):** `### Task B (Complex) - Agent_ABC & Agent_DEF: [Descriptive Task Title]`
 *   Follow the heading with a brief (1-2 sentence) description stating the task's objective.
 
-### 3.4. Sub-Task Decomposition
+### 4.4. Sub-Task Decomposition
 
 *   Use Markdown ordered lists (`1.`, `2.`, `3.`) for logical sub-components or stages within each main task.
 *   **Detailed Action Steps with Critical Guidance:** Within each numbered sub-component, use nested bullet points (`-` or `*`) to list the specific, fine-grained actions. 
@@ -91,7 +135,7 @@ Utilize standard Markdown syntax. The following structure is mandated:
         ```
 *   Strive for a balance where numbered sub-components represent logical stages, and nested bullets provide the necessary implementation detail.
 
-## 4. Example Snippet
+## 5. Example Snippet
 
 ```markdown
 # Implementation Plan
@@ -185,7 +229,7 @@ Objective: Build the user interface components for interacting with the backend 
 
 ```
 
-## 5. Final Considerations
+## 6. Final Considerations
 
 *   **Consistency is Key:** Ensure uniform application of headings, lists, agent assignments, and formatting throughout the document.
 *   **Generate After High-Level Summary:** Generate this file's full content based on the high-level plan structure and Memory Bank concept you have already summarized to the User. The User will be invited to review and suggest modifications to *this generated file* subsequently.
@@ -195,7 +239,7 @@ Objective: Build the user interface components for interacting with the backend 
 
 By following this guide, you will produce `Implementation_Plan.md` files that are comprehensive, clear, and serve as a reliable foundation for project execution.
 
-## 6. Post-Plan Generation: Next Steps & Ongoing Management
+## 7. Post-Plan Generation: Next Steps & Ongoing Management
 
 Once the `Implementation_Plan.md` is created and approved:
 
@@ -215,47 +259,3 @@ Once the `Implementation_Plan.md` is created and approved:
         ```
 
 Proceed with generating the `Implementation_Plan.md` content, meticulously applying these formatting standards and including the Handover Protocol reference section.
-
-## 3. Core Components of the Implementation Plan
-
-The `Implementation_Plan.md` file must be structured with the following sections.
-
-### 3.1. Document Header
-
-*   **Content:** A header indicating the document's purpose and the project it pertains to.
-*   **Format:**
-    ```markdown
-    # Implementation Plan: [Project Name]
-    **Version:** 1.0
-    **Date:** YYYY-MM-DD
-    **Status:** [Draft, In Review, Approved, In Progress, Completed]
-    ```
-
-### 3.2. Project Overview
-
-*   **Content:** A brief, high-level summary of the project's goals and objectives, as understood by the Manager Agent. This sets the context for the plan.
-*   **Source:** This should be a distillation of the information gathered during the initial project discovery phase.
-
-### 3.3. Memory Bank Configuration
-
-*   **Content:** A concise statement specifying the agreed-upon structure for the project's Memory Bank.
-*   **Source:** This decision is made by the Manager Agent, guided by `02_Memory_Bank_Guide.md`, and confirmed with the User.
-*   **Format Examples:**
-    *   `**Memory Bank Structure:** A single file named Memory_Bank.md will be used for this project.`
-    *   `**Memory Bank Structure:** A directory-based system located at /Memory_Bank/ will be used.`
-
-### 3.4. Prioritization Analysis Summary
-
-*   **Content:** A reference to the formal backlog analysis performed before the creation of this plan.
-*   **Source:** This is the output of the process defined in `07_Dynamic_Backlog_Analysis_Guide.md`.
-*   **Format:**
-    ```markdown
-    **Backlog Analysis Reference:** The task prioritization for this plan was determined by a formal analysis conducted on [Date]. The detailed analysis and justification for the task ordering are logged in the Memory Bank under the "Prioritization Analysis" entry.
-    ```
-
-### 3.5. Phases and Tasks
-
-*   **Primary Objective:** To break down the project into a logical sequence of phases and discrete, actionable tasks, based on the results of the Prioritization Analysis.
-*   **Structure:**
-    *   The project should be divided into logical `## Phase [Number]: [Phase Name]` sections (e.g., `## Phase 1: Foundational Setup`).
-    *   Each phase must contain one or more `### Task: [Task Name]` subsections. 
