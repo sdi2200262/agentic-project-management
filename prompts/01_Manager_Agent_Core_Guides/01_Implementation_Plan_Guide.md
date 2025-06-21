@@ -214,4 +214,48 @@ Once the `Implementation_Plan.md` is created and approved:
         The current Manager Agent or the User should initiate this protocol as needed.
         ```
 
-Proceed with generating the `Implementation_Plan.md` content, meticulously applying these formatting standards and including the Handover Protocol reference section. 
+Proceed with generating the `Implementation_Plan.md` content, meticulously applying these formatting standards and including the Handover Protocol reference section.
+
+## 3. Core Components of the Implementation Plan
+
+The `Implementation_Plan.md` file must be structured with the following sections.
+
+### 3.1. Document Header
+
+*   **Content:** A header indicating the document's purpose and the project it pertains to.
+*   **Format:**
+    ```markdown
+    # Implementation Plan: [Project Name]
+    **Version:** 1.0
+    **Date:** YYYY-MM-DD
+    **Status:** [Draft, In Review, Approved, In Progress, Completed]
+    ```
+
+### 3.2. Project Overview
+
+*   **Content:** A brief, high-level summary of the project's goals and objectives, as understood by the Manager Agent. This sets the context for the plan.
+*   **Source:** This should be a distillation of the information gathered during the initial project discovery phase.
+
+### 3.3. Memory Bank Configuration
+
+*   **Content:** A concise statement specifying the agreed-upon structure for the project's Memory Bank.
+*   **Source:** This decision is made by the Manager Agent, guided by `02_Memory_Bank_Guide.md`, and confirmed with the User.
+*   **Format Examples:**
+    *   `**Memory Bank Structure:** A single file named Memory_Bank.md will be used for this project.`
+    *   `**Memory Bank Structure:** A directory-based system located at /Memory_Bank/ will be used.`
+
+### 3.4. Prioritization Analysis Summary
+
+*   **Content:** A reference to the formal backlog analysis performed before the creation of this plan.
+*   **Source:** This is the output of the process defined in `07_Dynamic_Backlog_Analysis_Guide.md`.
+*   **Format:**
+    ```markdown
+    **Backlog Analysis Reference:** The task prioritization for this plan was determined by a formal analysis conducted on [Date]. The detailed analysis and justification for the task ordering are logged in the Memory Bank under the "Prioritization Analysis" entry.
+    ```
+
+### 3.5. Phases and Tasks
+
+*   **Primary Objective:** To break down the project into a logical sequence of phases and discrete, actionable tasks, based on the results of the Prioritization Analysis.
+*   **Structure:**
+    *   The project should be divided into logical `## Phase [Number]: [Phase Name]` sections (e.g., `## Phase 1: Foundational Setup`).
+    *   Each phase must contain one or more `### Task: [Task Name]` subsections. 
