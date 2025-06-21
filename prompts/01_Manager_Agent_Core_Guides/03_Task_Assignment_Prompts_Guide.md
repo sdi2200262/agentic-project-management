@@ -75,7 +75,17 @@ Below is a recommended structure. You should adapt this template, adding, removi
 
 *   **Instruction:** "If any part of this task assignment is unclear, please state your specific questions before proceeding."
 
-```
+## 4. Final Output
+
+The final output of this process is not a direct response to the User. Instead, it is a new message block that you will **append to the `WORK_QUEUE.md` file**.
+
+*   **Construct the Message:** Wrap the fully-formed `Task Assignment Prompt` (from step 3) inside a standard Work Queue message block.
+    *   Populate the `ID`, `FROM`, `TO`, and `TIMESTAMP` headers correctly.
+*   **Append to `WORK_QUEUE.md`:** Add this new message block to the end of the queue file.
+*   **Instruct the User:** Provide a simple, clear instruction to the user.
+    *   **Example Dialogue:** "I have prepared Task 1.3 for `Agent_Backend_Dev` and added it to the `WORK_QUEUE.md`. Please tell them to check the work queue."
+
+By following this guide, you will create effective, consistent, and actionable task assignments that are seamlessly integrated with the APM Work Queue protocol.
 
 ## 4. Best Practices & Adaptability
 
