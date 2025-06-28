@@ -1,0 +1,107 @@
+# APM v0.4 - Memory System Guide 
+This guide explains how APM sessions store and evolve memory. It defines three Memory System variants:
+- Simple
+- Dynamic‑MD
+- Dynamic‑JSON
+Memory duties are split between the *Setup Agent* and the *Manager Agent*. Details on individual Memory Log files reside in `guides/Memory_Log_Guide.md`.
+
+---
+
+## 1  Memory System Variant Overview
+Below follows a summary of the three Memory System variants, their storage layouts, log formats and memory summarization strategies:
+
+- Simple
+    - Storage layout: Single file `Memory_Bank.md` at workspace root
+    - Log format: Inline subsections inside the same MD file
+    - Each inline subsection acts as a task memory log; summaries are appended after each logical group of tasks (if any) is complete. Summarization approach is determined by the Manager Agent.
+
+- Dynamic‑MD
+    - Storage layout: Folder `Memory/` + `Memory_Root.md` + sub‑folders `Phase_XX_<slug>/`
+    - Log format: One `Task_XX_<slug>.md` Memory Log per task
+    - After each phase completes, an inline subsection is appended to the `Memory_Root.md` file summarizing the phase.
+
+- Dynamic‑JSON
+    - Storage layout: Same as Dynamic‑MD (markdown root)
+    - Log format: One `Task_XX_<slug>.json` Memory Log per task
+    - After each phase completes, an inline subsection is appended to the `Memory_Root.md` file summarizing the phase.
+
+**Memory Logs** capture granular, task‑level context and are written by Implementation Agents after each task completion. See `guides/Memory_Log_Guide.md` for schemas and writing rules.
+
+---
+
+## 2  Setup Agent Responsibilities
+Below follows the main responsibilities of the Setup Agent when initializing the Memory System for an APM session:
+
+1. Select Memory Strategy
+    - Review the Implementation Plan to determine task count and complexity.
+        - Use `simple` if there are ≤ 8 tasks with small to medium complexity.
+        - Use `dynamic-md` if there are ≥ 30 tasks, phased delivery, or medium to hard complexity (default).
+        - Use `dynamic-json` if there are 9–30 tasks, phased delivery, and hard complexity, or if the user specifically requests JSON during the Context Synthesis Phase.
+
+2. Record strategy `memory_strategy: <simple|dynamic-md|dynamic-json>` to the Bootstrap-prompt YAML.
+
+3. Initialize Memory System
+    - Simple:  
+      - Create `Memory_Bank.md` containing the following:
+        ```markdown
+        ---
+        memory_strategy: simple
+        format: markdown
+        ---
+        # Project_Name – APM Simple Memory Bank
+        All Implementation Plan Task Memory Logs and Task Summaries are to be stored here.
+        ```
+
+    - Dynamic (MD/JSON):  
+      - Create `Memory/` folder if missing.
+      - Add `Memory/Memory_Root.md` containing the following:
+        ```markdown
+        ---
+        memory_strategy: dynamic-md | dynamic-json
+        memory_log_format: markdown | json
+        ---
+        # Project_Name - APM Dynamic Memory Bank Root
+        Implementation Plan Phase Summarizes are to be stored here; detailed Task Memory Logs are stored in Markdown or JSON format in the sub-directories.
+        ```
+      - Subfolders (e.g., `Phase_01_<slug>/`) are created by the Manager Agent as needed.
+
+
+---
+
+## 3  Manager Agent Responsibilities
+Below are the main responsibilities of the Manager Agent when maintaining the Memory System during an APM session:
+
+### All Variants
+1. Keep the Memory System structure (folders/logs or sections) in sync with the current Implementation Plan. Update as Phases or Tasks change.
+2. After each phase (or group of tasks), create and append a concise summary referencing the relevant Memory Logs or inline memory log sections.
+
+### Simple Memory System
+1. Ensure `Memory_Bank.md` exists at the designated path defined during Setup.
+2. At the end of each group of tasks (phase/milestone), append a summary subsection to `Memory_Bank.md`:
+    ```markdown
+    ## <Group/Phase Name> Summary 
+    * Outcome summary (≤ 200 words)
+    * List of invloved Agents
+    * List of relevant task subsections
+    ```
+    Keep summaries ≤ 20 lines.
+
+### Dynamic‑MD and Dynamic‑JSON
+1. On phase entry, create `Memory/Phase_XX_<slug>/` if missing. For each task in the phase, create an empty Memory Log with a header referencing `guides/Memory_Log_Guide.md`:
+    - `Task_YY_<slug>.md` (Dynamic‑MD)
+    - `Task_YY_<slug>.json` (Dynamic‑JSON)
+
+2. After each task, review the Memory Log written by the Implementation Agent, provided via the User. For Dynamic‑JSON, validate the log structure against the required schema.
+
+3. At phase end, append a summary to `Memory/Memory_Root.md`:
+    ```markdown
+    ## Phase XX – <Phase Name> Summary 
+    * Outcome summary (≤ 200 words)
+    * List of involved Agents
+    * Links to all phase task logs
+    ```
+    Keep summaries ≤ 20 lines.
+
+---
+
+**End of Guide**
