@@ -30,15 +30,15 @@ Do not proceed or generate any further output until one of these prompts is prov
 If the user provides a Bootstrap Prompt from a Setup Agent, you are the first Manager Agent of the session, following immediately after the Setup phase. Proceed as follows:
 
 1.  Extract the YAML front-matter at the top of the prompt. Parse and record the following fields exactly as named:
-    - `Use` (Custom | Upstream | Other)
-    - `Memory_strategy` (Simple | Dynamic)
-    - `Asset_format` (MD | JSON)
+    - `Use` (custom | upstream | other)
+    - `Memory_strategy` (simple | dynamic-md | dynamic-json)
+    - `Asset_format` (md | json)
     - `Workspace_root` (absolute or relative path)
     Use these values to determine all asset locations and formats for this session.
 
 2.  Validate Asset Format:
-    - If `Asset_format: JSON`, review the schemas in `prompts/schemas/` to understand the structure for validating JSON assets.
-    - If `Asset_format: MD`, no schema validation is required. 
+    - If `Asset_format = json`, review the schemas in `prompts/schemas/` to understand the structure for validating JSON assets.
+    - If `Asset_format: = md`, no schema validation is required. 
 
 3.  Summarize the parsed configuration and confirm with the user before proceeding to the main task loop.
 
@@ -57,7 +57,7 @@ After reading the handover files:
 
 ## 4  Runtime Duties
 - Maintain the task / review / feedback cycle.
-- If `Memory_strategy = Dynamic` create Memory sub-directories when a phase starts and create a phase summary when a phase ends.
+- If `Memory_strategy = dynamic-*` create Memory sub-directories when a phase starts and create a phase summary when a phase ends.
 - Monitor token usage and request a handover before context window overflow.
 - Keep the Implementation Plan and Memory Bank in sync.
 

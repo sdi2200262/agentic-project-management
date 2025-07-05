@@ -1,0 +1,234 @@
+# APM v0.4 - Implementation Plan Guide
+This guide explains how APM sessions break complex projects into granular tasks and share workload between multiple Agents. It defines two Implementation Plan variants:
+- Markdown
+- JSON
+Planning duties are split between the *Setup Agent* and the *Manager Agent*.
+
+---
+
+## 1. Implementation Plan Variant Overview
+Below follows a summary of the two Implementation Plan variants, their formats and structural characteristics:
+
+- Markdown
+    - Format: `Implementation_Plan.md` at workspace root
+    - Structure: Phases as level 2 headings, tasks as level 3 headings with meta-fields
+    - Default format; human-readable with predictable structure for automated parsing
+
+- JSON
+    - Format: `Implementation_Plan.json` at workspace root
+    - Structure: Hierarchical JSON with phases array and nested tasks objects
+    - Opt-in format for stricter structure validation; follows same logical hierarchy as Markdown
+
+The Implementation Plan serves as the *single source of truth* for project scope, task organization, and agent assignments. Created by Setup Agent after context synthesis, maintained by Manager Agent throughout the session.
+
+----
+
+## 2. Project Decomposition Principles
+The Implementation Plan must be created using all available project context gathered during the context synthesis phase. Apply these rules in collaboration with that phase.
+
+### 2.1. Phase Identification
+- Group related capabilities (e.g., auth, data, UI)
+- Order phases by dependencies (e.g., backend → API → frontend) 
+- Align phases with testable outcomes
+- Consider agent specialization and parallelization
+
+### 2.2. Task Granularity and Sub-task Composition
+Every task **must** include sub-tasks—no exceptions.
+
+Tasks are focused work units for Implementation Agents, each broken down into actionable sub-tasks to guide execution.
+
+**Task granularity:**
+- 1 response: Simple changes, config, single file
+- 2–3 responses: Features, integrations, focused testing
+- 4–5 responses: Complex features, research, multi-file
+- >5 responses: Split into smaller tasks
+
+**Sub-task formats:**
+- **Single-step:** For atomic work done in one session, no sequential dependencies. Examples: config updates, extending code, following patterns.
+- **Multi-step:** For work with sequential dependencies; each step needs output/validation from the previous. Examples: research→implement→test, complex integrations.
+
+**Format selection:**
+- When unsure, use multi-step.
+- Only use single-step for truly atomic work.
+- Avoid unnecessary steps that break up atomic work.
+
+**Performance notes:**
+- Single-step: Lower overhead, faster, simpler tracking.
+- Multi-step: Better context management, clearer progress, validation between steps.
+- Use Ad-Hoc delegation for specialized research within multi-step tasks.
+
+### 2.3. Common Phase Patterns
+- Greenfield: Bootstrap → Core Features → Integration → Polish
+- Enhancement: Analysis → Implementation → Testing → Deployment
+- Migration: Assessment → Preparation → Migration → Validation
+
+---
+
+## 3. Document Structure Specifications
+
+### 3.1. Document Header (Lines 1‑15)
+```markdown
+# <Project Name> – Implementation Plan 
+
+**Memory Strategy:** simple | dynamic-md | dynamic-json  
+**Last Modification:** [Summary of last modification by Manager Agent here]
+**Project Overview:** [High-level project overview here]
+```
+Keep this header < 15 lines so diff tools can catch version bumps cheaply.
+
+### 3.2. Phase Sections
+- Use level 2 headings (`##`) for phases: `## Phase <n>: <Name>`.
+- Each phase groups related tasks (e.g., refactoring, feature rollout).
+- For small or strictly linear projects, omit phases and list tasks directly under the header.
+
+### 3.3. Task Blocks
+- Use a level 3 heading (`###`) for each task, assigned to one agent:  
+    `### Task <n.m> – <Title> │ <Agent_<Domain>>`
+- Each task is a focused, actionable step for an Implementation Agent, completed in 1 to 5 responses.
+- Directly under the heading, add an unordered list with these meta-fields:
+    - **Objective:** One-sentence task goal.
+    - **Output:** Concrete deliverable (e.g., function, module, PR).
+    - **Guidance:** Key constraints or special requirements (e.g., library, API contract).
+
+### 3.4. Sub-Task Decomposition
+Sub-tasks break down a parent task into logical steps and must be included for every task. 
+Use the appropriate format based on the task's workflow requirements.
+
+**Single-step:**  
+Use an **unordered list** (`-`) for atomic work done in one response, no sequential dependencies.
+
+**Multi-step:**  
+Use an **ordered list** (`1.`, `2.`, ...) for work with sequential dependencies; each step is a separate exchange.
+
+**Example (single-step format):**
+```markdown
+### Task 2.3 – Add Input Validation │ Agent_Backend
+- **Objective:** Add validation middleware to existing API endpoints.
+- **Output:** Updated middleware with comprehensive input validation.
+- **Guidance:** Follow existing validation patterns in auth middleware.
+- Extend current validation framework with new rules for user inputs.
+- Add comprehensive error handling for invalid data types.
+- Update existing middleware tests to cover new validation rules.
+```
+
+**Example (multi-step format with Ad-Hoc Agent):**
+```markdown
+### Task 2.1 – Migrate Auth Middleware │ Agent_Backend
+- **Objective:** Replace legacy session-based authentication with JWT middleware.
+- **Output:** Merged PR with updated `/auth/login` endpoint and passing tests.
+- **Guidance:** Preserve existing URL slugs for backward compatibility.
+
+1. **Research SDK:** Assign research of `Acme-JWT` v2 to an Ad-Hoc agent to determine integration requirements.
+2. **Implement Middleware:** Create middleware and integrate into `/auth/login`, replacing session logic.
+3. **Update Tests:** Modify unit tests for JWT flow and edge cases from research.
+4. **Submit PR:** Create a pull request for review, linking to this task.
+```
+
+**Ad-Hoc Agent Delegation:**  
+For specialized research or investigation within a multi-step task, delegate to an Ad-Hoc agent. This keeps the main workflow focused while obtaining necessary expertise.
+
+### 3.5. Cross-Agent Task Dependencies
+When tasks in a phase depend on each other (i.e., the output of one task is the input for another) and are assigned to different agents, explicitly define the dependency:
+
+1. **Producer Task:** In the `Output` field, specify the artifact that the next task will use (e.g., API contract, schema).
+2. **Consumer Task:** In the `Guidance` field, state the dependency using `Depends on: Task <n.m> Output`.
+
+This format tells the Manager Agent to extract the producer's output and provide it as context for the consumer task, ensuring smooth handoff and compatibility.
+
+**Example of a Sequential Handoff:**
+```markdown
+## Phase 2: API and Frontend Integration
+
+### Task 2.1 – Define User API Endpoint │ Agent_Backend
+- **Objective:** Create the API endpoint for retrieving user profiles.
+- **Output:** A committed file `routes/api/users.js` containing the `GET /api/users/:id` endpoint and a JSON schema for the response.
+- **Guidance:** The user object should only expose `id`, `username`, and `avatarUrl`.
+
+### Task 2.2 – Build User Profile Page │ Agent_Frontend
+- **Objective:** Create a React component to display a user's profile.
+- **Output:** A merged PR with the new `UserProfile.jsx` component.
+- **Guidance:** Depends on: **Task 2.1 Output**. The component must fetch data from the `GET /api/users/:id` endpoint and render it according to the specified JSON schema.
+```
+
+**Dependency Limit:** Avoid chains exceeding 3 sequential tasks without intermediate checkpoints.
+
+### 3.6. Phase Summary Procedure (Manager Agent)
+At the end of each phase:
+
+1. Append a detailed phase summary to the memory root file (see `guides/Memory_System_Guide.md` for format). This summary should cover key events, decisions, blockers, resolutions, and context for future phases.
+2. Add a concise, task-focused summary immediately after the completed phase section in the Implementation Plan, before the next phase header. This summary should list:
+    - Delivered: Completed tasks (IDs and titles)
+    - Outstanding: Unfinished or deferred tasks
+    - Blockers: Unresolved issues or dependencies
+    - Common Bugs/Issues: Notable bugs or technical challenges
+    - Compatibility Notes: Issues affecting later phases
+
+For markdown variant follow this template:
+```markdown
+## Phase <n>: <Name> Summary
+> Delivered: Tasks <n.m>, <n.k>
+> Outstanding: Tasks <n.x>, ...
+> Blockers: ...
+> Common Bugs/Issues: ...
+> Compatibility Notes: ...
+```
+
+---
+
+## 4. JSON Variant Specification
+JSON Implementation Plans follow identical rules and structure as Markdown but use schema validation at `/prompts/schemas/implementation_plan.schema.json`. All requirements for task meta-fields, agent assignments, dependencies, summaries, and policies apply as described for Markdown. 
+
+---
+
+## 5. Setup Agent Responsibilities
+Below follows the main responsibilities of the Setup Agent when creating the Implementation Plan for an APM session:
+
+1. Variant Selection
+    - Choose MD/JSON based on user preference from Context Synthesis Phase (default: Markdown)
+
+2. Project Analysis & Decomposition
+    - Review context for complexity, scope, timeline
+    - Split complex projects into phases (task groupings)
+    - Break phases into granular, actionable tasks
+
+3. Document Construction
+    - Follow Section 3 structure
+    - Assign agent slugs (Agent_<Domain>)
+    - Define task meta-fields: Objective, Output, Guidance
+    - Map dependencies using handoff patterns
+    - Validate JSON if used
+
+4. Quality Assurance
+    - Present plan for user review and feedback
+    - Iterate until approved
+
+## 6. Manager Agent Responsibilities
+Below are the main responsibilities of the Manager Agent when maintaining the Implementation Plan during an APM session:
+
+1. Plan Validation & Improvement
+    - Read guide, evaluate plan
+    - Validate JSON if used
+    - Suggest improvements only for integrity issues
+    - Confirm understanding before execution
+
+2. Live Plan Maintenance
+    - Sync plan with project changes
+    - Add/remove/modify phases and tasks as needed
+    - Update "Last Modification" for all changes
+    - Keep task numbering and dependencies consistent
+
+3. Execution Coordination
+    - Manage cross-agent handoffs per dependencies
+    - Extract producer outputs, inject into consumer agent context
+    - Create phase memory sections at transitions
+    - Issue task prompts per plan
+
+4. Phase Management
+    - Track phase completion
+    - Write detailed phase summaries in Memory Root
+    - Add concise phase summaries to plan before next phase
+    - Summaries must list deliverables, blockers, compatibility notes
+
+---
+
+**End of Guide**

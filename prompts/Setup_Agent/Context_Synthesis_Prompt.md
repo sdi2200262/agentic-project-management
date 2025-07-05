@@ -39,12 +39,15 @@ Where answers are unclear, follow up with examples, definitions, or alternative 
 At intervals, and at the end:  
 1. Summarize all gathered information in a high-level project overview.  
 2. Ask the user to confirm accuracy. Request follow-ups from the user for clarity if needed.
-3. Reiterate until a complete contextual understanding is achieved.
+3. After gathering all context, ask the user to choose an APM asset format:
+    - **Markdown**: Readable, concise, best for most cases.
+    - **JSON**: Structured, ~15% more tokens, use if strict validation/detail is needed.
+Explain both options briefly and confirm the user’s choice.
 
 ## Pass Control Flow Back to the Initiation Prompt
-Once a complete contextual understanding is achieved, switch control flow back to the `Initiate_Setup_Agent.md` prompt at the Context Synthesis Phase. The Setup Agent will then use this active context information to create an Implementation Plan according to the APM Guide.
+Once complete contextual understanding is achieved AND asset format is selected, switch control flow back to the `Setup_Agent_Initiation_Prompt.md` prompt at the Implementation Plan + Memory Root Creation Phase.
 
-### Principles for Discovery
+## Principles for Discovery
 - Aim for clarity and sufficiency, not exhaustive interrogation.  
 - Reuse any existing documentation before asking new questions.  
 - Adapt language and depth to project size and user expertise.  
