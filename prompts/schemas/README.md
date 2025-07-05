@@ -5,8 +5,9 @@ This directory contains the JSON schemas that define the structure of various ar
 ## Available Schemas
 
 - `implementation_plan.schema.json`: Defines the structure for both phased and linear `Implementation_Plan.json` files. It enforces rules for task definitions, agent assignments, dependencies, and phase summaries as described in the `Implementation_Plan_Guide.md`.
+- `memory_log.schema.json`: Defines the structure for dynamic-JSON variant Memory Logs, enforcing all rules and content requirements from the `Memory_Log_Guide.md`.
 
-*More schemas for other artifacts (e.g., Memory Logs, Task Assignments) will be added here as they are developed.*
+*More schemas for other artifacts (e.g., Task Assignments) will be added here as they are developed.*
 
 ---
 
@@ -24,14 +25,17 @@ python path/to/validate_schema.py <artifact_type> <file_path>
 ```
 
 **Arguments:**
-- `<artifact_type>`: The type of artifact to validate. Currently supported: `plan`.
+- `<artifact_type>`: The type of artifact to validate. Currently supported: `plan`, `log`.
 - `<file_path>`: The path to the JSON file you want to validate.
 
-**Example:**
+**Examples:**
 To validate the example implementation plan, run the following command from the `schemas/` directory:
 ```bash
-cd path/to/validate_schema.py
 python validate_schema.py plan examples/json_plan_example.json
+```
+To validate the example memory log, run:
+```bash
+python validate_schema.py log examples/json_memory_log_example.json
 ```
 A successful validation will print a confirmation message. If validation fails, the script will output detailed error information and exit with a non-zero status code.
 
@@ -44,5 +48,6 @@ The `examples/` subdirectory contains sample JSON files that conform to the sche
 ### Current Examples
 
 - `json_plan_example.json`: A simple, phased project to create a Vite application with Shadcn components.
+- `json_memory_log_example.json`: A sample dynamic-JSON memory log for Task 1.1 in the above plan.
 
 ---

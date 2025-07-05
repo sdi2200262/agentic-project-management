@@ -24,47 +24,37 @@ The Implementation Plan serves as the *single source of truth* for project scope
 ----
 
 ## 2. Project Decomposition Principles
-The Implementation Plan must be created using all available project context gathered during the context synthesis phase. Apply these rules in collaboration with that phase.
+Transform Context Synthesis outputs into structured Implementation Plans:
 
-### 2.1. Phase Identification
-- Group related capabilities (e.g., auth, data, UI)
-- Order phases by dependencies (e.g., backend → API → frontend) 
-- Align phases with testable outcomes
-- Consider agent specialization and parallelization
+### 2.1. Phase Structure
+Use deliverable type from Context Synthesis to determine phase organization:
+- **Linear:** Single deliverable → Sequential phases (research → draft → review)
+- **Parallel:** Multiple components → Component-based phases  
+- **Hierarchical:** Complex systems → Foundation → features → integration
 
-### 2.2. Task Granularity and Sub-task Composition
-Every task **must** include sub-tasks—no exceptions.
+### 2.2. Task Sizing
+Use complexity assessment from Context Synthesis:
+- **Simple work:** 3-5 response tasks
+- **Moderate complexity:** 2-3 response tasks  
+- **High complexity:** 1-2 response tasks
+- **Rule:** >5 responses = split into smaller tasks
 
-Tasks are focused work units for Implementation Agents, each broken down into actionable sub-tasks to guide execution.
+### 2.3. Task Dependencies  
+Use dependency information from Context Synthesis:
+- **Sequential work:** Ordered sub-tasks within phases
+- **Independent work:** Parallel tasks across agents
+- **Review checkpoints:** Phase boundaries
+- **Rule:** Every Task must include subtasks (see section §3.4)
 
-**Task granularity:**
-- 1 response: Simple changes, config, single file
-- 2–3 responses: Features, integrations, focused testing
-- 4–5 responses: Complex features, research, multi-file
-- >5 responses: Split into smaller tasks
-
-**Sub-task formats:**
-- **Single-step:** For atomic work done in one session, no sequential dependencies. Examples: config updates, extending code, following patterns.
-- **Multi-step:** For work with sequential dependencies; each step needs output/validation from the previous. Examples: research→implement→test, complex integrations.
-
-**Format selection:**
-- When unsure, use multi-step.
-- Only use single-step for truly atomic work.
-- Avoid unnecessary steps that break up atomic work.
-
-**Performance notes:**
-- Single-step: Lower overhead, faster, simpler tracking.
-- Multi-step: Better context management, clearer progress, validation between steps.
-- Use Ad-Hoc delegation for specialized research within multi-step tasks.
-
-### 2.3. Common Phase Patterns
-- Greenfield: Bootstrap → Core Features → Integration → Polish
-- Enhancement: Analysis → Implementation → Testing → Deployment
-- Migration: Assessment → Preparation → Migration → Validation
+### 2.4. Agent Assignment
+Use skills/expertise areas from Context Synthesis:
+- **1-3 related tasks:** Single domain agent
+- **4+ tasks or high complexity:** Split by specialization
+- **Naming:** Descriptive domains (Agent_Research, Agent_Backend, Agent_Writing)
 
 ---
 
-## 3. Document Structure Specifications
+## 3. Implementation Plan Structure Specifications
 
 ### 3.1. Document Header (Lines 1‑15)
 ```markdown
@@ -91,8 +81,7 @@ Keep this header < 15 lines so diff tools can catch version bumps cheaply.
     - **Guidance:** Key constraints or special requirements (e.g., library, API contract).
 
 ### 3.4. Sub-Task Decomposition
-Sub-tasks break down a parent task into logical steps and must be included for every task. 
-Use the appropriate format based on the task's workflow requirements.
+Sub-tasks break down a parent task into logical steps and must be included for every task. Use the appropriate format based on the task's workflow requirements.
 
 **Single-step:**  
 Use an **unordered list** (`-`) for atomic work done in one response, no sequential dependencies.
@@ -196,9 +185,9 @@ Below follows the main responsibilities of the Setup Agent when creating the Imp
     - Assign agent slugs (Agent_<Domain>)
     - Define task meta-fields: Objective, Output, Guidance
     - Map dependencies using handoff patterns
-    - Validate JSON if used
 
 4. Quality Assurance
+    - Validate JSON if used
     - Present plan for user review and feedback
     - Iterate until approved
 

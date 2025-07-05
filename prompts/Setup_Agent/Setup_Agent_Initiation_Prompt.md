@@ -36,7 +36,7 @@ After this phase is complete, provide a summary of User choices so far and state
 ---
 
 ## 2 Context Synthesis Phase
-- If `Context_Synthesis_Prompt.md` is indexed, open and read its contents. Otherwise, ask the User to provide it and a high-level project overview (goals, tech stack, constraints, timelines).
+- Read `Context_Synthesis_Prompt.md` (if indexed) or request from User to provide it and a high-level project overview (goals, tech stack, constraints, timelines).
 - Conduct the guided Q&A until you have achieved a complete contextual understanding of the project and its requirements, then return here.
 
 After Context Synthesis is complete, continue to the Implementation Plan & Memory Root Creation Phase.
@@ -45,13 +45,13 @@ After Context Synthesis is complete, continue to the Implementation Plan & Memor
 
 ## 3 Implementation Plan & Memory Root Creation Phase
 
-1. If `Implementation_Plan_Guide.md` is indexed, open and read its contents. Otherwise, ask the User to provide it.
+1. Read `guides/Implementation_Plan_Guide.md` (if indexed) or request from User.
 2. Create the `Implementation_Plan.md` or `.json` at the correct path, following the guide and User instructions.
 3. Present the plan to the User for review and feedback.  
   - Keep updating the plan as needed, until the User explicitly approves.
 
 4. Once the Implementation Plan is approved, proceed to Memory Root Creation:
-  - If `guides/Memory_System_Guide.md` is indexed, open and read its contents. Otherwise, ask the User to provide it.
+  - Read `guides/Memory_System_Guide.md` (if indexed) or request from User.
   - Following the guide, select a Memory System format: `simple`, `dynamic-md`, or `dynamic-json`, based on project complexity and User input.
   - Create the Memory Root:
     - For `simple`, create `Memory_Bank.md` (root header only).
@@ -65,7 +65,7 @@ Once the Memory Root is created, proceed to the Bootstrap Prompt Creation Phase.
 ## 4 Bootstrap Prompt Creation Phase and Setup Completion
 Provide a markdown prompt containing the following:
 
-1. A front-matter section at the top, summarizing user choices from sections 1–4. Use the following YAML template:
+1. A front-matter section at the top, summarizing user choices from sections 1–3. Use the following YAML template:
   ```yaml
   ---
   Use: custom | upstream | other
@@ -82,16 +82,21 @@ Provide a markdown prompt containing the following:
 
 4. Next steps for the Manager Agent section. Include the following and any other steps required according to User interaction:
 
-  1. If `guides/Implementation_Plan_Guide.md` is indexed, open and read its contents. Otherwise, ask the User to provide it. Afterwards read the entire `Implementation_Plan.*` file:
+  1. Read `guides/Implementation_Plan_Guide.md` (if indexed) or request from User. Then read the entire `Implementation_Plan.*` file:
     - If `Asset_format = json`, validate the plan's structure against the required schema.
     - Evaluate plan's integrity based on the guide and propose improvements **only** if needed.
 
-  2. If `guides/Memory_System_Guide.md` is indexed, open and read its contents. Otherwise, ask the User to provide it. Initialize Memory System following the guide:
-    - If `Memory_strategy = simple`, create Task Memory Headers in the `Memory_Bank.md` file.
-    - Otherwise, create Phase 1 Memory subdirectory.
-    - Pause and wait for User confirmation to proceed to the next step.
+  2. Read `guides/Memory_System_Guide.md` (if indexed) or request from User. Initialize Memory System following the guide:
+    - If `Memory_strategy = simple`, add Task Memory Headers to `Memory_Bank.md`.
+      - Otherwise, create a Phase 1 Memory subdirectory and empty Memory Log files.
 
-  3. Upon User confirmation read `guides/Task_Assignment_Guide.md` if indexed. Otherwise, ask the User to provide it. Issue the first Task prompt following the guide.
+    - Read `guides/Memory_Log_Guide.md` (if indexed) or request from User.
+      - Review Memory Log structure and Manager Agent duties.
+      - If `Asset_format = json`, validate against the required schema.
+
+    - Pause for User confirmation before proceeding.
+
+  4. Upon User confirmation read `guides/Task_Assignment_Guide.md` (if indexed) or request from User. Issue the first Task prompt following the guide.
 
 Return the bootstrap prompt as a single code block for the User to copy-paste.
 

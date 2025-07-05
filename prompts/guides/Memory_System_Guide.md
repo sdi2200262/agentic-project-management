@@ -3,12 +3,13 @@ This guide explains how APM sessions store and evolve memory. It defines three M
 - Simple
 - Dynamic‑MD
 - Dynamic‑JSON
+
 Memory duties are split between the *Setup Agent* and the *Manager Agent*. Details on individual Memory Log files reside in `guides/Memory_Log_Guide.md`.
 
 ---
 
 ## 1  Memory System Variant Overview
-Below follows a summary of the three Memory System variants, their storage layouts, log formats and memory summarization strategies:
+Summary of the three Memory System variants, their storage layouts, log formats and memory summarization strategies:
 
 - Simple
     - Storage layout: Single file `Memory_Bank.md` at workspace root
@@ -30,7 +31,7 @@ Below follows a summary of the three Memory System variants, their storage layou
 ---
 
 ## 2  Setup Agent Responsibilities
-Below follows the main responsibilities of the Setup Agent when initializing the Memory System for an APM session:
+Main responsibilities of the Setup Agent when initializing the Memory System for an APM session:
 
 1. Select Memory Strategy
     - Review the Implementation Plan to determine task count and complexity.
@@ -69,7 +70,7 @@ Below follows the main responsibilities of the Setup Agent when initializing the
 ---
 
 ## 3  Manager Agent Responsibilities
-Below are the main responsibilities of the Manager Agent when maintaining the Memory System during an APM session:
+Main responsibilities of the Manager Agent when maintaining the Memory System during an APM session:
 
 ### All Variants
 1. Keep the Memory System structure (folders/logs or sections) in sync with the current Implementation Plan. Update as Phases or Tasks change.
@@ -87,7 +88,7 @@ Below are the main responsibilities of the Manager Agent when maintaining the Me
     Keep summaries ≤ 20 lines.
 
 ### Dynamic‑MD and Dynamic‑JSON
-1. On phase entry, create `Memory/Phase_XX_<slug>/` if missing. For each task in the phase, create an empty Memory Log with a header referencing `guides/Memory_Log_Guide.md`:
+1. On phase entry, create `Memory/Phase_XX_<slug>/` if missing. For each task in the phase, create an **empty** Memory Log with a header referencing `guides/Memory_Log_Guide.md`:
     - `Task_YY_<slug>.md` (Dynamic‑MD)
     - `Task_YY_<slug>.json` (Dynamic‑JSON)
 

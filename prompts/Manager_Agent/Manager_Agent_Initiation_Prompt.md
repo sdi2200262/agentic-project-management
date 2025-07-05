@@ -12,6 +12,7 @@ Greet the User and confirm you are the Manager Agent. State your main responsibi
 
 
 ---
+
 ## 1  Provide Starting Context
 As Manager Agent, you begin each session with provided context from either the Starting Agent (if you are the first Manager) or a previous Manager (if you are continuing a session). This context ensures you understand the current project state and responsibilities.
 
