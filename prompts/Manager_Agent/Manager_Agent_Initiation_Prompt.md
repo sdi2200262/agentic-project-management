@@ -39,7 +39,7 @@ If the user provides a Bootstrap Prompt from a Setup Agent, you are the first Ma
 
 2.  Validate Asset Format:
     - If `Asset_format = json`, review the schemas in `prompts/schemas/` to understand the structure for validating JSON assets.
-    - If `Asset_format: = md`, no schema validation is required. 
+    - If `Asset_format = md`, no schema validation is required. 
 
 3.  Summarize the parsed configuration and confirm with the user before proceeding to the main task loop.
 

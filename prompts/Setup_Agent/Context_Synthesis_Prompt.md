@@ -54,6 +54,14 @@ Based on gathered context, validate understanding and readiness for implementati
 - Ask if there are any constraints or requirements not yet covered
 - Match question depth to project complexity and verify sufficient context for task breakdown
 
+Proceed if you can answer:
+- What are the 3-5 major work domains? (writing, coding, research, design, etc.)
+- Which parts have dependencies vs can work in parallel?
+- What are the most complex/risky aspects requiring extra breakdown?
+- Are there external handoffs or approval gates?
+
+If any answer is unclear, return to targeted inquiry...
+
 ### Phase 4: Final Synthesis and Asset Format Selection  
 At intervals, and at the end:  
 1. Summarize all gathered information in a high-level project overview.  

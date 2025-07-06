@@ -80,23 +80,22 @@ Provide a markdown prompt containing the following:
 
 3. Implementation Plan Overview section.
 
-4. Next steps for the Manager Agent section. Include the following and any other steps required according to User interaction:
+4. Next steps for the Manager Agent section. Include the following:
 
   1. Read `guides/Implementation_Plan_Guide.md` (if indexed) or request from User. Then read the entire `Implementation_Plan.*` file:
-    - If `Asset_format = json`, validate the plan's structure against the required schema.
-    - Evaluate plan's integrity based on the guide and propose improvements **only** if needed.
+    - If `Asset_format = json`, validate the plan's structure against the required schema
+    - Evaluate plan's integrity based on the guide and propose improvements **only** if needed
 
-  2. Read `guides/Memory_System_Guide.md` (if indexed) or request from User. Initialize Memory System following the guide:
-    - If `Memory_strategy = simple`, add Task Memory Headers to `Memory_Bank.md`.
-      - Otherwise, create a Phase 1 Memory subdirectory and empty Memory Log files.
+  2. Read `guides/Memory_System_Guide.md` (if indexed) or request from User:
+    - Initialize Memory System following section 3 (Manager Agent Responsibilities)
 
-    - Read `guides/Memory_Log_Guide.md` (if indexed) or request from User.
-      - Review Memory Log structure and Manager Agent duties.
-      - If `Asset_format = json`, validate against the required schema.
+  3. Read `guides/Memory_Log_Guide.md` (if indexed) or request from User:
+    - Review Memory Log structure and Manager Agent duties
+    - If `Asset_format = json`, review the required schema for later validation
 
-    - Pause for User confirmation before proceeding.
+  4. Pause for User confirmation before proceeding.
 
-  4. Upon User confirmation read `guides/Task_Assignment_Guide.md` (if indexed) or request from User. Issue the first Task prompt following the guide.
+  5. Upon User confirmation read `guides/Task_Assignment_Guide.md` (if indexed) or request from User. Issue the first Task prompt following the guide.
 
 Return the bootstrap prompt as a single code block for the User to copy-paste.
 

@@ -46,11 +46,30 @@ Use dependency information from Context Synthesis:
 - **Review checkpoints:** Phase boundaries
 - **Rule:** Every Task must include subtasks (see section §3.4)
 
-### 2.4. Agent Assignment
-Use skills/expertise areas from Context Synthesis:
-- **1-3 related tasks:** Single domain agent
-- **4+ tasks or high complexity:** Split by specialization
-- **Naming:** Descriptive domains (Agent_Research, Agent_Backend, Agent_Writing)
+### 2.4. Agent Assignment Strategy
+Use project context from Context Synthesis to determine optimal agent boundaries and assignments:
+
+#### Domain Separation
+- Assign separate agents for:
+    - Different technical stacks (e.g., Agent_Frontend, Agent_Backend)
+    - Distinct skill types (e.g., Agent_Research, Agent_Writing, Agent_Analysis)
+    - Divergent working styles (e.g., Agent_Architecture, Agent_Implementation)
+
+#### Task Volume Guidelines
+- 1–3 related tasks: Assign to a single specialized agent
+- 4–6 tasks in a domain: Use a dedicated domain agent
+- 7 or more tasks, or high complexity: Split by sub-domain or workflow stage
+
+#### Assignment Patterns
+- Document projects: Agent_Research, Agent_Writing, Agent_Review
+- Web applications: Agent_Backend, Agent_Frontend, Agent_DevOps
+- Analysis projects: Agent_DataGathering, Agent_Analysis, Agent_Visualization
+- Complex systems: Agent_Architecture, Agent_CoreFeatures, Agent_Integration, Agent_Testing
+
+#### Special Cases
+- Ad-Hoc agents: Assign for one-off research or investigation steps within multi-step tasks
+- Single agent projects: Use when all tasks are closely related and fewer than 6 total
+- Hybrid workflows: Combine domain agents with workflow-stage agents when both are relevant
 
 ---
 
