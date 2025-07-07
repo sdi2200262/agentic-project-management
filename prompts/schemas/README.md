@@ -1,53 +1,52 @@
-# APM Artifact Schemas
-
-This directory contains the JSON schemas that define the structure of various artifacts used within the Agentic Project Management (APM) framework. These schemas are critical for ensuring data integrity, consistency, and compatibility between different agents and system components.
+# APM Artifact JSON Schemas (Alpha Testing)
+This directory contains JSON schemas that define the structure for APM v0.4 artifacts. If you're testing the JSON variants of Implementation Plans, Memory Logs, or Task Assignments, these schemas keep everything properly structured and catch issues before they break your workflow.
 
 ## Available Schemas
+- **`implementation_plan.schema.json`** - Structure for `Implementation_Plan.json` files (both phased and linear projects). Enforces all the rules from `Implementation_Plan_Guide.md` about tasks, agent assignments, dependencies, and phase summaries.
 
-- `implementation_plan.schema.json`: Defines the structure for both phased and linear `Implementation_Plan.json` files. It enforces rules for task definitions, agent assignments, dependencies, and phase summaries as described in the `Implementation_Plan_Guide.md`.
-- `memory_log.schema.json`: Defines the structure for dynamic-JSON variant Memory Logs, enforcing all rules and content requirements from the `Memory_Log_Guide.md`.
+- **`memory_log.schema.json`** - Structure for Dynamic-JSON Memory Logs. Makes sure your logs follow all the requirements from `Memory_Log_Guide.md`.
 
-*More schemas for other artifacts (e.g., Task Assignments) will be added here as they are developed.*
+- **`task_assignment.schema.json`** - Structure for JSON-format Task Assignment Prompts. Validates all the YAML frontmatter and content sections from `Task_Assignment_Guide.md`.
 
----
+More schemas will show up here as I (or you) add new JSON variants to the framework.
 
 ## Validation Script
+I've included `validate_schema.py` for checking your JSON files against these schemas. It's handy for catching structural issues without having to run through the full APM workflow. Hopefully the Manager Agent will use it to validate Setup or evene later Artifacts against their required schemas... if it fails to do so, please instruct it at least for the Implementation Plan JSON Artifact.
 
-This directory includes a Python script, `validate_schema.py`, for validating JSON artifacts against their corresponding schemas. This allows for automated, non-LLM-based verification of artifact integrity.
-
-### How to Use
-
-The script is run from the command line and requires two arguments: the artifact type and the path to the JSON file to validate.
-
-**Usage:**
+### How to Use the Script
+Run it from command line with the artifact type and file path:
 ```bash
-python path/to/validate_schema.py <artifact_type> <file_path>
+python validate_schema.py <artifact_type> <file_path>
 ```
 
-**Arguments:**
-- `<artifact_type>`: The type of artifact to validate. Currently supported: `plan`, `log`.
-- `<file_path>`: The path to the JSON file you want to validate.
+**Supported artifact types:**
+- `plan` - for Implementation Plans
+- `log` - for Memory Logs  
+- `task` - for Task Assignments
 
 **Examples:**
-To validate the example implementation plan, run the following command from the `schemas/` directory:
 ```bash
+# Validate an implementation plan
 python validate_schema.py plan examples/json_plan_example.json
-```
-To validate the example memory log, run:
-```bash
-python validate_schema.py log examples/json_memory_log_example.json
-```
-A successful validation will print a confirmation message. If validation fails, the script will output detailed error information and exit with a non-zero status code.
 
----
+# Validate a memory log
+python validate_schema.py log examples/json_memory_log_example.json
+
+# Validate a task assignment
+python validate_schema.py task examples/json_task_example.json
+```
+
+If validation passes, you'll get a confirmation message. If it fails, you'll get detailed error info to fix whatever's broken.
 
 ## Examples
+The `examples/` folder has sample JSON files that follow the schemas. Use them for helping the Manager Agent with validation or as templates when creating new artifacts.... as the Header says... still Alpha testing.
 
-The `examples/` subdirectory contains sample JSON files that conform to the schemas. These can be used for testing the validation script or as a reference when generating new artifacts.
+### What's In Examples
+- **`json_plan_example.json`** - Sample phased project (Vite app with Shadcn components)
+- **`json_memory_log_example.json`** - Sample Dynamic-JSON memory log for Task 1.1
+- **`json_task_example.json`** - Sample Task Assignment Prompt in JSON format
 
-### Current Examples
+These examples show you exactly how the JSON variants should look when they're properly structured.
 
-- `json_plan_example.json`: A simple, phased project to create a Vite application with Shadcn components.
-- `json_memory_log_example.json`: A sample dynamic-JSON memory log for Task 1.1 in the above plan.
-
----
+**Warning:**
+> **Beware when using JSON variants that its still for Alpha testing and also that you are sacrificing ~15% higher token consumption for better LLM parsing and context retention. This means that you should be aware to conduct more frequent Handover Procedures to avoid context loss.**

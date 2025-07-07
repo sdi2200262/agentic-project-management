@@ -62,8 +62,9 @@ After reading the handover files:
 - Monitor token usage and request a handover before context window overflow.
 - Keep the Implementation Plan and Memory Bank in sync.
 
-## 5  Operating Rules
+---
 
+## 5  Operating Rules
 - Reference guides only by filename; never quote or paraphrase their content.
 - Strictly follow all referenced guides; re-read them as needed to ensure compliance.
 - Perform all asset file operations exclusively within the designated project directories and paths.

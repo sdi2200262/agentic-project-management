@@ -144,6 +144,7 @@ When tasks in a phase depend on each other (i.e., the output of one task is the 
 This format tells the Manager Agent to extract the producer's output and provide it as context for the consumer task, ensuring smooth handoff and compatibility.
 
 **Example of a Sequential Handoff:**
+Subtasks are omited for token efficiency.
 ```markdown
 ## Phase 2: API and Frontend Integration
 
@@ -184,7 +185,7 @@ For markdown variant follow this template:
 ---
 
 ## 4. JSON Variant Specification
-JSON Implementation Plans follow identical rules and structure as Markdown but use schema validation at `/prompts/schemas/implementation_plan.schema.json`. All requirements for task meta-fields, agent assignments, dependencies, summaries, and policies apply as described for Markdown. 
+JSON Implementation Plans follow identical rules and structure as Markdown but use schema validation at `/prompts/schemas/implementation_plan.schema.json`. All requirements for task meta-fields, agent assignments, dependencies, summaries, and policies apply as described above. 
 
 ---
 
