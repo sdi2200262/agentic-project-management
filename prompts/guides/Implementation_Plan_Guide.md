@@ -108,6 +108,14 @@ Use an **unordered list** (`-`) for atomic work done in one response, no sequent
 **Multi-step:**  
 Use an **ordered list** (`1.`, `2.`, ...) for work with sequential dependencies; each step is a separate exchange.
 
+**Ad-Hoc Agent Delegation Steps:**  
+For multi-step tasks requiring specialized knowledge or investigation, include delegation steps:
+- **Research delegation**: When current documentation, SDKs, or APIs may be outdated/unknown
+- **Debug delegation**: When complex bugs are anticipated that may require dedicated debugging or the task revolve about bug solving
+- **Format**: "Assign [research/debugging] of [specific topic] to an Ad-Hoc agent to [expected outcome]."
+
+Implementation Agents reference `ad-hoc/` directory guides for delegation execution.
+
 **Example (single-step format):**
 ```markdown
 ### Task 2.3 – Add Input Validation │ Agent_Backend
@@ -131,9 +139,6 @@ Use an **ordered list** (`1.`, `2.`, ...) for work with sequential dependencies;
 3. **Update Tests:** Modify unit tests for JWT flow and edge cases from research.
 4. **Submit PR:** Create a pull request for review, linking to this task.
 ```
-
-**Ad-Hoc Agent Delegation:**  
-For specialized research or investigation within a multi-step task, delegate to an Ad-Hoc agent. This keeps the main workflow focused while obtaining necessary expertise.
 
 ### 3.5. Cross-Agent Task Dependencies
 When tasks in a phase depend on each other (i.e., the output of one task is the input for another) and are assigned to different agents, explicitly define the dependency:

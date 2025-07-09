@@ -14,8 +14,7 @@ Thats it... a straightforward system for bringing in help without breaking your 
 Right now I've included a few essential ones:
 
 - **Debug_Delegation_Guide.md** - For persistent bugs that need dedicated debugging attention
-> **Research_Delegation_Guide.md** - For when a model's context is outdated or limited to a subject and you need to dive deep into documentation, APIs, or technical concepts - TBD
-> **Analysis_Delegation_Guide.md** - For complex data analysis or extraction or technical evaluation work - TBD
+- **Research_Delegation_Guide.md** - For when a model's context is outdated or limited to a subject and you need to dive deep into documentation, APIs, or technical concepts - TBD
 
 Implementation Agents will (hopefully) reference these when they hit scenarios that need delegation. You just copy-paste the prompts they create following these guides into new chat sessions and bring back the findings.
 

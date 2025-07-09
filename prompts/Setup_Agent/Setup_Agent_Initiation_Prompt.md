@@ -93,9 +93,13 @@ Provide a markdown prompt containing the following:
     - Review Memory Log structure and Manager Agent duties
     - If `Asset_format = json`, review the required schema for later validation
 
-  4. Pause for User confirmation before proceeding.
+  4. Read `guides/Task_Assignment_Guide.md` (if indexed) or request from User:
+    - Review Task Assignment Prompt structure and Manager Agent duties
+    - If `Asset_format = json`, review the required schema for later validation
+  
+  5. Summarize your understanding and pause for User confirmation before proceeding.
 
-  5. Upon User confirmation read `guides/Task_Assignment_Guide.md` (if indexed) or request from User. Issue the first Task prompt following the guide.
+  6. Issue the first Task prompt following the guide.
 
 Return the bootstrap prompt as a single code block for the User to copy-paste.
 

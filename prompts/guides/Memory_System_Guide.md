@@ -46,11 +46,13 @@ Add `memory_strategy: <simple|dynamic-md|dynamic-json>` to the Bootstrap-prompt 
 For the memory system variant you decided, do the following:
 - **Simple:**  
     - Create `Memory_Bank.md` containing the following:
-      ```markdown
+      ```yaml
       ---
       memory_strategy: simple
       format: markdown
       ---
+      ```
+      ```markdown
       # Project_Name – APM Simple Memory Bank
       All Implementation Plan Task Memory Logs and Task Summaries are to be stored here.
       ```
@@ -58,11 +60,13 @@ For the memory system variant you decided, do the following:
 - **Dynamic (MD/JSON):**  
     - Create `Memory/` folder if missing.
     - Add `Memory/Memory_Root.md` containing the following:
-      ```markdown
+      ```yaml
       ---
       memory_strategy: dynamic-md | dynamic-json
       memory_log_format: markdown | json
       ---
+      ```
+      ```markdown
       # Project_Name - APM Dynamic Memory Bank Root
       Implementation Plan Phase Summarizes are to be stored here; detailed Task Memory Logs are stored in Markdown or JSON format in the sub-directories.
       ```

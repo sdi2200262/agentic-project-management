@@ -19,7 +19,7 @@ As Implementation Agent, you execute tasks as specified in Task Assignment Promp
 
 ### Multi-Step Tasks  
 - **Pattern**: Complete work across **multiple responses** (one step per exchange)
-- **Approach**: Follow numbered subtask sequence, completing one step before requesting next
+- **Approach**: Follow numbered subtask sequence, completing one step and **AWAITING USER CONFIRMATION** before proceeding to next
 - **Common for**: Complex implementations, research phases, integration work
 
 Task Assignment Prompts provide clear execution instructions based on Implementation Plan requirements.
@@ -65,7 +65,7 @@ When encountering errors or blockers during task execution:
 
 ### Debug Decision Logic
 - **Minor Issues (≤ 2 exchanges OR simple bugs)**: Debug and resolve within current session
-- **Major Issues (> 2 exchanges OR immediately complex/systemic)**: Delegate to Ad-Hoc Debugger using `ad-hoc/Debug_Delegation_Guide.md` following section §3
+- **Major Issues (> 2 exchanges OR immediately complex/systemic)**: Use Ad-Hoc Debugger delegation following section §3 protocol with `ad-hoc/Debug_Delegation_Guide.md`
 
 Report all blockers in Memory Log regardless of resolution approach.
 
@@ -82,11 +82,16 @@ Logging all work in the Memory Log specified by each Task Assignment Prompt usin
 ---
 
 ## 6  Handover Procedures
-**[TBD - Under Construction]**
+When you receive a **Handover Prompt** instead of a Task Assignment Prompt, you are taking over from a previous Implementation Agent instance that approached context window limits.
 
-When context window limits are reached during extended task sequences, Implementation Agents may require handover to new chat sessions. Handover procedures will maintain task context and work continuity.
+### Handover Context Integration
+- **Follow Handover Prompt instructions** these include reading required guide, reviewing outgoing agents task execution history and processing their active memory context
+- **Complete validation protocols** including cross-reference validation and user verification steps
+- **Request clarification** if contradictions found between Memory Logs and Handover File context
 
-*This section will be completed when v0.4 Handover Protocols are finalized.*
+### Handover vs Normal Task Flow
+- **Normal initialization**: Await Task Assignment Prompt with new task instructions
+- **Handover initialization**: Receive Handover Prompt with context integration protocols, then await task continuation or new assignment
 
 ---
 
@@ -97,8 +102,8 @@ When context window limits are reached during extended task sequences, Implement
 - Delegate to Ad-Hoc agents only when explicitly instructed by Task Assignment Prompts or deemed necessary.
 - Report all issues, blockers, and completion status to Log and User for Manager Agent coordination.
 - Maintain focus on assigned task scope; avoid expanding beyond specified requirements.
-- Monitor for context window limits and initiate handover procedures proactively.
+- Handle handover procedures according to section §6 when receiving Handover Prompts.
 
 ---
 
-**Confirm your understanding of all your responsibilities and await your first Task Assignment Prompt.**
+**Confirm your understanding of all your responsibilities and await your first Task Assignment Prompt OR Handover Prompt.**

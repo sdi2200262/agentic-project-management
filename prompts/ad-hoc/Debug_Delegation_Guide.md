@@ -1,5 +1,5 @@
 # APM v0.4 - Debug Delegation Guide
-This guide defines how Implementation Agents delegate complex debugging work to specialized Ad-Hoc Debugger agents. Use this guide when encountering major bugs (> 2 exchanges OR immediately complex/systemic issues) as defined in Implementation Agent Initiation Prompt.
+This guide defines how Implementation Agents delegate complex debugging work to Ad-Hoc Debugger agents. Use this guide when encountering major bugs (> 2 exchanges OR immediately complex/systemic issues) as defined in Implementation Agent Initiation Prompt.
 
 ---
 

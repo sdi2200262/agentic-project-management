@@ -34,6 +34,7 @@ For Simple variant systems, entries are inline sections in `Memory_Bank.md` sepa
 
 ```markdown
 ---
+
 ## [Agent ID] - [Task Reference]
 * **Status:** [Completed|Partial|Blocked|Error]
 
@@ -47,7 +48,7 @@ For Simple variant systems, entries are inline sections in `Memory_Bank.md` sepa
 ### 2.2. Dynamic-MD Variant Memory Log Format
 For Dynamic-MD systems, each log is in a dedicated file created empty by Manager Agent, then populated by Implementation Agent. Use parsable Markdown with YAML front-matter and minimal formatting. Include optional sections only when their front-matter boolean is true:
 
-```markdown
+```yaml
 ---
 agent: [Agent ID]
 task_ref: [Task_ID]
@@ -56,6 +57,8 @@ ad_hoc_delegation: [true|false]
 compatibility_issues: [true|false]
 important_findings: [true|false]
 ---
+```
+```markdown
 
 # Task Log: [Task Reference]
 

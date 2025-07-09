@@ -50,9 +50,9 @@ Implementation Plan: **Task X.Y - [Title]** assigned to **[Agent_<Domain>]**
 ## Detailed Instructions
 [Based on Implementation Plan subtasks:]
 - For single-step tasks: "Complete all items in one response"
-- For multi-step tasks: "Complete in X exchanges, one step per response"
-- Expand Implementation Plan guidance into specific instructions
-- Include technical constraints, libraries, methods from Plan guidance
+- For multi-step tasks: "Complete in X exchanges, one step per response. **AWAIT USER CONFIRMATION** before proceeding to each subsequent step."
+- Transform subtask bullets into actionable instructions specifying: what to do, how to approach it, where to implement, and what constraints/libraries to use
+- Include context from task Objective, Output, and Guidance fields
 
 ## Expected Output
 - Deliverables: [from Implementation Plan Output field]
@@ -72,7 +72,6 @@ Based on Implementation Plan delegation step, specify:
 - How Implementation Agent should integrate findings
 
 See section §7 for complete delegation protocol.
-
 ```
 
 ---
@@ -144,8 +143,7 @@ Set `ad_hoc_delegation: true` only when Implementation Plan contains explicit de
 ### 7.3. Integration Requirements
 - Implementation Agent creates delegation prompt and manages workflow
 - Ad-Hoc agents work in a separate branch managed by the assigning Implementation Agent; they do not log into Memory
-- Original agent incorporates findings and logs delegation
-- User deletes ad-hoc chat session after completion (optional)
+- Original agent incorporates findings and logs delegation while User deletes delegation chat session (optional)
 
 ---
 
