@@ -52,7 +52,7 @@ For Dynamic-MD systems, each log is in a dedicated file created empty by Manager
 ---
 agent: [Agent ID]
 task_ref: [Task_ID]
-status: [Completed|Partial|Blocked|Error|Info]
+status: [Completed|Partial|Blocked|Error]
 ad_hoc_delegation: [true|false]
 compatibility_issues: [true|false]
 important_findings: [true|false]

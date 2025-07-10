@@ -82,12 +82,13 @@ Provide a markdown prompt containing the following:
 
 4. Next steps for the Manager Agent section. Include the following:
 
-  1. Read `guides/Implementation_Plan_Guide.md` (if indexed) or request from User. Then read the entire `Implementation_Plan.*` file:
+  1. Read `guides/Implementation_Plan_Guide.md` (if indexed) or request from User. Then read the entire `Implementation_Plan.*` file **created by Setup Agent**:
     - If `Asset_format = json`, validate the plan's structure against the required schema
     - Evaluate plan's integrity based on the guide and propose improvements **only** if needed
 
   2. Read `guides/Memory_System_Guide.md` (if indexed) or request from User:
     - Initialize Memory System following section 3 (Manager Agent Responsibilities)
+    - Note: Memory Root already created by Setup Agent, **your role is phase management**
 
   3. Read `guides/Memory_Log_Guide.md` (if indexed) or request from User:
     - Review Memory Log structure and Manager Agent duties
@@ -108,7 +109,7 @@ After the prompt, outside of the code block, state that the APM Setup is complet
 
 ---
 
-### Operating rules
+## Operating rules
 - Reference guides by filename; do not quote them.  
 - Group questions to minimise turns.  
 - Summarise and get explicit confirmation before moving on.  

@@ -7,8 +7,6 @@ Task assignments coordinate agent work during the Task Loop of an APM session, f
 ---
 
 ## 1. Task Loop Overview
-Below follows an overview of the APM Task Loop:
-
 Manager Agent issues Task Assignment Prompt → User passes to Implementation Agent → Implementation Agent executes task and logs work → User returns log to Manager → Manager reviews and determines next action (continue, follow-up, delegate, or plan update).
 
 ---
@@ -39,10 +37,7 @@ Implementation Plan: **Task X.Y - [Title]** assigned to **[Agent_<Domain>]**
 
 ## Context from Dependencies
 [Only include if dependency_context: true]
-- Previous work summary from related producer tasks
-- Key deliverables and outputs to build upon
-- Code snippets, file paths, or artifacts from dependencies
-- Integration points and compatibility requirements
+[Manager fills this section with section §4 content guidance]
 
 ## Objective
 [One-sentence task goal from Implementation Plan]
@@ -65,13 +60,7 @@ Follow `guides/Memory_Log_Guide.md` instructions.
 
 ## Ad-Hoc Delegation
 [Only include if ad_hoc_delegation: true]
-Based on Implementation Plan delegation step, specify:
-- What to delegate (research, analysis, investigation)
-- Reference relevant ad-hoc/ guide by name if available for delegation type
-- Expected deliverables from Ad-Hoc agent
-- How Implementation Agent should integrate findings
-
-See section §7 for complete delegation protocol.
+[Manager fills this section with section §7 content guidance]
 ```
 
 ---
@@ -81,32 +70,45 @@ JSON prompts follow identical content requirements as Markdown but use schema va
 
 ---
 
-## 4. Dependency Context Integration
-When Tasks have cross-agent dependencies then the Manager Agent is responsible of providing required context in the Task Assignment prompt for task completion:
+## 4. Context Dependency Integration
+When consumer tasks depend on producer outputs ("Depends on: Task X.Y Output" in Implementation Plan Guidance), Manager provides context based on agent assignment:
+- **Same agent assigned to producer & consumer**: Minimal context - reference "your previous work from Task X.Y"
+- **Different agents**: Comprehensive integration context (see §4.1)
 
-### 4.1. Producer Output Extraction
-- From producer task completion extract specific deliverables mentioned in producer's Output field
-- Include relevant code, files, schemas, or specifications
+### 4.1. Different Agent Context Provision
+For cross-agent dependencies, include in "Context from Dependencies":
+1. **Producer Summary**: What Task X.Y built and its core functionality
+2. **Output Locations**: Specific file paths and access instructions
+3. **Integration Pathway**: Preliminary steps before main task execution (examples):
+    - Review producer deliverables to understand their design and structure
+    - Examine documentation and specifications created by producer if any
+    - Understand interfaces, contracts, and data formats established
+4. **Usage Notes**: How outputs integrate with current task
 
-### 4.2. Consumer Context Provision
-- Summarize producer work and key decisions
-- Provide concrete artifacts (code snippets, file references) and explain integration requirements and compatibility constraints
-- Reference producer task ID for traceability
+**Example context for cross-agent dependencies task prompt:**
+```markdown
+## Context from Dependencies
+This Task is based on Task 2.1 which created authentication API with:
+- Endpoints: `src/api/auth.js` implementing POST /api/login
+- Documentation: `docs/auth-api.md` with request/response schemas
+- Tests: `tests/api/auth.test.js` showing usage examples
+
+Integration steps before main task:
+1. Review API documentation for endpoint details
+2. Run `npm test tests/api/auth.test.js` to see working examples
+3. Note JWT token format for frontend state management
+```
+
+### 4.2. Blocked Dependencies
+If producer task status is Partial/Blocked:
+- First attempt resolution via follow-up prompt(s)
+- OR adapt consumer task to work with available outputs
+- OR update Implementation Plan to restructure dependencies
 
 ---
 
-## 5. Memory Log Review Process
-When Implementation Agent returns:
-
-### 5.1. Log Assessment
-- Verify log format compliance with Memory Log Guide
-- Check task completion against assigned instructions
-- Identify any blockers, issues, or deviations reported
-
-### 5.2. Quality Evaluation
-- Compare deliverables with expected outputs
-- Assess adherence to Implementation Plan requirements
-- Note any outstanding work or follow-up needs
+## 5. Memory Log Review
+When Implementation Agent returns, **review Memory Log per `guides/Memory_Log_Guide.md` section §5**. Assess task completion status, identify blockers, and verify outputs match Implementation Plan expectations.
 
 ---
 
@@ -130,17 +132,14 @@ Based on log review, determine appropriate next step:
 ---
 
 ## 7. Ad-Hoc Delegation Protocol
-For tasks with explicit Ad-Hoc delegation steps in the Implementation Plan:
-
-### 7.1. When to Include Delegation
 Set `ad_hoc_delegation: true` only when Implementation Plan contains explicit delegation steps for the task.
 
-### 7.2. Manager Responsibilities  
+### 7.1. Manager Responsibilities  
 - Extract delegation requirements from Implementation Plan step
-- Reference ad-hoc/ directory if relevant guides exist for delegation type
+- Reference `ad-hoc/` directory if relevant guides exist for delegation type
 - Specify what to delegate and expected deliverables in prompt
 
-### 7.3. Integration Requirements
+### 7.2. Integration Requirements
 - Implementation Agent creates delegation prompt and manages workflow
 - Ad-Hoc agents work in a separate branch managed by the assigning Implementation Agent; they do not log into Memory
 - Original agent incorporates findings and logs delegation while User deletes delegation chat session (optional)

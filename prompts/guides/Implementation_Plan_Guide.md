@@ -1,5 +1,5 @@
 # APM v0.4 - Implementation Plan Guide
-This guide explains how APM sessions break complex projects into granular tasks and share workload between multiple Agents. It defines two Implementation Plan variants:
+This guide explains how APM sessions break complex projects into granular tasks and share workload between multiple Agents. It defines two Implementation Plan variants: 
 - Markdown
 - JSON
 Planning duties are split between the *Setup Agent* and the *Manager Agent*.
@@ -66,6 +66,11 @@ Use project context from Context Synthesis to determine optimal agent boundaries
 - Analysis projects: Agent_DataGathering, Agent_Analysis, Agent_Visualization
 - Complex systems: Agent_Architecture, Agent_CoreFeatures, Agent_Integration, Agent_Testing
 
+#### Dependency Optimization
+- Assign producer-consumer task pairs to the same agent when feasible 
+- Reduce context transfer overhead and integration complexity
+- Example: API creation + API integration → same Agent_Backend
+
 #### Special Cases
 - Ad-Hoc agents: Assign for one-off research or investigation steps within multi-step tasks
 - Single agent projects: Use when all tasks are closely related and fewer than 6 total
@@ -102,26 +107,26 @@ Keep this header < 15 lines so diff tools can catch version bumps cheaply.
 ### 3.4. Sub-Task Decomposition
 Sub-tasks break down a parent task into logical steps and must be included for every task. Use the appropriate format based on the task's workflow requirements.
 
-**Single-step:**  
+#### Single-step  
 Use an **unordered list** (`-`) for atomic work done in one response, no sequential dependencies.
 
-**Multi-step:**  
+#### Multi-step
 Use an **ordered list** (`1.`, `2.`, ...) for work with sequential dependencies; each step is a separate exchange.
 
-**Ad-Hoc Agent Delegation Steps:**  
+#### Ad-Hoc Agent Delegation Steps
+Implementation Agents reference `ad-hoc/` directory guides for delegation execution.
 For multi-step tasks requiring specialized knowledge or investigation, include delegation steps:
 - **Research delegation**: When current documentation, SDKs, or APIs may be outdated/unknown
 - **Debug delegation**: When complex bugs are anticipated that may require dedicated debugging or the task revolve about bug solving
 - **Format**: "Assign [research/debugging] of [specific topic] to an Ad-Hoc agent to [expected outcome]."
 
-Implementation Agents reference `ad-hoc/` directory guides for delegation execution.
-
 **Example (single-step format):**
 ```markdown
-### Task 2.3 – Add Input Validation │ Agent_Backend
+### Task 2.3 - Add Input Validation │ Agent_Backend
 - **Objective:** Add validation middleware to existing API endpoints.
 - **Output:** Updated middleware with comprehensive input validation.
 - **Guidance:** Follow existing validation patterns in auth middleware.
+
 - Extend current validation framework with new rules for user inputs.
 - Add comprehensive error handling for invalid data types.
 - Update existing middleware tests to cover new validation rules.
@@ -129,7 +134,7 @@ Implementation Agents reference `ad-hoc/` directory guides for delegation execut
 
 **Example (multi-step format with Ad-Hoc Agent):**
 ```markdown
-### Task 2.1 – Migrate Auth Middleware │ Agent_Backend
+### Task 2.1 - Migrate Auth Middleware │ Agent_Backend
 - **Objective:** Replace legacy session-based authentication with JWT middleware.
 - **Output:** Merged PR with updated `/auth/login` endpoint and passing tests.
 - **Guidance:** Preserve existing URL slugs for backward compatibility.
@@ -141,43 +146,36 @@ Implementation Agents reference `ad-hoc/` directory guides for delegation execut
 ```
 
 ### 3.5. Cross-Agent Task Dependencies
-When tasks in a phase depend on each other (i.e., the output of one task is the input for another) and are assigned to different agents, explicitly define the dependency:
+When tasks depend on outputs from other tasks, explicitly declare dependencies in the Implementation Plan:
 
-1. **Producer Task:** In the `Output` field, specify the artifact that the next task will use (e.g., API contract, schema).
-2. **Consumer Task:** In the `Guidance` field, state the dependency using `Depends on: Task <n.m> Output`.
+#### Dependency Declaration
+- **Producer Task**: Specify concrete deliverables in the `Output` field
+- **Consumer Task**: Reference dependency in `Guidance` field using format: "Depends on: Task X.Y Output"
 
-This format tells the Manager Agent to extract the producer's output and provide it as context for the consumer task, ensuring smooth handoff and compatibility.
+This declaration enables Manager Agent to coordinate proper context handoff between tasks.
 
-**Example of a Sequential Handoff:**
-Subtasks are omited for token efficiency.
+**Example (Subtasks are omitted for brevity):**
+
 ```markdown
-## Phase 2: API and Frontend Integration
+### Task 2.1 - Create User API │ Agent_Backend
+- **Objective:** Implement user authentication endpoints
+- **Output:** API endpoints at `src/api/auth.js` with login/logout functionality and API documentation at `docs/auth-api.md`
+- **Guidance:** Use JWT for token generation
 
-### Task 2.1 – Define User API Endpoint │ Agent_Backend
-- **Objective:** Create the API endpoint for retrieving user profiles.
-- **Output:** A committed file `routes/api/users.js` containing the `GET /api/users/:id` endpoint and a JSON schema for the response.
-- **Guidance:** The user object should only expose `id`, `username`, and `avatarUrl`.
-
-### Task 2.2 – Build User Profile Page │ Agent_Frontend
-- **Objective:** Create a React component to display a user's profile.
-- **Output:** A merged PR with the new `UserProfile.jsx` component.
-- **Guidance:** Depends on: **Task 2.1 Output**. The component must fetch data from the `GET /api/users/:id` endpoint and render it according to the specified JSON schema.
+### Task 2.2 - Build Login UI │ Agent_Frontend
+- **Objective:** Create React login component
+- **Output:** Login component at `src/components/Login.jsx`
+- **Guidance:** Depends on: Task 2.1 Output. Follow existing UI patterns.
 ```
 
-**Dependency Limit:** Avoid chains exceeding 3 sequential tasks without intermediate checkpoints.
+**Dependency Limit:** Avoid dependency chains exceeding 3 sequential tasks without intermediate checkpoints.
+
 
 ### 3.6. Phase Summary Procedure (Manager Agent)
-At the end of each phase:
+At phase completion, append summaries to:
+1. **Memory Root**: Detailed narrative per Memory System Guide
+2. **Implementation Plan**: Concise summary before next phase following this format:
 
-1. Append a detailed phase summary to the memory root file (see `guides/Memory_System_Guide.md` for format). This summary should cover key events, decisions, blockers, resolutions, and context for future phases.
-2. Add a concise, task-focused summary immediately after the completed phase section in the Implementation Plan, before the next phase header. This summary should list:
-    - Delivered: Completed tasks (IDs and titles)
-    - Outstanding: Unfinished or deferred tasks
-    - Blockers: Unresolved issues or dependencies
-    - Common Bugs/Issues: Notable bugs or technical challenges
-    - Compatibility Notes: Issues affecting later phases
-
-For markdown variant follow this template:
 ```markdown
 ## Phase <n>: <Name> Summary
 > Delivered: Tasks <n.m>, <n.k>
@@ -233,15 +231,13 @@ Below are the main responsibilities of the Manager Agent when maintaining the Im
 
 3. Execution Coordination
     - Manage cross-agent handoffs per dependencies
-    - Extract producer outputs, inject into consumer agent context
-    - Create phase memory sections at transitions
+    - Extract producer task outputs, inject into consumer taska assignments
     - Issue task prompts per plan
 
 4. Phase Management
     - Track phase completion
     - Write detailed phase summaries in Memory Root
-    - Add concise phase summaries to plan before next phase
-    - Summaries must list deliverables, blockers, compatibility notes
+    - Add concise phase summaries to plan before next phase following Memory System Guide
 
 ---
 
