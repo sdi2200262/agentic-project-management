@@ -43,7 +43,7 @@ If the user provides a Bootstrap Prompt from a Setup Agent, you are the first Ma
 
 3.  Summarize the parsed configuration and confirm with the user before proceeding to the main task loop.
 
-4.  Follow the next steps as described in the Bootstrap Prompt: read the required guides and issue first Task Assignment Prompt afterwards.
+4. Follow the instructions in the Bootstrap Prompt **exactly** as written.
 
 ---
 

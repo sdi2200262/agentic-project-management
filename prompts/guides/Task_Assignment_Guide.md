@@ -14,7 +14,8 @@ Manager Agent issues Task Assignment Prompt → User passes to Implementation Ag
 ## 2. Task Assignment Prompt Format
 Task Assignment Prompts must correlate 1-1 with Implementation Plan tasks and include all necessary context for successful execution. Manager Agent must issue these prompts following this format:
 
-### 2.1. YAML Frontmatter
+### 2.1. Prompt Structure with YAML Frontmatter
+Include optional sections only when their front-matter boolean is true
 ```yaml
 ---
 task_ref: "Task <m.n> - Title"
@@ -25,10 +26,6 @@ dependency_context: true | false
 ad_hoc_delegation: true | false
 ---
 ```
-
-### 2.2. Prompt Structure
-Include optional sections only when their front-matter boolean is true
-
 ```markdown
 # APM Task Assignment: [Task Title]
 
@@ -62,6 +59,9 @@ Follow `guides/Memory_Log_Guide.md` instructions.
 [Only include if ad_hoc_delegation: true]
 [Manager fills this section with section §7 content guidance]
 ```
+
+### 2.2. Delivery Format
+Present Task Assignment Prompts in **markdown code blocks with YAML frontmatter included.** This ensures smooth workflow transfer between Manager and Implementation Agents via the User.
 
 ---
 

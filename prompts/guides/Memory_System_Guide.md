@@ -34,10 +34,19 @@ Summary of the three Memory System variants, their storage layouts, log formats 
 Main responsibilities of the Setup Agent when initializing the Memory System for an APM session:
 
 ### 2.1. Select Memory Strategy
-Review the Implementation Plan to determine task count and complexity.
-    - Use `simple` if there are ≤8 tasks AND low-medium complexity.
-    - Use `dynamic-md` if there are >8 tasks OR any phased delivery (default for most projects).
-    - Use `dynamic-json` if user requests JSON OR high complexity validation needs. 
+Review the Implementation Plan using these criteria:
+
+#### Check for Phases First
+- Multiple phases (Phase 1, Phase 2, etc.)? → **Use `dynamic-md`**
+
+#### Otherwise, Check Task Count  
+- More than 8 tasks? → **Use `dynamic-md`**
+- 8 or fewer tasks with low-medium complexity? → **Use `simple`**
+
+#### Special Cases
+- **User has requested JSON** OR high complexity validation? → **Use `dynamic-json`**
+
+**Default for most projects: `dynamic-md`**
 
 ### 2.2. Record strategy 
 Add `memory_strategy: <simple|dynamic-md|dynamic-json>` to the Bootstrap-prompt YAML.

@@ -1,13 +1,38 @@
 # APM v0.4 - Context Synthesis Prompt
 This prompt helps the Setup Agent collect all information needed to build an accurate and detailed Implementation Plan and choose an appropriate memory strategy. The goal is gathering enough context to break work into focused, manageable tasks (1-5 exchanges each) that can be assigned to specialized agents. At this stage, the Setup Agent passes control flow to this prompt.
 
-## Principles for Discovery
-- Aim for clarity and sufficiency for task breakdown, not exhaustive interrogation.  
-- Reuse any existing documentation before asking new questions.  
-- Adapt language and depth to project size, type, and user expertise.  
-- Combine related questions to reduce turns.
-- Focus on gathering context that enables work decomposition into manageable, focused tasks.
-- Be mindful of token consumption and context window limitations. Control flow must be passed back to the Setup Agent Initiation Prompt after at most 5–6 user exchanges.
+## Principles for Discovery & Objectives
+
+### Discovery Methodology
+- Aim for clarity and sufficiency for task breakdown, not exhaustive interrogation
+- Reuse existing documentation before asking new questions  
+- Adapt language and depth to project size, type, and user expertise
+- Combine related questions to reduce turns and maintain context efficiency
+- Control flow must return to Setup Agent after at most 6–7 user exchanges
+
+### Context Retention for Task Planning
+As you gather responses, internally note planning implications for the structured work breakdown that follows:
+
+#### Complexity Awareness
+When user describes challenging/complex aspects → Flag these areas for careful breakdown for later planning
+When user expresses uncertainty about approach → Note investigation and research needs for planning phase
+When user mentions "first this, then that" or similar phrases or patterns → Retain sequential workflow patterns
+When user describes parallel work streams or independent deliverables → Retain concurrent workflow patterns for flexible task assignment
+
+#### Work Organization Memory  
+When user explains independent vs dependent work → Remember workflow relationships and dependencies for planning
+When user describes different skill areas → Retain domain boundaries for agent assignment decisions
+When user mentions external dependencies → Flag coordination and environment needs for planning
+When user identifies bottlenecks or critical path items → Note priority sequencing requirements for task ordering decisions
+When user provides examples or references similar work → Capture relevant context for efficient informed planning decisions
+
+#### Scope Understanding
+When user describes deliverable scale → Carry forward scope implications for workload sizing
+When user mentions timeline or other constraints → Retain urgency factors for planning decisions
+When user identifies risk areas → Flag for extra attention during work breakdown
+When user specifies quality standards or acceptance criteria → Preserve validation requirements for completion assessment planning
+
+These retained insights inform adaptive work breakdown during the Implementation Plan creation phase.
 
 ## Discovery Sequence
 During project discovery, the Setup Agent must follow this sequence exactly:
