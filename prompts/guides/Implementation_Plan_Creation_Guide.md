@@ -1,4 +1,4 @@
-# APM v0.4 - Implementation Plan Guide
+# APM v0.4 - Implementation Plan Creation Guide
 This guide explains how APM sessions break complex projects into granular tasks and share workload between multiple Agents. It defines two Implementation Plan variants: 
 - Markdown
 - JSON
@@ -21,7 +21,7 @@ Below follows a summary of the two Implementation Plan variants, their formats a
 
 The Implementation Plan serves as the *single source of truth* for project scope, task organization, and agent assignments. Created by Setup Agent after context synthesis, maintained by Manager Agent throughout the session.
 
-----
+---
 
 ## 2. Project Decomposition Principles
 Transform Context Synthesis outputs into structured Implementation Plans:
@@ -50,28 +50,85 @@ Apply retained insights from Context Synthesis to determine task boundaries:
 - **Retained investigation needs** → Include dedicated research tasks preceding implementation tasks or assign Research Ad-Hoc Agent
 
 #### Breakdown Principles
-- Each task should have **one clear, achievable objective**
+**Objective Decomposition:** A phase will include some **achievable objectives** which can be broken down further into **units of work**
+**Unit of Work Decomposition**: Transform objectives into focused completion units that deliver independent value
+- **Parallel Activity Detection**: Split activities that can be done in any order into separate tasks
+- **Objective Analysis**: If objective contains multiple distinct activities, separate into individual tasks
+- **Natural Workflow**: Let task complexity follow actual requirements, avoid forcing artificial consistency
 - **Challenging areas flagged in context** → Create focused, well-scoped tasks
 - **Sequential workflows retained** → Honor natural progression order
 - **Independent work noted** → Allow parallel execution across agents
 
-### 2.3. Task Dependencies
-Use retained workflow relationships to determine task sequencing:
+### 2.3. Subtask Format Selection
+Use internal workflow dependencies to determine execution pattern:
 
-#### Dependency Decision Logic
+#### Format Decision Logic
+Determine subtask format based on internal dependencies and confirmation needs:
+
+**Single-step [unordered list]:** Work with no internal sequential dependencies completed in one focused exchange
+- All subtask activities can be approached simultaneously within one exchange
+- No natural "first this, then that" progression required
+- Implementation Agent can complete entire unit of work without staged confirmation
+
+**Multi-step [ordered list]:** Work with sequential internal dependencies completed in multiple progressive exchanges
+- Clear "first this, then that" workflow where steps build on each other
+- Benefits from user confirmation between progression steps
+- Natural pause points where Implementation Agent should verify before continuing
+
+#### Natural Step Count Principles
+- **Workflow-driven steps**: Let natural workflow determine step count (2-3 steps to 5-6 steps based on actual requirements)
+- **Avoid artificial consistency**: Each task should follow its organic structure, not predetermined patterns
+- **Template matching prevention**: Do not standardize step counts across tasks
+
+#### Ad-Hoc Delegation Assessment
+Include delegation steps for specialized investigation:
+- **Research delegation**: When a task would benefit from up-to-date data, targeted investigation, or scoped research-such as verifying documentation, or gathering missing info. Delegate to ensure agents work with the sufficient context.
+- **Format**: "Assign [research/debugging] of [specific topic] to an Ad-Hoc agent to [expected outcome]. Read `ad-hoc/Research_Delegation_Guide.md` to ensure proper delegation prompt format."
+
+### 2.4. Task Dependencies
+Use retained workflow relationships and coordination needs to determine task sequencing:
+
+#### Dependency Assessment Criteria
 - **Retained "must do A before B" patterns** → Create sequential task dependencies
 - **Retained coordination needs** → Establish producer-consumer relationships  
 - **Retained independent work streams** → Allow parallel execution
 - **Same-agent optimization** → Prefer assigning dependent tasks to same agent when possible
 
-See section §3.5 for dependency declaration formatting requirements.
+#### Dependency Guidelines
+- **Minimize unnecessary dependencies** → Only declare when work genuinely requires previous outputs
+- **Same-agent optimization** → When dependencies exist, prefer assigning both producer and consumer tasks to the same agent when possible to reduce context transfer overhead
+- **Cross-agent dependencies** → Declare explicitly in Guidance field ("Depends on: Task X.Y Output")
+- **Avoid excessive dependency chains** → Use intermediate checkpoints for complex sequential workflows
 
-### 2.4. Agent Assignment Logic
+### 2.5. Task Execution Scope
+When writing tasks, assume Implementation Agents have access to the same IDE environment and tools as the Setup Agent. For actions requiring work outside the IDE interface, tasks should specify Implementation Agent guidance rather than direct execution:
+
+- **IDE environment capabilities** → Tasks can specify direct Implementation Agent execution
+- **External platform actions** → Tasks should specify Implementation Agent guidance of user actions  
+- **User preference signals retained** → Honor explicit requests for guidance over automation, regardless of technical capability
+- **Mixed execution tasks** → Break into separate steps: agent-executable preparation + user-guided external actions
+
+#### External Platform Action Identification
+**Decision Criteria**: Ask these questions internally to identify external platform actions
+- **Access boundaries**: Does this require accessing interfaces outside the IDE environment?
+- **User account control**: Does this require user authentication or account permissions that agents cannot access?
+- **Platform-specific UI**: Does this involve navigating web interfaces, dashboards, or settings panels?
+- **User preference signals**: Has the user explicitly indicated they will handle certain configurations manually?
+
+#### Guidance Task Approach  
+**Guidance Task Principles**:
+- **Preparation over execution**: Focus on creating resources and instructions rather than attempting direct action
+- **User empowerment**: Provide information and guidance that enables user success
+- **Clear boundaries**: Distinguish between agent-preparable work and user-required actions
+- **Language patterns**: Use "guide," "provide instructions," "prepare documentation" rather than "configure," "deploy," "setup"
+
+### 2.6. Agent Assignment Logic
 Use retained domain boundaries to determine agent distribution:
 
 #### Domain Separation Guidelines
 - **Different skill areas retained** → Separate agents (research vs writing vs analysis vs technical)
 - **Different technical stacks/tools noted** → Domain-specific agents for each environment
+- **Context preservation**: Group related tasks within each agent's domain
 - **Concurrent work streams identified** → Enable parallel execution with multiple agents
 
 #### Assignment Patterns
@@ -84,12 +141,9 @@ Use retained domain boundaries to determine agent distribution:
 - **Cross-domain coordination flagged** → Minimize handoffs through strategic agent boundaries
 - **Context transfer efficiency** → Reduce overhead by grouping related work
 
-See section §3.5 for dependency optimization principles.
-
 #### Special Considerations
 - **Investigation needs retained** → Plan for Ad-Hoc agent delegation in complex tasks
-- **Simple scope understanding** → Single agent may suffice for focused projects  
-- **Hybrid requirements** → Combine domain and workflow-stage agents when appropriate
+- **Hybrid requirements** → Combine domain and workflow-stage agents **only** when appropriate
 
 Align agent assignments with retained domain patterns rather than arbitrary task distribution.
 
@@ -101,7 +155,7 @@ Align agent assignments with retained domain patterns rather than arbitrary task
 ```markdown
 # <Project Name> – Implementation Plan 
 
-**Memory Strategy:** simple | dynamic-md | dynamic-json  
+**Memory Strategy:**  [Leave empty - determined during Memory Root Creation phase]
 **Last Modification:** [Summary of last modification by Manager Agent here]
 **Project Overview:** [High-level project overview here]
 ```
@@ -115,34 +169,31 @@ Keep this header < 15 lines so diff tools can catch version bumps cheaply.
 ### 3.3. Task Blocks
 - Use a level 3 heading (`###`) for each task, assigned to one agent:  
     `### Task <n.m> – <Title> │ <Agent_<Domain>>`
-- Each task is a focused, actionable step for an Implementation Agent with one clear objective
+- Each task is a focused, actionable unit of work for an Implementation Agent with one clear objective that delivers independent value.
+- Apply execution scope principles from section §2.5 when determining task language and approach
 - Directly under the heading, add an unordered list with these meta-fields:
     - **Objective:** One-sentence task goal.
     - **Output:** Concrete deliverable (e.g., function, module, PR).
     - **Guidance:** Key constraints or special requirements (e.g., library, API contract).
 
-### 3.4. Sub-Task Decomposition
-Sub-tasks break down a parent task into logical steps and must be included for every task. Choose format based on work characteristics rather than arbitrary rules.
+### 3.4. Sub-Task Formatting
+Sub-tasks break down a parent task into logical steps and must be included for every task. Use format determined by section §2.3 principles:
 
-#### Format Selection Logic
-Determine subtask format based on task workflow requirements:
+**Single-step format [unordered list (`-`)]:**
+```markdown
+- First activity or component
+- Second activity or component  
+- Third activity or component
+```
 
-**Single-step [unordered list(`-`)]:** Work completed in one focused exchange (one response)
-- No internal sequential dependencies between steps
-- Can be approached directly and completed without staged progression
-- All subtask components can be addressed simultaneously
+**Multi-step format [ordered list (`1.`, `2.`, ...)]:**
+```markdown
+1. **Step Name:** Step description with clear action.
+2. **Step Name:** Step description with clear action.
+3. **Step Name:** Step description with clear action.
+```
 
-**Multi-step [ordered list (`1.`, `2.`, ...)]:** Work requiring sequential progression (multiple responses)
-- Has natural "first this, then that" internal workflow
-- Benefits from user confirmation between progression steps
-- Same focused task scope but needs staged execution for success
-
-#### Ad-Hoc Agent Delegation Steps
-Implementation Agents reference `ad-hoc/` directory guides for delegation execution.
-For multi-step tasks requiring specialized knowledge or investigation, include delegation steps:
-- **Research delegation**: When current documentation, SDKs, or APIs may be outdated/unknown
-- **Debug delegation**: When complex bugs are anticipated that may require dedicated debugging or the task revolve about bug solving
-- **Format**: "Assign [research/debugging] of [specific topic] to an Ad-Hoc agent to [expected outcome]."
+**Note: Examples below illustrate structure and format - step counts should match actual workflow requirements per section §2.3.**
 
 **Example (single-step format):**
 ```markdown
@@ -169,33 +220,13 @@ For multi-step tasks requiring specialized knowledge or investigation, include d
 4. **Submit PR:** Create a pull request for review, linking to this task.
 ```
 
-### 3.5. Cross-Agent Task Dependencies
-Use retained coordination needs to determine when tasks require dependency relationships:
+### 3.5. Task Dependency Declaration Format
+When dependencies are required per section §2.4 assessment:
 
-#### Dependency Assessment
-Determine dependency needs based on Context Synthesis retention:
-- **Retained coordination needs flagged** → Tasks require explicit dependency declarations
-- **Retained sequential "A before B" patterns** → Producer-consumer relationships needed
-- **Independent work streams noted** → Avoid artificial dependencies between parallel work
-- **Retained bottlenecks identified** → Critical dependencies requiring careful coordination
+**Producer Task:** Specify concrete deliverables in the `Output` field for consumer task integration
+**Consumer Task:** Reference dependency in `Guidance` field using format: `"Depends on: Task X.Y Output"`
 
-#### Dependency Declaration
-When dependencies are needed:
-- **Producer Task**: Specify concrete deliverables in the `Output` field for consumer task integration
-- **Consumer Task**: Reference dependency in `Guidance` field using format: "Depends on: Task X.Y Output"
-- **Manager coordination required**: Cross-agent dependencies need explicit context transfer by the Manager Agent
-- **Same-agent dependencies**: Handle through logical task ordering within agent assignments
-
-#### Dependency Guidelines
-- **Minimize unnecessary dependencies** → Only declare when work genuinely requires previous outputs
-- **Same-agent optimization** → When dependencies exist, prefer assigning both producer and consumer tasks to the same agent when possible to reduce context transfer overhead
-- **Cross-agent dependencies** → Declare explicitly in Guidance field ("Depends on: Task X.Y Output")
-- **Avoid excessive dependency chains** → Use intermediate checkpoints for complex sequential workflows
-
-This declaration enables Manager Agent to coordinate proper context handoff between tasks
-
-**Example with Cross-Agent Dependency (Subtasks are omitted for brevity):**
-
+**Example with Cross-Agent Dependency:**
 ```markdown
 ### Task 2.1 - Create User API │ Agent_Backend
 - **Objective:** Implement user authentication endpoints
@@ -208,10 +239,8 @@ This declaration enables Manager Agent to coordinate proper context handoff betw
 - **Guidance:** Depends on: Task 2.1 Output. Follow existing UI patterns.
 ```
 
-### 3.6. Phase Summary Procedure (Manager Agent)
-At phase completion, append summaries to:
-1. **Memory Root**: Detailed narrative per Memory System Guide
-2. **Implementation Plan**: Concise summary before next phase following this format:
+### 3.6. Phase Summary Format (Manager Agent)
+At phase completion, append summaries to Implementation Plan before next phase:
 
 ```markdown
 ## Phase <n>: <Name> Summary

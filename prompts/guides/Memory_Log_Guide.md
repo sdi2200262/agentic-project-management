@@ -103,7 +103,7 @@ JSON Memory Logs follow identical rules and structure as Markdown but use schema
 ## 4. Implementation Agent Workflow
 Main responsibilities and workflow steps for Implementation Agents when working with the Memory System:
 
-1. **Receive Task Assignment:** Manager Agent provides a task prompt via the User with an empty log file attached.
+1. **Receive Task Assignment:** Manager Agent provides a task prompt via the User with an **empty** log file attached.
 2. **Execute Task:** Work on the assigned task as described in the Task Assignment Prompt. Complete the task or note any issues, blockers, or bugs that prevent completion.
 3. **Update Log:** Fill in all required fields in the provided log file using the correct format defined in sections 2 and 3.
 4. **Report Outcome:** Notify the User of task completion or issues, confirming the Memory Log is updated.
@@ -113,7 +113,7 @@ Main responsibilities and workflow steps for Implementation Agents when working 
 ## 5. Manager Agent Workflow
 Main responsibilities and workflow steps for Manager Agents when maintaining the Memory System:
 
-1. **Create Empty Logs:** At the start of each phase, create empty log files for all phase tasks.
+1. **Create Empty Logs:** At the start of each phase, create **completely empty** log files for all phase tasks.  **DO NOT populate any content.** Implementation Agents will fill in the entire structure when executing tasks.
 2. **Attach to Assignments:** Include the appropriate empty log file path with each task assignment prompt sent to Implementation Agents.
 3. **Review Completed Logs:** When the User returns with a completed task, review the log content for:
   - Task completion status and quality

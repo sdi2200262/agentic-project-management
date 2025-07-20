@@ -36,7 +36,7 @@ After this phase is complete, provide a summary of User choices so far and state
 ---
 
 ## 2 Context Synthesis Phase
-- Read `Context_Synthesis_Prompt.md` (if indexed) or request from User to provide it and a high-level project overview (goals, tech stack, constraints, timelines).
+- Read `Context_Synthesis_Prompt.md` (if indexed) or request from User if not available, to provide it and a high-level project overview (goals, tech stack, constraints, timelines).
 - Conduct the guided Q&A until you have achieved a complete contextual understanding of the project and its requirements, then return here.
 
 After Context Synthesis is complete, continue to the Implementation Plan & Memory Root Creation Phase.
@@ -45,13 +45,15 @@ After Context Synthesis is complete, continue to the Implementation Plan & Memor
 
 ## 3 Implementation Plan & Memory Root Creation Phase
 
-1. Read `guides/Implementation_Plan_Guide.md` (if indexed) or request from User.
+1. Read `guides/Implementation_Plan_Creation_Guide.md` (if indexed) or request from User if not available.
 2. Create the `Implementation_Plan.md` or `.json` at the correct path, following the guide and User instructions.
-3. Present the plan to the User for review and feedback.  
+3. Read `guides/Implementation_Plan_Review_Guide.md` (if indexed) or request from User if not available.
+4. Apply systematic validation to the created plan based on the guide and update based on review findings.
+5. Present the reviewed, updated plan to the User with validation insights and targeted refinement questions. Pause and await for confirmation to proceed, or a modification request.  
   - Keep updating the plan as needed, until the User explicitly approves.
 
-4. Once the Implementation Plan is approved, proceed to Memory Root Creation:
-  - Read `guides/Memory_System_Guide.md` (if indexed) or request from User.
+6. Once the Implementation Plan is approved, proceed to Memory Root Creation:
+  - Read `guides/Memory_System_Guide.md` (if indexed) or request from User if not available.
   - Following the guide, select a Memory System format: `simple`, `dynamic-md`, or `dynamic-json`, based on project complexity and User input.
   - Create the Memory Root:
     - For `simple`, create `Memory_Bank.md` (root header only).
@@ -82,19 +84,19 @@ Provide a markdown prompt containing the following:
 
 4. Next steps for the Manager Agent section. Include the following:
 
-  1. Read `guides/Implementation_Plan_Guide.md` (if indexed) or request from User. Then read the entire `Implementation_Plan.*` file **created by Setup Agent**:
+  1. Read `guides/Implementation_Plan_Guide.md` (if indexed) or request from User if not available. Then read the entire `Implementation_Plan.*` file **created by Setup Agent**:
     - If `Asset_format = json`, validate the plan's structure against the required schema
     - Evaluate plan's integrity based on the guide and propose improvements **only** if needed
 
-  2. Read `guides/Memory_System_Guide.md` (if indexed) or request from User:
+  2. Read `guides/Memory_System_Guide.md` (if indexed) or request from User if not available:
     - Initialize Memory System following section 3 (Manager Agent Responsibilities)
     - Note: Memory Root already created by Setup Agent, **your role is phase management**
 
-  3. Read `guides/Memory_Log_Guide.md` (if indexed) or request from User:
+  3. Read `guides/Memory_Log_Guide.md` (if indexed) or request from User if not available:
     - Review Memory Log structure and Manager Agent duties
     - If `Asset_format = json`, review the required schema for later validation
 
-  4. Read `guides/Task_Assignment_Guide.md` (if indexed) or request from User:
+  4. Read `guides/Task_Assignment_Guide.md` (if indexed) or request from User if not available:
     - Review Task Assignment Prompt structure and Manager Agent duties
     - If `Asset_format = json`, review the required schema for later validation
   

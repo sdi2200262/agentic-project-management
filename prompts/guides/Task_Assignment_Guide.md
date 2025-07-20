@@ -16,7 +16,8 @@ Task Assignment Prompts must correlate 1-1 with Implementation Plan tasks and in
 
 ### 2.1. Prompt Structure with YAML Frontmatter
 Include optional sections only when their front-matter boolean is true
-```yaml
+
+```markdown
 ---
 task_ref: "Task <m.n> - Title"
 agent_assignment: "Agent_<Domain>"
@@ -25,8 +26,7 @@ execution_type: "single-step | multi-step"
 dependency_context: true | false
 ad_hoc_delegation: true | false
 ---
-```
-```markdown
+
 # APM Task Assignment: [Task Title]
 
 ## Task Reference
@@ -61,7 +61,7 @@ Follow `guides/Memory_Log_Guide.md` instructions.
 ```
 
 ### 2.2. Delivery Format
-Present Task Assignment Prompts in **markdown code blocks with YAML frontmatter included.** This ensures smooth workflow transfer between Manager and Implementation Agents via the User.
+Present Task Assignment Prompts as **a single markdown code block with YAML frontmatter at the top.** This ensures smooth copy-paste workflow for users transferring prompts between Manager and Implementation Agents.
 
 ---
 

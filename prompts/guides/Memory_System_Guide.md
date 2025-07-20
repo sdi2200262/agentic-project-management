@@ -107,14 +107,14 @@ Main responsibilities of the Manager Agent when maintaining the Memory System du
     (≤ 20 lines)
 
 ### Dynamic‑MD and Dynamic‑JSON
-1. On phase entry, create `Memory/Phase_XX_<slug>/` if missing. For each task in the phase, create an **empty** Memory Log with a header referencing `guides/Memory_Log_Guide.md`:
+1. On phase entry, create `Memory/Phase_XX_<slug>/` if missing. For each task in the phase, create a **completely empty** Memory Log, following `guides/Memory_Log_Guide.md`:
     - `Task_Y_Z_<slug>.md` (Dynamic‑MD)
     - `Task_Y_Z_<slug>.json` (Dynamic‑JSON)
 
 **Use task ID and title from Implementation Plan (exclude agent assignment).**
 **Example: Task "Task 2.1 - Deploy Updates | Agent_Backend" → `Task_2_1_Deploy_Updates.md`**
 
-2. After each task, review the Memory Log written by the Implementation Agent, provided via the User. For Dynamic‑JSON, validate the log structure against the required schema.
+2. After each task, review the Memory Log **populated by the Implementation Agent**, provided via the User. For Dynamic‑JSON, validate the log structure against the required schema.
 
 3. At phase end, append a summary to `Memory/Memory_Root.md`:
     ```markdown

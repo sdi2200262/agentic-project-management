@@ -20,24 +20,31 @@ Ad-Hoc Research agents operate in **separate chat sessions** managed by the dele
 ---
 
 ## 2  Delegation Prompt Template
-Create delegation prompts using this structured format:
+Create delegation prompts using this structured format as **a single markdown code block with YAML frontmatter at the top:**
 
-### YAML Frontmatter
-```yaml
+```markdown
 ---
 research_type: [documentation|api_spec|sdk_version|integration|compatibility|best_practices|other]
 information_scope: [targeted|comprehensive|comparative]
 knowledge_gap: [outdated|missing|conflicting]
 delegation_attempt: [1|2|3|...]
 ---
-```
 
-### Required Content Sections
-```markdown
 # Research Delegation: [Brief Research Topic]
 
 ## Research Context
 [Describe what information is needed and why it's required for task completion]
+
+## Research Execution Approach
+**Primary Goal**: Gather current, authoritative information that Implementation Agents need to proceed with task execution
+**Information Delivery Required**: Provide researched documentation, best practices, or technical specifications for Implementation Agent use
+**Current Information Focus**: Access official sources and recent documentation rather than providing theoretical guidance
+**Knowledge Transfer**: Deliver structured findings that directly answer Implementation Agent questions to enable task continuation
+
+## Research Execution Requirements
+**Mandatory Tool Usage**: You must use web search and web fetch tools to access current official documentation and verify information. Do not rely solely on training data or prior knowledge.
+**Current Information Standard**: All findings must be sourced from official documentation, GitHub repositories, or authoritative, credible sources accessed during this research session.
+**Verification Protocol**: Cross-reference multiple current sources to ensure accuracy and currency of information.
 
 ## Current Knowledge State
 [What the Implementation Agent currently knows/assumes vs what's uncertain or potentially outdated]
@@ -46,7 +53,7 @@ delegation_attempt: [1|2|3|...]
 [List targeted questions that need answers, be specific about what you need to know]
 
 ## Expected Sources
-[Suggest relevant documentation sites, official repos, API docs, or community resources to investigate]
+[List specific documentation sites, official GitHub repos, API docs, or credible resources for the Ad-Hoc agent to investigate]
 
 ## Integration Requirements
 [Explain how the research findings will be applied to the current task]
@@ -54,6 +61,9 @@ delegation_attempt: [1|2|3|...]
 ## Previous Research Findings
 [Only include if delegation_attempt > 1]
 [Summarize findings from previous Ad-Hoc research attempts and why they were inadequate]
+
+## Delegation Execution Note
+**Follow your initiation prompt workflow exactly**: Complete Step 1 (scope assessment/confirmation), Step 2 (execution + findings + confirmation request), and Step 3 (final markdown delivery) as separate responses.
 ```
 
 ---
