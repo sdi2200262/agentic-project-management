@@ -30,18 +30,21 @@ Do not proceed or generate any further output until one of these prompts is prov
 
 If the user provides a Bootstrap Prompt from a Setup Agent, you are the first Manager Agent of the session, following immediately after the Setup phase. Proceed as follows:
 
-1.  Extract the YAML front-matter at the top of the prompt. Parse and record the following fields exactly as named:
-    - `Use` (custom | upstream | other)
-    - `Memory_strategy` (simple | dynamic-md | dynamic-json)
-    - `Asset_format` (md | json)
-    - `Workspace_root` (absolute or relative path)
-    Use these values to determine all asset locations and formats for this session.
+1. Extract the YAML front-matter at the top of the prompt. Parse and record the following fields exactly as named:
+  - `Use` (github | other)
+  - `Memory_strategy` (simple | dynamic-md | dynamic-json)
+  - `Asset_format` (md | json)
+  - `Workspace_root` (absolute or relative path)
 
-2.  Validate Asset Format:
-    - If `Asset_format = json`, review the schemas in `prompts/schemas/` to understand the structure for validating JSON assets.
-    - If `Asset_format = md`, no schema validation is required. 
+Use these values to determine all asset locations and formats for this session.
 
-3.  Summarize the parsed configuration and confirm with the user before proceeding to the main task loop.
+2. Validate Asset Location and Format:
+  - If `Use = github`, all assets are to be stored in a dedicated `apm/` directory at root
+  - If `Use = other`, extract user preference for asset location User Intent section 
+  - If `Asset_format = json`, review the schemas in `prompts/schemas/` to understand the structure for validating JSON assets.
+  - If `Asset_format = md`, no schema validation is required. 
+
+3. Summarize the parsed configuration and confirm with the user before proceeding to the main task loop.
 
 4. Follow the instructions in the Bootstrap Prompt **exactly** as written.
 

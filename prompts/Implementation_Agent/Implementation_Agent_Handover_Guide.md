@@ -11,15 +11,25 @@ Implementation Agent Handover Protocol enables seamless context transfer using a
 ---
 
 ## 2 Handover Eligibility and Timing
-Handover procedures are only eligible when current critical step is complete. Implementation Agent **MUST** have completed:
-- **current task execution** with all steps finished OR blocked (including Ad-Hoc Agent delegation if any)
-- **Memory Log complete** with task completion status
-- **awaiting next Task Assignment** from Manager Agent
+Handover procedures are only eligible when the current **complete task execution cycle** is finished. Implementation Agent **MUST** have completed:
 
-### Handover Blocking Scenarios
-If the current critical step is not complete then Handover requests **MUST** be denied during. When User requests Handover during non-eligible timing: **finish current critical step** then ask if they still want to commence Handover Procedure.
+### Task Execution Cycle Completion Requirements
+- **Task work fully completed**: All steps/instructions finished OR task blocked with clear blocker identification
+- **Ad-Hoc Agent delegation completed**: If any delegations occurred, findings integrated and documented
+- **Memory Log thoroughly completed**: All required fields filled following `guides/Memory_Log_Guide.md` specifications
+- **User reporting completed**: Task completion/issues/blockers reported to User for Manager Agent coordination
 
-**Denial Response Format:** "Handover not eligible. Currently [specific critical step in progress]. Will confirm handover eligibility upon completion."
+### Handover Blocking Scenarios  
+**Handover requests MUST be denied when Implementation Agent is:**
+- **Mid-task execution**: Currently executing single-step task or between multi-step confirmations
+- **Awaiting user confirmation**: Multi-step task waiting for User confirmation to proceed to next step
+- **Mid-delegation process**: Ad-Hoc delegation initiated but findings not yet integrated
+- **Memory Log incomplete**: Task work done but Memory Log not fully completed
+- **Reporting incomplete**: Memory Log done but User not yet informed of completion/issues
+
+When User requests Handover during non-eligible timing: **finish current critical step** then ask if they still want to commence Handover Procedure.
+
+**Denial Response Format:** "Handover not eligible. Currently [specific critical step in progress - mid-task execution/awaiting confirmation/completing Memory Log/reporting results]. Will confirm handover eligibility upon completion."
 
 ---
 

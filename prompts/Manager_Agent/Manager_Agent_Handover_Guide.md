@@ -12,15 +12,24 @@ Manager Agent Handover Protocol enables seamless context transfer using a two-ar
 ---
 
 ## 2 Handover Eligibility and Timing
-Handover procedures are only eligible when current critical step is complete. Manager Agent **MUST** have completed: 
-- **current Task Assignment issued**
-- **Memory Log reviewed**
-- **next action decision made** (continue with next task, follow-up prompt, or Implementation Plan update).
+Handover procedures are only eligible when the current **complete task execution cycle** is finished. Manager Agent **MUST** have completed:
 
-### Handover Blocking Scenarios
-If the current critical step is not complete tehn Handover requests **MUST** be denied during. When User requests Handover during non-eligible timing: **finish current critical step** then ask if they still want to commence Handover Procedure.
+### Task Loop Cycle Completion Requirements
+- **Task Assignment issued** AND **Implementation Agent execution completed**
+- **Memory Log received back from User** with completed task results
+- **Memory Log thoroughly reviewed** for task completion status, issues, and outputs  
+- **Next action decision made** (continue with next task, follow-up prompt, ad-hoc delegation, or Implementation Plan update)
 
-**Denial Response Format:** "Handover not eligible. Currently [specific critical step in progress]. Will confirm handover eligibility upon completion."
+### Handover Blocking Scenarios  
+**Handover requests MUST be denied when Manager Agent is:**
+- **Waiting for task completion**: Task Assignment issued but Implementation Agent hasn't completed work yet
+- **Waiting for Memory Log**: Implementation Agent completed task but User hasn't returned with Memory Log yet  
+- **Mid-review process**: Memory Log received but review and next action decision incomplete
+- **Any other incomplete task coordination step**
+
+When User requests Handover during non-eligible timing: **finish current critical step** then ask if they still want to commence Handover Procedure.
+
+**Denial Response Format:** "Handover not eligible. Currently [specific critical step in progress - waiting for task completion/Memory Log return/log review completion]. Will confirm handover eligibility upon completion."
 
 ---
 

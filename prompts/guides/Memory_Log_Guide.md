@@ -5,7 +5,6 @@ This guide defines how Implementation Agents log their work for Manager Agents a
 
 Both Manager and Implementation Agents must read this guide during session initialization. Implementation Agents reference it when logging; Manager Agents use it when reviewing logs.
 
----
 ## 1. Memory System Variant Overview
 Summary of the three Memory System variants, their storage layouts and log formats:
 
@@ -23,8 +22,6 @@ Summary of the three Memory System variants, their storage layouts and log forma
   - Format: One `Task_XX_<slug>.json` file per task (JSON, schema at `prompts/schemas/memory_log.schema.json`)
 
 Memory Logs are written by Implementation Agents after each task or when blockers occur. Manager Agents review logs to track progress and plan next steps.
-
----
 
 ## 2. Memory Log Structure Specifications
 All Memory Log entries must follow a precise structure to ensure clarity, traceability, and context retention. The format for each log entry, adapting for the specific Memory System variant (Simple, Dynamic-MD, or Dynamic-JSON):
@@ -93,12 +90,8 @@ important_findings: [true|false]
 [Follow-up actions or instructions for next agent or "None"]
 ```
 
----
-
 ## 3. JSON Variant Specification
 JSON Memory Logs follow identical rules and structure as Markdown but use schema validation at `/prompts/schemas/memory_log.schema.json`. All requirements for agent IDs, task references, status tracking, output documentation, and content guidelines apply as described for Markdown.
-
----
 
 ## 4. Implementation Agent Workflow
 Main responsibilities and workflow steps for Implementation Agents when working with the Memory System:
@@ -107,8 +100,6 @@ Main responsibilities and workflow steps for Implementation Agents when working 
 2. **Execute Task:** Work on the assigned task as described in the Task Assignment Prompt. Complete the task or note any issues, blockers, or bugs that prevent completion.
 3. **Update Log:** Fill in all required fields in the provided log file using the correct format defined in sections 2 and 3.
 4. **Report Outcome:** Notify the User of task completion or issues, confirming the Memory Log is updated.
-
----
 
 ## 5. Manager Agent Workflow
 Main responsibilities and workflow steps for Manager Agents when maintaining the Memory System:
@@ -123,8 +114,6 @@ Main responsibilities and workflow steps for Manager Agents when maintaining the
   - Send follow-up prompt to same agent (if task was blocked or needs refinement)
   - Assign ad-hoc agent for specialized work or issue resolution
   - Continue with next planned task assignment (if all is well)
-
----
 
 ## 6. Content Guidelines
 

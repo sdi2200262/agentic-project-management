@@ -4,12 +4,8 @@ This guide defines how Manager Agents issue task assignments to Implementation A
 - JSON
 Task assignments coordinate agent work during the Task Loop of an APM session, following the Implementation Plan.
 
----
-
 ## 1. Task Loop Overview
 Manager Agent issues Task Assignment Prompt → User passes to Implementation Agent → Implementation Agent executes task and logs work → User returns log to Manager → Manager reviews and determines next action (continue, follow-up, delegate, or plan update).
-
----
 
 ## 2. Task Assignment Prompt Format
 Task Assignment Prompts must correlate 1-1 with Implementation Plan tasks and include all necessary context for successful execution. Manager Agent must issue these prompts following this format:
@@ -63,12 +59,8 @@ Follow `guides/Memory_Log_Guide.md` instructions.
 ### 2.2. Delivery Format
 Present Task Assignment Prompts as **a single markdown code block with YAML frontmatter at the top.** This ensures smooth copy-paste workflow for users transferring prompts between Manager and Implementation Agents.
 
----
-
 ## 3. JSON Variant Specification
 JSON prompts follow identical content requirements as Markdown but use schema validation at `prompts/schemas/task_assignment.schema.json`. All sections for context, instructions, outputs, and logging apply as described above.
-
----
 
 ## 4. Context Dependency Integration
 When consumer tasks depend on producer outputs ("Depends on: Task X.Y Output" in Implementation Plan Guidance), Manager provides context based on agent assignment:
@@ -105,12 +97,8 @@ If producer task status is Partial/Blocked:
 - OR adapt consumer task to work with available outputs
 - OR update Implementation Plan to restructure dependencies
 
----
-
 ## 5. Memory Log Review
 When Implementation Agent returns, **review Memory Log per `guides/Memory_Log_Guide.md` section §5**. Assess task completion status, identify blockers, and verify outputs match Implementation Plan expectations.
-
----
 
 ## 6. Next Action Framework
 Based on log review, determine appropriate next step:
@@ -128,8 +116,6 @@ Based on log review, determine appropriate next step:
 - **Complete**: All deliverables produced, requirements met
 - **Partial**: Some progress made, specific issues identified
 - **Blocked**: Cannot proceed without external input or resolution
-
----
 
 ## 7. Ad-Hoc Delegation Protocol
 Set `ad_hoc_delegation: true` only when Implementation Plan contains explicit delegation steps for the task.
