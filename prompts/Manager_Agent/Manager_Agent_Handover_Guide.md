@@ -58,7 +58,7 @@ Create Generate Handover Artifacts following these templates:
 ### Manager Handover Prompt Template
 ```markdown
 # APM Manager Agent Handover - [Project Name]
-You are taking over as Manager Agent from [Outgoing Manager Agent ID].
+You are taking over as Manager Agent X+1 from [Outgoing Manager Agent X].
 
 ## APM Context Integration Protocol
 1. **Read Implementation Plan Guide** ([guides/Implementation_Plan_Guide.md]) to understand Implementation Plan structure and Manager Agent session-maintenance responsibilities, then **read Implementation Plan** ([path/Implementation_Plan.md/json]) for current phase status and task assignments
@@ -123,7 +123,7 @@ active_agents: [List of active Implementation Agents]
 ---
 
 ## 5 File Organization and Naming
-Store Manager Agent Handover Files in `Memory/Handovers/Manager_Agent_Handovers/` (Dynamic Memory) or `project-root/Handovers/Manager_Agent_Handovers/` (Simple Memory). Use naming: `Manager_Agent_Handover_File_[Number].md`. Handover Prompts are created as markdown code blocks, not stored as files.
+Store Manager Agent Handover Files in `Memory/Handovers/Manager_Agent_Handovers/` for all memory system variants. Use naming: `Manager_Agent_Handover_File_[Number].md`. **Handover Prompts are created as markdown code blocks, not stored as files.**
 
 ---
 

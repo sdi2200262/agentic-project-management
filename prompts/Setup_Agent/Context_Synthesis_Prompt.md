@@ -208,13 +208,26 @@ Present comprehensive summary covering:
 **Explicitly request user feedback:** "Please review this summary carefully. I want to ensure I've understood your project correctly before breaking it into tasks. Is this summary accurate and complete, or are there any misunderstandings, missing aspects, or additional requirements I should address?"
 
 #### Asset Format Selection
-In same response, right after summary presentation, ask the user to choose an APM asset format:
-- **Markdown**: Readable, concise, good for most projects (code, documents, analysis, feature-development)
-- **JSON**: Structured, ~15% more tokens, use for complex projects with strict validation needs
 
-**Explain both options briefly and propose one based on gathered context. Let the User make the decision.**
+After presenting the summary, clearly ask the user to choose an APM asset format for their Implementation Plan:
 
-#### Progression Decision
+- **Markdown (Recommended - Default):**  
+   - Readable, concise, and suitable for all projects (code, documents, analysis, feature development)
+   - Optimized for LLM parsing with YAML frontmatter and minimal token usage
+   - **Recommended:** Use Markdown for reliability, efficiency, and compatibility
+
+- **JSON (Testing Preview - Not for Production):**  
+   - Intended for advanced testing scenarios requiring strict workflow validation, maximum LLM parsing fidelity, and active context retention
+      - Designed for "token-wealthy" Users unconcerned with token consumption, or APM contributors seeking to experiment and provide feedback on asset structure and parsing efficiency
+      - Experimental only; not suitable for production or resource-constrained use due to much higher token consumption
+      - **WARNING:** JSON assets consume at least 15% more tokens, often 2x–3x higher than Markdown, and will fill the context window much faster, resulting in more frequent Handovers and context resets
+
+**Present Choice:**  
+"Please choose your preferred asset format for the Implementation Plan:  
+- Markdown (default - strongly recommended for all projects)  
+- JSON (testing preview only, not for production, higher token usage)
+
+If unsure, select Markdown. Let me know your choice!"
 - **If user provides both summary approval AND asset format choice:** Proceed to project planning
 - **If user provides summary approval but no asset format choice:** Ask for asset format choice to complete Phase 4
 - **If user provides context corrections (with or without asset format choice):** Incorporate user feedback and return to appropriate phase for additional follow-ups. **When returning to Phase 4 after corrections, re-ask for asset format choice if not previously provided.**

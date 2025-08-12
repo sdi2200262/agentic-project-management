@@ -10,6 +10,21 @@ Manager Agent issues Task Assignment Prompt → User passes to Implementation Ag
 ## 2. Task Assignment Prompt Format
 Task Assignment Prompts must correlate 1-1 with Implementation Plan tasks and include all necessary context for successful execution. Manager Agent must issue these prompts following this format:
 
+## 2.1 Dependency Check
+Before creating any Task Assignment Prompt check for task dependencies.
+
+**Step 1: Identify Dependencies**
+Check Implementation Plan task's `Guidance` field for dependency declarations:
+- `"Depends on: Task X.Y Output"` = Same-agent dependency
+- `"Depends on: Task X.Y Output by Agent Z"` = **CROSS-AGENT DEPENDENCY**
+
+**Step 2: Determine Context Integration Approach**
+- **Same Agent** (no "by Agent X" tag) → Use **Simple Contextual Reference** (Section 4.1)
+- **Cross Agent** (has "by Agent X" tag) → Use **MANDATORY Comprehensive Integration Context** (Section 4.2)
+
+### **Cross-Agent Dependency Warning**
+**CRITICAL**: Cross-agent dependencies require Implementation Agents to complete detailed file reading and integration steps BEFORE starting main task work.
+
 ### 2.1. Prompt Structure with YAML Frontmatter
 Include optional sections only when their front-matter boolean is true
 
@@ -64,38 +79,116 @@ JSON prompts follow identical content requirements as Markdown but use schema va
 
 ## 4. Context Dependency Integration
 When consumer tasks depend on producer outputs ("Depends on: Task X.Y Output" in Implementation Plan Guidance), Manager provides context based on agent assignment:
-- **Same agent assigned to producer & consumer**: Minimal context - reference "your previous work from Task X.Y"
-- **Different agents**: Comprehensive integration context (see §4.1)
 
-### 4.1. Different Agent Context Provision
-For cross-agent dependencies, include in "Context from Dependencies":
-1. **Producer Summary**: What Task X.Y built and its core functionality
-2. **Output Locations**: Specific file paths and access instructions
-3. **Integration Pathway**: Preliminary steps before main task execution (examples):
-    - Review producer deliverables to understand their design and structure
-    - Examine documentation and specifications created by producer if any
-    - Understand interfaces, contracts, and data formats established
-4. **Usage Notes**: How outputs integrate with current task
+### 4.1. Same-Agent Dependencies (Contextual Guidance)
+When **same Implementation Agent** worked on both producer and consumer tasks:
 
-**Example context for cross-agent dependencies task prompt:**
+**Contextual Approach:**
+- Provide specific output references and key implementation details to recall
+- Include relevant file locations and important artifacts created
+- Assume working familiarity but provide concrete guidance for integration
+- Detail level varies based on dependency complexity and time gap between tasks
+
+**Simple Same-Agent Context Example:**
 ```markdown
 ## Context from Dependencies
-This Task is based on Task 2.1 which created authentication API with:
-- Endpoints: `src/api/auth.js` implementing POST /api/login
-- Documentation: `docs/auth-api.md` with request/response schemas
-- Tests: `tests/api/auth.test.js` showing usage examples
-
-Integration steps before main task:
-1. Review API documentation for endpoint details
-2. Run `npm test tests/api/auth.test.js` to see working examples
-3. Note JWT token format for frontend state management
+Based on your Task 2.1 work, use the authentication middleware you created in `src/middleware/auth.js` and the JWT validation functions for this frontend integration task.
 ```
 
-### 4.2. Blocked Dependencies
-If producer task status is Partial/Blocked:
-- First attempt resolution via follow-up prompt(s)
-- OR adapt consumer task to work with available outputs
-- OR update Implementation Plan to restructure dependencies
+**Complex Same-Agent Context Example:**
+```markdown
+## Context from Dependencies
+Building on your Task 2.3 API implementation:
+
+**Key Outputs to Use:**
+- Authentication endpoints in `src/api/auth.js` (POST /api/login, GET /api/verify)
+- User validation middleware in `src/middleware/auth.js`
+- Database schema updates in `migrations/003_add_user_roles.sql`
+
+**Implementation Details to Recall:**
+- JWT tokens include user role and permissions in payload
+- Error handling returns standardized error objects with code/message format
+- Rate limiting applied to login attempts (implemented in middleware)
+
+**Integration Approach:**
+For this task, extend the existing role-based permissions system you built to handle the new admin dashboard requirements.
+```
+
+#### Same-Agent Context Guidelines
+- **Simple Dependencies**: Reference key files and outputs with brief integration guidance
+- **Complex Dependencies**: Include key outputs list, important implementation details, and clear integration approach
+- **Time-Gap Considerations**: More detail when significant time passed between related tasks
+- **File References**: Always include specific file paths for outputs that need to be used or extended
+- **Implementation Continuity**: Emphasize building on previous work rather than starting fresh
+
+### 4.2. Cross-Agent Dependencies (Comprehensive Integration Context)
+When **different Implementation Agents** worked on producer and consumer tasks (Tasks have "by Agent X" tag):
+
+**Comprehensive Context Approach:**
+- Always provide detailed integration steps with explicit file reading instructions
+- Include comprehensive output summaries and usage guidance regardless of dependency complexity
+- Provide User clarification protocols for ambiguous integration points
+- Complexity only affects the amount of integration work, not the level of detail provided
+
+**Cross-Agent Context Template:**
+
+From each section below use the options that best fits the specific context integration requirements.
+```markdown
+## Context from Dependencies
+This task [depends on/builds upon/integrates with] [Task X.Y description] implemented by [Producer_Agent]:
+
+**Integration Steps (complete in one response):**
+1. [Read/Review/Examine] [specific file/documentation] at [file path] to understand [specific aspect/functionality]
+2. [Study/Analyze] [implementation files] in [directory/file paths] to understand [technical approach/data structures/patterns]
+3. [Examine/Review] [test files/examples] at [file paths] for [usage patterns/expected behaviors/integration examples]
+4. [Additional integration steps as needed for specific outputs]
+
+**Producer Output Summary:**
+- [Key functionality/feature]: [Description of what was built and how it works]
+- [Important files/endpoints]: [Locations and purposes of key outputs]
+- [Data structures/interfaces]: [Important data formats, types, or contracts]
+- [Error handling/validation]: [How errors are handled and what formats are used]
+- [Security/authentication]: [Any security measures or authentication requirements]
+
+**Integration Requirements:**
+- [Specific requirement 1]: [How consumer task must integrate with producer output]
+- [Specific requirement 2]: [Additional integration specifications]
+- [Usage patterns]: [How to properly use the producer outputs]
+- [Constraints/limitations]: [Important limitations or constraints to consider]
+
+**User Clarification Protocol:**
+If [specific integration aspect] is ambiguous after completing integration steps, ask User about [specific clarification areas].
+```
+
+**Cross-Agent Context Creation Guidelines:**
+- **Always Comprehensive**: Regardless of dependency complexity, provide full integration steps, output summaries, and requirements selecting from the options that match the dependency requirements
+- **File-Specific Instructions**: Always include explicit file paths and what to look for in each file
+- **Complete Output Coverage**: Document all relevant outputs, interfaces, and usage patterns from producer task
+- **Integration Requirements**: Specify exactly how consumer task should integrate with producer outputs
+- **Clarification Protocols**: Always include User clarification pathway for ambiguous integration points
+- **Assumption**: Consumer Agent has zero familiarity with producer work - explain everything needed for successful integration
+
+### 4.3. Context Integration Execution
+**For Same-Agent Dependencies:**
+- No separate integration steps section in Task Assignment Prompt
+- Include minimal "Context from Dependencies" section with `dependency_context: true` in YAML
+
+**For Cross-Agent Dependencies:**
+- Include detailed "Context from Dependencies" section with `dependency_context: true` in YAML
+- Implementation Agent completes all integration steps in one response before main task
+
+### 4.4. Context Integration Guidelines for Manager Agents
+
+**Same-Agent Context Creation:**
+- Review producer task Memory Log for key outputs and deliverables
+- Reference previous work without repeating detailed instructions
+- Focus on output connection and continuation of work
+
+**Cross-Agent Context Creation:**
+- Review producer task Memory Log thoroughly for outputs, file locations, approaches
+- Create detailed file reading and review instructions
+- Provide comprehensive output summary and usage guidance
+- Include User clarification protocol for complex integrations
 
 ## 5. Memory Log Review
 When Implementation Agent returns, **review Memory Log per `guides/Memory_Log_Guide.md` section §5**. Assess task completion status, identify blockers, and verify outputs match Implementation Plan expectations.

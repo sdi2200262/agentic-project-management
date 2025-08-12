@@ -58,7 +58,7 @@ Create Handover Artifacts following these templates:
 ### Implementation Agent Handover Prompt Template
 ```markdown
 # APM Implementation Agent Handover - [Agent Type]
-You are taking over as [Agent_Type] for ongoing task execution from [Outgoing Agent ID].
+You are taking over as [Agent_Type X+1] for ongoing task execution from [Outgoing Agent X].
 
 ## Context Integration Protocol
 1. **Read Memory Log Guide** ([guides/Memory_Log_Guide.md]) to understand Memory Log structure and Implementation Agent logging responsibilities
@@ -116,7 +116,7 @@ last_completed_task: [Task ID]
 ---
 
 ## 5 File Organization and Naming
-Store Implementation Agent Handover Files in `Memory/Handovers/[Agent_Name]_Handovers/` (Dynamic Memory) or `project-root/Handovers/[Agent_Name]_Handovers/` (Simple Memory). Use naming: `[Agent_Name]_Handover_File_[Number].md`. Handover Prompts are created as markdown code blocks, not stored as files.
+Store Implementation Agent Handover Files in `Memory/Handovers/[Agent_Name]_Handovers/` for all memory system variants. Use naming: `[Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are created as markdown code blocks in chat, not stored as files.**
 
 ---
 

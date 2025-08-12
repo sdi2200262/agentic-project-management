@@ -10,17 +10,17 @@ Memory duties are split between the *Setup Agent* and the *Manager Agent*. Detai
 Summary of the three Memory System variants, their storage layouts, log formats and memory summarization strategies:
 
 - Simple
-    - Storage layout: Single file `Memory_Bank.md` in the User-selected storage location
+    - Storage layout: Folder `Memory/` + Single file `Memory_Bank.md` in the `apm/` directory
     - Log format: Inline subsections inside the same MD file
     - Each inline subsection acts as a task memory log; summaries are appended after each logical group of tasks (if any) is complete. Summarization approach is determined by the Manager Agent.
 
 - Dynamic‑MD
-    - Storage layout: Folder `Memory/` + `Memory_Root.md` + sub‑folders `Phase_XX_<slug>/` in the User-selected storage location,
+    - Storage layout: Folder `Memory/` + `Memory_Root.md` + sub‑folders `Phase_XX_<slug>/` in the `apm/` directory,
     - Log format: One `Task_XX_<slug>.md` Memory Log per task
     - After each phase completes, an inline subsection is appended to the `Memory_Root.md` file summarizing the phase.
 
-- Dynamic‑JSON
-    - Storage layout: Same as Dynamic‑MD (markdown root) in the User-selected storage location,
+- Dynamic‑JSON (Still being tested)
+    - Storage layout: Same as Dynamic‑MD (markdown root) in the `apm/` directory,
     - Log format: One `Task_XX_<slug>.json` Memory Log per task
     - After each phase completes, an inline subsection is appended to the `Memory_Root.md` file summarizing the phase.
 
@@ -50,7 +50,8 @@ Add `memory_strategy: <simple|dynamic-md|dynamic-json>` to the Bootstrap-prompt 
 ### 2.3. Initialize Memory System
 For the memory system variant you decided, do the following:
 - **Simple:**  
-    - Create `Memory_Bank.md` containing the following:
+    - Create `Memory/` folder if missing in the `apm/` directory
+    - Add `Memory_Bank.md` containing the following:
       ```yaml
       ---
       memory_strategy: simple
@@ -63,7 +64,7 @@ For the memory system variant you decided, do the following:
       ```
 
 - **Dynamic (MD/JSON):**  
-    - Create `Memory/` folder if missing.
+    - Create `Memory/` folder if missing in the `apm/` directory
     - Add `Memory/Memory_Root.md` containing the following:
       ```yaml
       ---
@@ -85,7 +86,7 @@ Main responsibilities of the Manager Agent when maintaining the Memory System du
 3. After each phase (or group of tasks), create and append a concise summary referencing the relevant Memory Logs or inline memory log sections.
 
 ### Simple Memory System
-1. Ensure `Memory_Bank.md` exists at the designated path from Setup.
+1. Ensure `Memory/Memory_Bank.md` exists at the `apm/` directory
 2. At the start of each group of tasks (phase/milestone), add a header:
     ```markdown
     ## <Group/Phase Name>

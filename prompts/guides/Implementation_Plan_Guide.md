@@ -91,20 +91,25 @@ Transform reviewed Implementation Plan file into detailed APM artifact:
 - Enhance subtask descriptions with comprehensive instructions and technical context
 - Provide detailed specifications that enable Manager Agent to create precise Task Assignment Prompts
 
-### 4.2. Phase-by-Phase Enhancement
+### 4.2. Phase-by-Phase Enhancement Approach
+**Sequential Phase Enhancement:**
+- Enhance the Implementation Plan one phase section at a time, proceeding sequentially through the file
+- Each phase enhancement represents one edit operation to the Implementation Plan file
+- Complete enhancement of current phase before proceeding to next phase
+
 **Enhancement Execution:**
-- Enhance the Implementation Plan one phase section at a time, proceeding sequentially through the file.
-- For each phase:
-    - Read the corresponding section in the reviewed file to fully understand its structure, tasks, and dependencies.
-    - Apply the document structure specifications from §2 to reformat and enrich the phase, ensuring all tasks are transformed into detailed task blocks with enhanced meta-fields.
-    - Enhance each tasks contents following §4.1. guidance, ensuring that the content of the reviewed file is retained, only with more detailed context. 
-    - Complete the enhancement of the current phase before moving on to the next, ensuring no phase is skipped or partially enhanced.
-- Continue this process until all phases in the Implementation Plan have been fully enhanced and the entire file meets the detailed specification requirements.
+- **Phase Analysis**: For each phase, read the corresponding section in the reviewed file to fully understand its structure, tasks, and dependencies
+- **Phase Enhancement**: Apply the document structure specifications from §2 to reformat and enrich the current phase, ensuring all tasks are transformed into detailed task blocks with enhanced meta-fields
+- **Content Enhancement**: Enhance each task's contents following §4.1 guidance, ensuring that the content of the reviewed file is retained, only with more detailed context
+- **Phase Completion**: Complete the enhancement of the current phase before moving on to the next, ensuring no phase is skipped or partially enhanced
+- **File Update**: Update Implementation Plan file with enhanced phase content
+- **Progression Gate**: Continue this process until all phases in the Implementation Plan have been fully enhanced
 
 **Quality Assurance:**
-- After each phase enhancement, review the updated content to confirm that detailed specifications are sufficient for Manager Agent Task Assignment Prompt creation.
-- Ensure all original task content, execution patterns, and agent assignments are preserved from the reviewed file.
-- Iterate and refine enhancements based on user feedback until the plan provides the necessary detail for systematic and effective task execution.
+- After each phase enhancement, review the updated content to confirm that detailed specifications are sufficient for Manager Agent Task Assignment Prompt creation
+- Ensure all original task content, execution patterns, and agent assignments are preserved from the reviewed file for the current phase
+- Iterate and refine current phase enhancement based on user feedback until the phase provides the necessary detail for systematic and effective task execution
+- Proceed to next phase only after current phase is complete and approved
 
 ## 5. Manager Agent Responsibilities
 Maintain detailed Implementation Plan throughout APM session:
