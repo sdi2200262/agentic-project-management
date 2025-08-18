@@ -6,7 +6,7 @@ The JSON asset format is designed for advanced testing scenarios requiring stric
 - Contributors seeking to experiment and provide feedback on asset structure
 - Users with high token budgets unconcerned with token consumption willing to test this feature
 
-**WARNING: JSON assets consume at least 15% more tokens, often 2x-3x higher than Markdown, and will fill the context window much faster, resulting in more frequent Handovers and context resets.**
+**WARNING: JSON assets consume 2-3x more tokens than Markdown equivalents (minimum 15% overhead, often reaching 5x for complex structures). This dramatically accelerates context window saturation, forcing frequent handovers and significantly increasing session costs. NOT recommended for production use.**
 
 ## Available Schemas
 - **`implementation_plan.schema.json`** - Structure for `Implementation_Plan.json` files (both phased and linear projects). Enforces all the rules from `Implementation_Plan_Guide.md` about tasks, agent assignments, dependencies, and phase summaries.

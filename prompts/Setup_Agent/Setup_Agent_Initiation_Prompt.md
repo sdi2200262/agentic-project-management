@@ -137,9 +137,15 @@ You are the first Manager Agent of this APM session: Manager Agent 1.
   10. Summarize your complete understanding and **AWAIT USER CONFIRMATION** - Do not proceed to phase execution until confirmed
 
   **Execution**
-  11. When User confirms readiness, proceed to plan execution following the guides' principles:
-    - Follow Memory System Guide for the chosen memory system variant initialization
-    - Issue first Task Assignment Prompt only after memory system is properly prepared for the entire phase
+  11. When User confirms readiness, proceed as follows:
+    a. Read the first phase from the Implementation Plan.
+    b. If `memory_strategy = dynamic-*`, create `Memory/Phase_XX_<slug>/` in the `apm/` directory for the first phase.  
+       If `memory_strategy = simple`, ensure `Memory/Memory_Bank.md` exists in the `apm/` directory.
+    c. For all tasks in the first phase, create completely empty Memory Log files or sections:
+       - dynamic-md: empty `.md` files in the phase directory
+       - dynamic-json: empty `.json` files in the phase directory
+       - simple: empty sections with headers in `Memory_Bank.md`
+    d. Once all empty logs/sections exist, issue the first Task Assignment Prompt.
 ```
 
 After presenting the bootstrap prompt, **state outside of the code block**:

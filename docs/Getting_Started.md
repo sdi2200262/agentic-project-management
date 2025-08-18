@@ -16,9 +16,9 @@ Before starting your first APM session, ensure you have:
 ### Recommended Model Tiers
 > **Note:** For guidance on choosing models in an economical way, be sure to read the [Token_Consumption_Tips.md](Token_Consumption_Tips.md).
 
-- **Setup Agent**: For best results, use top-tier frontier models such as Claude Sonnet 4 or Gemini 2.5 Pro. In general, any advanced model with strong "agentic" capabilities will suffice. Since most AI IDEs allow you to switch models per request, consider using deep thinking powerful models for Context Synthesis and planning, but switch to "non-thinking" and "agentic" models during the Project Breakdown phase to optimize costs and response quality.
+- **Setup Agent**: For best results, use top-tier frontier models such as Claude Sonnet 4 or Gemini 2.5 Pro throughout the entire Setup Phase. These models excel at the systematic reasoning required for project planning and breakdown.
 
-    > Note: Switching models mid-conversation often may results in context gaps, because of disruptances in token caching. Prefer using one model during the entire chat session for Setup Agent. **Best performing model during testing was Claude Sonnet 4**.
+    > **Important**: Avoid switching models mid-conversation during the Setup Phase as this causes context gaps due to token caching disruptions. Use one model throughout the entire Setup Agent session. **Best performing model during testing was Claude Sonnet 4**.
 
 - **Manager Agent**: Best practice is to use a powerful model with strong reasoning abilities. Like for the Setup Agent, Claude Sonnet 4 "thinking" and Gemini 2.5 Pro "thinking" are highly recommended. You can leverage these CoT models for their advanced reasoning, but mid-tier models like Claude Haiku, Cursor Auto (which mixes models), or Copilot base are also viable and offer a more economical alternative.
 

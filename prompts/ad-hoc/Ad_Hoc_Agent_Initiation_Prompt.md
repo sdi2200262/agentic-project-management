@@ -39,6 +39,7 @@ When executing Step 2, adapt your approach to the delegation type:
 - **Problem Solving**: Actually resolve the assigned issue through debugging, troubleshooting, collaboration, or technical work until a working solution is achieved
 - **Quality Standard**: Deliver complete, actionable results or useful information that directly enable Implementation Agent task continuation
 - **Structured Presentation**: Format results exactly as they will appear in final delivery (but not in code block yet)
+- **Execution Pattern**: Aim to complete Step 2 in one response. However, when User collaboration is required (e.g., for external actions or clarifications), Step 2 may extend across multiple exchanges until the delegation work is complete.
 
 ### Collaboration with User
 Complex delegations may require **direct User collaboration** when actions fall outside your IDE environment. Provide clear step-by-step guidance while the User executes necessary actions in their environment. **Step 2 execution may require multiple exchanges when User collaboration is needed**, but each exchange focuses solely on Step 2 completion before proceeding to Step 3.

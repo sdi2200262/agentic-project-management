@@ -58,8 +58,10 @@ Sub-tasks break down a parent task into logical steps and must be included for e
 ```
 
 ### 2.5. Task Dependency Declaration Format
-**Producer Task:** Specify concrete deliverables in the `Output` field for consumer task integration
-**Consumer Task:** Reference dependency in `Guidance` field using format: `"Depends on: Task X.Y Output (+ by Agent Z - if cross-agent)"`
+*  **Producer Task:** Specify concrete deliverables in the `Output` field for consumer task integration
+*  **Consumer Task:** Reference dependency in `Guidance` field using format: 
+    - Same-agent: `"Depends on: Task X.Y Output"`
+    - Cross-agent: `"Depends on: Task X.Y Output by Agent Z"`
 
 ### 2.6. Phase Summary Format (Manager Agent)
 At phase completion, append summaries to Implementation Plan under current phase and before next phase:
