@@ -1,5 +1,12 @@
-# APM Artifact JSON Schemas (Alpha Testing)
+# APM Artifact JSON Schemas (Testing Preview)
 This directory contains JSON schemas that define the structure for APM v0.4 artifacts. If you're testing the JSON variants of Implementation Plans, Memory Logs, or Task Assignments, these schemas keep everything properly structured and catch issues before they break your workflow.
+
+## **Testing Preview - Not for Production**
+The JSON asset format is designed for advanced testing scenarios requiring strict workflow validation and maximum LLM parsing fidelity. It is intended for:
+- Contributors seeking to experiment and provide feedback on asset structure
+- Users with high token budgets unconcerned with token consumption willing to test this feature
+
+**WARNING: JSON assets consume at least 15% more tokens, often 2x-3x higher than Markdown, and will fill the context window much faster, resulting in more frequent Handovers and context resets.**
 
 ## Available Schemas
 - **`implementation_plan.schema.json`** - Structure for `Implementation_Plan.json` files (both phased and linear projects). Enforces all the rules from `Implementation_Plan_Guide.md` about tasks, agent assignments, dependencies, and phase summaries.
@@ -8,13 +15,13 @@ This directory contains JSON schemas that define the structure for APM v0.4 arti
 
 - **`task_assignment.schema.json`** - Structure for JSON-format Task Assignment Prompts. Validates all the YAML frontmatter and content sections from `Task_Assignment_Guide.md`.
 
-More schemas will show up here as I (or you) add new JSON variants to the framework.
+More schemas will be added as new JSON variants are developed for the framework.
 
 ## Validation Script
-I've included `validate_schema.py` for checking your JSON files against these schemas. It's handy for catching structural issues without having to run through the full APM workflow. Hopefully the Manager Agent will use it to validate Setup or evene later Artifacts against their required schemas... if it fails to do so, please instruct it at least for the Implementation Plan JSON Artifact.
+The included `validate_schema.py` script checks your JSON files against these schemas, catching structural issues without requiring full APM workflow execution. Manager Agents should use this for Implementation Plan validation when using JSON variants.
 
 ### How to Use the Script
-Run it from command line with the artifact type and file path:
+Run from command line with the artifact type and file path:
 ```bash
 python validate_schema.py <artifact_type> <file_path>
 ```
@@ -36,17 +43,17 @@ python validate_schema.py log examples/json_memory_log_example.json
 python validate_schema.py task examples/json_task_example.json
 ```
 
-If validation passes, you'll get a confirmation message. If it fails, you'll get detailed error info to fix whatever's broken.
+If validation passes, you'll get a confirmation message. If it fails, you'll get detailed error information for fixes.
 
 ## Examples
-The `examples/` folder has sample JSON files that follow the schemas. Use them for helping the Manager Agent with validation or as templates when creating new artifacts.... as the Header says... still Alpha testing.
+The `examples/` folder contains sample JSON files demonstrating proper schema compliance. Use these as templates or for Manager Agent validation reference.
 
 ### What's In Examples
 - **`json_plan_example.json`** - Sample phased project (Vite app with Shadcn components)
 - **`json_memory_log_example.json`** - Sample Dynamic-JSON memory log for Task 1.1
 - **`json_task_example.json`** - Sample Task Assignment Prompt in JSON format
 
-These examples show you exactly how the JSON variants should look when they're properly structured.
+These examples demonstrate exactly how JSON variants should be structured for schema compliance.
 
-**Warning:**
-> **Beware when using JSON variants that its still for Alpha testing and also that you are sacrificing ~15% higher token consumption for better LLM parsing and context retention. This means that you should be aware to conduct more frequent Handover Procedures to avoid context loss.**
+## Cost & Usage Considerations
+**Recommended for testing and feedback only.** The significant token overhead makes JSON variants impractical for most production workflows. Use Markdown variants for normal APM sessions unless specifically testing structured data approaches or contributing to JSON format development.
