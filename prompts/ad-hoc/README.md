@@ -19,7 +19,7 @@ Right now I've included a few essential ones:
 Implementation Agents will (hopefully) reference these when they hit scenarios that need delegation. You just copy-paste the prompts they create following these guides into new chat sessions and bring back the findings.
 
 ## Creating Your Own Guides
-APM is an Open Source project so, anyone that wants to contribute by adding a new Delegation Guide or improving an existing one, is welcomed!
+APM is an Open Source project, anyone who wants to contribute by adding a new Delegation Guide or improving an existing one, is welcomed!
 Keep Delegation Guides you create **targeted and specific**. Good candidates:
 - Testing guides (unit test creation, test data generation) (also working on one)
 - Security analysis guides (vulnerability assessment, code review)

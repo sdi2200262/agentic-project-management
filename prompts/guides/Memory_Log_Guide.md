@@ -17,9 +17,14 @@ Summary of the three Memory System variants, their storage layouts and log forma
   - Storage: `Memory/` folder with subfolders `Phase_XX_<slug>/`
   - Format: One `Task_XX_<slug>.md` file per task (Markdown)
 
-- Dynamic-JSON (Still being tested)
+- Dynamic-JSON **(Testing Preview)**
   - Storage: Same as Dynamic-MD
   - Format: One `Task_XX_<slug>.json` file per task (JSON, schema at `prompts/schemas/memory_log.schema.json`)
+  - **Testing Preview - Not for Production (JSON):**
+    - Intended for advanced testing scenarios requiring strict workflow validation, maximum LLM parsing fidelity, and active context retention
+    - Designed for "token-wealthy" Users unconcerned with token consumption, or APM contributors seeking to experiment and provide feedback on asset structure and parsing efficiency
+    - Experimental only; not suitable for production or resource-constrained use due to much higher token consumption
+    - **WARNING:** JSON logs consume at least 15% more tokens, often 2x–3x higher than Markdown, and will fill the context window much faster, resulting in more frequent Handovers and context resets
 
 Memory Logs are written by Implementation Agents after each task or when blockers occur. Manager Agents review logs to track progress and plan next steps.
 
@@ -92,6 +97,12 @@ important_findings: [true|false]
 
 ## 3. JSON Variant Specification
 JSON Memory Logs follow identical rules and structure as Markdown but use schema validation at `/prompts/schemas/memory_log.schema.json`. All requirements for agent IDs, task references, status tracking, output documentation, and content guidelines apply as described for Markdown.
+
+### **Testing Preview - Not for Production (JSON)**
+- Intended for advanced testing scenarios requiring strict workflow validation, maximum LLM parsing fidelity, and active context retention
+- Designed for "token-wealthy" Users unconcerned with token consumption, or APM contributors seeking to experiment and provide feedback on asset structure and parsing efficiency
+- Experimental only; not suitable for production or resource-constrained use due to much higher token consumption
+- **WARNING:** JSON logs consume at least 15% more tokens, often 2x–3x higher than Markdown, and will fill the context window much faster, resulting in more frequent Handovers and context resets
 
 ## 4. Implementation Agent Workflow
 Main responsibilities and workflow steps for Implementation Agents when working with the Memory System:

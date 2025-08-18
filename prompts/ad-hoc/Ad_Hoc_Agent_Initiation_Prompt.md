@@ -56,3 +56,9 @@ After User confirms results, provide them in a structured format **inside a mark
 - Present technical content (commands, configuration, code) in ways that **avoid nested code block formatting**
 - Ensure Implementation Agents can understand and apply your technical solutions 
 - Focus on clarity and actionability over specific formatting patterns
+
+## Delivery Confirmation
+After presenting your structured findings in chat, explain the ad-hoc workflow to the User:
+1. Copy the complete markdown code block containing your structured findings
+2. Return to Implementation Agent chat session that delegated this ad-hoc task 
+3. Paste your structured findings to continue main task execution

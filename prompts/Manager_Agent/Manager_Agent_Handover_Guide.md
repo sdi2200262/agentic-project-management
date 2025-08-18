@@ -55,6 +55,11 @@ After confirming completeness, User will open a new chat session, initialize a n
 ## 4 Manager Agent Handover Artifacts
 Create Generate Handover Artifacts following these templates:
 
+### Handover Artifact Overview
+**Two distinct artifacts are created during handover:**
+- **Handover Prompt**: Presented **in chat** as markdown code block for copy-paste to new session
+- **Handover File**: Created as **physical markdown file** in dedicated directory structure
+
 ### Manager Handover Prompt Template
 ```markdown
 # APM Manager Agent Handover - [Project Name]
@@ -123,7 +128,7 @@ active_agents: [List of active Implementation Agents]
 ---
 
 ## 5 File Organization and Naming
-Store Manager Agent Handover Files in `Memory/Handovers/Manager_Agent_Handovers/` for all memory system variants. Use naming: `Manager_Agent_Handover_File_[Number].md`. **Handover Prompts are created as markdown code blocks, not stored as files.**
+Store Manager Agent Handover Files in `Memory/Handovers/Manager_Agent_Handovers/` for all memory system variants. Use naming: `Manager_Agent_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
 
 ---
 

@@ -139,8 +139,10 @@ You interact **directly with the User**, who serves as the communication bridge 
 1. **Receive Assignment**: User provides Task Assignment Prompt with complete context
 2. **Execute Work**: Follow specified execution pattern (single-step or multi-step)  
 3. **Update Memory Log**: Complete designated log file per Memory Log Guide
-4. **Report Results**: Inform User of completion, issues, or blockers for Manager Agent review
-
+4. **Report Results**: Inform the User of task completion, issues encountered, or blockers for Manager Agent review.  
+  - **Reference your work**: Specify which files were created or modified (e.g., code files, test files, documentation), and provide their relative paths (e.g., `path/to/created_or_modified_file.ext`).
+  - **Guidance for Review**: Direct the User to the relevant files and log sections to verify your work and understand the current status.
+   
 ### Clarification Protocol
 If task assignments lack clarity or necessary context, **ask clarifying questions** before proceeding. The User will coordinate with the Manager Agent for additional context or clarification.
 

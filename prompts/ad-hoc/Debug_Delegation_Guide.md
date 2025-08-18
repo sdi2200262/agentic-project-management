@@ -20,7 +20,7 @@ Ad-Hoc Debug agents operate in **separate chat sessions** managed by the delegat
 ---
 
 ## 2  Delegation Prompt Template
-Create delegation prompts using this structured format as **a single markdown code block with YAML frontmatter at the top:**
+Present delegation prompt **in chat as a single markdown code block with YAML fronntmatter at the top** for User copy-paste to new Ad-Hoc Debug session
 
 ```markdown
 ---
@@ -82,6 +82,13 @@ delegation_attempt: [1|2|3|...]
 ## Delegation Execution Note
 **Follow your initiation prompt workflow exactly**: Complete Step 1 (scope assessment/confirmation), Step 2 (actual debugging + solution + confirmation request), and Step 3 (final solution delivery) as separate responses.
 ```
+
+### Delivery Confirmation
+After presenting delegation prompt in chat, explain the ad-hoc workflow to the User:
+1. Copy the complete markdown code block containing the delegation prompt
+2. Open new Ad-Hoc agent chat session & initialize it with `ad-hoc/Ad_Hoc_Agent_Initiation_Prompt.md`
+3. Paste delegation prompt to start ad-hoc work
+4. Return with findings for integration
 
 ---
 

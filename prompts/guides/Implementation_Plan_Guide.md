@@ -16,7 +16,7 @@ Enable Manager Agents to create precise Task Assignment Prompts through detailed
 
 ## 2. Document Structure Specifications
 
-### 2.1. Document Header (Lines 1‑15)
+### 2.1. Document Header (Lines 1-15)
 ```markdown
 # <Project Name> – Implementation Plan 
 

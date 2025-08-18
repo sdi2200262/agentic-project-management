@@ -53,6 +53,11 @@ After confirming completeness, User will open a new chat session, initialize a n
 ---
 
 ## 4 Implementation Agent Handover Artifacts
+
+### Handover Artifact Overview
+**Two distinct artifacts are created during handover:**
+- **Handover Prompt**: Presented **in chat** as markdown code block for copy-paste to new session
+- **Handover File**: Created as **physical markdown file** in dedicated directory structure
 Create Handover Artifacts following these templates:
 
 ### Implementation Agent Handover Prompt Template
@@ -116,7 +121,7 @@ last_completed_task: [Task ID]
 ---
 
 ## 5 File Organization and Naming
-Store Implementation Agent Handover Files in `Memory/Handovers/[Agent_Name]_Handovers/` for all memory system variants. Use naming: `[Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are created as markdown code blocks in chat, not stored as files.**
+Store Implementation Agent Handover Files in `Memory/Handovers/[Agent_Name]_Handovers/` for all memory system variants. Use naming: `[Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
 
 ---
 

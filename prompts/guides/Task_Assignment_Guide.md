@@ -201,8 +201,7 @@ Based on log review, determine appropriate next step:
 - Phase complete → **Create phase summary**, begin next phase
 
 ### 6.2. Follow-Up Actions
-- Task needs refinement → Send correction **follow-up prompt** to same agent
-- Technical blockers persist → Consider **Ad-Hoc delegation**
+- Task needs refinement → Send correction **follow-up prompt** to same agent (if technical blockers persist, consider **Ad-Hoc delegation in the follow-up prompt**)
 - Plan assumptions invalid or any other changes needed → **Update Implementation Plan**
 
 ### 6.3. Decision Criteria

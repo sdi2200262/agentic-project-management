@@ -41,7 +41,7 @@ Strategic context switching prevents pattern matching:
 **File Operations**: Document each completed phase cycle, agent splitting updates, cross-agent dependency additions
 **Context Breaks**: File writes interrupt continuous chat writing, providing fresh perspective for each subsequent phases thus avoiding pattern-matching
 
-Simple file format (basic indentation, minimal structure - see §4.6) prevents template formation while preserving content for later formatting through `guides/Implementation_Plan_Format_Guide.md`
+Simple file format (basic indentation, minimal structure - see §4.6) prevents template formation while preserving content for later formatting through `guides/Implementation_Plan_Guide.md`
 
 ## 2. Domain Analysis & Agent Assignment
 
