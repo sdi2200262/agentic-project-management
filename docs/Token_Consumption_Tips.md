@@ -101,6 +101,8 @@ For these scenarios, the superior reasoning, creativity, and context management 
 **Model Switching Strategy**:
 > **Implementation Agents handle model switching well.** In general, model switching is not advised due to potential context loss in agent sessions. However, during testing, frequent model switching based on task domain (Cursor Auto for routine tasks, Sonnet 4 for complex work) proved to be both cost-efficient and effective. The tightly scoped task context makes this strategy viable, with minimal context gaps observed.
 
+**Step Combination Efficiency**:
+Implementation Agents can combine adjacent steps in multi-step tasks when requested by Users or specified in Task Assignment Prompts. This reduces confirmation overhead and effectively token consumption. Particularly valuable for credit-billed subscriptions and workflow acceleration. Request combinations for related setup/configuration steps while preserving individual steps for complex implementations requiring validation or for steps requiring User guidance/feedback.
 
 ### Ad-Hoc Agents (Delegation-Specific)
 

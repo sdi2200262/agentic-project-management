@@ -211,6 +211,7 @@ The Implementation Agent executes assigned tasks according to Task Assignment Pr
 **Multi-Step Tasks:**
 - Execute Step 1 → user confirmation → Step 2 → confirmation → continue
 - User iteration/feedback/guidance opportunities at each step
+- **Step combination available**: Adjacent steps can be combined when requested by user or pre-specified in Task Assignment Prompt for efficiency
 - Final step completion → Memory Logging
 
 ```mermaid

@@ -219,13 +219,14 @@ The Implementation Agent will:
 
 ### Implementation Agent Execution
 
-**For Single-Step Tasks** (bullet format):
+**For Single-Step Tasks**:
 - Agent completes all subtasks in one response
 - Proceeds directly to Memory Logging
 
-**For Multi-Step Tasks** (numbered format):
+**For Multi-Step Tasks**:
 - Agent executes step-by-step with your confirmation at each stage, you are able to combine adjacent step executions wherever applicable
 - You can provide feedback and request modifications
+- **Efficiency tip**: Request step combination for related work: "Step 2 looks alright. Combine steps 3-4 and log in your next response"
 - Agent proceeds to Memory Logging after final step
 
 ### Memory Logging
