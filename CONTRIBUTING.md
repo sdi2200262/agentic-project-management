@@ -1,38 +1,105 @@
-# Contributing to agentic-project-management (APM)
-Thank you for considering contributing to APM! Your help is appreciated.
+# Contributing to Agentic Project Management (APM)
 
-## How Can I Contribute?
+Thank you for considering contributing to APM! Your contributions help build a better framework for AI-assisted project management.
 
-### Reporting Bugs
+## Ways to Contribute
 
-- **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/your-username/agentic-project-management/issues).
-- If you're unable to find an open issue addressing the problem, [open a new one](https://github.com/your-username/agentic-project-management/issues/new). Be sure to include a **title and clear description**, as much relevant information as possible, and a **code sample** or an **executable test case** demonstrating the expected behavior that is not occurring.
+### Reporting Bugs & Workflow Issues
 
-### Suggesting Enhancements
+- **Search existing issues** first: [GitHub Issues](https://github.com/sdi2200262/agentic-project-management/issues)
+- **For new bug reports**, include:
+  - APM version and setup method (template, clone, manual)
+  - AI IDE used (Cursor, Windsurf, VS Code, etc.)
+  - Specific agent type experiencing issues (Setup, Manager, Implementation, Ad-Hoc)
+  - Step-by-step reproduction of the issue (if possible - otherwise a detailed description will suffice)
+  - Expected vs actual behavior
+  - Relevant context (memory system variant, asset format, etc.)
 
-- Open a new issue outlining your enhancement suggestion. Provide a clear description of the enhancement and its potential benefits.
+### Suggesting Features & Improvements
+
+- Framework enhancements: New agent capabilities, workflow improvements, memory system optimizations
+- Documentation improvements: Clearer explanations, additional examples, missing use cases
+- New integrations: Support for additional AI IDEs, tools, or platforms
+- Performance optimizations: Token efficiency, context management, handover procedures
+
+**Before requesting new features or changes to workflow assets (prompts/guides):** Please review [Modifying_APM.md](docs/Modifying_APM.md) for guidance on customizing APM for your needs using a custom repo template.
+
+### Documentation Contributions
+
+APM v0.4 includes comprehensive documentation, and contributions to improve it are always welcome. Please note that documentation changes are treated with extra care to ensure clarity, accuracy, and consistency across the framework.
+
+### High-Priority Areas Seeking Contributions:
+
+**JSON Asset Format Testing**
+- Experimental JSON variant for Implementation Plans, Memory Logs, and Task Assignments  
+- Suitable for contributors with high token budgets or interest in structured asset validation
+- Resources: 
+  - [Context & Prompt Engineering](docs/Context_and_Prompt_Engineering.md) (background)
+  - [`prompts/schemas/README.md`](prompts/schemas/README.md) (contribution guidelines)
+- Contributions needed: Testing, feedback, schema improvements, validation scripts
+
+**Ad-Hoc Delegation Guides**
+- Specialized guides for context-intensive tasks beyond debugging and research
+- Examples needed: Testing automation, security analysis, data extraction, documentation generation, performance optimization
+- Resources: [`prompts/ad-hoc/README.md`](prompts/ad-hoc/README.md) (template patterns and guidelines)
+- Format: Follow existing Debug/Research delegation guide structure
+
+**AI IDE Platform Adaptations**
+
+There are plans to expand APM’s reach by developing official **platform-specific adaptations** as independent repository forks. These adaptations are intended to take advantage of each platform’s unique features and address any platform-specific limitations, with the aim of providing a smoother and more effective user experience. The **main APM repository** will remain the IDE-agnostic, general-purpose framework, while these platform forks would function as **independent projects**. As such, they may not always incorporate every update, patch, or release from the main repository.
+
+Current and planned target platforms for these adaptations include:
+- Cursor
+- Windsurf
+- VS Code with AI extensions (Copilot, Roo, Cline etc.)
+
+If you are interested in contributing to or collaborating on IDE adaptation work, please reach out via Discord at: `cobuter_man`.
+
+### Community Contributions
+
+- Share adaptations: Domain-specific customizations (web dev, data science, content creation)
+- IDE integrations: Platform-specific rules, configurations, or workflows  
+- Best practices: Cost optimization strategies, effective agent coordination patterns
+- Case studies: Real project examples using APM
+
+## Contribution Process
 
 ### Pull Requests
 
 1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
+2. Create a feature branch: `git checkout -b feature/description-of-change`
+3. Make your changes:
+   - Follow existing file structure and naming conventions.
+   - Test your changes with actual APM sessions when possible.
+   - Update relevant documentation.
+4. Commit with clear messages: `git commit -m 'Add: [specific improvement]'`
+5. Push and create a Pull Request (PR): Include a description of your changes and reference any relevant issue numbers.
 
-Please ensure your PR includes:
-- A clear description of the changes.
-- Any relevant issue numbers.
-- Tests for your changes, if applicable.
+### PR Requirements
 
-## Styleguides
+- Provide a clear description of changes and motivation.
+- Reference related issues if applicable.
+- Include test instructions when relevant (especially for prompts/guides).
+- Update documentation for user-facing changes.
+- Follow established patterns in existing APM assets.
 
-Please adhere to standard Markdown formatting.
+## License Requirements
+
+APM uses Mozilla Public License 2.0 (MPL-2.0). By contributing, you agree that:
+- Your contributions will be licensed under MPL-2.0
+- Improvements to core APM files will remain open source
+- Proper attribution is maintained
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+This project follows our [Code of Conduct](CODE_OF_CONDUCT.md). All participants are expected to uphold these standards in all project interactions.
+
+## Questions & Discussion
+
+- Technical questions: Open a GitHub issue for community discussion
+- General inquiries: Contact via email (see Code of Conduct for contact information)
+- Collaboration: Mention @sdi2200262 in relevant issues or PRs or reach out via Discord at: `cobuter_man`
 
 ---
 
-We look forward to your contributions!
+Your contributions help make APM better for everyone. Thank you for being part of the community!
