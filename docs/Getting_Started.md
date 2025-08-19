@@ -35,6 +35,14 @@ Before starting your first APM session, ensure you have:
 
 ---
 
+## Notes for specific AI IDEs
+
+> **As of August 2025, GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism that is known to be buggy and can break cached context, disrupting APM workflows.
+>   - **Setup Phase**: If the summarization mechanism triggers, the agent may lose track of guides and procedures. **Stop the response immediately**, then re-provide the required prompts and guides (e.g., Setup Agent initiation prompt, planning guides) before continuing.
+>   - **Task Loop Phase**: The cycle is more resilient, but the same issue can occur. If summarization mechanism triggers, and you noticed degrading response quality **stop the response**, re-provide the necessary prompts/guides or task context, and verify the agent has re-established understanding before proceeding.
+>
+> > Additional notes for specific IDEs will be added here as new releases occur and user feedback is collected.
+
 ## Step 1: Access APM Assets
 
 Choose one of these approaches to get the APM framework materials:

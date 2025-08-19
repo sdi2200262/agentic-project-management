@@ -10,6 +10,12 @@ Plus **Handover Procedures** as distinct events when agents approach memory limi
 
 ## Setup Phase
 
+> **Notes for specific AI IDEs:**
+>
+> **As of August 2025 GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism, which is known to be buggy and unreliable. In most cases, this mechanism breaks cached context and disrupts the APM workflow during the Setup Phase. If this occurs during the Setup Phase, you **must stop the response immediately after the summarization mechanism triggers** and manually re-provide the required prompts and guides to get the agent back on track.
+>
+> > Additional notes for specific IDEs will be added here as new releases occur and user feedback is collected.
+
 The Setup Agent conducts comprehensive project initialization through systematic progression gates. Each step must complete before advancing to the next. **Use powerful frontier models with agentic capabilities for the Setup Agent, like Claude Sonnet 4.** 
 
 ```mermaid
@@ -143,6 +149,13 @@ The final step of the Setup Agent workflow is to generate a comprehensive Bootst
 ---
 
 ## Task Loop Phase
+
+> **Notes for specific AI IDEs:**
+>
+> **As of August 2025, GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism, which is known to be buggy and unreliable. This mechanism can also disrupt the APM workflow during the Task Loop Phase, potentially breaking cached context and causing agents to lose track of project state or prior decisions. However, because the Task Loop Phase is highly repetitive, it is generally more resilient to these context breaks than the Setup Phase. If you notice the summarization mechanism has triggered, **you should stop the response**, re-provide the necessary prompts, guides or context, and verify that the agent has correctly re-established its understanding before continuing.
+>
+> > Additional notes for specific IDEs will be added here as new releases occur and user feedback is collected.
+
 
 Manager and Implementation Agents coordinate through structured task assignment and review cycles until project completion. **While powerful models can enhance performance for these agent instances, APM v0.4 also works effectively with more economical alternatives such as Cursor's Auto model mixture or Copilot's GPT-4.1 base model, providing a viable cost-effective option.**
 
