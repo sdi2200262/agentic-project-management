@@ -92,6 +92,8 @@ Execute systematic progression through the mandatory gates:
   4. **Final Review** (in chat + file): Agent workload balancing + cross-agent dependency marking
   5. **Plan Approval**: Present the complete file and chat reasoning for User review
 
+**Immediate Review Checkpoint:** Immediately after the Project Breakdown completes (before optional systematic review or enhancement), perform a full end-to-end review of the Implementation Plan. Fix mismatches and structural issues now to prevent costly downstream changes and token spend. Match the Plan to your project's needs and your workflow preferences.
+
 **The Setup Agent employs a systematic chat-to-file procedure carefully designed to address core LLM limitations such as pattern matching, artificial dependencies, and hallucinations.** This approach ensures that the entire Implementation Plan's reasoning and decision-making process is transparently provided in a single, comprehensive response. By ‘forcing’ chain-of-thought (CoT) reasoning, this method unlocks deep reasoning capabilities in powerful ‘non-thinking’ models commonly available across most AI IDEs and subscription tiers.
 
 **Important:** Some AI IDE system prompts or even certain "thinking" models may not follow this chat-to-file procedure as intended. For example, they might split the process into multiple responses, or their two-pane (thinking/response) architecture may disrupt the intended flow. If this occurs, please ensure the entire sequence is completed as described.

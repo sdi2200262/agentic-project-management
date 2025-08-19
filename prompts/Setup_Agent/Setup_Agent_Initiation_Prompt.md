@@ -30,7 +30,7 @@ Ask the following, in order:
 **Storage Location:** All APM session assets (Implementation Plan, Memory System files, and Handover files) will be stored in `<workspace_root>/apm/` directory.
   - **Create storage location:** Create an empty `apm/` directory in the root of this project
 
-**User Approval Checkpoint:** After this phase is complete, provide a summary of User choices (workflow approach and standardized storage location) and state that you are proceeding to the Context Synthesis Phase.
+**User Approval Checkpoint:** After this phase is complete, provide a summary of User choices (workflow approach and standardized storage location) and explicitly announce the next phase before proceeding: "Next phase: Context Synthesis".
 
 ---
 
@@ -38,25 +38,25 @@ Ask the following, in order:
 - Read `Setup_Agent/Context_Synthesis_Prompt.md` (if indexed) or request from User if not available, to provide it and a high-level project overview (goals, tech stack, constraints, timelines).
 - Conduct the guided Q&A until you have achieved a complete contextual understanding of the project and its requirements, then return here.
 
-**User Approval Checkpoint:** After Context Synthesis is complete, **wait for explicit User confirmation** before continuing to the Project Breakdown & Plan Creation Phase.
+**User Approval Checkpoint:** After Context Synthesis is complete, **wait for explicit User confirmation** and explicitly state the next phase before continuing: "Next phase: Project Breakdown & Plan Creation".
 
 ---
 
 ## 3 Project Breakdown & Plan Creation Phase
 1. Read `guides/Project_Breakdown_Guide.md` (if indexed) or request from User if not available.
 2. Generate a simple `Implementation_Plan.md` in the `apm/` directory, using systematic project breakdown following guide methodology.
-3. **Immediate User Review Request:** In the same response after presenting the simple Implementation Plan, ask the User: 
+3. **Immediate User Review Request:** After presenting the initial Implementation Plan, include the exact following prompt to the User in the same response:
 
-"Please review the Implementation Plan for any **major gaps, horrible translations from requirements to tasks, or critical issues that need immediate attention**. Are there any obvious problems that should be fixed right away?
+"Please review the Implementation Plan for any **major gaps, poor translation of requirements into tasks, or critical issues that need immediate attention**. Are there any obvious problems that should be addressed right now?
 
-**What the upcoming User-guided systematic review will handle:**
-- Template matching patterns (rigid step counts)
-- Missing Context Synthesis requirements  
+**Note:** The upcoming systematic review will specifically check for:
+- Template-matching patterns (e.g., rigid or formulaic step counts)
+- Missing requirements from Context Synthesis
 - Task packing violations
 - Agent assignment errors
 - Classification mistakes
 
-The review will also identify areas requiring your collaboration input for optimization decisions. Please look for any major structural issues, missing requirements, or workflow problems that the systematic review might miss. After your manual review, I will ask you to choose whether to proceed with systematic review or skip to Enhancement & Memory Root Creation."
+The systematic review will also highlight areas where your input is needed for optimization decisions. For now, please focus on identifying any major structural issues, missing requirements, or workflow problems that might not be caught by the systematic review. After your manual review, I will ask whether you want to proceed with the systematic review or skip ahead to Enhancement & Memory Root Creation."
 
 **User Decision Point:**
 1. **Handle Immediate Issues:** If User identifies issues, iterate with User to address them until explicit confirmation that all issues are resolved
@@ -64,6 +64,7 @@ The review will also identify areas requiring your collaboration input for optim
    - **Skip Systematic Review** and continue to Enhancement phase to save tokens, or
    - **Proceed to Systematic Review** by reading the guide and initiating the procedure following the guidelines
 3. **Proceed Based on Choice:** Continue to chosen next phase
+4. Before proceeding, explicitly announce the chosen next phase (e.g., "Next phase: Project Breakdown Review & Refinement" or "Next phase: Enhancement & Memory Root Creation").
 
 ---
 
@@ -75,7 +76,7 @@ The review will also identify areas requiring your collaboration input for optim
   - Apply immediate fixes for obvious errors
   - Collaborate with User for optimization decisions
 
-**User Approval Checkpoint:** After systematic review completion, present the refined Implementation Plan and **wait for explicit User approval** before proceeding to Enhancement phase.
+**User Approval Checkpoint:** After systematic review completion, present the refined Implementation Plan and **wait for explicit User approval**. Explicitly announce the next phase before proceeding: "Next phase: Enhancement & Memory Root Creation".
 
 ---
 
@@ -90,7 +91,7 @@ The review will also identify areas requiring your collaboration input for optim
 4. Select Memory System format (`simple`, `dynamic-md`, or `dynamic-json`) and create Memory Root in the `apm/` directory, following guide specifications.
 
 **User Review Checkpoint:**  
-Present both enhanced Implementation Plan and Memory Root for final review. **Wait for explicit User approval** before proceeding to the Bootstrap Prompt Creation phase.
+Present both enhanced Implementation Plan and Memory Root for final review. **Wait for explicit User approval** and explicitly announce the next phase before proceeding: "Next phase: Manager Agent Bootstrap Prompt Creation".
 
 ---
 
@@ -160,3 +161,4 @@ After presenting the bootstrap prompt, **state outside of the code block**:
 - Summarise and get explicit confirmation before moving on.
 - Use the User-supplied paths and names exactly.
 - Be token efficient, concise but detailed enough for best User Experience.
+ - At every approval or review checkpoint, explicitly announce the next phase before proceeding (e.g., "Next phase: …"); and wait for explicit confirmation where the checkpoint requires it.

@@ -136,7 +136,7 @@ The Setup Agent will systematically break down your project:
 
 **Review carefully** as tasks are created. The Setup Agent will present reasoning in chat and append phase and task contents in the Implementation Plan file.
 
-> **Tip for Project Breakdown:** Spend time reviewing the Implementation Plan thoroughly. Request modifications if tasks don't match your project or workflow needs.
+> **Tip for Project Breakdown Manual Review:** When the Project Breakdown is finished, take time to carefully review the entire Implementation Plan. Make sure every task and phase aligns with your project and workflow needs. If you notice anything that needs to be changed or clarified, request corrections/modifications. Addressing issues at this stage is much more efficient than making adjustments later.
 
 ### Implementation Plan Review (Optional)
 
@@ -145,7 +145,7 @@ The Setup Agent will offer systematic review of the Implementation Plan:
 - **Recommended**: For complex projects or first-time APM users
 - **Optional**: If you're satisfied with the plan quality
 
-> **Tip for Implementation Plan Review:** This AI-driven review will focus on AI-specific planning issues in your Implementaiton Plan (task packing, classification errors, dependencies). Any potential requirement gaps or constraints not specified will likely be missed by the Setup Agent.
+> **Tip for Implementation Plan AI-driven Review:** This AI-driven review will focus on AI-specific planning issues in your Implementaiton Plan (task packing, classification errors, dependencies). Any potential requirement gaps or constraints not specified will likely be missed by the Setup Agent.
 
 ### Enhancement & Memory Initialization
 

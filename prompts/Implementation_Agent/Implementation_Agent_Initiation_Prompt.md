@@ -106,12 +106,12 @@ When `dependency_context: true` appears in YAML frontmatter:
 **MANDATORY**: Follow this protocol without exception.
 
 ### Debug Decision Logic
-- **Minor Issues**: ≤ 2 debugging exchanges AND simple bugs → Debug locally
-- **Major Issues**: > 2 debugging exchanges OR complex/systemic issues → **MANDATORY DELEGATION**
+- **Minor Issues**: ≤ 2 debugging attempts AND simple bugs → Debug locally
+- **Major Issues**: > 2 debugging attempts OR complex/systemic issues → **MANDATORY DELEGATION**
 
 ### Delegation Requirements
 **MUST delegate when ANY condition occurs:**
-1. After 2-3 debugging attempts (no 4th attempt)
+1. After 2 debugging attempts - **no 3rd attempt**
 2. Complex error patterns or system-wide issues
 3. Environment/integration problems
 4. Persistent recurring bugs
@@ -128,7 +128,9 @@ When `dependency_context: true` appears in YAML frontmatter:
 ### Post-Delegation Actions
 When User returns with findingns:
 - **Bug Resolved**: Apply/Test solution, continue task, document in Memory Log
-- **Bug Unsolved**: Redelegate if findings provided some noticeable progress or stop task execution, log blocker, escalate to Manager Agent
+- **Bug Unsolved**:  
+  - **Redelegate:** If the findings from the previous delegation attempt show any noticeable progress or new leads, immediately redelegate the debugging task. Be sure to include all updated context and clearly document what has changed or improved.
+  - **Escalate Blocker:** If no meaningful progress was made, stop task execution, log the blocker in detail (including all attempted steps and outcomes), and escalate the issue to the Manager Agent for further guidance or intervention.
 
 ---
 

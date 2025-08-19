@@ -10,7 +10,7 @@ Project decomposition transforms Context Synthesis findings into structured task
 - **Domain boundaries** → Create coherent agent assignments (see §2.1) 
 - **Complexity flags** → Create appropriately granular tasks (see §4.1)
 - **External dependencies** → Plan User guidance for actions outside IDE (see §4.1)
-- **Investigation needs** → Plan Ad-Hoc delegation steps (see §4.2)
+- **Investigation needs** → Add a minimal one-line Ad-Hoc Delegation step where needed in affected multi-step tasks (see §4.2, §4.3)
 - **Workflow patterns** → Honor natural progression in dependencies (see §4.5)
 
 **Process & Implementation Insights:**
@@ -168,6 +168,8 @@ While identifying tasks for this phase, apply these tests for each potential tas
 
 **Present Task List**: After applying guardrails, present **in chat** complete task list for phase: "Task X.1: [Name], Task X.2: [Name]..." before proceeding to individual analysis.
 
+**Ad-Hoc Delegation Precheck:** While listing tasks, quickly flag any task requiring ad-hoc delegation based on retained insights. Use an inline marker after the task name: "(ad-hoc: <purpose>)". Keep it to five words or fewer; no reasoning here.
+
 ### 4.2. Individual Task Complete Analysis
 **CRITICAL**: Analyze each task from 4.1 individually with complete reasoning before proceeding to next task. Never batch process multiple tasks.**For each identified task, complete the following systematic analysis in chat:**
 
@@ -188,7 +190,7 @@ Analyze what this task requires:
 **Classification Decision:**
 Evaluate the workflow structure:
 - **Single-step criteria**: Cohesive work completable in one exchange, no internal dependencies, no validation points needed
-- **Multi-step criteria**: Internal sequential dependencies, user confirmation needs, progressive validation requirements, complex implementation with natural breakpoints
+- **Multi-step criteria**: Internal sequential dependencies, user confirmation needs, ad-hoc delegation needs, progressive validation requirements, complex implementation with natural breakpoints
 - **Edge cases**: External platform coordination = multi-step, research needs = multi-step with ad-hoc delegation, complex technical work with breakpoints = multi-step
 
 *State your reasoning:* "Task [X.Y] involves [workflow description]. Based on [Context Synthesis insights, workflow factors, validation needs, technical dependencies], this requires [single/multi]-step execution because [specific reasoning]."
@@ -205,7 +207,8 @@ Determine appropriate task content:
 - **If Multi-step**: "This needs [X] steps because [workflow dependency analysis]. Each step represents [natural progression]."
 
 **Content Definition:**
-[Present actual bullets or steps with applied reasoning]
+- If flagged in §4.1, first add an ad-hoc delegation step: "Ad-Hoc Delegation – <purpose>" (optional ref to `ad-hoc/Research_Delegation_Guide.md` or `ad-hoc/Debug_Delegation_Guide.md`), then continue
+- [Present actual bullets or steps with applied reasoning]
 
 **Task [X.Y] analysis complete** ← State this before proceeding to next task
 ```
@@ -240,6 +243,7 @@ Translate completed individual analyses from §4.2-4.3 into structured file form
 - Dependency notation format: `Task <n.2>: <Task_Name> - Agent_<Domain> - Depends on Task <n.1> output`
 - Preserve all individual analysis insights, process requirements, and implementation specifications from chat breakdown
 - Preserve content descriptions exactly as justified in individual analysis
+- Ad-Hoc delegation steps: prefix with `Ad-Hoc Delegation – <Purpose>` as a single line (optional short guide ref); no extended content in file
 
 ## 5. Final Review & Cross-Agent Integration
 

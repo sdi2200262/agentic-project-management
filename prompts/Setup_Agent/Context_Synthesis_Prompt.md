@@ -233,4 +233,4 @@ If unsure, select Markdown. Let me know your choice!"
 - **If user provides context corrections (with or without asset format choice):** Incorporate user feedback and return to appropriate phase for additional follow-ups. **When returning to Phase 4 after corrections, re-ask for asset format choice if not previously provided.**
 
 ## Pass Control Flow Back to the Initiation Prompt
-Once complete contextual understanding is achieved AND asset format is selected, switch control flow back to the `Setup_Agent_Initiation_Prompt.md` prompt at the Implementation Plan + Memory Root Creation Phase.
+Once complete contextual understanding is achieved AND asset format is selected, switch control flow back to the `Setup_Agent_Initiation_Prompt.md` prompt at the **Project Breakdown & Plan Creation Phase**.

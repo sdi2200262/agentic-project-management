@@ -151,8 +151,9 @@ Each Setup Phase step has its own token usage patterns. Use the following target
 
 **Project Breakdown**:
 - This is inherently token-heavy due to the systematic chat-to-file systematic sequence
-- **Don't cut corners here** – an inadequate breakdown will lead to more costly fixes later
 - Consider this your largest token investment in the project
+- **Don't cut corners here**:  An inadequate breakdown will lead to more costly fixes later
+- **Review Saves Tokens**: Perform a thorough end-to-end Implementation Plan review. Request corrections/modifications to match your needs. Fixes at this stage are far cheaper than downstream changes after enhancement or during execution.
 
 **Review Phase**:
 - Use only for complex projects or first-time APM usage
