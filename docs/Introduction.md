@@ -12,12 +12,11 @@ Dividing the project workload among multiple agents minimizes the risk of contex
 
 ## The Problem APM Solves
 
-Managing large projects with AI assistants presents systematic challenges. Extended conversations frequently lead to context degradation where the AI loses track of original requirements, produces contradictory suggestions, or generates inaccurate details.
-These issues arise from fundamental limitations of LLMs: **Context Window Limits**
+Managing large projects with AI assistants presents systematic challenges. Extended conversations frequently lead to context degradation where the AI loses track of original requirements, produces contradictory suggestions, or generates inaccurate details. These issues arise from fundamental limitations of LLMs: **Context Window Limits**
 
 This constraint feels "heavier" within AI IDEs, when often times Context Windows are shrunk even further to maintain profitable interactions with the model's provider. As conversations grow, the AI struggles to keep track of everything, leading to confusion, errors, and wasted time.
 
-APM addresses these issues by providing a clear framework that prioritizes structured interaction, explicit context management and integration, and efficient, targeted communication with AI assistants through meta-prompting.
+APM addresses these issues by providing a clear framework that prioritizes structured interaction, explicit context management and integration, and efficient, targeted cross-agent communication through meta-prompting.
 
 ## APM's Approach
 
@@ -46,9 +45,9 @@ APM v0.4 employs a sophisticated multi-agent system built around four specialize
 ### Context Management
 APM preserves context with a carefully designed adaptation of the traditional Memory Bank and a context Handover Procedure. For tasks that require isolated, context-intensive work (such as research or debugging), Ad-Hoc Agent instances handle these activities separately, preventing unnecessary strain on the core agents' context.
 
-*   **Dynamic Memory Memory Bank**: An adaptation of the traditional single-file Memory Bank that maps Memory Log files to the tasks of the Implementation Plan. For complex projects Memory Logs are stored in a directory structure with folders mapped to the phases of the Implementation Plan. For simple projects, a single-file traditional Memory Bank is used.
+*   **Dynamic Memory Memory Bank**: An adaptation of the traditional single-file Memory Bank that maps Memory Log files to the tasks of an Implementation Plan. For complex projects Memory Logs are stored in a directory structure with folders mapped to the Implementation Plan's phases. For simple projects, a single-file traditional Memory Bank is used.
 
-*   **Ad-Hoc Agent Delegation**: Workflow branches for handling debugging, research, or analysis tasks through temporary agents instances that work in isolated context scopes.
+*   **Ad-Hoc Agent Delegation**: Workflow branches for handling debugging, research, or analysis tasks through temporary agent instances that work in isolated context scopes.
 
 *   **Handover Protocol**: A context transfer mechanism using structured handover files and prompts to seamlessly transition between agent instances when context limits are reached.
 
@@ -64,9 +63,9 @@ Plus **Handover Procedure**: as distinct events for seamless context transfer wh
 ---
 
 ## Core Framework (`/prompts`)
-The `/prompts` directory contains all core user prompts, guides, and schemas for APM agents and workflows. Each subdirectory focuses on a specific agent type, process guide, or, in the case of `schemas/`, the JSON asset format variant.
+The `/prompts` directory contains all core user prompts, guides, and schemas for APM agents and workflows. Each subdirectory focuses on a specific agent type, process guide, or in the case of `schemas/`, the JSON asset format variant.
 
-> **Testing Preview:** JSON asset format variant is designed for "token-wealthy" Users unconcerned with token consumption, or APM contributors seeking to experiment and provide feedback on asset structure and parsing efficiency. Experimental only; not suitable for production or resource-constrained use due to much higher token consumption.
+> **Testing/Research Preview:** The JSON asset format variant is part of ongoing research into structured prompting and improved LLM parsing efficiency with commercial AI Assistants. It is specifically designed for better LLM parsing and prompt structure, and is intended for token-wealthy users or APM contributors interested in testing and providing feedback. This format is experimental and not recommended for production or resource-constrained scenarios due to significantly higher token consumption.
 
 | Subdirectory                                                         | Purpose                                                                                    | Notes                                                                                                                       |
 | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
@@ -81,15 +80,15 @@ The `/prompts` directory contains all core user prompts, guides, and schemas for
 ## Documentation (`/docs`)
 The `/docs` directory contains comprehensive documentation covering the APM framework, including agent roles, workflow processes, memory management strategies, prompt engineering techniques, and optimization tips to help you effectively implement and customize APM for your projects.
 
-| File                                                    | Purpose                                                                                   |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------------------|
-| **[Agent_Types.md](Agent_Types.md)**                    | Learn about Setup, Manager, and Implementation Agent roles and Ad-Hoc Agent Delegations   |
-| **[Workflow_Overview.md](Workflow_Overview.md)**        | Complete APM process walkthrough                                                          |
-| **Getting-Started.md**                                  | Step-by-step guide to launching your first APM session                                    |
-| **Token-Consumption-Tips.md**                           | Strategies for reducing token usage; economic model proposal                              |
-| **Modifying-APM.md**                                    | Instructions for customizing APM assets to match your needs                               |
-| **Context-and-Memory-Management.md <br/>(Advanced)**    | Explains how APM handles context scope and memory of the agent instances                  |
-| **Context-and-Prompt-Engineering.md <br/>(Advanced)**   | Explains context and prompt engineering techniques utilized throughout APM                |
+| File                                                                                       | Purpose                                                                                   |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------|
+| **[Agent_Types.md](Agent_Types.md)**                                                       | Learn about Setup, Manager, and Implementation Agent roles and Ad-Hoc Agent Delegations   |
+| **[Workflow_Overview.md](Workflow_Overview.md)**                                           | Complete APM process walkthrough                                                          |
+| **[Getting_Started.md](Getting_Started.md)**                                               | Step-by-step guide to launching your first APM session                                    |
+| **[Token_Consumption_Tips.md](Token_Consumption_Tips.md)**                                 | Strategies for reducing token usage; economic model proposal                              |
+| **[Modifying_APM.md](Modifying_APM.md)**                                                   | Instructions for customizing APM assets to match your needs                               |
+| **[Context_and_Memory_Management.md](Context_and_Memory_Management.md) <br/>(Advanced)**   | Explains how APM handles context scope and memory of the agent instances                  |
+| **[Context_and_Prompt_Engineering.md](Context_and_Prompt_Engineering.md) <br/>(Advanced)** | Explains context and prompt engineering techniques utilized throughout APM                |
 
 
 ---

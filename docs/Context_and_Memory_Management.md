@@ -17,7 +17,7 @@ APM achieves agent specialization through **targeted context scoping** rather th
 - Context pollution from irrelevant role-playing instructions
 
 **APM's Scoped Context Approach**:
-- **Active Context Tokens**: Only include information directly relevant to current task execution
+- **Active Context Tokens**: Include only information directly relevant to current task execution
 - **Natural Specialization**: LLM expertise emerges from task-specific context and requirements
 - **Token Efficiency**: Every token in context contributes to task completion quality
 - **Domain Activation**: Technical domains activate appropriate sub-models without explicit instruction
@@ -34,7 +34,7 @@ The working context for an Implementation Agent centers on the Task Assignment P
 - **Memory Logging**: Log entries to Memory with standard format
 
 **Exclusions from Context**:
-To ensure clarity, Task Assignment Prompts exclude project-wide architectural discussions unrelated to the current task, conversations and coordination details from other agents, historical decisions that do not impact the present implementation, and future plans that extend beyond immediate task dependencies.
+To ensure clarity, Task Assignment Prompts exclude project-wide architectural discussions unrelated to the current task, conversations and coordination details from other agents, historical decisions that do not impact the current implementation, and future plans that extend beyond immediate task dependencies.
 
 **Benefits of Tight Scoping**:
 Tight scoping helps agents stay focused, accurate, efficient, and compatible across models.
@@ -47,15 +47,15 @@ Tight scoping helps agents stay focused, accurate, efficient, and compatible acr
 #### Manager Agent Context Scope
 
 **Coordination-Focused Context**:
-The Manager Agent maintains the overall project "big picture," serving as the central coordinator between the User and all agent instances. It is responsible for making project decisions in direct collaboration with the User, orchestrating task assignment prompts, and managing the flow of work, including handling cross-agent dependencies when they arise. To do this effectively, the Manager Agent draws on several key sources of context:
+The Manager Agent maintains the overall project "big picture," serving as the central coordinator between the User and all agent instances. It is responsible for making project decisions in direct collaboration with the User, orchestrating Task Assignment Prompts, and managing the flow of work, including handling cross-agent dependencies when they arise. To do this effectively, the Manager Agent draws on several key sources of context:
 
 - **Implementation Plan**: Current project structure and task organization
 - **Memory Logs**: Implementation Agent outputs and progress tracking
 - **Internal Dependency Map**: Cross-agent coordination requirements and blockers
 - **Phase Status**: Current project state and near-term coordination needs
 
-**Strategic Context Management**:  
-The Manager Agent uses only the most relevant, 'fresh' context, mainly Memory Logs and summary-level dependency info when assigning tasks. It does not track detailed implementation specifics. This is why clear, accurate Memory Logs are essential, as they are the Manager Agent’s only source of project history for decision-making and oversight.
+**Strategic Context Management**:
+The Manager Agent uses only the most relevant, fresh context—mainly Memory Logs and summary-level dependency information—when assigning tasks. It does not track detailed implementation specifics. This is why clear, accurate Memory Logs are essential, as they are the Manager Agent’s only source of project history for decision-making and oversight.
 
 ### Cross-Agent Dependencies and Context Integration
 
@@ -75,33 +75,24 @@ Cross-agent dependencies often arise in areas where different domains must coord
 
 To ensure seamless handling of cross-agent dependencies, APM requires rigorous and explicit context integration whenever tasks span multiple Implementation Agents. For every such dependency, the Manager Agent must include a **comprehensive "Context from Dependencies" section** in the Task Assignment Prompt, constructed according to the following protocol:
 
-**Required Structure for Cross-Agent Context Integration:**
-```markdown
-## Context from Dependencies
-This task [depends on/builds upon/integrates with] [Task X.Y description] implemented by [Producer_Agent]:
+**Required Components for Cross-Agent Context Integration:**
 
-**Integration Steps (complete in one response):**
-1. [Read/Review/Examine] [specific file/documentation] at [file path] to understand [specific aspect/functionality]
-2. [Study/Analyze] [implementation files] in [directory/file paths] to understand [technical approach/data structures/patterns]
-3. [Examine/Review] [test files/examples] at [file paths] for [usage patterns/expected behaviors/integration examples]
-4. [Additional integration steps as needed for specific outputs]
+- **Dependency Overview**
+  - State which previous task(s)/agent(s) this depends on.
 
-**Producer Output Summary:**
-- [Key functionality/feature]: [Description of what was built and how it works]
-- [Important files/endpoints]: [Locations and purposes of key outputs]
-- [Data structures/interfaces]: [Important data formats, types, or contracts]
-- [Error handling/validation]: [How errors are handled and what formats are used]
-- [Security/authentication]: [Any security measures or authentication requirements]
+- **Integration Steps**
+  - List concrete steps to review and understand producer outputs (e.g., read files, check docs/code/tests).
 
-**Integration Requirements:**
-- [Specific requirement 1]: [How consumer task must integrate with producer output]
-- [Specific requirement 2]: [Additional integration specifications]
-- [Usage patterns]: [How to properly use the producer outputs]
-- [Constraints/limitations]: [Important limitations or constraints to consider]
+- **Producer Output Summary**
+  - Key features, files, data structures, and any important details from the producer task.
 
-**User Clarification Protocol:**
-If [specific integration aspect] is ambiguous after completing integration steps, ask User about [specific clarification areas].
-```
+- **Integration Requirements**
+  - How to integrate with producer outputs; any constraints noted.
+
+- **User Clarification Protocol**
+  - If anything remains unclear, ask User for specifics.
+
+This structure ensures that all necessary information for successful cross-agent integration is clearly communicated, while keeping the context concise and actionable.
 
 ---
 
@@ -109,12 +100,12 @@ If [specific integration aspect] is ambiguous after completing integration steps
 
 ### Evolution from Simple Memory Banks
 
-APM v0.4's Dynamic Memory Bank represents a carefully designed adaptation of the traditional single-file memory systems, addressing scalability, maintainability, and cost-efficiency challenges inherent in large project contexts.
+APM v0.4's Dynamic Memory Bank represents a carefully designed adaptation of the traditional single-file memory system, addressing scalability, maintainability, and cost-efficiency challenges inherent in large project contexts.
 
 **Traditional Single-File Memory Bank Limitations**:
 - Context window bloat as projects grow
 - Difficulty parsing relevant information from accumulated project history
-- Manager Agent context overload when accessing all historical information
+- Manager Agent context overload from accessing all historical information
 - Inefficient token usage when most historical context is irrelevant to current decisions
 
 **Dynamic Memory Bank Advantages**:
@@ -142,7 +133,7 @@ APM v0.4 Setup Agent automatically selects memory system variants based on proje
 **Dynamic-JSON Variant** (Directory structure with JSON logs) — **Testing Preview Only**:
 - **Usage**: Experimental/advanced scenarios requiring strict schema validation and maximum parsing fidelity
 - **Structure**: Same as Dynamic-MD but with structured JSON task logs
-- **Benefits**: Schema validation, programmatic access, designed advanced context retention
+- **Benefits**: Schema validation, programmatic access, designed for advanced context retention
 > **Warning**: This variant is for testing and contributor feedback only. It is not recommended for production or resource-constrained use, as JSON logs consume at least 15% more tokens (often 2–3x higher than Markdown) and will fill the context window much faster, resulting in more frequent handovers and context resets.
 
 #### Progressive Memory Creation
@@ -154,11 +145,11 @@ APM dynamically generates memory components as project execution progresses. Thi
 - **Memory Root**: Created during Setup Agent memory initialization with project context
 - **Phase Directories**: Created by the Manager Agent on Implementation Plan phase entry
 - **Task Memory Logs**: Mapped to Implementation Plan tasks and created as empty files on phase entry; populated by Implementation Agents during task execution
-- **Phase Summaries**: Appended to the Memory Root upon phase closing
+- **Phase Summaries**: Appended to the Memory Root at phase completion
 
 **Progressive Benefits**:
 - **Adaptation Flexibility**: Memory structure adapts if the project requirements/goals and therefore the Implementation Plan changes during execution
-- **Resource Efficiency**: Avoid creating unused Memory Logs for modified or cancelled task
+- **Resource Efficiency**: Avoid creating unused Memory Logs for modified or canceled tasks
 - **Token Conservation**: Manager Agents only initialize memory for immediate coordination needs
 
 #### Task-to-Memory Mapping
@@ -186,7 +177,7 @@ Memory/
 ```
 
 #### Memory Root and Phase Summaries
-Manager Agents create phase summaries upon phase completion, providing structured project memory without overwhelming detail. In addition to providing a high-level overview for the user, these summaries also serve as structured context snapshots for Manager Agent Handovers. 
+Manager Agents create phase summaries upon phase completion, providing structured project memory without overwhelming detail. In addition to providing a high-level overview for the User, these summaries also serve as structured context snapshots for Manager Agent handovers. 
 
 **Phase Summary Creation**:
 Each phase summary is a concise record of the completed phase, capturing key outcomes, deliverables, and insights that reflect overall project progress:
@@ -206,7 +197,7 @@ Each phase summary is a concise record of the completed phase, capturing key out
 
 ### Handover Procedure Concept
 
-**Context Window Limits Reality**: Even with careful scoping, agent instances eventually approach context window limits through accumulated task execution, dependency integration, and coordination history. APM's Handover Procedures enable seamless context transfer to replacement agent instances while preserving essential working context and project continuity.
+**The Reality of Context Window Limits**: Even with careful scoping, agent instances eventually approach context window limits through accumulated task execution, dependency integration, and coordination history. APM's Handover Procedures enable seamless context transfer to replacement agent instances while preserving essential working context and project continuity.
 
 **Handover Trigger Scenarios**:
 - **Context Capacity**: Agent approaching 80-90% context window utilization

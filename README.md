@@ -32,7 +32,10 @@ Think of it like having a project manager, developers, ad-hoc specialists, and a
 3.  **Manual Copy-Pasting (Basic Usage):**
     *   You can manually copy and paste prompt content from the official APM GitHub repository into your AI assistant as needed. While this approach works, it involves more manual labor and does not fully leverage the agentic capabilities of the framework.
 
-**Next Steps:** See the [Getting Started Guide](docs/Getting_Started.md) for complete setup instructions and your first APM session.
+**Next Steps:** 
+1) See [Getting Started Guide](docs/Getting_Started.md) for complete setup instructions and your first APM session.
+2) See [Workflow_Overview.md](docs/Workflow_Overview.md) for a complete understanding of all workflow protocols, procedures, and concepts.
+
 
 ## Documentation
 

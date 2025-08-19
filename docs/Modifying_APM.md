@@ -34,7 +34,7 @@ You can adapt Manager Agent behavior for specific project management and coordin
 
 ## GitHub Template Approach
 
-The recommended way to customize APM is using GitHub's "Use this template" feature rather than direct forking or cloning.
+The recommended way to customize APM is to use GitHub's "Use this template" feature rather than direct forking or cloning.
 
 ### Setting Up Your Custom APM
 
@@ -47,7 +47,7 @@ The recommended way to customize APM is using GitHub's "Use this template" featu
    cd your-apm-template
    ```
 
-### Benefits of Template Approach
+### Benefits of the Template Approach
 
 **Independent Development**: Make changes without affecting the upstream APM project
 **Version Control**: Track your customizations and maintain team consistency
@@ -138,7 +138,7 @@ You can tailor Implementation Agent execution behavior for specific development 
 - Analyze multi-step tasks and identify steps that can be logically combined
 - Execute 2-3 related steps together when they share similar context or build upon each other
 - Maintain quality standards while reducing the number of confirmation cycles
-- Document step combinations in Memory Log for transparency
+- Document step combinations in the Memory Log for transparency
 
 **Example Step Combinations**:
 - Combine "Setup configuration" + "Install dependencies" + "Initialize project structure"
@@ -170,7 +170,7 @@ Consider modifying how Manager Agents create Task Assignment Prompts to include 
 
 **File**: `prompts/guides/Task_Assignment_Guide.md`
 
-**Recommended section for Task Assignment Prompt Format → Detailed Instructions**:
+**Recommended addition to Task Assignment Prompt Format → Detailed Instructions**:
 ```markdown
 ## Security Requirements (Include for all tasks involving data handling or user interaction)
 - **Input Validation**: Implement comprehensive input validation and sanitization

@@ -8,14 +8,14 @@ APM's sophisticated agent coordination relies on advanced context and prompt eng
 
 ### Defining Agent Operational Boundaries
 
-Context engineering in APM focuses on **constructing the operational reality** within which LLMs function effectively. Unlike traditional approaches that rely on personality-based role definitions, APM's context engineering establishes clear operational boundaries and responsibilities, process frameworks that enable emergent specialization through focused context scope.
+Context engineering in APM focuses on **constructing the operational reality** within which LLMs function effectively. Unlike traditional approaches that rely on personality-based role definitions, APM's context engineering establishes clear operational boundaries and responsibilities, and process frameworks that enable emergent specialization through a focused context scope.
 
 **Agent Operational Contexts**:
 - **Setup Agents**: Project discovery and planning with systematic progression gates
-- **Manager Agents**: Coordination, decision-making and structured task assignment & review protocols
+- **Manager Agents**: Coordination, decision-making, and structured task assignment and review protocols
 - **Implementation Agents**: Domain-specific execution with defined input/output specifications
 
-This architecture ensures comprehensive project coverage while preventing scope creep. Setup Agents handle project initialization and Implementation Plan creation but explicitly avoid ongoing execution work. Manager Agents coordinate task assignments and dependency management but do not perform implementation tasks. Implementation Agents execute assigned work within their domain expertise but cannot make project-level architectural decisions. This way, the entire project context is covered, but distributed across multiple agent instances and context windows, effectively offloading the workload from one single LLM and enabling focused and specialized interactions.
+This architecture ensures comprehensive project coverage while preventing scope creep. Setup Agents handle project initialization and Implementation Plan creation but explicitly avoid ongoing execution work. Manager Agents coordinate task assignments and dependency management but do not perform implementation tasks. Implementation Agents execute assigned work within their domain expertise but cannot make project-level architectural decisions. This way, the entire project context is covered but distributed across multiple agent instances and context windows, effectively offloading the workload from a single LLM and enabling focused, specialized interactions.
 
 ### Processes and Workflows
 
@@ -29,7 +29,7 @@ The Task Loop Phase follows structured cycles that maintain coordination efficie
 
 > Task Assignment → Execution → Logging → Review → Next Action Decision
 >
-> Each step building upon the previous while maintaining clear handoff points between Manager and Implementation Agents.
+> Each step builds upon the previous while maintaining clear handoff points between Manager and Implementation Agents.
 
 ### Contextual Specialization Framework
 
@@ -54,7 +54,7 @@ Contextual specialization emerges organically from project requirements rather t
 
 APM employs **structured Markdown formatting** as the default communication protocol because it provides superior LLM parsing capabilities compared to plain text or other formatting approaches. Markdown's hierarchical structure enables LLMs to better understand information relationships, maintain longer token retention in active context, and produce more robust and stable responses across different model architectures.
 
-Using hierarchical Markdown formatting such as headers, lists and font emphasis, enables APM prompts to convey information in a way that is both easy for LLMs to parse and less prone to misinterpretation than plain text.
+Using hierarchical Markdown formatting—such as headers, lists, and font emphasis—enables APM prompts to convey information in a way that is both easy for LLMs to parse and less prone to misinterpretation than plain text.
 
 **Key Parsing Benefits**:
 - **Token Retention**: Markdown's structural elements help LLMs organize and retain key information over the course of long conversations.
@@ -63,9 +63,9 @@ Using hierarchical Markdown formatting such as headers, lists and font emphasis,
 
 ### YAML Frontmatter Integration
 
-APM uses **lightweight YAML frontmatter** at the top of important documents to deliver structured metadata, enabling agents to instantly recognize an asset's key attributes. By embedding concise YAML blocks before the main Markdown content, APM creates hybrid files that are both easy for humans to read and highly efficient for LLMs to parse.
+APM uses **lightweight YAML front matter** at the top of important documents to deliver structured metadata, enabling agents to instantly recognize an asset's key attributes. By embedding concise YAML blocks before the main Markdown content, APM creates hybrid files that are both easy for humans to read and highly efficient for LLMs to parse.
 
-This frontmatter strategy streamlines agent workflows by allowing quick filtering and triage of assets. Agents can extract essential details such as execution type, dependencies, status, or task references without reading detailed descriptions. For example, Task Assignment Prompts leverage YAML to flag dependencies and execution context, while Memory Logs use it to indicate completion status and link to relevant tasks, supporting fast and accurate coordination in complex, multi-agent environments.
+This front matter strategy streamlines agent workflows by allowing quick filtering and triage of assets. Agents can extract essential details such as execution type, dependencies, status, or task references without reading detailed descriptions. For example, Task Assignment Prompts leverage YAML to flag dependencies and execution context, while Memory Logs use it to indicate completion status and link to relevant tasks, supporting fast and accurate coordination in complex, multi-agent environments.
 
 **Dual-Layer Parsing Architecture**:
 - **YAML Layer**: Structured metadata provides context scaffolding and quick filtering
@@ -79,9 +79,9 @@ This combination creates enhanced parsing precision where structured metadata pr
 
 ### User-Provided Assets
 
-**Pre-written initialization prompts** represent APM's most direct prompt engineering approach, providing complete, ready-to-use prompts that users can immediately copy-paste into their AI IDE platforms. These prompts are carefully designed to establish agent responsibilities, and operational protocols in single initialization exchanges.
+**Pre-written initialization prompts** represent APM's most direct prompt engineering approach, providing complete, ready-to-use prompts that users can immediately copy and paste into their AI IDE platforms. These prompts are carefully designed to establish agent responsibilities and operational protocols in single initialization exchanges.
 
-Each agent type receives a comprehensive initiation prompt that establishes operational context without requiring additional setup. These prompts also instruct agents to autonomously read relevant APM guides (as described in the next section) or to expect additional prompts as part of the workflow. For example, Manager Agents are prepared for a bootstrap prompt after initialization, and both Manager and Implementation Agents are instructed to anticipate handover prompts when context transfer is required.
+Each agent type receives a comprehensive initiation prompt that establishes operational context without requiring additional setup. These prompts also instruct agents to autonomously read relevant APM guides (as described in the next section) or to expect additional prompts as part of the workflow. For example, Manager Agents are prepared for a Bootstrap Prompt after initialization, and both Manager and Implementation Agents are instructed to anticipate Handover Prompts when context transfer is required.
 
 **Initiation Prompt Components**:
 - **Setup Agents**: Five-step workflow sequence, progression gate requirements, asset verification protocols
@@ -102,8 +102,8 @@ A key practical feature of APM's prompt engineering is the use of **prompts and 
 APM's most advanced prompt engineering features **meta-prompts that agents create dynamically** during workflow execution. These prompts are not pre-written or stored in asset directories but are generated by agents following structured formats defined in the guide system.
 
 **Meta-Prompt Generation by Agent Type**
-- **Manager Agents**: Generate Task Assignment Prompts by combining Implementation Plan task specifications with dependency context, success criteria, and execution instructions. Task Assignment Prompts are presented as **markdown code blocks in chat for easy copy-paste workflow**.
-- **Implementation Agents**: Generate Memory Log entries with standardized log formats with task-specific execution details, including outcomes, issues encountered, and solutions implemented. Memory Log entries are presented as **file appendixes in Memory Log files**.
+- **Manager Agents**: Generate Task Assignment Prompts by combining Implementation Plan task specifications with dependency context, success criteria, and execution instructions. Task Assignment Prompts are presented as **Markdown code blocks in chat for easy copy-paste workflows**.
+- **Implementation Agents**: Generate Memory Log entries with standardized log formats and task-specific execution details, including outcomes, issues encountered, and solutions implemented. Memory Log entries are presented as **file appendixes in Memory Log files**.
 
 The formats are standardized for parsing efficiency, but the content varies based on Implementation Plan specifications, dependency relationships, and execution outcomes.
 
@@ -117,13 +117,13 @@ APM v0.4 includes an **experimental JSON asset format variant** as a testing pre
 
 The JSON variant employs strict schema validation to explore whether structured data constraints can improve consistency and enable automated analysis of APM assets. JSON schemas define required fields, data types, and structural relationships for Implementation Plans, Memory Logs, and Task Assignment Prompts as a proof-of-concept for more rigid data organization in prompt engineering.
 
-**Design Rationale for JSON assets**:
+**Design Rationale for JSON Assets**:
 - **Automated Schema Validation for Format Quality**: By enforcing strict schema validation, agents could automatically/autonomously check the structural integrity of assets (regardless of content), helping to catch agent hallucinations or malformed outputs. This acts as a safeguard, ensuring that only well-formed assets are processed, which can prevent downstream errors and improve overall reliability.
-- **Parsing Consistency and LLM Research**: JSON’s rigid structure may enable more consistent parsing by LLMs, as proposed in other research. This could reduce ambiguity in interpretation, but it remains to be seen whether the benefits of improved structure and token retention outweigh the significant increase in token overhead. I believe that JSON’s syntax (brackets, colons, etc.) can "pollute" the active context window, consuming tokens that do not directly serve the project’s purpose, unlike Markdown, where - if properly designed - nearly every token is meaningful for the task.
+- **Parsing Consistency and LLM Research**: JSON’s rigid structure may enable more consistent parsing by LLMs, as proposed in other research. This could reduce ambiguity in interpretation, but it remains to be seen whether the benefits of improved structure and token retention outweigh the significant increase in token overhead. JSON’s syntax (brackets, colons, etc.) can "pollute" the active context window, consuming tokens that do not directly serve the project’s purpose, unlike Markdown, where—if properly designed—nearly every token is meaningful for the task.
 - **Objective Project Metrics and Analysis**: JSON format could facilitate automated extraction of project metrics, such as accuracy and performance, allowing for more precise measurement rather than relying on estimates. This opens the door to more rigorous project analytics and quality tracking, provided the format’s overhead can be justified.
 - **Programmatic Integration Potential**: The use of JSON enables easier integration with enterprise tools and automated pipelines, supporting advanced workflows and data-driven project management.
 
-Overall, the JSON asset format is being explored to determine if the tradeoff between improved validation, parsing, and analytics is worth the substantial token and context overhead it introduces.
+Overall, the JSON asset format is being explored to determine whether the tradeoff between improved validation, parsing, and analytics is worth the substantial token and context overhead it introduces.
 
 ### Testing Preview Limitations and Concerns
 
@@ -132,7 +132,7 @@ Overall, the JSON asset format is being explored to determine if the tradeoff be
 The token density impact creates **accelerated context window saturation**, requiring more frequent handover procedures and significantly increasing session management overhead. For typical projects, this overhead quickly outweighs any potential benefits from structured data organization.
 
 **Implementation Challenges Identified**:
-- **Token Economy**: JSON syntax overhead creates unsustainable cost increases for most users. A major issue is that, as tokens are cached in chat sessions to construct the agent's context, every time the cache is read, all the repetitive elements in JSON such as brackets, colons and quotation marks are re-read by the model, even though they provide no additional value to the agent's reasoning or project execution.
+- **Token Economy**: JSON syntax overhead creates unsustainable cost increases for most users. A major issue is that, as tokens are cached in chat sessions to construct the agent's context, every time the cache is read, all the repetitive elements in JSON—such as brackets, colons, and quotation marks—are re-read by the model, even though they provide no additional value to the agent's reasoning or project execution.
 <br/>
 
 - **Context Saturation**: Faster context window consumption disrupts normal workflow patterns and forces agents to perform handover procedures much more frequently. Each handover is itself a somewhat token-expensive process, as it requires generating, transferring, and reloading context summaries or memory logs between agent sessions. This not only interrupts the natural flow of work but also compounds the overall token usage and cost, sometimes negating any potential benefits of structured data by racking up additional overhead with every required handover.

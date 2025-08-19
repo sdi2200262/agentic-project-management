@@ -25,9 +25,9 @@ Modern LLMs like GPT, Claude, and others utilize **Mixture of Experts (MoE) arch
 
 ## 1. Setup Agent
 
-**Primary Function**: Session asset initialization and comprehensive planning through structured discovery and breakdown.
+**Primary Function**: Session asset initialization and comprehensive planning through structured project discovery and breakdown.
 
-**Operational Context**: Fresh session initiation with user-provided project requirements. No prior project history.
+**Operational Context**: Fresh session initiation with user-provided project information. No prior project history.
 
 ### Core Responsibilities
 
@@ -62,13 +62,14 @@ Modern LLMs like GPT, Claude, and others utilize **Mixture of Experts (MoE) arch
 1. **Session Context Management**: Process Bootstrap or Handover prompts to establish operational awareness
 2. **Implementation Plan Maintenance**: Review, validate, and update project structure as requirements evolve
 3. **Task Assignment Creation**: Generate detailed Task Assignment Prompts with dependency context and execution specifications
-4. **Work Review & Evaluation**: Assess Implementation Agent outputs and determine next actions
-5. **Cross-Agent Coordination**: Manage dependencies between different Implementation Agent domains
-6. **Handover Execution**: Transfer context to replacement Manager instances when approaching context limits
+4. **Work Review & Evaluation**: Assess Implementation Agent log entries and task outputs and determine next actions
+5. **Cross-Agent Coordination**: Manage context dependencies between different Implementation Agent instances
+6. **Handover Execution**: Transfer context to replacement Manager Agent instances when approaching context limits
 
 ### Workflow Pattern
 
-**Task Loop Management**: Manager Agent operates in Task Loop cycles; Issues Task Assignment → Reviews Memory Log → Makes Next Action Decision. This continues until project completion or context handover requirements.
+**Task Loop Management**: Manager Agent operates in Task Loop cycles. This continues until project completion or context handover requirements.
+> Issues Task Assignment → Reviews Memory Log → Makes Next Action Decision
 
 **Context Integration**: For cross-agent dependencies, Manager Agent provides comprehensive context integration instructions to Implementation Agents, ensuring seamless coordination between different agent instances.
 
@@ -84,7 +85,7 @@ Modern LLMs like GPT, Claude, and others utilize **Mixture of Experts (MoE) arch
 
 **Primary Function**: Focused task execution with detailed logging and distinct domain work.
 
-**Operational Context**: Receives Task Assignment Prompts from Manager Agent with specific execution instructions and dependency context and context.
+**Operational Context**: Receives Task Assignment Prompts from Manager Agent with specific execution and context integration instructions.
 
 ### Core Responsibilities
 
@@ -93,6 +94,7 @@ Modern LLMs like GPT, Claude, and others utilize **Mixture of Experts (MoE) arch
 3. **User Collaboration**: Coordinate with user for external actions, clarifications and approval/feedback processes
 4. **Ad-Hoc Delegation**: Delegate complex debugging, research, or analysis work to specialized Ad-Hoc agents when required or specified
 5. **Memory Logging**: Document all work, decisions, and execution outcomes in designated Memory Log using standardized format
+6. **Handover Execution**: Transfer context to replacement Implementation Agent instances when approaching context limits
 
 ### Execution Patterns
 
@@ -123,7 +125,7 @@ Modern LLMs like GPT, Claude, and others utilize **Mixture of Experts (MoE) arch
 - **Domain-Focused**: Each agent instance handles related tasks in specific domain (Frontend, Backend, Research, Design etc.)
 - **Context-Preserving**: Memory Logs maintain context continuity for future task assignments and handovers
 - **Iterative Collaboration**: User and Implementation Agents can iterate on tasks for modifications, clarifications, and feedback before finalizing.
-- **User-Interactive**: Guides and coordinates with the User for any required actions outside the IDE, such as setting up accounts, configuring services, or managing credentials.
+- **User-Interactive**: Guides and cooperates with the User for any required actions outside the IDE, such as setting up accounts, configuring services, or managing credentials.
 
 ---
 
@@ -148,10 +150,10 @@ Modern LLMs like GPT, Claude, and others utilize **Mixture of Experts (MoE) arch
 
 ### Key Characteristics
 
-- **Isolated Context**: Work in separate sessions/ workflow branches to prevent main agent context overload
-- **Focused Scope**: Prevent scope creep beyond assigned delegation boundaries
+- **Isolated Context**: Work in separate chat sessions/workflow branches to prevent main agent context overload
+- **Focused Scope**: Avoid scope creep beyond assigned delegation boundaries
 - **Temporary Duration**: Session ends when delegation is complete or escalated
 
 ---
 
-**See [`Token-Consumption-Tips.md`](../Token-Consumption-Tips.md) for best models to use with each agent instance and [`Modifying-APM.md`](../Modifying-APM.md) for ways to enhance agent capabilities with custom tools and prompts.**
+**See [`Token_Consumption_Tips.md`](Token_Consumption_Tips.md) for best models to use with each agent instance and [`Modifying_APM.md`](Modifying_APM.md) for ways to enhance agent capabilities with custom tools and prompts.**

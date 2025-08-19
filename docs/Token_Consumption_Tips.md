@@ -17,7 +17,7 @@ APM is designed to be token-efficient through focused agent interactions and str
 - **Implementation Agents**: Budget models for most tasks, upgrade selectively
 - **Ad-Hoc Agents**: Match model tier to delegation complexity
 
-**Expected Cost Profile**: 70-80% cost reduction compared to premium-only approach while maintaining 80%+ output quality. Recommended for personal side-projects, vibe coding sessions, and semi-complicated production apps.
+**Expected Cost Profile**: Significant cost reduction compared to premium-only approach while maintaining acceptable output quality. Recommended for personal side-projects, vibe coding sessions, and semi-complicated production apps.
 
 ### Performance-First Approach (Recommended for Quality-First Users)
 
@@ -27,7 +27,7 @@ APM is designed to be token-efficient through focused agent interactions and str
 - **All Agents**: Claude Sonnet 4, Gemini 2.5 Pro, or equivalent frontier models; avoid "thinking" models
 - **Consistent Experience**: No model switching, premium reasoning throughout
 
-**Expected Cost Profile**: 2-3x more expensive but delivers the highest consistency and quality. Recommended for users or organizations where cost is not a primary concern, such as research labs or enterprise teams prioritizing output quality.
+**Expected Cost Profile**: Highest token costs, but delivers the best consistency and quality. Recommended for users or organizations where cost is not a primary concern, such as research labs or enterprise teams prioritizing output quality.
 
 ### Hybrid Approach (Sweet Spot for Complex Projects)
 
@@ -39,7 +39,7 @@ APM is designed to be token-efficient through focused agent interactions and str
 - **Implementation Agents**: Budget for routine tasks, premium for complex/creative work
 - **Ad-Hoc Agents**: Match model tier to delegation complexity
 
-**Expected Cost Profile**: 40-50% cost reduction with minimal quality impact.
+**Expected Cost Profile**: Adequate cost reduction with minimal quality impact. Recommended for users with experience in AI-driven development who can adapt model selection to match project complexity and requirements.
 
 ---
 
@@ -53,7 +53,7 @@ APM is designed to be token-efficient through focused agent interactions and str
 
 **Cost-Effective Alternatives**:
 - **Cursor Auto** - Surprisingly good for structured breakdown tasks; lacks reasoning capabilities
-- **Claude Haiku** - Acceptable for simple projects
+- **Claude 3.7 Haiku** - Acceptable for simple projects
 
 **Why Premium Models Matter Here**:
 The Setup Agent creates your project foundation. Poor planning cascades through the entire session, causing more expensive fixes later. **Invest in quality here to save tokens downstream.**
@@ -62,8 +62,12 @@ The Setup Agent creates your project foundation. Poor planning cascades through 
 > **Warning**: Avoid model switching during Setup Agent sessions. Context gaps from token caching disruptions can compromise project breakdown quality. Stick with one model throughout the entire Setup Phase.
 
 **Thinking Models Warning**:
-> **Warning**: Avoid "thinking" models during project breakdown. "Thinking Mode" often disrupts the 'forced CoT' chat-to-file planning technique used there. They're great for context synthesis, but switching models mid-breakdown risks context loss.
+> **Warning**: Avoid "thinking" models during project breakdown. "Thinking Mode" often disrupts the 'forced CoT' chat-to-file planning technique used there. They're great for Context Synthesis, but switching models mid-breakdown risks context loss.
 
+**Best Model During Testing (August 2025):**
+> **Claude Sonnet 4** was the clear top performer for Setup Agent, consistently delivering the best project breakdowns and systematic planning during testing.
+
+---
 
 ### Manager Agent (Coordination Efficiency)
 
@@ -79,9 +83,11 @@ The Setup Agent creates your project foundation. Poor planning cascades through 
 **Model Switching Considerations**:
 > **Warning**: While model switching during Manager Agent sessions is not encouraged, real-world testing showed that context gaps and disruptions were generally manageable and did not break sessions. If a model switch is necessary (e.g., for a complex coordination task), proceed with caution and monitor for any context loss. For best results, stick with a single model throughout the Manager Agent session when possible.
 
+**Best Models During Testing (August 2025):**
+> **Claude Sonnet 4** was the best overall performer for Manager Agent coordination, providing the most reliable reasoning, decision making, and context management for complex project scenarios.
+> **Cursor Auto** delivered outstanding Manager Agent performance during extensive real-world testing. Even after recent pricing updates, it remains the most cost-effective choice for project coordination, especially when leveraging the structured Task Assignment format.
 
-**Real-World Testing Insights**:
-> **During extensive testing, Cursor Auto delivered outstanding Manager Agent performance.** Even after recent pricing updates, it remains the most cost-effective choice for project coordination. The structured Task Assignment format plays to its strengths.
+---
 
 ### Implementation Agents (Task-Specific Optimization)
 
@@ -98,11 +104,15 @@ Premium models such as **Claude Sonnet 4** and **Gemini 2.5 Pro** deliver the hi
 
 For these scenarios, the superior reasoning, creativity, and context management of premium models can significantly improve outcomes and reduce the risk of costly mistakes. While budget models excel for routine implementation, investing in premium models for these high-impact tasks is often worthwhile.
 
-**Model Switching Strategy**:
-> **Implementation Agents handle model switching well.** In general, model switching is not advised due to potential context loss in agent sessions. However, during testing, frequent model switching based on task domain (Cursor Auto for routine tasks, Sonnet 4 for complex work) proved to be both cost-efficient and effective. The tightly scoped task context makes this strategy viable, with minimal context gaps observed.
-
 **Step Combination Efficiency**:
 Implementation Agents can combine adjacent steps in multi-step tasks when requested by Users or specified in Task Assignment Prompts. This reduces confirmation overhead and effectively token consumption. Particularly valuable for credit-billed subscriptions and workflow acceleration. Request combinations for related setup/configuration steps while preserving individual steps for complex implementations requiring validation or for steps requiring User guidance/feedback.
+
+**Model Switching Strategy**:
+> **Implementation Agents handle model switching well.** In general, model switching **is not advised** due to potential context loss in agent sessions. However, during testing, frequent model switching based on task domain (Cursor Auto for routine tasks, Sonnet 4 for complex work) proved to be both cost-efficient and effective, and the tightly scoped task context makes this strategy viable with minimal context gaps observed. Proceed thoughtfully and monitor for any subtle context loss or unexpected behavior to avoid costly mistakes.
+
+**Best Models During Testing (August 2025):**
+> **Claude Sonnet 4** and **Gemini 2.5 Pro** tied as the top performers for complex or creative implementation tasks, each excelling in advanced reasoning and error detection.
+> **Cursor Auto** and **Windsurf SWE-1** also provided very strong results for routine implementation work, and as of August 2025 their extremely low (essentially free at the time of testing) cost makes them highly attractive for most tasks.
 
 ### Ad-Hoc Agents (Delegation-Specific)
 
@@ -112,11 +122,11 @@ Implementation Agents can combine adjacent steps in multi-step tasks when reques
 
 **Research Delegation**:
 - **Budget Models**: Data gathering, documentation review
-- **Premium Models**: Web research, Analysis synthesis, strategic recommendations
+- **Premium Models**: Web research, data analysis, strategic recommendations
 
 **Specialized Tasks**:
 - Match model capability to delegation complexity
-- Short sessions make premium model costs manageable
+- Short ad-hoc sessions make premium model costs manageable
 
 ---
 
@@ -126,7 +136,7 @@ Implementation Agents can combine adjacent steps in multi-step tasks when reques
 The Setup Phase is where the majority of high token consumption occurs during an APM session, as the Setup Agent gathers context and plans the project.
 
 **Cost Breakdown**:
-- **Context Synthesis**: 20-30% of Setup Phase tokens
+- **Context Synthesis**: 15-25% of Setup Phase tokens
 - **Project Breakdown**: 40-50% of Setup Phase tokens  
 - **Review (Optional)**: 15-25% of Setup Phase tokens
 - **Enhancement**: 10-15% of Setup Phase tokens
