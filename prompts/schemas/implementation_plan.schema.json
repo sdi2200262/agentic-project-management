@@ -1,0 +1,258 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://apm.cobuter-man.dev/schemas/implementation_plan.schema.json",
+  "title": "APM v0.4 Implementation Plan Schema",
+  "description": "JSON schema for APM Implementation Plans that enforces structure and validation rules from the Implementation Plan Guide",
+  "type": "object",
+  "required": [
+    "projectName",
+    "memoryStrategy", 
+    "lastModification",
+    "projectOverview"
+  ],
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "Project name for the implementation plan header",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "memoryStrategy": {
+      "type": "string",
+      "description": "Memory strategy chosen for this APM session",
+      "enum": ["simple", "dynamic-md", "dynamic-json"]
+    },
+    "lastModification": {
+      "type": "string",
+      "description": "Summary of last modification by Manager Agent",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "projectOverview": {
+      "type": "string", 
+      "description": "High-level project overview",
+      "minLength": 10,
+      "maxLength": 500
+    },
+    "phases": {
+      "type": "array",
+      "description": "Array of project phases. Optional for small/linear projects",
+      "items": {
+        "$ref": "#/definitions/Phase"
+      },
+      "minItems": 1
+    },
+    "tasks": {
+      "type": "array",
+      "description": "Root-level tasks for projects without phases",
+      "items": {
+        "$ref": "#/definitions/Task"
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "description": "Phased project structure",
+      "required": ["phases"],
+      "not": {
+        "required": ["tasks"]
+      }
+    },
+    {
+      "description": "Linear project structure without phases", 
+      "required": ["tasks"],
+      "not": {
+        "required": ["phases"]
+      }
+    }
+  ],
+  "definitions": {
+    "Phase": {
+      "type": "object",
+      "description": "A project phase containing related tasks",
+      "required": ["id", "name", "tasks"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Phase identifier",
+          "pattern": "^Phase \\d+$"
+        },
+        "name": {
+          "type": "string",
+          "description": "Descriptive phase name",
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "tasks": {
+          "type": "array",
+          "description": "Tasks within this phase",
+          "items": {
+            "$ref": "#/definitions/Task"
+          },
+          "minItems": 1
+        },
+        "summary": {
+          "$ref": "#/definitions/PhaseSummary",
+          "description": "Phase completion summary (added by Manager Agent)"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "description": "A discrete task assigned to an Implementation Agent",
+      "required": ["id", "title", "assignedAgent", "objective", "output", "guidance"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique task identifier",
+          "pattern": "^Task \\d+(\\.\\d+)?$"
+        },
+        "title": {
+          "type": "string",
+          "description": "Descriptive task title",
+          "minLength": 5,
+          "maxLength": 100
+        },
+        "assignedAgent": {
+          "type": "string",
+          "description": "Agent responsible for task execution",
+          "pattern": "^Agent_[A-Za-z][A-Za-z0-9_]*$"
+        },
+        "objective": {
+          "type": "string",
+          "description": "One-sentence task goal",
+          "minLength": 10,
+          "maxLength": 200
+        },
+        "output": {
+          "type": "string",
+          "description": "Concrete deliverable (e.g., function, module, PR)",
+          "minLength": 5,
+          "maxLength": 300
+        },
+        "guidance": {
+          "type": "string",
+          "description": "Key constraints, requirements, or dependency references",
+          "minLength": 5,
+          "maxLength": 500
+        },
+        "subtasks": {
+          "$ref": "#/definitions/SubtaskCollection",
+          "description": "Optional subtask breakdown"
+        },
+        "dependencies": {
+          "type": "array",
+          "description": "Dependencies on other task outputs",
+          "items": {
+            "$ref": "#/definitions/TaskDependency"
+          },
+          "maxItems": 3
+        }
+      }
+    },
+    "SubtaskCollection": {
+      "type": "object",
+      "description": "Collection of subtasks with specified execution pattern",
+      "required": ["type", "items"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Execution pattern for subtasks",
+          "enum": ["checklist", "sequential"]
+        },
+        "items": {
+          "type": "array",
+          "description": "Array of subtask items",
+          "items": {
+            "$ref": "#/definitions/Subtask"
+          },
+          "minItems": 1,
+          "maxItems": 5
+        }
+      }
+    },
+    "Subtask": {
+      "type": "object",
+      "description": "Individual subtask within a task",
+      "required": ["description"],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Subtask description or action",
+          "minLength": 5,
+          "maxLength": 200
+        },
+        "adHocDelegation": {
+          "type": "boolean",
+          "description": "Whether this subtask involves Ad-Hoc agent delegation",
+          "default": false
+        }
+      }
+    },
+    "TaskDependency": {
+      "type": "object",
+      "description": "Dependency on another task's output",
+      "required": ["taskId", "outputType"],
+      "properties": {
+        "taskId": {
+          "type": "string",
+          "description": "ID of the task this depends on",
+          "pattern": "^Task \\d+(\\.\\d+)?$"
+        },
+        "outputType": {
+          "type": "string",
+          "description": "Type of output expected from the dependency",
+          "enum": ["file", "api", "schema", "config", "data", "documentation", "other"]
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional description of what is needed from the dependency",
+          "maxLength": 100
+        }
+      }
+    },
+    "PhaseSummary": {
+      "type": "object", 
+      "description": "Summary added by Manager Agent upon phase completion",
+      "required": ["delivered", "outstanding", "blockers", "commonIssues", "compatibilityNotes"],
+      "properties": {
+        "delivered": {
+          "type": "array",
+          "description": "Completed tasks (IDs and titles)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "outstanding": {
+          "type": "array",
+          "description": "Unfinished or deferred tasks",
+          "items": {
+            "type": "string"
+          }
+        },
+        "blockers": {
+          "type": "array",
+          "description": "Unresolved issues or dependencies",
+          "items": {
+            "type": "string"
+          }
+        },
+        "commonIssues": {
+          "type": "array",
+          "description": "Notable bugs or technical challenges",
+          "items": {
+            "type": "string"
+          }
+        },
+        "compatibilityNotes": {
+          "type": "array",
+          "description": "Issues affecting later phases",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

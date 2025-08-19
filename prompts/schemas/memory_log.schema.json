@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://apm.cobuter-man.dev/schemas/memory_log.schema.json",
+  "title": "APM v0.4 Memory Log Schema",
+  "description": "JSON schema for APM Memory Logs in Dynamic-JSON format that enforces structure and validation rules from the Memory Log Guide",
+  "type": "object",
+  "required": [
+    "agent",
+    "task_ref",
+    "status",
+    "ad_hoc_delegation",
+    "compatibility_issues",
+    "important_findings",
+    "summary",
+    "details",
+    "output",
+    "issues",
+    "next_steps"
+  ],
+  "properties": {
+    "agent": {
+      "type": "string",
+      "description": "Agent ID responsible for this task",
+      "pattern": "^Agent_[A-Za-z][A-Za-z0-9_]*$",
+      "minLength": 7,
+      "maxLength": 50
+    },
+    "task_ref": {
+      "type": "string", 
+      "description": "Task ID reference from Implementation Plan",
+      "pattern": "^Task \\d+(\\.\\d+)?$",
+      "minLength": 6,
+      "maxLength": 20
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the task",
+      "enum": ["Completed", "Partial", "Blocked", "Error", "Info"]
+    },
+    "ad_hoc_delegation": {
+      "type": "boolean",
+      "description": "Whether any ad-hoc agent delegation occurred during this task"
+    },
+    "compatibility_issues": {
+      "type": "boolean", 
+      "description": "Whether any compatibility issues were identified"
+    },
+    "important_findings": {
+      "type": "boolean",
+      "description": "Whether project-relevant findings were discovered that Manager must know"
+    },
+    "summary": {
+      "type": "string",
+      "description": "1-2 sentences describing main outcome",
+      "minLength": 10,
+      "maxLength": 500
+    },
+    "details": {
+      "type": "string",
+      "description": "Work performed, decisions made, steps taken in logical order",
+      "minLength": 20,
+      "maxLength": 2000
+    },
+    "output": {
+      "type": "array",
+      "description": "File paths, code snippets, configuration changes, results or deliverables",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 300
+      },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "issues": {
+      "type": "string",
+      "description": "Specific blockers or errors, include error messages if relevant, or 'None'",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "compatibility_concerns": {
+      "type": "string",
+      "description": "Any compatibility issues identified (only present if compatibility_issues: true)",
+      "minLength": 10,
+      "maxLength": 1000
+    },
+    "ad_hoc_delegation_details": {
+      "type": "string", 
+      "description": "Details of any agent delegation that occurred during this task (only present if ad_hoc_delegation: true)",
+      "minLength": 10,
+      "maxLength": 1000
+    },
+    "important_findings_details": {
+      "type": "string",
+      "description": "Project-relevant information discovered during work that Manager must know (only present if important_findings: true)",
+      "minLength": 10,
+      "maxLength": 1000
+    },
+    "next_steps": {
+      "type": "string",
+      "description": "Follow-up actions or instructions for next agent or 'None'",
+      "minLength": 1,
+      "maxLength": 500
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "compatibility_issues": { "const": true }
+        }
+      },
+      "then": {
+        "required": ["compatibility_concerns"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ad_hoc_delegation": { "const": true }
+        }
+      },
+      "then": {
+        "required": ["ad_hoc_delegation_details"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "important_findings": { "const": true }
+        }
+      },
+      "then": {
+        "required": ["important_findings_details"]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,100 @@
+{
+  "projectName": "Extravagant Hello World - Vite + Shadcn",
+  "memoryStrategy": "dynamic-md",
+  "lastModification": "Initial plan creation by Setup Agent",
+  "projectOverview": "A simple Vite application with TypeScript and Shadcn components to display a customized 'Hello World' message.",
+  "phases": [
+    {
+      "id": "Phase 1",
+      "name": "Project Setup and Configuration",
+      "tasks": [
+        {
+          "id": "Task 1.1",
+          "title": "Initialize Vite Project",
+          "assignedAgent": "Agent_Frontend",
+          "objective": "Create a new Vite project with the TypeScript template.",
+          "output": "A functional Vite project directory with all dependencies installed.",
+          "guidance": "Use the latest version of Vite and npm for initialization.",
+          "subtasks": {
+            "type": "sequential",
+            "items": [
+              {
+                "description": "Run 'npm create vite@latest' with the 'react-ts' template."
+              },
+              {
+                "description": "Navigate into the project directory and run 'npm install'."
+              },
+              {
+                "description": "Verify the default application runs with 'npm run dev'."
+              }
+            ]
+          }
+        },
+        {
+          "id": "Task 1.2",
+          "title": "Install and Configure Shadcn",
+          "assignedAgent": "Agent_Frontend",
+          "objective": "Integrate the Shadcn component library into the project.",
+          "output": "A configured 'components.json' file and the ability to add Shadcn components via the CLI.",
+          "guidance": "Depends on: Task 1.1 Output. Follow the official Shadcn documentation for Vite.",
+          "dependencies": [
+            {
+              "taskId": "Task 1.1",
+              "outputType": "file",
+              "description": "The initialized Vite project directory."
+            }
+          ],
+          "subtasks": {
+            "type": "sequential",
+            "items": [
+              {
+                "description": "Run 'npx shadcn-ui@latest init' and follow the prompts."
+              },
+              {
+                "description": "Ensure the component paths and tsconfig.json aliases are set correctly."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "Phase 2",
+      "name": "Component Development",
+      "tasks": [
+        {
+          "id": "Task 2.1",
+          "title": "Create a 'Hello World' Button Component",
+          "assignedAgent": "Agent_Frontend",
+          "objective": "Create a reusable Shadcn button component that displays 'Hello World'.",
+          "output": "A new file 'src/components/ui/HelloWorldButton.tsx' containing the React component.",
+          "guidance": "Use the existing Shadcn button component as a base.",
+          "dependencies": [
+            {
+              "taskId": "Task 1.2",
+              "outputType": "config",
+              "description": "The configured Shadcn CLI and component setup."
+            }
+          ],
+          "subtasks": {
+            "type": "checklist",
+            "items": [
+              {
+                "description": "Use the Shadcn CLI to add a 'button' component."
+              },
+              {
+                "description": "Create the 'HelloWorldButton.tsx' file."
+              },
+              {
+                "description": "Import and use the Shadcn button within the new component."
+              },
+              {
+                "description": "Integrate the new component into the main App.tsx to display it."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
