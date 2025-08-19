@@ -4,7 +4,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.3.0] - YYYY-MM-DD
+## [0.4.0] - 2025-08-19
+
+APM v0.4 represents a complete framework refinement. The v0.3 architecture is enhanced to provide a more sophisticated, scalable approach to multi-agent project management while maintaining the core principles that made APM effective.
+
+### Major Changes
+
+**Architecture Enhancements**
+- **Expanded from 2 to 4 agent types**: Added Setup Agent for project initialization and Ad-Hoc Agents for specialized delegation
+- **Two-phase workflow**: Setup Phase for comprehensive planning, Task Loop Phase for execution
+- **Advanced memory system**: Dynamic Memory Bank with multiple variants and progressive creation
+- **Sophisticated dependency management**: Cross-agent coordination with comprehensive context integration
+- **Handovers are now practical context repair mechanisms** not just context dumps, with built-in safety and validation steps
+
+**Complete File Structure Overhaul**
+- All prompts redesigned and reorganized under new directory structure
+- New `docs/` directory with comprehensive updated documentation
+- Added `schemas/` directory with experimental JSON asset format for testing/research preview
+
+**Enhanced Capabilities**
+- **Systematic project discovery**: 4-phase Context Synthesis with progression gates
+- **Advanced task execution**: Single-step and multi-step patterns with dependency context integration
+- **Error handling protocol**: Mandatory delegation system for complex debugging scenarios
+- **Token optimization**: Economic model proposals and cost-effective strategies
+
+### License Change
+- **Updated from MIT to Mozilla Public License 2.0 (MPL-2.0)**
+- Ensures community protection while maintaining full commercial compatibility
+
+### Migration Notes
+APM v0.4 is not backward compatible with v0.3. assets - **yet**. However:
+- **New users** will find v0.4 significantly easier to get started with using the comprehensive documentation
+- **v0.3 users** will find the core concepts familiar but greatly enhanced with more sophisticated workflows and capabilities
+
+> **Note:** Existing v0.3 projects should be re-initialized using the new Setup Agent methodology and all v0.3 assets should be removed..
+
+### **Getting Started**
+See the complete [documentation suite](docs/) for detailed setup instructions, concepts, and advanced usage. Read [Getting Started](docs/Getting_Started.md) for your first APM v0.4 session.
+
+---
+
+## [0.3.0] - 2025-05-21
 
 ### Added
 - New section in `prompts/02_Utility_Prompts_And_Format_Definitions/Handover_Artifact_Format.md` for "Recent Conversational Context & Key User Directives" in the `Handover_File.md`.
@@ -28,6 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the `Complex_Task_Prompting_Best_Practices.md` guide to maintain a more general framework.
 - Removed explicit guidelines for Jupyter Notebook cell generation from `prompts/02_Utility_Prompts_And_Format_Definitions/Imlementation_Agent_Onboarding.md` to keep agent guidance general.
 
+---
+
 ## [0.2.0] - 2025-05-14
 ### Added
 - New Manager Agent Guide for dynamic Memory Bank setup (`02_Memory_Bank_Guide.md`).
@@ -39,6 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive documentation updates across key files (Root `README.md`, `Getting Started`, `Cursor Integration`, `Core Concepts`, `Troubleshooting`) reflecting all v0.2.0 changes.
 - Renumbered core MA guides in `prompts/01_Manager_Agent_Core_Guides/` and updated framework references.
 
+---
 
 ## [0.1.0] - 2025-05-12
 ### Added

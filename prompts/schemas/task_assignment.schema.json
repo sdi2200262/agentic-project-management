@@ -1,0 +1,214 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://apm.cobuter-man.dev/schemas/task_assignment.schema.json",
+  "title": "APM v0.4 Task Assignment Prompt Schema",
+  "description": "JSON schema for APM Task Assignment Prompts in JSON format that enforces structure and validation rules from the Task Assignment Guide",
+  "type": "object",
+  "required": [
+    "task_ref",
+    "agent_assignment", 
+    "memory_log_path",
+    "execution_type",
+    "dependency_context",
+    "ad_hoc_delegation",
+    "task_title",
+    "task_reference",
+    "objective",
+    "detailed_instructions",
+    "expected_output",
+    "memory_logging"
+  ],
+  "properties": {
+    "task_ref": {
+      "type": "string",
+      "description": "Task ID reference from Implementation Plan",
+      "pattern": "^Task \\d+\\.\\d+ - .+$",
+      "minLength": 10,
+      "maxLength": 100
+    },
+    "agent_assignment": {
+      "type": "string",
+      "description": "Agent ID assigned to this task",
+      "pattern": "^Agent_[A-Za-z][A-Za-z0-9_]*$",
+      "minLength": 7,
+      "maxLength": 50
+    },
+    "memory_log_path": {
+      "type": "string",
+      "description": "Path to the memory log file for this task",
+      "minLength": 5,
+      "maxLength": 200
+    },
+    "execution_type": {
+      "type": "string",
+      "description": "Type of task execution based on Implementation Plan subtasks",
+      "enum": ["single-step", "multi-step"]
+    },
+    "dependency_context": {
+      "type": "boolean",
+      "description": "Whether this task depends on outputs from previous tasks"
+    },
+    "ad_hoc_delegation": {
+      "type": "boolean",
+      "description": "Whether this task contains explicit ad-hoc delegation steps"
+    },
+    "task_title": {
+      "type": "string",
+      "description": "Brief descriptive title for the task assignment",
+      "minLength": 5,
+      "maxLength": 100
+    },
+    "task_reference": {
+      "type": "string",
+      "description": "Implementation Plan task reference with agent assignment",
+      "minLength": 15,
+      "maxLength": 200
+    },
+    "context_from_dependencies": {
+      "type": "object",
+      "description": "Context from producer tasks (only present if dependency_context: true)",
+      "required": ["previous_work_summary"],
+      "properties": {
+        "previous_work_summary": {
+          "type": "string",
+          "description": "Previous work summary from related producer tasks",
+          "minLength": 20,
+          "maxLength": 1000
+        },
+        "key_deliverables": {
+          "type": "array",
+          "description": "Key deliverables and outputs to build upon",
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 300
+          },
+          "maxItems": 10
+        },
+        "code_artifacts": {
+          "type": "array",
+          "description": "Code snippets, file paths, or artifacts from dependencies",
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 1000
+          },
+          "maxItems": 5
+        },
+        "integration_requirements": {
+          "type": "string",
+          "description": "Integration points and compatibility requirements",
+          "minLength": 10,
+          "maxLength": 500
+        }
+      },
+      "additionalProperties": false
+    },
+    "objective": {
+      "type": "string",
+      "description": "One-sentence task goal from Implementation Plan",
+      "minLength": 10,
+      "maxLength": 300
+    },
+    "detailed_instructions": {
+      "type": "array",
+      "description": "Specific instructions based on Implementation Plan subtasks",
+      "items": {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 500
+      },
+      "minItems": 1,
+      "maxItems": 20
+    },
+    "expected_output": {
+      "type": "object",
+      "description": "Expected deliverables and success criteria",
+      "required": ["deliverables", "success_criteria"],
+      "properties": {
+        "deliverables": {
+          "type": "array",
+          "description": "Deliverables from Implementation Plan Output field",
+          "items": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 200
+          },
+          "minItems": 1,
+          "maxItems": 10
+        },
+        "success_criteria": {
+          "type": "string",
+          "description": "Clear completion definition",
+          "minLength": 10,
+          "maxLength": 300
+        },
+        "file_locations": {
+          "type": "array",
+          "description": "Specific paths for created/modified files",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "maxItems": 15
+        }
+      },
+      "additionalProperties": false
+    },
+    "memory_logging": {
+      "type": "string", 
+      "description": "Instructions for logging work to memory system with path and guide reference",
+      "minLength": 30,
+      "maxLength": 200
+    },
+    "ad_hoc_delegation_instructions": {
+      "type": "object",
+      "description": "Ad-hoc delegation guidance (only present if ad_hoc_delegation: true)",
+      "required": ["delegation_specification"],
+      "properties": {
+        "delegation_specification": {
+          "type": "array",
+          "description": "What to delegate and how to structure it",
+          "items": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 300
+          },
+          "minItems": 3,
+          "maxItems": 5
+        },
+        "protocol_reference": {
+          "type": "string",
+          "description": "Reference to section 7 for complete delegation protocol",
+          "pattern": "^See section §7",
+          "maxLength": 50
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "dependency_context": { "const": true }
+        }
+      },
+      "then": {
+        "required": ["context_from_dependencies"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "ad_hoc_delegation": { "const": true }
+        }
+      },
+      "then": {
+        "required": ["ad_hoc_delegation_instructions"]
+      }
+    }
+  ],
+  "additionalProperties": false
+}
