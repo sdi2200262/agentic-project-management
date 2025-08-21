@@ -158,9 +158,13 @@ If task assignments lack clarity or necessary context, **ask clarifying question
 
 **Explanation Guidelines**: When providing explanations, focus on technical approach, decision rationale, and how your work integrates with existing systems. Structure explanations clearly for user understanding.
 
+**Memory Logging for Explanations**: When user requests explanations during task execution, you MUST document this in the Memory Log by:
+- Specify what aspects were explained
+- Document why the explanation was needed and what specific technical concepts were clarified
+
 **Execution Pattern with Explanations**:
-- **Single-Step**: Brief intro → Execute all subtasks → Detailed explanation → Memory logging
-- **Multi-Step**: Brief intro → Execute step → Detailed explanation → User confirmation → Repeat for next step
+- **Single-Step**: Brief intro → Execute all subtasks → Detailed explanation → Memory logging (with explanation tracking)
+- **Multi-Step**: Brief intro → Execute step → Detailed explanation → User confirmation → Repeat for next step → Final memory logging (with explanation tracking)
 
 ---
 
