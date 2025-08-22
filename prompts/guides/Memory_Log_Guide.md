@@ -134,6 +134,7 @@ Main responsibilities and workflow steps for Manager Agents when maintaining the
 - Reference artifacts by path, avoid large code blocks
 - Include code snippets only for novel, complex, or critical logic (≤ 20 lines)
 - Link actions to requirements from the task description when relevant
+- Include valuable explanations provided during task execution when they offer user insights
 
 ### 6.2. Code and Output Handling
 - For code changes: show relevant snippets with file paths, not entire files

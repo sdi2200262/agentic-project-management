@@ -115,7 +115,7 @@ last_completed_task: [Task ID]
 ## Working Notes
 **Development Patterns:** [Effective coding approaches, user-preferred solutions, successful strategies]
 **Environment Setup:** [Key file locations, configuration preferences, tool usage patterns]
-**User Interaction:** [Effective communication patterns, clarification approaches, feedback integration]
+**User Interaction**: [Effective communication patterns, clarification approaches, feedback integration, explanation preferences for complex areas]
 ```
 
 ---

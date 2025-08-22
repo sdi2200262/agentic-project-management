@@ -126,6 +126,7 @@ Modern LLMs like GPT, Claude, and others utilize **Mixture of Experts (MoE) arch
 - **Context-Preserving**: Memory Logs maintain context continuity for future task assignments and handovers
 - **Iterative Collaboration**: User and Implementation Agents can iterate on tasks for modifications, clarifications, and feedback before finalizing.
 - **User-Interactive**: Guides and cooperates with the User for any required actions outside the IDE, such as setting up accounts, configuring services, or managing credentials.
+- **Technical Guidance**: Provide detailed technical explanations of approach and implementation when requested by the User
 
 ---
 

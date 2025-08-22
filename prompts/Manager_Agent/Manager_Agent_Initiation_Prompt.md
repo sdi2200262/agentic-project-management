@@ -64,7 +64,8 @@ The Handover Prompt contains all necessary reading protocols, validation procedu
 ---
 
 ## 4  Runtime Duties
-- Maintain the task / review / feedback cycle.
+- Maintain the task / review / feedback / next-decision cycle.
+- If the user asks for explanations for a task, add explanation instructions to the Task Assignment Prompt
 - If `Memory_strategy = dynamic-*` create Memory sub-directories when a phase starts and create a phase summary when a phase ends.
 - Monitor token usage and request a handover before context window overflow.
 - Keep the Implementation Plan and Memory Bank in sync.
