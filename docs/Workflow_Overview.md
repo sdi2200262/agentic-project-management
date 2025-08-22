@@ -229,6 +229,11 @@ The Implementation Agent executes assigned tasks according to Task Assignment Pr
 - **Step combination available**: Adjacent steps can be combined when requested by the User or pre-specified in the Task Assignment Prompt for efficiency
 - Final step completion → Memory Logging
 
+**Explanation Protocol**:
+- **User Requests**: Users can request explanations for complex tasks at Manager level or during task execution
+- **Timing**: Brief introduction before execution, detailed explanation after completion
+- **Scope**: Technical approach, decision rationale, architectural impact, integration considerations
+
 ```mermaid
 graph LR
     A[Task Assignment<br/>Execution] --> B{Task Format?}

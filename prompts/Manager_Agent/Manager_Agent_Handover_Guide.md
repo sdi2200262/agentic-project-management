@@ -122,7 +122,7 @@ active_agents: [List of active Implementation Agents]
 ## Working Notes
 **File Patterns:** [Key locations and user preferences]
 **Coordination Strategies:** [Effective task assignment and communication approaches]
-**User Preferences:** [Communication style, task breakdown patterns, quality expectations]
+**User Preferences:** [Communication style, task breakdown patterns, quality expectations, explanation preferences for complex areas]
 ```
 
 ---
