@@ -248,6 +248,13 @@ The Implementation Agent will:
 - You can provide feedback and request modifications between steps
 - Agent proceeds to Memory Logging after final step
 
+> **Explanation Tip**: If you’re working on a complex task or are unfamiliar with the task’s domain, you can request explanations to help you understand the process. You can either ask the Manager Agent to include explanation instructions in the Task Assignment Prompt, or request explanations directly from the Implementation Agent during task execution:
+>    - **Manager Level** (ask the Manager Agent to include explanation requirements in the Task Assignment Prompt):  
+>        - `"Task X was completed. Please review the log and proceed. Include explanation instructions for the next Task Assignment Prompt because I find task Y complex."`  
+>    <br/>
+>    - **Implementation Level** (ask the Implementation Agent directly during execution):  
+>        - `"Please proceed to the next step, but include detailed explanation of your approach and rationale."`  
+
 ### Memory Logging
 
 The Implementation Agent will complete a standardized Memory Log entry containing:
