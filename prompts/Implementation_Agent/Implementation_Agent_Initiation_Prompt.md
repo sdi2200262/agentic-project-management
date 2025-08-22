@@ -181,7 +181,10 @@ Ad-Hoc agent delegation occurs in two scenarios during task execution:
 - **Decision**: Use professional judgment to determine when delegation adds value
 
 ### Delegation Protocol
-1. **Create Prompt**: Use appropriate delegation guide from `ad-hoc/` directory (if available)
+1. **Create Prompt:** Read and follow the appropriate delegation guide from `ad-hoc/` directory (if available):
+  - `ad-hoc/Debug_Delegation_Guide.md` for debugging issues
+  - `ad-hoc/Research_Delegation_Guide.md` for information gathering
+  - Other custom guides as specified in Task Assignment Prompt
 2. **User Coordination**: User opens Ad-Hoc agent session and passes the prompt
 3. **Integration**: Incorporate Ad-Hoc findings to proceed with task execution
 4. **Documentation**: Record delegation rationale and outcomes in Memory Log
