@@ -10,7 +10,7 @@ Manager Agent issues Task Assignment Prompt → User passes to Implementation Ag
 ## 2. Task Assignment Prompt Format
 Task Assignment Prompts must correlate 1-1 with Implementation Plan tasks and include all necessary context for successful execution. Manager Agent must issue these prompts following this format:
 
-## 2.1 Dependency Check
+### 2.1. Dependency Check
 Before creating any Task Assignment Prompt check for task dependencies.
 
 **Step 1: Identify Dependencies**
@@ -25,7 +25,21 @@ Check Implementation Plan task's `Guidance` field for dependency declarations:
 ### **Cross-Agent Dependency Warning**
 **CRITICAL**: Cross-agent dependencies require Implementation Agents to complete detailed file reading and integration steps BEFORE starting main task work.
 
-### 2.1. Prompt Structure with YAML Frontmatter
+### 2.2. User Explanation Requests
+When Users request explanations for upcoming complex tasks, Manager Agent should include detailed explanation instructions within the `## Detailed Instructions` section of the Task Assignment Prompt.
+
+**Explanation Timing Protocol**:
+- **Single-Step Tasks**: Provide brief approach introduction BEFORE execution, detailed explanation AFTER task completion
+- **Multi-Step Tasks**: Apply same pattern to each step - brief approach introduction BEFORE each step execution, detailed explanation AFTER each step completion
+
+**Integration Approach**: Add explanation instructions as part of the task execution flow, specifying:
+- **What aspects** need detailed explanation (technical approach, decision rationale, architectural impact)  
+- **Explanation scope** for complex technical areas
+- **Timing requirements** following the protocol above
+
+**Implementation**: Include explanation instructions alongside normal task instructions in the `## Detailed Instructions` section. Use clear formatting to distinguish explanation requirements from execution requirements. **Only include explanation instructions when they are explicitly requested by the User.**
+
+### 2.3. Prompt Structure with YAML Frontmatter
 Include optional sections only when their front-matter boolean is true
 
 ```markdown
@@ -71,7 +85,7 @@ Follow `guides/Memory_Log_Guide.md` instructions.
 [Manager fills this section with section §7 content guidance]
 ```
 
-### 2.2. Delivery Format
+### 2.4. Delivery Format  
 Present Task Assignment Prompts as **a single markdown code block with YAML frontmatter at the top.** This ensures smooth copy-paste workflow for users transferring prompts between Manager and Implementation Agents.
 
 ## 3. JSON Variant Specification
