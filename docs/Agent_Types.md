@@ -4,13 +4,13 @@ APM employs four distinct agent types, each with clear responsibilities and care
 
 ## Agent Specialization Architecture
 
-Modern LLMs like GPT, Claude, and others utilize **Mixture of Experts (MoE) architecture** with specialized sub-models that automatically route to different capabilities. APM's agent design leverages this existing infrastructure instead of wasting tokens on persona descriptions.
+**APM achieves agent specialization by providing each agent with carefully scoped, task-relevant context**, rather than relying on artificial personas. Agents develop expertise organically from the information and responsibilities assigned to them, without relying on character-based role-play.
 
 **APM's Approach:**
-- **Responsibility-Driven**: Each agent is defined by specific functions, not personality traits
-- **Context-Scoped**: Agents receive only information relevant to their work domain  
-- **Task-Focused**: Natural LLM specialization activates through targeted task assignment
-- **Token-Efficient**: No persona token overhead; just direct, technical instruction
+- **Context-Driven Specialization**: Agents develop domain expertise through exposure to focused, relevant context; not personalitty traits
+- **Responsibility-Based Emergence**: Specialization emerges from the specific tasks and decisions each agent handles
+- **Natural Adaptation**: Models naturally adapt their responses based on the scoped context they receive
+- **Token-Efficient**: No wasted tokens on persona descriptions; every token serves the actual work needed
 
 ## Quick Agent Comparison
 
