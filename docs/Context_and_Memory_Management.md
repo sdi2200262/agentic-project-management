@@ -8,7 +8,7 @@ APM's effectiveness stems from context scope management and a dynamic memory sys
 
 ### Emergent Specialization Through Scoped Context
 
-APM achieves agent specialization through **targeted context scoping** rather than embedded persona engineering. This approach leverages modern LLMs' inherent Mixture of Experts (MoE) architecture, where specialized sub-models automatically activate based on the context and task requirements.
+APM achieves agent specialization through **targeted context scoping** rather than embedded persona engineering. When an agent receives only the context relevant to their specific responsibilities, they naturally develop the appropriate expertise and decision-making patterns for that role.
 
 **Traditional Approach Problems**:
 - Token-expensive persona descriptions that consume context window space
@@ -20,7 +20,7 @@ APM achieves agent specialization through **targeted context scoping** rather th
 - **Active Context Tokens**: Include only information directly relevant to current task execution
 - **Natural Specialization**: LLM expertise emerges from task-specific context and requirements
 - **Token Efficiency**: Every token in context contributes to task completion quality
-- **Domain Activation**: Technical domains activate appropriate sub-models without explicit instruction
+- **Reliable Responses**: Models respond based on actual context; not artificial personas
 
 ### Context Scope Mechanics
 

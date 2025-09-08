@@ -40,7 +40,7 @@ During Project Breakdown, the Setup Agent reviews the project context to identif
 2) technical environment boundaries: creating domain-specific agents for different technology stacks
 3) workflow patterns: distinguishing between different task orientations to assign agents accordingly.
 
-The Setup Agent creates an **initial Implementation Agent team** based on identified logical domains, assigning descriptive agent identifiers that reflect domain scope such as `Agent_Backend`, `Agent_Frontend`, or `Agent_DevOps`. This dynamic assignment ensures agents receive context naturally suited to their designated work areas without requiring explicit domain expertise embedding.
+The Setup Agent creates an **initial Implementation Agent team** based on identified logical domains, assigning descriptive agent identifiers that reflect domain scope such as `Agent_Backend`, `Agent_Frontend`, or `Agent_DevOps`. This dynamic assignment ensures agents receive context naturally suited to their designated work areas without requiring explicit domain expertise embedding in their prompts.
 
 **Agent Workload Balancing and Subdomain Creation**: When domain analysis reveals agents with excessive task assignments (typically 8+ tasks), the Setup Agent implements subdomain splitting to distribute workload effectively. Overloaded domains are analyzed for logical sub-domain boundaries based on natural task groupings and process specialization needs. For example, a heavily loaded `Agent_Backend` might split into `Agent_Backend_API` and `Agent_Backend_Database`, or a complex `Agent_Frontend` could separate into `Agent_Frontend_Components` and `Agent_Frontend_Integration`.
 

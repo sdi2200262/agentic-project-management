@@ -40,7 +40,7 @@ APM v0.4 employs a sophisticated multi-agent system built around four specialize
 
 *   **4. Ad-Hoc Agents:** Temporary agents for isolated tasks (e.g., debugging, research, analysis) outside the main workflow as workflow "branches". They run in separate chat sessions with minimal scoped context, are assigned by Implementation Agents, and return findings for integration. Ad-Hoc Agents don’t make project decisions, just solve a specific problem, report back, and close, preventing context overload in core agents.
 
-> Agent types in APM are **not specialized "personas"**. Their specialization comes from well defined responsibilities and carefully scoped context for each agent instance. Modern LLMs already adapt to user requests by employing specialized sub-models; APM builds on this strength, enabling precise and effective task execution through focused, strategic agent interactions.
+> In APM, agent types are **not artificial "personas"**. Instead, their specialization arises organically from clearly defined responsibilities and tightly scoped context for each agent instance. By supplying each agent with only the information relevant to their specific role and tasks, APM ensures reliable responses, without wasting tokens on unnecessary persona descriptions.
 
 ### Context Management
 APM preserves context with a carefully designed adaptation of the traditional Memory Bank and a context Handover Procedure. For tasks that require isolated, context-intensive work (such as research or debugging), Ad-Hoc Agent instances handle these activities separately, preventing unnecessary strain on the core agents' context.
