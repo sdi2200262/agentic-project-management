@@ -32,23 +32,35 @@ Think of it like having a project manager, developers, ad-hoc specialists, and a
 3.  **Manual Copy-Pasting (Basic Usage):**
     *   You can manually copy and paste prompt content from the official APM GitHub repository into your AI assistant as needed. While this approach works, it involves more manual labor and does not fully leverage the agentic capabilities of the framework.
 
-**Next Steps:** 
-1) See [Getting Started Guide](docs/Getting_Started.md) for complete setup instructions and your first APM session.
-2) See [Workflow_Overview.md](docs/Workflow_Overview.md) for a complete understanding of all workflow protocols, procedures, and concepts.
-
+**Next Steps:**
+1. Begin with the [Introduction](docs/Introduction.md) to familiarize yourself with the APM framework.
+2. Proceed to the [Getting Started Guide](docs/Getting_Started.md) or consult the [Quick Start Guide](docs/guides/APM_Quick_Start_Guide.pdf) to launch your first APM session.
 
 ## Documentation
 
 APM v0.4 includes comprehensive documentation covering all aspects of the framework:
 
-*   **[Introduction](docs/Introduction.md)** - Overview of APM concepts, goals, and core framework
-*   **[Getting Started Guide](docs/Getting_Started.md)** - Step-by-step setup and first session
-*   **[Agent Types](docs/Agent_Types.md)** - Understanding the different agent roles  
-*   **[Workflow Overview](docs/Workflow_Overview.md)** - Complete workflow walkthrough
-*   **[Token Consumption Tips](docs/Token_Consumption_Tips.md)** - Cost optimization strategies
-*   **[Modifying APM](docs/Modifying_APM.md)** - Customization and advanced features
-*   **[Context & Memory Management](docs/Context_and_Memory_Management.md)** *(Advanced)* - How APM handles agent context and preserves key information.
-*   **[Context & Prompt Engineering](docs/Context_and_Prompt_Engineering.md)** *(Advanced)* - Prompt and Context Engineering techniques used throughout the APM v0.4 framework.
+| Document | Description |
+|----------|-------------|
+| **[Introduction](docs/Introduction.md)** | Overview of APM concepts, goals, and core framework |
+| **[Getting Started](docs/Getting_Started.md)** | Step-by-step setup and first session guide |
+| **[Agent Types](docs/Agent_Types.md)** | Different agent roles and specializations |
+| **[Workflow Overview](docs/Workflow_Overview.md)** | Complete workflow walkthrough with process diagrams |
+| **[Token Consumption Tips](docs/Token_Consumption_Tips.md)** | Cost optimization strategies and model recommendations |
+| **[Modifying APM](docs/Modifying_APM.md)** | Customization of APM assets and advanced features |
+| **[Context & Memory Management](docs/Context_and_Memory_Management.md)** (advanced) | How APM handles context and manages memory across agent instances  |
+| **[Context & Prompt Engineering](docs/Context_and_Prompt_Engineering.md)** (advanced) | Prompt and context engineering techniques used throughout the framework |
+
+### Visual Guides
+
+These PDF guides provide detailed, visual explanations of APM's processes, including annotated screenshots, best practices, and practical tips to enhance your understanding:
+
+| Guide | Description | Best For |
+|-------|-------------|----------|
+| **[Quick Start Guide](docs/guides/APM_Quick_Start_Guide.pdf)** | Step-by-step walkthrough of your first APM session with annotated screenshots | Beginners & visual learners |
+| **[User Guide](docs/guides/APM_User_Guide.pdf)** | In-depth manual covering advanced usage, optimization techniques, and troubleshooting for common issues | Experienced users |
+
+For a complete documentation index with recommended reading order, see the **[Documentation Hub](docs/README.md)**.
 
 ## Contributing
 

@@ -4,11 +4,11 @@
 
 ## What is APM?
 
-Agentic Project Management (APM) is a structured multi-agent workflow for managing complex projects within AI IDE environments. It applies real-world project management principles to AI-driven workflows including task breakdown, role assignment, progress tracking, and seamless handoffs between team members.
+Agentic Project Management (APM) is a structured multi-agent workflow framework for managing complex projects within AI IDE environments. It applies real-world project management principles to AI-driven workflows, including task breakdown, role assignment, progress tracking, and seamless handoffs between team members. 
 
-APM utilizes chat sessions in your AI IDE as separate agent instances, each with its own context scope and memory. This allows for more focused interactions, reduces the cognitive load and produces more consistent results.
+APM offers an Agentic Spec-driven Development experience that prioritizes explicit context management and ensures continuity throughout sessions.
 
-Dividing the project workload among multiple agents minimizes the risk of context loss and reduces hallucinations, leading to more reliable and consistent results.
+APM utilizes chat sessions in your AI IDE as separate agent instances, each with its own context scope and memory. By distributing the project's workload among these agents, APM enables more focused interactions, reduces cognitive load, and minimizes the risk of context loss or hallucinations, resulting in more reliable and consistent outcomes.
 
 ## The Problem APM Solves
 
@@ -16,7 +16,7 @@ Managing large projects with AI assistants presents systematic challenges. Exten
 
 This constraint feels "heavier" within AI IDEs, when often times Context Windows are shrunk even further to maintain profitable interactions with the model's provider. As conversations grow, the AI struggles to keep track of everything, leading to confusion, errors, and wasted time.
 
-APM addresses these issues by providing a clear framework that prioritizes structured interaction, explicit context management and integration, and efficient, targeted cross-agent communication through meta-prompting.
+APM addresses these issues by emphasizing structured interaction, explicit context management and integration, and efficient, targeted cross-agent communication through meta-prompting.
 
 ## APM's Approach
 
@@ -77,19 +77,24 @@ The `/prompts` directory contains all core user prompts, guides, and schemas for
 | [`/prompts/guides/`](../prompts/guides/)                             | Guides for APM processes and protocols                                                     | Covers project breakdown, memory management, task assignment, review, and handover                                          |
 
 
-## Documentation (`/docs`)
-The `/docs` directory contains comprehensive documentation covering the APM framework, including agent roles, workflow processes, memory management strategies, prompt engineering techniques, and optimization tips to help you effectively implement and customize APM for your projects.
+## Documentation Overview
 
-| File                                                                                       | Purpose                                                                                   |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------|
-| **[Agent_Types.md](Agent_Types.md)**                                                       | Learn about Setup, Manager, and Implementation Agent roles and Ad-Hoc Agent Delegations   |
-| **[Workflow_Overview.md](Workflow_Overview.md)**                                           | Complete APM process walkthrough                                                          |
-| **[Getting_Started.md](Getting_Started.md)**                                               | Step-by-step guide to launching your first APM session                                    |
-| **[Token_Consumption_Tips.md](Token_Consumption_Tips.md)**                                 | Strategies for reducing token usage; economic model proposal                              |
-| **[Modifying_APM.md](Modifying_APM.md)**                                                   | Instructions for customizing APM assets to match your needs                               |
-| **[Context_and_Memory_Management.md](Context_and_Memory_Management.md) <br/>(Advanced)**   | Explains how APM handles context scope and memory of the agent instances                  |
-| **[Context_and_Prompt_Engineering.md](Context_and_Prompt_Engineering.md) <br/>(Advanced)** | Explains context and prompt engineering techniques utilized throughout APM                |
+APM's documentation is organized to support both quick starts and deep dives:
 
+- **Core Framework Documentation**: Available in the `/docs` directory
+- **Visual Guides**: PDF guides in `/docs/guides` that complement the mainn documentation suite
+
+For a complete documentation index, see the [Documentation Hub](README.md).
+
+
+## Visual Workflow Overview
+
+Below is a visual overview of the APM workflow, illustrating the full process from the Setup Phase through the Task Loop Phase, including workflow branches of Ad-Hoc Delegations.
+> **Note:** This overview omits some intermediate steps and sub-processes in both the Setup Phase and Task Loop Phase for brevity. For a complete, detailed workflow breakdown, see the [Workflow Overview](Workflow_Overview.md) document.
+
+<div align="center">
+  <img src="../assets/apm-workflow-diagram.png" alt="APM v0.4 - Agentic Spec-driven Development" width="1200" style="max-width: 100%;"/>
+</div>
 
 ---
 
