@@ -38,7 +38,7 @@ APM employs four distinct agent types, each with clear responsibilities and care
 5. **Enhancement & Memory Root Creation**: Generate detailed APM Implementation Plan artifact and initialize Memory System
 6. **Manager Bootstrap**: Create initialization prompt for Manager Agent handoff
 
-### Workflow Pattern
+### Operational Workflow
 
 **Sequential Process**: Setup Agent operates through mandatory progression gates; each phase must complete before advancing to the next. This prevents incomplete planning and ensures comprehensive project foundation.
 
@@ -66,7 +66,7 @@ APM employs four distinct agent types, each with clear responsibilities and care
 5. **Cross-Agent Coordination**: Manage context dependencies between different Implementation Agent instances
 6. **Handover Execution**: Transfer context to replacement Manager Agent instances when approaching context limits
 
-### Workflow Pattern
+### Operational Workflow
 
 **Task Loop Management**: Manager Agent operates in Task Loop cycles. This continues until project completion or context handover requirements.
 > Issues Task Assignment → Reviews Memory Log → Makes Next Action Decision

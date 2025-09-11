@@ -2,6 +2,12 @@
 
 This guide walks you through launching your first APM session, from initial setup through completing your first few tasks. **The more time spent during setup and planning, the better your project execution will be.**
 
+> For additional guidance and step-by-step screenshots of the entire process, see the [Quick Start Guide PDF](guides/APM_Quick_Start_Guide.pdf).
+
+> For a clearer understanding of each agent's roles and responsibilities, refer to the [Agent Types document](Agent_Types.md).
+
+> For a detailed walkthrough of APM workflows and protocols, refer to the [Workflow Overview document](Workflow_Overview.md).
+
 ---
 
 ## Prerequisites
@@ -14,24 +20,27 @@ Before starting your first APM session, ensure you have:
 - **APM Assets**: Access to the APM framework prompts and guides
 
 ### Recommended Model Tiers
+
+Each APM agent type has different model requirements, so model selection may vary by role. However, **Claude Sonnet 4** stands out for its strong reasoning and agentic capabilities, consistently performing well across all agent instances.
+
+*  **Setup Agent**: For best results, use top-tier frontier models such as Claude Sonnet 4 or Gemini 2.5 Pro throughout the entire Setup Phase. These models excel at the systematic reasoning required for project planning and breakdown
+    > **Important**: Avoid switching models mid-conversation during the Setup Phase as this causes context gaps due to token caching disruptions. Use one model throughout the entire Setup Agent session. **Best performing model during testing was Claude Sonnet 4**.
+
+<br/>
+
+*  **Manager Agent**: Best practice is to use a powerful model with strong reasoning abilities. Like for the Setup Agent, Claude Sonnet 4 and Gemini 2.5 Pro are highly recommended. You can leverage CoT models for their advanced reasoning, but be aware that some CoT models may interfere with APM workflow protocols and occasionally break responses. Alternatively, mid-tier models like Claude 3.7 Sonnet or Cursor Auto (which mixes models) offer a more economical option.
+    > **Important:** Avoid switching models mid-conversation for the Manager Agent to prevent context gaps. While model-switching caused fewer issues here than with the Setup Agent, it's still best to stick to one model.
+    >
+    > **Note:** **During testing, Cursor Auto delivered outstanding performance as the Manager Agent.** Given its low cost, even after recent pricing updates, it stands out as the most efficient and cost-effective choice. For other AI Assistants compact, and agentic models like Qwen 3 and Kimi K2 have also delivered acceptable results.
+
+<br/>
+
+*  **Implementation Agents**: In APM, tasks are designed to be granular and clearly scoped, enabling even compact models to execute them successfully. The effectiveness of Implementation Agents depends on the quality and granularity of your Implementation Plan, so invest time perfecting it before proceeding. While high-end models like Sonnet 4 will provide the best results, base models such as GPT-4.1 in Copilot, Cursor Auto, or even budget options like Qwen and Kimi K2 have delivered exceptional results for their price point.
+    > **Note:** Because Implementation Agent context is always tightly scoped to the assigned task and session, switching between models mid-conversation (for example, to match task complexity or requirements) did not cause significant context gaps or issues during testing. Unlike with Setup or Manager Agents, context loss from token caching disruptions was minimal. **During testing, model switching was frequently performed based on task domain, for example, using Cursor Auto, GPT-4.1 in Copilot, or Windsurf's SWE-1 for most tasks, and switching to Sonnet 4 or GPT-5 for especially complex or design-heavy assignments, with no major problems observed.** If you choose to experiment with model switching, proceed carefully and remain attentive to any potential context gaps.
+
+<br/>
+
 > **Note:** For guidance on choosing models in an economical way, be sure to read the [Token_Consumption_Tips.md](Token_Consumption_Tips.md).
-
-<br/>
-
-**Setup Agent**: For best results, use top-tier frontier models such as Claude Sonnet 4 or Gemini 2.5 Pro throughout the entire Setup Phase. These models excel at the systematic reasoning required for project planning and breakdown
-> **Important**: Avoid switching models mid-conversation during the Setup Phase as this causes context gaps due to token caching disruptions. Use one model throughout the entire Setup Agent session. **Best performing model during testing was Claude Sonnet 4**.
-
-<br/>
-
-**Manager Agent**: Best practice is to use a powerful model with strong reasoning abilities. Like for the Setup Agent, Claude Sonnet 4 and Gemini 2.5 Pro are highly recommended. You can leverage CoT models for their advanced reasoning, but be aware that some CoT models may interfere with APM workflow protocols and occasionally break responses. Alternatively, mid-tier models like Claude 3.7 Sonnet or Cursor Auto (which mixes models) offer a more economical option.
-> **Important:** Avoid switching models mid-conversation for the Manager Agent to prevent context gaps. While model-switching caused fewer issues here than with the Setup Agent, it's still best to stick to one model.
->
-> **Note:** **During testing, Cursor Auto delivered outstanding performance as the Manager Agent.** Given its low cost, even after recent pricing updates, it stands out as the most efficient and cost-effective choice. **Windsurf's SWE 1 model has also performed well in this role.** For other AI Assistants compact, and agentic models like Qwen 3 and Kimi K2 have also delivered acceptable results.
-
-<br/>
-
-**Implementation Agents**: In APM, tasks are designed to be granular and clearly scoped, enabling even compact models to execute them successfully. The effectiveness of Implementation Agents depends on the quality and granularity of your Implementation Plan, so invest time perfecting it before proceeding. While high-end models like Sonnet 4 will provide the best results, base models such as GPT-4.1 in Copilot, Cursor Auto, or even budget options like Qwen and Kimi K2 have delivered exceptional results for their price point.
-> **Note:** Because Implementation Agent context is always tightly scoped to the assigned task and session, switching between models mid-conversation (for example, to match task complexity or requirements) did not cause significant context gaps or issues during testing. Unlike with Setup or Manager Agents, context loss from token caching disruptions was minimal. **During testing, model switching was frequently performed based on task domain—for example, using Cursor Auto and GPT-4.1 in Copilot for most tasks, and switching to Sonnet 4 or GPT-5 for especially complex or design-heavy assignments, with no major problems observed.** If you choose to experiment with model switching, proceed carefully and remain attentive to any potential context gaps.
 
 ---
 
@@ -41,7 +50,11 @@ Before starting your first APM session, ensure you have:
 >   - **Setup Phase**: If the summarization mechanism triggers, the agent may lose track of guides and procedures. **Stop the response immediately**, then re-provide the required prompts and guides (e.g., Setup Agent initiation prompt, planning guides) before continuing.
 >   - **Task Loop Phase**: The cycle is more resilient, but the same issue can occur. If summarization mechanism triggers, and you noticed degrading response quality **stop the response**, re-provide the necessary prompts/guides or task context, and verify the agent has re-established understanding before proceeding.
 >
+> **Tip:** Consider disabling the summarization mechanism by setting `github.copilot.chat.summarizeAgentConversationHistory.enabled` to `false` in your Copilot settings.
+>
 > > Additional notes for specific IDEs will be added here as new releases occur and user feedback is collected.
+
+---
 
 ## Step 1: Access APM Assets
 
@@ -99,6 +112,8 @@ The Setup Agent will greet you and outline its 6-step workflow:
 
 The Setup Agent will guide you through each step systematically. **Be thorough during this phase**; time invested here prevents roadblocks later.
 
+Each step of the Setup Phase is designed to support APM’s spec-driven methodology. Before moving on, the Setup Agent will always ask for your confirmation, giving you the opportunity to review, clarify, or request changes to the current step. This allows you to iterate as needed, whether by providing additional explanations, making clarifications, or requesting modifications to the Implementation Plan, before proceeding to the next step.
+
 ### Asset Verification
 
 **Setup Agent will ask about your workflow approach:**
@@ -136,7 +151,7 @@ The Setup Agent will systematically break down your project:
 
 **Review carefully** as tasks are created. The Setup Agent will present reasoning in chat and append phase and task contents in the Implementation Plan file.
 
-> **Tip for Project Breakdown Manual Review:** When the Project Breakdown is finished, take time to carefully review the entire Implementation Plan. Make sure every task and phase aligns with your project and workflow needs. If you notice anything that needs to be changed or clarified, request corrections/modifications. Addressing issues at this stage is much more efficient than making adjustments later.
+> **Tip for Project Breakdown Manual Review:** When the Project Breakdown is finished, take time to carefully review the entire Implementation Plan. Make sure every phase and task aligns with your project and workflow needs. If you notice anything that needs to be changed or clarified, request corrections/modifications. Addressing issues at this stage is much more efficient than making adjustments later.
 
 ### Implementation Plan Review (Optional)
 
@@ -145,7 +160,7 @@ The Setup Agent will offer systematic review of the Implementation Plan:
 - **Recommended**: For complex projects or first-time APM users
 - **Optional**: If you're satisfied with the plan quality
 
-> **Tip for Implementation Plan AI-driven Review:** This AI-driven review will focus on AI-specific planning issues in your Implementaiton Plan (task packing, classification errors, dependencies). Any potential requirement gaps or constraints not specified will likely be missed by the Setup Agent.
+> **Tip for Implementation Plan AI-driven Review:** This AI-driven review will focus on AI-specific planning issues in your Implementaiton Plan (task packing, classification errors, dependencies). Any potential requirement gaps or constraints not specified will likely be missed by the Setup Agent. Make sure that you conduct your own manual review of the plan.
 
 ### Enhancement & Memory Initialization
 
@@ -347,6 +362,8 @@ As your sessions grow, agents may approach the LLM's context window limit. When 
 
 **Problem**: Context confusion between agents
 **Solution**: Each agent should only focus on their assigned work, avoid cross-contamination
+
+> For more detailed troubleshooting guidance and solutions to common issues, refer to the `Troubleshooting` section in the [User Guide](guides/APM_User_Guide.pdf).
 
 ---
 
