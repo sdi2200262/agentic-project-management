@@ -71,14 +71,13 @@ The Setup Agent creates your project foundation. Poor planning cascades through 
 
 ### Manager Agent (Coordination Efficiency)
 
-**Effective Budget Options**:
-- **Cursor Auto** - Outstanding performance during testing despite low cost
-- **Windsurf SWE-1** - Excellent coordination capabilities  
-- **Claude Sonnet 3.7** - Acceptable for straightforward projects
-
-**Premium Options**:
+**Best Performing Models**:
 - **Claude Sonnet 4** - Best reasoning for complex coordination decisions
 - **Gemini 2.5 Pro** - Strong cross-agent dependency management
+
+**Effective Budget Options**:
+- **Cursor Auto** - Outstanding performance during testing despite low cost
+- **Claude Sonnet 3.7** - Acceptable for straightforward projects
 
 **Model Switching Considerations**:
 > **Warning**: While model switching during Manager Agent sessions is not encouraged, real-world testing showed that context gaps and disruptions were generally manageable and did not break sessions. If a model switch is necessary (e.g., for a complex coordination task), proceed with caution and monitor for any context loss. For best results, stick with a single model throughout the Manager Agent session when possible.
@@ -91,16 +90,19 @@ The Setup Agent creates your project foundation. Poor planning cascades through 
 
 ### Implementation Agents (Task-Specific Optimization)
 
-**Budget Models Excel Here**:
-- **GPT-4.1 in Copilot** - Excellent for focused, granular tasks
-- **Cursor Auto** - Strong general-purpose execution
-- **Qwen / Kimi K2** - Exceptional value for routine implementation
-
-**Premium Model Scenarios**:
-Premium models such as **Claude Sonnet 4** and **Gemini 2.5 Pro** deliver the highest performance for demanding implementation tasks. Consider using these models when your task involves:
+**Best Performing Models**:
+Premium models such as **Claude Sonnet 4**, **Chat GPT-5** and **Gemini 2.5 Pro** deliver the highest performance for demanding implementation tasks. Consider using these models when your task involves:
 - Complex algorithm design, where advanced reasoning and error detection are critical
 - Creative or design-oriented work, such as UI/UX prototyping or generating novel solutions
 - Architecture decisions that require deep analysis, tradeoff evaluation, or synthesizing multiple requirements
+
+**Budget Models Excel Here**:
+- **GPT-4.1 in Copilot** - Excellent for focused, granular tasks
+- **Cursor Auto** - Strong general-purpose choice
+- **Windsurf SWE-1** - Excellent coordination capabilities  
+- **Grok Code Fast 1** - Excellent for focused, granular tasks
+- **Qwen / Kimi K2** - Exceptional value for routine implementation
+
 
 For these scenarios, the superior reasoning, creativity, and context management of premium models can significantly improve outcomes and reduce the risk of costly mistakes. While budget models excel for routine implementation, investing in premium models for these high-impact tasks is often worthwhile.
 
@@ -113,6 +115,8 @@ Implementation Agents can combine adjacent steps in multi-step tasks when reques
 **Best Models During Testing (August 2025):**
 > **Claude Sonnet 4** and **Gemini 2.5 Pro** tied as the top performers for complex or creative implementation tasks, each excelling in advanced reasoning and error detection.
 > **Cursor Auto** and **Windsurf SWE-1** also provided very strong results for routine implementation work, and as of August 2025 their extremely low (essentially free at the time of testing) cost makes them highly attractive for most tasks.
+
+---
 
 ### Ad-Hoc Agents (Delegation-Specific)
 
@@ -130,19 +134,10 @@ Implementation Agents can combine adjacent steps in multi-step tasks when reques
 
 ---
 
-## Token-Expensive Exchanges & Optimization
+## Token Consumption Optimization
 
 ### Setup Phase (Highest Token Consumption)
-The Setup Phase is where the majority of high token consumption occurs during an APM session, as the Setup Agent gathers context and plans the project.
-
-**Cost Breakdown**:
-- **Context Synthesis**: 15-25% of Setup Phase tokens
-- **Project Breakdown**: 40-50% of Setup Phase tokens  
-- **Review (Optional)**: 15-25% of Setup Phase tokens
-- **Enhancement**: 10-15% of Setup Phase tokens
-
-**Optimization Strategies for Setup Phase**:
-Each Setup Phase step has its own token usage patterns. Use the following targeted tips to optimize tokens at every stage without sacrificing quality.
+The Setup Phase is where the majority of high token consumption occurs during an APM session, as the Setup Agent gathers context and plans the project. Each Setup Phase step has its own token usage patterns. Use the following targeted tips to optimize tokens at every stage without sacrificing quality.
 
 **Context Synthesis**:
 - Prepare materials beforehand (PRDs, requirements, existing code references)
@@ -196,7 +191,9 @@ Context 'repair' and validation during a handover requires the agent to process 
 
 **Focus Maintenance**: Keep each agent focused only on their assigned work to avoid unnecessary context expansion. Cross-contamination between agent sessions wastes tokens, reduces effectiveness and could potentially result in session break.
 
-**Context Preservation**: Use Memory Logs and Handover procedures as designed rather than trying to maintain context through extended sessions. The structured approach is more token-efficient than fighting context window limits.
+**Context Preservation**: Use Memory Logs and Handover procedures as designed rather than trying to manually maintain context through extended sessions. The structured approach is more token-efficient than fighting context window limits.
+
+> **Tip:** For more ways to optimize token usage, see the `Optimization Strategies` section in the [User Guide](guides/APM_User_Guide.pdf).
 
 ---
 
