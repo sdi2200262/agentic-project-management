@@ -21,6 +21,7 @@
   "author": "CobuterMan <haidemenoss@gmail.com>",
   "contributors": [],
   "license": "MPL-2.0",
+  "private": true,
   "type": "module",
   "bin": {
     "apm": "src/index.js"
