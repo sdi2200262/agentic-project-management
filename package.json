@@ -1,0 +1,36 @@
+{
+  "name": "agentic-pm",
+  "version": "0.5.0",
+  "description": "Agentic Project Management CLI",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdi2200262/agentic-project-management.git"
+  },
+  "keywords": [
+    "agentic",
+    "project-management",
+    "cli",
+    "apm"
+  ],
+  "author": "CobuterMan <haidemenoss@gmail.com>",
+  "contributors": [],
+  "license": "MPL-2.0",
+  "type": "module",
+  "bin": {
+    "apm": "src/index.js"
+  },
+  "bugs": {
+    "url": "https://github.com/sdi2200262/agentic-project-management/issues"
+  },
+  "homepage": "https://github.com/sdi2200262/agentic-project-management#readme",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "commander": "^14.0.1"
+  }
+}
