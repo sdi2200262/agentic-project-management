@@ -105,3 +105,6 @@ temp/
 
 # OS generated files
 Thumbs.db
+
+# Test assets for development
+test-assets/
