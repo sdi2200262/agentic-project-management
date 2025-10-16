@@ -1,4 +1,10 @@
-# APM v0.4 - Implementation Agent Handover Guide
+---
+priority: 6
+command_name: apm-6-perform-implementation-handover
+description: Guides an Implementation Agent through the handover procedure to a new agent instance
+---
+
+# APM {VERSION} - Implementation Agent Handover Guide
 This guide defines how Implementation Agents execute handover procedures to transfer task execution context to incoming Implementation Agent instances when approaching context window limits.
 
 ---
@@ -16,7 +22,7 @@ Handover procedures are only eligible when the current **complete task execution
 ### Task Execution Cycle Completion Requirements
 - **Task work fully completed**: All steps/instructions finished OR task blocked with clear blocker identification
 - **Ad-Hoc Agent delegation completed**: If any delegations occurred, findings integrated and documented
-- **Memory Log thoroughly completed**: All required fields filled following `guides/Memory_Log_Guide.md` specifications
+- **Memory Log thoroughly completed**: All required fields filled following {GUIDE_PATH:Memory_Log_Guide.md} specifications
 - **User reporting completed**: Task completion/issues/blockers reported to User for Manager Agent coordination
 
 ### Handover Blocking Scenarios  
@@ -66,7 +72,7 @@ Create Handover Artifacts following these templates:
 You are taking over as [Agent_Type X+1] for ongoing task execution from [Outgoing Agent X].
 
 ## Context Integration Protocol
-1. **Read Memory Log Guide** ([guides/Memory_Log_Guide.md]) to understand Memory Log structure and Implementation Agent logging responsibilities
+1. **Read Memory Log Guide** ({GUIDE_PATH:Memory_Log_Guide.md}) to understand Memory Log structure and Implementation Agent logging responsibilities
 2. **Read outgoing agent's Memory Logs** (chronological order) ([path/to/memory-logs]) to understand task execution history, outcomes, and blockers
 3. **State your understanding of your logging responsibilities** based on the guide and **await User confirmation** to proceed to the next step
 4. **Read Handover File** ([path/Agent_Type_Handover_File_X.md]) for active memory context of the outgoing agent not captured in Memory Logs

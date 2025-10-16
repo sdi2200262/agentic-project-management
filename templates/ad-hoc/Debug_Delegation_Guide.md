@@ -1,4 +1,10 @@
-# APM v0.4 - Debug Delegation Guide
+---
+priority: 8
+command_name: apm-8-delegate-debug
+description: Provides the template for delegating a complex debugging task to an Ad-Hoc agent
+---
+
+# APM {VERSION} - Debug Delegation Guide
 This guide defines how Implementation Agents delegate complex debugging work to Ad-Hoc Debug agents. Use this guide when encountering major bugs (> 2 exchanges OR immediately complex/systemic issues) as defined in Implementation Agent Initiation Prompt or if explicitly defined in Task Assignment Prompt.
 
 ---
@@ -86,7 +92,7 @@ delegation_attempt: [1|2|3|...]
 ### Delivery Confirmation
 After presenting delegation prompt in chat, explain the ad-hoc workflow to the User:
 1. Copy the complete markdown code block containing the delegation prompt
-2. Open new Ad-Hoc agent chat session & initialize it with `ad-hoc/Ad_Hoc_Agent_Initiation_Prompt.md`
+2. Open new Ad-Hoc agent chat session & initialize it with {GUIDE_PATH:Ad_Hoc_Agent_Initiation_Prompt.md}
 3. Paste delegation prompt to start ad-hoc work
 4. Return with findings for integration
 
