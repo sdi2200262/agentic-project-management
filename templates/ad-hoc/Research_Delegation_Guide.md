@@ -1,4 +1,10 @@
-# APM v0.4 - Research Delegation Guide
+---
+priority: 7
+command_name: apm-7-delegate-research
+description: Provides the template for delegating a research task to an Ad-Hoc agent
+---
+
+# APM {VERSION} - Research Delegation Guide
 This guide defines how Implementation Agents delegate research work to Ad-Hoc Research agents. Use this guide when encountering knowledge gaps about current documentation, APIs, SDKs, or technical specifications required for task completion.
 
 ---
@@ -69,7 +75,7 @@ delegation_attempt: [1|2|3|...]
 ### Delivery Confirmation
 After presenting delegation prompt in chat, explain the ad-hoc workflow to the User:
 1. Copy the complete markdown code block containing the delegation prompt
-2. Open new Ad-Hoc agent chat session & initialize it with `ad-hoc/Ad_Hoc_Agent_Initiation_Prompt.md`
+2. Open new Ad-Hoc agent chat session & initialize it with {GUIDE_PATH:Ad_Hoc_Agent_Initiation_Prompt.md}
 3. Paste delegation prompt to start ad-hoc work
 4. Return with findings for integration
 
