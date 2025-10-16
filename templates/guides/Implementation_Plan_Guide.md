@@ -1,7 +1,11 @@
-# APM v0.4 - Implementation Plan Format Guide
+# APM {VERSION} - Implementation Plan Format Guide
+
 This guide explains how to transform Implementation Plan files into detailed, structured APM artifacts and how to maintain them throughout APM sessions. Enhanced task details help Manager Agents create precise Task Assignment Prompts while preserving all task content and structure from the reviewed file. It also explains Manager Agent maintenance responsibilities of the live Implementation Plan artifact throughout an APM session.
 
-## 1. Implementation Plan Enhancement Overview
+---
+
+## 1  Implementation Plan Enhancement Overview
+
 Transform simple project decomposition file into detailed Implementation Plan artifact:
 
 **Enhancement Process:**
@@ -14,9 +18,11 @@ Task content, objectives, execution patterns, agent assignments, and dependencie
 **Enhancement Purpose:**
 Enable Manager Agents to create precise Task Assignment Prompts through detailed task specifications while maintaining all reviewed task boundaries and structure.
 
-## 2. Document Structure Specifications
+---
 
-### 2.1. Document Header (Lines 1-15)
+## 2  Document Structure Specifications
+
+### 2.1  Document Header (Lines 1-15)
 ```markdown
 # <Project Name> – Implementation Plan 
 
@@ -26,7 +32,7 @@ Enable Manager Agents to create precise Task Assignment Prompts through detailed
 ```
 Keep this header < 15 lines so diff tools can catch version bumps cheaply.
 
-### 2.2. Phase Sections
+### 2.2  Phase Sections
 - Use level 2 headings (`##`) for phases: `## Phase <n>: <Name>`.
 - Each phase groups related tasks as determined during project decomposition
 - For small or strictly linear projects, omit phases and list tasks directly under the header.
@@ -75,10 +81,14 @@ At phase completion, append summaries to Implementation Plan under current phase
 > Compatibility Notes: ...
 ```
 
-## 3. JSON Variant Specification
+---
+
+## 3  JSON Variant Specification
 JSON Implementation Plans follow identical rules and structure as Markdown but use schema validation at `/prompts/schemas/implementation_plan.schema.json`. All requirements for task meta-fields, agent assignments, dependencies, summaries, and detailed specifications apply as described above.
 
-## 4. Setup Agent Responsibilities
+---
+
+## 4  Setup Agent Responsibilities
 Transform reviewed Implementation Plan file into detailed APM artifact:
 
 ### 4.1. Enhancement Process
@@ -113,7 +123,9 @@ Transform reviewed Implementation Plan file into detailed APM artifact:
 - Iterate and refine current phase enhancement based on user feedback until the phase provides the necessary detail for systematic and effective task execution
 - Proceed to next phase only after current phase is complete and approved
 
-## 5. Manager Agent Responsibilities
+---
+
+## 5  Manager Agent Responsibilities
 Maintain detailed Implementation Plan throughout APM session:
 
 ### 5.1. Plan Validation & Improvement

@@ -1,4 +1,4 @@
-# APM v0.4 - Memory Log Guide
+# APM {VERSION} - Memory Log Guide
 This guide defines how Implementation Agents log their work for Manager Agents and Users. Memory Logs capture task-level context using two format variants:
 - Markdown (Simple & Dynamic-MD)
 - JSON (Dynamic-JSON)

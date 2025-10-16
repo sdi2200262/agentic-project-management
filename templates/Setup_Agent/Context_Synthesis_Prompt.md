@@ -1,4 +1,4 @@
-# APM v0.4 - Context Synthesis Prompt
+# APM {VERSION} - Context Synthesis Prompt
 This prompt helps the Setup Agent collect all information needed to build an accurate and detailed Implementation Plan and choose an appropriate memory strategy. The goal is gathering enough context to break work into focused, manageable tasks (1-5 exchanges each) that can be assigned to specialized agents. At this stage, the Setup Agent passes control flow to this prompt.
 
 ## Principles for Discovery & Objectives

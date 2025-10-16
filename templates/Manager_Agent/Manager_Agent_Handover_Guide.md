@@ -1,4 +1,10 @@
-# APM v0.4 - Manager Agent Handover Guide
+---
+priority: 5
+command_name: apm-5-perform-manager-handover
+description: Guides a Manager Agent through the handover procedure to a new agent instance.
+---
+
+# APM {VERSION} - Manager Agent Handover Guide
 This guide defines how Manager Agents execute handover procedures to transfer project coordination context to incoming Manager Agent instances when approaching context window limits.
 
 ---
@@ -66,12 +72,12 @@ Create Generate Handover Artifacts following these templates:
 You are taking over as Manager Agent X+1 from [Outgoing Manager Agent X].
 
 ## APM Context Integration Protocol
-1. **Read Implementation Plan Guide** ([guides/Implementation_Plan_Guide.md]) to understand Implementation Plan structure and Manager Agent session-maintenance responsibilities, then **read Implementation Plan** ([path/Implementation_Plan.md/json]) for current phase status and task assignments
-2. **Read Memory System Guide** ([guides/Memory_System_Guide.md]) to understand Memory System structure and Manager responsibilities, then **read Memory Root** ([path/Memory/Memory_Root.md or Memory_Bank.md]) for phase summaries and coordination history
-3. **Read Memory Log Guide** ([guides/Memory_Log_Guide.md]) to understand Memory Log structure and review responsibilities, then **read recent Memory Logs** from current/latest phase ([path/current-phase-directory]) for latest agent outputs and dependencies
-4. **Read Task Assignment Guide** ([guides/Task_Assignment_Guide.md]) to understand Task Assignment structure and agent coordination responsibilities
+1. **Read Implementation Plan Guide** ({GUIDE_PATH:Implementation_Plan_Guide.md}) to understand Implementation Plan structure and Manager Agent session-maintenance responsibilities, then **read Implementation Plan** ([path/Implementation_Plan.md/json]) for current phase status and task assignments
+2. **Read Memory System Guide** ({GUIDE_PATH:Memory_System_Guide.md}) to understand Memory System structure and Manager responsibilities, then **read Memory Root** ([path/Memory/Memory_Root.md or Memory_Bank.md]) for phase summaries and coordination history
+3. **Read Memory Log Guide** ({GUIDE_PATH:Memory_Log_Guide.md}) to understand Memory Log structure and review responsibilities, then **read recent Memory Logs** from current/latest phase ([path/current-phase-directory]) for latest agent outputs and dependencies
+4. **Read Task Assignment Guide** ({GUIDE_PATH:Task_Assignment_Guide.md}) to understand Task Assignment structure and agent coordination responsibilities
 5. **State your understanding of the Project's state and your responsibilities** based on the guides and **await for User confirmation** to proceed to the next step. 
-5. **Read Handover File** ([path/Manager_Agent_Handover_File_X.md]) for active memory context of the outgoing agent not captured in formal logs
+6. **Read Handover File** ([path/Manager_Agent_Handover_File_X.md]) for active memory context of the outgoing agent not captured in formal logs
 
 ## Cross-Reference Validation
 Compare Handover File active memory against Implementation Plan current state and Memory Log outcomes. Note contradictions for User clarification.

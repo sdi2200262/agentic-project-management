@@ -1,4 +1,4 @@
-# APM v0.4 - Task Assignment Guide
+# APM {VERSION} - Task Assignment Guide
 This guide defines how Manager Agents issue task assignments to Implementation Agents and evaluate their completion. It defines two Task Assignment Prompt variants:
 - Markdown
 - JSON
