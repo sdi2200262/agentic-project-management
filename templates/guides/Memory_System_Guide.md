@@ -1,4 +1,4 @@
-# APM v0.4 - Memory System Guide 
+# APM {VERSION}- Memory System Guide 
 This guide explains how APM sessions store and evolve memory. It defines three Memory System variants:
 - Simple
 - Dynamic-MD

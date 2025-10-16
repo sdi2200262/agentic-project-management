@@ -1,4 +1,4 @@
-# APM v0.4 - Project Breakdown Review Guide
+# APM {VERSION} - Project Breakdown Review Guide
 This guide defines how Setup Agents conduct targeted, user-selected review of Implementation Plans to detect and fix critical task quality issues before enhancement. Using fresh context from Implementation Plan creation, agents propose specific areas for systematic review and let users choose which sections receive detailed analysis.
 
 ---

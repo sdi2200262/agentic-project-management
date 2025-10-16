@@ -1,4 +1,4 @@
-# APM v0.4 - Project Breakdown Guide
+# APM {VERSION} - Project Breakdown Guide
 This guide defines how Setup Agents transform Context Synthesis findings into structured, agent-assigned task breakdowns. Following systematic high-level-to-detail methodology, it prevents template matching through strategic workflow sequencing and chat-to-file output switching. The guide ensures task breakdown precision required for Implementation Agent success while minimizing Manager Agent coordination overhead.
 
 ## 1. Context Integration & Breakdown Overview
