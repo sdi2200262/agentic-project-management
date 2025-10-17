@@ -2,7 +2,10 @@ import fs from 'fs-extra';
 import yaml from 'js-yaml';
 import path from 'path';
 
-// Read and parse build-config.json
+/**
+ * Loads and parses the build configuration from build-config.json
+ * @returns {Promise<Object>} The parsed configuration object
+ */
 async function loadConfig() {
   const configPath = 'build-config.json';
   if (!await fs.pathExists(configPath)) {
@@ -12,7 +15,11 @@ async function loadConfig() {
   return JSON.parse(configContent);
 }
 
-// Recursively find all .md files in sourceDir, ignoring README.md
+/**
+ * Recursively finds all .md files in the source directory, excluding README.md
+ * @param {string} sourceDir - The directory to search in
+ * @returns {Promise<string[]>} Array of file paths
+ */
 async function findMdFiles(sourceDir) {
   const files = [];
   const items = await fs.readdir(sourceDir, { withFileTypes: true });
@@ -29,7 +36,11 @@ async function findMdFiles(sourceDir) {
   return files;
 }
 
-// Read file content and parse YAML frontmatter
+/**
+ * Parses YAML frontmatter from markdown content
+ * @param {string} content - The markdown content
+ * @returns {Object} Object with frontmatter and body content
+ */
 function parseFrontmatter(content) {
   const lines = content.split('\n');
   if (lines[0] !== '---') {
@@ -54,18 +65,24 @@ function parseFrontmatter(content) {
   return { frontmatter, content: body };
 }
 
-// Replace placeholders in content
+/**
+ * Replaces placeholders in template content with actual values
+ * @param {string} content - The content to process
+ * @param {string} version - Version string to replace {VERSION}
+ * @param {Object} targetDirectories - Directory configuration for the target
+ * @returns {string} Content with placeholders replaced
+ */
 function replacePlaceholders(content, version, targetDirectories) {
   let replaced = content
     .replace(/{VERSION}/g, version)
     .replace(/{TIMESTAMP}/g, new Date().toISOString());
 
-  // Replace GUIDE_PATH placeholders
+  // Replace GUIDE_PATH placeholders with relative paths
   replaced = replaced.replace(/{GUIDE_PATH:([^}]+)}/g, (match, filename) => {
     return path.join(targetDirectories.guides, filename);
   });
 
-  // Replace COMMAND_PATH placeholders
+  // Replace COMMAND_PATH placeholders with relative paths
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (match, filename) => {
     return path.join(targetDirectories.commands, filename);
   });
@@ -73,7 +90,10 @@ function replacePlaceholders(content, version, targetDirectories) {
   return replaced;
 }
 
-// Test the replacePlaceholders function
+/**
+ * Unit test for the replacePlaceholders function
+ * @returns {boolean} True if all tests pass
+ */
 function testReplacePlaceholders() {
   const testContent = `
 # APM {VERSION} - Test Guide
@@ -111,7 +131,9 @@ And .cursor/commands/some-command.md for commands.
   return versionReplaced && guideReplaced && commandReplaced && timestampPresent;
 }
 
-// Example usage for testing
+/**
+ * Main execution function for testing and development
+ */
 async function main() {
   try {
     const config = await loadConfig();
@@ -121,6 +143,22 @@ async function main() {
     const mdFiles = await findMdFiles(sourceDir);
     console.log('Found .md files:', mdFiles.length);
 
+    // Find a file with COMMAND_PATH for testing
+    const commandPathFile = mdFiles.find(file => file.includes('Research_Delegation_Guide.md'));
+    if (commandPathFile) {
+      console.log('\n--- Testing COMMAND_PATH replacement ---');
+      const content = await fs.readFile(commandPathFile, 'utf8');
+      const replaced = replacePlaceholders(content, '0.5.0', config.targets[0].directories);
+      
+      // Find the line with COMMAND_PATH
+      const originalLine = content.split('\n').find(line => line.includes('COMMAND_PATH'));
+      const replacedLine = replaced.split('\n').find(line => line.includes('.github/prompts'));
+      
+      console.log('Original line:', originalLine);
+      console.log('Replaced line:', replacedLine);
+      console.log('--- End COMMAND_PATH Test ---\n');
+    }
+
     if (mdFiles.length > 0) {
       const sampleFile = mdFiles[0];
       const content = await fs.readFile(sampleFile, 'utf8');
@@ -129,6 +167,8 @@ async function main() {
 
       // Test placeholder replacement
       const replaced = replacePlaceholders(content, '0.5.0', config.targets[0].directories);
+      console.log('Original sample content (first 200 chars):', content.substring(0, 200));
+      console.log('Replaced sample content (first 200 chars):', replaced.substring(0, 200));
       console.log('Placeholders replaced in sample content');
     }
 
