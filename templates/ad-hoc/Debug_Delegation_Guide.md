@@ -92,7 +92,7 @@ delegation_attempt: [1|2|3|...]
 ### Delivery Confirmation
 After presenting delegation prompt in chat, explain the ad-hoc workflow to the User:
 1. Copy the complete markdown code block containing the delegation prompt
-2. Open new Ad-Hoc agent chat session & initialize it with {GUIDE_PATH:Ad_Hoc_Agent_Initiation_Prompt.md}
+2. Open new Ad-Hoc agent chat session & initialize it with {COMMAND_PATH:Ad_Hoc_Agent_Initiation_Prompt.md}
 3. Paste delegation prompt to start ad-hoc work
 4. Return with findings for integration
 
