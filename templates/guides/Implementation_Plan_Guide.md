@@ -171,7 +171,7 @@ Maintain detailed Implementation Plan throughout APM session:
 
 **Documentation:**
 - Write detailed phase summaries in Memory Root using enhanced task context
-- Add concise phase summaries to plan before next phase following Memory System Guide({GUIDE_PATH:Memory_System_Guide.md})
+- Add concise phase summaries to plan before next phase following {GUIDE_PATH:Memory_System_Guide.md}
 - Maintain comprehensive project documentation through enhanced plan structure
 
 ---

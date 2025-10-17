@@ -50,7 +50,7 @@ Ask the following, in order:
 
 ## 3 Project Breakdown & Plan Creation Phase
 1. Read {GUIDE_PATH:Project_Breakdown_Guide.md} (if indexed) or request from User if not available.
-2. Generate a simple `Implementation_Plan.md` in the `apm/` directory, using systematic project breakdown following guide methodology ({GUIDE_PATH:Implemetation_Plan_Guide.md}).
+2. Generate a simple `Implementation_Plan.md` in the `apm/` directory, using systematic project breakdown following guide methodology.
 3. **Immediate User Review Request:** After presenting the initial Implementation Plan, include the exact following prompt to the User in the same response:
 
 "Please review the Implementation Plan for any **major gaps, poor translation of requirements into tasks, or critical issues that need immediate attention**. Are there any obvious problems that should be addressed right now?
@@ -68,7 +68,7 @@ The systematic review will also highlight areas where your input is needed for o
 1. **Handle Immediate Issues:** If User identifies issues, iterate with User to address them until explicit confirmation that all issues are resolved
 2. **ALWAYS Present Systematic Review Choice:** After any manual modifications are complete (or if no issues were identified), ask User to choose:
    - **Skip Systematic Review** and continue to Enhancement phase to save tokens, or
-   - **Proceed to Systematic Review** by reading the guide and initiating the procedure following the guidelines
+   - **Proceed to Systematic Review** by reading {GUIDE_PATH:Project_Breakdown_Guide_Review.md} and initiating the procedure following the guidelines
 3. **Proceed Based on Choice:** Continue to chosen next phase
 4. Before proceeding, explicitly announce the chosen next phase (e.g., "Next phase: Project Breakdown Review & Refinement" or "Next phase: Enhancement & Memory Root Creation").
 
