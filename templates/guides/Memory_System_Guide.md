@@ -4,7 +4,7 @@ This guide explains how APM sessions store and evolve memory. It defines three M
 - Dynamic-MD
 - Dynamic-JSON
 
-Memory duties are split between the *Setup Agent* and the *Manager Agent*. Details on individual Memory Log files reside in `guides/Memory_Log_Guide.md`.
+Memory duties are split between the *Setup Agent* and the *Manager Agent*. Details on individual Memory Log files reside in {GUIDE_PATH:Memory_Log_Guide.md}.
 
 ## 1  Memory System Variant Overview
 Summary of the three Memory System variants, their storage layouts, log formats and memory summarization strategies:
@@ -29,7 +29,7 @@ Summary of the three Memory System variants, their storage layouts, log formats 
         - Experimental only; not suitable for production or resource-constrained use due to much higher token consumption
         - **WARNING:** JSON artifacts consume at least 15% more tokens, often 2x–3x higher than Markdown, and will fill the context window much faster, resulting in more frequent Handovers and context resets
 
-**Memory Logs** capture granular, task-level context and are written by Implementation Agents after each task completion. See `guides/Memory_Log_Guide.md` for schemas and writing rules.
+**Memory Logs** capture granular, task-level context and are written by Implementation Agents after each task completion. See{GUIDE_PATH:Memory_Log_Guide.md} for schemas and writing rules.
 
 ## 2  Setup Agent Responsibilities
 Main responsibilities of the Setup Agent when initializing the Memory System for an APM session:
@@ -106,7 +106,7 @@ Main responsibilities of the Manager Agent when maintaining the Memory System du
     (≤ 20 lines)
 
 ### Dynamic-MD and Dynamic-JSON
-1. On phase entry, create `Memory/Phase_XX_<slug>/` if missing. For each task in the phase, create a **completely empty** Memory Log, following `guides/Memory_Log_Guide.md`:
+1. On phase entry, create `Memory/Phase_XX_<slug>/` if missing. For each task in the phase, create a **completely empty** Memory Log, following {GUIDE_PATH:Memory_Log_Guide.md}:
     - `Task_Y_Z_<slug>.md` (Dynamic-MD)
     - `Task_Y_Z_<slug>.json` (Dynamic-JSON)
 

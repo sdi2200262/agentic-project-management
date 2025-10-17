@@ -41,7 +41,7 @@ Strategic context switching prevents pattern matching:
 **File Operations**: Document each completed phase cycle, agent splitting updates, cross-agent dependency additions
 **Context Breaks**: File writes interrupt continuous chat writing, providing fresh perspective for each subsequent phases thus avoiding pattern-matching
 
-Simple file format (basic indentation, minimal structure - see §4.6) prevents template formation while preserving content for later formatting through `guides/Implementation_Plan_Guide.md`
+Simple file format (basic indentation, minimal structure - see §4.6) prevents template formation while preserving content for later formatting through {GUIDE_PATH:Implementation_Plan_Guide.md}
 
 ## 2. Domain Analysis & Agent Assignment
 
@@ -207,7 +207,7 @@ Determine appropriate task content:
 - **If Multi-step**: "This needs [X] steps because [workflow dependency analysis]. Each step represents [natural progression]."
 
 **Content Definition:**
-- If flagged in §4.1, first add an ad-hoc delegation step: "Ad-Hoc Delegation – <purpose>" (optional ref to `ad-hoc/Research_Delegation_Guide.md` or `ad-hoc/Debug_Delegation_Guide.md`), then continue
+- If flagged in §4.1, first add an ad-hoc delegation step: "Ad-Hoc Delegation – <purpose>" (optional ref to {GUIDE_PATH:Research_Delegation_Guide.md} or {GUIDE_PATH:Debug_Delegation_Guide.md}), then continue
 - [Present actual bullets or steps with applied reasoning]
 
 **Task [X.Y] analysis complete** ← State this before proceeding to next task
@@ -299,6 +299,6 @@ Present **in chat** high-level plan statistics:
 - Reference detailed breakdown reasoning from previous chat exchanges (§2-§4)
 - Confirm that Context Synthesis insights, including process requirements and quality standards, are reflected in task specifications
 - Handle modification requests through targeted revisions to affected plan sections
-- Iterate until explicit User approval to proceed to Project Breakdown Review Guide
+- Iterate until explicit User approval to proceed to Project Breakdown Review Guide ({GUIDE_PATH:Project_Breakdown_Review_Guide.md})
 
 **End of Guide**
