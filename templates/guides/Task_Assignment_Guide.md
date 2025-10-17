@@ -78,11 +78,11 @@ Implementation Plan: **Task X.Y - [Title]** assigned to **[Agent_<Domain>]**
 
 ## Memory Logging
 Upon completion, you **MUST** log work in: `[memory_log_path]`
-Follow `guides/Memory_Log_Guide.md` instructions.
+Follow {GUIDE_PATH:Memory_Log_Guide.md} instructions.
 
 ## Ad-Hoc Delegation
 [Only include if ad_hoc_delegation: true]
-[Manager fills this section with section §7 content guidance, including explicit guide references for Debug/Research delegations]
+[Manager fills this section with section §7 content guidance, including explicit guide references for Debug/Research delegations({GUIDE_PATH:Debug_Delegation_Guide.md} or {GUIDE_PATH:Research_Delegation_Guide.md})]
 ```
 
 ### 2.4. Delivery Format  
@@ -205,7 +205,7 @@ If [specific integration aspect] is ambiguous after completing integration steps
 - Include User clarification protocol for complex integrations
 
 ## 5. Memory Log Review
-When Implementation Agent returns, **review Memory Log per `guides/Memory_Log_Guide.md` section §5**. Assess task completion status, identify blockers, and verify outputs match Implementation Plan expectations.
+When Implementation Agent returns, **review Memory Log per {GUIDE_PATH:Memory_Log_Guide.md} section §5**. Assess task completion status, identify blockers, and verify outputs match Implementation Plan expectations.
 
 ## 6. Next Action Framework
 Based on log review, determine appropriate next step:
@@ -234,8 +234,8 @@ When Implementation Plan contains explicit delegation steps, Manager Agents must
 - Specify what to delegate and expected deliverables in prompt
 
 **Standard Delegation Guide References**:
-- **Debug Delegation**: Reference `ad-hoc/Debug_Delegation_Guide.md`
-- **Research Delegation**: Reference `ad-hoc/Research_Delegation_Guide.md`  
+- **Debug Delegation**: Reference {GUIDE_PATH:Debug_Delegation_Guide.md}
+- **Research Delegation**: Reference {GUIDE_PATH:Debug_Delegation_Guide.md}  
 - **Custom Delegations**: Reference appropriate custom guides if available
 
 ### 7.2. Integration Requirements
