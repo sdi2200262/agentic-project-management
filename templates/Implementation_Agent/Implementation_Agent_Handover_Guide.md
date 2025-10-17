@@ -72,7 +72,7 @@ Create Handover Artifacts following these templates:
 You are taking over as [Agent_Type X+1] for ongoing task execution from [Outgoing Agent X].
 
 ## Context Integration Protocol
-1. **Read Memory Log Guide** ({GUIDE_PATH:Memory_Log_Guide.md}) to understand Memory Log structure and Implementation Agent logging responsibilities
+1. **Read {GUIDE_PATH:Memory_Log_Guide.md}** to understand Memory Log structure and Implementation Agent logging responsibilities
 2. **Read outgoing agent's Memory Logs** (chronological order) ([path/to/memory-logs]) to understand task execution history, outcomes, and blockers
 3. **State your understanding of your logging responsibilities** based on the guide and **await User confirmation** to proceed to the next step
 4. **Read Handover File** ([path/Agent_Type_Handover_File_X.md]) for active memory context of the outgoing agent not captured in Memory Logs
