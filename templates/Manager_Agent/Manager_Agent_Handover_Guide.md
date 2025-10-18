@@ -1,6 +1,6 @@
 ---
 priority: 5
-command_name: apm-5-perform-manager-handover
+command_name: handover-manager
 description: Guides a Manager Agent through the handover procedure to a new agent instance.
 ---
 

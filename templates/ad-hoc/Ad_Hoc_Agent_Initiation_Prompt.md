@@ -1,6 +1,6 @@
 ---
 priority: 4
-command_name: apm-4-initiate-adhoc
+command_name: initiate-adhoc
 description: Initializes a temporary Ad-Hoc Agent for an isolated task (e.g., debugging)
 ---
 
