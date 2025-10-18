@@ -1,6 +1,6 @@
 ---
 priority: 1
-command_name: apm-1-initiate-setup
+command_name: initiate-setup
 description: Initializes a new APM project session and starts the 6-step setup phase.
 ---
 
