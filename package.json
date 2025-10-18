@@ -6,7 +6,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run --reporter=basic",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -36,5 +37,8 @@
     "commander": "^11.1.0",
     "fs-extra": "^11.2.0",
     "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.3"
   }
 }

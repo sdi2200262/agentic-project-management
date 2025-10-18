@@ -1,24 +1,36 @@
+/**
+ * APM Build Script
+ * 
+ * Generates AI assistant-specific command bundles from markdown templates.
+ * Supports Markdown (Claude, Copilot, etc.) and TOML (Gemini, Qwen) formats.
+ * 
+ * Usage: node build.js
+ */
+
 import fs from 'fs-extra';
 import yaml from 'js-yaml';
 import path from 'path';
 
 /**
- * Loads and parses the build configuration from build-config.json
- * @returns {Promise<Object>} The parsed configuration object
+ * Loads and parses build-config.json
+ * @returns {Promise<Object>} Configuration with build settings and target assistants
+ * @throws {Error} If config file not found or invalid JSON
  */
 async function loadConfig() {
   const configPath = 'build-config.json';
+  
   if (!await fs.pathExists(configPath)) {
     throw new Error('build-config.json not found');
   }
+  
   const configContent = await fs.readFile(configPath, 'utf8');
   return JSON.parse(configContent);
 }
 
 /**
- * Recursively finds all .md files in the source directory, excluding README.md
- * @param {string} sourceDir - The directory to search in
- * @returns {Promise<string[]>} Array of file paths
+ * Recursively finds all .md template files, excluding README.md
+ * @param {string} sourceDir - Directory to search
+ * @returns {Promise<string[]>} Array of markdown file paths
  */
 async function findMdFiles(sourceDir) {
   const files = [];
@@ -26,6 +38,7 @@ async function findMdFiles(sourceDir) {
 
   for (const item of items) {
     const fullPath = path.join(sourceDir, item.name);
+    
     if (item.isDirectory()) {
       files.push(...await findMdFiles(fullPath));
     } else if (item.isFile() && item.name.endsWith('.md') && item.name !== 'README.md') {
@@ -38,11 +51,12 @@ async function findMdFiles(sourceDir) {
 
 /**
  * Parses YAML frontmatter from markdown content
- * @param {string} content - The markdown content
- * @returns {Object} Object with frontmatter and body content
+ * @param {string} content - Markdown content with potential frontmatter
+ * @returns {Object} Object with {frontmatter, content} properties
  */
 function parseFrontmatter(content) {
   const lines = content.split('\n');
+  
   if (lines[0] !== '---') {
     return { frontmatter: {}, content };
   }
@@ -66,33 +80,43 @@ function parseFrontmatter(content) {
 }
 
 /**
- * Replaces placeholders in template content with actual values
- * @param {string} content - The content to process
- * @param {string} version - Version string to replace {VERSION}
- * @param {Object} targetDirectories - Directory configuration for the target
+ * Replaces template placeholders with target-specific values
+ * 
+ * Supported placeholders:
+ * - {VERSION}: Package version
+ * - {TIMESTAMP}: ISO timestamp
+ * - {GUIDE_PATH:filename}: Path to guide file
+ * - {COMMAND_PATH:filename}: Path to command file
+ * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
+ * 
+ * @param {string} content - Template content with placeholders
+ * @param {string} version - Version string
+ * @param {Object} targetDirectories - Target directory configuration
+ * @param {string} format - Target format ('markdown' or 'toml')
  * @returns {string} Content with placeholders replaced
  */
-function replacePlaceholders(content, version, targetDirectories) {
+function replacePlaceholders(content, version, targetDirectories, format) {
   let replaced = content
     .replace(/{VERSION}/g, version)
     .replace(/{TIMESTAMP}/g, new Date().toISOString());
 
-  // Replace GUIDE_PATH placeholders with relative paths
   replaced = replaced.replace(/{GUIDE_PATH:([^}]+)}/g, (_match, filename) => {
     return path.join(targetDirectories.guides, filename);
   });
 
-  // Replace COMMAND_PATH placeholders with relative paths
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, filename) => {
     return path.join(targetDirectories.commands, filename);
   });
+
+  const argsPlaceholder = format === 'toml' ? '{{args}}' : '$ARGUMENTS';
+  replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
 
   return replaced;
 }
 
 /**
- * Main build function that orchestrates the entire build process
- * @param {Object} config - The build configuration
+ * Main build function - processes templates for all target assistants
+ * @param {Object} config - Build configuration from build-config.json
  * @param {string} version - Version string for placeholder replacement
  * @returns {Promise<void>}
  */
@@ -100,7 +124,6 @@ async function build(config, version) {
   const { build: buildConfig, targets } = config;
   const { outputDir, cleanOutput } = buildConfig;
 
-  // Create clean output directory
   if (cleanOutput) {
     await fs.emptyDir(outputDir);
   } else {
@@ -109,7 +132,6 @@ async function build(config, version) {
 
   console.log(`Building ${targets.length} targets to ${outputDir}...`);
 
-  // Process each target
   for (const target of targets) {
     const targetBuildDir = path.join(outputDir, `${target.id}-build`);
     const commandsDir = path.join(targetBuildDir, 'commands');
@@ -117,46 +139,78 @@ async function build(config, version) {
 
     console.log(`\nProcessing target: ${target.name} (${target.id})`);
 
-    // Create target build directories
     await fs.ensureDir(commandsDir);
     await fs.ensureDir(guidesDir);
 
-    // Find all template files
     const templateFiles = await findMdFiles(buildConfig.sourceDir);
     console.log(`Found ${templateFiles.length} template files`);
 
-    // Process each template file
     for (const templatePath of templateFiles) {
       const content = await fs.readFile(templatePath, 'utf8');
       const { frontmatter } = parseFrontmatter(content);
 
-      // Categorize as command or guide based on frontmatter
       const isCommand = frontmatter.command_name !== undefined;
       const category = isCommand ? 'command' : 'guide';
 
-      // Replace placeholders
-      const processedContent = replacePlaceholders(content, version, target.directories);
+      let processedContent = replacePlaceholders(content, version, target.directories, target.format);
 
-      // Determine output filename
       const originalFilename = path.basename(templatePath, '.md');
       let outputFilename;
+      let fileExtension;
+      let finalContent;
+
       if (isCommand && frontmatter.command_name) {
-        // Construct full command name: apm-{priority}-{command_name}
+        // Command files: apm-{priority}-{command_name}
         const fullCommandName = `apm-${frontmatter.priority}-${frontmatter.command_name}`;
-        outputFilename = `${fullCommandName}.md`;
+
+        if (target.format === 'toml') {
+          // TOML format for Gemini/Qwen CLI
+          fileExtension = '.toml';
+          outputFilename = `${fullCommandName}${fileExtension}`;
+
+          const description = frontmatter.description || 'APM command';
+
+          // Remove description from frontmatter to avoid duplication in TOML
+          const lines = processedContent.split('\n');
+          let inFrontmatter = false;
+          let skipDescription = false;
+          const filteredLines = [];
+
+          for (const line of lines) {
+            if (line.trim() === '---') {
+              inFrontmatter = !inFrontmatter;
+              skipDescription = false;
+              filteredLines.push(line);
+            } else if (inFrontmatter && line.trim().startsWith('description:')) {
+              skipDescription = true;
+            } else if (inFrontmatter && skipDescription && line.match(/^[ \t]/)) {
+              // Skip multiline description continuation
+            } else {
+              filteredLines.push(line);
+              skipDescription = false;
+            }
+          }
+
+          const contentWithoutDescription = filteredLines.join('\n');
+          finalContent = `description = "${description}"\n\nprompt = """\n${contentWithoutDescription}\n"""\n`;
+        } else {
+          // Markdown format for most assistants
+          fileExtension = '.md';
+          outputFilename = `${fullCommandName}${fileExtension}`;
+          finalContent = processedContent;
+        }
       } else {
-        // Keep original filename for guides
-        outputFilename = `${originalFilename}.md`;
+        // Guide files: keep original name, always markdown
+        fileExtension = '.md';
+        outputFilename = `${originalFilename}${fileExtension}`;
+        finalContent = processedContent;
       }
 
-      // Determine output directory
       const outputDirPath = isCommand ? commandsDir : guidesDir;
       const outputPath = path.join(outputDirPath, outputFilename);
 
-      // Write file
-      await fs.writeFile(outputPath, processedContent);
-
-      console.log(`  ${category}: ${originalFilename}.md → ${path.relative(outputDir, outputPath)}`);
+      await fs.writeFile(outputPath, finalContent);
+      console.log(`  ${category}: ${originalFilename}.md → ${path.relative(targetBuildDir, outputPath)}`);
     }
 
     console.log(`Completed target: ${target.name}`);
@@ -166,22 +220,28 @@ async function build(config, version) {
 }
 
 /**
- * Main execution function
+ * Main entry point - loads config and executes build
  */
 async function main() {
   try {
     const config = await loadConfig();
-    const version = '0.5.0'; // In a real implementation, this would come from package.json or CLI args
+    
+    // Read version dynamically from package.json
+    const packageJson = await fs.readFile('package.json', 'utf8');
+    const { version } = JSON.parse(packageJson);
 
     await build(config, version);
+
   } catch (error) {
     console.error('Build failed:', error.message);
     process.exit(1);
   }
 }
 
+// Export functions for testing
 export { loadConfig, findMdFiles, parseFrontmatter, replacePlaceholders, build };
 
+// Run build when executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }
