@@ -10,6 +10,7 @@
 import fs from 'fs-extra';
 import yaml from 'js-yaml';
 import path from 'path';
+import archiver from 'archiver';
 
 /**
  * Loads and parses build-config.json
@@ -119,6 +120,32 @@ function replacePlaceholders(content, version, targetDirectories, format, now = 
 }
 
 /**
+ * Creates a ZIP archive from a directory
+ * @param {string} sourceDir - Directory to compress
+ * @param {string} outputPath - Path for the output .zip file
+ * @returns {Promise<void>}
+ * @throws {Error} If archiving fails
+ */
+async function createZipArchive(sourceDir, outputPath) {
+  return new Promise((resolve, reject) => {
+    const output = fs.createWriteStream(outputPath);
+    const archive = archiver('zip', { zlib: { level: 9 } });
+
+    output.on('close', () => {
+      resolve();
+    });
+
+    archive.on('error', (err) => {
+      reject(err);
+    });
+
+    archive.pipe(output);
+    archive.directory(sourceDir, false);
+    archive.finalize();
+  });
+}
+
+/**
  * Main build function - processes templates for all target assistants
  * @param {Object} config - Build configuration from build-config.json
  * @param {string} version - Version string for placeholder replacement
@@ -198,6 +225,22 @@ async function build(config, version) {
     }
 
     console.log(`Completed target: ${target.name}`);
+
+    // Create ZIP archive from build directory
+    const zipPath = path.join(outputDir, target.bundleName);
+    console.log(`Creating archive: ${target.bundleName}...`);
+    
+    try {
+      await createZipArchive(targetBuildDir, zipPath);
+      console.log(`Archive created successfully: ${target.bundleName}`);
+      
+      // Clean up temporary build directory
+      await fs.remove(targetBuildDir);
+      console.log(`Cleaned up temporary directory: ${path.basename(targetBuildDir)}`);
+    } catch (error) {
+      console.error(`Failed to create archive for ${target.name}:`, error.message);
+      throw error;
+    }
   }
 
   console.log('\nBuild completed successfully!');
@@ -223,7 +266,7 @@ async function main() {
 }
 
 // Export functions for testing
-export { loadConfig, findMdFiles, parseFrontmatter, replacePlaceholders, build };
+export { loadConfig, findMdFiles, parseFrontmatter, replacePlaceholders, createZipArchive, build };
 
 // Run build when executed directly
 if (import.meta.url === `file://${process.argv[1]}`) {

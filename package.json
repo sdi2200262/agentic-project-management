@@ -39,6 +39,7 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
+    "archiver": "^7.0.1",
     "vitest": "^2.1.3"
   }
 }
