@@ -91,51 +91,95 @@ function replacePlaceholders(content, version, targetDirectories) {
 }
 
 /**
- * Main execution function for testing and development
+ * Main build function that orchestrates the entire build process
+ * @param {Object} config - The build configuration
+ * @param {string} version - Version string for placeholder replacement
+ * @returns {Promise<void>}
+ */
+async function build(config, version) {
+  const { build: buildConfig, targets } = config;
+  const { outputDir, cleanOutput } = buildConfig;
+
+  // Create clean output directory
+  if (cleanOutput) {
+    await fs.emptyDir(outputDir);
+  } else {
+    await fs.ensureDir(outputDir);
+  }
+
+  console.log(`Building ${targets.length} targets to ${outputDir}...`);
+
+  // Process each target
+  for (const target of targets) {
+    const targetBuildDir = path.join(outputDir, `${target.id}-build`);
+    const commandsDir = path.join(targetBuildDir, 'commands');
+    const guidesDir = path.join(targetBuildDir, 'guides');
+
+    console.log(`\nProcessing target: ${target.name} (${target.id})`);
+
+    // Create target build directories
+    await fs.ensureDir(commandsDir);
+    await fs.ensureDir(guidesDir);
+
+    // Find all template files
+    const templateFiles = await findMdFiles(buildConfig.sourceDir);
+    console.log(`Found ${templateFiles.length} template files`);
+
+    // Process each template file
+    for (const templatePath of templateFiles) {
+      const content = await fs.readFile(templatePath, 'utf8');
+      const { frontmatter } = parseFrontmatter(content);
+
+      // Categorize as command or guide based on frontmatter
+      const isCommand = frontmatter.command_name !== undefined;
+      const category = isCommand ? 'command' : 'guide';
+
+      // Replace placeholders
+      const processedContent = replacePlaceholders(content, version, target.directories);
+
+      // Determine output filename
+      const originalFilename = path.basename(templatePath, '.md');
+      let outputFilename;
+      if (isCommand && frontmatter.command_name) {
+        // Use command_name for commands
+        outputFilename = `${frontmatter.command_name}.md`;
+      } else {
+        // Keep original filename for guides
+        outputFilename = `${originalFilename}.md`;
+      }
+
+      // Determine output directory
+      const outputDirPath = isCommand ? commandsDir : guidesDir;
+      const outputPath = path.join(outputDirPath, outputFilename);
+
+      // Write file
+      await fs.writeFile(outputPath, processedContent);
+
+      console.log(`  ${category}: ${originalFilename}.md → ${path.relative(outputDir, outputPath)}`);
+    }
+
+    console.log(`Completed target: ${target.name}`);
+  }
+
+  console.log('\nBuild completed successfully!');
+}
+
+/**
+ * Main execution function
  */
 async function main() {
   try {
     const config = await loadConfig();
-    console.log('Config loaded:', config.build);
+    const version = '0.5.0'; // In a real implementation, this would come from package.json or CLI args
 
-    const sourceDir = config.build.sourceDir;
-    const mdFiles = await findMdFiles(sourceDir);
-    console.log('Found .md files:', mdFiles.length);
-
-    // Find a file with COMMAND_PATH for testing
-    const commandPathFile = mdFiles.find(file => file.includes('Research_Delegation_Guide.md'));
-    if (commandPathFile) {
-      console.log('\n--- Testing COMMAND_PATH replacement ---');
-      const content = await fs.readFile(commandPathFile, 'utf8');
-      const replaced = replacePlaceholders(content, '0.5.0', config.targets[0].directories);
-      
-      // Find the line with COMMAND_PATH
-      const originalLine = content.split('\n').find(line => line.includes('COMMAND_PATH'));
-      const replacedLine = replaced.split('\n').find(line => line.includes('.github/prompts'));
-      
-      console.log('Original line:', originalLine);
-      console.log('Replaced line:', replacedLine);
-      console.log('--- End COMMAND_PATH Test ---\n');
-    }
-
-    if (mdFiles.length > 0) {
-      const sampleFile = mdFiles[0];
-      const content = await fs.readFile(sampleFile, 'utf8');
-      const parsed = parseFrontmatter(content);
-      console.log('Sample frontmatter:', parsed.frontmatter);
-
-      // Test placeholder replacement
-      const replaced = replacePlaceholders(content, '0.5.0', config.targets[0].directories);
-      console.log('Original sample content (first 200 chars):', content.substring(0, 200));
-      console.log('Replaced sample content (first 200 chars):', replaced.substring(0, 200));
-      console.log('Placeholders replaced in sample content');
-    }
+    await build(config, version);
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error('Build failed:', error.message);
+    process.exit(1);
   }
 }
 
-export { loadConfig, findMdFiles, parseFrontmatter, replacePlaceholders };
+export { loadConfig, findMdFiles, parseFrontmatter, replacePlaceholders, build };
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   main();
