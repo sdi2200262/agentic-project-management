@@ -36,9 +36,9 @@
       }
     },
     {
-      "id": "cursor-agent",
+      "id": "cursor",
       "name": "Cursor",
-      "bundleName": "apm-cursor-agent.zip",
+      "bundleName": "apm-cursor.zip",
       "format": "markdown",
       "directories": {
         "commands": ".cursor/commands",

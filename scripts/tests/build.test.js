@@ -11,6 +11,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import fs from 'fs-extra';
+import AdmZip from 'adm-zip';
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 
 // Functions under test
@@ -19,6 +20,7 @@ import {
   findMdFiles,
   parseFrontmatter,
   replacePlaceholders,
+  createZipArchive,
   build,
 } from '../build.js';
 
@@ -175,6 +177,54 @@ describe('replacePlaceholders()', () => {
 });
 
 // ---------------------------------------------------------------------------
+describe('createZipArchive()', () => {
+  it('creates a valid ZIP archive from a directory', async () => {
+    await withTempDir('zip-create', async (dir) => {
+      const sourceDir = path.join(dir, 'source');
+      const zipPath = path.join(dir, 'output.zip');
+
+      // Create test files
+      await fs.ensureDir(path.join(sourceDir, 'subdir'));
+      await fs.writeFile(path.join(sourceDir, 'file1.txt'), 'content1', 'utf8');
+      await fs.writeFile(path.join(sourceDir, 'subdir', 'file2.txt'), 'content2', 'utf8');
+
+      // Create archive
+      await createZipArchive(sourceDir, zipPath);
+
+      // Verify ZIP was created
+      expect(await fs.pathExists(zipPath)).toBe(true);
+
+      // Verify ZIP contents
+      const zip = new AdmZip(zipPath);
+      const entries = zip.getEntries();
+      expect(entries.length).toBe(3); // 1 dir + 2 files
+
+      const file1Entry = zip.getEntry('file1.txt');
+      expect(file1Entry).toBeTruthy();
+      expect(file1Entry.getData().toString('utf8')).toBe('content1');
+
+      const file2Entry = zip.getEntry('subdir/file2.txt');
+      expect(file2Entry).toBeTruthy();
+      expect(file2Entry.getData().toString('utf8')).toBe('content2');
+    });
+  });
+
+  it('creates an empty ZIP when source directory does not exist', async () => {
+    await withTempDir('zip-empty', async (dir) => {
+      const nonExistentDir = path.join(dir, 'does-not-exist');
+      const zipPath = path.join(dir, 'output.zip');
+
+      // archiver doesn't throw for non-existent dirs, it creates empty ZIP
+      await createZipArchive(nonExistentDir, zipPath);
+      
+      expect(await fs.pathExists(zipPath)).toBe(true);
+      const zip = new AdmZip(zipPath);
+      expect(zip.getEntries().length).toBe(0);
+    });
+  });
+});
+
+// ---------------------------------------------------------------------------
 describe('build()', () => {
   it('generates command and guide outputs for both markdown and toml targets', async () => {
     await withTempDir('build-run', async (dir) => {
@@ -210,12 +260,14 @@ describe('build()', () => {
           {
             id: 'copilot',
             name: 'GitHub Copilot',
+            bundleName: 'apm-copilot.zip',
             format: 'markdown',
             directories: { guides: '.github/prompts', commands: '.github/prompts' },
           },
           {
             id: 'gemini',
             name: 'Gemini CLI',
+            bundleName: 'apm-gemini.zip',
             format: 'toml',
             directories: { guides: '.gemini/guides', commands: '.gemini/commands' },
           },
@@ -231,34 +283,53 @@ describe('build()', () => {
 
       await build(cfg, '0.5.0-test');
 
-      // Validate Copilot (markdown)
-      const copilotBase = path.join(outDir, 'copilot-build');
-      const copilotCmd = path.join(copilotBase, 'commands', 'apm-low-run.md');
-      const copilotGuide = path.join(copilotBase, 'guides', 'Guide.md');
-      expect(await fs.pathExists(copilotCmd)).toBe(true);
-      expect(await fs.pathExists(copilotGuide)).toBe(true);
+      // Validate Copilot (markdown) - check ZIP file
+      const copilotZip = path.join(outDir, 'apm-copilot.zip');
+      expect(await fs.pathExists(copilotZip)).toBe(true);
 
-      const copilotCmdContent = await fs.readFile(copilotCmd, 'utf8');
+      // Verify ZIP contents
+      const copilotZipFile = new AdmZip(copilotZip);
+      const copilotEntries = copilotZipFile.getEntries();
+      
+      const copilotCmdEntry = copilotEntries.find(e => e.entryName === 'commands/apm-low-run.md');
+      expect(copilotCmdEntry).toBeTruthy();
+      const copilotCmdContent = copilotCmdEntry.getData().toString('utf8');
       expect(copilotCmdContent.includes('$ARGUMENTS')).toBe(true);
       expect(copilotCmdContent.includes('.github/prompts')).toBe(true);
 
-      const copilotGuideContent = await fs.readFile(copilotGuide, 'utf8');
+      const copilotGuideEntry = copilotEntries.find(e => e.entryName === 'guides/Guide.md');
+      expect(copilotGuideEntry).toBeTruthy();
+      const copilotGuideContent = copilotGuideEntry.getData().toString('utf8');
       expect(copilotGuideContent.includes('$ARGUMENTS')).toBe(true);
       expect(copilotGuideContent.includes('0.5.0-test')).toBe(true);
 
-      // Validate Gemini (toml)
-      const geminiBase = path.join(outDir, 'gemini-build');
-      const geminiCmd = path.join(geminiBase, 'commands', 'apm-low-run.toml');
-      const geminiGuide = path.join(geminiBase, 'guides', 'Guide.md');
-      expect(await fs.pathExists(geminiCmd)).toBe(true);
-      expect(await fs.pathExists(geminiGuide)).toBe(true);
+      // Verify temporary build directory was cleaned up
+      const copilotBuildDir = path.join(outDir, 'copilot-build');
+      expect(await fs.pathExists(copilotBuildDir)).toBe(false);
 
-      const geminiCmdContent = await fs.readFile(geminiCmd, 'utf8');
+      // Validate Gemini (toml) - check ZIP file
+      const geminiZip = path.join(outDir, 'apm-gemini.zip');
+      expect(await fs.pathExists(geminiZip)).toBe(true);
+
+      // Verify ZIP contents
+      const geminiZipFile = new AdmZip(geminiZip);
+      const geminiEntries = geminiZipFile.getEntries();
+
+      const geminiCmdEntry = geminiEntries.find(e => e.entryName === 'commands/apm-low-run.toml');
+      expect(geminiCmdEntry).toBeTruthy();
+      const geminiCmdContent = geminiCmdEntry.getData().toString('utf8');
       expect(geminiCmdContent.startsWith('description = "Example command"')).toBe(true);
       expect(/prompt\s*=\s*"""[\s\S]*"""/m.test(geminiCmdContent)).toBe(true);
       expect(geminiCmdContent.includes('description:')).toBe(false);
       expect(geminiCmdContent.includes('{{args}}')).toBe(true);
       expect(geminiCmdContent.includes('.gemini/guides')).toBe(true);
+
+      const geminiGuideEntry = geminiEntries.find(e => e.entryName === 'guides/Guide.md');
+      expect(geminiGuideEntry).toBeTruthy();
+
+      // Verify temporary build directory was cleaned up
+      const geminiBuildDir = path.join(outDir, 'gemini-build');
+      expect(await fs.pathExists(geminiBuildDir)).toBe(false);
 
       // Clean up out dir
       await fs.remove(outDir);
@@ -282,18 +353,27 @@ describe('build()', () => {
       const cfg = {
         build: { sourceDir, outputDir: outDir, cleanOutput: true },
         targets: [
-          { id: 'copilot', name: 'GitHub Copilot', format: 'markdown', directories: { guides: '.github/prompts', commands: '.github/prompts' } },
+          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { guides: '.github/prompts', commands: '.github/prompts' } },
         ],
       };
 
       await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'tmp', version: '1.0.0' }), 'utf8');
       await build(cfg, '1.2.3');
 
-      const base = path.join(outDir, 'copilot-build');
-      const guideOut = path.join(base, 'guides', 'SomeGuide.md');
-      expect(await fs.pathExists(guideOut)).toBe(true);
-      const guideContent = await fs.readFile(guideOut, 'utf8');
+      // Check ZIP file was created
+      const zipPath = path.join(outDir, 'apm-copilot.zip');
+      expect(await fs.pathExists(zipPath)).toBe(true);
+
+      // Verify ZIP contents
+      const zip = new AdmZip(zipPath);
+      const guideEntry = zip.getEntry('guides/SomeGuide.md');
+      expect(guideEntry).toBeTruthy();
+      const guideContent = guideEntry.getData().toString('utf8');
       expect(guideContent.includes('Content here')).toBe(true);
+
+      // Verify temp directory was cleaned up
+      const buildDir = path.join(outDir, 'copilot-build');
+      expect(await fs.pathExists(buildDir)).toBe(false);
 
       await fs.remove(outDir);
     });
@@ -316,7 +396,7 @@ describe('build()', () => {
       const cfg = {
         build: { sourceDir, outputDir: outDir, cleanOutput: false },
         targets: [
-          { id: 'copilot', name: 'GitHub Copilot', format: 'markdown', directories: { guides: '.', commands: '.' } },
+          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { guides: '.', commands: '.' } },
         ],
       };
 
@@ -327,9 +407,18 @@ describe('build()', () => {
       expect(await fs.pathExists(existingFile)).toBe(true);
       expect(await fs.readFile(existingFile, 'utf8')).toBe('existing content');
 
-      // Check new file was created
-      const guideOut = path.join(outDir, 'copilot-build', 'guides', 'Guide.md');
-      expect(await fs.pathExists(guideOut)).toBe(true);
+      // Check ZIP file was created
+      const zipPath = path.join(outDir, 'apm-copilot.zip');
+      expect(await fs.pathExists(zipPath)).toBe(true);
+
+      // Verify ZIP contains the guide
+      const zip = new AdmZip(zipPath);
+      const guideEntry = zip.getEntry('guides/Guide.md');
+      expect(guideEntry).toBeTruthy();
+
+      // Verify temp directory was cleaned up
+      const buildDir = path.join(outDir, 'copilot-build');
+      expect(await fs.pathExists(buildDir)).toBe(false);
 
       await fs.remove(outDir);
     });
@@ -353,18 +442,27 @@ describe('build()', () => {
       const cfg = {
         build: { sourceDir, outputDir: outDir, cleanOutput: true },
         targets: [
-          { id: 'copilot', name: 'GitHub Copilot', format: 'markdown', directories: { guides: '.github/prompts', commands: '.github/prompts' } },
+          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { guides: '.github/prompts', commands: '.github/prompts' } },
         ],
       };
 
       await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'tmp', version: '1.0.0' }), 'utf8');
       await build(cfg, '1.2.3');
 
-      const base = path.join(outDir, 'copilot-build');
-      const cmdOut = path.join(base, 'commands', 'apm-default-run-task.md');
-      expect(await fs.pathExists(cmdOut)).toBe(true);
-      const cmdContent = await fs.readFile(cmdOut, 'utf8');
+      // Check ZIP file was created
+      const zipPath = path.join(outDir, 'apm-copilot.zip');
+      expect(await fs.pathExists(zipPath)).toBe(true);
+
+      // Verify ZIP contents
+      const zip = new AdmZip(zipPath);
+      const cmdEntry = zip.getEntry('commands/apm-default-run-task.md');
+      expect(cmdEntry).toBeTruthy();
+      const cmdContent = cmdEntry.getData().toString('utf8');
       expect(cmdContent.includes('Body content')).toBe(true);
+
+      // Verify temp directory was cleaned up
+      const buildDir = path.join(outDir, 'copilot-build');
+      expect(await fs.pathExists(buildDir)).toBe(false);
 
       await fs.remove(outDir);
     });
