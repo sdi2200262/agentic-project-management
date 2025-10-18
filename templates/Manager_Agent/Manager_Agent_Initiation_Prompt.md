@@ -1,6 +1,6 @@
 ---
 priority: 2
-command_name: apm-2-initiate-manager
+command_name: initiate-manager
 description: Initializes a Manager Agent to oversee project execution and task coordination
 ---
 

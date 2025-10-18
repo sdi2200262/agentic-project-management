@@ -1,6 +1,6 @@
 ---
 priority: 8
-command_name: apm-8-delegate-debug
+command_name: delegate-debug
 description: Provides the template for delegating a complex debugging task to an Ad-Hoc agent
 ---
 

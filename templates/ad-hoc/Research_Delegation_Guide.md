@@ -1,6 +1,6 @@
 ---
 priority: 7
-command_name: apm-7-delegate-research
+command_name: delegate-research
 description: Provides the template for delegating a research task to an Ad-Hoc agent
 ---
 

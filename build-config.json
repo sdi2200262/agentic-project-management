@@ -1,0 +1,139 @@
+{
+  "build": {
+    "sourceDir": "templates",
+    "outputDir": "dist",
+    "cleanOutput": true
+  },
+  "targets": [
+    {
+      "id": "copilot",
+      "name": "GitHub Copilot",
+      "bundleName": "apm-copilot.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".github/prompts",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "claude",
+      "name": "Claude Code",
+      "bundleName": "apm-claude.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".claude/commands",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini CLI",
+      "bundleName": "apm-gemini.zip",
+      "format": "toml",
+      "directories": {
+        "commands": ".gemini/commands",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "bundleName": "apm-cursor.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".cursor/commands",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "qwen",
+      "name": "Qwen Code",
+      "bundleName": "apm-qwen.zip",
+      "format": "toml",
+      "directories": {
+        "commands": ".qwen/commands",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "opencode",
+      "name": "opencode",
+      "bundleName": "apm-opencode.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".opencode/command",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "bundleName": "apm-codex.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".codex/prompts",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "windsurf",
+      "name": "Windsurf",
+      "bundleName": "apm-windsurf.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".windsurf/workflows",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "kilocode",
+      "name": "Kilo Code",
+      "bundleName": "apm-kilocode.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".kilocode/workflows",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "auggie",
+      "name": "Auggie CLI",
+      "bundleName": "apm-auggie.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".augment/commands",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "codebuddy",
+      "name": "CodeBuddy",
+      "bundleName": "apm-codebuddy.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".codebuddy/commands",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "roo",
+      "name": "Roo Code",
+      "bundleName": "apm-roo.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".roo/commands",
+        "guides": "guides"
+      }
+    },
+    {
+      "id": "q",
+      "name": "Amazon Q Developer CLI",
+      "bundleName": "apm-q.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".amazonq/prompts",
+        "guides": "guides"
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 ---
 priority: 6
-command_name: apm-6-perform-implementation-handover
+command_name: handover-implementation
 description: Guides an Implementation Agent through the handover procedure to a new agent instance
 ---
 
