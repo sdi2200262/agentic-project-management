@@ -1,6 +1,6 @@
 ---
 priority: 3
-command_name: apm-3-initiate-implementation
+command_name: initiate-implementation
 description: Initializes an Implementation Agent for focused, domain-specific task execution
 ---
 

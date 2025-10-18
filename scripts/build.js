@@ -141,8 +141,9 @@ async function build(config, version) {
       const originalFilename = path.basename(templatePath, '.md');
       let outputFilename;
       if (isCommand && frontmatter.command_name) {
-        // Use command_name for commands
-        outputFilename = `${frontmatter.command_name}.md`;
+        // Construct full command name: apm-{priority}-{command_name}
+        const fullCommandName = `apm-${frontmatter.priority}-${frontmatter.command_name}`;
+        outputFilename = `${fullCommandName}.md`;
       } else {
         // Keep original filename for guides
         outputFilename = `${originalFilename}.md`;
