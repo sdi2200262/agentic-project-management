@@ -55,6 +55,9 @@ async function findMdFiles(sourceDir) {
  * @returns {Object} Object with {frontmatter, content} properties
  */
 function parseFrontmatter(content) {
+  // Normalize line endings and remove BOM for robustness
+  content = content.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  
   const lines = content.split('\n');
   
   if (lines[0] !== '---') {
@@ -93,12 +96,13 @@ function parseFrontmatter(content) {
  * @param {string} version - Version string
  * @param {Object} targetDirectories - Target directory configuration
  * @param {string} format - Target format ('markdown' or 'toml')
+ * @param {Date} [now] - Optional timestamp for deterministic testing
  * @returns {string} Content with placeholders replaced
  */
-function replacePlaceholders(content, version, targetDirectories, format) {
+function replacePlaceholders(content, version, targetDirectories, format, now = new Date()) {
   let replaced = content
     .replace(/{VERSION}/g, version)
-    .replace(/{TIMESTAMP}/g, new Date().toISOString());
+    .replace(/{TIMESTAMP}/g, now.toISOString());
 
   replaced = replaced.replace(/{GUIDE_PATH:([^}]+)}/g, (_match, filename) => {
     return path.join(targetDirectories.guides, filename);
@@ -147,12 +151,13 @@ async function build(config, version) {
 
     for (const templatePath of templateFiles) {
       const content = await fs.readFile(templatePath, 'utf8');
-      const { frontmatter } = parseFrontmatter(content);
+      const { frontmatter, content: body } = parseFrontmatter(content);
 
       const isCommand = frontmatter.command_name !== undefined;
       const category = isCommand ? 'command' : 'guide';
 
-      let processedContent = replacePlaceholders(content, version, target.directories, target.format);
+      const processedBody = replacePlaceholders(body, version, target.directories, target.format);
+      const processedFull = replacePlaceholders(content, version, target.directories, target.format);
 
       const originalFilename = path.basename(templatePath, '.md');
       let outputFilename;
@@ -161,7 +166,9 @@ async function build(config, version) {
 
       if (isCommand && frontmatter.command_name) {
         // Command files: apm-{priority}-{command_name}
-        const fullCommandName = `apm-${frontmatter.priority}-${frontmatter.command_name}`;
+        const priority = frontmatter.priority || 'default';
+        const sanitizedCommandName = frontmatter.command_name.replace(/[^a-zA-Z0-9-_]/g, '-');
+        const fullCommandName = `apm-${priority}-${sanitizedCommandName}`;
 
         if (target.format === 'toml') {
           // TOML format for Gemini/Qwen CLI
@@ -169,41 +176,18 @@ async function build(config, version) {
           outputFilename = `${fullCommandName}${fileExtension}`;
 
           const description = frontmatter.description || 'APM command';
-
-          // Remove description from frontmatter to avoid duplication in TOML
-          const lines = processedContent.split('\n');
-          let inFrontmatter = false;
-          let skipDescription = false;
-          const filteredLines = [];
-
-          for (const line of lines) {
-            if (line.trim() === '---') {
-              inFrontmatter = !inFrontmatter;
-              skipDescription = false;
-              filteredLines.push(line);
-            } else if (inFrontmatter && line.trim().startsWith('description:')) {
-              skipDescription = true;
-            } else if (inFrontmatter && skipDescription && line.match(/^[ \t]/)) {
-              // Skip multiline description continuation
-            } else {
-              filteredLines.push(line);
-              skipDescription = false;
-            }
-          }
-
-          const contentWithoutDescription = filteredLines.join('\n');
-          finalContent = `description = "${description}"\n\nprompt = """\n${contentWithoutDescription}\n"""\n`;
+          finalContent = `description = "${description}"\n\nprompt = """\n${processedBody}\n"""\n`;
         } else {
           // Markdown format for most assistants
           fileExtension = '.md';
           outputFilename = `${fullCommandName}${fileExtension}`;
-          finalContent = processedContent;
+          finalContent = processedFull;
         }
       } else {
         // Guide files: keep original name, always markdown
         fileExtension = '.md';
         outputFilename = `${originalFilename}${fileExtension}`;
-        finalContent = processedContent;
+        finalContent = processedFull;
       }
 
       const outputDirPath = isCommand ? commandsDir : guidesDir;

@@ -11,7 +11,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import fs from 'fs-extra';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 
 // Functions under test
 import {
@@ -126,17 +126,15 @@ describe('parseFrontmatter()', () => {
   });
 
   it('handles malformed YAML frontmatter gracefully', () => {
-    let warned = false;
-    const origWarn = console.warn;
-    console.warn = () => { warned = true; };
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     try {
       const input = ['---', 'a: [1, 2', '---', 'Body'].join('\n');
       const { frontmatter, content } = parseFrontmatter(input);
       expect(frontmatter).toEqual({});
       expect(content).toBe('Body');
-      expect(warned).toBe(true);
+      expect(spy).toHaveBeenCalled();
     } finally {
-      console.warn = origWarn;
+      spy.mockRestore();
     }
   });
 
@@ -296,6 +294,77 @@ describe('build()', () => {
       expect(await fs.pathExists(guideOut)).toBe(true);
       const guideContent = await fs.readFile(guideOut, 'utf8');
       expect(guideContent.includes('Content here')).toBe(true);
+
+      await fs.remove(outDir);
+    });
+  });
+
+  it('respects cleanOutput: false by not clearing existing files', async () => {
+    await withTempDir('build-no-clean', async (dir) => {
+      const sourceDir = path.join(dir, 'templates');
+      const outDir = path.join(dir, 'out');
+      await fs.ensureDir(sourceDir);
+
+      // Create a dummy existing file
+      const existingFile = path.join(outDir, 'existing.txt');
+      await fs.ensureDir(outDir);
+      await fs.writeFile(existingFile, 'existing content', 'utf8');
+
+      const guideTemplate = '# Guide\nContent';
+      await fs.writeFile(path.join(sourceDir, 'Guide.md'), guideTemplate, 'utf8');
+
+      const cfg = {
+        build: { sourceDir, outputDir: outDir, cleanOutput: false },
+        targets: [
+          { id: 'copilot', name: 'GitHub Copilot', format: 'markdown', directories: { guides: '.', commands: '.' } },
+        ],
+      };
+
+      await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'tmp', version: '1.0.0' }), 'utf8');
+      await build(cfg, '1.2.3');
+
+      // Check existing file still exists
+      expect(await fs.pathExists(existingFile)).toBe(true);
+      expect(await fs.readFile(existingFile, 'utf8')).toBe('existing content');
+
+      // Check new file was created
+      const guideOut = path.join(outDir, 'copilot-build', 'guides', 'Guide.md');
+      expect(await fs.pathExists(guideOut)).toBe(true);
+
+      await fs.remove(outDir);
+    });
+  });
+
+  it('defaults priority to "default" when missing and sanitizes command_name', async () => {
+    await withTempDir('build-missing-priority', async (dir) => {
+      const sourceDir = path.join(dir, 'templates');
+      const outDir = path.join(dir, 'out');
+      await fs.ensureDir(path.join(sourceDir, 'commands'));
+
+      const template = [
+        '---',
+        'command_name: "run task"',
+        'description: "Test command"',
+        '---',
+        'Body content',
+      ].join('\n');
+      await fs.writeFile(path.join(sourceDir, 'commands', 'Test.md'), template, 'utf8');
+
+      const cfg = {
+        build: { sourceDir, outputDir: outDir, cleanOutput: true },
+        targets: [
+          { id: 'copilot', name: 'GitHub Copilot', format: 'markdown', directories: { guides: '.github/prompts', commands: '.github/prompts' } },
+        ],
+      };
+
+      await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'tmp', version: '1.0.0' }), 'utf8');
+      await build(cfg, '1.2.3');
+
+      const base = path.join(outDir, 'copilot-build');
+      const cmdOut = path.join(base, 'commands', 'apm-default-run-task.md');
+      expect(await fs.pathExists(cmdOut)).toBe(true);
+      const cmdContent = await fs.readFile(cmdOut, 'utf8');
+      expect(cmdContent.includes('Body content')).toBe(true);
 
       await fs.remove(outDir);
     });
