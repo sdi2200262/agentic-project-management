@@ -269,6 +269,13 @@ async function main() {
 export { loadConfig, findMdFiles, parseFrontmatter, replacePlaceholders, createZipArchive, build };
 
 // Run build when executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Check if this module is the main module being run
+import { fileURLToPath } from 'url';
+import { resolve } from 'path';
+
+const currentFile = fileURLToPath(import.meta.url);
+const mainFile = resolve(process.argv[1]);
+
+if (currentFile === mainFile) {
   main();
 }
