@@ -2,7 +2,7 @@ name: Build and Release
 
 on:
   push:
-    branches: [main]
+    branches: [main, v0.5-dev]  # TEMPORARY: Added v0.5-dev for testing
     paths:
       - 'templates/**'
       - 'scripts/**'
