@@ -1,0 +1,88 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'templates/**'
+      - 'scripts/**'
+      - 'package.json'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (e.g., v0.5.1-rc1)'
+        required: true
+        type: string
+      draft:
+        description: 'Create as draft release'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run build script
+        run: npm run build
+
+      - name: Determine version and draft status
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual trigger: use input version
+            VERSION="${{ inputs.version }}"
+            DRAFT="${{ inputs.draft }}"
+          else
+            # Push to main: extract version from package.json
+            VERSION="v$(node -p "require('./package.json').version")"
+            DRAFT="false"
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "draft=$DRAFT" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+          echo "Draft: $DRAFT"
+
+      - name: Create and push tag (production only)
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          DRAFT="${{ steps.version.outputs.draft }}"
+          
+          # Build the gh release create command
+          CMD="gh release create \"$VERSION\" dist/*.zip --title \"APM $VERSION\" --notes \"Automated release for version $VERSION\""
+          
+          # Add draft flag if needed
+          if [ "$DRAFT" = "true" ]; then
+            CMD="$CMD --draft"
+          fi
+          
+          # Execute the command
+          eval $CMD
+
