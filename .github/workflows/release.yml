@@ -81,6 +81,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Delete tag if it exists
+          git tag -d ${{ steps.version.outputs.version }} 2>/dev/null || true
+          # Create new tag
           git tag ${{ steps.version.outputs.version }}
 
       - name: Create GitHub Release
