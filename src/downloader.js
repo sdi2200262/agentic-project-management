@@ -71,10 +71,10 @@ export async function fetchLatestRelease(releaseTag = null) {
 /**
  * Fetches the asset URL for the specified AI assistant from GitHub releases
  * @param {string} assistant - The AI assistant name (e.g., "Cursor", "GitHub Copilot")
- * @param {string} [releaseTag] - Optional specific release tag
+ * @param {string|Object} [releaseTagOrObject] - Optional specific release tag or release object to avoid duplicate API calls
  * @returns {Promise<string>} The download URL for the asset bundle
  */
-export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
+export async function fetchReleaseAssetUrl(assistant, releaseTagOrObject = null) {
   try {
     // Get the bundle filename for this assistant
     const bundleFilename = ASSET_MAP[assistant];
@@ -83,8 +83,16 @@ export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
       throw new Error(`Unsupported AI assistant: ${assistant}. Supported assistants: ${Object.keys(ASSET_MAP).join(', ')}`);
     }
     
-    // Fetch the latest release
-    const release = await fetchLatestRelease(releaseTag);
+    // Use provided release object or fetch it
+    let release;
+    if (releaseTagOrObject && typeof releaseTagOrObject === 'object' && releaseTagOrObject.assets) {
+      // It's already a release object
+      release = releaseTagOrObject;
+    } else {
+      // It's a release tag or null, fetch the release
+      const releaseTag = typeof releaseTagOrObject === 'string' ? releaseTagOrObject : null;
+      release = await fetchLatestRelease(releaseTag);
+    }
     
     console.log(chalk.gray(`Found release: ${release.name || release.tag_name}`));
     
