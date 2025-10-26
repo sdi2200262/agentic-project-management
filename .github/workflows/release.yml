@@ -2,11 +2,12 @@ name: Build and Release
 
 on:
   push:
-    branches: [main]
+    branches: [main, v0.5-dev]  # TEMP: Added v0.5-dev for testing
     paths:
       - 'templates/**'
       - 'scripts/**'
       - 'package.json'
+      - 'src/**'  # TEMP: Added to trigger on CLI changes
   workflow_dispatch:
     inputs:
       version:
@@ -50,9 +51,16 @@ jobs:
             VERSION="${{ inputs.version }}"
             DRAFT="${{ inputs.draft }}"
           else
-            # Push to main: extract version from package.json
+            # Push trigger: extract version from package.json
             VERSION="v$(node -p "require('./package.json').version")"
-            DRAFT="false"
+            
+            # TEMP: Create draft releases for v0.5-dev, production for main
+            if [ "${{ github.ref }}" = "refs/heads/v0.5-dev" ]; then
+              VERSION="${VERSION}-draft"
+              DRAFT="true"
+            else
+              DRAFT="false"
+            fi
           fi
           
           echo "version=$VERSION" >> $GITHUB_OUTPUT
