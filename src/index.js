@@ -55,7 +55,7 @@ program
       const metadataPath = resolve(process.cwd(), '.apm', 'metadata.json');
       
       if (existsSync(metadataPath)) {
-        console.log(chalk.yellow('⚠️  APM appears to already be initialized in this directory.'));
+        console.log(chalk.yellow('APM appears to already be initialized in this directory.'));
         console.log(chalk.yellow('   Continuing will overwrite existing files.\n'));
       }
 

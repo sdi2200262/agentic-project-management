@@ -52,5 +52,5 @@ jobs:
           gh release create "$VERSION" \
             dist/*.zip \
             --title "APM $VERSION" \
-            --generate-notes
+            --notes "Latest release of APM command and guide prompts."
 
