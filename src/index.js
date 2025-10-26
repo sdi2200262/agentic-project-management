@@ -6,6 +6,7 @@ import { select, confirm } from '@inquirer/prompts';
 import { fetchReleaseAssetUrl, downloadAndExtract, fetchLatestRelease } from './downloader.js';
 import { existsSync, mkdirSync, writeFileSync, rmSync, readdirSync, cpSync, copyFileSync } from 'fs';
 import { resolve, join } from 'path';
+import { execSync } from 'child_process';
 import { readMetadata, writeMetadata, detectInstalledAssistants, compareVersions, createBackup, getAssistantDirectory, restoreBackup } from './utils.js';
 
 const program = new Command();
@@ -179,6 +180,12 @@ program
         mkdirSync(rootAssistantDir, { recursive: true });
         cpSync(tempCommandsDir, rootAssistantDir, { recursive: true });
         console.log(chalk.gray(`  Installed ${assistantDir}/`));
+
+        if (assistant === 'GitHub Copilot') {
+          // Rename all .md files to .prompt.md for Copilot prompts
+          execSync(`find "${rootAssistantDir}" -name "*.md" -exec bash -c 'mv "$1" "\${1%.md}.prompt.md"' _ {} \\;`);
+          console.log(chalk.gray('  Renamed prompt files for Copilot'));
+        }
       }
 
       // Create Memory directory with empty Memory_Root.md
@@ -335,16 +342,16 @@ program
         
         // Update assistant-specific directory
         const oldAssistantDir = join(process.cwd(), assistantDir);
-        const newAssistantDir = join(tempDir, assistantDir);
+        const newCommandsDir = join(tempDir, 'commands');
         
         if (existsSync(oldAssistantDir)) {
           rmSync(oldAssistantDir, { recursive: true, force: true });
         }
-        if (existsSync(newAssistantDir)) {
+        if (existsSync(newCommandsDir)) {
           mkdirSync(oldAssistantDir, { recursive: true });
-          const items = readdirSync(newAssistantDir, { withFileTypes: true });
+          const items = readdirSync(newCommandsDir, { withFileTypes: true });
           for (const item of items) {
-            const src = join(newAssistantDir, item.name);
+            const src = join(newCommandsDir, item.name);
             const dest = join(oldAssistantDir, item.name);
             if (item.isDirectory()) {
               cpSync(src, dest, { recursive: true });
@@ -353,6 +360,12 @@ program
             }
           }
           console.log(chalk.green(`  Updated ${assistantDir}`));
+
+          if (assistant === 'GitHub Copilot') {
+            // Rename all .md files to .prompt.md for Copilot prompts
+            execSync(`find "${oldAssistantDir}" -name "*.md" -exec bash -c 'mv "$1" "\${1%.md}.prompt.md"' _ {} \\;`);
+            console.log(chalk.gray('  Renamed prompt files for Copilot'));
+          }
         }
 
         // Update guides directory
