@@ -11,25 +11,96 @@ const execAsync = promisify(exec);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// GitHub repository configuration
+const GITHUB_REPO_OWNER = 'sdi2200262';
+const GITHUB_REPO_NAME = 'agentic-project-management';
+const GITHUB_API_BASE = 'https://api.github.com';
+
 /**
- * Fetches the asset URL for the specified AI assistant
- * @param {string} assistant - The AI assistant name (e.g., "Cursor", "GitHub Copilot")
- * @returns {Promise<string>} The URL or file path to the asset bundle
+ * Mapping of AI assistant display names to their bundle filenames
  */
-export async function fetchReleaseAssetUrl(assistant) {
-  // TODO: In Phase 3, this will integrate with GitHub API to fetch real release assets
-  // For now, we use hardcoded test bundle paths for development
-  
-  const testAssetsPath = join(__dirname, '..', 'test-assets');
-  
-  switch (assistant.toLowerCase()) {
-    case 'cursor':
-      return join(testAssetsPath, 'apm-cursor-bundle.zip');
-    case 'github copilot':
-    case 'copilot':
-      return join(testAssetsPath, 'apm-copilot-bundle.zip');
-    default:
-      throw new Error(`Unsupported AI assistant: ${assistant}`);
+export const ASSET_MAP = {
+  'Cursor': 'apm-cursor.zip',
+  'GitHub Copilot': 'apm-copilot.zip',
+  'Claude Code': 'apm-claude.zip',
+  'Gemini CLI': 'apm-gemini.zip',
+  'Qwen Code': 'apm-qwen.zip',
+  'opencode': 'apm-opencode.zip',
+  'Codex CLI': 'apm-codex.zip',
+  'Windsurf': 'apm-windsurf.zip',
+  'Kilo Code': 'apm-kilocode.zip',
+  'Auggie CLI': 'apm-auggie.zip',
+  'CodeBuddy': 'apm-codebuddy.zip',
+  'Roo Code': 'apm-roo.zip',
+  'Amazon Q Developer CLI': 'apm-q.zip'
+};
+
+/**
+ * Fetches the latest release information from GitHub API
+ * @param {string} [releaseTag] - Optional specific release tag (for testing with drafts)
+ * @returns {Promise<Object>} Release data from GitHub API
+ */
+export async function fetchLatestRelease(releaseTag = null) {
+  try {
+    const endpoint = releaseTag
+      ? `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tags/${releaseTag}`
+      : `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/latest`;
+    
+    console.log(chalk.gray(`Fetching release from: ${endpoint}`));
+    
+    const response = await axios.get(endpoint, {
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'User-Agent': 'APM-CLI'
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 404) {
+        throw new Error('No releases found. Please ensure APM has been published.');
+      } else if (error.response.status === 403) {
+        throw new Error('GitHub API rate limit exceeded. Please try again later.');
+      }
+    }
+    throw new Error(`Failed to fetch release information: ${error.message}`);
+  }
+}
+
+/**
+ * Fetches the asset URL for the specified AI assistant from GitHub releases
+ * @param {string} assistant - The AI assistant name (e.g., "Cursor", "GitHub Copilot")
+ * @param {string} [releaseTag] - Optional specific release tag (for testing)
+ * @returns {Promise<string>} The download URL for the asset bundle
+ */
+export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
+  try {
+    // Get the bundle filename for this assistant
+    const bundleFilename = ASSET_MAP[assistant];
+    
+    if (!bundleFilename) {
+      throw new Error(`Unsupported AI assistant: ${assistant}. Supported assistants: ${Object.keys(ASSET_MAP).join(', ')}`);
+    }
+    
+    // Fetch the latest release
+    const release = await fetchLatestRelease(releaseTag);
+    
+    console.log(chalk.gray(`Found release: ${release.name || release.tag_name}`));
+    
+    // Find the matching asset in the release
+    const asset = release.assets.find(a => a.name === bundleFilename);
+    
+    if (!asset) {
+      throw new Error(`Bundle not found for ${assistant}. Expected file: ${bundleFilename}. This may indicate an incomplete release.`);
+    }
+    
+    console.log(chalk.gray(`Found asset: ${asset.name} (${(asset.size / 1024).toFixed(1)} KB)`));
+    
+    return asset.browser_download_url;
+  } catch (error) {
+    console.error(chalk.red('Failed to fetch release asset:'));
+    throw error;
   }
 }
 
