@@ -141,8 +141,65 @@ program
       // Fetch the asset URL for the selected assistant
       const assetUrl = await fetchReleaseAssetUrl(assistant);
       
-      // Download and extract the bundle
-      await downloadAndExtract(assetUrl, process.cwd());
+      // Download and extract the bundle to a temporary directory first
+      const tempDir = join(process.cwd(), '.apm', 'temp-init');
+      if (existsSync(tempDir)) {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+      mkdirSync(tempDir, { recursive: true });
+      
+      console.log(chalk.gray('Downloading and extracting bundle...'));
+      await downloadAndExtract(assetUrl, tempDir);
+
+      // Create the .apm directory structure
+      const apmDir = join(process.cwd(), '.apm');
+      if (!existsSync(apmDir)) {
+        mkdirSync(apmDir, { recursive: true });
+      }
+
+      // Move guides directory into .apm/
+      const tempGuidesDir = join(tempDir, 'guides');
+      const apmGuidesDir = join(apmDir, 'guides');
+      if (existsSync(tempGuidesDir)) {
+        if (existsSync(apmGuidesDir)) {
+          rmSync(apmGuidesDir, { recursive: true, force: true });
+        }
+        cpSync(tempGuidesDir, apmGuidesDir, { recursive: true });
+        console.log(chalk.gray('  Installed guides/'));
+      }
+
+      // Move assistant-specific directory into .apm/
+      const assistantDir = getAssistantDirectory(assistant);
+      const tempAssistantDir = join(tempDir, assistantDir);
+      const apmAssistantDir = join(apmDir, assistantDir);
+      if (existsSync(tempAssistantDir)) {
+        if (existsSync(apmAssistantDir)) {
+          rmSync(apmAssistantDir, { recursive: true, force: true });
+        }
+        cpSync(tempAssistantDir, apmAssistantDir, { recursive: true });
+        console.log(chalk.gray(`  Installed ${assistantDir}/`));
+      }
+
+      // Create Memory directory with empty Memory_Root.md
+      const memoryDir = join(apmDir, 'Memory');
+      if (!existsSync(memoryDir)) {
+        mkdirSync(memoryDir, { recursive: true });
+      }
+      const memoryRootPath = join(memoryDir, 'Memory_Root.md');
+      if (!existsSync(memoryRootPath)) {
+        writeFileSync(memoryRootPath, '');
+        console.log(chalk.gray('  Created Memory/Memory_Root.md'));
+      }
+
+      // Create empty Implementation_Plan.md
+      const implementationPlanPath = join(apmDir, 'Implementation_Plan.md');
+      if (!existsSync(implementationPlanPath)) {
+        writeFileSync(implementationPlanPath, '');
+        console.log(chalk.gray('  Created Implementation_Plan.md'));
+      }
+
+      // Clean up temp directory
+      rmSync(tempDir, { recursive: true, force: true });
 
       // Create metadata file
       createMetadata(process.cwd(), assistant, releaseVersion);
@@ -151,7 +208,7 @@ program
       console.log(chalk.green('\nAPM initialized successfully!'));
       console.log(chalk.gray(`Version: ${releaseVersion}`));
       console.log(chalk.gray('\nNext steps:'));
-      console.log(chalk.gray('1. Review the generated files in the assistant-specific and guides/ directories'));
+      console.log(chalk.gray('1. Review the generated files in the .apm/ directory'));
       console.log(chalk.gray('2. Customize the prompts and configuration for your specific project'));
       console.log(chalk.gray('3. Start using APM with your AI assistant for project management'));
       console.log(chalk.gray('4. Run "apm update" anytime to get the latest improvements\n'));
