@@ -38,23 +38,31 @@ jobs:
           BASE_VERSION="v$(node -p "require('./package.json').version")"
           
           if [ "${{ github.ref }}" = "refs/heads/v0.5-dev" ]; then
-            # Dev branch: append -dev suffix and mark as draft
-            VERSION="${BASE_VERSION}-dev"
-            IS_DRAFT="true"
-            RELEASE_NOTES="**⚠️ Development Release - For Testing Only**\n\nThis is an automated development release from the v0.5-dev branch.\nUse for testing purposes only. Production releases are tagged without the -dev suffix."
+            # Dev branch: append -rc suffix for release candidate
+            VERSION="${BASE_VERSION}-rc"
+            PRERELEASE="--prerelease"
+            RELEASE_NOTES="**⚠️ Release Candidate - For Testing Only**
+
+This is an automated release candidate from the v0.5-dev branch.
+Use for testing purposes only. Production releases are published from the main branch without the -rc suffix.
+
+**Testing:**
+\`\`\`bash
+apm init
+\`\`\`"
           else
             # Main branch: production release
             VERSION="${BASE_VERSION}"
-            IS_DRAFT="false"
+            PRERELEASE=""
             RELEASE_NOTES="Automated release for version ${VERSION}"
           fi
           
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "is_draft=$IS_DRAFT" >> $GITHUB_OUTPUT
+          echo "prerelease=$PRERELEASE" >> $GITHUB_OUTPUT
           echo "release_notes<<EOF" >> $GITHUB_OUTPUT
-          echo -e "$RELEASE_NOTES" >> $GITHUB_OUTPUT
+          echo "$RELEASE_NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-          echo "Version: $VERSION (Draft: $IS_DRAFT)"
+          echo "Version: $VERSION"
 
       - name: Delete existing tag if exists
         run: |
@@ -80,16 +88,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ "${{ steps.version.outputs.is_draft }}" = "true" ]; then
-            gh release create "${{ steps.version.outputs.version }}" \
-              dist/*.zip \
-              --title "APM ${{ steps.version.outputs.version }}" \
-              --notes "${{ steps.version.outputs.release_notes }}" \
-              --draft
-          else
-            gh release create "${{ steps.version.outputs.version }}" \
-              dist/*.zip \
-              --title "APM ${{ steps.version.outputs.version }}" \
-              --notes "${{ steps.version.outputs.release_notes }}"
-          fi
+          gh release create "${{ steps.version.outputs.version }}" \
+            dist/*.zip \
+            --title "APM ${{ steps.version.outputs.version }}" \
+            --notes "${{ steps.version.outputs.release_notes }}" \
+            ${{ steps.version.outputs.prerelease }}
 
