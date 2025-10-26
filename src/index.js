@@ -139,10 +139,10 @@ program
       const releaseVersion = release.tag_name.replace(/^v/, ''); // Remove 'v' prefix
 
       // Fetch the asset URL for the selected assistant
-      const assetInfo = await fetchReleaseAssetUrl(assistant);
+      const assetUrl = await fetchReleaseAssetUrl(assistant);
       
       // Download and extract the bundle
-      await downloadAndExtract(assetInfo.url, process.cwd(), assetInfo.isDraft);
+      await downloadAndExtract(assetUrl, process.cwd());
 
       // Create metadata file
       createMetadata(process.cwd(), assistant, releaseVersion);
@@ -269,8 +269,8 @@ program
         mkdirSync(tempDir, { recursive: true });
 
         // Fetch and download the latest bundle
-        const assetInfo = await fetchReleaseAssetUrl(assistant);
-        await downloadAndExtract(assetInfo.url, tempDir, assetInfo.isDraft);
+        const assetUrl = await fetchReleaseAssetUrl(assistant);
+        await downloadAndExtract(assetUrl, tempDir);
 
         // Update files: remove old, copy new
         console.log(chalk.gray('\nUpdating files...'));

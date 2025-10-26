@@ -37,51 +37,25 @@ export const ASSET_MAP = {
 
 /**
  * Fetches the latest release information from GitHub API
- * @param {string} [releaseTag] - Optional specific release tag (for testing with drafts)
+ * @param {string} [releaseTag] - Optional specific release tag
  * @returns {Promise<Object>} Release data from GitHub API
  */
 export async function fetchLatestRelease(releaseTag = null) {
   try {
-    let endpoint;
-    let headers = {
-      'Accept': 'application/vnd.github+json',
-      'User-Agent': 'APM-CLI'
-    };
-    
-    // Add GitHub token if available (needed for draft releases)
-    if (process.env.GITHUB_TOKEN) {
-      headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
-    }
-    
-    if (releaseTag) {
-      // Fetch specific release by tag
-      endpoint = `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tags/${releaseTag}`;
-    } else {
-      // Try to fetch latest release (published)
-      endpoint = `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/latest`;
-    }
+    const endpoint = releaseTag
+      ? `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tags/${releaseTag}`
+      : `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/latest`;
     
     console.log(chalk.gray(`Fetching release from: ${endpoint}`));
     
-    try {
-      const response = await axios.get(endpoint, { headers });
-      return response.data;
-    } catch (error) {
-      // If latest release fails and we have a token, try to fetch the first draft release
-      if (!releaseTag && error.response?.status === 404 && process.env.GITHUB_TOKEN) {
-        console.log(chalk.yellow('No published releases found. Checking for draft releases...'));
-        const allReleasesEndpoint = `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`;
-        const allReleasesResponse = await axios.get(allReleasesEndpoint, { headers });
-        
-        // Find the first draft release (most recent)
-        const draftRelease = allReleasesResponse.data.find(r => r.draft === true);
-        if (draftRelease) {
-          console.log(chalk.yellow(`Found draft release: ${draftRelease.tag_name}`));
-          return draftRelease;
-        }
+    const response = await axios.get(endpoint, {
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'User-Agent': 'APM-CLI'
       }
-      throw error;
-    }
+    });
+    
+    return response.data;
   } catch (error) {
     if (error.response) {
       if (error.response.status === 404) {
@@ -97,8 +71,8 @@ export async function fetchLatestRelease(releaseTag = null) {
 /**
  * Fetches the asset URL for the specified AI assistant from GitHub releases
  * @param {string} assistant - The AI assistant name (e.g., "Cursor", "GitHub Copilot")
- * @param {string} [releaseTag] - Optional specific release tag (for testing)
- * @returns {Promise<Object>} Object with url, isDraft, and asset info
+ * @param {string} [releaseTag] - Optional specific release tag
+ * @returns {Promise<string>} The download URL for the asset bundle
  */
 export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
   try {
@@ -123,15 +97,7 @@ export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
     
     console.log(chalk.gray(`Found asset: ${asset.name} (${(asset.size / 1024).toFixed(1)} KB)`));
     
-    // For draft releases, we need to use the API URL with authentication
-    const isDraft = release.draft === true;
-    const downloadUrl = isDraft ? asset.url : asset.browser_download_url;
-    
-    return {
-      url: downloadUrl,
-      isDraft: isDraft,
-      asset: asset
-    };
+    return asset.browser_download_url;
   } catch (error) {
     console.error(chalk.red('Failed to fetch release asset:'));
     throw error;
@@ -142,10 +108,9 @@ export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
  * Downloads and extracts a zip file to the specified destination
  * @param {string} url - URL or file path to the zip file
  * @param {string} destinationPath - Path where the contents should be extracted
- * @param {boolean} [requiresAuth=false] - Whether the download requires authentication
  * @returns {Promise<void>}
  */
-export async function downloadAndExtract(url, destinationPath, requiresAuth = false) {
+export async function downloadAndExtract(url, destinationPath) {
   try {
     console.log(chalk.blue('● ○ ○ Downloading assets...'));
     
@@ -154,25 +119,10 @@ export async function downloadAndExtract(url, destinationPath, requiresAuth = fa
     // Check if it's a local file path or URL
     if (url.startsWith('http://') || url.startsWith('https://')) {
       // Handle URL downloads
-      const headers = {
-        'User-Agent': 'APM-CLI'
-      };
-      
-      // Add authentication for draft releases
-      if (requiresAuth) {
-        if (process.env.GITHUB_TOKEN) {
-          headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
-          headers['Accept'] = 'application/octet-stream'; // Required for asset downloads
-        } else {
-          throw new Error('GITHUB_TOKEN environment variable required to download draft releases');
-        }
-      }
-      
       const response = await axios({
         method: 'GET',
         url: url,
-        responseType: 'stream',
-        headers: headers
+        responseType: 'stream'
       });
       
       // Create a temporary file for the download
