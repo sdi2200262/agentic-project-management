@@ -48,8 +48,8 @@ program
   .description('Initialize a new APM project')
   .action(async () => {
     try {
-      console.log(chalk.blue('🚀 APM v0.5 Initializer'));
-      console.log(chalk.gray('Setting up your Agentic Project Management environment...\n'));
+      console.log(chalk.blue('APM v0.5.0'));
+      console.log(chalk.gray('Setting up Agentic Project Management in this directory...\n'));
 
       // Check if APM is already initialized in current directory
       const metadataPath = resolve(process.cwd(), '.apm', 'metadata.json');
@@ -66,7 +66,7 @@ program
           {
             name: 'Cursor',
             value: 'Cursor',
-            description: 'Optimized for Cursor IDE with slash commands'
+            description: 'Optimized for Cursor IDE'
           },
           {
             name: 'GitHub Copilot',
@@ -81,12 +81,12 @@ program
           {
             name: 'Gemini CLI',
             value: 'Gemini CLI',
-            description: 'Optimized for Google Gemini CLI (TOML format)'
+            description: 'Optimized for Google Gemini CLI'
           },
           {
             name: 'Qwen Code',
             value: 'Qwen Code',
-            description: 'Optimized for Alibaba Qwen Code CLI (TOML format)'
+            description: 'Optimized for Alibaba Qwen Code CLI'
           },
           {
             name: 'opencode',
@@ -101,7 +101,7 @@ program
           {
             name: 'Windsurf',
             value: 'Windsurf',
-            description: 'Optimized for Windsurf IDE workflows'
+            description: 'Optimized for Windsurf IDE'
           },
           {
             name: 'Kilo Code',
@@ -131,7 +131,7 @@ program
         ]
       });
 
-      console.log(chalk.blue(`\n🎯 Selected: ${assistant}`));
+      console.log(chalk.blue(`\nSelected: ${assistant}`));
       console.log(chalk.gray('Fetching appropriate asset bundle...\n'));
 
       // Fetch the latest release to get version info
@@ -148,7 +148,7 @@ program
       createMetadata(process.cwd(), assistant, releaseVersion);
 
       // Success message with next steps
-      console.log(chalk.green('\n🎉 APM project initialized successfully!'));
+      console.log(chalk.green('\nAPM initialized successfully!'));
       console.log(chalk.gray(`Version: ${releaseVersion}`));
       console.log(chalk.gray('\nNext steps:'));
       console.log(chalk.gray('1. Review the generated files in the assistant-specific and guides/ directories'));
@@ -157,7 +157,7 @@ program
       console.log(chalk.gray('4. Run "apm update" anytime to get the latest improvements\n'));
 
     } catch (error) {
-      console.error(chalk.red('\n❌ Initialization failed:'));
+      console.error(chalk.red('\nInitialization failed...'));
       console.error(chalk.red(error.message));
       process.exit(1);
     }
@@ -175,7 +175,7 @@ program
       const metadata = readMetadata(process.cwd());
       
       if (!metadata) {
-        console.log(chalk.yellow('⚠️  No APM installation detected in this directory.'));
+        console.log(chalk.yellow('No APM installation detected in this directory.'));
         console.log(chalk.yellow('   Run "apm init" to initialize a new project.\n'));
         process.exit(1);
       }
@@ -184,7 +184,7 @@ program
       const detectedAssistants = detectInstalledAssistants(process.cwd());
       
       if (detectedAssistants.length === 0) {
-        console.log(chalk.yellow('⚠️  No AI assistant directories detected.'));
+        console.log(chalk.yellow('No AI assistant directories detected.'));
         console.log(chalk.yellow('   APM installation may be corrupted. Consider running "apm init" again.\n'));
         process.exit(1);
       }
@@ -214,13 +214,13 @@ program
       const comparison = compareVersions(metadata.version, latestVersion);
 
       if (comparison >= 0) {
-        console.log(chalk.green(`\n✅ APM is already at the latest version (v${metadata.version})`));
+        console.log(chalk.green(`\nAPM is already at the latest version (v${metadata.version})`));
         console.log(chalk.gray('No update needed.\n'));
         return;
       }
 
       // Show update information
-      console.log(chalk.cyan(`\n📦 Update available: v${metadata.version} → v${latestVersion}`));
+      console.log(chalk.cyan(`\nUpdate available: v${metadata.version} → v${latestVersion}`));
       console.log(chalk.gray(`Release: ${release.name || release.tag_name}`));
       if (release.body) {
         console.log(chalk.gray(`\nRelease notes:`));
@@ -232,6 +232,7 @@ program
       console.log(chalk.gray('  - Guide files (templates and documentation)'));
 
       console.log(chalk.cyan('\nWhat will be preserved:'));
+      console.log(chalk.gray('  - User apm/ directories (apm/Memory/, apm/Implementation_Plan.md, etc.)'));
       console.log(chalk.gray('  - User content in directories outside APM control'));
       console.log(chalk.gray('  - Custom configurations (if any)'));
 
@@ -254,7 +255,7 @@ program
       
       console.log(chalk.gray('Creating backup...'));
       const backupDir = createBackup(process.cwd(), dirsToBackup);
-      console.log(chalk.green(`✅ Backup created at: ${backupDir}`));
+      console.log(chalk.green(`Backup created at: ${backupDir}`));
 
       try {
         // Download and extract new version to a temporary directory
@@ -293,7 +294,7 @@ program
               copyFileSync(src, dest);
             }
           }
-          console.log(chalk.green(`  ✅ Updated ${assistantDir}`));
+          console.log(chalk.green(`  Updated ${assistantDir}`));
         }
 
         // Update guides directory
@@ -315,34 +316,34 @@ program
               copyFileSync(src, dest);
             }
           }
-          console.log(chalk.green(`  ✅ Updated guides`));
+          console.log(chalk.green(`  Updated guides`));
         }
 
         // Update metadata
         metadata.version = latestVersion;
         metadata.lastUpdated = new Date().toISOString();
         writeMetadata(process.cwd(), metadata);
-        console.log(chalk.green(`  ✅ Updated metadata`));
+        console.log(chalk.green(`  Updated metadata`));
 
         // Clean up temp directory
         rmSync(tempDir, { recursive: true, force: true });
 
         // Success!
-        console.log(chalk.green(`\n🎉 APM successfully updated to v${latestVersion}!`));
+        console.log(chalk.green(`\nAPM successfully updated to v${latestVersion}!`));
         console.log(chalk.gray(`View release notes: ${release.html_url}`));
         console.log(chalk.gray(`\nBackup saved at: ${backupDir}`));
         console.log(chalk.gray('You can safely delete the backup directory once you\'ve verified everything works.\n'));
 
       } catch (updateError) {
-        console.error(chalk.red('\n❌ Update failed:'), updateError.message);
-        console.log(chalk.yellow('\n⚠️  Attempting to restore from backup...'));
+        console.error(chalk.red('\nUpdate failed...'), updateError.message);
+        console.log(chalk.yellow('\nAttempting to restore from backup...'));
         
         try {
           // Restore from backup
           restoreBackup(backupDir, process.cwd());
-          console.log(chalk.green('✅ Successfully restored from backup.'));
+          console.log(chalk.green('Successfully restored from backup.'));
         } catch (restoreError) {
-          console.error(chalk.red('❌ Failed to restore backup:'), restoreError.message);
+          console.error(chalk.red('Failed to restore backup...'), restoreError.message);
           console.log(chalk.red(`Manual restoration may be required. Backup location: ${backupDir}`));
         }
         
@@ -350,7 +351,7 @@ program
       }
 
     } catch (error) {
-      console.error(chalk.red('\n❌ Update failed:'));
+      console.error(chalk.red('\nUpdate failed...'));
       console.error(chalk.red(error.message));
       process.exit(1);
     }

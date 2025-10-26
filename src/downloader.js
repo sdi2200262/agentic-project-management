@@ -112,7 +112,7 @@ export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
  */
 export async function downloadAndExtract(url, destinationPath) {
   try {
-    console.log(chalk.blue('📦 Downloading assets...'));
+    console.log(chalk.blue('● ○ ○ Downloading assets...'));
     
     let zipPath;
     
@@ -142,7 +142,7 @@ export async function downloadAndExtract(url, destinationPath) {
       zipPath = url;
     }
     
-    console.log(chalk.yellow('📂 Extracting files...'));
+    console.log(chalk.yellow('● ● ○ Extracting files...'));
     
     // Use unzip command to extract (more reliable than unzipper package)
     try {
@@ -165,11 +165,11 @@ export async function downloadAndExtract(url, destinationPath) {
       }
     }
     
-    console.log(chalk.green('✅ Scaffolding complete!'));
-    console.log(chalk.green(`📁 APM project structure created in: ${destinationPath}`));
+    console.log(chalk.green('● ● ● Scaffolding complete!'));
+    console.log(chalk.green(`APM project structure created in: ${destinationPath}`));
     
   } catch (error) {
-    console.error(chalk.red('❌ Error during download/extraction:'));
+    console.error(chalk.red('✗ ✗ ✗ Error during download/extraction...'));
     console.error(chalk.red(error.message));
     throw error;
   }
