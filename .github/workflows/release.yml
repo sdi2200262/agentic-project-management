@@ -2,7 +2,7 @@ name: Build and Release
 
 on:
   push:
-    branches: [main]
+    branches: [main, v0.5-dev]
     paths:
       - 'templates/**'
       - 'scripts/**'
@@ -32,26 +32,64 @@ jobs:
       - name: Run build script
         run: npm run build
 
-      - name: Extract version from package.json
+      - name: Determine version and release type
         id: version
         run: |
-          VERSION="v$(node -p "require('./package.json').version")"
+          BASE_VERSION="v$(node -p "require('./package.json').version")"
+          
+          if [ "${{ github.ref }}" = "refs/heads/v0.5-dev" ]; then
+            # Dev branch: append -dev suffix and mark as draft
+            VERSION="${BASE_VERSION}-dev"
+            IS_DRAFT="true"
+            RELEASE_NOTES="**⚠️ Development Release - For Testing Only**\n\nThis is an automated development release from the v0.5-dev branch.\nUse for testing purposes only. Production releases are tagged without the -dev suffix."
+          else
+            # Main branch: production release
+            VERSION="${BASE_VERSION}"
+            IS_DRAFT="false"
+            RELEASE_NOTES="Automated release for version ${VERSION}"
+          fi
+          
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "Version: $VERSION"
+          echo "is_draft=$IS_DRAFT" >> $GITHUB_OUTPUT
+          echo "release_notes<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$RELEASE_NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION (Draft: $IS_DRAFT)"
+
+      - name: Delete existing tag if exists
+        run: |
+          git tag -d ${{ steps.version.outputs.version }} 2>/dev/null || true
+          git push origin :refs/tags/${{ steps.version.outputs.version }} 2>/dev/null || true
+        continue-on-error: true
 
       - name: Create and push tag
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag ${{ steps.version.outputs.version }}
-          git push origin ${{ steps.version.outputs.version }}
+          git tag -f ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }} --force
+
+      - name: Delete existing release if exists
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete "${{ steps.version.outputs.version }}" --yes 2>/dev/null || true
+        continue-on-error: true
 
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ steps.version.outputs.version }}" \
-            dist/*.zip \
-            --title "APM ${{ steps.version.outputs.version }}" \
-            --notes "Automated release for version ${{ steps.version.outputs.version }}"
+          if [ "${{ steps.version.outputs.is_draft }}" = "true" ]; then
+            gh release create "${{ steps.version.outputs.version }}" \
+              dist/*.zip \
+              --title "APM ${{ steps.version.outputs.version }}" \
+              --notes "${{ steps.version.outputs.release_notes }}" \
+              --draft
+          else
+            gh release create "${{ steps.version.outputs.version }}" \
+              dist/*.zip \
+              --title "APM ${{ steps.version.outputs.version }}" \
+              --notes "${{ steps.version.outputs.release_notes }}"
+          fi
 

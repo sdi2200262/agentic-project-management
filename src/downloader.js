@@ -42,20 +42,46 @@ export const ASSET_MAP = {
  */
 export async function fetchLatestRelease(releaseTag = null) {
   try {
-    const endpoint = releaseTag
-      ? `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tags/${releaseTag}`
-      : `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/latest`;
+    let endpoint;
+    let headers = {
+      'Accept': 'application/vnd.github+json',
+      'User-Agent': 'APM-CLI'
+    };
+    
+    // Add GitHub token if available (needed for draft releases)
+    if (process.env.GITHUB_TOKEN) {
+      headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+    }
+    
+    if (releaseTag) {
+      // Fetch specific release by tag
+      endpoint = `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/tags/${releaseTag}`;
+    } else {
+      // Try to fetch latest release (published)
+      endpoint = `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases/latest`;
+    }
     
     console.log(chalk.gray(`Fetching release from: ${endpoint}`));
     
-    const response = await axios.get(endpoint, {
-      headers: {
-        'Accept': 'application/vnd.github+json',
-        'User-Agent': 'APM-CLI'
+    try {
+      const response = await axios.get(endpoint, { headers });
+      return response.data;
+    } catch (error) {
+      // If latest release fails and we have a token, try to fetch the first draft release
+      if (!releaseTag && error.response?.status === 404 && process.env.GITHUB_TOKEN) {
+        console.log(chalk.yellow('No published releases found. Checking for draft releases...'));
+        const allReleasesEndpoint = `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`;
+        const allReleasesResponse = await axios.get(allReleasesEndpoint, { headers });
+        
+        // Find the first draft release (most recent)
+        const draftRelease = allReleasesResponse.data.find(r => r.draft === true);
+        if (draftRelease) {
+          console.log(chalk.yellow(`Found draft release: ${draftRelease.tag_name}`));
+          return draftRelease;
+        }
       }
-    });
-    
-    return response.data;
+      throw error;
+    }
   } catch (error) {
     if (error.response) {
       if (error.response.status === 404) {
