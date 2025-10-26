@@ -1,7 +1,6 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, cpSync, rmSync } from 'fs';
 import { resolve, join, dirname } from 'path';
 import chalk from 'chalk';
-import { ASSET_MAP } from './downloader.js';
 
 /**
  * Assistant directory mapping for detection
