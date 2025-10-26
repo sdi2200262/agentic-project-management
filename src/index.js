@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { select, confirm } from '@inquirer/prompts';
-import { fetchReleaseAssetUrl, downloadAndExtract, ASSET_MAP, fetchLatestRelease } from './downloader.js';
+import { fetchReleaseAssetUrl, downloadAndExtract, fetchLatestRelease } from './downloader.js';
 import { existsSync, mkdirSync, writeFileSync, rmSync, readdirSync, cpSync, copyFileSync } from 'fs';
 import { resolve, join } from 'path';
 import { readMetadata, writeMetadata, detectInstalledAssistants, compareVersions, createBackup, getAssistantDirectory, restoreBackup } from './utils.js';

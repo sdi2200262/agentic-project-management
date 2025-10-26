@@ -1,6 +1,6 @@
 import axios from 'axios';
 import chalk from 'chalk';
-import { createReadStream, createWriteStream, mkdirSync } from 'fs';
+import { createWriteStream } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { exec } from 'child_process';
