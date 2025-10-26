@@ -138,8 +138,8 @@ program
       const release = await fetchLatestRelease();
       const releaseVersion = release.tag_name.replace(/^v/, ''); // Remove 'v' prefix
 
-      // Fetch the asset URL for the selected assistant
-      const assetUrl = await fetchReleaseAssetUrl(assistant);
+      // Fetch the asset URL for the selected assistant, passing the release object to avoid duplicate API call
+      const assetUrl = await fetchReleaseAssetUrl(assistant, release);
       
       // Download and extract the bundle to a temporary directory first
       const tempDir = join(process.cwd(), '.apm', 'temp-init');
@@ -168,15 +168,16 @@ program
         console.log(chalk.gray('  Installed guides/'));
       }
 
-      // Move assistant-specific directory into .apm/
+      // Move commands directory into assistant-specific directory at PROJECT ROOT
       const assistantDir = getAssistantDirectory(assistant);
-      const tempAssistantDir = join(tempDir, assistantDir);
-      const apmAssistantDir = join(apmDir, assistantDir);
-      if (existsSync(tempAssistantDir)) {
-        if (existsSync(apmAssistantDir)) {
-          rmSync(apmAssistantDir, { recursive: true, force: true });
+      const tempCommandsDir = join(tempDir, 'commands');
+      const rootAssistantDir = join(process.cwd(), assistantDir);
+      if (existsSync(tempCommandsDir)) {
+        if (existsSync(rootAssistantDir)) {
+          rmSync(rootAssistantDir, { recursive: true, force: true });
         }
-        cpSync(tempAssistantDir, apmAssistantDir, { recursive: true });
+        mkdirSync(rootAssistantDir, { recursive: true });
+        cpSync(tempCommandsDir, rootAssistantDir, { recursive: true });
         console.log(chalk.gray(`  Installed ${assistantDir}/`));
       }
 
