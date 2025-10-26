@@ -2,23 +2,12 @@ name: Build and Release
 
 on:
   push:
-    branches: [main, v0.5-dev]  # TEMP: Added v0.5-dev for testing
+    branches: [main]
     paths:
       - 'templates/**'
       - 'scripts/**'
       - 'package.json'
-      - 'src/**'  # TEMP: Added to trigger on CLI changes
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version (e.g., v0.5.1-rc1)'
-        required: true
-        type: string
-      draft:
-        description: 'Create as draft release'
-        required: false
-        type: boolean
-        default: true
+      - 'src/**'
 
 permissions:
   contents: write
@@ -43,64 +32,26 @@ jobs:
       - name: Run build script
         run: npm run build
 
-      - name: Determine version and draft status
+      - name: Extract version from package.json
         id: version
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            # Manual trigger: use input version
-            VERSION="${{ inputs.version }}"
-            DRAFT="${{ inputs.draft }}"
-          else
-            # Push trigger: extract version from package.json
-            VERSION="v$(node -p "require('./package.json').version")"
-            
-            # TEMP: Create draft releases for v0.5-dev, production for main
-            if [ "${{ github.ref }}" = "refs/heads/v0.5-dev" ]; then
-              VERSION="${VERSION}-draft"
-              DRAFT="true"
-            else
-              DRAFT="false"
-            fi
-          fi
-          
+          VERSION="v$(node -p "require('./package.json').version")"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "draft=$DRAFT" >> $GITHUB_OUTPUT
           echo "Version: $VERSION"
-          echo "Draft: $DRAFT"
 
       - name: Create and push tag
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag ${{ steps.version.outputs.version }}
           git push origin ${{ steps.version.outputs.version }}
-      
-      - name: Create tag locally for draft releases
-        if: github.event_name == 'push' && github.ref == 'refs/heads/v0.5-dev'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Delete tag if it exists
-          git tag -d ${{ steps.version.outputs.version }} 2>/dev/null || true
-          # Create new tag
-          git tag ${{ steps.version.outputs.version }}
 
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          DRAFT="${{ steps.version.outputs.draft }}"
-          
-          # Build the gh release create command
-          CMD="gh release create \"$VERSION\" dist/*.zip --title \"APM $VERSION\" --notes \"Automated release for version $VERSION\""
-          
-          # Add draft flag if needed
-          if [ "$DRAFT" = "true" ]; then
-            CMD="$CMD --draft"
-          fi
-          
-          # Execute the command
-          eval $CMD
+          gh release create "${{ steps.version.outputs.version }}" \
+            dist/*.zip \
+            --title "APM ${{ steps.version.outputs.version }}" \
+            --notes "Automated release for version ${{ steps.version.outputs.version }}"
 
