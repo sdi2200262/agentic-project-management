@@ -2,7 +2,7 @@
   "name": "agentic-pm",
   "version": "0.5.0",
   "description": "Agentic Project Management CLI",
-  "_buildTrigger": "test",
+  "_buildTrigger": "test2",
   "directories": {
     "doc": "docs"
   },
