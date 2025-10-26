@@ -132,17 +132,14 @@ program
       });
 
       console.log(chalk.blue(`\nSelected: ${assistant}`));
-      console.log(chalk.gray('Fetching appropriate asset bundle...\n'));
+      console.log(chalk.gray('Fetching latest release...\n'));
 
-      // TEMP: For testing, fetch the draft release by tag
-      const DRAFT_TAG = 'v0.5.0-draft'; // TODO: Remove this after testing
-      
       // Fetch the latest release to get version info
-      const release = await fetchLatestRelease(DRAFT_TAG); // TEMP: Using draft tag
+      const release = await fetchLatestRelease();
       const releaseVersion = release.tag_name.replace(/^v/, ''); // Remove 'v' prefix
 
-      // Fetch the asset URL
-      const assetUrl = await fetchReleaseAssetUrl(assistant, DRAFT_TAG); // TEMP: Using draft tag
+      // Fetch the asset URL for the selected assistant
+      const assetUrl = await fetchReleaseAssetUrl(assistant);
       
       // Download and extract the bundle
       await downloadAndExtract(assetUrl, process.cwd());
@@ -209,11 +206,8 @@ program
 
       console.log(chalk.blue(`Current installation: ${assistant} v${metadata.version}`));
 
-      // TEMP: For testing, fetch the draft release by tag
-      const DRAFT_TAG = 'v0.5.0-draft'; // TODO: Remove this after testing
-
       // Fetch latest release
-      const release = await fetchLatestRelease(DRAFT_TAG); // TEMP: Using draft tag
+      const release = await fetchLatestRelease();
       const latestVersion = release.tag_name.replace(/^v/, '');
 
       // Compare versions
@@ -275,7 +269,7 @@ program
         mkdirSync(tempDir, { recursive: true });
 
         // Fetch and download the latest bundle
-        const assetUrl = await fetchReleaseAssetUrl(assistant, DRAFT_TAG); // TEMP: Using draft tag
+        const assetUrl = await fetchReleaseAssetUrl(assistant);
         await downloadAndExtract(assetUrl, tempDir);
 
         // Update files: remove old, copy new
