@@ -98,7 +98,7 @@ export async function fetchLatestRelease(releaseTag = null) {
  * Fetches the asset URL for the specified AI assistant from GitHub releases
  * @param {string} assistant - The AI assistant name (e.g., "Cursor", "GitHub Copilot")
  * @param {string} [releaseTag] - Optional specific release tag (for testing)
- * @returns {Promise<string>} The download URL for the asset bundle
+ * @returns {Promise<Object>} Object with url, isDraft, and asset info
  */
 export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
   try {
@@ -123,7 +123,15 @@ export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
     
     console.log(chalk.gray(`Found asset: ${asset.name} (${(asset.size / 1024).toFixed(1)} KB)`));
     
-    return asset.browser_download_url;
+    // For draft releases, we need to use the API URL with authentication
+    const isDraft = release.draft === true;
+    const downloadUrl = isDraft ? asset.url : asset.browser_download_url;
+    
+    return {
+      url: downloadUrl,
+      isDraft: isDraft,
+      asset: asset
+    };
   } catch (error) {
     console.error(chalk.red('Failed to fetch release asset:'));
     throw error;
@@ -134,9 +142,10 @@ export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
  * Downloads and extracts a zip file to the specified destination
  * @param {string} url - URL or file path to the zip file
  * @param {string} destinationPath - Path where the contents should be extracted
+ * @param {boolean} [requiresAuth=false] - Whether the download requires authentication
  * @returns {Promise<void>}
  */
-export async function downloadAndExtract(url, destinationPath) {
+export async function downloadAndExtract(url, destinationPath, requiresAuth = false) {
   try {
     console.log(chalk.blue('● ○ ○ Downloading assets...'));
     
@@ -145,10 +154,25 @@ export async function downloadAndExtract(url, destinationPath) {
     // Check if it's a local file path or URL
     if (url.startsWith('http://') || url.startsWith('https://')) {
       // Handle URL downloads
+      const headers = {
+        'User-Agent': 'APM-CLI'
+      };
+      
+      // Add authentication for draft releases
+      if (requiresAuth) {
+        if (process.env.GITHUB_TOKEN) {
+          headers['Authorization'] = `Bearer ${process.env.GITHUB_TOKEN}`;
+          headers['Accept'] = 'application/octet-stream'; // Required for asset downloads
+        } else {
+          throw new Error('GITHUB_TOKEN environment variable required to download draft releases');
+        }
+      }
+      
       const response = await axios({
         method: 'GET',
         url: url,
-        responseType: 'stream'
+        responseType: 'stream',
+        headers: headers
       });
       
       // Create a temporary file for the download
