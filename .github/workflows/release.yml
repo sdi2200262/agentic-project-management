@@ -68,13 +68,20 @@ jobs:
           echo "Version: $VERSION"
           echo "Draft: $DRAFT"
 
-      - name: Create and push tag (production only)
-        if: github.event_name == 'push'
+      - name: Create and push tag
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag ${{ steps.version.outputs.version }}
           git push origin ${{ steps.version.outputs.version }}
+      
+      - name: Create tag locally for draft releases
+        if: github.event_name == 'push' && github.ref == 'refs/heads/v0.5-dev'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.version.outputs.version }}
 
       - name: Create GitHub Release
         env:
