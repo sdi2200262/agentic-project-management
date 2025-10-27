@@ -127,7 +127,7 @@ last_completed_task: [Task ID]
 ---
 
 ## 5 File Organization and Naming
-Store Implementation Agent Handover Files in `Memory/Handovers/[Agent_Name]_Handovers/` for all memory system variants. Use naming: `[Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
+Store Implementation Agent Handover Files in `Memory/Handovers/[Agent_Name]_Handovers/`. Use naming: `[Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
 
 ---
 
