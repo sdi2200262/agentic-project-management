@@ -1,0 +1,22 @@
+# Build and test
+scripts/
+*.test.js
+
+# Development
+.git
+.github
+.gitignore
+node_modules/
+templates/
+
+# Documentation
+docs/
+assets/
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+CHANGELOG.md
+
+# Configuration
+.eslintrc*
+.prettierrc*
+build-config.json
