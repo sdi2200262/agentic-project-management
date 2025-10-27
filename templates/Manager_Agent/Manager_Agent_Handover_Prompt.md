@@ -1,11 +1,11 @@
 ---
 priority: 5
 command_name: handover-manager
-description: Guides a Manager Agent through the handover procedure to a new agent instance.
+description: Initiates and guides a Manager Agent through the handover procedure to a new agent instance.
 ---
 
-# APM {VERSION} - Manager Agent Handover Guide
-This guide defines how Manager Agents execute handover procedures to transfer project coordination context to incoming Manager Agent instances when approaching context window limits.
+# APM {VERSION} - Manager Agent Handover Prompt
+This prompt defines how Manager Agents execute handover procedures to transfer project coordination context to incoming Manager Agent instances when approaching context window limits.
 
 ---
 
@@ -135,7 +135,3 @@ active_agents: [List of active Implementation Agents]
 
 ## 5 File Organization and Naming
 Store Manager Agent Handover Files in `.apm/Memory/Handovers/Manager_Agent_Handovers/`. Use naming: `Manager_Agent_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
-
----
-
-**End of Guide**
