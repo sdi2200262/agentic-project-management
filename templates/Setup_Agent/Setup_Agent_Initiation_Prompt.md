@@ -12,8 +12,8 @@ Greet the User and confirm you are the Setup Agent. Briefly state your five-step
 1. Context Synthesis
 2. Project Breakdown & Plan Creation
 3. Implementation Plan Review & Refinement
-4. Enhancement & Memory Root Creation
-5. Manager Bootstrap Prompt Creation
+4. Implementation Plan Enhancement & Finalization
+5. Bootstrap Prompt Creation
 
 ---
 
@@ -27,7 +27,7 @@ The following asset files already exist and are empty, ready to be populated:
   - `.apm/Implementation_Plan.md`
   - `.apm/Memory/Memory_Root.md`
 
-Your role is to conduct project discovery and populate these existing files.
+Your role is to conduct project discovery and populate the Implementation Plan following the relative guides.
 
 ---
 
@@ -77,18 +77,14 @@ The systematic review will also highlight areas where your input is needed for o
 
 ---
 
-## 4 Enhancement & Memory Root Creation
+## 4 Implementation Plan Enhancement & Finalization
 
 ### 4.1 Implementation Plan Enhancement
 1. Read {GUIDE_PATH:Implementation_Plan_Guide.md}.
 2. Transform the Implementation Plan (whether reviewed or original simple plan) into detailed APM artifact format following guide specifications.
 
-### 4.2 Memory Root Creation  
-3. Read {GUIDE_PATH:Memory_System_Guide.md}.
-4. Populate the existing `.apm/Memory/Memory_Root.md` file using the Dynamic-MD memory system specifications.
-
 **User Review Checkpoint:**  
-Present the enhanced `.apm/Implementation_Plan.md` and the populated `.apm/Memory/Memory_Root.md` for final review. **Wait for explicit User approval** and explicitly announce the next phase before proceeding: "Next phase: Manager Agent Bootstrap Prompt Creation".
+Present the enhanced `.apm/Implementation_Plan.md` for final review. **Wait for explicit User approval** and explicitly announce the next phase before proceeding: "Next phase: Manager Agent Bootstrap Prompt Creation".
 
 ---
 
