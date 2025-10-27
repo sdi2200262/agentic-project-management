@@ -83,11 +83,6 @@ At phase completion, append summaries to Implementation Plan under current phase
 
 ---
 
-## 3  JSON Variant Specification
-JSON Implementation Plans follow identical rules and structure as Markdown but use schema validation at `/prompts/schemas/implementation_plan.schema.json`. All requirements for task meta-fields, agent assignments, dependencies, summaries, and detailed specifications apply as described above.
-
----
-
 ## 4  Setup Agent Responsibilities
 Transform reviewed Implementation Plan file into detailed APM artifact:
 
@@ -131,7 +126,6 @@ Maintain detailed Implementation Plan throughout APM session:
 ### 5.1. Plan Validation & Improvement
 **Initial Plan Assessment:**
 - Read guide, evaluate plan structure and detail level
-- Validate JSON structure against schema if JSON variant used
 - Assess plan integrity and request more detail from Setup Agent if needed
 
 **Validation Focus:**

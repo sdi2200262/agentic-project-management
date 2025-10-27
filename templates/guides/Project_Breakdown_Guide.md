@@ -146,7 +146,7 @@ Present the full phase sequence with supporting rationale:
 After presenting agent team assignments (see §2.2), immediately write **in chat** phase sequence analysis before beginning phase cycles (see §4). This establishes project structure foundation for systematic task breakdown.
 
 ### 3.3. Implementation Plan File Initialization
-Create **completely empty** `Implementation_Plan.md` file in the User-selected storage location, to receive phase content during upcoming phase cycles. Afterwards proceed to phase cycles (see §4). 
+All phase content will be appended to the **existing empty** `.apm/Implementation_Plan.md` file created by the `apm init` CLI tool. Proceed to phase cycles (see §4). 
 
 ## 4. Phase Cycle Execution
 
