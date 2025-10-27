@@ -291,7 +291,7 @@ describe('build()', () => {
       const copilotZipFile = new AdmZip(copilotZip);
       const copilotEntries = copilotZipFile.getEntries();
       
-      const copilotCmdEntry = copilotEntries.find(e => e.entryName === 'commands/apm-low-run.md');
+      const copilotCmdEntry = copilotEntries.find(e => e.entryName === 'commands/apm-low-run.prompt.md');
       expect(copilotCmdEntry).toBeTruthy();
       const copilotCmdContent = copilotCmdEntry.getData().toString('utf8');
       expect(copilotCmdContent.includes('$ARGUMENTS')).toBe(true);
@@ -455,7 +455,7 @@ describe('build()', () => {
 
       // Verify ZIP contents
       const zip = new AdmZip(zipPath);
-      const cmdEntry = zip.getEntry('commands/apm-default-run-task.md');
+      const cmdEntry = zip.getEntry('commands/apm-default-run-task.prompt.md');
       expect(cmdEntry).toBeTruthy();
       const cmdContent = cmdEntry.getData().toString('utf8');
       expect(cmdContent.includes('Body content')).toBe(true);
