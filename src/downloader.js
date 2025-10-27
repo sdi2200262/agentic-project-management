@@ -3,10 +3,7 @@ import chalk from 'chalk';
 import { createWriteStream } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { exec } from 'child_process';
-import { promisify } from 'util';
-
-const execAsync = promisify(exec);
+import AdmZip from 'adm-zip';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -151,26 +148,28 @@ export async function downloadAndExtract(url, destinationPath) {
     }
     
     console.log(chalk.yellow('● ● ○ Extracting files...'));
-    
-    // Use unzip command to extract (more reliable than unzipper package)
+    // Cross-platform extraction using adm-zip
     try {
-      await execAsync(`unzip -o "${zipPath}" -d "${destinationPath}"`);
-    } catch (unzipError) {
-      // Fallback: try with ditto on macOS
-      try {
-        await execAsync(`ditto -xk "${zipPath}" "${destinationPath}"`);
-      } catch (dittoError) {
-        throw new Error(`Failed to extract zip file: ${unzipError.message}`);
-      }
+      const zip = new AdmZip(zipPath);
+      zip.extractAllTo(destinationPath, true);
+    } catch (extractError) {
+      throw new Error(`Failed to extract zip file: ${extractError.message}`);
     }
     
     // Clean up temporary file if it was downloaded
     if (url.startsWith('http://') || url.startsWith('https://')) {
       try {
-        await execAsync(`rm "${zipPath}"`);
-      } catch (cleanupError) {
-        // Ignore cleanup errors
-      }
+        // Best-effort cleanup; ignore failures
+        await new Promise(resolve => {
+          try {
+            // Defer require to avoid top-level import just for cleanup
+            const { unlink } = require('fs');
+            unlink(zipPath, () => resolve());
+          } catch (_) {
+            resolve();
+          }
+        });
+      } catch (_) {}
     }
     
     console.log(chalk.green('● ● ● Scaffolding complete!'));
