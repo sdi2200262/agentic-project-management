@@ -1,5 +1,5 @@
 # APM {VERSION} - Context Synthesis Prompt
-This prompt helps the Setup Agent collect all information needed to build an accurate and detailed Implementation Plan and choose an appropriate memory strategy. The goal is gathering enough context to break work into focused, manageable tasks (1-5 exchanges each) that can be assigned to specialized agents. At this stage, the Setup Agent passes control flow to this prompt.
+This prompt helps the Setup Agent collect all information needed to build an accurate and detailed Implementation Plan. The goal is gathering enough context to break work into focused, manageable tasks that can be assigned to specialized agents. At this stage, the Setup Agent passes control flow to this prompt.
 
 ## Principles for Discovery & Objectives
 
@@ -194,7 +194,8 @@ After each user response, assess information gaps:
 
 **Phase 3 Completion Requirement:** State "Phase 3 understanding complete. Ready to proceed to Phase 4 because: [specific reasoning]. No additional follow-ups needed because: [specific process/implementation/coordination understanding achieved]."
 
-### Phase 4: Final Validation and Asset Format Selection
+### Phase 4: Final Validation
+
 **User Collaboration Point:** This is your opportunity to correct any misunderstandings before implementation planning begins.
 
 #### Summary for User Validation
@@ -207,30 +208,8 @@ Present comprehensive summary covering:
 
 **Explicitly request user feedback:** "Please review this summary carefully. I want to ensure I've understood your project correctly before breaking it into tasks. Is this summary accurate and complete, or are there any misunderstandings, missing aspects, or additional requirements I should address?"
 
-#### Asset Format Selection
-
-After presenting the summary, clearly ask the user to choose an APM asset format for their Implementation Plan:
-
-- **Markdown (Recommended - Default):**  
-   - Readable, concise, and suitable for all projects (code, documents, analysis, feature development)
-   - Optimized for LLM parsing with YAML frontmatter and minimal token usage
-   - **Recommended:** Use Markdown for reliability, efficiency, and compatibility
-
-- **JSON (Testing Preview - Not for Production):**  
-   - Intended for advanced testing scenarios requiring strict workflow validation, maximum LLM parsing fidelity, and active context retention
-      - Designed for "token-wealthy" Users unconcerned with token consumption, or APM contributors seeking to experiment and provide feedback on asset structure and parsing efficiency
-      - Experimental only; not suitable for production or resource-constrained use due to much higher token consumption
-      - **WARNING:** JSON assets consume at least 15% more tokens, often 2x–3x higher than Markdown, and will fill the context window much faster, resulting in more frequent Handovers and context resets
-
-**Present Choice:**  
-"Please choose your preferred asset format for the Implementation Plan:  
-- Markdown (default - strongly recommended for all projects)  
-- JSON (testing preview only, not for production, higher token usage)
-
-If unsure, select Markdown. Let me know your choice!"
-- **If user provides both summary approval AND asset format choice:** Proceed to project planning
-- **If user provides summary approval but no asset format choice:** Ask for asset format choice to complete Phase 4
-- **If user provides context corrections (with or without asset format choice):** Incorporate user feedback and return to appropriate phase for additional follow-ups. **When returning to Phase 4 after corrections, re-ask for asset format choice if not previously provided.**
+**If user provides summary approval:** Proceed to project planning
+**If user provides context corrections:** Incorporate user feedback and return to appropriate phase for additional follow-ups.
 
 ## Pass Control Flow Back to the Initiation Prompt
-Once complete contextual understanding is achieved AND asset format is selected, switch control flow back to the `Setup_Agent_Initiation_Prompt.md` prompt at the **Project Breakdown & Plan Creation Phase**.
+Once complete contextual understanding is achieved, switch control flow back to the `Setup_Agent_Initiation_Prompt.md` prompt at the **Project Breakdown & Plan Creation Phase**.

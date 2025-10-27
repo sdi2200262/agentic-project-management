@@ -1,8 +1,5 @@
 # APM {VERSION} - Task Assignment Guide
-This guide defines how Manager Agents issue task assignments to Implementation Agents and evaluate their completion. It defines two Task Assignment Prompt variants:
-- Markdown
-- JSON
-Task assignments coordinate agent work during the Task Loop of an APM session, following the Implementation Plan.
+This guide defines how Manager Agents issue task assignments to Implementation Agents and evaluate their completion. Task assignments coordinate agent work during the Task Loop of an APM session, following the Implementation Plan.
 
 ## 1. Task Loop Overview
 Manager Agent issues Task Assignment Prompt → User passes to Implementation Agent → Implementation Agent executes task and logs work → User returns log to Manager → Manager reviews and determines next action (continue, follow-up, delegate, or plan update).
@@ -88,13 +85,10 @@ Follow {GUIDE_PATH:Memory_Log_Guide.md} instructions.
 ### 2.4. Delivery Format  
 Present Task Assignment Prompts as **a single markdown code block with YAML frontmatter at the top.** This ensures smooth copy-paste workflow for users transferring prompts between Manager and Implementation Agents.
 
-## 3. JSON Variant Specification
-JSON prompts follow identical content requirements as Markdown but use schema validation at `prompts/schemas/task_assignment.schema.json`. All sections for context, instructions, outputs, and logging apply as described above.
-
-## 4. Context Dependency Integration
+## 3. Context Dependency Integration
 When consumer tasks depend on producer outputs ("Depends on: Task X.Y Output" in Implementation Plan Guidance), Manager provides context based on agent assignment:
 
-### 4.1. Same-Agent Dependencies (Contextual Guidance)
+### 3.1. Same-Agent Dependencies (Contextual Guidance)
 When **same Implementation Agent** worked on both producer and consumer tasks:
 
 **Contextual Approach:**
@@ -135,7 +129,7 @@ For this task, extend the existing role-based permissions system you built to ha
 - **File References**: Always include specific file paths for outputs that need to be used or extended
 - **Implementation Continuity**: Emphasize building on previous work rather than starting fresh
 
-### 4.2. Cross-Agent Dependencies (Comprehensive Integration Context)
+### 3.2. Cross-Agent Dependencies (Comprehensive Integration Context)
 When **different Implementation Agents** worked on producer and consumer tasks (Tasks have "by Agent X" tag):
 
 **Comprehensive Context Approach:**
@@ -182,7 +176,7 @@ If [specific integration aspect] is ambiguous after completing integration steps
 - **Clarification Protocols**: Always include User clarification pathway for ambiguous integration points
 - **Assumption**: Consumer Agent has zero familiarity with producer work - explain everything needed for successful integration
 
-### 4.3. Context Integration Execution
+### 3.3. Context Integration Execution
 **For Same-Agent Dependencies:**
 - No separate integration steps section in Task Assignment Prompt
 - Include minimal "Context from Dependencies" section with `dependency_context: true` in YAML
@@ -191,7 +185,7 @@ If [specific integration aspect] is ambiguous after completing integration steps
 - Include detailed "Context from Dependencies" section with `dependency_context: true` in YAML
 - Implementation Agent completes all integration steps in one response before main task
 
-### 4.4. Context Integration Guidelines for Manager Agents
+### 3.4. Context Integration Guidelines for Manager Agents
 
 **Same-Agent Context Creation:**
 - Review producer task Memory Log for key outputs and deliverables
