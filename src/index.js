@@ -180,12 +180,6 @@ program
         mkdirSync(rootAssistantDir, { recursive: true });
         cpSync(tempCommandsDir, rootAssistantDir, { recursive: true });
         console.log(chalk.gray(`  Installed ${assistantDir}/`));
-
-        if (assistant === 'GitHub Copilot') {
-          // Rename all .md files to .prompt.md for Copilot prompts
-          execSync(`find "${rootAssistantDir}" -name "*.md" -exec bash -c 'mv "$1" "\${1%.md}.prompt.md"' _ {} \\;`);
-          console.log(chalk.gray('  Renamed prompt files for Copilot'));
-        }
       }
 
       // Create Memory directory with empty Memory_Root.md
@@ -360,12 +354,6 @@ program
             }
           }
           console.log(chalk.green(`  Updated ${assistantDir}`));
-
-          if (assistant === 'GitHub Copilot') {
-            // Rename all .md files to .prompt.md for Copilot prompts
-            execSync(`find "${oldAssistantDir}" -name "*.md" -exec bash -c 'mv "$1" "\${1%.md}.prompt.md"' _ {} \\;`);
-            console.log(chalk.gray('  Renamed prompt files for Copilot'));
-          }
         }
 
         // Update guides directory

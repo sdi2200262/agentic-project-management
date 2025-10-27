@@ -224,6 +224,20 @@ async function build(config, version) {
       console.log(`  ${category}: ${originalFilename}.md → ${path.relative(targetBuildDir, outputPath)}`);
     }
 
+    // Handle target-specific post-processing
+    if (target.id === 'copilot') {
+      // Rename all command .md files to .prompt.md for Copilot
+      const commandFiles = await fs.readdir(commandsDir);
+      for (const file of commandFiles) {
+        if (file.endsWith('.md') && !file.endsWith('.prompt.md')) {
+          const oldPath = path.join(commandsDir, file);
+          const newPath = path.join(commandsDir, file.replace(/\.md$/, '.prompt.md'));
+          await fs.rename(oldPath, newPath);
+          console.log(`  Renamed: ${file} → ${path.basename(newPath)}`);
+        }
+      }
+    }
+
     console.log(`Completed target: ${target.name}`);
 
     // Create ZIP archive from build directory
