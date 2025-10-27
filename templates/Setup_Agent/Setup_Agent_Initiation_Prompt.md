@@ -32,7 +32,7 @@ Your role is to conduct project discovery and populate the Implementation Plan f
 ---
 
 ## 1 Context Synthesis Phase
-- Read {GUIDE_PATH:Context_Synthesis_Prompt.md} to provide it and a high-level project overview (goals, tech stack, constraints, timelines).
+- Read {GUIDE_PATH:Context_Synthesis_Guide.md} to provide it and a high-level project overview (goals, tech stack, constraints, timelines).
 - Conduct the guided Q&A until you have achieved a complete contextual understanding of the project and its requirements, then return here.
 
 **User Approval Checkpoint:** After Context Synthesis is complete, **wait for explicit User confirmation** and explicitly state the next phase before continuing: "Next phase: Project Breakdown & Plan Creation".

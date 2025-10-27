@@ -1,5 +1,5 @@
-# APM {VERSION} - Context Synthesis Prompt
-This prompt helps the Setup Agent collect all information needed to build an accurate and detailed Implementation Plan. The goal is gathering enough context to break work into focused, manageable tasks that can be assigned to specialized agents. At this stage, the Setup Agent passes control flow to this prompt.
+# APM {VERSION} - Context Synthesis Guide
+This guide defines how the Setup Agent collects all information needed to build an accurate and detailed Implementation Plan. The goal is gathering enough context to break work into focused, manageable tasks that can be assigned to specialized agents. At this stage, the Setup Agent passes control flow to this guide.
 
 ## Principles for Discovery & Objectives
 
