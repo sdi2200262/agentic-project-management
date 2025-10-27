@@ -1,11 +1,11 @@
 ---
 priority: 6
 command_name: handover-implementation
-description: Guides an Implementation Agent through the handover procedure to a new agent instance
+description: Initiates and guides an Implementation Agent through the handover procedure to a new agent instance
 ---
 
-# APM {VERSION} - Implementation Agent Handover Guide
-This guide defines how Implementation Agents execute handover procedures to transfer task execution context to incoming Implementation Agent instances when approaching context window limits.
+# APM {VERSION} - Implementation Agent Handover Prompt
+This prompt defines how Implementation Agents execute handover procedures to transfer task execution context to incoming Implementation Agent instances when approaching context window limits.
 
 ---
 
@@ -127,8 +127,4 @@ last_completed_task: [Task ID]
 ---
 
 ## 5 File Organization and Naming
-Store Implementation Agent Handover Files in `Memory/Handovers/[Agent_Name]_Handovers/`. Use naming: `[Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
-
----
-
-**End of Guide**
+Store Implementation Agent Handover Files in `.apm/Memory/Handovers/[Agent_Name]_Handovers/`. Use naming: `[Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
