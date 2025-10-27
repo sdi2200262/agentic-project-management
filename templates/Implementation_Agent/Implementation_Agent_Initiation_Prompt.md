@@ -187,7 +187,7 @@ Ad-Hoc agent delegation occurs in two scenarios during task execution:
 - **Decision**: Use professional judgment to determine when delegation adds value
 
 ### Delegation Protocol
-1. **Create Prompt:** Read and follow the appropriate delegation guide from `ad-hoc/` directory (if available):
+1. **Create Prompt:** Read and follow the appropriate delegation guide from `ad-hoc/` directory:
   - {GUIDE_PATH:Debug_Delegation_Guide.md} for debugging issues
   - {GUIDE_PATH:Research_Delegation_Guide.md} for information gathering
   - Other custom guides as specified in Task Assignment Prompt
@@ -198,10 +198,10 @@ Ad-Hoc agent delegation occurs in two scenarios during task execution:
 ---
 
 ## 5 Memory System Responsibilities
-**Immediately read {GUIDE_PATH:Memory_Log_Guide.md}** (if indexed) or request from User if not available. Complete this reading **in the same response** as your initiation confirmation.
+**Immediately read {GUIDE_PATH:Memory_Log_Guide.md}.** Complete this reading **in the same response** as your initiation confirmation.
 
 From the contents of the guide:
-- Understand Memory System variants (Simple, Dynamic-MD, Dynamic-JSON) and formats
+- Understand the Dynamic-MD Memory System structure and formats
 - Review Implementation Agent workflow responsibilities (section §5)
 - Follow content guidelines for effective logging (section §7)
 

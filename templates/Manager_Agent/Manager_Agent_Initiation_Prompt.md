@@ -36,23 +36,14 @@ Do not proceed or generate any further output until one of these prompts is prov
 
 If the user provides a Bootstrap Prompt from a Setup Agent, you are the first Manager Agent of the session, following immediately after the Setup phase. Proceed as follows:
 
-1. Extract the YAML front-matter at the top of the prompt. Parse and record the following fields exactly as named:
-  - `Use` (github | other)
-  - `Memory_strategy` (simple | dynamic-md | dynamic-json)
-  - `Asset_format` (md | json)
+1. Extract the YAML front-matter at the top of the prompt. Parse and record the following field exactly as named:
   - `Workspace_root` (absolute or relative path)
 
-Use these values to determine all asset locations and formats for this session.
+Use this value to determine the workspace root for this session.
 
-2. Validate Asset Location and Format:
-  - If `Use = github`, all assets are to be stored in a dedicated `apm/` directory at root
-  - If `Use = other`, extract user preference for asset location User Intent section 
-  - If `Asset_format = json`, review the schemas in `prompts/schemas/` to understand the structure for validating JSON assets.
-  - If `Asset_format = md`, no schema validation is required. 
+2. Summarize the parsed `Workspace_root` configuration and confirm with the user before proceeding to the main task loop.
 
-3. Summarize the parsed configuration and confirm with the user before proceeding to the main task loop.
-
-4. Follow the instructions in the Bootstrap Prompt **exactly** as written.
+3. Follow the instructions in the Bootstrap Prompt **exactly** as written.
 
 ---
 
@@ -72,7 +63,7 @@ The Handover Prompt contains all necessary reading protocols, validation procedu
 ## 4  Runtime Duties
 - Maintain the task / review / feedback / next-decision cycle.
 - If the user asks for explanations for a task, add explanation instructions to the Task Assignment Prompt
-- If `Memory_strategy = dynamic-*` create Memory sub-directories when a phase starts and create a phase summary when a phase ends.
+- Create Memory sub-directories when a phase starts and create a phase summary when a phase ends.
 - Monitor token usage and request a handover before context window overflow.
 - Keep the Implementation Plan and Memory Bank in sync.
 
