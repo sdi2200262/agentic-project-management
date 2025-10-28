@@ -1,6 +1,6 @@
 # Agentic Project Management (APM)
 
-[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.4.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.4.0)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.0)
 
 *Manage complex projects with a team of AI assistants, smoothly and efficiently.*
 
@@ -13,32 +13,79 @@ APM uses various context retention techniques, coordinating a team of specialize
 Think of it like having a project manager, developers, ad-hoc specialists, and a setup/configuration expert all powered by AI and working together under your guidance.
 
 <p align="center">
-  <img src="assets/apm-graph.png" alt="apm-graph" width="full"/>
+  <img src="assets/apm-banner.png" alt="apm-banner" style="max-width:1100px; width:80%; height:auto;" />
 </p>
+
+## Installation
+
+Install APM CLI globally via NPM:
+
+```bash
+npm install -g agentic-pm
+```
+
+Or install locally in your project:
+
+```bash
+npm install agentic-pm
+```
+
+<details>
+<summary><strong>Supported AI Assistants</strong></summary>
+
+APM supports the following AI assistants and IDEs:
+
+| Assistant           | Type                    | Format   | Command Directory      |
+|---------------------|-------------------------|----------|------------------------|
+| GitHub Copilot      | IDE                     | Markdown | `.github/prompts`      |
+| Claude Code         | IDE & CLI               | Markdown | `.claude/commands`     |
+| Cursor              | IDE                     | Markdown | `.cursor/commands`     |
+| Windsurf            | IDE                     | Markdown | `.windsurf/workflows`  |
+| Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
+| Qwen Code           | CLI                     | TOML     | `.qwen/commands`       |
+| Roo Code            | IDE                     | Markdown | `.roo/commands`        |
+| Amazon Q Developer  | IDE & CLI               | Markdown | `.amazonq/prompts`     |
+| opencode            | CLI                     | Markdown | `.opencode/command`    |
+| Codex CLI           | CLI                     | Markdown | `.codex/prompts`       |
+| Kilo Code           | IDE & CLI               | Markdown | `.kilocode/workflows`  |
+| Augment Code        | IDE & CLI               | Markdown | `.augment/commands`    |
+| CodeBuddy           | IDE & CLI               | Markdown | `.codebuddy/commands`  |
+
+When you run `apm init`, simply select your AI assistant from the list, and APM will automatically configure the appropriate command structure for your environment.
+
+</details>
 
 ## Getting Started
 
-**Accessing APM Assets:** You have a few options to get the APM prompts, guides and protocol definitions:
+Follow these simple steps to start using APM in your project:
 
-1.  **Use the APM Template (Recommended for Custom Projects):**
-    *   Click the "Use this template" button on the [APM GitHub Repository](https://github.com/sdi2200262/agentic-project-management).
-    *   This creates *your own repository* pre-filled with the entire APM structure.
-    *   **Ideal Setup:** Clone *your new repository*, ideally at the root of your project workspace.
+1. **Navigate to your project directory** in your terminal.
 
-2.  **Clone the Official APM Repository (Recommended for Direct Use & Updates):**
-    *   Clone the main [APM GitHub Repository](https://github.com/sdi2200262/agentic-project-management) directly into your project workspace, ideally at the root.
-    *   This gives you direct access to the latest version and all assets.
+2. **Run the APM initialization command:**
+   ```bash
+   apm init
+   ```
 
-3.  **Manual Copy-Pasting (Basic Usage):**
-    *   You can manually copy and paste prompt content from the official APM GitHub repository into your AI assistant as needed. While this approach works, it involves more manual labor and does not fully leverage the agentic capabilities of the framework.
+3. **Select your AI assistant** when prompted (e.g., Cursor, Copilot, Claude Code, etc.).
 
-**Next Steps:**
-1. Begin with the [Introduction](docs/Introduction.md) to familiarize yourself with the APM framework.
-2. Proceed to the [Getting Started Guide](docs/Getting_Started.md) or consult the [Quick Start Guide](docs/guides/APM_Quick_Start_Guide.pdf) to launch your first APM session.
+4. **APM automatically installs:**
+   - `.apm/` directory with APM guides and initial assets
+   - APM slash commands in your AI assistant's command directory
+   - Necessary installation meta-data
+
+5. **Open your AI assistant chat** and enter the slash command:
+   ```
+   /apm-1-initiate-setup
+   ```
+
+6. **Follow the established APM workflow:** <br/>
+Setup Phase (Project Discovery & Planning) → Task Loop Phase (Plan Execution)
+
+For step-by-step guidance, see the **[Getting Started Guide](docs/Getting_Started.md)**
 
 ## Documentation
 
-APM v0.4 includes comprehensive documentation covering all aspects of the framework:
+APM v0.5 includes comprehensive documentation covering all aspects of the framework:
 
 | Document | Description |
 |----------|-------------|
@@ -48,17 +95,9 @@ APM v0.4 includes comprehensive documentation covering all aspects of the framew
 | **[Workflow Overview](docs/Workflow_Overview.md)** | Complete workflow walkthrough with process diagrams |
 | **[Token Consumption Tips](docs/Token_Consumption_Tips.md)** | Cost optimization strategies and model recommendations |
 | **[Modifying APM](docs/Modifying_APM.md)** | Customization of APM assets and advanced features |
+| **[Troubleshooting Guide](docs/Troubleshooting_Guide.md)** | Troubleshooting for common issues |
 | **[Context & Memory Management](docs/Context_and_Memory_Management.md)** (advanced) | How APM handles context and manages memory across agent instances  |
 | **[Context & Prompt Engineering](docs/Context_and_Prompt_Engineering.md)** (advanced) | Prompt and context engineering techniques used throughout the framework |
-
-### Visual Guides
-
-These PDF guides provide detailed, visual explanations of APM's processes, including annotated screenshots, best practices, and practical tips to enhance your understanding:
-
-| Guide | Description | Best For |
-|-------|-------------|----------|
-| **[Quick Start Guide](docs/guides/APM_Quick_Start_Guide.pdf)** | Step-by-step walkthrough of your first APM session with annotated screenshots | Beginners & visual learners |
-| **[User Guide](docs/guides/APM_User_Guide.pdf)** | In-depth manual covering advanced usage, optimization techniques, and troubleshooting for common issues | Experienced users |
 
 For a complete documentation index with recommended reading order, see the **[Documentation Hub](docs/README.md)**.
 
@@ -69,15 +108,15 @@ APM is an open-source project, and your contributions are welcome! Whether it's 
 **Ways to contribute:**
 - **Report bugs or workflow issues**
 - **Suggest features or improvements**
-- **Improve documentation or guides**
-- **Share customizations/adaptations** for specific domains or IDEs
+- **Improve documentation**
+- **Share customizations/adaptations** for specific domains or use-cases
+- **Extend support** for new AI assistants
 
 **Areas particularly seeking contributions:**
 
-- **JSON Asset Format Testing:** APM v0.4 includes an experimental JSON asset format variant designed for better LLM parsing. If you have access to high token budgets or want to experiment with structured asset validation, testing the JSON format and providing feedback would be valuable for future development. See [Context & Prompt Engineering](docs/Context_and_Prompt_Engineering.md) documentation and [prompts/schemas/README.md](prompts/schemas/README.md) for detailed information and contribution guidelines.
-<br/>
-
-- **Ad-Hoc Delegation Guides:** The framework currently includes Debug and Research delegation guides, but there's opportunity to create specialized guides for other context-intensive tasks such as testing automation, security analysis, data extraction and more. See [prompts/ad-hoc/README.md](prompts/ad-hoc/README.md) for contribution guidelines and template patterns.
+- **Assistant Support:** Help expand APM support for additional AI assistants beyond the ones currently supported.
+- **Ad-Hoc Delegation Guides:** The framework includes Debug and Research delegation guides, but there's opportunity to create specialized guides for other context-intensive tasks such as testing automation, security analysis, data extraction and more.
+- **Workflow Optimizations:** Share improvements to agent protocols or memory system enhancements.
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and contribution process.
 
