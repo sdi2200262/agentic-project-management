@@ -1,4 +1,4 @@
-# APM v0.4 - Agentic Project Management Framework
+# APM v0.5 - Agentic Project Management Framework
 
 **A Structured, Multi-Agent Workflow System for Complex Project Execution with AI Assistants**
 
@@ -30,7 +30,7 @@ The result is a workflow that feels more like working with a well organized team
 
 ## Multi-Agent Coordination
 
-APM v0.4 employs a sophisticated multi-agent system built around four specialized agent types:
+APM v0.5 employs a sophisticated multi-agent system built around four specialized agent types:
 
 *   **1. Setup Agent:** Initiates the project session, creating the needed APM assets. The Setup Agent conducts comprehensive project discovery, transforms requirements into a detailed Implementation Plan, and initializes the Memory System that enables effective coordination. Once session is initialized it passes control to the Manager Agent.
 
@@ -45,7 +45,7 @@ APM v0.4 employs a sophisticated multi-agent system built around four specialize
 ### Context Management
 APM preserves context with a carefully designed adaptation of the traditional Memory Bank and a context Handover Procedure. For tasks that require isolated, context-intensive work (such as research or debugging), Ad-Hoc Agent instances handle these activities separately, preventing unnecessary strain on the core agents' context.
 
-*   **Dynamic Memory Memory Bank**: An adaptation of the traditional single-file Memory Bank that maps Memory Log files to the tasks of an Implementation Plan. For complex projects Memory Logs are stored in a directory structure with folders mapped to the Implementation Plan's phases. For simple projects, a single-file traditional Memory Bank is used.
+*   **Dynamic Memory Bank**: An adaptation of the traditional single-file Memory Bank that maps Memory Log files to the tasks of an Implementation Plan. Memory Logs are stored in a directory structure with folders mapped to the Implementation Plan's phases.
 
 *   **Ad-Hoc Agent Delegation**: Workflow branches for handling debugging, research, or analysis tasks through temporary agent instances that work in isolated context scopes.
 
@@ -53,7 +53,7 @@ APM preserves context with a carefully designed adaptation of the traditional Me
 
 ## The APM Workflow
 
-APM v0.4 operates through two workflow phases:
+APM v0.5 operates through two workflow phases:
 
 1. **Setup Phase**: Comprehensive project discovery and planning through the Setup Agent & initialization of session assets
 2. **Task Loop Phase**: Coordinated task assignment & execution via Manager and Implementation Agents
@@ -62,19 +62,14 @@ Plus **Handover Procedure**: as distinct events for seamless context transfer wh
 
 ---
 
-## Core Framework (`/prompts`)
-The `/prompts` directory contains all core user prompts, guides, and schemas for APM agents and workflows. Each subdirectory focuses on a specific agent type, process guide, or in the case of `schemas/`, the JSON asset format variant.
+## Core Framework and Customization
 
-> **Testing/Research Preview:** The JSON asset format variant is part of ongoing research into structured prompting and improved LLM parsing efficiency with commercial AI Assistants. It is specifically designed for better LLM parsing and prompt structure, and is intended for token-wealthy users or APM contributors interested in testing and providing feedback. This format is experimental and not recommended for production or resource-constrained scenarios due to significantly higher token consumption.
+In APM v0.5, the core framework is installed and managed via the `apm init` CLI tool. Instead of a `/prompts` directory, the CLI automatically installs the necessary files into your project's workspace:
 
-| Subdirectory                                                         | Purpose                                                                                    | Notes                                                                                                                       |
-| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-|  [`/prompts/Setup_Agent/`](../prompts/Setup_Agent/)                  | Initialization Prompt & Context Synthesis Prompt for the Setup Agent                       | For project discovery, planning, and memory system setup                                                                    |
-| [`/prompts/Manager_Agent/`](../prompts/Manager_Agent/)               | Initialization Prompt & Handover Guide for the Manager Agent                               | Guides task assignment and context continuity                                                                               |
-| [`/prompts/Implementation_Agent/`](../prompts/Implementation_Agent/) | Initialization Prompt & Handover Guide for Implementation Agents                           | Ensures focused execution and seamless task handover                                                                        |
-| [`/prompts/ad-hoc/`](../prompts/ad-hoc/)                             | Initialization Prompt & Delegation Guides for Ad-Hoc Agents                                | Supports temporary, isolated tasks outside the main workflow                                                                |
-| [`/prompts/schemas/`](../prompts/schemas/)                           | JSON schema definitions for Implementation Plans, Memory Logs, and Task Assignment Prompts | Includes README, examples, and Python validation script                                                                     |
-| [`/prompts/guides/`](../prompts/guides/)                             | Guides for APM processes and protocols                                                     | Covers project breakdown, memory management, task assignment, review, and handover                                          |
+* **Guides:** All workflow guides are placed in the `.apm/guides/` directory for agent reference and user customization.
+* **Commands:** Agent slash commands (initiation prompts, handover guides, ad-hoc delegations) are installed directly into your selected AI assistant's command directory (e.g., `.cursor/commands`, `.github/prompts`, `.claude/commands`).
+
+This automated setup ensures all assets are correctly placed and version-managed. Customization is done by editing the files in these directories after running `init`.
 
 
 ## Documentation Overview
@@ -93,7 +88,7 @@ Below is a visual overview of the APM workflow, illustrating the full process fr
 > **Note:** This overview omits some intermediate steps and sub-processes in both the Setup Phase and Task Loop Phase for brevity. For a complete, detailed workflow breakdown, see the [Workflow Overview](Workflow_Overview.md) document.
 
 <div align="center">
-  <img src="../assets/apm-workflow-diagram.png" alt="APM v0.4 - Agentic Spec-driven Development" width="1200" style="max-width: 100%;"/>
+  <img src="../assets/apm-workflow-diagram.png" alt="APM v0.5 - Agentic Spec-driven Development" width="1200" style="max-width: 100%;"/>
 </div>
 
 ---

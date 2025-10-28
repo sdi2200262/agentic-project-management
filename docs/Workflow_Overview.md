@@ -1,4 +1,4 @@
-# Workflow Overview - APM v0.4
+# Workflow Overview - APM v0.5
 
 APM operates through two workflow phases:
 1. **Setup Phase**: Comprehensive project discovery and planning
@@ -25,8 +25,7 @@ The Setup Agent conducts comprehensive project initialization through systematic
 
 ```mermaid
 graph LR
-    A[User Initializes<br/>Setup Agent] --> B[Asset<br/>Verification]
-    B --> C[Context<br/>Synthesis]
+    A[User Initializes<br/>Setup Agent] --> C[Context<br/>Synthesis]
     C --> D[Project<br/>Breakdown]
     D --> E{User Chooses<br/>Review?}
     E -->|Yes| F[Systematic<br/>Review]
@@ -41,40 +40,25 @@ graph LR
 
 ### Setup Agent Initialization
 
-The Setup Phase begins when the User initiates the Setup Agent, which then starts a comprehensive 6-step sequence defined below.
+The Setup Phase begins when the User initiates the Setup Agent, which then starts a comprehensive 5-step sequence defined below.
 
-### 1. Asset Verification & Workspace Setup
-The Asset Verification step ensures that all necessary APM assets are available and the project workspace is properly structured before proceeding.
-
-**User Actions:**
-- Clone the APM repository or access the prompts manually
-- Choose the workspace directory and storage approach
-- Initialize the Setup Agent with the initiation prompt
-
-**Setup Agent Actions:**
-- Verify APM asset availability
-- Establish workflow strategy: GitHub repository vs. other (describe if 'other')
-- Create the `<workspace_root>/apm/` directory structure
-
-### 2. Context Synthesis & Project Discovery
-After Asset Verification, the Setup Agent proceeds to Context Synthesis for project discovery:
+### 1. Context Synthesis & Project Discovery
+The Setup Agent proceeds to Context Synthesis for project discovery:
 
 **User Actions:**
-- Respond to a structured discovery questionnaire across four phases
+- Respond to a structured discovery questionnaire across three phases
 - Provide detailed project information, requirements, and constraints
 - Validate the Setup Agent's understanding or expand
-- Select asset format (Markdown or JSON — Testing Preview) and approve proceeding to the breakdown
 
 **Setup Agent Actions:**
-- Conduct systematic discovery through a four-phase methodology:
+- Conduct systematic discovery through a three-phase methodology:
   - **Phase 1**: Existing materials, PRDs, project vision, and scope assessment
   - **Phase 2**: Targeted inquiry across technical requirements, dependencies, constraints
   - **Phase 3**: Process requirements, workflow preferences, quality standards  
-  - **Phase 4**: User validation and asset format selection
 - Use mandatory follow-up cycles for each discovery phase until understanding is complete
 - Retain insights for the systematic breakdown phase
 
-### 3. Project Breakdown & Implementation Plan Creation
+### 2. Project Breakdown & Implementation Plan Creation
 After complete contextual understanding has been achieved in Context Synthesis, the Setup Agent proceeds to Project Breakdown using a systematic chat-to-file procedure:
 
 **User Actions:**
@@ -105,9 +89,9 @@ Execute systematic progression through the mandatory gates:
 
 **This approach is intentionally crafted for robust, agentic non-thinking models, which are the default in most AI IDEs.** 
 
-> **Note:** If you encounter any issues during this process, please refer to the relevant paragraph within the `Troubleshooting` section of the [User Guide](../guides/APM_User_Guide.pdf) for detailed assistance.
+> **Note:** If you encounter any issues during this process, please refer to the relevant section of the [Troubleshooting Guide](./docs/Troubleshooting_Guide.pdf) for detailed assistance.
 
-### 4. Implementation Plan Review (Optional)
+### 3. Implementation Plan Review (Optional)
 If the User opts for a systematic review, the Setup Agent highlights plan sections needing extra attention. For the areas the User selects, the Setup Agent reviews for AI-specific planning issues—like task-packing, misclassified tasks, or other LLM-related errors, rather than rechecking the entire project context. Major context gaps may still be flagged if found. This agent-driven review is optional and is intended to optimize workflow clarity, smoothness, and AI-oriented planning practices, rather than to ensure the Implementation Plan fully and accurately reflects the project's actual requirements. **The User should always conduct their own comprehensive review of the Implementation Plan before relying on the Agent's review.**
 
 **User Actions:**
@@ -120,25 +104,19 @@ If the User opts for a systematic review, the Setup Agent highlights plan sectio
 - Challenge previous planning decisions through structured questioning
 - Apply improvements identified through the review process
 
-### 5. Enhancement & Memory System Initialization
-In this exchange, the Setup Agent transforms the Implementation Plan into a detailed APM artifact and initializes the Memory System accordingly.
+### 4. Implementation Plan Enhancement & Finalization
+In this exchange, the Setup Agent transforms the Implementation Plan into a detailed APM artifact.
 
 **User Actions:**
 - Review the enhanced Implementation Plan with detailed task specifications
-- Review the selected memory system strategy and initialization
 - Request modifications to any artifacts, if needed
 
 **Setup Agent Actions:**
 - Transform the simple plan into a detailed APM artifact with comprehensive task specifications
-- Select a memory system strategy based on project complexity:
-  - **Simple**: ≤8 tasks, single-file Memory Bank
-  - **Dynamic-MD**: >8 tasks or multiple phases, directory structure with phase folders
-  - **Dynamic-JSON (Testing Preview)**: Designed for advanced testing/validation scenarios (higher token consumption)
-- Initialize memory structure and create Memory Root based on selected strategy
 
-> **Note:** If you encounter any issues during this process, please refer to the relevant paragraph within the `Troubleshooting` section of the [User Guide](../guides/APM_User_Guide.pdf) for detailed assistance.
+> **Note:** If you encounter any issues during this process, please refer to the relevant section of the [Troubleshooting Guide](./docs/Troubleshooting_Guide.pdf) for detailed assistance.
 
-### 6. Manager Bootstrap Creation
+### 5. Manager Bootstrap Creation
 The final step of the Setup Agent workflow is to generate a comprehensive Bootstrap Prompt for initializing the first Manager Agent chat session.
 
 **User Actions:**
@@ -148,7 +126,7 @@ The final step of the Setup Agent workflow is to generate a comprehensive Bootst
 
 **Setup Agent Actions:**
 - Generate a comprehensive Bootstrap Prompt containing:
-  - YAML frontmatter with asset locations and format specifications
+  - YAML frontmatter 
   - User intent and requirements summary  
   - Implementation Plan overview and execution guidance
   - Memory system initialization instructions
@@ -159,7 +137,7 @@ The final step of the Setup Agent workflow is to generate a comprehensive Bootst
 
 ## Task Loop Phase
 
-Manager and Implementation Agents coordinate through structured task assignment and review cycles until project completion. **While powerful models can enhance performance for these agent instances, APM v0.4 also works effectively with more economical alternatives such as Cursor's Auto model mixture or Copilot's GPT-4.1 base model, providing a viable cost-effective option.**
+Manager and Implementation Agents coordinate through structured task assignment and review cycles until project completion. **While powerful models can enhance performance for these agent instances, APM v0.5 also works effectively with more economical alternatives such as Cursor's Auto model mixture or Copilot's GPT-4.1 base model, providing a viable cost-effective option.**
 
 ```mermaid
 graph LR
