@@ -1,4 +1,4 @@
-# Modifying APM - APM v0.4
+# Modifying APM - APM v0.5
 
 APM is designed to be highly customizable. Whether you're adapting prompts for specific workflows, adding new delegation guides, or integrating powerful MCP tools, this guide shows you how to tailor APM to your project's unique needs.
 
@@ -32,27 +32,22 @@ You can adapt Manager Agent behavior for specific project management and coordin
 
 ---
 
-## GitHub Template Approach
+## Customization in v0.5 (Work in Progress)
 
-The recommended way to customize APM is to use GitHub's "Use this template" feature rather than direct forking or cloning.
+The new `apm init` CLI makes installation and setup significantly easier, but this comes at a trade-off.
 
-### Setting Up Your Custom APM
+The v0.4 "GitHub Template" approach, which made forking and managing custom versions easy, is no longer supported with the CLI model. We recognize this is a step back for heavy customization, version control etc and we are actively working on a better solution that balances ease of installation with flexible customization for future versions.
 
-1. **Visit the APM Repository**: Go to [github.com/sdi2200262/agentic-project-management](https://github.com/sdi2200262/agentic-project-management)
-2. **Create Template**: Click "Use this template" → "Create a new repository"
-3. **Name Your Version**: Use descriptive names like `apm-for-web-development` or `company-apm-framework`
-4. **Clone Your Template**: 
-   ```bash
-   git clone https://github.com/yourusername/your-apm-template
-   cd your-apm-template
-   ```
+For now, the primary way to customize APM is to edit the files locally after the CLI installs them.
 
-### Benefits of the Template Approach
+### Current Customization Workflow
 
-**Independent Development**: Make changes without affecting the upstream APM project
-**Version Control**: Track your customizations and maintain team consistency
-**Easy Updates**: Selectively merge improvements from the main APM project
-**Sharing**: Distribute your customized version within your organization or team
+1. First, run `apm init` in your project directory and select your AI assistant.
+2. The CLI will install all prompts and guides into your project.
+3. **To modify guides:** Navigate to the `.apm/guides/` directory and edit the Markdown files (e.g., `Task_Assignment_Guide.md`, `Context_Synthesis_Guide.md`).
+4. **To modify core agent prompts:** Navigate to your AI assistant's specific command directory (e.g., `.cursor/commands`, `.github/prompts`, `.claude/commands`) and edit the relevant agent initiation or handover prompt (e.g., `apm-1-initiate-setup.md`, `apm-3-initiate-implementation.md`).
+
+**Note:** Be aware that running `apm update` in the future may overwrite your local changes in these directories. We recommend backing up your customized files before updating.
 
 ---
 
@@ -64,7 +59,7 @@ The Setup Agent's Context Synthesis phase is highly customizable for domain-spec
 
 #### Example: Web Development Specialization
 
-**File**: `prompts/Setup_Agent/Context_Synthesis_Prompt.md`
+**File**: `.apm/guides/Context_Synthesis_Guide.md`
 
 **Original Phase 2 Questions**:
 ```markdown
@@ -107,7 +102,7 @@ You can tailor Implementation Agent execution behavior for specific development 
 
 #### Example: Verbose Execution Mode
 
-**File**: `prompts/Implementation_Agent/Implementation_Agent_Initiation_Prompt.md`
+**File**: `[Your-Assistant-Command-Dir]/apm-3-initiate-implementation.md` (or the equivalent command file)
 
 **Proposed addition to the Interaction Model section**:
 ```markdown
@@ -168,7 +163,7 @@ Consider modifying how Manager Agents create Task Assignment Prompts to include 
 
 #### Example: Security-First Task Assignment
 
-**File**: `prompts/guides/Task_Assignment_Guide.md`
+**File**: `.apm/guides/Task_Assignment_Guide.md`
 
 **Recommended addition to Task Assignment Prompt Format → Detailed Instructions**:
 ```markdown
@@ -250,7 +245,7 @@ Beyond Debug and Research delegation, you can create specialized guides for cont
 
 ### Contributing Delegation Guides
 
-If you develop delegation guides that could benefit the broader APM community, consider submitting them as Pull Requests to the main repository. **See the README in `prompts/ad-hoc/` for detailed guidance and contribution guidelines.**
+If you've created a delegation guide that could benefit the APM community, please open a Pull Request to the main APM repository. Use existing examples in `.apm/guides/` (for example, `Debug_Delegation_Guide.md`) or the templates in `templates/ad-hoc/` as a reference. In your PR include a short description, intended use cases, usage instructions and any tests or examples. Review the repository's CONTRIBUTING guidelines before submitting.
 
 ---
 
@@ -379,7 +374,7 @@ Model Context Protocol (MCP) tools can significantly enhance APM agent capabilit
 
 **Enhanced Context Synthesis with MCP Tools**:
 
-**File**: `prompts/Setup_Agent/Context_Synthesis_Prompt.md`
+**File**: `.apm/guides/Context_Synthesis_Guide.md`
 
 **Illustrative addition to Phase 2 questioning**:
 ```markdown
@@ -395,7 +390,7 @@ Would you like me to analyze any existing systems or verify documentation for yo
 
 #### Implementation Agent Integration
 
-**File**: `prompts/Implementation_Agent/Implementation_Agent_Initiation_Prompt.md`
+**File**: `[Your-Assistant-Command-Dir]/apm-3-initiate-implementation.md`
 
 **Illustrative addition to core responsibilities**:
 ```markdown
@@ -416,7 +411,7 @@ When MCP tools are available, use them strategically to enhance task execution:
 
 #### Manager Agent Integration
 
-**File**: `prompts/Manager_Agent/Manager_Agent_Initiation_Prompt.md`
+**File**: `[Your-Assistant-Command-Dir]/apm-2-initiate-manager.md`
 
 **Illustrative addition to runtime duties**:
 ```markdown
