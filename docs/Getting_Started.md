@@ -1,8 +1,6 @@
-# Getting Started - APM v0.4
+# Getting Started - APM v0.5
 
 This guide walks you through launching your first APM session, from initial setup through completing your first few tasks. **The more time spent during setup and planning, the better your project execution will be.**
-
-> For additional guidance and step-by-step screenshots of the entire process, see the [Quick Start Guide PDF](guides/APM_Quick_Start_Guide.pdf).
 
 > For a clearer understanding of each agent's roles and responsibilities, refer to the [Agent Types document](Agent_Types.md).
 
@@ -15,28 +13,28 @@ This guide walks you through launching your first APM session, from initial setu
 Before starting your first APM session, ensure you have:
 
 ### Required
+- **Node.js**: APM v0.5 CLI requires Node.js (v16 or higher recommended)
 - **AI IDE Platform**: Access to an AI IDE with multiple chat sessions and file operations (Cursor, Windsurf, VS Code with AI extensions, etc.)
 - **Project Workspace**: Dedicated directory for your project files
-- **APM Assets**: Access to the APM framework prompts and guides
 
 ### Recommended Model Tiers
 
 Each APM agent type has different model requirements, so model selection may vary by role. However, **Claude Sonnet 4** stands out for its strong reasoning and agentic capabilities, consistently performing well across all agent instances.
 
-*  **Setup Agent**: For best results, use top-tier frontier models such as Claude Sonnet 4 or Gemini 2.5 Pro throughout the entire Setup Phase. These models excel at the systematic reasoning required for project planning and breakdown
+*  **Setup Agent**: For best results, use top-tier frontier models such as Claude Sonnet 4, Claude Sonnet 4.5 or Gemini 2.5 Pro throughout the entire Setup Phase. These models excel at the systematic reasoning required for project planning and breakdown
     > **Important**: Avoid switching models mid-conversation during the Setup Phase as this causes context gaps due to token caching disruptions. Use one model throughout the entire Setup Agent session. **Best performing model during testing was Claude Sonnet 4**.
 
 <br/>
 
-*  **Manager Agent**: Best practice is to use a powerful model with strong reasoning abilities. Like for the Setup Agent, Claude Sonnet 4 and Gemini 2.5 Pro are highly recommended. You can leverage CoT models for their advanced reasoning, but be aware that some CoT models may interfere with APM workflow protocols and occasionally break responses. Alternatively, mid-tier models like Claude 3.7 Sonnet or Cursor Auto (which mixes models) offer a more economical option.
+*  **Manager Agent**: Best practice is to use a powerful model with strong reasoning abilities. Like for the Setup Agent, Claude Sonnet 4, Claude Sonnet 4.5 and Gemini 2.5 Pro are highly recommended. You can leverage CoT models for their advanced reasoning, but be aware that some CoT models may interfere with APM workflow protocols and occasionally break responses. Alternatively, mid-tier models like Claude 3.7 Sonnet or Cursor Auto (which mixes models) offer a more economical option.
     > **Important:** Avoid switching models mid-conversation for the Manager Agent to prevent context gaps. While model-switching caused fewer issues here than with the Setup Agent, it's still best to stick to one model.
     >
-    > **Note:** **During testing, Cursor Auto delivered outstanding performance as the Manager Agent.** Given its low cost, even after recent pricing updates, it stands out as the most efficient and cost-effective choice. For other AI Assistants compact, and agentic models like Qwen 3 and Kimi K2 have also delivered acceptable results.
+    > **Note:** **During testing, Cursor Auto delivered outstanding performance as the Manager Agent.** Given its low cost, it stands out as the most efficient and cost-effective choice. For other AI Assistants compact, and agentic models like Qwen 3 and Kimi K2 have also delivered acceptable results.
 
 <br/>
 
-*  **Implementation Agents**: In APM, tasks are designed to be granular and clearly scoped, enabling even compact models to execute them successfully. The effectiveness of Implementation Agents depends on the quality and granularity of your Implementation Plan, so invest time perfecting it before proceeding. While high-end models like Sonnet 4 will provide the best results, base models such as GPT-4.1 in Copilot, Cursor Auto, or even budget options like Qwen and Kimi K2 have delivered exceptional results for their price point.
-    > **Note:** Because Implementation Agent context is always tightly scoped to the assigned task and session, switching between models mid-conversation (for example, to match task complexity or requirements) did not cause significant context gaps or issues during testing. Unlike with Setup or Manager Agents, context loss from token caching disruptions was minimal. **During testing, model switching was frequently performed based on task domain, for example, using Cursor Auto, GPT-4.1 in Copilot, or Windsurf's SWE-1 for most tasks, and switching to Sonnet 4 or GPT-5 for especially complex or design-heavy assignments, with no major problems observed.** If you choose to experiment with model switching, proceed carefully and remain attentive to any potential context gaps.
+*  **Implementation Agents**: In APM, tasks are designed to be granular and clearly scoped, enabling even compact models to execute them successfully. The effectiveness of Implementation Agents depends on the quality and granularity of your Implementation Plan, so invest time perfecting it before proceeding. While high-end models like Sonnet 4.5 will provide the best results, base models such as GPT-4.1 in Copilot, Cursor Auto, or Grok Code Fast results for their price point.
+    > **Note:** Because Implementation Agent context is always tightly scoped to the assigned task and session, switching between models mid-conversation (for example, to match task complexity or requirements) did not cause significant context gaps or issues during testing. Unlike with Setup or Manager Agents, context loss from token caching disruptions was minimal. **During testing, model switching was frequently performed based on task domain, for example, using Cursor Auto, GPT-4.1 in Copilot, or Windsurf's SWE-1 for most tasks, and switching to Sonnet 4.5, GPT-5 or GPT-5-Codex for especially complex or design-heavy assignments, with no major problems observed.** If you choose to experiment with model switching, proceed carefully and remain attentive to any potential context gaps.
 
 <br/>
 
@@ -46,9 +44,11 @@ Each APM agent type has different model requirements, so model selection may var
 
 ## Notes for specific AI IDEs
 
-> **As of August 2025, GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism that is known to be buggy and can break cached context, disrupting APM workflows.
->   - **Setup Phase**: If the summarization mechanism triggers, the agent may lose track of guides and procedures. **Stop the response immediately**, then re-provide the required prompts and guides (e.g., Setup Agent initiation prompt, planning guides) before continuing.
->   - **Task Loop Phase**: The cycle is more resilient, but the same issue can occur. If summarization mechanism triggers, and you noticed degrading response quality **stop the response**, re-provide the necessary prompts/guides or task context, and verify the agent has re-established understanding before proceeding.
+> **As of November 2025, GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism that is known to be buggy and can break cached context, disrupting APM workflows.
+>   - **Setup Phase**: If the summarization mechanism triggers, the agent may lose track of guides and procedures. **Stop the response immediately**, then re-provide the required prompts and guides (e.g., Setup Agent initiation prompt, planning guides) before continuing. Consider starting a new agent session and manually reconstructing context to continue where you left off.
+> <br/>
+>
+>   - **Task Loop Phase**: The cycle is more resilient, but the same issue can occur. If summarization mechanism triggers, and you noticed degrading response quality **stop the response** then re-provide the necessary prompts/guides or task context. Consider starting a new agent session and manually reconstructing context to continue where you left off.
 >
 > **Tip:** Consider disabling the summarization mechanism by setting `github.copilot.chat.summarizeAgentConversationHistory.enabled` to `false` in your Copilot settings.
 >
@@ -56,27 +56,40 @@ Each APM agent type has different model requirements, so model selection may var
 
 ---
 
-## Step 1: Access APM Assets
+## Step 1: Install and Initialize APM
 
-Choose one of these approaches to get the APM framework materials:
+APM v0.5 introduces a CLI tool that automates the installation and setup process. Install the APM CLI globally using npm:
 
-### Option A: GitHub Repository (Default)
 ```bash
-git clone https://github.com/sdi2200262/agentic-project-management
-cd agentic-project-management
+npm install -g agentic-pm
 ```
 
-### Option B: Use as Template (Recommended for Customization)
-If you want to tailor APM to your workflow, use the GitHub "Use this template" feature to create your own copy. This allows you to freely modify prompts or guides to better fit your project's needs. Feel free to adjust any instructions, formats, or agent guides as required for your specific use case.
-1. Visit the [APM GitHub repository](https://github.com/sdi2200262/agentic-project-management)
-2. Click "Use this template" to create your own copy
-3. Clone your template repository to your workspace
+> **Alternatively:** for local installation in your project's workspace:
+>
+>```bash
+>npm install agentic-pm
+> ```
+> <br/>
 
-### Option C: Manual Access
-> **Not Recommended:**  
-> This option is a slow and expensive alternative, mostly untested, and undermines the purpose of an agentic workflow since agents cannot autonomously access prompts and guides when needed, which severely limits workflow efficiency and reliability.
+### Initialize Your Project
 
-Copy-paste prompt and guide contents directly from GitHub as needed during the session. Only use this if you cannot clone or template the repository.
+Navigate to your project directory and run:
+
+```bash
+apm init
+```
+
+The `init` command will:
+1. **Prompt for AI Assistant Selection**: Ask you to select your AI assistant from a list of supported platforms (Cursor, GitHub Copilot, Windsurf, Claude Code, etc.)
+2. **Download APM Assets**: Automatically fetch the latest prompts and guides from the APM repository
+3. **Create Directory Structure**: Set up the `.apm/` directory with:
+   - `.apm/guides/` - All template guides for APM workflows
+   - `.apm/Memory/Memory_Root.md` - Empty root memory file
+   - `.apm/Implementation_Plan.md` - Empty implementation plan file
+   - `.apm/metadata.json` - Installation metadata
+4. **Install Commands**: Create assistant-specific slash commands in the appropriate directory (e.g., `.cursor/`, `.github/copilot/`, etc.)
+
+After initialization completes, you're ready to begin using APM with your AI assistant.
 
 ---
 
@@ -91,20 +104,20 @@ The Setup Agent conducts comprehensive project planning and creates all necessar
 2. **Name It Clearly**: "Setup Agent" or "APM Setup"
 3. **Model Choice**: Refer to the "Prerequisites" section above for recommended models for the Setup Agent.
 
-### 2.2 Provide Setup Agent Initiation Prompt
+### 2.2 Run Setup Agent Initialization Command
 
-**Locate the prompt**: `prompts/Setup_Agent/Setup_Agent_Initiation_Prompt.md`
+The APM CLI has automatically installed slash commands for your AI assistant. To initialize the Setup Agent, simply enter the command:
 
-**Provide the Setup Agent Initiation Prompt**:  
-Open `prompts/Setup_Agent/Setup_Agent_Initiation_Prompt.md` and provide its content to the Setup Agent, either by pasting it as the first message in the chat, or by using your AI IDE’s method for adding it as context (e.g., `"Initialize as Setup Agent"` and supplying the prompt file as attachment).
+```
+/apm-1-initiate-setup
+```
 
-The Setup Agent will greet you and outline its 6-step workflow:
-1. Asset Verification
-2. Context Synthesis
-3. Project Breakdown & Plan Creation
-4. Implementation Plan Review & Refinement
-5. Enhancement & Memory Root Creation
-6. Manager Bootstrap Prompt Creation
+This command loads the Setup Agent Initiation Prompt automatically. The Setup Agent will greet you and outline its 5-step workflow:
+1. Context Synthesis
+2. Project Breakdown & Plan Creation
+3. Implementation Plan Review & Refinement
+4. Implemmentation Plan Enhancement & Finalization
+5. Manager Bootstrap Prompt Creation
 
 ---
 
@@ -112,27 +125,15 @@ The Setup Agent will greet you and outline its 6-step workflow:
 
 The Setup Agent will guide you through each step systematically. **Be thorough during this phase**; time invested here prevents roadblocks later.
 
-Each step of the Setup Phase is designed to support APM’s spec-driven methodology. Before moving on, the Setup Agent will always ask for your confirmation, giving you the opportunity to review, clarify, or request changes to the current step. This allows you to iterate as needed, whether by providing additional explanations, making clarifications, or requesting modifications to the Implementation Plan, before proceeding to the next step.
-
-### Asset Verification
-
-**Setup Agent will ask about your workflow approach:**
-- **GitHub repo** (if you cloned/templated APM)
-- **Other workflow** (describe your approach)
-
-**Answer with the way you have chosen to use APM assets** and confirm the Setup Agent can access necessary files. For example:
-`"I have created a template repo of APM, so option (a). I have cloned it at the root of this workspace"`
-
-Most AI IDEs have indexing systems, that will parse your codebase and provide its structure to the models as context. Most likely the agent will have access to the cloned repository through that.
+Each step of the Setup Phase is designed to support APM's spec-driven methodology. Before moving on, the Setup Agent will always ask for your confirmation, giving you the opportunity to review, clarify, or request changes to the current step. This allows you to iterate as needed, whether by providing additional explanations, making clarifications, or requesting modifications to the Implementation Plan, before proceeding to the next step.
 
 ### Context Synthesis (Project Discovery)
 
-**This is the most important stage.** The Setup Agent will conduct structured discovery through four phases:
+**This is the most important stage.** The Setup Agent will conduct structured discovery through three phases:
 
 1. **Existing Materials & Vision**: Share any PRDs, requirements, existing code, or project documentation
 2. **Technical Requirements**: Discuss technologies, constraints, dependencies, and technical scope
 3. **Process Requirements**: Explain workflow preferences, quality standards, and coordination needs
-4. **Validation & Format Selection**: Confirm understanding and choose asset format: Markdown (Default) vs JSON (Testing Preview)
 
 > **Tips for Context Synthesis:**
 >  - **Be comprehensive**: Share all relevant project information
@@ -166,7 +167,7 @@ The Setup Agent will offer systematic review of the Implementation Plan:
 
 The Setup Agent will:
 - Transform the Implementation Plan into detailed APM artifact format
-- Select and initialize the appropriate Memory System strategy
+- Initialize the Dynamic-MD Memory System
 - Create comprehensive task specifications
 
 ### Manager Bootstrap Creation
@@ -189,12 +190,15 @@ The Setup Agent generates a Bootstrap Prompt containing:
 2. **Name It Clearly**: "Manager Agent" or "APM Manager 1"
 3. **Model Choice**: Refer to the "Prerequisites" section above for recommended models for the Manager Agent.
 
-### Provide Manager Agent Initiation Prompt
+### Run Manager Agent Initialization Command
 
-**Locate the prompt**: `prompts/Manager_Agent/Manager_Agent_Initiation_Prompt.md`
+Enter the Manager Agent initialization command:
 
-**Provide the Setup Agent Initiation Prompt**:  
-Open `prompts/Manager_Agent/Manager_Agent_Initiation_Prompt.md` and provide its content to the Manager Agent, like you did with the Setup Agent instance.
+```
+/apm-2-initiate-manager
+```
+
+This command loads the Manager Agent Initiation Prompt automatically.
 
 ### Deliver Bootstrap Prompt
 
@@ -230,8 +234,11 @@ The prompt will be presented **in a markdown code block** for easy copy-paste.
 
 1. **Open New Chat**: Create another dedicated chat session for the assigned Implementation Agent
 2. **Name Appropriately**: Use the agent name from the Implementation Plan (e.g., "Agent_Frontend")
-3. **Provide Initiation Prompt**: `prompts/Implementation_Agent/Implementation_Agent_Initiation_Prompt.md`
-    - The Implementation Agent, after receiving their Initiation Prompt, will:
+3. **Run Implementation Agent Initialization Command**:
+    ```
+    /apm-3-initiate-implementation
+    ```
+    This command loads the Implementation Agent Initiation Prompt automatically. The Implementation Agent, after receiving their Initiation Prompt, will:
         1. Greet and confirm their role
         2. Read the Memory Log Guide (see note below)
         3. Confirm understanding of responsibilities
