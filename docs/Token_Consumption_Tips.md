@@ -3,6 +3,25 @@
 APM is designed to be token-efficient through focused agent interactions and structured workflows, but multi-agent coordination does involve meta-prompting overhead. This guide provides strategies for optimizing cost while maintaining APM effectiveness across different subscription tiers and model access levels.
 
 > **Note:** All percentages, numbers, and statistics related to token consumption in this document are approximate estimates.
+
+## Table of Contents
+
+- [Economic Models for APM Usage](#economic-models-for-apm-usage)
+  - [Cost-Minimization Approach](#cost-minimization-approach-recommended-for-cost-conscious-users)
+  - [Performance-First Approach](#performance-first-approach-recommended-for-quality-first-users)
+  - [Hybrid Approach](#hybrid-approach-sweet-spot-for-complex-projects)
+- [Model Recommendations by Agent Type](#model-recommendations-by-agent-type)
+  - [Setup Agent (Highest Impact Investment)](#setup-agent-highest-impact-investment)
+  - [Manager Agent (Coordination Efficiency)](#manager-agent-coordination-efficiency)
+  - [Implementation Agents (Task-Specific Optimization)](#implementation-agents-task-specific-optimization)
+  - [Ad-Hoc Agents (Delegation-Specific)](#ad-hoc-agents-delegation-specific)
+- [Token Consumption Optimization](#token-consumption-optimization)
+  - [Setup Phase (Highest Token Consumption)](#setup-phase-highest-token-consumption)
+  - [Handover Procedures (Context Transfer Overhead)](#handover-procedures-context-transfer-overhead)
+- [General Token Optimization Considerations](#general-token-optimization-considerations)
+  - [Pre-Session Planning](#pre-session-planning)
+  - [Session Management](#session-management)
+
 ---
 
 ## Economic Models for APM Usage

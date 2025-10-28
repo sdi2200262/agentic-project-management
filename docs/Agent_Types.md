@@ -2,6 +2,15 @@
 
 APM employs four distinct agent types, each with clear responsibilities and carefully scoped context. These agents are **not** "personas" or role-playing characters; they are functional specializations that **leverage modern LLMs' built-in expert capabilities** through focused task assignments and targeted context management.
 
+## Table of Contents
+
+- [Agent Specialization Architecture](#agent-specialization-architecture)
+- [Quick Agent Comparison](#quick-agent-comparison)
+- [1. Setup Agent](#1-setup-agent)
+- [2. Manager Agent](#2-manager-agent)
+- [3. Implementation Agents](#3-implementation-agents)
+- [4. Ad-Hoc Agents](#4-ad-hoc-agents)
+
 ## Agent Specialization Architecture
 
 **APM achieves agent specialization by providing each agent with carefully scoped, task-relevant context**, rather than relying on artificial personas. Agents develop expertise organically from the information and responsibilities assigned to them, without relying on character-based role-play.

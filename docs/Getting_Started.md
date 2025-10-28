@@ -6,6 +6,20 @@ This guide walks you through launching your first APM session, from initial setu
 
 > For a detailed walkthrough of APM workflows and protocols, refer to the [Workflow Overview document](Workflow_Overview.md).
 
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Notes for specific AI IDEs](#notes-for-specific-ai-ides)
+- [Step 1: Install and Initialize APM](#step-1-install-and-initialize-apm)
+- [Step 2: Initialize Setup Agent](#step-2-initialize-setup-agent)
+- [Step 3: Work Through Setup Phase](#step-3-work-through-setup-phase)
+- [Step 4: Initialize Manager Agent](#step-4-initialize-manager-agent)
+- [Step 5: First Task Assignment](#step-5-first-task-assignment)
+- [Step 6: Complete First Task Cycle](#step-6-complete-first-task-cycle)
+- [Establish Your Workflow](#establish-your-workflow)
+- [Common First Session Issues](#common-first-session-issues)
+- [Tips for Success](#tips-for-success)
+
 ---
 
 ## Prerequisites
@@ -127,7 +141,7 @@ The Setup Agent will guide you through each step systematically. **Be thorough d
 
 Each step of the Setup Phase is designed to support APM's spec-driven methodology. Before moving on, the Setup Agent will always ask for your confirmation, giving you the opportunity to review, clarify, or request changes to the current step. This allows you to iterate as needed, whether by providing additional explanations, making clarifications, or requesting modifications to the Implementation Plan, before proceeding to the next step.
 
-### Context Synthesis (Project Discovery)
+### 3.1 Context Synthesis (Project Discovery)
 
 **This is the most important stage.** The Setup Agent will conduct structured discovery through three phases:
 
@@ -141,7 +155,7 @@ Each step of the Setup Phase is designed to support APM's spec-driven methodolog
 >  - **Include constraints**: Timeline, technical limitations, workflow preferences
 >  - **Ask questions**: If uncertain about requirements, discuss options with the Setup Agent
 
-### Project Breakdown
+### 3.2 Project Breakdown
 
 The Setup Agent will systematically break down your project:
 
@@ -154,7 +168,7 @@ The Setup Agent will systematically break down your project:
 
 > **Tip for Project Breakdown Manual Review:** When the Project Breakdown is finished, take time to carefully review the entire Implementation Plan. Make sure every phase and task aligns with your project and workflow needs. If you notice anything that needs to be changed or clarified, request corrections/modifications. Addressing issues at this stage is much more efficient than making adjustments later.
 
-### Implementation Plan Review (Optional)
+### 3.3 Implementation Plan Review (Optional)
 
 The Setup Agent will offer systematic review of the Implementation Plan:
 
@@ -163,14 +177,13 @@ The Setup Agent will offer systematic review of the Implementation Plan:
 
 > **Tip for Implementation Plan AI-driven Review:** This AI-driven review will focus on AI-specific planning issues in your Implementaiton Plan (task packing, classification errors, dependencies). Any potential requirement gaps or constraints not specified will likely be missed by the Setup Agent. Make sure that you conduct your own manual review of the plan.
 
-### Enhancement & Memory Initialization
+### 3.4 Implementation Plan Enhancement & Finalization
 
 The Setup Agent will:
 - Transform the Implementation Plan into detailed APM artifact format
-- Initialize the Dynamic-MD Memory System
-- Create comprehensive task specifications
+- Generate comprehensive task specifications
 
-### Manager Bootstrap Creation
+### 3.5 Manager Bootstrap Creation
 
 The Setup Agent generates a Bootstrap Prompt containing:
 - Project context and requirements
@@ -184,13 +197,13 @@ The Setup Agent generates a Bootstrap Prompt containing:
 
 ## Step 4: Initialize Manager Agent
 
-### Create Manager Agent Session
+### 4.1 Create Manager Agent Session
 
 1. **Open New Chat**: Create another dedicated chat session in "agent" mode
 2. **Name It Clearly**: "Manager Agent" or "APM Manager 1"
 3. **Model Choice**: Refer to the "Prerequisites" section above for recommended models for the Manager Agent.
 
-### Run Manager Agent Initialization Command
+### 4.2 Run Manager Agent Initialization Command
 
 Enter the Manager Agent initialization command:
 
@@ -200,7 +213,7 @@ Enter the Manager Agent initialization command:
 
 This command loads the Manager Agent Initiation Prompt automatically.
 
-### Deliver Bootstrap Prompt
+### 4.3 Deliver Bootstrap Prompt
 
 The Manager Agent will ask for either a Bootstrap Prompt or Handover Prompt. Since this is the first Manager Agent instance of the session, it requires the Bootstrap Prompt from the Setup Agent to receive initial project context.
 
@@ -224,13 +237,13 @@ The Manager Agent will:
 
 > **Note:** The Manager Agent may proceed with phase 1 memory initialization (see note above) before the Task Assignment Prompt creation for the first task, if this was not done in the previous response.
 
-### Manager Creates Task Assignment
+### 5.1 Manager Creates Task Assignment
 
 The Manager Agent will create a Task Assignment Prompt for the first task in your Implementation Plan.
 
 The prompt will be presented **in a markdown code block** for easy copy-paste.
 
-### Initialize Implementation Agent
+### 5.2 Initialize Implementation Agent
 
 1. **Open New Chat**: Create another dedicated chat session for the assigned Implementation Agent
 2. **Name Appropriately**: Use the agent name from the Implementation Plan (e.g., "Agent_Frontend")
@@ -245,7 +258,7 @@ The prompt will be presented **in a markdown code block** for easy copy-paste.
         4. Wait for the first Task Assignment or Handover Prompt
     > **Note:** Some AI IDEs' system prompts, or lower-cost models lacking "strong" agentic capabilities, may not autonomously read the Memory Log Guide and will instead request it directly. If this occurs, provide the Memory Log Guide in your next response *before* supplying any task assignment prompts.
 
-### Deliver Task Assignment
+### 5.3 Deliver Task Assignment
 
 **Copy the Task Assignment Prompt** from the Manager Agent and **paste it to the Implementation Agent**.
 
@@ -258,17 +271,17 @@ The Implementation Agent will:
 
 ## Step 6: Complete First Task Cycle
 
-### Implementation Agent Execution
+### 6.1 Task Execution
 
 **For Single-Step Tasks**:
-- Agent completes all subtasks in one response
+- Implementation Agent completes all subtasks in one response
 - Proceeds directly to Memory Logging
 
 **For Multi-Step Tasks**:
-- Agent executes step-by-step with your confirmation at each stage; you are able to combine adjacent step executions wherever applicable
+- Imlpementation Agent executes step-by-step with your confirmation at each stage; you are able to combine adjacent step executions wherever applicable
     - **Efficiency tip**: Request step combination for related work: `"Step 2 looks alright. Combine steps 3-4 and log in your next response"`
 - You can provide feedback and request modifications between steps
-- Agent proceeds to Memory Logging after final step
+- Implementation Agent proceeds to Memory Logging after final step
 
 > **Explanation Tip**: If you’re working on a complex task or are unfamiliar with the task’s domain, you can request explanations to help you understand the process. You can either ask the Manager Agent to include explanation instructions in the Task Assignment Prompt, or request explanations directly from the Implementation Agent during task execution:
 >    - **Manager Level** (ask the Manager Agent to include explanation requirements in the Task Assignment Prompt):  
@@ -278,7 +291,7 @@ The Implementation Agent will:
 >    - **Implementation Level** (ask the Implementation Agent directly during execution):  
 >        - `"Please proceed to the next step, but include detailed explanation of your approach and rationale."`  
 
-### Memory Logging
+### 6.2 Memory Logging
 
 The Implementation Agent will complete a standardized Memory Log entry containing:
 - Task completion status
@@ -287,23 +300,23 @@ The Implementation Agent will complete a standardized Memory Log entry containin
 - Issues encountered (if any)
 - Next steps or recommendations
 
-### Report to Manager
+### 6.3 Report to Manager
 
 **Return to your Manager Agent session** and inform them about task execution outputs. For example:
 `"Agent_[Name] has completed Task [X.Y] successfully and logged the results to [Memory_Log_Path]. Please review it and proceed accordingly."`
 
-### Manager Review & Next Steps
+### 6.4 Manager Review & Next Steps
 
 The Manager Agent will:
 - Review the Memory Log and possibly task execution outputs for quality and completeness
-- Determine the next action:
+- Determine the Next Action:
   - **Continue**: Issue next Task Assignment Prompt
   - **Corrections**: Create follow-up prompt for refinements
   - **Plan Updates**: Modify Implementation Plan based on findings
 
 ---
 
-## Step 7: Establish Your Workflow
+## Establish Your Workflow
 
 ### Task Loop Pattern
 
@@ -323,7 +336,7 @@ You'll now repeat this cycle:
 **Session Organization**: Keep Manager and Implementation Agent sessions easily accessible
 
 
-#### Handover Procedure: Managing Context Window Limits
+### Handover Procedure: Managing Context Window Limits
 
 As your sessions grow, agents may approach the LLM's context window limit. When this happens, you should perform a **Handover Procedure** to ensure smooth continuation:
 

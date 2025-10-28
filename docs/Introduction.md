@@ -2,6 +2,17 @@
 
 **A Structured, Multi-Agent Workflow System for Complex Project Execution with AI Assistants**
 
+## Table of Contents
+
+- [What is APM?](#what-is-apm)
+- [The Problem APM Solves](#the-problem-apm-solves)
+- [APM's Approach](#apms-approach)
+- [Multi-Agent Coordination](#multi-agent-coordination)
+- [The APM Workflow](#the-apm-workflow)
+- [Core Framework and Customization](#core-framework-and-customization)
+- [Documentation Overview](#documentation-overview)
+- [Visual Workflow Overview](#visual-workflow-overview)
+
 ## What is APM?
 
 Agentic Project Management (APM) is a structured multi-agent workflow framework for managing complex projects within AI IDE environments. It applies real-world project management principles to AI-driven workflows, including task breakdown, role assignment, progress tracking, and seamless handoffs between team members. 

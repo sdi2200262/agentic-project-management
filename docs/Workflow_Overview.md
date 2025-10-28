@@ -6,6 +6,26 @@ APM operates through two workflow phases:
 
 Plus **Handover Procedures** as distinct events when agents approach memory limits.
 
+## Table of Contents
+
+- [Notes for specific AI IDEs](#notes-for-specific-ai-ides)
+- [Setup Phase](#setup-phase)
+  - [Setup Agent Initialization](#setup-agent-initialization)
+  - [1. Context Synthesis & Project Discovery](#1-context-synthesis--project-discovery)
+  - [2. Project Breakdown & Implementation Plan Creation](#2-project-breakdown--implementation-plan-creation)
+  - [3. Implementation Plan Review (Optional)](#3-implementation-plan-review-optional)
+  - [4. Implementation Plan Enhancement & Finalization](#4-implementation-plan-enhancement--finalization)
+  - [5. Manager Bootstrap Creation](#5-manager-bootstrap-creation)
+- [Task Loop Phase](#task-loop-phase)
+  - [Manager Agent Initialization](#manager-agent-initialization)
+  - [Task Assignment Prompt Creation](#task-assignment-prompt-creation)
+  - [Implementation Agent Task Execution](#implementation-agent-task-execution)
+  - [Error Handling & Ad-Hoc Debugger Delegation](#error-handling--ad-hoc-debugger-delegation)
+  - [Memory Logging & Review](#memory-logging--review)
+- [Handover Procedures](#handover-procedures)
+  - [When to Consider Handovers](#when-to-consider-handovers)
+  - [Handover Eligibility Requirements](#handover-eligibility-requirements)
+
 ---
 
 ## Notes for specific AI IDEs

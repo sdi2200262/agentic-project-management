@@ -2,6 +2,43 @@
 
 APM is designed to be highly customizable. Whether you're adapting prompts for specific workflows, adding new delegation guides, or integrating powerful MCP tools, this guide shows you how to tailor APM to your project's unique needs.
 
+## Table of Contents
+
+- [Customization in v0.5 (Work in Progress)](#customization-in-v05-work-in-progress)
+- [Manager Agent Coordination Customization](#manager-agent-coordination-customization)
+- [Customizing Core Prompts](#customizing-core-prompts)
+  - [Setup Agent Customization](#setup-agent-customization)
+  - [Implementation Agent Execution Customization](#implementation-agent-execution-customization)
+  - [Task Assignment Prompt Customization](#task-assignment-prompt-customization)
+- [Creating Custom Delegation Guides](#creating-custom-delegation-guides)
+- [MCP Tool Integration](#mcp-tool-integration)
+  - [Recommended MCP Tools for APM](#recommended-mcp-tools-for-apm)
+  - [Integrating MCP Tools with APM Agents](#integrating-mcp-tools-with-apm-agents)
+  - [Custom MCP Tool Configuration Examples](#custom-mcp-tool-configuration-examples)
+- [Domain-Specific Customization Examples](#domain-specific-customization-examples)
+- [Best Practices for APM Customization](#best-practices-for-apm-customization)
+
+---
+
+## Customization in v0.5 (Work in Progress)
+
+The new `apm init` CLI makes installation and setup significantly easier, but this comes at a trade-off.
+
+The v0.4 "GitHub Template" approach, which made forking and managing custom versions easy, is no longer supported with the CLI model. We recognize this is a step back for heavy customization, version control etc and we are actively working on a better solution that balances ease of installation with flexible customization for future versions.
+
+For now, the primary way to customize APM is to edit the files locally after the CLI installs them.
+
+### Current Customization Workflow
+
+1. First, run `apm init` in your project directory and select your AI assistant.
+2. The CLI will install all prompts and guides into your project.
+3. **To modify guides:** Navigate to the `.apm/guides/` directory and edit the Markdown files (e.g., `Task_Assignment_Guide.md`, `Context_Synthesis_Guide.md`).
+4. **To modify core agent prompts:** Navigate to your AI assistant's specific command directory (e.g., `.cursor/commands`, `.github/prompts`, `.claude/commands`) and edit the relevant agent initiation or handover prompt (e.g., `apm-1-initiate-setup.md`, `apm-3-initiate-implementation.md`).
+
+**Note:** Be aware that running `apm update` in the future may overwrite your local changes in these directories. We recommend backing up your customized files before updating.
+
+---
+
 ### Manager Agent Coordination Customization
 
 You can adapt Manager Agent behavior for specific project management and coordination styles.
@@ -29,25 +66,6 @@ You can adapt Manager Agent behavior for specific project management and coordin
 - **Resource Conflicts**: Detect and resolve conflicts when multiple agents need the same resources
 - **Dependency Updates**: Automatically update dependent tasks when producer tasks are modified
 ```
-
----
-
-## Customization in v0.5 (Work in Progress)
-
-The new `apm init` CLI makes installation and setup significantly easier, but this comes at a trade-off.
-
-The v0.4 "GitHub Template" approach, which made forking and managing custom versions easy, is no longer supported with the CLI model. We recognize this is a step back for heavy customization, version control etc and we are actively working on a better solution that balances ease of installation with flexible customization for future versions.
-
-For now, the primary way to customize APM is to edit the files locally after the CLI installs them.
-
-### Current Customization Workflow
-
-1. First, run `apm init` in your project directory and select your AI assistant.
-2. The CLI will install all prompts and guides into your project.
-3. **To modify guides:** Navigate to the `.apm/guides/` directory and edit the Markdown files (e.g., `Task_Assignment_Guide.md`, `Context_Synthesis_Guide.md`).
-4. **To modify core agent prompts:** Navigate to your AI assistant's specific command directory (e.g., `.cursor/commands`, `.github/prompts`, `.claude/commands`) and edit the relevant agent initiation or handover prompt (e.g., `apm-1-initiate-setup.md`, `apm-3-initiate-implementation.md`).
-
-**Note:** Be aware that running `apm update` in the future may overwrite your local changes in these directories. We recommend backing up your customized files before updating.
 
 ---
 
@@ -231,17 +249,17 @@ Beyond Debug and Research delegation, you can create specialized guides for cont
 
 ### Potential Delegation Guide Types
 
-**Testing Delegation**: For comprehensive testing scenarios requiring specialized expertise and extensive test coverage.
+- **Testing Delegation**: For comprehensive testing scenarios requiring specialized expertise and extensive test coverage.
 
-**Security Review Delegation**: For thorough security analysis and vulnerability assessments that need deep, focused examination.
+- **Security Review Delegation**: For thorough security analysis and vulnerability assessments that need deep, focused examination.
 
-**Documentation Delegation**: For extensive documentation tasks requiring research, synthesis, and detailed technical writing.
+- **Documentation Delegation**: For extensive documentation tasks requiring research, synthesis, and detailed technical writing.
 
-**Data Analysis Delegation**: For complex data exploration and statistical analysis that would overwhelm Implementation Agent context.
+- **Data Analysis Delegation**: For complex data exploration and statistical analysis that would overwhelm Implementation Agent context.
 
-**Performance Optimization Delegation**: For in-depth performance profiling and optimization work requiring iterative testing.
+- **Performance Optimization Delegation**: For in-depth performance profiling and optimization work requiring iterative testing.
 
-**Integration Testing Delegation**: For complex multi-system integration validation across services and external APIs.
+- **Integration Testing Delegation**: For complex multi-system integration validation across services and external APIs.
 
 ### Contributing Delegation Guides
 
@@ -515,18 +533,6 @@ When MCP tools are available, leverage them for enhanced project coordination:
 - **Documentation Standards**: Maintain documentation according to enterprise standards
 - **Security Reviews**: Include security review checkpoints for sensitive implementations
 ```
-
----
-
-## Best Practices for APM Customization
-
-**Documentation**: Consider creating a `CUSTOMIZATIONS.md` file documenting your changes, modified files, added files, and MCP integrations. This helps team members understand your customizations and facilitates maintenance.
-
-**Testing**: It can be helpful to test your modifications with sample projects before deploying custom APM. You might run through Context Synthesis, execute Implementation Agent tasks, verify delegation guides, and ensure MCP integrations function correctly.
-
-**Version Management**: Consider using descriptive commit messages for your modifications and tagging stable versions of your customizations for easier rollback and team coordination.
-
-**Team Distribution**: You might share your customized APM template with team members by pushing to a shared repository and documenting setup instructions for consistent team usage.
 
 ---
 
