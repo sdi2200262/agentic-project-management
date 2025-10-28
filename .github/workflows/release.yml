@@ -2,12 +2,9 @@ name: Release
 
 on:
   push:
-    branches: [main, v0.5-dev]
+    branches: [main]
     paths:
-      - 'templates/**'
-      - 'scripts/**'
       - 'package.json'
-      - 'src/**'
 
 permissions:
   contents: write
@@ -19,24 +16,53 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 2  # Need at least 2 commits to compare
+
+      - name: Check if version changed
+        id: version_check
+        run: |
+          # Get current version
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          
+          # Get previous version (from the commit before)
+          git checkout HEAD~1 -- package.json 2>/dev/null || echo "No previous version"
+          PREVIOUS_VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo "none")
+          
+          # Restore current package.json
+          git checkout HEAD -- package.json
+          
+          echo "Current version: $CURRENT_VERSION"
+          echo "Previous version: $PREVIOUS_VERSION"
+          
+          if [ "$CURRENT_VERSION" != "$PREVIOUS_VERSION" ]; then
+            echo "Version has changed from $PREVIOUS_VERSION to $CURRENT_VERSION"
+            echo "version_changed=true" >> $GITHUB_OUTPUT
+            echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "Version has not changed"
+            echo "version_changed=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Setup Node.js
+        if: steps.version_check.outputs.version_changed == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
 
       - name: Install dependencies
+        if: steps.version_check.outputs.version_changed == 'true'
         run: npm install
 
       - name: Run build script
+        if: steps.version_check.outputs.version_changed == 'true'
         run: npm run build
 
       - name: Create release
+        if: steps.version_check.outputs.version_changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION="v$(node -p "require('./package.json').version")"
+          VERSION="v${{ steps.version_check.outputs.version }}"
           
           # Delete existing release/tag if exists
           gh release delete "$VERSION" --yes 2>/dev/null || true
@@ -52,5 +78,5 @@ jobs:
           gh release create "$VERSION" \
             dist/*.zip \
             --title "APM $VERSION" \
-            --notes "Latest release of APM command and guide prompts."
+            --notes "Release $VERSION of APM command and guide prompts."
 
