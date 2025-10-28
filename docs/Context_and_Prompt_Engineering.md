@@ -1,4 +1,4 @@
-# Context and Prompt Engineering - APM v0.4
+# Context and Prompt Engineering - APM v0.5
 
 APM's sophisticated agent coordination relies on advanced context and prompt engineering techniques that work synergistically to create reliable, efficient AI workflows. This technical document explores how APM constructs operational reality for LLMs and engineers prompts for maximum parsing fidelity and token efficiency.
 
@@ -106,47 +106,6 @@ APM's most advanced prompt engineering features **meta-prompts that agents creat
 - **Implementation Agents**: Generate Memory Log entries with standardized log formats and task-specific execution details, including outcomes, issues encountered, and solutions implemented. Memory Log entries are presented as **file appendixes in Memory Log files**.
 
 The formats are standardized for parsing efficiency, but the content varies based on Implementation Plan specifications, dependency relationships, and execution outcomes.
-
----
-
-## JSON Asset Format: Testing Preview & Proposal
-
-### Experimental Schema Design
-
-APM v0.4 includes an **experimental JSON asset format variant** as a testing preview for contributor feedback and advanced research scenarios. This format represents ongoing exploration into a more structured prompt engineering approach, with emphasis on LLM parsing and schema validation.
-
-The JSON variant employs strict schema validation to explore whether structured data constraints can improve consistency and enable automated analysis of APM assets. JSON schemas define required fields, data types, and structural relationships for Implementation Plans, Memory Logs, and Task Assignment Prompts as a proof-of-concept for more rigid data organization in prompt engineering.
-
-**Design Rationale for JSON Assets**:
-- **Automated Schema Validation for Format Quality**: By enforcing strict schema validation, agents could automatically/autonomously check the structural integrity of assets (regardless of content), helping to catch agent hallucinations or malformed outputs. This acts as a safeguard, ensuring that only well-formed assets are processed, which can prevent downstream errors and improve overall reliability.
-- **Parsing Consistency and LLM Research**: JSON’s rigid structure may enable more consistent parsing by LLMs, as proposed in other research. This could reduce ambiguity in interpretation, but it remains to be seen whether the benefits of improved structure and token retention outweigh the significant increase in token overhead. JSON’s syntax (brackets, colons, etc.) can "pollute" the active context window, consuming tokens that do not directly serve the project’s purpose, unlike Markdown, where—if properly designed—nearly every token is meaningful for the task.
-- **Objective Project Metrics and Analysis**: JSON format could facilitate automated extraction of project metrics, such as accuracy and performance, allowing for more precise measurement rather than relying on estimates. This opens the door to more rigorous project analytics and quality tracking, provided the format’s overhead can be justified.
-- **Programmatic Integration Potential**: The use of JSON enables easier integration with enterprise tools and automated pipelines, supporting advanced workflows and data-driven project management.
-
-Overall, the JSON asset format is being explored to determine whether the tradeoff between improved validation, parsing, and analytics is worth the substantial token and context overhead it introduces.
-
-### Testing Preview Limitations and Concerns
-
-**Critical Performance Impact**: Initial testing with the `current APM JSON asset schemas` shows that the JSON format introduces **substantial token overhead**, making it impractical for most production scenarios. The structural syntax required by these schemas typically increases token consumption by a minimum of 15-20% even for simple asset structures, and can grow to 2x-3x the average token usage for more complex or deeply nested APM JSON assets, sometimes reaching up to 5x compared to their equivalent Markdown representations.
-
-The token density impact creates **accelerated context window saturation**, requiring more frequent handover procedures and significantly increasing session management overhead. For typical projects, this overhead quickly outweighs any potential benefits from structured data organization.
-
-**Implementation Challenges Identified**:
-- **Token Economy**: JSON syntax overhead creates unsustainable cost increases for most users. A major issue is that, as tokens are cached in chat sessions to construct the agent's context, every time the cache is read, all the repetitive elements in JSON—such as brackets, colons, and quotation marks—are re-read by the model, even though they provide no additional value to the agent's reasoning or project execution.
-<br/>
-
-- **Context Saturation**: Faster context window consumption disrupts normal workflow patterns and forces agents to perform handover procedures much more frequently. Each handover is itself a somewhat token-expensive process, as it requires generating, transferring, and reloading context summaries or memory logs between agent sessions. This not only interrupts the natural flow of work but also compounds the overall token usage and cost, sometimes negating any potential benefits of structured data by racking up additional overhead with every required handover.
-<br/>
-
-- **User Experience**: Reduced readability makes project review and modification more difficult
-
-### Contributor Testing and Feedback
-
-**Testing Preview Status**: The JSON format variant is provided primarily for **contributor testing and feedback** rather than production deployment. Contributors interested in exploring structured data approaches can experiment with JSON assets to evaluate potential benefits and identify implementation challenges.
-
-**Future Development Considerations**: Based on testing and contributor feedback, the JSON format may undergo significant design changes, be refined for specific use cases, or potentially be deprecated if testing reveals insurmountable practical limitations.
-
-> Users interested in contributing to JSON format development **should expect experimental behavior, potential breaking changes, and surging token consumption**. Consider testing JSON assets using free trial credits, free-tier models, or during periods when you have access to free or very low-cost tokens, as the increased token usage can quickly become expensive during experimentation.
 
 ---
 
