@@ -1,6 +1,43 @@
-# Modifying APM - APM v0.4
+# Modifying APM - APM v0.5
 
 APM is designed to be highly customizable. Whether you're adapting prompts for specific workflows, adding new delegation guides, or integrating powerful MCP tools, this guide shows you how to tailor APM to your project's unique needs.
+
+## Table of Contents
+
+- [Customization in v0.5 (Work in Progress)](#customization-in-v05-work-in-progress)
+- [Manager Agent Coordination Customization](#manager-agent-coordination-customization)
+- [Customizing Core Prompts](#customizing-core-prompts)
+  - [Setup Agent Customization](#setup-agent-customization)
+  - [Implementation Agent Execution Customization](#implementation-agent-execution-customization)
+  - [Task Assignment Prompt Customization](#task-assignment-prompt-customization)
+- [Creating Custom Delegation Guides](#creating-custom-delegation-guides)
+- [MCP Tool Integration](#mcp-tool-integration)
+  - [Recommended MCP Tools for APM](#recommended-mcp-tools-for-apm)
+  - [Integrating MCP Tools with APM Agents](#integrating-mcp-tools-with-apm-agents)
+  - [Custom MCP Tool Configuration Examples](#custom-mcp-tool-configuration-examples)
+- [Domain-Specific Customization Examples](#domain-specific-customization-examples)
+- [Best Practices for APM Customization](#best-practices-for-apm-customization)
+
+---
+
+## Customization in v0.5 (Work in Progress)
+
+The new `apm init` CLI makes installation and setup significantly easier, but this comes at a trade-off.
+
+The v0.4 "GitHub Template" approach, which made forking and managing custom versions easy, is no longer supported with the CLI model. We recognize this is a step back for heavy customization, version control etc and we are actively working on a better solution that balances ease of installation with flexible customization for future versions.
+
+For now, the primary way to customize APM is to edit the files locally after the CLI installs them.
+
+### Current Customization Workflow
+
+1. First, run `apm init` in your project directory and select your AI assistant.
+2. The CLI will install all prompts and guides into your project.
+3. **To modify guides:** Navigate to the `.apm/guides/` directory and edit the Markdown files (e.g., `Task_Assignment_Guide.md`, `Context_Synthesis_Guide.md`).
+4. **To modify core agent prompts:** Navigate to your AI assistant's specific command directory (e.g., `.cursor/commands`, `.github/prompts`, `.claude/commands`) and edit the relevant agent initiation or handover prompt (e.g., `apm-1-initiate-setup.md`, `apm-3-initiate-implementation.md`).
+
+**Note:** Be aware that running `apm update` in the future may overwrite your local changes in these directories. We recommend backing up your customized files before updating.
+
+---
 
 ### Manager Agent Coordination Customization
 
@@ -32,30 +69,6 @@ You can adapt Manager Agent behavior for specific project management and coordin
 
 ---
 
-## GitHub Template Approach
-
-The recommended way to customize APM is to use GitHub's "Use this template" feature rather than direct forking or cloning.
-
-### Setting Up Your Custom APM
-
-1. **Visit the APM Repository**: Go to [github.com/sdi2200262/agentic-project-management](https://github.com/sdi2200262/agentic-project-management)
-2. **Create Template**: Click "Use this template" → "Create a new repository"
-3. **Name Your Version**: Use descriptive names like `apm-for-web-development` or `company-apm-framework`
-4. **Clone Your Template**: 
-   ```bash
-   git clone https://github.com/yourusername/your-apm-template
-   cd your-apm-template
-   ```
-
-### Benefits of the Template Approach
-
-**Independent Development**: Make changes without affecting the upstream APM project
-**Version Control**: Track your customizations and maintain team consistency
-**Easy Updates**: Selectively merge improvements from the main APM project
-**Sharing**: Distribute your customized version within your organization or team
-
----
-
 ## Customizing Core Prompts
 
 ### Setup Agent Customization
@@ -64,7 +77,7 @@ The Setup Agent's Context Synthesis phase is highly customizable for domain-spec
 
 #### Example: Web Development Specialization
 
-**File**: `prompts/Setup_Agent/Context_Synthesis_Prompt.md`
+**File**: `.apm/guides/Context_Synthesis_Guide.md`
 
 **Original Phase 2 Questions**:
 ```markdown
@@ -107,7 +120,7 @@ You can tailor Implementation Agent execution behavior for specific development 
 
 #### Example: Verbose Execution Mode
 
-**File**: `prompts/Implementation_Agent/Implementation_Agent_Initiation_Prompt.md`
+**File**: `[Your-Assistant-Command-Dir]/apm-3-initiate-implementation.md` (or the equivalent command file)
 
 **Proposed addition to the Interaction Model section**:
 ```markdown
@@ -168,7 +181,7 @@ Consider modifying how Manager Agents create Task Assignment Prompts to include 
 
 #### Example: Security-First Task Assignment
 
-**File**: `prompts/guides/Task_Assignment_Guide.md`
+**File**: `.apm/guides/Task_Assignment_Guide.md`
 
 **Recommended addition to Task Assignment Prompt Format → Detailed Instructions**:
 ```markdown
@@ -236,21 +249,21 @@ Beyond Debug and Research delegation, you can create specialized guides for cont
 
 ### Potential Delegation Guide Types
 
-**Testing Delegation**: For comprehensive testing scenarios requiring specialized expertise and extensive test coverage.
+- **Testing Delegation**: For comprehensive testing scenarios requiring specialized expertise and extensive test coverage.
 
-**Security Review Delegation**: For thorough security analysis and vulnerability assessments that need deep, focused examination.
+- **Security Review Delegation**: For thorough security analysis and vulnerability assessments that need deep, focused examination.
 
-**Documentation Delegation**: For extensive documentation tasks requiring research, synthesis, and detailed technical writing.
+- **Documentation Delegation**: For extensive documentation tasks requiring research, synthesis, and detailed technical writing.
 
-**Data Analysis Delegation**: For complex data exploration and statistical analysis that would overwhelm Implementation Agent context.
+- **Data Analysis Delegation**: For complex data exploration and statistical analysis that would overwhelm Implementation Agent context.
 
-**Performance Optimization Delegation**: For in-depth performance profiling and optimization work requiring iterative testing.
+- **Performance Optimization Delegation**: For in-depth performance profiling and optimization work requiring iterative testing.
 
-**Integration Testing Delegation**: For complex multi-system integration validation across services and external APIs.
+- **Integration Testing Delegation**: For complex multi-system integration validation across services and external APIs.
 
 ### Contributing Delegation Guides
 
-If you develop delegation guides that could benefit the broader APM community, consider submitting them as Pull Requests to the main repository. **See the README in `prompts/ad-hoc/` for detailed guidance and contribution guidelines.**
+If you've created a delegation guide that could benefit the APM community, please open a Pull Request to the main APM repository. Use existing examples in `.apm/guides/` (for example, `Debug_Delegation_Guide.md`) or the templates in `templates/ad-hoc/` as a reference. In your PR include a short description, intended use cases, usage instructions and any tests or examples. Review the repository's CONTRIBUTING guidelines before submitting.
 
 ---
 
@@ -379,7 +392,7 @@ Model Context Protocol (MCP) tools can significantly enhance APM agent capabilit
 
 **Enhanced Context Synthesis with MCP Tools**:
 
-**File**: `prompts/Setup_Agent/Context_Synthesis_Prompt.md`
+**File**: `.apm/guides/Context_Synthesis_Guide.md`
 
 **Illustrative addition to Phase 2 questioning**:
 ```markdown
@@ -395,7 +408,7 @@ Would you like me to analyze any existing systems or verify documentation for yo
 
 #### Implementation Agent Integration
 
-**File**: `prompts/Implementation_Agent/Implementation_Agent_Initiation_Prompt.md`
+**File**: `[Your-Assistant-Command-Dir]/apm-3-initiate-implementation.md`
 
 **Illustrative addition to core responsibilities**:
 ```markdown
@@ -416,7 +429,7 @@ When MCP tools are available, use them strategically to enhance task execution:
 
 #### Manager Agent Integration
 
-**File**: `prompts/Manager_Agent/Manager_Agent_Initiation_Prompt.md`
+**File**: `[Your-Assistant-Command-Dir]/apm-2-initiate-manager.md`
 
 **Illustrative addition to runtime duties**:
 ```markdown
@@ -520,18 +533,6 @@ When MCP tools are available, leverage them for enhanced project coordination:
 - **Documentation Standards**: Maintain documentation according to enterprise standards
 - **Security Reviews**: Include security review checkpoints for sensitive implementations
 ```
-
----
-
-## Best Practices for APM Customization
-
-**Documentation**: Consider creating a `CUSTOMIZATIONS.md` file documenting your changes, modified files, added files, and MCP integrations. This helps team members understand your customizations and facilitates maintenance.
-
-**Testing**: It can be helpful to test your modifications with sample projects before deploying custom APM. You might run through Context Synthesis, execute Implementation Agent tasks, verify delegation guides, and ensure MCP integrations function correctly.
-
-**Version Management**: Consider using descriptive commit messages for your modifications and tagging stable versions of your customizations for easier rollback and team coordination.
-
-**Team Distribution**: You might share your customized APM template with team members by pushing to a shared repository and documenting setup instructions for consistent team usage.
 
 ---
 

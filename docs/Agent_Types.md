@@ -1,6 +1,15 @@
-# Agent Types - APM v0.4
+# Agent Types - APM v0.5
 
 APM employs four distinct agent types, each with clear responsibilities and carefully scoped context. These agents are **not** "personas" or role-playing characters; they are functional specializations that **leverage modern LLMs' built-in expert capabilities** through focused task assignments and targeted context management.
+
+## Table of Contents
+
+- [Agent Specialization Architecture](#agent-specialization-architecture)
+- [Quick Agent Comparison](#quick-agent-comparison)
+- [1. Setup Agent](#1-setup-agent)
+- [2. Manager Agent](#2-manager-agent)
+- [3. Implementation Agents](#3-implementation-agents)
+- [4. Ad-Hoc Agents](#4-ad-hoc-agents)
 
 ## Agent Specialization Architecture
 
@@ -31,12 +40,11 @@ APM employs four distinct agent types, each with clear responsibilities and care
 
 ### Core Responsibilities
 
-1. **Asset Verification**: Establish project storage strategy and workspace organization
-2. **Context Synthesis**: Conduct systematic project discovery through guided, strategic questionnaire methodology
-3. **Project Breakdown**: Transform project goals & requirements into structured Implementation Plan draft using systematic analysis
-4. **Implementation Plan Review (Optional)**: Apply targeted systematic review on User-selected sections of the Implementation Plan draft for quality assurance and task optimization
-5. **Enhancement & Memory Root Creation**: Generate detailed APM Implementation Plan artifact and initialize Memory System
-6. **Manager Bootstrap**: Create initialization prompt for Manager Agent handoff
+1. **Context Synthesis**: Conduct systematic project discovery through guided, strategic questionnaire methodology
+2. **Project Breakdown**: Transform project goals & requirements into structured Implementation Plan draft using systematic analysis
+3. **Implementation Plan Review (Optional)**: Apply targeted systematic review on User-selected sections of the Implementation Plan draft for quality assurance and task optimization
+4. **Implementation Plan Enhancement & Finalization**: Generate detailed APM Implementation Plan artifact.
+5. **Manager Bootstrap**: Create initialization prompt for Manager Agent handoff
 
 ### Operational Workflow
 
