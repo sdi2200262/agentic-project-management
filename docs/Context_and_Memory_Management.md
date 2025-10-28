@@ -1,6 +1,20 @@
-# Context and Memory Management - APM v0.4
+# Context and Memory Management - APM v0.5
 
 APM's effectiveness stems from context scope management and a dynamic memory system that enable focused agent interactions while preserving project continuity. This document explores how APM leverages scoped context for emergent specialization and implements progressive memory management for cost-effective, scalable project execution.
+
+## Table of Contents
+
+- [Context Scope Architecture](#context-scope-architecture)
+  - [Emergent Specialization Through Scoped Context](#emergent-specialization-through-scoped-context)
+  - [Context Scope Mechanics](#context-scope-mechanics)
+  - [Cross-Agent Dependencies and Context Integration](#cross-agent-dependencies-and-context-integration)
+- [Dynamic Memory Bank System](#dynamic-memory-bank-system)
+  - [Evolution from Simple Memory Banks](#evolution-from-simple-memory-banks)
+  - [Dynamic Memory System Architecture](#dynamic-memory-system-architecture)
+- [Context & Memory Preservation Through Handovers](#context--memory-preservation-through-handovers)
+  - [Handover Procedure Concept](#handover-procedure-concept)
+  - [Two-Artifact Handover System](#two-artifact-handover-system)
+  - [Context Survival and the Limits of Multiple Handovers](#context-survival-and-the-limits-of-multiple-handovers)
 
 ---
 
@@ -100,7 +114,7 @@ This structure ensures that all necessary information for successful cross-agent
 
 ### Evolution from Simple Memory Banks
 
-APM v0.4's Dynamic Memory Bank represents a carefully designed adaptation of the traditional single-file memory system, addressing scalability, maintainability, and cost-efficiency challenges inherent in large project contexts.
+APM v0.5's Dynamic Memory Bank represents a carefully designed adaptation of the traditional single-file memory system, addressing scalability, maintainability, and cost-efficiency challenges inherent in large project contexts.
 
 **Traditional Single-File Memory Bank Limitations**:
 - Context window bloat as projects grow
@@ -116,25 +130,13 @@ APM v0.4's Dynamic Memory Bank represents a carefully designed adaptation of the
 
 ### Dynamic Memory System Architecture
 
-#### Memory System Variants and Selection
+#### Memory System: Dynamic-MD Variant
 
-APM v0.4 Setup Agent automatically selects memory system variants based on project complexity:
-
-**Simple Variant** (`Memory_Bank.md`):
-- **Usage**: ≤8 tasks, single phase or straightforward linear progression
-- **Structure**: Single file with inline task sections separated by `---`
-- **Benefits**: Minimal overhead, direct access, suitable for focused projects
+APM v0.5 uses the Dynamic-MD (Markdown) memory system exclusively for all projects:
 
 **Dynamic-MD Variant** (Directory structure with Markdown logs):
-- **Usage**: >8 tasks, multiple phases, complex coordination requirements
 - **Structure**: `Memory_Root.md` + `Phase_XX_<slug>/` directories + individual task logs
-- **Benefits**: User readability, granular access, efficient context management
-
-**Dynamic-JSON Variant** (Directory structure with JSON logs) — **Testing Preview Only**:
-- **Usage**: Experimental/advanced scenarios requiring strict schema validation and maximum parsing fidelity
-- **Structure**: Same as Dynamic-MD but with structured JSON task logs
-- **Benefits**: Schema validation, programmatic access, designed for advanced context retention
-> **Warning**: This variant is for testing and contributor feedback only. It is not recommended for production or resource-constrained use, as JSON logs consume at least 15% more tokens (often 2–3x higher than Markdown) and will fill the context window much faster, resulting in more frequent handovers and context resets.
+- **Benefits**: User readability, granular access, efficient context management, optimal token usage
 
 #### Progressive Memory Creation
 
@@ -158,7 +160,7 @@ APM dynamically generates memory components as project execution progresses. Thi
 Each Implementation Plan task maps directly to a dedicated Memory Log file, ensuring traceability and granular access to task execution context.
 
 **Mapping Schema**:
-- **Task Reference**: `Task X.Y - Title | Agent_Domain` → **Memory Log**: `Task_X_Y_<title_slug>.md/json`
+- **Task Reference**: `Task X.Y - Title | Agent_Domain` → **Memory Log**: `Task_X_Y_<title_slug>.md`
 - **Phase Organization**: `Phase N: Phase_Name` → **Directory**: `Phase_NN_<phase_slug>/`
 - **Cross-References**: Memory Logs include task references for dependency tracking
 
