@@ -1,4 +1,4 @@
-# Agent Types - APM v0.4
+# Agent Types - APM v0.5
 
 APM employs four distinct agent types, each with clear responsibilities and carefully scoped context. These agents are **not** "personas" or role-playing characters; they are functional specializations that **leverage modern LLMs' built-in expert capabilities** through focused task assignments and targeted context management.
 
@@ -31,12 +31,11 @@ APM employs four distinct agent types, each with clear responsibilities and care
 
 ### Core Responsibilities
 
-1. **Asset Verification**: Establish project storage strategy and workspace organization
-2. **Context Synthesis**: Conduct systematic project discovery through guided, strategic questionnaire methodology
-3. **Project Breakdown**: Transform project goals & requirements into structured Implementation Plan draft using systematic analysis
-4. **Implementation Plan Review (Optional)**: Apply targeted systematic review on User-selected sections of the Implementation Plan draft for quality assurance and task optimization
-5. **Enhancement & Memory Root Creation**: Generate detailed APM Implementation Plan artifact and initialize Memory System
-6. **Manager Bootstrap**: Create initialization prompt for Manager Agent handoff
+1. **Context Synthesis**: Conduct systematic project discovery through guided, strategic questionnaire methodology
+2. **Project Breakdown**: Transform project goals & requirements into structured Implementation Plan draft using systematic analysis
+3. **Implementation Plan Review (Optional)**: Apply targeted systematic review on User-selected sections of the Implementation Plan draft for quality assurance and task optimization
+4. **Implementation Plan Enhancement & Finalization**: Generate detailed APM Implementation Plan artifact.
+5. **Manager Bootstrap**: Create initialization prompt for Manager Agent handoff
 
 ### Operational Workflow
 
