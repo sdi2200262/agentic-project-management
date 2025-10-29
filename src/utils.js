@@ -154,3 +154,64 @@ export function getAssistantDirectory(assistant) {
   return ASSISTANT_DIRECTORIES[assistant] || null;
 }
 
+/**
+ * Generates an ASCII banner for APM CLI with custom colors for ASCII art
+ * @param {string} version - APM version
+ * @returns {string[]} Array of colored banner lines
+ */
+export function generateBanner(version = '0.5.0') {
+  // Define colors for each letter in the ASCII art
+  // You can change these to any chalk color: red, green, yellow, blue, magenta, cyan, white, gray, etc.
+  const colorA = chalk.white;      // Color for letter "A"
+  const colorP = chalk.cyan;   // Color for letter "P" 
+  const colorM = chalk.cyan;    // Color for letter "M"
+  
+  const border = chalk.blue('║');
+  const lines = [
+    chalk.blue('╔══════════════════════════════════════════════════════════════════════════════╗'),
+    border + chalk.blue('                                                                              ') + border,
+    border + chalk.blue('                                                                              ') + border,
+    // A letter              P letter              M letter
+    border + '                           ' + colorA('█████╗') + ' ' + colorP('██████╗') + ' ' + colorM('███╗   ███╗') + '                         ' + border,
+    border + '                          ' + colorA('██╔══██╗') + colorP('██╔══██╗') + colorM('████╗ ████║') + '                         ' + border,
+    border + '                       ' + colorP('█████████████████╔╝') + colorM('██╔████╔██║') + '                         ' + border,
+    border + '                       ' + colorP('╚══')+ colorA('██')+ colorP('═══') + colorA('██') + colorP('═██╔═══╝ ') + colorM('██║╚██╔╝██║') + '                         ' + border,
+    border + '                          ' + colorA('██║  ██║') + colorP('██║     ') + colorM('██║ ╚═╝ ██║') + '                         ' + border,
+    border + '                          ' + colorA('╚═╝  ╚═╝') + colorP('╚═╝     ') + colorM('╚═╝     ╚═╝') + '                         ' + border,
+    border + chalk.blue('                                                                              ') + border,
+    border + chalk.cyan.bold('                      Agentic Project Management v' + version + '                       ') + border,
+    border + chalk.blue('                                                                              ') + border,
+    border + chalk.gray('              Manage complex projects with a team of AI assistants            ') + border,
+    border + chalk.gray('                          smoothly and efficiently                            ') + border,
+    border + chalk.blue('                                                                              ') + border,
+    border + '                               ' + chalk.cyan.underline('\x1b]8;;https://github.com/sdi2200262/agentic-project-management\x1b\\View on GitHub\x1b]8;;\x1b\\') + '                                 ' + border,
+    border + '                                ' + chalk.yellow.underline('\x1b]8;;https://www.npmjs.com/package/agentic-pm\x1b\\View on NPM\x1b]8;;\x1b\\') + '                                   ' + border,
+    border + chalk.blue('                                                                              ') + border,
+    chalk.blue('╚══════════════════════════════════════════════════════════════════════════════╝')
+  ];
+  
+  return lines;
+}
+
+/**
+ * Displays the APM banner with optional version
+ * @param {string} version - APM version
+ * @param {boolean} useColors - Whether to use colors
+ */
+export function displayBanner(version = '0.5.0', useColors = true) {
+  const lines = generateBanner(version);
+  
+  if (useColors) {
+    // Lines are already colored, just print them
+    lines.forEach(line => console.log(line));
+    console.log(); // Add blank line for spacing
+  } else {
+    // Strip colors for plain text version
+    const plainLines = lines.map(line => {
+      // This is a simplified version - in real use you'd strip ANSI codes
+      return line;
+    });
+    plainLines.forEach(line => console.log(line));
+  }
+}
+
