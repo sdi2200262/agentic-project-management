@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning (SemVer)](https://semver.org/spec/v2.0.0.html) for the **core CLI package** published on NPM.
+
+> **Note:** APM uses a dual versioning system. Updates to the **agent templates** (prompts and guides) might be released more frequently via GitHub Releases using build metadata appended to the current CLI version (e.g., `v0.5.0+templates.1`). This changelog primarily tracks changes related to the SemVer-managed CLI package, but major template releases or changes may also be noted. See [VERSIONING.md](VERSIONING.md) for full details.
+
+---
+
 ## [0.5.0] - 2025-x-x
 
 ### Added

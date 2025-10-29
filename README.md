@@ -120,6 +120,12 @@ APM is an open-source project, and your contributions are welcome! Whether it's 
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and contribution process.
 
+## Versioning Strategy
+
+APM uses a dual versioning system to separate updates to the core CLI tool from updates to the agent prompts and guides (templates). The CLI follows Semantic Versioning on NPM, while template updates are released via GitHub Releases using build metadata. This allows for frequent template improvements without unnecessary CLI version bumps.
+
+For a detailed explanation of the versioning, tagging, and release process, please see the [VERSIONING.md](VERSIONING.md) file.
+
 ## License
 
 This project is licensed under the **Mozilla Public License 2.0** - see the [LICENSE](LICENSE) file for full details.
