@@ -39,7 +39,7 @@ jobs:
       - name: Checkout code on target branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.base_ref || 'main' }} # Use the target branch (main or v0.5-dev) after merge
+          ref: ${{ github.ref_name || github.base_ref || 'main' }} # Use the current branch for manual triggers, target branch for PRs
           fetch-depth: 0 # Fetch full history for versioning/tagging
           token: ${{ secrets.GITHUB_TOKEN }} # Use default GitHub token
 
