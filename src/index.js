@@ -6,8 +6,7 @@ import { select, confirm } from '@inquirer/prompts';
 import { fetchReleaseAssetUrl, downloadAndExtract, fetchLatestRelease } from './downloader.js';
 import { existsSync, mkdirSync, writeFileSync, rmSync, readdirSync, cpSync, copyFileSync } from 'fs';
 import { resolve, join } from 'path';
-import { execSync } from 'child_process';
-import { readMetadata, writeMetadata, detectInstalledAssistants, compareVersions, createBackup, getAssistantDirectory, restoreBackup } from './utils.js';
+import { readMetadata, writeMetadata, detectInstalledAssistants, compareVersions, createBackup, getAssistantDirectory, restoreBackup, displayBanner } from './utils.js';
 
 const program = new Command();
 
@@ -17,6 +16,12 @@ program
   .name('apm')
   .description('Agentic Project Management CLI')
   .version(APM_VERSION);
+
+// Display banner when no command is provided
+program.action(() => {
+  displayBanner(APM_VERSION);
+  console.log(chalk.gray('\nUse --help to see available commands.\n'));
+});
 
 /**
  * Creates metadata file to store APM installation information
@@ -49,7 +54,8 @@ program
   .description('Initialize a new APM project')
   .action(async () => {
     try {
-      console.log(chalk.blue('APM v0.5.0'));
+      // Display the APM banner
+      displayBanner(APM_VERSION);
       console.log(chalk.gray('Setting up Agentic Project Management in this directory...\n'));
 
       // Check if APM is already initialized in current directory
@@ -227,6 +233,8 @@ program
   .description('Update APM to the latest version')
   .action(async () => {
     try {
+      // Display the APM banner
+      displayBanner(APM_VERSION);
       console.log(chalk.blue('🔄 APM Update Tool'));
       console.log(chalk.gray('Checking for updates...\n'));
 
