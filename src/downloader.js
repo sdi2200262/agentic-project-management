@@ -110,6 +110,95 @@ export async function fetchReleaseAssetUrl(assistant, releaseTagOrObject = null)
 }
 
 /**
+ * Parses a template tag to extract base version and build number
+ * @param {string} tagName - Tag name (e.g., "v0.5.1+templates.2")
+ * @returns {Object|null} Object with baseVersion and buildNumber, or null if invalid
+ */
+function parseTemplateTag(tagName) {
+  // Match pattern: v<version>+templates.<buildNumber>
+  const match = tagName.match(/^v(\d+\.\d+\.\d+)\+templates\.(\d+)$/);
+  if (!match) {
+    return null;
+  }
+  return {
+    baseVersion: match[1],
+    buildNumber: parseInt(match[2], 10)
+  };
+}
+
+/**
+ * Finds the latest compatible template tag for the given CLI version
+ * Searches all GitHub releases for tags matching v<cliVersion>+templates.*
+ * and returns the one with the highest build number
+ * @param {string} cliVersion - Current CLI version (e.g., "0.5.1")
+ * @returns {Promise<Object|null>} Object with tag_name and release_notes, or null if none found
+ */
+export async function findLatestCompatibleTemplateTag(cliVersion) {
+  try {
+    // Fetch all releases from GitHub API
+    const endpoint = `${GITHUB_API_BASE}/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/releases`;
+    
+    console.log(chalk.gray(`Fetching all releases to find compatible templates for CLI v${cliVersion}...`));
+    
+    const response = await axios.get(endpoint, {
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'User-Agent': 'APM-CLI'
+      },
+      params: {
+        per_page: 100 // Fetch up to 100 releases (adjust if needed)
+      }
+    });
+    
+    const releases = response.data;
+    
+    // Filter releases to find compatible tags matching v<cliVersion>+templates.*
+    const compatibleTags = [];
+    const expectedBaseVersion = cliVersion;
+    
+    for (const release of releases) {
+      const tagName = release.tag_name;
+      const parsed = parseTemplateTag(tagName);
+      
+      if (parsed && parsed.baseVersion === expectedBaseVersion) {
+        compatibleTags.push({
+          tag_name: tagName,
+          buildNumber: parsed.buildNumber,
+          release_notes: release.body || '',
+          release: release
+        });
+      }
+    }
+    
+    if (compatibleTags.length === 0) {
+      console.log(chalk.yellow(`No compatible template tags found for CLI version ${cliVersion}`));
+      return null;
+    }
+    
+    // Sort by build number (descending) to find the latest
+    compatibleTags.sort((a, b) => b.buildNumber - a.buildNumber);
+    
+    const latest = compatibleTags[0];
+    console.log(chalk.gray(`Found compatible template tag: ${latest.tag_name} (build ${latest.buildNumber})`));
+    
+    return {
+      tag_name: latest.tag_name,
+      release_notes: latest.release_notes
+    };
+    
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 404) {
+        throw new Error('Repository or releases not found. Please verify the repository exists.');
+      } else if (error.response.status === 403) {
+        throw new Error('GitHub API rate limit exceeded. Please try again later.');
+      }
+    }
+    throw new Error(`Failed to find compatible template tag: ${error.message}`);
+  }
+}
+
+/**
  * Downloads and extracts a zip file to the specified destination
  * @param {string} url - URL or file path to the zip file
  * @param {string} destinationPath - Path where the contents should be extracted

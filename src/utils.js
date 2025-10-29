@@ -95,6 +95,56 @@ export function compareVersions(v1, v2) {
 }
 
 /**
+ * Parses a template tag to extract base version and build number
+ * @param {string} tag - Template tag (e.g., "v0.5.1+templates.2")
+ * @returns {Object|null} Object with baseVersion and buildNumber, or null if invalid
+ */
+function parseTemplateTagParts(tag) {
+  // Match pattern: v<version>+templates.<buildNumber>
+  const match = tag.match(/^v(\d+\.\d+\.\d+)\+templates\.(\d+)$/);
+  if (!match) {
+    return null;
+  }
+  return {
+    baseVersion: match[1],
+    buildNumber: parseInt(match[2], 10)
+  };
+}
+
+/**
+ * Compares two template version tags
+ * First compares base versions - if they differ, returns NaN (indicating incompatibility)
+ * If base versions match, compares build numbers
+ * @param {string} tagA - First template tag (e.g., "v0.5.1+templates.1")
+ * @param {string} tagB - Second template tag (e.g., "v0.5.1+templates.2")
+ * @returns {number} -1 if tagA < tagB, 0 if equal, 1 if tagA > tagB, NaN if base versions differ
+ */
+export function compareTemplateVersions(tagA, tagB) {
+  const parsedA = parseTemplateTagParts(tagA);
+  const parsedB = parseTemplateTagParts(tagB);
+  
+  // Handle invalid tags
+  if (!parsedA || !parsedB) {
+    throw new Error(`Invalid template tag format: "${tagA}" or "${tagB}". Expected format: v<version>+templates.<buildNumber>`);
+  }
+  
+  // First, compare base versions
+  // If base versions differ, these tags are not directly comparable
+  if (parsedA.baseVersion !== parsedB.baseVersion) {
+    return NaN;
+  }
+  
+  // Base versions are the same, compare build numbers
+  if (parsedA.buildNumber < parsedB.buildNumber) {
+    return -1;
+  } else if (parsedA.buildNumber > parsedB.buildNumber) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+/**
  * Creates a backup of specified directories
  * @param {string} projectPath - Path to the project directory
  * @param {string[]} directories - Array of directory paths to backup
