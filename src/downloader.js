@@ -103,17 +103,18 @@ export async function fetchReleaseAssetUrl(assistant, releaseTag = null) {
 
 /**
  * Parses a template tag to extract base version and build number
- * @param {string} tagName - Tag name (e.g., "v0.5.1+templates.2")
+ * @param {string} tagName - Tag name (e.g., "v0.5.1+templates.2" or "v0.5.0-test-1+templates.1")
  * @returns {Object|null} Object with baseVersion and buildNumber, or null if invalid
  */
 function parseTemplateTag(tagName) {
   // Match pattern: v<version>+templates.<buildNumber>
-  const match = tagName.match(/^v(\d+\.\d+\.\d+)\+templates\.(\d+)$/);
+  // Supports pre-release versions like v0.5.0-test-1+templates.1
+  const match = tagName.match(/^v(\d+\.\d+\.\d+(?:-[a-zA-Z0-9.-]+)?)\+templates\.(\d+)$/);
   if (!match) {
     return null;
   }
   return {
-    baseVersion: match[1],
+    baseVersion: match[1], // Includes pre-release suffix if present (e.g., "0.5.0-test-1")
     buildNumber: parseInt(match[2], 10)
   };
 }
