@@ -39,7 +39,7 @@ APM supports the following AI assistants and IDEs:
 |---------------------|-------------------------|----------|------------------------|
 | GitHub Copilot      | IDE                     | Markdown | `.github/prompts`      |
 | Claude Code         | IDE & CLI               | Markdown | `.claude/commands`     |
-| Cursor              | IDE                     | Markdown | `.cursor/commands`     |
+| Cursor              | IDE & CLI               | Markdown | `.cursor/commands`     |
 | Windsurf            | IDE                     | Markdown | `.windsurf/workflows`  |
 | Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
 | Qwen Code           | CLI                     | TOML     | `.qwen/commands`       |
