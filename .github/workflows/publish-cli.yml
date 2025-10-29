@@ -41,7 +41,7 @@ jobs:
         with:
           ref: ${{ github.base_ref || 'main' }} # Use the target branch (main or v0.5-dev) after merge
           fetch-depth: 0 # Fetch full history for versioning/tagging
-          token: ${{ secrets.PAT_FOR_BUMP }} # Use PAT to allow pushing commit/tag
+          token: ${{ secrets.GITHUB_TOKEN }} # Use default GitHub token
 
       # --- Logic for PR Trigger ---
       - name: Check for src changes in PR (PR Trigger Only)
