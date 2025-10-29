@@ -16,11 +16,11 @@ jobs:
   release_templates:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout latest main
+      - name: Checkout latest branch
         uses: actions/checkout@v4
         # Fetch all tags to accurately determine the next build number
         with:
-          ref: main
+          ref: ${{ github.ref_name || 'main' }}
           fetch-depth: 0
 
       - name: Setup Node.js

@@ -4,7 +4,7 @@ name: Publish CLI on Release PR Merge
 on:
   pull_request:
     types: [closed] # Trigger when a PR is closed
-    branches: [ main ] # Only on PRs targeting the main branch
+    branches: [ main, v0.5-dev ] # Only on PRs targeting the main or v0.5-dev branch
   workflow_dispatch: # Keep manual trigger for specific cases (like initial v0.5.0)
     inputs:
       version_type:
@@ -36,10 +36,10 @@ jobs:
       new_version: ${{ steps.set_version.outputs.version }} # Pass version out if needed later
 
     steps:
-      - name: Checkout code on main branch
+      - name: Checkout code on target branch
         uses: actions/checkout@v4
         with:
-          ref: main # Ensure we are on the main branch after merge
+          ref: ${{ github.base_ref || 'main' }} # Use the target branch (main or v0.5-dev) after merge
           fetch-depth: 0 # Fetch full history for versioning/tagging
           token: ${{ secrets.PAT_FOR_BUMP }} # Use PAT to allow pushing commit/tag
 
