@@ -42,9 +42,34 @@ Agentic Project Management (APM) employs a dual versioning system to clearly dis
     8.  It runs the build script (`npm run build`) to generate the `.zip` bundles.
     9.  It creates a new GitHub Release titled (e.g.) `APM Templates v0.5.1 Build 2`, associates it with the `v0.5.1+templates.2` tag, and uploads the `.zip` bundles as release assets.
 
+## CLI Behavior for Users
+
+The CLI manages template versions based on compatibility with the running CLI version:
+
+* **`apm init` (default behavior):**
+    * Automatically finds and installs the latest template tag compatible with the *currently running CLI version*.
+    * For example, if you're running CLI `0.5.0`, it will find the latest `v0.5.0+templates.N` tag available.
+    * This ensures that templates are always compatible with your CLI installation.
+
+* **`apm init --tag <tag>` (specific version):**
+    * Allows installing a *specific* template tag by explicitly providing it (e.g., `apm init --tag v0.5.0+templates.1`).
+    * This can bypass the default compatibility check and install any specified template version.
+    * The CLI may issue a warning if the base version of the specified tag doesn't match your current CLI version, as this could lead to incompatibilities.
+
+* **`apm update`:**
+    * Finds the latest template tag compatible with the *currently running CLI version*.
+    * Compares it to the installed template version (stored in `.apm/metadata.json`) using the build number (`+templates.N`).
+    * Only updates if a newer compatible build exists (higher build number with matching base version).
+    * If newer templates exist but require a different CLI version (e.g., templates for `v0.6.0` when you're running `0.5.1`), the CLI will inform you that a CLI update is available via `npm update -g agentic-pm` to access those newer templates.
+
 ## User Impact
 
-* **Installing/Updating the CLI:** Users manage the CLI version via NPM (e.g., `npm install -g agentic-pm@latest` or `npm update -g agentic-pm`). The NPM version number (e.g., `0.5.1`) reflects the CLI's features and bug fixes.
-* **Getting/Updating Templates:** The `apm init` and `apm update` commands interact with the **GitHub Releases** page to find and download the latest available template bundle (`.zip` file) associated with the user's currently installed CLI version (or the latest compatible one). The build metadata (`+templates.N`) allows users to receive template updates without needing to update the core CLI package if only templates changed.
+### Workflow Implications
+
+The dual versioning system provides a clear separation of concerns and practical benefits:
+
+* **CLI Updates:** Users update the CLI independently via NPM (e.g., `npm update -g agentic-pm`). CLI updates bring new features, bug fixes, and improvements to the tool itself. Since the CLI version determines which templates are compatible, updating the CLI may "unlock" access to newer template versions.
+
+* **Template Updates:** Template updates are delivered independently via GitHub Releases and managed through `apm update`. Users can receive improved prompts and guides without needing to update the CLI package, as long as the templates match their current CLI version. This allows for rapid iteration on agent behavior without disrupting the CLI tool's stability.
 
 This dual system ensures that CLI stability is maintained with standard SemVer, while allowing for more frequent iteration and delivery of the agent templates via GitHub Releases and the `apm update` command.

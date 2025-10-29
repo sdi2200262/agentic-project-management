@@ -65,6 +65,11 @@ Follow these simple steps to start using APM in your project:
    ```bash
    apm init
    ```
+   
+   By default, `apm init` automatically finds and installs the latest template version compatible with your current CLI version. To install a specific template version (e.g., for rollbacks or testing), you can use the `--tag` option:
+   ```bash
+   apm init --tag v0.5.0+templates.1
+   ```
 
 3. **Select your AI assistant** when prompted (e.g., Cursor, Copilot, Claude Code, etc.).
 
