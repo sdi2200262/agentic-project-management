@@ -39,7 +39,7 @@ APM supports the following AI assistants and IDEs:
 |---------------------|-------------------------|----------|------------------------|
 | GitHub Copilot      | IDE                     | Markdown | `.github/prompts`      |
 | Claude Code         | IDE & CLI               | Markdown | `.claude/commands`     |
-| Cursor              | IDE                     | Markdown | `.cursor/commands`     |
+| Cursor              | IDE & CLI               | Markdown | `.cursor/commands`     |
 | Windsurf            | IDE                     | Markdown | `.windsurf/workflows`  |
 | Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
 | Qwen Code           | CLI                     | TOML     | `.qwen/commands`       |
@@ -64,6 +64,11 @@ Follow these simple steps to start using APM in your project:
 2. **Run the APM initialization command:**
    ```bash
    apm init
+   ```
+   
+   By default, `apm init` automatically finds and installs the latest template version compatible with your current CLI version. To install a specific template version (e.g., for rollbacks or testing), you can use the `--tag` option:
+   ```bash
+   apm init --tag v0.5.0+templates.1
    ```
 
 3. **Select your AI assistant** when prompted (e.g., Cursor, Copilot, Claude Code, etc.).
@@ -119,6 +124,12 @@ APM is an open-source project, and your contributions are welcome! Whether it's 
 - **Workflow Optimizations:** Share improvements to agent protocols or memory system enhancements.
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and contribution process.
+
+## Versioning Strategy
+
+APM uses a dual versioning system to separate updates to the core CLI tool from updates to the agent prompts and guides (templates). The CLI follows Semantic Versioning on NPM, while template updates are released via GitHub Releases using build metadata. This allows for frequent template improvements without unnecessary CLI version bumps.
+
+For a detailed explanation of the versioning, tagging, and release process, please see the [VERSIONING.md](VERSIONING.md) file.
 
 ## License
 

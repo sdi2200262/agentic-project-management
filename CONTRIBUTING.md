@@ -136,6 +136,17 @@ If your contribution modifies prompt or guide templates, you must verify the cha
 - Update documentation for user-facing changes.
 - Follow established patterns in existing APM assets.
 
+### Versioning Considerations
+
+APM has a dual versioning system: the CLI (`src/`) follows SemVer on NPM, while Templates (`templates/`) use build metadata (`+templates.N`) released via GitHub Releases.
+
+* **CLI Changes (`src/`):** If your contribution modifies the CLI code and warrants a new release, consider addign one of the labels `release:patch`, `release:minor`, or `release:major` to your Pull Request. The presence of one of these labels will trigger the automatic version bump and NPM publish workflow.<br/>
+   > **Note:** PRs with a `release:x` label will receive extra scrutiny from maintainers, including a thorough review of code, tests, and docs for stability and standards. If the label is missing on a PR that adds major or new CLI features, maintainers may add it to trigger the correct versioning and release process.
+* **Template Changes (`templates/`):** Changes here do not automatically bump the CLI version. After your PR is merged, a maintainer will manually trigger the template release workflow, which creates a new Git tag (e.g., `vX.Y.Z+templates.N`) and a GitHub Release with the updated template bundles.
+* **Build System Changes:** Changes to build scripts or configuration do not trigger version bumps or releases.
+
+Please refer to [VERSIONING.md](VERSIONING.md) for a complete explanation of the release strategy. Ensure your contributions align with this process.
+
 ## License Requirements
 
 APM uses Mozilla Public License 2.0 (MPL-2.0). By contributing, you agree that:
