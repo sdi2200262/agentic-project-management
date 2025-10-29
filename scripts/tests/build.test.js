@@ -1,12 +1,12 @@
 /**
  * APM Build Script - Unit Tests (Vitest)
  *
- * Validates core functions in scripts/build.js.
- * 
- * Focus: basic behaviors and edge cases using temporary fixtures.
+ * Modular harness around scripts/build.js.
+ *  - Smoke tests cover helper utilities with synthetic fixtures.
+ *  - Build matrix pulls verified assistants from build-config.json and reuses shared assertions.
+ *  - Temporary workspaces keep runs isolated and scrub their artifacts on exit.
  *
- * Note:  Tests assume POSIX "/" paths in assertions and will fail on Windows.
- *        For cross-platform runs, normalize paths in assertions or construct expected values with path.join.
+ * Note: Tests assume POSIX "/" separators in assertions; normalize paths when running on Windows.
  */
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,6 +29,78 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const TMP_ROOT = path.join(PROJECT_ROOT, 'scripts', 'tests', '.tmp');
+
+const BUILD_CONFIG_PATH = path.join(PROJECT_ROOT, 'build-config.json');
+const BUILD_CONFIG_DATA = fs.readJsonSync(BUILD_CONFIG_PATH);
+
+// Assistants listed here should already be validated manually.
+const MANUALLY_VERIFIED_ASSISTANT_IDS = new Set(['copilot', 'gemini', 'cursor']);
+
+// Use overrides for assistants whose behavior diverges from the default expectations.
+const ASSISTANT_EXPECTATION_OVERRIDES = {
+  copilot: {
+    commandExtension: '.prompt.md',
+  },
+};
+
+const VERIFIED_ASSISTANT_TARGETS = BUILD_CONFIG_DATA.targets.filter((target) =>
+  MANUALLY_VERIFIED_ASSISTANT_IDS.has(target.id)
+);
+
+function resolveAssistantExpectations(target) {
+  const defaults =
+    target.format === 'toml'
+      ? { commandExtension: '.toml', argsPlaceholder: '{{args}}' }
+      : { commandExtension: '.md', argsPlaceholder: '$ARGUMENTS' };
+
+  const overrides = ASSISTANT_EXPECTATION_OVERRIDES[target.id] ?? {};
+
+  return {
+    ...defaults,
+    ...overrides,
+    guideArgsPlaceholder: overrides.guideArgsPlaceholder ?? defaults.argsPlaceholder,
+    target,
+  };
+}
+
+function expectMarkdownCommandContent(content, { argsPlaceholder, target }) {
+  expect(content.includes(argsPlaceholder)).toBe(true);
+
+  if (target.directories?.commands) {
+    expect(content.includes(target.directories.commands)).toBe(true);
+  }
+
+  if (target.directories?.guides) {
+    expect(content.includes(target.directories.guides)).toBe(true);
+  }
+}
+
+function expectTomlCommandContent(content, { argsPlaceholder, target }) {
+  expect(content).toMatch(/^description\s*=\s*"Example command"/m);
+  expect(content).toMatch(/prompt\s*=\s*"""/m);
+  expect(content.includes('description:')).toBe(false);
+  expect(content.includes(argsPlaceholder)).toBe(true);
+
+  if (target.directories?.commands) {
+    expect(content.includes(target.directories.commands)).toBe(true);
+  }
+}
+
+function assertCommandContent(content, expectations) {
+  if (expectations.target.format === 'toml') {
+    expectTomlCommandContent(content, expectations);
+  } else {
+    expectMarkdownCommandContent(content, expectations);
+  }
+}
+
+async function writePackageJson(dir, version) {
+  await fs.writeFile(
+    path.join(dir, 'package.json'),
+    JSON.stringify({ name: 'tmp', version }, null, 2),
+    'utf8'
+  );
+}
 
 /**
  * Utilities for temp directories and sandboxed CWD changes
@@ -225,34 +297,47 @@ describe('createZipArchive()', () => {
 });
 
 // ---------------------------------------------------------------------------
+// Helper function to create test fixtures
+async function createTestFixtures(dir, options = {}) {
+  const sourceDir = path.join(dir, 'templates');
+  await fs.ensureDir(path.join(sourceDir, 'commands'));
+
+  const defaultGuideTemplate = [
+    '# Guide Title',
+    'This is a guide for {VERSION}.',
+    'Args echo: {ARGS}',
+  ].join('\n');
+
+  const defaultCommandTemplate = [
+    '---',
+    'description: "Example command"',
+    'command_name: "run"',
+    'priority: "low"',
+    '---',
+    'Body with placeholders:',
+    ' - {ARGS}',
+    ' - {GUIDE_PATH:Guide.md}',
+    ' - {COMMAND_PATH:Example.md}',
+  ].join('\n');
+
+  const guideTemplate = options.guideTemplate ?? defaultGuideTemplate;
+  const commandTemplate = options.commandTemplate ?? defaultCommandTemplate;
+  const packageVersion = options.packageVersion ?? '0.0.0';
+
+  await fs.writeFile(path.join(sourceDir, 'Guide.md'), guideTemplate, 'utf8');
+  await fs.writeFile(path.join(sourceDir, 'commands', 'Example.md'), commandTemplate, 'utf8');
+
+  await writePackageJson(dir, packageVersion);
+
+  return sourceDir;
+}
+
+// ---------------------------------------------------------------------------
 describe('build()', () => {
   it('generates command and guide outputs for both markdown and toml targets', async () => {
     await withTempDir('build-run', async (dir) => {
-      const sourceDir = path.join(dir, 'templates');
+      const sourceDir = await createTestFixtures(dir);
       const outDir = path.join(dir, 'out');
-      await fs.ensureDir(path.join(sourceDir, 'commands'));
-
-      // Guide template (no frontmatter)
-      const guideTemplate = [
-        '# Guide Title',
-        'This is a guide for {VERSION}.',
-        'Args echo: {ARGS}',
-      ].join('\n');
-      await fs.writeFile(path.join(sourceDir, 'Guide.md'), guideTemplate, 'utf8');
-
-      // Command template (with frontmatter)
-      const commandTemplate = [
-        '---',
-        'description: "Example command"',
-        'command_name: "run"',
-        'priority: "low"',
-        '---',
-        'Body with placeholders:',
-        ' - {ARGS}',
-        ' - {GUIDE_PATH:Guide.md}',
-        ' - {COMMAND_PATH:Example.md}',
-      ].join('\n');
-      await fs.writeFile(path.join(sourceDir, 'commands', 'Example.md'), commandTemplate, 'utf8');
 
       const cfg = {
         build: { sourceDir: sourceDir, outputDir: outDir, cleanOutput: true },
@@ -273,13 +358,6 @@ describe('build()', () => {
           },
         ],
       };
-
-      // Provide a minimal package.json for version resolution path in build()
-      await fs.writeFile(
-        path.join(dir, 'package.json'),
-        JSON.stringify({ name: 'tmp', version: '0.0.0' }),
-        'utf8'
-      );
 
       await build(cfg, '0.5.0-test');
 
@@ -357,7 +435,7 @@ describe('build()', () => {
         ],
       };
 
-      await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'tmp', version: '1.0.0' }), 'utf8');
+      await writePackageJson(dir, '1.0.0');
       await build(cfg, '1.2.3');
 
       // Check ZIP file was created
@@ -400,7 +478,7 @@ describe('build()', () => {
         ],
       };
 
-      await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'tmp', version: '1.0.0' }), 'utf8');
+      await writePackageJson(dir, '1.0.0');
       await build(cfg, '1.2.3');
 
       // Check existing file still exists
@@ -446,7 +524,7 @@ describe('build()', () => {
         ],
       };
 
-      await fs.writeFile(path.join(dir, 'package.json'), JSON.stringify({ name: 'tmp', version: '1.0.0' }), 'utf8');
+      await writePackageJson(dir, '1.0.0');
       await build(cfg, '1.2.3');
 
       // Check ZIP file was created
@@ -465,6 +543,61 @@ describe('build()', () => {
       expect(await fs.pathExists(buildDir)).toBe(false);
 
       await fs.remove(outDir);
+    });
+  });
+});
+
+// ---------------------------------------------------------------------------
+describe('build() - Verified assistant targets', () => {
+  const versionUnderTest = '0.5.0-test';
+
+  it('covers every manually verified assistant declared in build-config.json', () => {
+    expect(VERIFIED_ASSISTANT_TARGETS).not.toHaveLength(0);
+
+    const missing = Array.from(MANUALLY_VERIFIED_ASSISTANT_IDS).filter(
+      (id) => !VERIFIED_ASSISTANT_TARGETS.some((target) => target.id === id)
+    );
+
+    expect(missing).toEqual([]);
+  });
+
+  VERIFIED_ASSISTANT_TARGETS.forEach((target) => {
+    const expectations = resolveAssistantExpectations(target);
+
+    it(`generates correct output for ${target.name} (${target.id})`, async () => {
+      await withTempDir(`build-${target.id}`, async (dir) => {
+        const sourceDir = await createTestFixtures(dir);
+        const outDir = path.join(dir, 'out');
+
+        const cfg = {
+          build: { sourceDir, outputDir: outDir, cleanOutput: true },
+          targets: [JSON.parse(JSON.stringify(target))],
+        };
+
+        await build(cfg, versionUnderTest);
+
+        const zipPath = path.join(outDir, target.bundleName);
+        expect(await fs.pathExists(zipPath)).toBe(true);
+
+        const zip = new AdmZip(zipPath);
+        const commandFileName = `apm-low-run${expectations.commandExtension}`;
+        const cmdEntry = zip.getEntry(`commands/${commandFileName}`);
+        expect(cmdEntry).toBeTruthy();
+
+        const cmdContent = cmdEntry.getData().toString('utf8');
+        assertCommandContent(cmdContent, expectations);
+
+        const guideEntry = zip.getEntry('guides/Guide.md');
+        expect(guideEntry).toBeTruthy();
+        const guideContent = guideEntry.getData().toString('utf8');
+        expect(guideContent.includes(expectations.guideArgsPlaceholder)).toBe(true);
+        expect(guideContent.includes(versionUnderTest)).toBe(true);
+
+        const buildDir = path.join(outDir, `${target.id}-build`);
+        expect(await fs.pathExists(buildDir)).toBe(false);
+
+        await fs.remove(outDir);
+      });
     });
   });
 });
