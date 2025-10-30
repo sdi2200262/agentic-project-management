@@ -423,15 +423,36 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       
       const latestCompatibleTag = compatibleResult.tag_name;
       
-      // Compare template versions
+      // Decide update policy per rules:
+      // - If installed base < CURRENT_CLI_VERSION: update available for sure
+      // - If installed base == CURRENT_CLI_VERSION: compare build numbers
+      // - If installed base > CURRENT_CLI_VERSION: do NOT downgrade; advise CLI update
       let comparison;
-      try {
-        comparison = compareTemplateVersions(installedVersion, latestCompatibleTag);
-      } catch (error) {
-        // Invalid tag format in metadata - might be old format
-        console.log(chalk.yellow(`\n[WARN] Installed version format may be outdated: ${installedVersion}`));
-        console.log(chalk.yellow('Attempting to update to latest compatible version...'));
-        comparison = -1; // Force update
+      const installedParsed = parseTemplateTagParts(installedVersion);
+      if (installedParsed && installedParsed.baseVersion !== CURRENT_CLI_VERSION) {
+        if (isVersionNewer(installedParsed.baseVersion, CURRENT_CLI_VERSION)) {
+          // Installed templates are for a NEWER CLI base than current CLI → do not downgrade
+          console.log(chalk.red(`\n[WARN] Installed templates are for a newer CLI base than your current CLI.`));
+          console.log(chalk.red(`  Installed: v${installedParsed.baseVersion}`));
+          console.log(chalk.red(`  Current CLI: v${CURRENT_CLI_VERSION}`));
+          console.log(chalk.yellow(`\nTo align with installed templates, update your CLI:`));
+          console.log(chalk.white(`  ${chalk.bold('npm update -g agentic-pm')}`));
+          console.log(chalk.gray(`\nAlternatively, you can re-install templates compatible with your CLI using a specific tag via:`));
+          console.log(chalk.white(`  ${chalk.bold('apm init --tag <tag-for-your-CLI>')}`));
+          return;
+        } else {
+          // Installed templates are for an OLDER CLI base → update available
+          comparison = -1;
+        }
+      } else {
+        try {
+          comparison = compareTemplateVersions(installedVersion, latestCompatibleTag);
+        } catch (error) {
+          // Invalid tag format in metadata - might be old format
+          console.log(chalk.yellow(`\n[WARN] Installed version format may be outdated: ${installedVersion}`));
+          console.log(chalk.yellow('Attempting to update to latest compatible version...'));
+          comparison = -1; // Force update
+        }
       }
       
       // Check if there are newer templates available for other CLI versions (for informational purposes)
@@ -441,8 +462,7 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       // Handle comparison results
       let baseMismatch = false;
       if (isNaN(comparison)) {
-        // Base versions differ: treat as update available without erroring
-        baseMismatch = true;
+        baseMismatch = true; // Shouldn't happen after explicit base policy above, but keep flag for messaging
         comparison = -1;
       }
       if (comparison === 0) {
