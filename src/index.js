@@ -439,39 +439,13 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       const newerVersionInfo = checkForNewerTemplates(CURRENT_CLI_VERSION, latestOverall);
       
       // Handle comparison results
-      let proceedWithUpdate = false;
+      let baseMismatch = false;
       if (isNaN(comparison)) {
-        // Base versions differ - offer to update all assistants to latest compatible tag
-        console.log(chalk.red(`\n[WARN] Installed templates are for a different CLI base than your current CLI.`));
-        console.log(chalk.red(`  Installed: ${installedVersion}`));
-        console.log(chalk.red(`  Current CLI: v${CURRENT_CLI_VERSION}`));
-        console.log(chalk.red(`  Latest compatible with your CLI: ${latestCompatibleTag}`));
-        const proceed = await confirm({
-          message: chalk.red(`Update ALL assistants to ${latestCompatibleTag}?`),
-          default: false
-        });
-        if (!proceed) {
-          console.log(chalk.yellow('\nUpdate cancelled.'));
-          return;
-        }
-        proceedWithUpdate = true;
-        console.log(chalk.cyan(`\n[UPDATE] Updating to match your CLI base`));
-        console.log(chalk.gray(`Current template version: ${installedVersion}`));
-        console.log(chalk.gray(`Latest compatible version: ${latestCompatibleTag}`));
-        console.log(chalk.cyan(`\nUpdate: ${installedVersion} → ${latestCompatibleTag}`));
-        if (compatibleResult.release_notes) {
-          const notesPreview = compatibleResult.release_notes.substring(0, 300);
-          console.log(chalk.gray(`\nRelease notes:`));
-          console.log(chalk.gray(notesPreview + (compatibleResult.release_notes.length > 300 ? '...' : '')));
-        }
-        console.log(chalk.cyan('\nWhat will be updated:'));
-        console.log(chalk.gray('  - Command files (slash commands)'));
-        console.log(chalk.gray('  - Guide files (templates and documentation)'));
-        console.log(chalk.cyan('\nWhat will be preserved:'));
-        console.log(chalk.gray('  - User apm/ directories (apm/Memory/, apm/Implementation_Plan.md, etc.)'));
-        console.log(chalk.gray('  - User content in directories outside APM control'));
-        console.log(chalk.gray('  - Custom configurations (if any)'));
-      } else if (comparison === 0) {
+        // Base versions differ: treat as update available without erroring
+        baseMismatch = true;
+        comparison = -1;
+      }
+      if (comparison === 0) {
         // Already up to date with compatible version
         console.log(chalk.green(`\n[OK] You have the latest template version compatible with your CLI!`));
         console.log(chalk.gray(`Current CLI version: ${CURRENT_CLI_VERSION}`));
@@ -523,16 +497,17 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
         return;
       }
       
-      // Confirm only if not already confirmed in mismatch flow
-      if (!proceedWithUpdate) {
-        const shouldUpdate = await confirm({
-          message: `Update ALL assistants from ${installedVersion} to ${latestCompatibleTag}?`,
-          default: false
-        });
-        if (!shouldUpdate) {
-          console.log(chalk.yellow('\nUpdate cancelled.\n'));
-          return;
-        }
+      // Announce update normally; include a light note if base mismatched
+      if (baseMismatch) {
+        console.log(chalk.cyan(`\n[INFO] Installed templates are for a different CLI base. Updating to latest compatible.`));
+      }
+      const shouldUpdate = await confirm({
+        message: `Update ALL assistants from ${installedVersion} to ${latestCompatibleTag}?`,
+        default: false
+      });
+      if (!shouldUpdate) {
+        console.log(chalk.yellow('\nUpdate cancelled.\n'));
+        return;
       }
 
       console.log(chalk.blue('\n[PROCESS] Starting update process...'));
