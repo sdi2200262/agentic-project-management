@@ -522,10 +522,11 @@ export function createAndZipBackup(projectPath, assistants, templateTag) {
   }
 
   // Create a cross-platform zip archive using AdmZip
+  let zipPath = '';
   try {
     const backupBase = basename(backupDir);
     const zipName = `${backupBase}.zip`;
-    const zipPath = join(apmDir, zipName);
+    zipPath = join(apmDir, zipName);
     const zip = new AdmZip();
     // Add the whole backup folder under its base name
     zip.addLocalFolder(backupDir, backupBase);
@@ -535,6 +536,6 @@ export function createAndZipBackup(projectPath, assistants, templateTag) {
     console.log(chalk.yellow(`  Could not create zip archive for backup: ${err.message}`));
   }
 
-  return backupDir;
+  return { backupDir, zipPath };
 }
 

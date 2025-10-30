@@ -535,7 +535,7 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
 
       // Create backup by moving assistant directories and .apm/guides, then zipping
       console.log(chalk.gray('Creating backup...'));
-      const backupDir = createAndZipBackup(process.cwd(), assistants, installedVersion);
+      const { backupDir, zipPath } = createAndZipBackup(process.cwd(), assistants, installedVersion);
       console.log(chalk.green(`Backup created at: ${backupDir}`));
 
       try {
@@ -575,8 +575,19 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
         console.log(chalk.green(`\nAPM templates successfully updated to ${latestCompatibleTag}!`));
         console.log(chalk.gray(`CLI Version: ${CURRENT_CLI_VERSION}`));
         console.log(chalk.gray(`Template Version: ${latestCompatibleTag}`));
-        console.log(chalk.gray(`\nBackup saved at: ${backupDir}`));
-        console.log(chalk.gray('You can safely delete the backup directory once you\'ve verified everything works.\n'));
+        // Remove unzipped backup folder, keep archive
+        try {
+          rmSync(backupDir, { recursive: true, force: true });
+          if (zipPath) {
+            console.log(chalk.gray(`\nBackup archive saved at: ${zipPath}`));
+          } else {
+            console.log(chalk.gray(`\nBackup directory saved at: ${backupDir}`));
+          }
+        } catch (_) {
+          // If cleanup fails, still continue
+          console.log(chalk.yellow(`\nCould not clean backup directory: ${backupDir}`));
+        }
+        console.log('');
 
       } catch (updateError) {
         console.error(chalk.red('\nUpdate failed...'), updateError.message);
