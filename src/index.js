@@ -377,7 +377,7 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       // Display the APM banner
       displayBanner(CURRENT_CLI_VERSION);
       console.log(chalk.blue('[UPDATE] APM Update Tool'));
-      console.log(chalk.gray('Checking for updates...\n'));
+      console.log(chalk.gray('  Checking for updates...\n'));
 
       // Check if APM is initialized (and migrate if needed)
       const metadata = readMetadata(process.cwd(), CURRENT_CLI_VERSION);
@@ -468,9 +468,9 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       if (comparison === 0) {
         // Already up to date with compatible version
         console.log(chalk.green(`\n[OK] You have the latest template version compatible with your CLI!`));
-        console.log(chalk.gray(`Current CLI version: ${CURRENT_CLI_VERSION}`));
-        console.log(chalk.gray(`Current template version: ${installedVersion}`));
-        console.log(chalk.gray(`Latest compatible: ${latestCompatibleTag}`));
+        console.log(chalk.gray(`  Current CLI version: ${CURRENT_CLI_VERSION}`));
+        console.log(chalk.gray(`  Current template version: ${installedVersion}`));
+        console.log(chalk.gray(`  Latest compatible: ${latestCompatibleTag}`));
         
         if (newerVersionInfo) {
           console.log(chalk.cyan(`\n[INFO] Newer templates are available for CLI v${newerVersionInfo.baseVersion}: ${newerVersionInfo.tag}`));
@@ -489,14 +489,14 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       } else if (comparison === -1) {
         // Update available
         console.log(chalk.cyan(`\n[UPDATE] Update available for your CLI version!`));
-        console.log(chalk.gray(`Current template version: ${installedVersion}`));
-        console.log(chalk.gray(`Latest compatible version: ${latestCompatibleTag}`));
-        console.log(chalk.cyan(`\nUpdate: ${installedVersion} → ${latestCompatibleTag}`));
+        console.log(chalk.gray(`  Current template version: ${installedVersion}`));
+        console.log(chalk.gray(`  Latest compatible version: ${latestCompatibleTag}`));
+        console.log(chalk.cyan(`\n  Update: ${installedVersion} → ${latestCompatibleTag}`));
         
         if (compatibleResult.release_notes) {
           const notesPreview = compatibleResult.release_notes.substring(0, 300);
-          console.log(chalk.gray(`\nRelease notes:`));
-          console.log(chalk.gray(notesPreview + (compatibleResult.release_notes.length > 300 ? '...' : '')));
+          console.log(chalk.gray(`  Release notes:`));
+          console.log(chalk.gray(`  ${notesPreview + (compatibleResult.release_notes.length > 300 ? '...' : '')}`));
         }
 
         if (newerVersionInfo) {
@@ -504,14 +504,14 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
           console.log(chalk.yellow(`To access those, update your CLI: ${chalk.white('npm update -g agentic-pm')} then run 'apm update' again.`));
         }
 
-        console.log(chalk.cyan('\nWhat will be updated:'));
-        console.log(chalk.gray('  - Command files (slash commands)'));
-        console.log(chalk.gray('  - Guide files (templates and documentation)'));
+        console.log(chalk.cyan('\n  What will be updated:'));
+        console.log(chalk.gray('    - Command files (slash commands)'));
+        console.log(chalk.gray('    - Guide files (templates and documentation)'));
 
-        console.log(chalk.cyan('\nWhat will be preserved:'));
-        console.log(chalk.gray('  - User apm/ directories (apm/Memory/, apm/Implementation_Plan.md, etc.)'));
-        console.log(chalk.gray('  - User content in directories outside APM control'));
-        console.log(chalk.gray('  - Custom configurations (if any)'));
+        console.log(chalk.cyan('\n  What will be preserved:'));
+        console.log(chalk.gray('    - User apm/ directories (apm/Memory/, apm/Implementation_Plan.md, etc.)'));
+        console.log(chalk.gray('    - User content in directories outside APM control'));
+        console.log(chalk.gray('    - Custom configurations (if any)'));
       } else {
         // Already handled (comparison === 0 or 1), return early
         return;
@@ -521,6 +521,7 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       if (baseMismatch) {
         console.log(chalk.cyan(`\n[INFO] Installed templates are for a different CLI base. Updating to latest compatible.`));
       }
+      console.log('');
       const shouldUpdate = await confirm({
         message: `Update ALL assistants from ${installedVersion} to ${latestCompatibleTag}?`,
         default: false
