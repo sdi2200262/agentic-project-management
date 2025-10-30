@@ -9,6 +9,7 @@ This documentation suite provides in-depth coverage of APM's architecture, workf
 ### Getting Started
 - **[Introduction](Introduction.md)** - Overview of the APM framework, core concepts, and the v0.5 CLI.
 - **[Getting Started](Getting_Started.md)** - Step-by-step guide for installing APM via CLI and launching your first session.
+ - **[CLI Guide](CLI.md)** - Detailed CLI usage, behaviors, policies, and update rules.
 
 ### Core Documentation
 - **[Agent Types](Agent_Types.md)** - Detailed breakdown of all four agent types and their roles
