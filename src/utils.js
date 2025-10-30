@@ -246,6 +246,16 @@ export function generateBanner(version = '0.5.0') {
   const leftSpaces = ' '.repeat(spacesOnEachSide);
   const rightSpaces = ' '.repeat(innerWidth - versionTextLength - spacesOnEachSide);
   
+  // Detect basic hyperlink support (OSC 8). Many Windows consoles don't support this.
+  const supportsHyperlinks = process.platform !== 'win32' && process.stdout && process.stdout.isTTY;
+  const ghLabel = 'View on GitHub';
+  const npmLabel = 'View on NPM';
+  const ghUrl = 'https://github.com/sdi2200262/agentic-project-management';
+  const npmUrl = 'https://www.npmjs.com/package/agentic-pm';
+  const formatLink = (label, url) => supportsHyperlinks
+    ? `\x1b]8;;${url}\x1b\\${label}\x1b]8;;\x1b\\`
+    : label;
+
   const lines = [
     chalk.blue('╔══════════════════════════════════════════════════════════════════════════════╗'),
     border + chalk.blue(' '.repeat(innerWidth)) + border,
@@ -263,8 +273,8 @@ export function generateBanner(version = '0.5.0') {
     border + chalk.gray('              Manage complex projects with a team of AI assistants            ') + border,
     border + chalk.gray('                          smoothly and efficiently                            ') + border,
     border + chalk.blue(' '.repeat(innerWidth)) + border,
-    border + '                               ' + chalk.cyan.underline('\x1b]8;;https://github.com/sdi2200262/agentic-project-management\x1b\\View on GitHub\x1b]8;;\x1b\\') + '                                 ' + border,
-    border + '                                ' + chalk.yellow.underline('\x1b]8;;https://www.npmjs.com/package/agentic-pm\x1b\\View on NPM\x1b]8;;\x1b\\') + '                                   ' + border,
+    border + '                               ' + chalk.cyan.underline(formatLink(ghLabel, ghUrl)) + '                                 ' + border,
+    border + '                                ' + chalk.yellow.underline(formatLink(npmLabel, npmUrl)) + '                                   ' + border,
     border + chalk.blue('                                                                              ') + border,
     chalk.blue('╚══════════════════════════════════════════════════════════════════════════════╝')
   ];
