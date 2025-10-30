@@ -1,5 +1,6 @@
-import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, cpSync, rmSync, copyFileSync } from 'fs';
-import { join, dirname } from 'path';
+import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, cpSync, rmSync, copyFileSync, renameSync } from 'fs';
+import { join, dirname, basename } from 'path';
+import { execSync } from 'child_process';
 import chalk from 'chalk';
 
 /**
@@ -26,7 +27,7 @@ const ASSISTANT_DIRECTORIES = {
  * @param {string} projectPath - Path to the project directory
  * @returns {Object|null} Metadata object or null if not found
  */
-export function readMetadata(projectPath) {
+export function readMetadata(projectPath, currentCliVersion) {
   const metadataPath = join(projectPath, '.apm', 'metadata.json');
   
   if (!existsSync(metadataPath)) {
@@ -35,7 +36,30 @@ export function readMetadata(projectPath) {
   
   try {
     const content = readFileSync(metadataPath, 'utf8');
-    return JSON.parse(content);
+    const parsed = JSON.parse(content);
+
+    // Detect old schema and migrate automatically
+    const isOldSchema = parsed && typeof parsed === 'object' && 'version' in parsed && 'assistant' in parsed;
+    if (!isOldSchema) {
+      return parsed;
+    }
+
+    const oldAssistant = parsed.assistant ? [parsed.assistant] : [];
+    const detected = detectInstalledAssistants(projectPath);
+    const assistants = Array.from(new Set([...oldAssistant, ...detected]));
+
+    const migrated = {
+      cliVersion: currentCliVersion || (parsed.version ? parsed.version.replace(/^v(\d+\.\d+\.\d+).*/, '$1') : ''),
+      templateVersion: parsed.version,
+      assistants,
+      installedAt: parsed.installedAt || new Date().toISOString(),
+      lastUpdated: new Date().toISOString()
+    };
+
+    // Persist migrated schema
+    writeMetadata(projectPath, migrated);
+    console.log(chalk.gray('  Migrated .apm/metadata.json to multi-assistant schema'));
+    return migrated;
   } catch (error) {
     console.error(chalk.red(`Error reading metadata: ${error.message}`));
     return null;
@@ -81,9 +105,10 @@ export function detectInstalledAssistants(projectPath) {
  * @param {string} tag - Template tag (e.g., "v0.5.1+templates.2")
  * @returns {Object|null} Object with baseVersion and buildNumber, or null if invalid
  */
-function parseTemplateTagParts(tag) {
+export function parseTemplateTagParts(tag) {
   // Match pattern: v<version>+templates.<buildNumber>
-  const match = tag.match(/^v(\d+\.\d+\.\d+)\+templates\.(\d+)$/);
+  // Support pre-release suffix in base version, e.g., v0.5.0-test-1+templates.1
+  const match = tag.match(/^v(\d+\.\d+\.\d+(?:-[a-zA-Z0-9.-]+)?)\+templates\.(\d+)$/);
   if (!match) {
     return null;
   }
@@ -187,6 +212,17 @@ export function getAssistantDirectory(assistant) {
 }
 
 /**
+ * Merges two assistant arrays into a unique, ordered union
+ * @param {string[]} a
+ * @param {string[]} b
+ * @returns {string[]}
+ */
+export function mergeAssistants(a = [], b = []) {
+  const set = new Set([...(a || []), ...(b || [])].filter(Boolean));
+  return Array.from(set);
+}
+
+/**
  * Generates an ASCII banner for APM CLI with custom colors for ASCII art
  * @param {string} version - APM version
  * @returns {string[]} Array of colored banner lines
@@ -264,16 +300,48 @@ export function displayBanner(version = '0.5.0', useColors = true) {
  * @param {string} v2 - Second version (e.g., "0.5.0")
  * @returns {boolean} True if v1 is newer than v2
  */
-export function isVersionNewer(v1, v2) {
-  const parts1 = v1.split('.').map(Number);
-  const parts2 = v2.split('.').map(Number);
-  
-  for (let i = 0; i < 3; i++) {
-    if (parts1[i] > parts2[i]) return true;
-    if (parts1[i] < parts2[i]) return false;
+// SemVer compare with pre-release awareness (no build metadata support)
+function compareSemverVersions(v1, v2) {
+  const parse = (v) => {
+    const [core, pre = ''] = String(v).split('-');
+    const [maj, min, pat] = core.split('.').map(n => parseInt(n, 10));
+    const preTokens = pre === '' ? [] : pre.split('.');
+    return { maj, min, pat, preTokens };
+  };
+  const isNumeric = (s) => /^\d+$/.test(s);
+  const a = parse(v1);
+  const b = parse(v2);
+  if (a.maj !== b.maj) return a.maj > b.maj ? 1 : -1;
+  if (a.min !== b.min) return a.min > b.min ? 1 : -1;
+  if (a.pat !== b.pat) return a.pat > b.pat ? 1 : -1;
+  // Handle prerelease: no pre > with pre
+  if (a.preTokens.length === 0 && b.preTokens.length === 0) return 0;
+  if (a.preTokens.length === 0) return 1;
+  if (b.preTokens.length === 0) return -1;
+  const len = Math.max(a.preTokens.length, b.preTokens.length);
+  for (let i = 0; i < len; i++) {
+    const ta = a.preTokens[i];
+    const tb = b.preTokens[i];
+    if (ta === undefined) return -1; // shorter < longer (alpha < alpha.1)
+    if (tb === undefined) return 1;
+    const na = isNumeric(ta);
+    const nb = isNumeric(tb);
+    if (na && nb) {
+      const iva = parseInt(ta, 10);
+      const ivb = parseInt(tb, 10);
+      if (iva !== ivb) return iva > ivb ? 1 : -1;
+    } else if (na !== nb) {
+      // Numeric identifiers have lower precedence than non-numeric
+      return na ? -1 : 1;
+    } else {
+      if (ta !== tb) return ta > tb ? 1 : -1; // ASCII lexical
+    }
   }
-  
-  return false; // Equal versions
+  return 0;
+}
+
+export function isVersionNewer(v1, v2) {
+  return compareSemverVersions(v1, v2) > 0;
 }
 
 /**
@@ -304,13 +372,14 @@ export function checkForNewerTemplates(currentCliVersion, latestOverall) {
  * @param {string} assistant - Assistant name
  * @param {string} projectRoot - Project root directory
  */
-export function installFromTempDirectory(tempDir, assistant, projectRoot) {
+export function installFromTempDirectory(tempDir, assistant, projectRoot, options = {}) {
+  const { installGuides = true } = options;
   // Install guides directory into .apm/
   const tempGuidesDir = join(tempDir, 'guides');
   const apmDir = join(projectRoot, '.apm');
   const apmGuidesDir = join(apmDir, 'guides');
   
-  if (existsSync(tempGuidesDir)) {
+  if (installGuides && existsSync(tempGuidesDir)) {
     if (!existsSync(apmDir)) {
       mkdirSync(apmDir, { recursive: true });
     }
@@ -342,7 +411,8 @@ export function installFromTempDirectory(tempDir, assistant, projectRoot) {
  * @param {string} assistant - Assistant name
  * @param {string} projectRoot - Project root directory
  */
-export function updateFromTempDirectory(tempDir, assistant, projectRoot) {
+export function updateFromTempDirectory(tempDir, assistant, projectRoot, options = {}) {
+  const { installGuides = true } = options;
   
   // Update assistant-specific directory
   const assistantDir = getAssistantDirectory(assistant);
@@ -367,26 +437,91 @@ export function updateFromTempDirectory(tempDir, assistant, projectRoot) {
     console.log(chalk.green(`  Updated ${assistantDir}`));
   }
 
-  // Update guides directory
-  const oldGuidesDir = join(projectRoot, 'guides');
+  // Update guides directory (in .apm/guides) only when requested
+  const apmGuidesDir = join(projectRoot, '.apm', 'guides');
   const newGuidesDir = join(tempDir, 'guides');
   
-  if (existsSync(oldGuidesDir)) {
-    rmSync(oldGuidesDir, { recursive: true, force: true });
-  }
-  if (existsSync(newGuidesDir)) {
-    mkdirSync(oldGuidesDir, { recursive: true });
-    const items = readdirSync(newGuidesDir, { withFileTypes: true });
-    for (const item of items) {
-      const src = join(newGuidesDir, item.name);
-      const dest = join(oldGuidesDir, item.name);
-      if (item.isDirectory()) {
-        cpSync(src, dest, { recursive: true });
-      } else {
-        copyFileSync(src, dest);
-      }
+  if (installGuides) {
+    if (existsSync(apmGuidesDir)) {
+      rmSync(apmGuidesDir, { recursive: true, force: true });
     }
-    console.log(chalk.green(`  Updated guides`));
+    if (existsSync(newGuidesDir)) {
+      mkdirSync(apmGuidesDir, { recursive: true });
+      const items = readdirSync(newGuidesDir, { withFileTypes: true });
+      for (const item of items) {
+        const src = join(newGuidesDir, item.name);
+        const dest = join(apmGuidesDir, item.name);
+        if (item.isDirectory()) {
+          cpSync(src, dest, { recursive: true });
+        } else {
+          copyFileSync(src, dest);
+        }
+      }
+      console.log(chalk.green(`  Updated guides`));
+    }
   }
+}
+
+/**
+ * Creates and zips a backup by MOVING assistant directories and .apm/guides
+ * Leaves Implementation_Plan.md and Memory/ intact
+ * @param {string} projectPath
+ * @param {string[]} assistants
+ * @param {string} templateTag
+ * @returns {string} backup directory path
+ */
+export function createAndZipBackup(projectPath, assistants, templateTag) {
+  const safeTag = String(templateTag || 'unknown').replace(/[^a-zA-Z0-9._-]/g, '-');
+  const apmDir = join(projectPath, '.apm');
+  const backupDir = join(apmDir, `apm-backup-${safeTag}`);
+  mkdirSync(backupDir, { recursive: true });
+
+  // Helper to move preserving structure
+  const movePath = (src, relativeDest) => {
+    const dest = join(backupDir, relativeDest);
+    mkdirSync(dirname(dest), { recursive: true });
+    try {
+      renameSync(src, dest);
+    } catch (err) {
+      // Fallback to copy+remove if cross-device
+      cpSync(src, dest, { recursive: true });
+      rmSync(src, { recursive: true, force: true });
+    }
+    console.log(chalk.gray(`  Moved to backup: ${relativeDest}`));
+  };
+
+  // Move assistant directories
+  for (const assistant of assistants || []) {
+    const relAssistantDir = getAssistantDirectory(assistant);
+    if (!relAssistantDir) continue;
+    const absAssistantDir = join(projectPath, relAssistantDir);
+    if (existsSync(absAssistantDir)) {
+      movePath(absAssistantDir, relAssistantDir);
+    } else {
+      console.log(chalk.yellow(`  Assistant directory missing, skipping: ${relAssistantDir}`));
+    }
+  }
+
+  // Move guides directory from .apm/guides
+  const guidesDir = join(apmDir, 'guides');
+  if (existsSync(guidesDir)) {
+    // Store under apm/guides relative inside backup
+    movePath(guidesDir, join('apm', 'guides'));
+  } else {
+    console.log(chalk.yellow('  Guides directory missing, skipping: .apm/guides'));
+  }
+
+  // Try to zip the backup folder using system zip if available
+  try {
+    const backupBase = basename(backupDir);
+    const zipName = `${backupBase}.zip`;
+    // Run zip from within .apm to get a neat archive
+    execSync(`zip -r ${zipName} ${backupBase} >/dev/null 2>&1 || true`, { cwd: apmDir, stdio: 'ignore' });
+    console.log(chalk.gray(`  Created zip archive: .apm/${zipName}`));
+  } catch (err) {
+    console.log(chalk.yellow('  Could not create zip archive for backup (zip CLI not available).'));
+  }
+
+  return backupDir;
 }
 

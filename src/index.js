@@ -7,7 +7,7 @@ import { downloadAndExtract, fetchLatestRelease, findLatestCompatibleTemplateTag
 import { existsSync, mkdirSync, writeFileSync, rmSync, readFileSync } from 'fs';
 import { resolve, join, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { readMetadata, writeMetadata, detectInstalledAssistants, compareTemplateVersions, createBackup, getAssistantDirectory, restoreBackup, displayBanner, isVersionNewer, checkForNewerTemplates, installFromTempDirectory, updateFromTempDirectory } from './utils.js';
+import { readMetadata, writeMetadata, detectInstalledAssistants, compareTemplateVersions, getAssistantDirectory, restoreBackup, displayBanner, isVersionNewer, checkForNewerTemplates, installFromTempDirectory, updateFromTempDirectory, parseTemplateTagParts, mergeAssistants, createAndZipBackup } from './utils.js';
 
 const program = new Command();
 
@@ -63,29 +63,30 @@ program.action(() => {
 });
 
 /**
- * Creates metadata file to store APM installation information
+ * Creates or updates metadata file to store APM installation information (multi-assistant schema)
  * @param {string} projectPath - Path to the project directory
- * @param {string} assistant - Selected AI assistant
- * @param {string} version - APM version
+ * @param {string[]} assistants - Installed assistants
+ * @param {string} templateVersion - APM template tag (e.g., v0.5.1+templates.2)
  */
-function createMetadata(projectPath, assistant, version) {
+function createOrUpdateMetadata(projectPath, assistants, templateVersion) {
   const metadataDir = resolve(projectPath, '.apm');
   const metadataPath = join(metadataDir, 'metadata.json');
   
-  // Create .apm directory if it doesn't exist
   if (!existsSync(metadataDir)) {
     mkdirSync(metadataDir, { recursive: true });
   }
   
+  const now = new Date().toISOString();
   const metadata = {
-    version: version,
-    assistant: assistant,
-    installedAt: new Date().toISOString(),
-    lastUpdated: new Date().toISOString()
+    cliVersion: CURRENT_CLI_VERSION,
+    templateVersion,
+    assistants: assistants || [],
+    installedAt: existsSync(metadataPath) ? JSON.parse(readFileSync(metadataPath, 'utf8')).installedAt || now : now,
+    lastUpdated: now
   };
   
   writeFileSync(metadataPath, JSON.stringify(metadata, null, 2));
-  console.log(chalk.gray(`Metadata saved to ${metadataPath}`));
+  console.log(chalk.gray(`  Metadata saved to ${metadataPath}`));
 }
 
 program
@@ -106,12 +107,17 @@ template version compatible with your current CLI version.
       displayBanner(CURRENT_CLI_VERSION);
       console.log(chalk.gray('Setting up Agentic Project Management in this directory...\n'));
 
-      // Check if APM is already initialized in current directory
-      const metadataPath = resolve(process.cwd(), '.apm', 'metadata.json');
-      
-      if (existsSync(metadataPath)) {
+      // Check existing metadata and migrate if needed
+      const existingMetadata = readMetadata(process.cwd(), CURRENT_CLI_VERSION);
+      if (existingMetadata) {
         console.log(chalk.yellow('APM appears to already be initialized in this directory.'));
-        console.log(chalk.yellow('   Continuing will overwrite existing files.\n'));
+        console.log(chalk.yellow('Continuing may update existing APM files.'));
+        const existingAssistantsMsg = Array.isArray(existingMetadata.assistants) && existingMetadata.assistants.length
+          ? `Installed assistants detected: ${existingMetadata.assistants.join(', ')}`
+          : 'No assistants recorded in metadata yet.';
+        console.log(chalk.gray(`\n${existingAssistantsMsg}`));
+        console.log(chalk.gray(`Note: Selecting an assistant will install/update ALL recorded assistants to the chosen tag.`));
+        console.log('');
       }
 
       // Interactive prompt for AI assistant selection - all 13 assistants
@@ -196,15 +202,62 @@ template version compatible with your current CLI version.
         // User specified a specific tag
         targetTag = options.tag;
         console.log(chalk.yellow(`\nInstalling specific tag: ${targetTag}`));
-        console.log(chalk.gray('Validating tag...\n'));
+        console.log(chalk.gray('  Validating tag...'));
         
         // Validate the tag exists
         try {
           const release = await fetchLatestRelease(targetTag);
           releaseNotes = release.body || '';
-          console.log(chalk.gray(`Found release: ${release.name || release.tag_name}`));
+          console.log(chalk.gray(`  Found release: ${release.name || release.tag_name}`));
         } catch (error) {
           throw new Error(`Tag ${targetTag} not found or invalid: ${error.message}`);
+        }
+
+        // Apply warning policy for --tag
+        const parsedTarget = parseTemplateTagParts(targetTag);
+        if (!parsedTarget) {
+          throw new Error(`Invalid tag format: ${targetTag}. Expected v<version>+templates.<build>`);
+        }
+
+        // Determine assistants which will be affected (ALL recorded + selected)
+        const preExistingAssistants = existingMetadata?.assistants || detectInstalledAssistants(process.cwd());
+        const assistantsAffected = mergeAssistants(preExistingAssistants, [assistant]);
+
+        if (parsedTarget.baseVersion !== CURRENT_CLI_VERSION) {
+          console.log('');
+          console.log(chalk.red('[WARN] Different CLI base detected'));
+          console.log(chalk.red(`  Target tag base: v${parsedTarget.baseVersion}`));
+          console.log(chalk.red(`  Your CLI base:   v${CURRENT_CLI_VERSION}`));
+          console.log(chalk.red(`  This will overwrite ALL assistants (${assistantsAffected.join(', ') || 'none'}) to ${targetTag}.`));
+          const proceed = await confirm({
+            message: chalk.red(`May cause incompatibilities. Proceed with init using ${targetTag}?`),
+            default: false
+          });
+          if (!proceed) {
+            console.log(chalk.yellow('\nInit cancelled.'));
+            return;
+          }
+        } else {
+          // Same base - check if older build than latest compatible
+          const compatible = await findLatestCompatibleTemplateTag(CURRENT_CLI_VERSION);
+          if (compatible) {
+            const cmp = compareTemplateVersions(targetTag, compatible.tag_name);
+            if (cmp === -1) {
+              console.log('');
+              console.log(chalk.yellow('[WARN] Template downgrade on same CLI base'));
+              console.log(chalk.yellow(`  Selected tag:      ${targetTag}`));
+              console.log(chalk.yellow(`  Latest compatible: ${compatible.tag_name}`));
+              console.log(chalk.yellow(`  This will overwrite ALL assistants (${assistantsAffected.join(', ') || 'none'}) to ${targetTag}.`));
+              const proceedOlder = await confirm({
+                message: chalk.yellow('Proceed with downgrade?'),
+                default: false
+              });
+              if (!proceedOlder) {
+                console.log(chalk.yellow('\nInit cancelled.'));
+                return;
+              }
+            }
+          }
         }
       } else {
         // Find latest compatible template tag for current CLI version
@@ -250,18 +303,25 @@ template version compatible with your current CLI version.
         console.log('');
       }
       
-      // Download and extract the bundle to a temporary directory first
+      // Determine assistants to install/update (union existing + selected)
+      const existingAssistants = existingMetadata?.assistants || [];
+      const assistantsToInstall = mergeAssistants(existingAssistants, [assistant]);
+
+      // Download and extract the bundle(s) to a temporary directory first
       const tempDir = join(process.cwd(), '.apm', 'temp-init');
       if (existsSync(tempDir)) {
         rmSync(tempDir, { recursive: true, force: true });
       }
       mkdirSync(tempDir, { recursive: true });
       
-      console.log(chalk.gray('Downloading and extracting bundle...'));
-      await downloadAndExtract(targetTag, assistant, tempDir);
-
-      // Install files from temp directory
-      installFromTempDirectory(tempDir, assistant, process.cwd());
+      let guidesInstalled = false;
+      for (const a of assistantsToInstall) {
+        const subDir = join(tempDir, a.replace(/[^a-zA-Z0-9._-]/g, '_'));
+        mkdirSync(subDir, { recursive: true });
+        await downloadAndExtract(targetTag, a, subDir);
+        installFromTempDirectory(subDir, a, process.cwd(), { installGuides: !guidesInstalled });
+        if (!guidesInstalled) guidesInstalled = true;
+      }
 
       // Create Memory directory with empty Memory_Root.md
       const apmDir = join(process.cwd(), '.apm');
@@ -285,17 +345,17 @@ template version compatible with your current CLI version.
       // Clean up temp directory
       rmSync(tempDir, { recursive: true, force: true });
 
-      // Create metadata file with full template tag
-      createMetadata(process.cwd(), assistant, targetTag);
+      // Create/update metadata file with full template tag and assistants
+      createOrUpdateMetadata(process.cwd(), assistantsToInstall, targetTag);
 
       // Success message with next steps
-      console.log(chalk.green('\nAPM initialized successfully!'));
+      console.log(chalk.green.bold('\nAPM initialized successfully!'));
       console.log(chalk.gray(`CLI Version: ${CURRENT_CLI_VERSION}`));
       console.log(chalk.gray(`Template Version: ${targetTag}`));
       console.log(chalk.gray('\nNext steps:'));
       console.log(chalk.gray('1. Review the generated files in the .apm/ directory'));
       console.log(chalk.gray('2. Customize the prompts and configuration for your specific project'));
-      console.log(chalk.gray('3. Start using APM with your AI assistant for project management'));
+      console.log(chalk.gray('3. Start using APM with your AI assistant'));
       console.log(chalk.gray('4. Run "apm update" anytime to get the latest improvements\n'));
 
     } catch (error) {
@@ -319,45 +379,25 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       console.log(chalk.blue('[UPDATE] APM Update Tool'));
       console.log(chalk.gray('Checking for updates...\n'));
 
-      // Check if APM is initialized
-      const metadata = readMetadata(process.cwd());
+      // Check if APM is initialized (and migrate if needed)
+      const metadata = readMetadata(process.cwd(), CURRENT_CLI_VERSION);
       
       if (!metadata) {
         console.log(chalk.yellow('No APM installation detected in this directory.'));
         console.log(chalk.yellow('   Run "apm init" to initialize a new project.\n'));
         process.exit(1);
       }
+      const assistants = Array.isArray(metadata.assistants) && metadata.assistants.length > 0
+        ? metadata.assistants
+        : detectInstalledAssistants(process.cwd());
 
-      // Detect installed assistant
-      const detectedAssistants = detectInstalledAssistants(process.cwd());
-      
-      if (detectedAssistants.length === 0) {
-        console.log(chalk.yellow('No AI assistant directories detected.'));
-        console.log(chalk.yellow('   APM installation may be corrupted. Consider running "apm init" again.\n'));
-        process.exit(1);
-      }
-
-      let assistant = metadata.assistant;
-      
-      // If multiple assistants detected, ask user which one to update
-      if (detectedAssistants.length > 1) {
-        console.log(chalk.yellow(`Multiple AI assistants detected: ${detectedAssistants.join(', ')}`));
-        assistant = await select({
-          message: 'Which assistant would you like to update?',
-          choices: detectedAssistants.map(a => ({ name: a, value: a }))
-        });
-      } else if (!detectedAssistants.includes(assistant)) {
-        // Metadata doesn't match detected assistant
-        console.log(chalk.yellow(`Metadata shows ${assistant}, but detected: ${detectedAssistants[0]}`));
-        assistant = detectedAssistants[0];
-      }
-
-      const installedVersion = metadata.version; // This is a full template tag (e.g., "v0.5.0+templates.1")
-      console.log(chalk.blue(`Current installation: ${assistant} ${installedVersion}`));
+      const installedVersion = metadata.templateVersion || metadata.version; // support migrated/old
+      console.log(chalk.blue(`Current installation (all assistants): ${assistants.join(', ') || 'none'}`));
+      console.log(chalk.blue(`Template Version: ${installedVersion}`));
       console.log(chalk.blue(`CLI Version: ${CURRENT_CLI_VERSION}`));
 
       // Find latest compatible template tag for current CLI version
-      console.log(chalk.gray(`\nFinding latest compatible templates for CLI v${CURRENT_CLI_VERSION}...`));
+      console.log(chalk.gray(`\n  Finding latest compatible templates for CLI v${CURRENT_CLI_VERSION}...`));
       const compatibleResult = await findLatestCompatibleTemplateTag(CURRENT_CLI_VERSION);
       
       if (!compatibleResult) {
@@ -466,7 +506,7 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
       }
       
       const shouldUpdate = await confirm({
-        message: `Update APM templates from ${installedVersion} to ${latestCompatibleTag}?`,
+        message: `Update ALL assistants from ${installedVersion} to ${latestCompatibleTag}?`,
         default: false
       });
 
@@ -477,12 +517,9 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
 
       console.log(chalk.blue('\n[PROCESS] Starting update process...'));
 
-      // Create backup
-      const assistantDir = getAssistantDirectory(assistant);
-      const dirsToBackup = [assistantDir, 'guides', '.apm'];
-      
+      // Create backup by moving assistant directories and .apm/guides, then zipping
       console.log(chalk.gray('Creating backup...'));
-      const backupDir = createBackup(process.cwd(), dirsToBackup);
+      const backupDir = createAndZipBackup(process.cwd(), assistants, installedVersion);
       console.log(chalk.green(`Backup created at: ${backupDir}`));
 
       try {
@@ -496,15 +533,21 @@ current CLI version. To update the CLI itself, use: ${chalk.yellow('npm update -
         }
         mkdirSync(tempDir, { recursive: true });
 
-        // Download and extract the latest compatible bundle
-        await downloadAndExtract(latestCompatibleTag, assistant, tempDir);
-
-        // Update files: remove old, copy new
-        console.log(chalk.gray('\nUpdating files...'));
-        updateFromTempDirectory(tempDir, assistant, process.cwd());
+        // Download and extract the latest compatible bundles per assistant
+        console.log(chalk.gray('\nDownloading update bundles...'));
+        let guidesUpdated = false;
+        for (const a of assistants) {
+          const subDir = join(tempDir, a.replace(/[^a-zA-Z0-9._-]/g, '_'));
+          mkdirSync(subDir, { recursive: true });
+          await downloadAndExtract(latestCompatibleTag, a, subDir);
+          updateFromTempDirectory(subDir, a, process.cwd(), { installGuides: !guidesUpdated });
+          if (!guidesUpdated) guidesUpdated = true;
+        }
 
         // Update metadata
-        metadata.version = latestCompatibleTag;
+        metadata.templateVersion = latestCompatibleTag;
+        metadata.cliVersion = CURRENT_CLI_VERSION;
+        metadata.assistants = assistants;
         metadata.lastUpdated = new Date().toISOString();
         writeMetadata(process.cwd(), metadata);
         console.log(chalk.green(`  Updated metadata`));
