@@ -86,7 +86,7 @@ Follow these simple steps to start using APM in your project:
 6. **Follow the established APM workflow:** <br/>
 Setup Phase (Project Discovery & Planning) → Task Loop Phase (Plan Execution)
 
-For step-by-step guidance, see the **[Getting Started Guide](docs/Getting_Started.md)**
+For step-by-step guidance, see the **[Getting Started Guide](docs/Getting_Started.md)**. For detailed CLI behavior and policies, see the **[CLI Guide](docs/CLI.md)**.
 
 ## Documentation
 
@@ -103,6 +103,7 @@ APM v0.5 includes comprehensive documentation covering all aspects of the framew
 | **[Troubleshooting Guide](docs/Troubleshooting_Guide.md)** | Troubleshooting for common issues |
 | **[Context & Memory Management](docs/Context_and_Memory_Management.md)** (advanced) | How APM handles context and manages memory across agent instances  |
 | **[Context & Prompt Engineering](docs/Context_and_Prompt_Engineering.md)** (advanced) | Prompt and context engineering techniques used throughout the framework |
+| **[CLI Guide](docs/CLI.md)** | Detailed CLI usage, behaviors, policies |
 
 For a complete documentation index with recommended reading order, see the **[Documentation Hub](docs/README.md)**.
 
