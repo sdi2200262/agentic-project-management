@@ -1,6 +1,6 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, cpSync, rmSync, copyFileSync, renameSync } from 'fs';
 import { join, dirname, basename } from 'path';
-import { execSync } from 'child_process';
+import AdmZip from 'adm-zip';
 import chalk from 'chalk';
 
 /**
@@ -511,15 +511,18 @@ export function createAndZipBackup(projectPath, assistants, templateTag) {
     console.log(chalk.yellow('  Guides directory missing, skipping: .apm/guides'));
   }
 
-  // Try to zip the backup folder using system zip if available
+  // Create a cross-platform zip archive using AdmZip
   try {
     const backupBase = basename(backupDir);
     const zipName = `${backupBase}.zip`;
-    // Run zip from within .apm to get a neat archive
-    execSync(`zip -r ${zipName} ${backupBase} >/dev/null 2>&1 || true`, { cwd: apmDir, stdio: 'ignore' });
+    const zipPath = join(apmDir, zipName);
+    const zip = new AdmZip();
+    // Add the whole backup folder under its base name
+    zip.addLocalFolder(backupDir, backupBase);
+    zip.writeZip(zipPath);
     console.log(chalk.gray(`  Created zip archive: .apm/${zipName}`));
   } catch (err) {
-    console.log(chalk.yellow('  Could not create zip archive for backup (zip CLI not available).'));
+    console.log(chalk.yellow(`  Could not create zip archive for backup: ${err.message}`));
   }
 
   return backupDir;
