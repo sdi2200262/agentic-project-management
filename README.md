@@ -44,7 +44,6 @@ APM supports the following AI assistants and IDEs:
 | Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
 | Qwen Code           | CLI                     | TOML     | `.qwen/commands`       |
 | Roo Code            | IDE                     | Markdown | `.roo/commands`        |
-| Amazon Q Developer  | IDE & CLI               | Markdown | `.amazonq/prompts`     |
 | opencode            | CLI                     | Markdown | `.opencode/command`    |
 | Codex CLI           | CLI                     | Markdown | `.codex/prompts`       |
 | Kilo Code           | IDE & CLI               | Markdown | `.kilocode/workflows`  |

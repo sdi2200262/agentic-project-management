@@ -124,16 +124,6 @@
         "commands": ".roo/commands",
         "guides": "guides"
       }
-    },
-    {
-      "id": "q",
-      "name": "Amazon Q Developer CLI",
-      "bundleName": "apm-q.zip",
-      "format": "markdown",
-      "directories": {
-        "commands": ".amazonq/prompts",
-        "guides": "guides"
-      }
     }
   ]
 }

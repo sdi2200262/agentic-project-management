@@ -66,7 +66,7 @@ program
         console.log(chalk.yellow('   Continuing will overwrite existing files.\n'));
       }
 
-      // Interactive prompt for AI assistant selection - all 13 assistants
+      // Interactive prompt for AI assistant selection - all 12 assistants
       const assistant = await select({
         message: 'Which AI assistant are you using?',
         choices: [
@@ -129,11 +129,6 @@ program
             name: 'Roo Code',
             value: 'Roo Code',
             description: 'Optimized for Roo Code IDE'
-          },
-          {
-            name: 'Amazon Q Developer CLI',
-            value: 'Amazon Q Developer CLI',
-            description: 'Optimized for Amazon Q Developer CLI'
           }
         ]
       });
@@ -235,7 +230,7 @@ program
     try {
       // Display the APM banner
       displayBanner(APM_VERSION);
-      console.log(chalk.blue('🔄 APM Update Tool'));
+      console.log(chalk.blue('?? APM Update Tool'));
       console.log(chalk.gray('Checking for updates...\n'));
 
       // Check if APM is initialized
@@ -287,7 +282,7 @@ program
       }
 
       // Show update information
-      console.log(chalk.cyan(`\nUpdate available: v${metadata.version} → v${latestVersion}`));
+      console.log(chalk.cyan(`\nUpdate available: v${metadata.version} ? v${latestVersion}`));
       console.log(chalk.gray(`Release: ${release.name || release.tag_name}`));
       if (release.body) {
         console.log(chalk.gray(`\nRelease notes:`));
@@ -314,7 +309,7 @@ program
         return;
       }
 
-      console.log(chalk.blue('\n🔧 Starting update process...'));
+      console.log(chalk.blue('\n?? Starting update process...'));
 
       // Create backup
       const assistantDir = getAssistantDirectory(assistant);

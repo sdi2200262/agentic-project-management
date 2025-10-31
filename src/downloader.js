@@ -28,8 +28,7 @@ export const ASSET_MAP = {
   'Kilo Code': 'apm-kilocode.zip',
   'Auggie CLI': 'apm-auggie.zip',
   'CodeBuddy': 'apm-codebuddy.zip',
-  'Roo Code': 'apm-roo.zip',
-  'Amazon Q Developer CLI': 'apm-q.zip'
+  'Roo Code': 'apm-roo.zip'
 };
 
 /**

@@ -17,8 +17,7 @@ const ASSISTANT_DIRECTORIES = {
   'Kilo Code': '.kilocode/workflows',
   'Auggie CLI': '.augment/commands',
   'CodeBuddy': '.codebuddy/commands',
-  'Roo Code': '.roo/commands',
-  'Amazon Q Developer CLI': '.amazonq/prompts'
+  'Roo Code': '.roo/commands'
 };
 
 /**
