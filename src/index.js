@@ -66,7 +66,7 @@ program
         console.log(chalk.yellow('   Continuing will overwrite existing files.\n'));
       }
 
-      // Interactive prompt for AI assistant selection - all 12 assistants
+      // Interactive prompt for AI assistant selection - all 11 assistants
       const assistant = await select({
         message: 'Which AI assistant are you using?',
         choices: [
@@ -119,11 +119,6 @@ program
             name: 'Auggie CLI',
             value: 'Auggie CLI',
             description: 'Optimized for Auggie CLI'
-          },
-          {
-            name: 'CodeBuddy',
-            value: 'CodeBuddy',
-            description: 'Optimized for CodeBuddy CLI'
           },
           {
             name: 'Roo Code',

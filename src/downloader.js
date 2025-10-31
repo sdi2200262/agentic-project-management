@@ -27,7 +27,6 @@ export const ASSET_MAP = {
   'Windsurf': 'apm-windsurf.zip',
   'Kilo Code': 'apm-kilocode.zip',
   'Auggie CLI': 'apm-auggie.zip',
-  'CodeBuddy': 'apm-codebuddy.zip',
   'Roo Code': 'apm-roo.zip'
 };
 
