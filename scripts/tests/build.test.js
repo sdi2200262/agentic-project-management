@@ -34,7 +34,7 @@ const BUILD_CONFIG_PATH = path.join(PROJECT_ROOT, 'build-config.json');
 const BUILD_CONFIG_DATA = fs.readJsonSync(BUILD_CONFIG_PATH);
 
 // Assistants listed here should already be validated manually.
-const MANUALLY_VERIFIED_ASSISTANT_IDS = new Set(['copilot', 'gemini', 'cursor', 'windsurf', 'roo', 'qwen', 'opencode', 'kilocode']);
+const MANUALLY_VERIFIED_ASSISTANT_IDS = new Set(['copilot', 'gemini', 'cursor', 'windsurf', 'roo', 'qwen', 'opencode', 'kilocode', 'auggie']);
 
 // Use overrides for assistants whose behavior diverges from the default expectations.
 const ASSISTANT_EXPECTATION_OVERRIDES = {

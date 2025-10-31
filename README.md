@@ -47,7 +47,7 @@ APM supports the following AI assistants and IDEs:
 | opencode            | CLI                     | Markdown | `.opencode/command`    |
 | Codex CLI           | CLI                     | Markdown | `.codex/prompts`       |
 | Kilo Code           | IDE                     | Markdown | `.kilocode/workflows`  |
-| Augment Code        | IDE & CLI               | Markdown | `.augment/commands`    |
+| Auggie CLI          | CLI                     | Markdown | `.augment/commands`    |
 | CodeBuddy           | IDE & CLI               | Markdown | `.codebuddy/commands`  |
 
 When you run `apm init`, simply select your AI assistant from the list, and APM will automatically configure the appropriate command structure for your environment.
