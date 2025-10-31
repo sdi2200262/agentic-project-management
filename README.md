@@ -46,7 +46,7 @@ APM supports the following AI assistants and IDEs:
 | Roo Code            | IDE                     | Markdown | `.roo/commands`        |
 | opencode            | CLI                     | Markdown | `.opencode/command`    |
 | Codex CLI           | CLI                     | Markdown | `.codex/prompts`       |
-| Kilo Code           | IDE & CLI               | Markdown | `.kilocode/workflows`  |
+| Kilo Code           | IDE                     | Markdown | `.kilocode/workflows`  |
 | Augment Code        | IDE & CLI               | Markdown | `.augment/commands`    |
 | CodeBuddy           | IDE & CLI               | Markdown | `.codebuddy/commands`  |
 
