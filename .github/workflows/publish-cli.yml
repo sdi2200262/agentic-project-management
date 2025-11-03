@@ -4,7 +4,7 @@ name: Publish CLI on Release PR Merge
 on:
   pull_request:
     types: [closed] # Trigger when a PR is closed
-    branches: [ main, v0.5-dev ] # Only on PRs targeting the main or v0.5-dev branch
+    branches: [ main ] # Only on PRs targeting the main branch
   workflow_dispatch: # Keep manual trigger for specific cases (like initial v0.5.0)
     inputs:
       version_type:
