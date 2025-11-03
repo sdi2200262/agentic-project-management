@@ -37,19 +37,16 @@ APM supports the following AI assistants and IDEs:
 
 | Assistant           | Type                    | Format   | Command Directory      |
 |---------------------|-------------------------|----------|------------------------|
-| GitHub Copilot      | IDE                     | Markdown | `.github/prompts`      |
-| Claude Code         | IDE & CLI               | Markdown | `.claude/commands`     |
 | Cursor              | IDE & CLI               | Markdown | `.cursor/commands`     |
+| Claude Code         | IDE & CLI               | Markdown | `.claude/commands`     |
+| GitHub Copilot      | IDE                     | Markdown | `.github/prompts`      |
 | Windsurf            | IDE                     | Markdown | `.windsurf/workflows`  |
-| Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
-| Qwen Code           | CLI                     | TOML     | `.qwen/commands`       |
 | Roo Code            | IDE                     | Markdown | `.roo/commands`        |
-| Amazon Q Developer  | IDE & CLI               | Markdown | `.amazonq/prompts`     |
+| Kilo Code           | IDE                     | Markdown | `.kilocode/workflows`  |
+| Qwen Code           | CLI                     | TOML     | `.qwen/commands`       |
 | opencode            | CLI                     | Markdown | `.opencode/command`    |
-| Codex CLI           | CLI                     | Markdown | `.codex/prompts`       |
-| Kilo Code           | IDE & CLI               | Markdown | `.kilocode/workflows`  |
-| Augment Code        | IDE & CLI               | Markdown | `.augment/commands`    |
-| CodeBuddy           | IDE & CLI               | Markdown | `.codebuddy/commands`  |
+| Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
+| Auggie CLI          | CLI                     | Markdown | `.augment/commands`    |
 
 When you run `apm init`, simply select your AI assistant from the list, and APM will automatically configure the appropriate command structure for your environment.
 
