@@ -23,13 +23,10 @@ export const ASSET_MAP = {
   'Gemini CLI': 'apm-gemini.zip',
   'Qwen Code': 'apm-qwen.zip',
   'opencode': 'apm-opencode.zip',
-  'Codex CLI': 'apm-codex.zip',
   'Windsurf': 'apm-windsurf.zip',
   'Kilo Code': 'apm-kilocode.zip',
   'Auggie CLI': 'apm-auggie.zip',
-  'CodeBuddy': 'apm-codebuddy.zip',
-  'Roo Code': 'apm-roo.zip',
-  'Amazon Q Developer CLI': 'apm-q.zip'
+  'Roo Code': 'apm-roo.zip'
 };
 
 /**

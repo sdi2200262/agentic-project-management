@@ -66,16 +66,6 @@
       }
     },
     {
-      "id": "codex",
-      "name": "Codex CLI",
-      "bundleName": "apm-codex.zip",
-      "format": "markdown",
-      "directories": {
-        "commands": ".codex/prompts",
-        "guides": "guides"
-      }
-    },
-    {
       "id": "windsurf",
       "name": "Windsurf",
       "bundleName": "apm-windsurf.zip",
@@ -106,32 +96,12 @@
       }
     },
     {
-      "id": "codebuddy",
-      "name": "CodeBuddy",
-      "bundleName": "apm-codebuddy.zip",
-      "format": "markdown",
-      "directories": {
-        "commands": ".codebuddy/commands",
-        "guides": "guides"
-      }
-    },
-    {
       "id": "roo",
       "name": "Roo Code",
       "bundleName": "apm-roo.zip",
       "format": "markdown",
       "directories": {
         "commands": ".roo/commands",
-        "guides": "guides"
-      }
-    },
-    {
-      "id": "q",
-      "name": "Amazon Q Developer CLI",
-      "bundleName": "apm-q.zip",
-      "format": "markdown",
-      "directories": {
-        "commands": ".amazonq/prompts",
         "guides": "guides"
       }
     }
