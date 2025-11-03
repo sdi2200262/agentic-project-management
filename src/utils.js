@@ -13,13 +13,10 @@ const ASSISTANT_DIRECTORIES = {
   'Gemini CLI': '.gemini/commands',
   'Qwen Code': '.qwen/commands',
   'opencode': '.opencode/command',
-  'Codex CLI': '.codex/prompts',
   'Windsurf': '.windsurf/workflows',
   'Kilo Code': '.kilocode/workflows',
   'Auggie CLI': '.augment/commands',
-  'CodeBuddy': '.codebuddy/commands',
-  'Roo Code': '.roo/commands',
-  'Amazon Q Developer CLI': '.amazonq/prompts'
+  'Roo Code': '.roo/commands'
 };
 
 /**
