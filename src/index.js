@@ -101,11 +101,6 @@ program
             description: 'Optimized for opencode CLI'
           },
           {
-            name: 'Codex CLI',
-            value: 'Codex CLI',
-            description: 'Optimized for Codex CLI'
-          },
-          {
             name: 'Windsurf',
             value: 'Windsurf',
             description: 'Optimized for Windsurf IDE'

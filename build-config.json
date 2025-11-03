@@ -66,16 +66,6 @@
       }
     },
     {
-      "id": "codex",
-      "name": "Codex CLI",
-      "bundleName": "apm-codex.zip",
-      "format": "markdown",
-      "directories": {
-        "commands": ".codex/prompts",
-        "guides": "guides"
-      }
-    },
-    {
       "id": "windsurf",
       "name": "Windsurf",
       "bundleName": "apm-windsurf.zip",
