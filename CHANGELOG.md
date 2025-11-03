@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 * **NPM CLI Tool (`agentic-pm`):** Introduced a command-line interface for managing APM installations.
 * **`apm init` Command:** Automates project setup, including AI assistant selection, asset download from GitHub Releases, and creation of the `.apm` directory structure (`.apm/guides`, `.apm/Memory`, `.apm/Implementation_Plan.md`, `.apm/metadata.json`).
 * **`apm update` Command:** Allows users to update their local APM installation to the latest version, with backup and restore functionality.
-* **Support for 11 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Gemini CLI, Qwen Code, opencode, Codex CLI, Windsurf, Kilo Code, Auggie CLI, and Roo Code.
+* **Support for 10 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Gemini CLI, Qwen Code, opencode, Windsurf, Kilo Code, Auggie CLI, and Roo Code.
 * **Build Process (`npm run build`):** New script (`scripts/build.js`) processes source templates (`templates/`) into distributable bundles (`dist/`) for each assistant, handling formatting (Markdown/TOML) and placeholders.
 * **Metadata File (`.apm/metadata.json`):** Tracks the installed APM version and selected AI assistant within the project.
 * **`Troubleshooting_Guide.md`:** Added a dedicated guide based on the v0.4 User Guide's troubleshooting section.
