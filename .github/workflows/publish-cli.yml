@@ -1,0 +1,150 @@
+# .github/workflows/publish-cli.yml
+name: Publish CLI on Release PR Merge
+
+on:
+  pull_request:
+    types: [closed] # Trigger when a PR is closed
+    branches: [ main, v0.5-dev ] # Only on PRs targeting the main or v0.5-dev branch
+  workflow_dispatch: # Keep manual trigger for specific cases (like initial v0.5.0)
+    inputs:
+      version_type:
+        description: 'Specify bump type (patch, minor, major) OR exact version (e.g., 0.5.0)'
+        required: true
+      reason:
+        description: 'Reason for manual trigger (e.g., Initial v0.5.0 release)'
+        required: true
+
+permissions:
+  contents: write # To push version bump commit and tag, and read PR labels
+  pull-requests: read # To read PR labels and check merge status
+  id-token: write # To publish to NPM using OIDC (or use secrets.NPM_TOKEN)
+
+jobs:
+  publish_cli_on_merge:
+    # Run only if PR was merged AND had a release label AND contained src changes
+    # OR if it was a manual trigger
+    if: |
+      (
+        github.event.pull_request.merged == true &&
+        (contains(github.event.pull_request.labels.*.name, 'release:patch') ||
+         contains(github.event.pull_request.labels.*.name, 'release:minor') ||
+         contains(github.event.pull_request.labels.*.name, 'release:major'))
+      ) ||
+      github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      new_version: ${{ steps.set_version.outputs.version }} # Pass version out if needed later
+
+    steps:
+      - name: Checkout code on target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name || github.base_ref || 'main' }} # Use the current branch for manual triggers, target branch for PRs
+          fetch-depth: 0 # Fetch full history for versioning/tagging
+          token: ${{ secrets.GITHUB_TOKEN }} # Use default GitHub token
+
+      # --- Logic for PR Trigger ---
+      - name: Check for src changes in PR (PR Trigger Only)
+        id: check_pr_files
+        if: github.event_name == 'pull_request'
+        run: |
+          # Get files changed in the PR
+          PR_FILES=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "${{ github.event.pull_request.url }}/files" | jq -r '.[].filename')
+
+          echo "Files changed in PR: $PR_FILES"
+          SRC_CHANGED=$(echo "$PR_FILES" | grep -q '^src/' && echo "true" || echo "false")
+          echo "src_changed=$SRC_CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Determine Version Bump Type from Label (PR Trigger Only)
+        id: get_label
+        if: github.event_name == 'pull_request' && steps.check_pr_files.outputs.src_changed == 'true'
+        run: |
+          VERSION_TYPE=""
+          if contains(github.event.pull_request.labels.*.name, 'release:major'); then
+            VERSION_TYPE="major"
+          elif contains(github.event.pull_request.labels.*.name, 'release:minor'); then
+            VERSION_TYPE="minor"
+          elif contains(github.event.pull_request.labels.*.name, 'release:patch'); then
+            VERSION_TYPE="patch"
+          fi
+          # Check for multiple release labels (error case)
+          LABEL_COUNT=$(echo "$VERSION_TYPE" | wc -w)
+          if [[ "$LABEL_COUNT" -ne 1 ]]; then
+             echo "Error: PR must have exactly one release:* label (patch, minor, or major)."
+             exit 1
+          fi
+          echo "Detected version type from label: $VERSION_TYPE"
+          echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
+
+      # --- Setup Node & Git ---
+      - name: Setup Node.js
+        # Run if manual trigger OR (PR trigger AND src changed AND label found)
+        if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Configure Git user
+        if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Install dependencies
+        if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
+        run: npm install
+
+      # --- Versioning & Tagging ---
+      - name: Bump version, Commit, Tag, Push
+        id: set_version
+        if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
+        run: |
+          VERSION_INPUT=""
+          # Determine version type/value based on trigger
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION_INPUT="${{ github.event.inputs.version_type }}"
+          else # pull_request trigger
+            VERSION_INPUT="${{ steps.get_label.outputs.version_type }}"
+          fi
+
+          echo "Attempting version action with input: $VERSION_INPUT"
+
+          # Check if input is a specific version or a bump type
+          if [[ "$VERSION_INPUT" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-.*)?$ ]]; then
+            # Input is an exact version (e.g., 0.5.0) - Likely for manual trigger
+            echo "Input is an exact version: $VERSION_INPUT"
+            # Ensure package.json matches this version before tagging
+            CURRENT_PKG_VERSION=$(node -p "require('./package.json').version")
+            if [[ "$CURRENT_PKG_VERSION" != "$VERSION_INPUT" ]]; then
+               echo "Error: Manual version $VERSION_INPUT does not match package.json version $CURRENT_PKG_VERSION. Make sure package.json was updated manually."
+               exit 1
+            fi
+            # Manually create tag
+            echo "Creating tag v${VERSION_INPUT}"
+            git tag "v${VERSION_INPUT}"
+            git push origin "v${VERSION_INPUT}"
+            NEW_VERSION=$VERSION_INPUT
+          elif [[ "$VERSION_INPUT" =~ ^(patch|minor|major)$ ]]; then
+            # Input is a bump type (patch, minor, major) - Likely for PR trigger
+            echo "Input is a bump type: $VERSION_INPUT. Performing npm version $VERSION_INPUT..."
+            # npm version <type> bumps, commits, tags (vX.Y.Z), and pushes
+            npm version "$VERSION_INPUT" -m "chore(release): bump CLI version to %s [skip ci]"
+            echo "Pushing commit and tag..."
+            git push --follow-tags
+            NEW_VERSION=$(node -p "require('./package.json').version")
+          else
+            echo "Error: Invalid version input '$VERSION_INPUT'. Must be 'patch', 'minor', 'major', or an exact version like 'X.Y.Z'."
+            exit 1
+          fi
+
+          echo "Set version to: $NEW_VERSION"
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      # --- Publishing ---
+      - name: Publish to NPM
+        if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

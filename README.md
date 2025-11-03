@@ -62,6 +62,11 @@ Follow these simple steps to start using APM in your project:
    ```bash
    apm init
    ```
+   
+   By default, `apm init` automatically finds and installs the latest template version compatible with your current CLI version. To install a specific template version (e.g., for rollbacks or testing), you can use the `--tag` option:
+   ```bash
+   apm init --tag v0.5.0+templates.1
+   ```
 
 3. **Select your AI assistant** when prompted (e.g., Cursor, Copilot, Claude Code, etc.).
 
@@ -78,7 +83,7 @@ Follow these simple steps to start using APM in your project:
 6. **Follow the established APM workflow:** <br/>
 Setup Phase (Project Discovery & Planning) → Task Loop Phase (Plan Execution)
 
-For step-by-step guidance, see the **[Getting Started Guide](docs/Getting_Started.md)**
+For step-by-step guidance, see the **[Getting Started Guide](docs/Getting_Started.md)**. For detailed CLI behavior and policies, see the **[CLI Guide](docs/CLI.md)**.
 
 ## Documentation
 
@@ -95,6 +100,7 @@ APM v0.5 includes comprehensive documentation covering all aspects of the framew
 | **[Troubleshooting Guide](docs/Troubleshooting_Guide.md)** | Troubleshooting for common issues |
 | **[Context & Memory Management](docs/Context_and_Memory_Management.md)** (advanced) | How APM handles context and manages memory across agent instances  |
 | **[Context & Prompt Engineering](docs/Context_and_Prompt_Engineering.md)** (advanced) | Prompt and context engineering techniques used throughout the framework |
+| **[CLI Guide](docs/CLI.md)** | Detailed CLI usage, behaviors, policies |
 
 For a complete documentation index with recommended reading order, see the **[Documentation Hub](docs/README.md)**.
 
@@ -116,6 +122,12 @@ APM is an open-source project, and your contributions are welcome! Whether it's 
 - **Workflow Optimizations:** Share improvements to agent protocols or memory system enhancements.
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and contribution process.
+
+## Versioning Strategy
+
+APM uses a dual versioning system to separate updates to the core CLI tool from updates to the agent prompts and guides (templates). The CLI follows Semantic Versioning on NPM, while template updates are released via GitHub Releases using build metadata. This allows for frequent template improvements without unnecessary CLI version bumps.
+
+For a detailed explanation of the versioning, tagging, and release process, please see the [VERSIONING.md](VERSIONING.md) file.
 
 ## License
 
