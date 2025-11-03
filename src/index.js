@@ -120,7 +120,7 @@ template version compatible with your current CLI version.
         console.log('');
       }
 
-      // Interactive prompt for AI assistant selection - all 13 assistants
+      // Interactive prompt for AI assistant selection - all 10 assistants
       const assistant = await select({
         message: 'Which AI assistant are you using?',
         choices: [
@@ -155,11 +155,6 @@ template version compatible with your current CLI version.
             description: 'Optimized for opencode CLI'
           },
           {
-            name: 'Codex CLI',
-            value: 'Codex CLI',
-            description: 'Optimized for Codex CLI'
-          },
-          {
             name: 'Windsurf',
             value: 'Windsurf',
             description: 'Optimized for Windsurf IDE'
@@ -175,19 +170,9 @@ template version compatible with your current CLI version.
             description: 'Optimized for Auggie CLI'
           },
           {
-            name: 'CodeBuddy',
-            value: 'CodeBuddy',
-            description: 'Optimized for CodeBuddy CLI'
-          },
-          {
             name: 'Roo Code',
             value: 'Roo Code',
             description: 'Optimized for Roo Code IDE'
-          },
-          {
-            name: 'Amazon Q Developer CLI',
-            value: 'Amazon Q Developer CLI',
-            description: 'Optimized for Amazon Q Developer CLI'
           }
         ]
       });
