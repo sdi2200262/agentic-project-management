@@ -278,7 +278,7 @@ The Implementation Agent will:
 - Proceeds directly to Memory Logging
 
 **For Multi-Step Tasks**:
-- Imlpementation Agent executes step-by-step with your confirmation at each stage; you are able to combine adjacent step executions wherever applicable
+- Imlpementation Agent executes step-by-step with your confirmation at each stage; you are able to combine adjacent step executions wherever applicable. (NOT reccommended: You may also ask the agent to continue without confirmation request if you prefer YOLO mode. (Example: "you can skip confirmation request for each step. continue until you accomplish all the steps")
     - **Efficiency tip**: Request step combination for related work: `"Step 2 looks alright. Combine steps 3-4 and log in your next response"`
 - You can provide feedback and request modifications between steps
 - Implementation Agent proceeds to Memory Logging after final step
