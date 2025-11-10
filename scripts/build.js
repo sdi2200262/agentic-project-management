@@ -100,7 +100,8 @@ function parseFrontmatter(content) {
  * @param {Date} [now] - Optional timestamp for deterministic testing
  * @returns {string} Content with placeholders replaced
  */
-function replacePlaceholders(content, version, targetDirectories, format, now = new Date()) {
+function replacePlaceholders(content, version, targetDirectories, format, options = {}) {
+  const { now = new Date(), commandFileMap = {} } = options;
   let replaced = content
     .replace(/{VERSION}/g, version)
     .replace(/{TIMESTAMP}/g, now.toISOString());
@@ -110,7 +111,10 @@ function replacePlaceholders(content, version, targetDirectories, format, now = 
   });
 
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, filename) => {
-    return path.join(targetDirectories.commands, filename);
+    // Map referenced template filename to the final built command filename for this target
+    const base = path.basename(filename, path.extname(filename));
+    const resolved = commandFileMap[base] || commandFileMap[filename] || filename;
+    return path.join(targetDirectories.commands, resolved);
   });
 
   const argsPlaceholder = format === 'toml' ? '{{args}}' : '$ARGUMENTS';
@@ -176,6 +180,36 @@ async function build(config, version) {
     const templateFiles = await findMdFiles(buildConfig.sourceDir);
     console.log(`Found ${templateFiles.length} template files`);
 
+    // Pre-compute command filename mapping for {COMMAND_PATH:*} replacements
+    // Map original template base filename (without extension) -> final built command filename (with correct extension)
+    const commandFileMap = {};
+    for (const templatePath of templateFiles) {
+      const content = await fs.readFile(templatePath, 'utf8');
+      const { frontmatter } = parseFrontmatter(content);
+      const isCommand = frontmatter.command_name !== undefined;
+      if (!isCommand) continue;
+
+      const originalBase = path.basename(templatePath, '.md');
+      const priority = frontmatter.priority || 'default';
+      const sanitizedCommandName = String(frontmatter.command_name || '')
+        .replace(/[^a-zA-Z0-9-_]/g, '-');
+      const fullCommandName = `apm-${priority}-${sanitizedCommandName}`;
+
+      // Determine final extension per target
+      let finalExt;
+      if (target.format === 'toml') {
+        finalExt = '.toml';
+      } else {
+        // Markdown
+        finalExt = target.id === 'copilot' ? '.prompt.md' : '.md';
+      }
+      const finalFilename = `${fullCommandName}${finalExt}`;
+
+      // Store mapping by base and by original filename w/ extension for robustness
+      commandFileMap[originalBase] = finalFilename;
+      commandFileMap[`${originalBase}.md`] = finalFilename;
+    }
+
     for (const templatePath of templateFiles) {
       const content = await fs.readFile(templatePath, 'utf8');
       const { frontmatter, content: body } = parseFrontmatter(content);
@@ -183,8 +217,8 @@ async function build(config, version) {
       const isCommand = frontmatter.command_name !== undefined;
       const category = isCommand ? 'command' : 'guide';
 
-      const processedBody = replacePlaceholders(body, version, target.directories, target.format);
-      const processedFull = replacePlaceholders(content, version, target.directories, target.format);
+      const processedBody = replacePlaceholders(body, version, target.directories, target.format, { commandFileMap });
+      const processedFull = replacePlaceholders(content, version, target.directories, target.format, { commandFileMap });
 
       const originalFilename = path.basename(templatePath, '.md');
       let outputFilename;

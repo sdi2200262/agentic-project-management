@@ -79,7 +79,7 @@ Follow {GUIDE_PATH:Memory_Log_Guide.md} instructions.
 
 ## Ad-Hoc Delegation
 [Only include if ad_hoc_delegation: true]
-[Manager fills this section with section §7 content guidance, including explicit guide references for Debug/Research delegations({GUIDE_PATH:Debug_Delegation_Guide.md} or {GUIDE_PATH:Research_Delegation_Guide.md})]
+[Manager fills this section with section §7 content guidance, including explicit command references for Debug/Research delegations ({COMMAND_PATH:Debug_Delegation_Guide.md} or {COMMAND_PATH:Research_Delegation_Guide.md})]
 ```
 
 ### 2.4. Delivery Format  
@@ -227,10 +227,10 @@ When Implementation Plan contains explicit delegation steps, Manager Agents must
 - **Include explicit guide references** for standard delegation types in the Task Assignment Prompt if possible
 - Specify what to delegate and expected deliverables in prompt
 
-**Standard Delegation Guide References**:
-- **Debug Delegation**: Reference {GUIDE_PATH:Debug_Delegation_Guide.md}
-- **Research Delegation**: Reference {GUIDE_PATH:Debug_Delegation_Guide.md}  
-- **Custom Delegations**: Reference appropriate custom guides if available
+**Standard Delegation Command References**:
+- **Debug Delegation**: Reference {COMMAND_PATH:Debug_Delegation_Guide.md}
+- **Research Delegation**: Reference {COMMAND_PATH:Research_Delegation_Guide.md}  
+- **Custom Delegations**: Reference appropriate custom command files if available
 
 ### 7.2. Integration Requirements
 - Implementation Agent creates delegation prompt and manages workflow
