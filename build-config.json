@@ -12,7 +12,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".github/prompts",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -22,7 +22,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".claude/commands",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -32,7 +32,7 @@
       "format": "toml",
       "directories": {
         "commands": ".gemini/commands",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -42,7 +42,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".cursor/commands",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -52,7 +52,7 @@
       "format": "toml",
       "directories": {
         "commands": ".qwen/commands",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -62,7 +62,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".opencode/command",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -72,7 +72,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".windsurf/workflows",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -82,7 +82,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".kilocode/workflows",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -92,7 +92,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".augment/commands",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     },
     {
@@ -102,7 +102,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".roo/commands",
-        "guides": "guides"
+        "guides": ".apm/guides"
       }
     }
   ]
