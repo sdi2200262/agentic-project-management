@@ -207,7 +207,7 @@ Determine appropriate task content:
 - **If Multi-step**: "This needs [X] steps because [workflow dependency analysis]. Each step represents [natural progression]."
 
 **Content Definition:**
-- If flagged in §4.1, first add an ad-hoc delegation step: "Ad-Hoc Delegation – <purpose>" (optional ref to {GUIDE_PATH:Research_Delegation_Guide.md} or {GUIDE_PATH:Debug_Delegation_Guide.md}), then continue
+- If flagged in §4.1, first add an ad-hoc delegation step: "Ad-Hoc Delegation – <purpose>" (optional ref to {COMMAND_PATH:Research_Delegation_Guide.md} or {COMMAND_PATH:Debug_Delegation_Guide.md}), then continue
 - [Present actual bullets or steps with applied reasoning]
 
 **Task [X.Y] analysis complete** ← State this before proceeding to next task

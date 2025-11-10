@@ -50,8 +50,8 @@ const VERIFIED_ASSISTANT_TARGETS = BUILD_CONFIG_DATA.targets.filter((target) =>
 function resolveAssistantExpectations(target) {
   const defaults =
     target.format === 'toml'
-      ? { commandExtension: '.toml', argsPlaceholder: '{{args}}' }
-      : { commandExtension: '.md', argsPlaceholder: '$ARGUMENTS' };
+      ? { commandExtension: '.toml', argsPlaceholder: '{{args}}', commandRefExtension: '.toml' }
+      : { commandExtension: '.md', argsPlaceholder: '$ARGUMENTS', commandRefExtension: target.id === 'copilot' ? '.prompt.md' : '.md' };
 
   const overrides = ASSISTANT_EXPECTATION_OVERRIDES[target.id] ?? {};
 
@@ -63,7 +63,7 @@ function resolveAssistantExpectations(target) {
   };
 }
 
-function expectMarkdownCommandContent(content, { argsPlaceholder, target }) {
+function expectMarkdownCommandContent(content, { argsPlaceholder, target, commandRefExtension }) {
   expect(content.includes(argsPlaceholder)).toBe(true);
 
   if (target.directories?.commands) {
@@ -73,9 +73,14 @@ function expectMarkdownCommandContent(content, { argsPlaceholder, target }) {
   if (target.directories?.guides) {
     expect(content.includes(target.directories.guides)).toBe(true);
   }
+
+  // The template body includes {COMMAND_PATH:Example.md}; after build it should reference the
+  // final built filename (apm-<priority>-<command_name>.<ext>) inside content
+  // Our fixture uses priority "low" and command_name "run" => apm-low-run
+  expect(content.includes(`apm-low-run${commandRefExtension}`)).toBe(true);
 }
 
-function expectTomlCommandContent(content, { argsPlaceholder, target }) {
+function expectTomlCommandContent(content, { argsPlaceholder, target, commandRefExtension }) {
   expect(content).toMatch(/^description\s*=\s*"Example command"/m);
   expect(content).toMatch(/prompt\s*=\s*"""/m);
   expect(content.includes('description:')).toBe(false);
@@ -84,6 +89,10 @@ function expectTomlCommandContent(content, { argsPlaceholder, target }) {
   if (target.directories?.commands) {
     expect(content.includes(target.directories.commands)).toBe(true);
   }
+
+  // The template body includes {COMMAND_PATH:Example.md}; in TOML the prompt body should include
+  // a path pointing to apm-low-run.toml
+  expect(content.includes(`apm-low-run${commandRefExtension}`)).toBe(true);
 }
 
 function assertCommandContent(content, expectations) {
