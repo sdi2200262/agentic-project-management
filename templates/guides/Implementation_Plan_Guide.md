@@ -26,7 +26,7 @@ Enable Manager Agents to create precise Task Assignment Prompts through detailed
 ```markdown
 # <Project Name> – Implementation Plan 
 
-**Memory Strategy:**  [Determined during Memory Root Creation phase]
+**Memory Strategy:**  Dynamic-MD (directory structure with Markdown logs)
 **Last Modification:** [Summary of last modification by Manager Agent]
 **Project Overview:** [High-level project overview with context and objectives]
 ```
@@ -68,18 +68,6 @@ Sub-tasks break down a parent task into logical steps and must be included for e
 *  **Consumer Task:** Reference dependency in `Guidance` field using format: 
     - Same-agent: `"Depends on: Task X.Y Output"`
     - Cross-agent: `"Depends on: Task X.Y Output by Agent Z"`
-
-### 2.6. Phase Summary Format (Manager Agent)
-At phase completion, append summaries to Implementation Plan under current phase and before next phase:
-
-```markdown
-## Phase <n>: <Name> Summary
-> Delivered: Tasks <n.m>, <n.k>
-> Outstanding: Tasks <n.x>, ...
-> Blockers: ...
-> Common Bugs/Issues: ...
-> Compatibility Notes: ...
-```
 
 ---
 
@@ -126,7 +114,7 @@ Maintain detailed Implementation Plan throughout APM session:
 ### 5.1. Plan Validation & Improvement
 **Initial Plan Assessment:**
 - Read guide, evaluate plan structure and detail level
-- Assess plan integrity and request more detail from Setup Agent if needed
+- Assess plan integrity and propose improvements to the User if critical gaps or issues are found
 
 **Validation Focus:**
 - Confirm detailed specifications support precise Task Assignment Prompt creation
@@ -162,11 +150,6 @@ Maintain detailed Implementation Plan throughout APM session:
 - Track phase completion using detailed task specifications
 - Manage phase transitions with comprehensive context understanding
 - Use enhanced plan structure for effective phase coordination
-
-**Documentation:**
-- Write detailed phase summaries in Memory Root using enhanced task context
-- Add concise phase summaries to plan before next phase following {GUIDE_PATH:Memory_System_Guide.md}
-- Maintain comprehensive project documentation through enhanced plan structure
 
 ---
 
