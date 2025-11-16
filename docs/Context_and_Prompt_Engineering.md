@@ -1,3 +1,10 @@
+---
+id: context-and-prompt-engineering
+slug: /context-and-prompt-engineering
+sidebar_label: Context & Prompt Engineering
+sidebar_position: 8
+---
+
 # Context and Prompt Engineering - APM v0.5
 
 APM's sophisticated agent coordination relies on advanced context and prompt engineering techniques that work synergistically to create reliable, efficient AI workflows. This technical document explores how APM constructs operational reality for LLMs and engineers prompts for maximum parsing fidelity and token efficiency.

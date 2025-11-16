@@ -1,3 +1,10 @@
+---
+id: token-consumption-tips
+slug: /token-consumption-tips
+sidebar_label: Token Consumption Tips
+sidebar_position: 10
+---
+
 # Token Consumption Tips - APM v0.5
 
 APM is designed to be token-efficient through focused agent interactions and structured workflows, but multi-agent coordination does involve meta-prompting overhead. This guide provides strategies for optimizing cost while maintaining APM effectiveness across different subscription tiers and model access levels.

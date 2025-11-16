@@ -108,3 +108,9 @@ Thumbs.db
 
 # Test assets for development
 test-assets/
+# Docusaurus website build artifacts
+website/build/
+website/.docusaurus/
+website/node_modules/
+# Generated at build-time by concat-docs
+website/static/all_docs.md

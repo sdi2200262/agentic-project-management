@@ -3,9 +3,12 @@
   "version": "0.5.1",
   "description": "Agentic Project Management CLI",
   "scripts": {
-    "build": "node scripts/build.js",
+    "build:templates": "node scripts/build.js",
+    "build:website": "cd website && npm run build",
+    "start:website": "cd website && npm run start",
     "test": "vitest run --reporter=basic",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "build:cli": "npm run build:templates"
   },
   "repository": {
     "type": "git",

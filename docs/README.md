@@ -1,3 +1,10 @@
+---
+id: index
+slug: /
+sidebar_label: Documentation Hub
+sidebar_position: 1
+---
+
 # APM v0.5 Documentation Hub
 
 Welcome to the documentation suite for the Agentic Project Management (APM) framework.

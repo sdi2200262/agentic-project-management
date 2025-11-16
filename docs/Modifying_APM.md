@@ -1,3 +1,10 @@
+---
+id: modifying-apm
+slug: /modifying-apm
+sidebar_label: Modifying APM
+sidebar_position: 9
+---
+
 # Modifying APM - APM v0.5
 
 APM is designed to be highly customizable. Whether you're adapting prompts for specific workflows, adding new delegation guides, or integrating powerful MCP tools, this guide shows you how to tailor APM to your project's unique needs.

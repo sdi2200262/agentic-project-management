@@ -1,3 +1,10 @@
+---
+id: context-and-memory-management
+slug: /context-and-memory-management
+sidebar_label: Context & Memory Management
+sidebar_position: 7
+---
+
 # Context and Memory Management - APM v0.5
 
 APM's effectiveness stems from context scope management and a dynamic memory system that enable focused agent interactions while preserving project continuity. This document explores how APM leverages scoped context for emergent specialization and implements progressive memory management for cost-effective, scalable project execution.
