@@ -1,3 +1,10 @@
+---
+id: introduction
+slug: /introduction
+sidebar_label: Introduction
+sidebar_position: 3
+---
+
 # APM v0.5 - Agentic Project Management Framework
 
 **A Structured, Multi-Agent Workflow System for Complex Project Execution with AI Assistants**
@@ -99,9 +106,9 @@ Below is a visual overview of the APM workflow, illustrating the full process fr
 > **Note:** This overview omits some intermediate steps and sub-processes in both the Setup Phase and Task Loop Phase for brevity. For a complete, detailed workflow breakdown, see the [Workflow Overview](Workflow_Overview.md) document.
 
 <div align="center">
-  <img src="../assets/apm-workflow-diagram.png" alt="APM v0.5 - Agentic Spec-driven Development" width="1200" style="max-width: 100%;"/>
+  <img src="../assets/apm-workflow-diagram.png" alt="APM v0.5 - Agentic Spec-driven Development" width="1200" style={{maxWidth: '100%'}}/>
 </div>
 
 ---
 
-APM is an Open Source project, and contributions to both the framework and its documentation are encouraged. You can contribute by posting an Issue for bugs, feature requests, or questions, or by submitting a Pull Request (PR) with improvements, fixes, or documentation enhancements/refinements. For details on contributions and guidelines, please see the [CONTRIBUTING.md](../CONTRIBUTING.md) file.
+APM is an Open Source project, and contributions to both the framework and its documentation are encouraged. You can contribute by posting an Issue for bugs, feature requests, or questions, or by submitting a Pull Request (PR) with improvements, fixes, or documentation enhancements/refinements. For details on contributions and guidelines, please see the [CONTRIBUTING.md](https://github.com/sdi2200262/agentic-project-management/blob/main/CONTRIBUTING.md) file.

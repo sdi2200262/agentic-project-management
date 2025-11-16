@@ -1,3 +1,10 @@
+---
+id: workflow-overview
+slug: /workflow-overview
+sidebar_label: Workflow Overview
+sidebar_position: 6
+---
+
 # Workflow Overview - APM v0.5
 
 APM operates through two workflow phases:
@@ -109,7 +116,7 @@ Execute systematic progression through the mandatory gates:
 
 **This approach is intentionally crafted for robust, agentic non-thinking models, which are the default in most AI IDEs.** 
 
-> **Note:** If you encounter any issues during this process, please refer to the relevant section of the [Troubleshooting Guide](./docs/Troubleshooting_Guide.pdf) for detailed assistance.
+> **Note:** If you encounter any issues during this process, please refer to the relevant section of the [Troubleshooting Guide](./Troubleshooting_Guide.md) for detailed assistance.
 
 ### 3. Implementation Plan Review (Optional)
 If the User opts for a systematic review, the Setup Agent highlights plan sections needing extra attention. For the areas the User selects, the Setup Agent reviews for AI-specific planning issues—like task-packing, misclassified tasks, or other LLM-related errors, rather than rechecking the entire project context. Major context gaps may still be flagged if found. This agent-driven review is optional and is intended to optimize workflow clarity, smoothness, and AI-oriented planning practices, rather than to ensure the Implementation Plan fully and accurately reflects the project's actual requirements. **The User should always conduct their own comprehensive review of the Implementation Plan before relying on the Agent's review.**
@@ -134,7 +141,7 @@ In this exchange, the Setup Agent transforms the Implementation Plan into a deta
 **Setup Agent Actions:**
 - Transform the simple plan into a detailed APM artifact with comprehensive task specifications
 
-> **Note:** If you encounter any issues during this process, please refer to the relevant section of the [Troubleshooting Guide](./docs/Troubleshooting_Guide.pdf) for detailed assistance.
+> **Note:** If you encounter any issues during this process, please refer to the relevant section of the [Troubleshooting Guide](./Troubleshooting_Guide.md) for detailed assistance.
 
 ### 5. Manager Bootstrap Creation
 The final step of the Setup Agent workflow is to generate a comprehensive Bootstrap Prompt for initializing the first Manager Agent chat session.
@@ -417,7 +424,8 @@ graph LR
 - **Model Variations**: Different models may interpret handover context differently; be prepared to provide clarifications
 - **Working Relationship**: Replacement agents need to rebuild understanding of your communication style and preferences
 
-> **Note:** For guidance on how to recover from common Handover issues, refer to the relevant paragraph of the `Troubleshooting` section of the [APM User Guide](../guides/APM_User_Guide.pdf).
+
+> **Note:** For guidance on how to recover from common Handover issues, refer to the relevant paragraph of the `Troubleshooting` section in the [Troubleshooting Guide](Troubleshooting_Guide.md).
 
 
 ---
