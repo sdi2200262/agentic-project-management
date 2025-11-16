@@ -1,3 +1,10 @@
+---
+id: troubleshooting-guide
+slug: /troubleshooting-guide
+sidebar_label: Troubleshooting Guide
+sidebar_position: 11
+---
+
 # Troubleshooting Guide - APM v0.5
 
 Effective troubleshooting prevents minor issues from becoming project blockers. This guide covers common scenarios encountered during APM sessions and provides recovery strategies.

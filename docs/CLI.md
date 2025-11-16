@@ -1,3 +1,10 @@
+---
+id: cli
+slug: /cli
+sidebar_label: CLI Guide
+sidebar_position: 5
+---
+
 # APM CLI Guide
 
 This document explains how the APM CLI installs and updates templates and how it manages multiple assistants in a project.

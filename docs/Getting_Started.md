@@ -1,3 +1,10 @@
+---
+id: getting-started
+slug: /getting-started
+sidebar_label: Getting Started
+sidebar_position: 2
+---
+
 # Getting Started - APM v0.5
 
 This guide walks you through launching your first APM session, from initial setup through completing your first few tasks. **The more time spent during setup and planning, the better your project execution will be.**
@@ -383,7 +390,7 @@ As your sessions grow, agents may approach the LLM's context window limit. When 
 **Problem**: Context confusion between agents
 **Solution**: Each agent should only focus on their assigned work, avoid cross-contamination
 
-> For more detailed troubleshooting guidance and solutions to common issues, refer to the `Troubleshooting` section in the [User Guide](guides/APM_User_Guide.pdf).
+> For more detailed troubleshooting guidance and solutions to common issues, refer to the [`docs/Troubleshooting_Guide.md`](Troubleshooting_Guide.md)
 
 ---
 
