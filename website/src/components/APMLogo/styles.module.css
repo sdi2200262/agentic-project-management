@@ -1,0 +1,16 @@
+.logo {
+  transition: transform 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
+  transform-origin: left center;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+  opacity: 0.95;
+}
+
+.logo:active {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+

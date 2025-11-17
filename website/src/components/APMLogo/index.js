@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './styles.module.css';
 
 /**
  * APM Logo component for web display
@@ -20,7 +21,7 @@ export default function APMLogo({ fontSize = 16, className = '' }) {
   };
 
   return (
-    <div className={className} style={style}>
+    <div className={`${styles.logo} ${className}`} style={style}>
       <div>
         <span> </span>
         <span> </span>
@@ -70,3 +71,4 @@ export default function APMLogo({ fontSize = 16, className = '' }) {
     </div>
   );
 }
+
