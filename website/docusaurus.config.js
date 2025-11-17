@@ -1,8 +1,9 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 
+/** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Agentic Project Management',
-  tagline: 'AI-powered project management CLI tool',
+  tagline: 'Manage complex projects with a team of AI assistants.',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -30,7 +31,8 @@ const config = {
   presets: [
     [
       'classic',
-      {
+      /** @type {import('@docusaurus/preset-classic').Options} */
+      ({
         docs: {
           path: '../docs',
           sidebarPath: './sidebars.js',
@@ -42,84 +44,81 @@ const config = {
         theme: {
           customCss: './src/css/custom.css',
         },
-      },
+      }),
     ],
   ],
 
-  themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
-    navbar: {
-      title: 'Agentic PM',
-      logo: {
-        alt: 'Agentic PM Logo',
-        src: 'img/logo.svg',
+  themeConfig:
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
+    ({
+      // Replace with your project's social card
+      image: 'img/docusaurus-social-card.jpg',
+      navbar: {
+        title: 'Agentic PM',
+        logo: {
+          alt: 'Agentic PM Logo',
+          src: 'img/logo.svg',
+        },
+        items: [
+          {
+            type: 'docSidebar',
+            sidebarId: 'tutorialSidebar',
+            position: 'left',
+            label: 'Docs',
+          },
+          {
+            href: 'https://github.com/sdi2200262/agentic-project-management',
+            label: 'GitHub',
+            position: 'right',
+          },
+        ],
       },
-      items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Documentation',
-        },
-        {
-          href: 'https://github.com/sdi2200262/agentic-project-management',
-          label: 'GitHub',
-          position: 'right',
-        },
-      ],
-    },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Getting Started',
-              to: '/docs/Getting_Started',
-            },
-            {
-              label: 'Introduction',
-              to: '/docs/Introduction',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/sdi2200262/agentic-project-management',
-            },
-            {
-              label: 'Issues',
-              href: 'https://github.com/sdi2200262/agentic-project-management/issues',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'NPM',
-              href: 'https://www.npmjs.com/package/agentic-pm',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Agentic Project Management. Built with Docusaurus.`,
-    },
-    colorMode: {
-      defaultMode: 'dark',
-      disableSwitch: true,
-      respectPrefersColorScheme: false,
-    },
-    prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
-    },
-  },
+      footer: {
+        style: 'dark',
+        links: [
+          {
+            title: 'Docs',
+            items: [
+              {
+                label: 'Getting Started',
+                to: '/docs/getting-started',
+              },
+              {
+                label: 'Introduction',
+                to: '/docs/introduction',
+              },
+            ],
+          },
+          {
+            title: 'Community',
+            items: [
+              {
+                label: 'GitHub',
+                href: 'https://github.com/sdi2200262/agentic-project-management',
+              },
+              {
+                label: 'Issues',
+                href: 'https://github.com/sdi2200262/agentic-project-management/issues',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'NPM',
+                href: 'https://www.npmjs.com/package/agentic-pm',
+              },
+            ],
+          },
+        ],
+        copyright: `Copyright © ${new Date().getFullYear()} Agentic Project Management. Built with Docusaurus.`,
+      },
+      prism: {
+        theme: prismThemes.github,
+        darkTheme: prismThemes.dracula,
+      },
+    }),
 };
 
 export default config;
