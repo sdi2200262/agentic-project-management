@@ -9,84 +9,52 @@ export default function DocBreadcrumbsWrapper(props) {
   const {siteConfig} = useDocusaurusContext();
   const baseUrl = siteConfig.baseUrl;
   const handlerRef = useRef(null);
+  const processedLinksRef = useRef(new WeakSet());
   
   useEffect(() => {
-    // Check if we're on a docs page
-    const isDocsPage = location.pathname.includes('/docs');
+    if (!location.pathname.includes('/docs')) return;
     
-    if (isDocsPage) {
-      const setupBreadcrumbHandler = () => {
-        // Find breadcrumb container
-        const breadcrumbContainer = document.querySelector('.theme-doc-breadcrumbs') ||
-                                   document.querySelector('nav[aria-label="breadcrumbs"]');
+    const docsUrl = `${baseUrl.replace(/\/$/, '')}/docs`;
+    
+    const updateHomeLink = () => {
+      const container = document.querySelector('.theme-doc-breadcrumbs') ||
+                       document.querySelector('nav[aria-label="breadcrumbs"]');
+      const homeLink = container?.querySelector('.breadcrumbs__item:first-child a');
+      
+      if (homeLink && !processedLinksRef.current.has(homeLink)) {
+        homeLink.setAttribute('href', docsUrl);
         
-        if (breadcrumbContainer) {
-          // Find the first breadcrumb item (home)
-          const firstBreadcrumbItem = breadcrumbContainer.querySelector('.breadcrumbs__item:first-child');
-          
-          if (firstBreadcrumbItem) {
-            const homeLink = firstBreadcrumbItem.querySelector('a');
-            
-            if (homeLink) {
-              // Construct the correct docs URL with baseUrl
-              // baseUrl is '/agentic-project-management/', so we want '/agentic-project-management/docs'
-              // Remove trailing slash from baseUrl, add 'docs', then add trailing slash
-              const baseUrlClean = baseUrl.replace(/\/$/, '');
-              const docsUrl = `${baseUrlClean}/docs`;
-              
-              homeLink.setAttribute('href', docsUrl);
-              
-              // Remove any existing click handler
-              if (handlerRef.current) {
-                homeLink.removeEventListener('click', handlerRef.current, true);
-              }
-              
-              // Create new click handler that intercepts navigation
-              const clickHandler = (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                // Use the full path with baseUrl
-                history.push(docsUrl);
-                return false;
-              };
-              
-              handlerRef.current = clickHandler;
-              // Use capture phase to intercept before React Router
-              homeLink.addEventListener('click', clickHandler, true);
-            }
-          }
-        }
-      };
-      
-      // Try multiple times with increasing delays to catch breadcrumbs when they render
-      const timeouts = [];
-      [50, 100, 200, 500, 1000].forEach((delay) => {
-        timeouts.push(setTimeout(setupBreadcrumbHandler, delay));
-      });
-      
-      // Use MutationObserver for dynamic updates
-      const observer = new MutationObserver(() => {
-        setupBreadcrumbHandler();
-      });
-      
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-      });
-      
-      return () => {
-        timeouts.forEach(clearTimeout);
-        observer.disconnect();
-        // Clean up event listeners
-        if (handlerRef.current) {
-          const links = document.querySelectorAll('.theme-doc-breadcrumbs a, nav[aria-label="breadcrumbs"] a');
-          links.forEach(link => {
-            link.removeEventListener('click', handlerRef.current, true);
-          });
-        }
-      };
-    }
+        // Create click handler
+        const clickHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          history.push(docsUrl);
+          return false;
+        };
+        
+        // Remove any existing handlers by cloning the node
+        const newLink = homeLink.cloneNode(true);
+        homeLink.parentNode.replaceChild(newLink, homeLink);
+        newLink.addEventListener('click', clickHandler, true);
+        
+        processedLinksRef.current.add(newLink);
+        handlerRef.current = clickHandler;
+      }
+    };
+    
+    // Try multiple times to ensure breadcrumbs are rendered
+    const timeouts = [50, 100, 200, 500, 1000].map(delay => setTimeout(updateHomeLink, delay));
+    
+    // Watch for dynamic updates
+    const observer = new MutationObserver(updateHomeLink);
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    return () => {
+      timeouts.forEach(clearTimeout);
+      observer.disconnect();
+      processedLinksRef.current = new WeakSet();
+    };
   }, [location.pathname, history, baseUrl]);
   
   return <DocBreadcrumbs {...props} />;
