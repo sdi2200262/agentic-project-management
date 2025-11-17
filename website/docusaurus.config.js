@@ -55,11 +55,6 @@ const config = {
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
         title: 'Agentic PM',
-        logo: {
-          alt: 'Agentic PM Logo',
-          src: 'img/logo.svg',
-          href: '/',
-        },
         items: [
           {
             to: '/docs',
