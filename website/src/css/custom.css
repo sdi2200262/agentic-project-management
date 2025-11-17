@@ -29,6 +29,14 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
+/* -------------------------------- Nav Bar Styling -------------------------------- */
+
+/* Custom Docs button styling */
+.navbar__item--docs {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
 /* GitHub icon styling */
 .header-github-link {
   display: flex;
@@ -51,13 +59,20 @@
 }
 
 .header-github-link svg {
-  fill: currentColor;
+  fill: white;
   width: 20px;
   height: 20px;
 }
 
-/* Custom Docs button styling */
-.navbar__item--docs {
-  font-weight: 500;
+/* Navbar brand (logo) styling */
+.navbar__brand {
+  padding-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.navbar__logo {
+  padding-left: 2rem !important;
+}
