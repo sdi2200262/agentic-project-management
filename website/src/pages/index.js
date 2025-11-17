@@ -1,22 +1,28 @@
 import React from 'react';
 import {useHistory} from '@docusaurus/router';
-import Layout from '@theme/Layout';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import Footer from '@theme/Footer';
 import styles from './index.module.css';
 
 export default function Home() {
   const history = useHistory();
+  const {siteConfig} = useDocusaurusContext();
+  const baseUrl = siteConfig.baseUrl;
 
   const handleGoToDocs = () => {
-    history.push('/docs');
+    // Construct the correct docs URL with baseUrl
+    const docsUrl = `${baseUrl.replace(/\/$/, '')}/docs`;
+    history.push(docsUrl);
   };
 
   return (
-    <Layout title="Agentic Project Management" description="AI-powered project management CLI tool">
-      <div className={styles.landingPage}>
+    <div className={styles.landingPage}>
+      <main className={styles.mainContent}>
         <button className={styles.docsButton} onClick={handleGoToDocs}>
           Go to Docs
         </button>
-      </div>
-    </Layout>
+      </main>
+      <Footer />
+    </div>
   );
 }

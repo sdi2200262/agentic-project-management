@@ -1,8 +1,15 @@
 .landingPage {
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.mainContent {
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 60px);
+  flex: 1;
   width: 100%;
 }
 
