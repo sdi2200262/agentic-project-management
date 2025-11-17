@@ -1,0 +1,21 @@
+/* Center footer content */
+.footer {
+  text-align: center;
+}
+
+.footer__links {
+  justify-content: center;
+}
+
+.footer__item {
+  text-align: center;
+}
+
+.footer__title {
+  text-align: center;
+}
+
+.footer__link-item {
+  text-align: center;
+}
+
