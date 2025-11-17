@@ -4,38 +4,199 @@
  * work well for content-centric websites.
  */
 
-/* You can override the default Infima variables here. */
+/* Light Theme - Based on screenshot with grayish navbar */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* Primary colors - Teal/Blue palette for light theme */
+  --ifm-color-primary: #14b8a6; /* Teal */
+  --ifm-color-primary-dark: #0d9488;
+  --ifm-color-primary-darker: #0f766e;
+  --ifm-color-primary-darkest: #115e59;
+  --ifm-color-primary-light: #2dd4bf;
+  --ifm-color-primary-lighter: #5eead4;
+  --ifm-color-primary-lightest: #99f6e4;
+  
+  /* Background colors */
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f8f9fa;
+  
+  /* Navbar - Grayish background for light theme */
+  --ifm-navbar-background-color: #01323e;
+  --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  
+  /* Text colors */
+  --ifm-font-color-base: #1a1a1a;
+  --ifm-font-color-base-inverse: #ffffff;
+  --ifm-color-content: #1a1a1a;
+  --ifm-color-content-secondary: #6b7280;
+  
+  /* Code blocks */
   --ifm-code-font-size: 95%;
+  --ifm-code-background: #f4f4f5;
+  --ifm-code-color: #e11d48;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  
+  /* Links */
+  --ifm-link-color: #14b8a6;
+  --ifm-link-hover-color: #0d9488;
+  
+  /* Buttons and UI elements */
+  --ifm-color-emphasis-100: #f4f4f5;
+  --ifm-color-emphasis-200: #e4e4e7;
+  --ifm-color-emphasis-300: #d4d4d8;
+  --ifm-color-emphasis-500: #71717a;
+  --ifm-color-emphasis-600: #52525b;
+  --ifm-color-emphasis-700: #3f3f46;
+  
+  /* Borders */
+  --ifm-border-color: #e4e4e7;
+  
+  /* Footer */
+  --ifm-footer-background-color: #01323e;
+  --ifm-footer-color: #ffffff;
+  --ifm-footer-link-color: #99f6e4;
+  --ifm-footer-link-hover-color: #5eead4;
+  
+  /* Table of contents */
+  --ifm-toc-border-color: #e4e4e7;
+  
+  /* Admonitions */
+  --ifm-alert-background-color: #f0fdfa;
+  --ifm-alert-border-color: #14b8a6;
+  --ifm-alert-color: #0f766e;
+  
+  /* Markdown content styling for light theme */
+  --ifm-heading-color: #1a1a1a;
+  --ifm-hr-border-color: #e4e4e7;
+  --ifm-blockquote-color: #52525b;
+  --ifm-blockquote-border-left-color: #14b8a6;
+  --ifm-table-border-color: #e4e4e7;
+  --ifm-table-stripe-background: rgba(20, 184, 166, 0.05);
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* Dark Theme - Matching screenshot colors */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  /* Primary colors - Teal/Blue gradient palette */
+  --ifm-color-primary: #2dd4bf; /* Lighter teal */
+  --ifm-color-primary-dark: #14b8a6;
+  --ifm-color-primary-darker: #0d9488;
+  --ifm-color-primary-darkest: #0f766e;
+  --ifm-color-primary-light: #5eead4;
+  --ifm-color-primary-lighter: #7dd3fc; /* Blue-teal blend */
+  --ifm-color-primary-lightest: #99f6e4;
+  
+  /* Background colors - Dark blue */
+  --ifm-background-color: #02233a; /* Dark blue */
+  --ifm-background-surface-color: #01304a; /* Slightly lighter dark blue */
+  
+  /* Navbar - Dark background */
+  --ifm-navbar-background-color: #01323e;
+  --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  
+  /* Text colors - White */
+  --ifm-font-color-base: #ffffff;
+  --ifm-font-color-base-inverse: #0a0a0a;
+  --ifm-color-content: #ffffff;
+  --ifm-color-content-secondary: #a1a1aa;
+  
+  /* Code blocks */
+  --ifm-code-font-size: 95%;
+  --ifm-code-background: #1a1a1a;
+  --ifm-code-color: #f472b6;
+  --docusaurus-highlighted-code-line-bg: rgba(45, 212, 191, 0.2); /* Teal highlight */
+  
+  /* Links */
+  --ifm-link-color: #5eead4;
+  --ifm-link-hover-color: #2dd4bf;
+  
+  /* Buttons and UI elements - Dark grey boxes */
+  --ifm-color-emphasis-100: #27272a;
+  --ifm-color-emphasis-200: #3f3f46;
+  --ifm-color-emphasis-300: #52525b;
+  --ifm-color-emphasis-500: #71717a;
+  --ifm-color-emphasis-600: #a1a1aa;
+  --ifm-color-emphasis-700: #d4d4d8;
+  
+  /* Borders */
+  --ifm-border-color: #3f3f46;
+  
+  /* Footer */
+  --ifm-footer-background-color: #01323e;
+  --ifm-footer-color: #ffffff;
+  --ifm-footer-link-color: #5eead4;
+  --ifm-footer-link-hover-color: #2dd4bf;
+  
+  /* Table of contents */
+  --ifm-toc-border-color: #3f3f46;
+  
+  /* Admonitions */
+  --ifm-alert-background-color: rgba(14, 165, 233, 0.1); /* Blue-teal tint */
+  --ifm-alert-border-color: #2dd4bf;
+  --ifm-alert-color: #5eead4;
+  
+  /* Markdown content styling */
+  --ifm-heading-color: #ffffff;
+  --ifm-hr-border-color: #3f3f46;
+  
+  /* Blockquotes */
+  --ifm-blockquote-color: #a1a1aa;
+  --ifm-blockquote-border-left-color: #2dd4bf;
+  
+  /* Tables */
+  --ifm-table-border-color: #3f3f46;
+  --ifm-table-stripe-background: rgba(45, 212, 191, 0.05);
+}
+
+/* Markdown content styling - ensure proper color inheritance */
+.markdown {
+  color: var(--ifm-color-content);
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  color: var(--ifm-heading-color);
+}
+
+.markdown a {
+  color: var(--ifm-link-color);
+}
+
+.markdown a:hover {
+  color: var(--ifm-link-hover-color);
+}
+
+.markdown code {
+  background-color: var(--ifm-code-background);
+  color: var(--ifm-code-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.markdown pre {
+  background-color: var(--ifm-code-background);
+  border: 1px solid var(--ifm-border-color);
+}
+
+.markdown blockquote {
+  color: var(--ifm-blockquote-color);
+  border-left-color: var(--ifm-blockquote-border-left-color);
+}
+
+.markdown table {
+  border-color: var(--ifm-table-border-color);
+}
+
+.markdown table tr:nth-child(2n) {
+  background-color: var(--ifm-table-stripe-background);
+}
+
+.markdown hr {
+  border-color: var(--ifm-hr-border-color);
 }
 
 /* -------------------------------- Nav Bar Styling -------------------------------- */
-
-/* Custom Docs button styling */
-.navbar__item--docs {
-  font-weight: 800;
-  font-size: 1.1rem;
-}
 
 /* GitHub icon styling */
 .header-github-link {
@@ -59,9 +220,14 @@
 }
 
 .header-github-link svg {
-  fill: white;
+  fill: var(--ifm-font-color-base);
   width: 20px;
   height: 20px;
+  transition: fill 0.2s ease;
+}
+
+.header-github-link svg {
+  fill: #ffffff;
 }
 
 /* Navbar brand (logo) styling */
