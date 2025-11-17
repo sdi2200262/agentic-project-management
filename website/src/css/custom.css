@@ -29,3 +29,35 @@
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
 
+/* GitHub icon styling */
+.header-github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none !important;
+  border: none;
+  text-decoration: none;
+}
+
+.header-github-link:hover {
+  opacity: 0.6;
+}
+
+.header-github-link:before {
+  display: none;
+}
+
+.header-github-link svg {
+  fill: currentColor;
+  width: 20px;
+  height: 20px;
+}
+
+/* Custom Docs button styling */
+.navbar__item--docs {
+  font-weight: 500;
+}
+
