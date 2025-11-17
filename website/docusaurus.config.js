@@ -67,12 +67,6 @@ const config = {
         title: 'Agentic PM',
         items: [
           {
-            to: '/docs',
-            position: 'left',
-            label: 'Documentation',
-            className: 'navbar__item--docs',
-          },
-          {
             type: 'search',
             position: 'right',
           },
@@ -84,7 +78,6 @@ const config = {
         ],
       },
       footer: {
-        style: 'dark',
         links: [
           {
             title: 'Docs',
