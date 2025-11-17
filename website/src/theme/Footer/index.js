@@ -1,5 +1,6 @@
 import React from 'react';
 import FooterOriginal from '@theme-original/Footer';
+import './index.css';
 
 // Export the original Footer for direct use
 export {FooterOriginal as Footer};
