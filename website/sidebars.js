@@ -13,7 +13,7 @@ const sidebars = {
     'index',
     {
       type: 'category',
-      label: 'Getting Started',
+      label: 'Welcome',
       collapsed: false,
       items: [
         'introduction',
@@ -25,8 +25,8 @@ const sidebars = {
       label: 'Core Concepts',
       collapsed: false,
       items: [
-        'agent-types',
         'workflow-overview',
+        'agent-types',
         'cli',
       ],
     },
@@ -45,8 +45,8 @@ const sidebars = {
       collapsed: true,
       items: [
         'modifying-apm',
-        'token-consumption-tips',
         'troubleshooting-guide',
+        'token-consumption-tips',
       ],
     },
   ],

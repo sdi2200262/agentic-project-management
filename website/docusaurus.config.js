@@ -58,11 +58,11 @@ const config = {
         logo: {
           alt: 'Agentic PM Logo',
           src: 'img/logo.svg',
+          href: '/',
         },
         items: [
           {
-            type: 'docSidebar',
-            sidebarId: 'tutorialSidebar',
+            to: '/docs',
             position: 'left',
             label: 'Docs',
           },
