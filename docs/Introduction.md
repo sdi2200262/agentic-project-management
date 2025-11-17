@@ -106,7 +106,7 @@ Below is a visual overview of the APM workflow, illustrating the full process fr
 > **Note:** This overview omits some intermediate steps and sub-processes in both the Setup Phase and Task Loop Phase for brevity. For a complete, detailed workflow breakdown, see the [Workflow Overview](Workflow_Overview.md) document.
 
 <div align="center">
-  <img src="../assets/apm-workflow-diagram.png" alt="APM v0.5 - Agentic Spec-driven Development" width="1200" style={{maxWidth: '100%'}}/>
+  <img src={require('@site/static/img/apm-workflow-diagram.png').default} alt="APM v0.5 - Agentic Spec-driven Development" width="1200" style={{maxWidth: '100%'}}/>
 </div>
 
 ---
