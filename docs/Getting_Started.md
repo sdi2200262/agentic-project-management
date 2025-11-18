@@ -40,13 +40,13 @@ APM agents function best with models that excel at systematic reasoning and cont
 
 ## Notes for specific AI IDEs
 
+Notes for specific IDEs will be added here as new releases occur and user feedback is collected.
+
 > **As of November 2025, GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism that is known to be buggy and can break cached context, disrupting APM workflows.
 >
 > * **If summarization triggers (in any phase)**: The agent may lose track of crucial context (guides, prompts, task details), resulting in degraded responses. **Stop the response immediately**, then re-provide the necessary prompts, guides, or task context before continuing. If issues persist, consider starting a new agent session and manually rebuilding context to resume work where you left off.
 >
 > **Tip:** Consider disabling the summarization mechanism by setting `github.copilot.chat.summarizeAgentConversationHistory.enabled` to `false` in your Copilot settings.
->
-> > Additional notes for specific IDEs will be added here as new releases occur and user feedback is collected.
 
 ---
 
@@ -234,9 +234,9 @@ The Manager Agent will create a **Task Assignment Prompt** for the first task in
 1.  **Open New Chat**: Create another dedicated chat session for the assigned Implementation Agent.
 2.  **Name Appropriately**: Use the agent name from the Implementation Plan (e.g., "Agent_Frontend").
 3.  **Enter the Implementation Agent Initialization Command**:
-    ```
-    /apm-3-initiate-implementation
-    ```
+```
+/apm-3-initiate-implementation
+```
 The Implementation Agent will confirm its role, read the Memory Log Guide, and wait for the Task Assignment.
 
 ### 5.3 Deliver Task Assignment
@@ -254,8 +254,8 @@ The Implementation Agent will execute the task in one of two ways:
   * **Single-Step Tasks**: Agent completes all subtasks and proceeds directly to Memory Logging.
   * **Multi-Step Tasks**: Agent executes step-by-step with your confirmation at each stage. You can provide feedback and request modifications between steps.
 
-> **Efficiency tip**: Request step combination for related work: `"Step 2 looks alright. Combine steps 3-4 and log in your next response."`
-> **Explanation Tip:** Ask the Manager Agent to include explanation instructions in Task Assignment Prompts, or request detailed explanations directly from the Implementation Agent during task execution.
+> * **Efficiency tip**: Request step combination for related work: `"Step 2 looks alright. Combine steps 3-4 and log in your next response."`
+> * **Explanation Tip:** Ask the Manager Agent to include explanation instructions in Task Assignment Prompts, or request detailed explanations directly from the Implementation Agent during task execution.
 
 Once task is complete, or faced serious blockers, the Agent will create a concise Memory Log entry summarizing task completion, outputs, any delegations or any issues encountered, and next steps or recommendations.
 
