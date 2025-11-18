@@ -1,0 +1,143 @@
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.getAllDocsSection {
+  margin-top: auto;
+  /* This pushes the section to the bottom of the content area */
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background-color: var(--ifm-toc-border-color);
+  margin-bottom: 0.5rem;
+}
+
+.dropdownContainer {
+  position: relative;
+  width: 100%;
+  /* Ensure dropdown stays within sidebar bounds */
+  overflow: visible;
+}
+
+.getAllDocsButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--ifm-toc-border-color);
+  border-top: 2px solid var(--ifm-color-primary);
+  border-radius: 6px;
+  color: var(--ifm-font-color-base);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  position: relative;
+}
+
+.getAllDocsButton:hover {
+  background-color: var(--ifm-color-emphasis-100);
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+}
+
+.getAllDocsButton:active {
+  transform: scale(0.98);
+}
+
+.copyIcon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.copyButtonText {
+  flex: 1;
+  text-align: left;
+  font-weight: 500;
+}
+
+.dropdownArrow {
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s ease;
+  margin-left: auto;
+}
+
+.dropdownArrowOpen {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  bottom: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  background-color: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+  animation: slideUp 0.2s ease;
+  max-height: 200px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  background: transparent;
+  border: none;
+  color: var(--ifm-font-color-base);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  font-family: inherit;
+  text-align: left;
+  font-weight: 500;
+}
+
+.dropdownItem:hover {
+  background-color: var(--ifm-color-emphasis-100);
+}
+
+.dropdownItem:active {
+  background-color: var(--ifm-color-emphasis-200);
+}
+
+.dropdownItem:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dropdownItem svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.dropdownItem span {
+  flex: 1;
+}
