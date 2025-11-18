@@ -196,6 +196,13 @@
   border-color: var(--ifm-hr-border-color);
 }
 
+/* Remove vertical border from TOC */
+.table-of-contents,
+.theme-doc-toc-mobile,
+[class*="table-of-contents"] {
+  border-left: none !important;
+}
+
 /* -------------------------------- Nav Bar Styling -------------------------------- */
 
 /* GitHub icon styling */
