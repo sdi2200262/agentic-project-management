@@ -50,7 +50,11 @@ export default function FooterWrapper(props) {
           </div>
         )}
         <div className="footer-logo-container">
-          <APMLogo fontSize={16} />
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <div>
+              <APMLogo fontSize={16} />
+            </div>
+          </Link>
         </div>
       </div>
 
