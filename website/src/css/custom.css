@@ -67,10 +67,29 @@
   /* Markdown content styling for light theme */
   --ifm-heading-color: #1a1a1a;
   --ifm-hr-border-color: #e4e4e7;
-  --ifm-blockquote-color: #52525b;
+  --ifm-blockquote-background-color: #f0fdfabd;
+  --ifm-blockquote-color: #0f766e;
   --ifm-blockquote-border-left-color: #14b8a6;
   --ifm-table-border-color: #e4e4e7;
-  --ifm-table-stripe-background: rgba(20, 184, 166, 0.05);
+  --ifm-table-head-background-color: #f4f4f5; /* Different from rows, matching theme */
+  --ifm-table-stripe-background: rgba(20, 184, 166, 0.05); /* Light cyan for light theme */
+  
+  /* Additional markdown element colors - customize these as needed */
+  --markdown-paragraph-color: #1a1a1a;
+  --markdown-list-color: #1a1a1a;
+  --markdown-list-marker-color: #14b8a6; /* Cyan - keep as is */
+  --markdown-strong-color: #1a1a1a; /* Black bold for light theme */
+  --markdown-em-color: #0d9488;
+  --markdown-image-border-color: #e4e4e7;
+  --markdown-image-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --markdown-kbd-background: #f4f4f5;
+  --markdown-kbd-border: #d4d4d8;
+  --markdown-kbd-color: #1a1a1a;
+  
+  /* Inline code styling - cyan text, cyan border, low opacity cyan background */
+  --markdown-inline-code-color: #14b8a6; /* Cyan text */
+  --markdown-inline-code-border: #14b8a6; /* Cyan border */
+  --markdown-inline-code-background: rgba(20, 184, 166, 0.1); /* Low opacity cyan background */
 }
 
 /* Dark Theme - Matching screenshot colors */
@@ -97,7 +116,7 @@
   /* Code blocks */
   --ifm-code-font-size: 95%;
   --ifm-code-background: #1a1a1a;
-  --ifm-code-color: #f472b6;
+  --ifm-code-color: #5eead4;
   --docusaurus-highlighted-code-line-bg: rgba(45, 212, 191, 0.2); /* Teal highlight */
   
   /* Links */
@@ -134,63 +153,267 @@
   --ifm-hr-border-color: #3f3f46;
   
   /* Blockquotes */
-  --ifm-blockquote-color: #a1a1aa;
+  --ifm-blockquote-background-color: #48484fd1;
+  --ifm-blockquote-color: #ffffff;
   --ifm-blockquote-border-left-color: #2dd4bf;
   
   /* Tables */
   --ifm-table-border-color: #3f3f46;
-  --ifm-table-stripe-background: rgba(45, 212, 191, 0.05);
+  --ifm-table-head-border-color: #0b0b0c;
+  --ifm-table-head-background-color: #3f3f46d7; /* Lighter gray to stand out more, matching theme */
+  --ifm-table-stripe-background: rgba(45, 212, 191, 0.1); /* Dark cyan for dark theme */
+  
+  /* Additional markdown element colors for dark theme - customize these as needed */
+  --markdown-paragraph-color: #ffffff;
+  --markdown-list-color: #ffffff;
+  --markdown-list-marker-color: #5eead4; /* Cyan - keep as is */
+  --markdown-strong-color: #ffffff; /* White bold for dark theme */
+  --markdown-em-color: #5eead4;
+  --markdown-image-border-color: #3f3f46;
+  --markdown-image-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --markdown-kbd-background: #27272a;
+  --markdown-kbd-border: #3f3f46;
+  --markdown-kbd-color: #ffffff;
+  
+  /* Inline code styling - cyan text, cyan border, low opacity cyan background */
+  --markdown-inline-code-color: #5eead4; /* Cyan text */
+  --markdown-inline-code-border: #5eead4; /* Cyan border */
+  --markdown-inline-code-background: rgba(94, 234, 212, 0.1); /* Low opacity cyan background */
 }
 
-/* Markdown content styling - ensure proper color inheritance */
-.markdown {
+/* ========================================
+ * MARKDOWN CONTENT STYLING
+ * ========================================
+ * Customize markdown rendering colors and styles here.
+ * All selectors target elements within .markdown or .theme-doc-markdown
+ * ======================================== */
+
+/* Base markdown container */
+.markdown,
+.theme-doc-markdown {
   color: var(--ifm-color-content);
 }
 
+/* Headings - customize individual heading levels */
 .markdown h1,
 .markdown h2,
 .markdown h3,
 .markdown h4,
 .markdown h5,
-.markdown h6 {
+.markdown h6,
+.theme-doc-markdown h1,
+.theme-doc-markdown h2,
+.theme-doc-markdown h3,
+.theme-doc-markdown h4,
+.theme-doc-markdown h5,
+.theme-doc-markdown h6 {
   color: var(--ifm-heading-color);
+  font-weight: 600;
 }
 
-.markdown a {
+/* Individual heading level customization (uncomment to customize) */
+/*
+.markdown h1 { color: #your-color; }
+.markdown h2 { color: #your-color; }
+.markdown h3 { color: #your-color; }
+*/
+
+/* Paragraphs */
+.markdown p,
+.theme-doc-markdown p {
+  color: var(--markdown-paragraph-color);
+  line-height: 1.7;
+}
+
+/* Links */
+.markdown a,
+.theme-doc-markdown a {
   color: var(--ifm-link-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-.markdown a:hover {
+.markdown a:hover,
+.theme-doc-markdown a:hover {
   color: var(--ifm-link-hover-color);
+  text-decoration: underline;
 }
 
-.markdown code {
-  background-color: var(--ifm-code-background);
-  color: var(--ifm-code-color);
-  border: 1px solid var(--ifm-color-emphasis-300);
+/* Inline code - cyan text, cyan border, low opacity cyan background */
+.markdown code:not(pre code),
+.theme-doc-markdown code:not(pre code) {
+  background-color: var(--markdown-inline-code-background);
+  color: var(--markdown-inline-code-color);
+  border: 1px solid var(--markdown-inline-code-border);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-size: var(--ifm-code-font-size);
+  font-family: var(--ifm-font-family-monospace);
 }
 
-.markdown pre {
+/* Code blocks */
+.markdown pre,
+.theme-doc-markdown pre {
   background-color: var(--ifm-code-background);
   border: 1px solid var(--ifm-border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
 }
 
-.markdown blockquote {
+.markdown pre code,
+.theme-doc-markdown pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--ifm-code-color); /* Use original code color for code blocks */
+}
+
+/* Blockquotes */
+.markdown blockquote,
+.theme-doc-markdown blockquote {
   color: var(--ifm-blockquote-color);
-  border-left-color: var(--ifm-blockquote-border-left-color);
+  border-left: 4px solid var(--ifm-blockquote-border-left-color);
+  margin: 1.5rem 0;
+  font-style: italic;
+  background-color: var(--ifm-blockquote-background-color);
+  padding: 1rem 1rem 1rem 1.5rem;
+  border-radius: 4px;
 }
 
-.markdown table {
+/* Tables */
+.markdown table,
+.theme-doc-markdown table {
   border-color: var(--ifm-table-border-color);
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
 }
 
-.markdown table tr:nth-child(2n) {
+.markdown table th,
+.theme-doc-markdown table th {
+  background-color: var(--ifm-table-head-background-color);
+  color: var(--ifm-font-color-base);
+  font-weight: 600;
+  padding: 0.75rem;
+  border: 1px solid var(--ifm-table-head-border-color, var(--ifm-table-border-color)); /* Use header border color if defined, otherwise fallback to regular border */
+}
+
+.markdown table td,
+.theme-doc-markdown table td {
+  padding: 0.75rem;
+  border: 1px solid var(--ifm-table-border-color);
+}
+
+.markdown table tr:nth-child(2n),
+.theme-doc-markdown table tr:nth-child(2n) {
   background-color: var(--ifm-table-stripe-background);
 }
 
-.markdown hr {
+/* Horizontal rules */
+.markdown hr,
+.theme-doc-markdown hr {
   border-color: var(--ifm-hr-border-color);
+  border-width: 1px;
+  margin: 2rem 0;
 }
+
+/* Lists */
+.markdown ul,
+.markdown ol,
+.theme-doc-markdown ul,
+.theme-doc-markdown ol {
+  color: var(--markdown-list-color);
+  padding-left: 2rem;
+  margin: 1rem 0;
+}
+
+.markdown li,
+.theme-doc-markdown li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.markdown ul li::marker,
+.theme-doc-markdown ul li::marker {
+  color: var(--markdown-list-marker-color);
+}
+
+.markdown ol li::marker,
+.theme-doc-markdown ol li::marker {
+  color: var(--markdown-list-marker-color);
+}
+
+/* Nested lists */
+.markdown ul ul,
+.markdown ol ol,
+.markdown ul ol,
+.markdown ol ul,
+.theme-doc-markdown ul ul,
+.theme-doc-markdown ol ol,
+.theme-doc-markdown ul ol,
+.theme-doc-markdown ol ul {
+  margin: 0.5rem 0;
+}
+
+/* Strong (bold) text */
+.markdown strong,
+.theme-doc-markdown strong {
+  color: var(--markdown-strong-color);
+  font-weight: 700;
+}
+
+/* Emphasis (italic) text */
+.markdown em,
+.theme-doc-markdown em {
+  color: var(--markdown-em-color);
+  font-style: italic;
+}
+
+/* Images */
+.markdown img,
+.theme-doc-markdown img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--markdown-image-border-color);
+  border-radius: 6px;
+  box-shadow: var(--markdown-image-shadow);
+  margin: 1.5rem 0;
+}
+
+/* Keyboard keys (kbd) */
+.markdown kbd,
+.theme-doc-markdown kbd {
+  background-color: var(--markdown-kbd-background);
+  border: 1px solid var(--markdown-kbd-border);
+  border-radius: 4px;
+  color: var(--markdown-kbd-color);
+  padding: 0.2rem 0.4rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9em;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Definition lists */
+.markdown dl,
+.theme-doc-markdown dl {
+  margin: 1rem 0;
+}
+
+.markdown dt,
+.theme-doc-markdown dt {
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+  margin-top: 1rem;
+}
+
+.markdown dd,
+.theme-doc-markdown dd {
+  margin-left: 2rem;
+  color: var(--markdown-paragraph-color);
+}
+
+/* ------------------------------------ TOC Styling -------------------------------------- */
 
 /* Remove vertical border from TOC */
 .table-of-contents,
@@ -199,7 +422,7 @@
   border-left: none !important;
 }
 
-/* -------------------------------- Nav Bar Styling -------------------------------- */
+/* -------------------------------- Docs Nav Bar Styling -------------------------------- */
 
 /* GitHub icon styling */
 .header-github-link {
