@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import Content from '@theme-original/DocSidebar/Desktop/Content';
 import styles from './styles.module.css';
@@ -6,6 +6,7 @@ import styles from './styles.module.css';
 export default function ContentWrapper(props) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [copying, setCopying] = useState(false);
+  const [closeTimeout, setCloseTimeout] = useState(null);
 
   // Function to copy all docs
   const copyAllDocs = async () => {
@@ -26,7 +27,12 @@ export default function ContentWrapper(props) {
       }
 
       await navigator.clipboard.writeText(content);
-      setDropdownOpen(false);
+
+      // Close dropdown after a short delay
+      const timeout = setTimeout(() => {
+        setDropdownOpen(false);
+      }, 1000);
+      setCloseTimeout(timeout);
     } catch (error) {
       console.error('Failed to copy all docs:', error);
       alert('Failed to copy all docs. Please try downloading instead.');
@@ -44,8 +50,22 @@ export default function ContentWrapper(props) {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    setDropdownOpen(false);
+
+    // Close dropdown after a short delay
+    const timeout = setTimeout(() => {
+      setDropdownOpen(false);
+    }, 1000);
+    setCloseTimeout(timeout);
   };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeout) {
+        clearTimeout(closeTimeout);
+      }
+    };
+  }, [closeTimeout]);
 
   return (
     <div className={styles.contentContainer}>
