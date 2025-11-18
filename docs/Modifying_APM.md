@@ -9,23 +9,6 @@ sidebar_position: 9
 
 APM is designed to be highly customizable. Whether you're adapting prompts for specific workflows, adding new delegation guides, or integrating powerful MCP tools, this guide shows you how to tailor APM to your project's unique needs.
 
-## Table of Contents
-
-- [Customization in v0.5 (Work in Progress)](#customization-in-v05-work-in-progress)
-- [Manager Agent Coordination Customization](#manager-agent-coordination-customization)
-- [Customizing Core Prompts](#customizing-core-prompts)
-  - [Setup Agent Customization](#setup-agent-customization)
-  - [Implementation Agent Execution Customization](#implementation-agent-execution-customization)
-  - [Task Assignment Prompt Customization](#task-assignment-prompt-customization)
-- [Creating Custom Delegation Guides](#creating-custom-delegation-guides)
-- [MCP Tool Integration](#mcp-tool-integration)
-  - [Recommended MCP Tools for APM](#recommended-mcp-tools-for-apm)
-  - [Integrating MCP Tools with APM Agents](#integrating-mcp-tools-with-apm-agents)
-  - [Custom MCP Tool Configuration Examples](#custom-mcp-tool-configuration-examples)
-- [Domain-Specific Customization Examples](#domain-specific-customization-examples)
-- [Best Practices for APM Customization](#best-practices-for-apm-customization)
-
----
 
 ## Customization in v0.5 (Work in Progress)
 
