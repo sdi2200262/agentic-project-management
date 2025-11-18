@@ -9,16 +9,6 @@ sidebar_position: 3
 
 **A Structured, Multi-Agent Workflow System for Complex Project Execution with AI Assistants**
 
-## Table of Contents
-
-- [What is APM?](#what-is-apm)
-- [The Problem APM Solves](#the-problem-apm-solves)
-- [APM's Approach](#apms-approach)
-- [Multi-Agent Coordination](#multi-agent-coordination)
-- [The APM Workflow](#the-apm-workflow)
-- [Core Framework and Customization](#core-framework-and-customization)
-- [Documentation Overview](#documentation-overview)
-- [Visual Workflow Overview](#visual-workflow-overview)
 
 ## What is APM?
 
