@@ -13,21 +13,6 @@ This guide walks you through launching your first APM session, from initial setu
 
 > For a detailed walkthrough of APM workflows and protocols, refer to the [Workflow Overview document](Workflow_Overview.md).
 
-## Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Notes for specific AI IDEs](#notes-for-specific-ai-ides)
-- [Step 1: Install and Initialize APM](#step-1-install-and-initialize-apm)
-- [Step 2: Initialize Setup Agent](#step-2-initialize-setup-agent)
-- [Step 3: Work Through Setup Phase](#step-3-work-through-setup-phase)
-- [Step 4: Initialize Manager Agent](#step-4-initialize-manager-agent)
-- [Step 5: First Task Assignment](#step-5-first-task-assignment)
-- [Step 6: Complete First Task Cycle](#step-6-complete-first-task-cycle)
-- [Establish Your Workflow](#establish-your-workflow)
-- [Common First Session Issues](#common-first-session-issues)
-- [Tips for Success](#tips-for-success)
-
----
 
 ## Prerequisites
 

@@ -9,20 +9,6 @@ sidebar_position: 11
 
 Effective troubleshooting prevents minor issues from becoming project blockers. This guide covers common scenarios encountered during APM sessions and provides recovery strategies.
 
-## Table of Contents
-
-- [Setup Phase Issues](#setup-phase-issues)
-  - [1. Omitted Requirements During Context Synthesis](#1-omitted-requirements-during-context-synthesis)
-  - [2. Interrupted Project Breakdown](#2-interrupted-project-breakdown)
-  - [3. Interrupted Implementation Plan Enhancement](#3-interrupted-implementation-plan-enhancement)
-- [Task Loop Issues](#task-loop-issues)
-  - [1. Missing Context Integration Instructions](#1-missing-context-integration-instructions)
-  - [2. Implementation Plan Needs Revisions](#2-implementation-plan-needs-revisions)
-- [Handover Problems](#handover-problems)
-  - [1. Handling a Handover After the Context Window is Full](#1-handling-a-handover-after-the-context-window-is-full)
-  - [2. Recovering from a Late Handover](#2-recovering-from-a-late-handover)
-
----
 
 ## Setup Phase Issues
 

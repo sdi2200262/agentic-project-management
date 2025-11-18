@@ -9,21 +9,6 @@ sidebar_position: 7
 
 APM's effectiveness stems from context scope management and a dynamic memory system that enable focused agent interactions while preserving project continuity. This document explores how APM leverages scoped context for emergent specialization and implements progressive memory management for cost-effective, scalable project execution.
 
-## Table of Contents
-
-- [Context Scope Architecture](#context-scope-architecture)
-  - [Emergent Specialization Through Scoped Context](#emergent-specialization-through-scoped-context)
-  - [Context Scope Mechanics](#context-scope-mechanics)
-  - [Cross-Agent Dependencies and Context Integration](#cross-agent-dependencies-and-context-integration)
-- [Dynamic Memory Bank System](#dynamic-memory-bank-system)
-  - [Evolution from Simple Memory Banks](#evolution-from-simple-memory-banks)
-  - [Dynamic Memory System Architecture](#dynamic-memory-system-architecture)
-- [Context & Memory Preservation Through Handovers](#context--memory-preservation-through-handovers)
-  - [Handover Procedure Concept](#handover-procedure-concept)
-  - [Two-Artifact Handover System](#two-artifact-handover-system)
-  - [Context Survival and the Limits of Multiple Handovers](#context-survival-and-the-limits-of-multiple-handovers)
-
----
 
 ## Context Scope Architecture
 

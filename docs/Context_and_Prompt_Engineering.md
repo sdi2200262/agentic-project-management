@@ -9,21 +9,6 @@ sidebar_position: 8
 
 APM's sophisticated agent coordination relies on advanced context and prompt engineering techniques that work synergistically to create reliable, efficient AI workflows. This technical document explores how APM constructs operational reality for LLMs and engineers prompts for maximum parsing fidelity and token efficiency.
 
-## Table of Contents
-
-- [Context Engineering: Constructing LLM Operational Reality](#context-engineering-constructing-llm-operational-reality)
-  - [Defining Agent Operational Boundaries](#defining-agent-operational-boundaries)
-  - [Processes and Workflows](#processes-and-workflows)
-  - [Contextual Specialization Framework](#contextual-specialization-framework)
-- [Prompt Engineering: Optimizing LLM Interaction Fidelity](#prompt-engineering-optimizing-llm-interaction-fidelity)
-  - [Structured Markdown for Enhanced Parsing](#structured-markdown-for-enhanced-parsing)
-  - [YAML Frontmatter Integration](#yaml-frontmatter-integration)
-- [APM Prompt Asset Architecture](#apm-prompt-asset-architecture)
-  - [User-Provided Assets](#user-provided-assets)
-  - [Autonomous Access Assets](#autonomous-access-assets)
-  - [Meta-Prompts (Agent-Generated Dynamic Assets)](#meta-prompts-agent-generated-dynamic-assets)
-
----
 
 ## Context Engineering: Constructing LLM Operational Reality
 
