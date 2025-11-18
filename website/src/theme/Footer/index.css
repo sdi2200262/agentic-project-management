@@ -19,3 +19,36 @@
   text-align: center;
 }
 
+/* Custom footer additions */
+.footer-custom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  background-color: var(--ifm-footer-background-color);
+  border-top: 1px solid var(--ifm-border-color);
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-image img {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.footer-image img:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
