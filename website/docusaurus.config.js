@@ -88,12 +88,37 @@ const config = {
             title: 'Docs',
             items: [
               {
+                label: 'Documentation Hub',
+                to: '/docs',
+              },
+              {
                 label: 'Getting Started',
                 to: '/docs/getting-started',
               },
               {
                 label: 'Introduction',
                 to: '/docs/introduction',
+              },
+              {
+                label: 'CLI Guide',
+                to: '/docs/cli',
+              }
+            ],
+          },
+          {
+            title: 'More',
+            items: [
+              {
+                label: 'Changelog',
+                href: 'https://github.com/sdi2200262/agentic-project-management/blob/main/CHANGELOG.md',
+              },
+              {
+                label: 'Versioning',
+                href: 'https://github.com/sdi2200262/agentic-project-management/blob/main/VERSIONING.md',
+              },
+              {
+                label: 'NPM',
+                href: 'https://www.npmjs.com/package/agentic-pm',
               },
             ],
           },
@@ -110,17 +135,7 @@ const config = {
               },
             ],
           },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'NPM',
-                href: 'https://www.npmjs.com/package/agentic-pm',
-              },
-            ],
-          },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Agentic Project Management`,
       },
       prism: {
         theme: prismThemes.github,
