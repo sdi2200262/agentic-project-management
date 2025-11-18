@@ -120,7 +120,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Agentic Project Management. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} Agentic Project Management`,
       },
       prism: {
         theme: prismThemes.github,
