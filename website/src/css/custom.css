@@ -84,12 +84,8 @@
   --ifm-color-primary-lighter: #7dd3fc; /* Blue-teal blend */
   --ifm-color-primary-lightest: #99f6e4;
   
-  /* Background colors - Dark blue */
-  --ifm-background-color: #02233a; /* Dark blue */
-  --ifm-background-surface-color: #01304a; /* Slightly lighter dark blue */
-  
   /* Navbar - Dark background */
-  --ifm-navbar-background-color: #01323e;
+  --ifm-navbar-background-color: #1b1b1e;
   --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   
   /* Text colors - White */
