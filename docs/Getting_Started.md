@@ -78,8 +78,8 @@ apm init
 
 <div align="center">
   <img 
-    src={require('@site/static/docs-img/cursor-apm-init.png').default} 
-    alt="Initialize APM for your project using the `agentic-pm` CLI." 
+    src={require('@site/static/docs-gif/cursor-apm-install-and-init.gif').default} 
+    alt="Install `agentic-pm` CLI and initialize an APM session for your project." 
     width="1200" 
     style={{ maxWidth: '100%', borderRadius: '14px' }}
   />
@@ -98,15 +98,6 @@ The `init` command will:
   * **Install Commands**: Create assistant-specific slash commands in the appropriate directory (e.g., `.cursor/`, `.github/copilot/`, etc.)
 
 After initialization completes, you're ready to begin using APM.
-
-<div align="center">
-  <img 
-    src={require('@site/static/docs-img/cursor-apm-init-complete.png').default} 
-    alt="Installed assets for your APM session." 
-    width="1200" 
-    style={{ maxWidth: '100%', borderRadius: '14px' }}
-  />
-</div>
 
 ---
 
@@ -130,7 +121,7 @@ To initialize the Setup Agent, simply enter the command:
 
 <div align="center">
   <img 
-    src={require('@site/static/docs-img/cursor-apm-setup-agent.png').default} 
+    src={require('@site/static/docs-gif/cursor-apm-setup-agent.gif').default} 
     alt="Initialize Setup Agent using the `/apm-initiate-setup` command." 
     width="1200" 
     style={{ maxWidth: '100%', borderRadius: '14px' }}
@@ -158,7 +149,7 @@ The Setup Agent will guide you through each step systematically, always asking f
   * **Technical Requirements**: Discuss technologies, constraints, dependencies, and technical scope.
   * **Process Requirements**: Explain workflow preferences, quality standards, and coordination needs.
 
-> **Tips for Context Synthesis:** Share all relevant project details and constraints, consider long-term needs, and discuss any uncertainties or options with the Setup Agent.
+> **Tips for Context Synthesis:** Share all relevant project details, constraints, and uncertainties with the Setup Agent. **Try to provide requested context in the order that you are prompted** — early delivery of artifacts like PRDs or documentation improves the Agent's discovery process.
 
 ### 3.2 Project Breakdown
 
@@ -325,7 +316,7 @@ When agents approach the context window limit, perform a **Handover Procedure** 
 
 ---
 
-**Congratulations!** You've successfully launched your first APM session. The structured, spec-driven approach provides reliable project execution and prevents the chaos typical of AI collaboration.
+**Congratulations!** You've successfully launched your first APM session. The structured, agentic spec-driven approach provides reliable project execution and prevents the chaos typical of AI collaboration.
 
 **Additional Resources:**
 
