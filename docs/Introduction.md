@@ -85,7 +85,7 @@ The **Manager Agent** and **Implementation Agents** enter a coordination loop:
 
 ## Installation & Usage
 
-APM is installed via the `agentic-pm` CLI, which scaffolds the necessary guides and prompt templates into your project workspace. To get started with installation and your first session, see [Getting Started](Getting_Started.md).
+APM is installed via the [`agentic-pm`](https://www.npmjs.com/package/agentic-pm) CLI, which scaffolds the necessary guides and prompt templates into your project workspace. To get started with installation and your first session, see [Getting Started](Getting_Started.md).
 
 ---
 
