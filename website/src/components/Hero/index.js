@@ -1,8 +1,12 @@
 import React from 'react';
 import styles from './styles.module.css';
+import packageJson from '../../../../package.json';
+import { useStats } from '@site/src/hooks/useStats';
+import { formatNumber } from '@site/src/utils/format';
 
 export default function Hero() {
   const [copied, setCopied] = React.useState(false);
+  const { githubStars, npmDownloads, npmAllTimeDownloads, isLoading } = useStats();
 
   const handleCopy = () => {
     navigator.clipboard.writeText('npm install -g agentic-pm');
@@ -51,9 +55,24 @@ export default function Hero() {
           <div>Management</div>
         </h1>
         <p className={styles.heroVersion}>
-          Currently v0.5.1<br />
-          with 1.5k stars
+          Currently v{packageJson.version}
         </p>
+        <div className={styles.statsContainer}>
+          {npmDownloads !== null && (
+            <div className={styles.statItem}>
+              <span className={styles.statLabel}>NPM:</span>
+              <span className={styles.statValue}>
+                {formatNumber(npmDownloads)} this week
+              </span>
+            </div>
+          )}
+          {githubStars !== null && (
+            <div className={styles.statItem}>
+              <span className={styles.statLabel}>GitHub:</span>
+              <span className={styles.statValue}>{formatNumber(githubStars)}</span>
+            </div>
+          )}
+        </div>
       </div>
       
       <div className={styles.centerButtons}>

@@ -4,6 +4,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Footer from '@theme/Footer';
 import LandingHeader from '@site/src/components/LandingHeader';
 import Hero from '@site/src/components/Hero';
+import Contributors from '@site/src/components/Contributors';
 import styles from './index.module.css';
 
 export default function Home() {
@@ -42,8 +43,7 @@ export default function Home() {
 
         <section id="contributors" className={styles.section}>
           <div className={styles.sectionContent}>
-            <h2>Contributors</h2>
-            <p>Content for Contributors section</p>
+            <Contributors />
           </div>
         </section>
       </div>

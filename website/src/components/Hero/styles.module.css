@@ -65,10 +65,49 @@
   font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
   font-size: 1.125rem;
-  margin: 0;
+  margin: 0 0 1.5rem 0;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.5;
   text-align: left;
+}
+
+.statsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0;
+}
+
+.statItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.statIcon {
+  width: 16px;
+  height: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.statIcon[src] {
+  /* For img tags, remove color property */
+  color: unset;
+}
+
+.statLabel {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.statValue {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .centerButtons {
@@ -164,4 +203,15 @@
 .githubButton:hover {
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
   text-decoration: none;
+}
+
+.statsBadge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
 }
