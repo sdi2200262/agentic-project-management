@@ -463,8 +463,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .navbar__logo {
   padding-left: 2rem !important;
+}
+
+/* Prevent hover effects on navbar logo */
+.navbar__brand * {
+  pointer-events: none;
 }

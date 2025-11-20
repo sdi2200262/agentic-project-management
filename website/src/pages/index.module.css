@@ -3,6 +3,24 @@
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
+  background-color: #121212 !important;
+  color: #ffffff !important;
+  padding-top: 80px; /* Space for fixed header */
+}
+
+/* Force light mode styling regardless of theme */
+:global([data-theme='dark']) .landingPage {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+.section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-margin-top: 80px; /* Account for fixed header */
 }
 
 .mainContent {
@@ -11,6 +29,12 @@
   justify-content: center;
   flex: 1;
   width: 100%;
+}
+
+.sectionContent {
+  max-width: 1200px;
+  padding: 2rem;
+  text-align: center;
 }
 
 .docsButton {

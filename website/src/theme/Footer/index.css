@@ -45,6 +45,11 @@
   padding-right: 2rem;
 }
 
+.footer-logo-container * {
+  pointer-events: none;
+  cursor: default;
+}
+
 /* Links section with columns */
 .footer-links-container {
   display: flex;
