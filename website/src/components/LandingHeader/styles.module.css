@@ -6,15 +6,28 @@
   left: 0;
   right: 0;
   z-index: 1000;
+  padding: 1.5rem 2rem;
 }
 
 .headerContent {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2.5rem 2rem;
+  padding: 1rem 2rem;
   display: flex;
   align-items: center;
   position: relative;
+  isolation: isolate;
+}
+
+.headerContent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 18, 18, 0.2);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  border-radius: 16px;
+  z-index: -1;
 }
 
 /* Logo Section */
