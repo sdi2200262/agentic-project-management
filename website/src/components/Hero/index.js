@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from './styles.module.css';
 import packageJson from '../../../../package.json';
 import { useStats } from '@site/src/hooks/useStats';
 import { formatNumber } from '@site/src/utils/format';
+import { canvasPath, wigglePreset } from 'blobs/v2/animate';
 
 export default function Hero() {
   const [copied, setCopied] = React.useState(false);
+  const [blobReady, setBlobReady] = React.useState(false);
   const { githubStars, npmDownloads, isLoading } = useStats();
+  const canvasRef = useRef(null);
+  const animationRef = useRef(null);
 
   const handleCopy = () => {
     navigator.clipboard.writeText('npm install -g agentic-pm');
@@ -14,39 +18,117 @@ export default function Hero() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size
+    const width = 1224;
+    const height = 644;
+    const devicePixelRatio = window.devicePixelRatio || 1;
+    
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+
+    // Create animation with default timestamp provider
+    const animation = canvasPath();
+    animationRef.current = animation;
+
+    // Load pattern image
+    let fillPattern = null;
+    const patternImage = new Image();
+    patternImage.crossOrigin = 'anonymous';
+    
+    // Set up pattern once image loads
+    patternImage.onload = () => {
+      try {
+        fillPattern = ctx.createPattern(patternImage, 'no-repeat');
+        if (fillPattern && fillPattern.setTransform) {
+          try {
+            const scaleX = width / patternImage.width;
+            const scaleY = height / patternImage.height;
+            const matrix = new DOMMatrix();
+            matrix.scaleSelf(scaleX, scaleY);
+            fillPattern.setTransform(matrix);
+          } catch (e) {
+            // Fallback if setTransform fails
+            console.warn('Pattern transform not supported, using default');
+          }
+        }
+        
+        requestAnimationFrame(renderFrame);
+        setBlobReady(true);
+      } catch (e) {
+        console.warn('Failed to create pattern:', e);
+        fillPattern = null;
+        // Still start render loop with fallback
+        requestAnimationFrame(renderFrame);
+      }
+    };
+    
+    patternImage.onerror = () => {
+      console.warn('Failed to load blob image pattern from:', patternImage.src);
+      fillPattern = null;
+      requestAnimationFrame(renderFrame);
+      setBlobReady(true);
+    };
+    
+    patternImage.src = '/agentic-project-management/img/blobimg.png';
+
+    const baseSize = Math.min(width, height); 
+    
+    // Initialize with wiggle animation 
+    wigglePreset(
+      animation,
+      {
+        extraPoints: 8,
+        randomness: 4,
+        seed: Math.random(),
+        size: baseSize,
+      },
+      {
+        offsetX: (width - baseSize) / 2,
+        offsetY: (height - baseSize) / 2,
+      },
+      {
+        speed: 2, 
+        initialTransition: 500, 
+      }
+    );
+
+    const renderFrame = () => {
+      ctx.clearRect(0, 0, width, height);
+      
+      if (fillPattern) {
+        ctx.fillStyle = fillPattern;
+      } else {
+        const gradient = ctx.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, '#ec576b');
+        gradient.addColorStop(1, '#ff6b7a');
+        ctx.fillStyle = gradient;
+      }
+      
+      ctx.fill(animation.renderFrame());
+      requestAnimationFrame(renderFrame);
+    };
+    
+    return () => {
+    };
+  }, []);
+
   return (
     <div className={styles.heroWrapper}>
-      <svg className={styles.blob} viewBox="0 0 1224 644" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <pattern id="blobPattern" x="0" y="0" width="100%" height="100%" patternUnits="objectBoundingBox">
-            <image 
-            href="/agentic-project-management/img/blobimg.png" 
-            x="0" 
-            y="0" 
-            width="1224" 
-            height="644" 
-            preserveAspectRatio="xMidYMid slice"
-            />
-          </pattern>
-        </defs>
-        <path
-            fill="url(#blobPattern)"
-            d="M34.9823 477.878C-99.5032 325.878 181.906 48.6843 489.906 8.18429C962.906 -40.3157 1113.71 155.354 1143.41 187.684C1288.83 345.991 1216.91 550.184 1066.41 619.184C903.139 694.038 895.906 567.184 566.906 574.184C303.706 579.784 106.649 558.878 34.9823 477.878Z"
-        >
-          <animate
-            attributeName="d"
-            dur="10s"
-            repeatCount="indefinite"
-            values="
-              M34.9823 477.878C-99.5032 325.878 181.906 48.6843 489.906 8.18429C962.906 -40.3157 1113.71 155.354 1143.41 187.684C1288.83 345.991 1216.91 550.184 1066.41 619.184C903.139 694.038 895.906 567.184 566.906 574.184C303.706 579.784 106.649 558.878 34.9823 477.878Z;
-              
-              M45.9823 467.878C-89.5032 335.878 191.906 58.6843 499.906 18.18429C972.906 -30.3157 1103.71 165.354 1133.41 197.684C1278.83 355.991 1206.91 540.184 1056.41 609.184C893.139 684.038 885.906 577.184 556.906 584.184C293.706 589.784 96.649 548.878 45.9823 467.878Z;
-              
-              M34.9823 477.878C-99.5032 325.878 181.906 48.6843 489.906 8.18429C962.906 -40.3157 1113.71 155.354 1143.41 187.684C1288.83 345.991 1216.91 550.184 1066.41 619.184C903.139 694.038 895.906 567.184 566.906 574.184C303.706 579.784 106.649 558.878 34.9823 477.878Z
-            "
-          />
-        </path>
-      </svg>
+      <canvas 
+        ref={canvasRef} 
+        className={`${styles.blob} ${blobReady ? styles.blobVisible : ''}`} 
+      />
       <div className={styles.heroContent}>
       <div className={styles.topLeft}>
         <h1 className={styles.heroTitle}>
