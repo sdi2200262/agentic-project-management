@@ -50,9 +50,7 @@ export default function Contributors() {
     <div className={styles.contributorsSection}>
       <h2 className={styles.title}>Contributors</h2>
       <p className={styles.subtitle}>
-        APM is an Open Source project, and contributions are welcome.
-      </p>
-      <p className={styles.subtitle}>
+        APM is an Open Source project, and contributions are welcome. <br />
         Thank you to everyone who has contributed to this project!
       </p>
       <div className={styles.contributorsGrid}>

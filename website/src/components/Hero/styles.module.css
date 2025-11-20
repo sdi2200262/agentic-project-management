@@ -65,7 +65,7 @@
   font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
   font-size: 1.125rem;
-  margin: 0 0 1.5rem 0;
+  margin: 0;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.5;
   text-align: left;
@@ -75,12 +75,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-top: 0;
+  margin-top: 1.5rem;
 }
 
 .statItem {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.5rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.9375rem;
@@ -100,10 +100,6 @@
   color: unset;
 }
 
-.statLabel {
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-}
 
 .statValue {
   font-weight: 400;

@@ -3,7 +3,7 @@
  */
 
 /**
- * Format large numbers for display (e.g., 1234 -> "1.2k", 1234567 -> "1.2M")
+ * Format large numbers for display (e.g., 1234 -> "1.2k", 1234567 -> "1.2M", 692 -> "650+")
  * @param {number} num - Number to format
  * @returns {string} - Formatted string
  */
@@ -20,6 +20,8 @@ export function formatNumber(num) {
     return (num / 1000).toFixed(1) + 'k';
   }
   
-  return num.toString();
+  // For numbers below 1000, round down to nearest 50 and add a plus sign
+  const rounded = Math.floor(num / 50) * 50;
+  return rounded.toString() + '+';
 }
 
