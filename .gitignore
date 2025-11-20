@@ -114,3 +114,6 @@ website/.docusaurus/
 website/node_modules/
 # Generated at build-time by concat-docs
 website/static/all_docs.md
+
+# Large GIF files (exceed GitHub 100MB limit)
+website/static/docs-gif/*.gif
