@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.headerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* Logo Section */
+.logoSection {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Center wrapper to maintain equal spacing */
+.centerWrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logoSection * {
+  pointer-events: none;
+}
+
+/* Navigation */
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  isolation: isolate;
+}
+
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(70, 70, 70, 0.4);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  z-index: -1;
+}
+
+.navIndicator {
+  position: absolute;
+  height: calc(100% - 1rem);
+  top: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.navButton {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.5rem;
+  background: transparent;
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+  filter: none;
+  -webkit-filter: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.navButton:active {
+  transform: scale(0.98);
+}
+
+/* GitHub Link */
+.githubLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  color: #ffffff;
+  transition: opacity 0.2s ease;
+  text-decoration: none;
+  position: absolute;
+  right: 12rem;
+}
+
+.githubLink:hover {
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav {
+    gap: 0.25rem;
+    padding: 0.4rem 0.5rem;
+  }
+  
+  .navButton {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .logoText {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .logoText {
+    display: none;
+  }
+  
+  .nav {
+    flex-wrap: wrap;
+  }
+  
+  .navButton {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
