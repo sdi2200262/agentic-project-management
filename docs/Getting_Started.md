@@ -77,12 +77,16 @@ apm init
 ```
 
 <div align="center">
-  <img 
-    src={require('@site/static/docs-gif/cursor-apm-install-and-init.gif').default} 
-    alt="Install `agentic-pm` CLI and initialize an APM session for your project." 
-    width="1200" 
-    style={{ maxWidth: '100%', borderRadius: '14px' }}
-  />
+  <video 
+    controls 
+    autoplay 
+    loop 
+    muted 
+    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
+  >
+    <source src={require('@site/static/docs-video/cursor-apm-install-and-init.mp4').default} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 </div>
 
 
@@ -120,12 +124,16 @@ To initialize the Setup Agent, simply enter the command:
 ```
 
 <div align="center">
-  <img 
-    src={require('@site/static/docs-gif/cursor-apm-setup-agent.gif').default} 
-    alt="Initialize Setup Agent using the `/apm-initiate-setup` command." 
-    width="1200" 
-    style={{ maxWidth: '100%', borderRadius: '14px' }}
-  />
+  <video 
+    controls 
+    autoplay 
+    loop 
+    muted 
+    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
+  >
+    <source src={require('@site/static/docs-video/cursor-apm-setup-agent.mp4').default} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
 </div>
 
 ---
