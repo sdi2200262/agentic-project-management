@@ -17,12 +17,27 @@
 .blob {
   position: absolute;
   width: 1224px;
-  height: 450px;
-  top: 55%;
+  height: 644px;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
-  opacity: 1;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0s;
+}
+
+.blobVisible {
+  animation: fadeInBlob 1s ease-in-out forwards;
+}
+
+@keyframes fadeInBlob {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Hero Section */
