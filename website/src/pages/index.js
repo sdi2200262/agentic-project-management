@@ -2,6 +2,7 @@ import React from 'react';
 import {useHistory} from '@docusaurus/router';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Footer from '@theme/Footer';
+import LandingHeader from '@site/src/components/LandingHeader';
 import styles from './index.module.css';
 
 export default function Home() {
@@ -17,11 +18,37 @@ export default function Home() {
 
   return (
     <div className={styles.landingPage}>
-      <main className={styles.mainContent}>
-        <button className={styles.docsButton} onClick={handleGoToDocs}>
-          Go to Docs
-        </button>
-      </main>
+      <LandingHeader />
+      
+      <section id="home" className={styles.section}>
+        <div className={styles.mainContent}>
+          <button className={styles.docsButton} onClick={handleGoToDocs}>
+            Go to Docs
+          </button>
+        </div>
+      </section>
+
+      <section id="about" className={styles.section}>
+        <div className={styles.sectionContent}>
+          <h2>About</h2>
+          <p>Content for About section</p>
+        </div>
+      </section>
+
+      <section id="features" className={styles.section}>
+        <div className={styles.sectionContent}>
+          <h2>Features</h2>
+          <p>Content for Features section</p>
+        </div>
+      </section>
+
+      <section id="contributors" className={styles.section}>
+        <div className={styles.sectionContent}>
+          <h2>Contributors</h2>
+          <p>Content for Contributors section</p>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
