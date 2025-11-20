@@ -23,6 +23,7 @@
   align-items: center;
   cursor: pointer;
   flex-shrink: 0;
+  margin-right: 12rem;
 }
 
 /* Center wrapper to maintain equal spacing */
@@ -114,7 +115,7 @@
   transition: opacity 0.2s ease;
   text-decoration: none;
   position: absolute;
-  right: 12rem;
+  right: 6rem;
 }
 
 .githubLink:hover {
