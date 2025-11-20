@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500&family=Inconsolata&display=swap');
+
+/* Hero Wrapper */
+.heroWrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100px 0px;
+  background-position: center center;
+}
+
+.blob {
+  position: absolute;
+  width: 1224px;
+  height: 450px;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  opacity: 1;
+}
+
+/* Hero Section */
+.heroContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  width: 100%;
+  max-width: 1350px;
+  min-height: calc(100vh - 220px);
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.topLeft {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: start;
+}
+
+.heroTitle {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 4rem;
+  margin: 0 0 1.5rem 0;
+  line-height: 1;
+  color: #ffffff;
+  text-align: left;
+}
+
+.heroTitle div {
+  line-height: 1;
+}
+
+.heroVersion {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 1.125rem;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+  text-align: left;
+}
+
+.centerButtons {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+  align-items: start;
+  padding-top: 0rem;
+}
+
+.bottomRight {
+  grid-column: 2;
+  grid-row: 3;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin: 0;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: right;
+  align-self: end;
+  justify-self: end;
+}
+
+.installCommand {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.875rem 1.5rem;
+  gap: 1rem;
+  height: 56px;
+  box-sizing: border-box;
+}
+
+.commandText {
+  font-family: 'Inconsolata', monospace;
+  font-weight: 400;
+  font-size: 1.125rem;
+  flex: 1;
+  color: #ffffff;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: left;
+}
+
+.copyButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+  min-width: 36px;
+  height: 36px;
+}
+
+.copyButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.githubButton {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1.125rem;
+  padding: 0.875rem 1.5rem;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  white-space: nowrap;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.githubButton:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+}
