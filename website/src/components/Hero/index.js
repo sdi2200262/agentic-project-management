@@ -54,13 +54,14 @@ export default function Hero() {
           <div>Project</div>
           <div>Management</div>
         </h1>
-        <p className={styles.heroVersion}>
-          Currently v{packageJson.version}
-        </p>
         <div className={styles.statsContainer}>
+          <div className={styles.statItem}>
+            <span className={styles.heroVersion}>Currently:</span>
+            <span className={styles.statValue}>v{packageJson.version}</span>
+          </div>
           {npmDownloads !== null && (
             <div className={styles.statItem}>
-              <span className={styles.statLabel}>NPM:</span>
+              <span className={styles.heroVersion}>NPM:</span>
               <span className={styles.statValue}>
                 {formatNumber(npmDownloads)} this week
               </span>
@@ -68,7 +69,7 @@ export default function Hero() {
           )}
           {githubStars !== null && (
             <div className={styles.statItem}>
-              <span className={styles.statLabel}>GitHub:</span>
+              <span className={styles.heroVersion}>GitHub:</span>
               <span className={styles.statValue}>{formatNumber(githubStars)}</span>
             </div>
           )}
