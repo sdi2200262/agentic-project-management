@@ -54,38 +54,6 @@ export async function fetchNPMStats() {
 }
 
 /**
- * Fetch NPM package all-time download statistics
- * Note: NPM API doesn't have a reliable all-time endpoint, so this uses a wide date range
- * @returns {Promise<number|null>} - Total number of downloads (all-time) or null if unavailable
- */
-export async function fetchNPMAllTimeStats() {
-  try {
-    // Try using a very wide date range (last 5 years as approximation)
-    // NPM API doesn't have a true "all-time" endpoint
-    const fiveYearsAgo = new Date();
-    fiveYearsAgo.setFullYear(fiveYearsAgo.getFullYear() - 5);
-    const startDate = fiveYearsAgo.toISOString().split('T')[0];
-    const endDate = new Date().toISOString().split('T')[0];
-    
-    const response = await fetch(
-      `https://api.npmjs.org/downloads/point/${startDate}:${endDate}/${NPM_PACKAGE}`
-    );
-    
-    if (!response.ok) {
-      // If this fails, return null - we'll just show weekly downloads
-      return null;
-    }
-    
-    const data = await response.json();
-    return data.downloads || null;
-  } catch (error) {
-    // Silently fail - we'll just show weekly downloads
-    console.warn('All-time NPM stats unavailable:', error);
-    return null;
-  }
-}
-
-/**
  * Fetch GitHub repository contributors
  * @returns {Promise<Array>} - Array of contributor objects
  */

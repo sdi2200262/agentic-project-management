@@ -6,7 +6,7 @@ import { formatNumber } from '@site/src/utils/format';
 
 export default function Hero() {
   const [copied, setCopied] = React.useState(false);
-  const { githubStars, npmDownloads, npmAllTimeDownloads, isLoading } = useStats();
+  const { githubStars, npmDownloads, isLoading } = useStats();
 
   const handleCopy = () => {
     navigator.clipboard.writeText('npm install -g agentic-pm');

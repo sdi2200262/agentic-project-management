@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './styles.module.css';
 import { useContributors } from '@site/src/hooks/useContributors';
-import { formatNumber } from '@site/src/utils/format';
 
 export default function Contributors() {
   const { contributors, isLoading, error } = useContributors();
@@ -71,7 +70,7 @@ export default function Contributors() {
             <div className={styles.contributorInfo}>
               <div className={styles.username}>{contributor.login}</div>
               <div className={styles.contributions}>
-                {formatNumber(contributor.contributions)}{' '}
+                {contributor.contributions}{' '}
                 {contributor.contributions === 1 ? 'contribution' : 'contributions'}
               </div>
             </div>
