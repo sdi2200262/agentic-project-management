@@ -26,8 +26,7 @@ const sidebars = {
       collapsed: false,
       items: [
         'workflow-overview',
-        'agent-types',
-        'cli',
+        'agent-types'
       ],
     },
     {
@@ -44,9 +43,10 @@ const sidebars = {
       label: 'Reference & Guides',
       collapsed: true,
       items: [
-        'modifying-apm',
+        'cli',
         'troubleshooting-guide',
         'token-consumption-tips',
+        'modifying-apm'
       ],
     },
   ],
