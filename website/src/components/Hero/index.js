@@ -8,9 +8,47 @@ import { canvasPath, wigglePreset } from 'blobs/v2/animate';
 export default function Hero() {
   const [copied, setCopied] = React.useState(false);
   const [blobReady, setBlobReady] = React.useState(false);
+  const [currentSvgIndex, setCurrentSvgIndex] = React.useState(0);
   const { githubStars, npmDownloads, isLoading } = useStats();
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
+
+  // SVG slideshow images with individual sizing and positioning
+  const svgImages = [
+    {
+      src: '/agentic-project-management/img/apm-task-loop.svg',
+      width: 256,
+      height: 192,
+      top: '42%',
+    },
+    {
+      src: '/agentic-project-management/img/apm-workload-distribution.svg',
+      width: 368,
+      height: 288,
+      top: '42%',
+    },
+    {
+      src: '/agentic-project-management/img/apm-handover.svg',
+      width: 320,
+      height: 240,
+      top: '42%',
+    },
+    {
+      src: '/agentic-project-management/img/apm-multi-agent-orchestration.svg',
+      width: 448,
+      height: 336,
+      top: '42%',
+    },
+  ];
+
+  // Cycle through SVGs periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSvgIndex((prevIndex) => (prevIndex + 1) % svgImages.length);
+    }, 4000); // Switch every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [svgImages.length]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText('npm install -g agentic-pm');
@@ -128,6 +166,17 @@ export default function Hero() {
       <canvas 
         ref={canvasRef} 
         className={`${styles.blob} ${blobReady ? styles.blobVisible : ''}`} 
+      />
+      <img 
+        src={svgImages[currentSvgIndex].src} 
+        alt="APM Diagram" 
+        className={styles.heroSvg}
+        key={currentSvgIndex}
+        style={{
+          width: `${svgImages[currentSvgIndex].width}px`,
+          height: `${svgImages[currentSvgIndex].height}px`,
+          top: svgImages[currentSvgIndex].top,
+        }}
       />
       <div className={styles.heroContent}>
       <div className={styles.topLeft}>
