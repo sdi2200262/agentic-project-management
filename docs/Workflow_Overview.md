@@ -154,7 +154,7 @@ APM tries to prevent Implementation Agents from spiraling into long debugging lo
 
 The issue is handed to a temporary **Ad-Hoc Agent**. The blocked Implementation Agent creates a **Delegation Prompt** describing the bug and how to reproduce it.
 
-The User copies and pastes the delegation prompt into an Ad-Hoc Agent chat session, collaborates with the temporary agent to resolve the bug, and after a solution is found, returns to the original Implementation Agent with the fix. If the problem remains unresolved, it may be escalated back to the Manager for further guidance.
+The User copies and pastes the delegation prompt into an Ad-Hoc Agent chat session, collaborates with the temporary Agent to resolve the bug, and after a solution is found, returns to the original Implementation Agent with the fix. If the problem remains unresolved, it may be escalated back to the Manager for further guidance.
 
 ```mermaid
 graph LR
@@ -201,21 +201,21 @@ graph LR
 ```
 
 ### The Handover Process
-A Handover Procedure transfers the outgoing agent's working memory, insights, user preferences, and not-logged context, to a fresh instance to ensure seamless continuity.
+A Handover Procedure transfers the outgoing Agent's working memory, insights, user preferences, and not-logged context, to a fresh instance to ensure seamless continuity.
 
 #### 1. Trigger & Eligibility
 Handovers must be proactive. Waiting until the context window is full may cause hallucinated or corrupted handovers. The procedure must be performed *between* tasks (after a Memory Log is completed), never during active execution.
 
-Watch for context usage (~80-90% capacity) or signs of context degradation (repetitive questions, forgetting constraints) and when needed command the "full" agent to begin the handover protocol once the current task cycle is fully resolved.
+Watch for context usage (~80-90% capacity) or signs of context degradation (repetitive questions, forgetting constraints) and when needed command the "full" Agent to begin the handover protocol once the current task cycle is fully resolved.
 
 #### 2. Artifact Creation (The Two-Artifact System)
-The agent distills its "mental state" into two distinct components:
+The Agent distills its "mental state" into two distinct components:
   * **Handover File:** A Markdown file capturing undocumented insights, effective workflow patterns, and specific user preferences that are not recorded in formal Memory Logs.
-  * **Handover Prompt:** A structured meta-prompt containing onboarding instructions and reading protocols for the new agent. It is presented in a Markdown code block for copy-paste to the new Agent instance.
+  * **Handover Prompt:** A structured meta-prompt containing onboarding instructions and reading protocols for the new Agent. It is presented in a Markdown code block for copy-paste to the new Agent instance.
 
 #### 3. Initialization & Verification
-The new agent is initialized and given the Handover Prompt, which instructs it to read the Handover File and the relevant Memory Logs to reconstruct the required context.
+The new Agent is initialized and given the Handover Prompt, which instructs it to read the Handover File and the relevant Memory Logs to reconstruct the required context.
 
-The new agent will summarize its understanding. The User **must** carefully review the summary to make sure no hallucinations or broken context has been transferred to the new Agent instance. Once verified, the User authorizes the new agent to continue from where the previous left off.
+The new Agent will summarize its understanding. The User **must** carefully review the summary to make sure no hallucinations or broken context has been transferred to the new Agent instance. Once verified, the User authorizes the new Agent to continue from where the previous left off.
 
 > **Note:** For recovery from failed handovers, see the relevant section in the [Troubleshooting Guide](Troubleshooting_Guide.md#troubleshooting-guide---apm-v05)

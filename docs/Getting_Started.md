@@ -9,7 +9,7 @@ sidebar_position: 2
 
 This guide walks you through launching your first APM session, from initial setup through completing your first few tasks. **The more time spent during setup and planning, the better your project execution will be.**
 
- - For a clearer understanding of each agent's roles and responsibilities, refer to the [Agent Types document](Agent_Types.md).
+ - For a clearer understanding of each Agent's roles and responsibilities, refer to the [Agent Types document](Agent_Types.md).
 
  - For a detailed walkthrough of APM workflows and protocols, refer to the [Workflow Overview document](Workflow_Overview.md).
 
@@ -26,7 +26,7 @@ Before starting your first APM session, ensure you have the following in place:
 
 ### Recommended Model Tiers
 
-APM agents function best with models that excel at systematic reasoning and context management. Model selection can be optimized by role, but **Claude Sonnet 4** stands out for its consistent performance across all agent instances.
+APM Agents function best with models that excel at systematic reasoning and context management. Model selection can be optimized by role, but **Claude Sonnet 4** stands out for its consistent performance across all Agent instances.
 
 | Agent Type | Recommended Models (Best Results) | Cost-Effective Alternatives | Key Model Selection Note |
 | :--- | :--- | :--- | :--- |
@@ -44,7 +44,7 @@ Notes for specific IDEs will be added here as new releases occur and user feedba
 
 > **As of November 2025, GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism that is known to be buggy and can break cached context, disrupting APM workflows.
 >
-> * **If summarization triggers (in any phase)**: The agent may lose track of crucial context (guides, prompts, task details), resulting in degraded responses. **Stop the response immediately**, then re-provide the necessary prompts, guides, or task context before continuing. If issues persist, consider starting a new agent session and manually rebuilding context to resume work where you left off.
+> * **If summarization triggers (in any phase)**: The Agent may lose track of crucial context (guides, prompts, task details), resulting in degraded responses. **Stop the response immediately**, then re-provide the necessary prompts, guides, or task context before continuing. If issues persist, consider starting a new Agent session and manually rebuilding context to resume work where you left off.
 >
 > **Tip:** Consider disabling the summarization mechanism by setting `github.copilot.chat.summarizeAgentConversationHistory.enabled` to `false` in your Copilot settings.
 
@@ -166,7 +166,7 @@ The Setup Agent will systematically break down your project through key stages:
   * **Domain Analysis**: Identify work areas and create Implementation Agent assignments.
   * **Phase Definition**: Establish project progression and logical groupings.
   * **Phase Cycles**: Create detailed task breakdown with dependency analysis.
-  * **Final Review**: Agent workload balancing and cross-agent coordination planning.
+  * **Final Review**: Agent workload balancing and cross-Agent coordination planning.
 
 > **Tips for Project Breakdown:** Review the Agent's reasoning in the chat and thoroughly check the full Implementation Plan at the end. Request any changes or clarifications now. **Fixing issues early is much easier and cheaper than later adjustments.**
 
@@ -198,7 +198,7 @@ The Setup Agent will create a **Bootstrap Prompt** summarizing project context, 
 
 ### 4.1 Create Manager Agent Session
 
-1.  **Open New Chat**: Create another dedicated chat session in "agent" mode.
+1.  **Open New Chat**: Create another dedicated chat session in "Agent" mode.
 2.  **Name It Clearly**: Use a clear name, such as "Manager Agent" or "APM Manager 1."
 3.  **Model Choice**: Select a model as recommended in the [Prerequisites](#prerequisites).
 
@@ -231,7 +231,7 @@ The Manager Agent will create a **Task Assignment Prompt** for the first task in
 ### 5.2 Initialize Implementation Agent
 
 1.  **Open New Chat**: Create another dedicated chat session for the assigned Implementation Agent.
-2.  **Name Appropriately**: Use the agent name from the Implementation Plan (e.g., "Agent_Frontend").
+2.  **Name Appropriately**: Use the Agent name from the Implementation Plan (e.g., "Agent_Frontend").
 3.  **Enter the Implementation Agent Initialization Command**:
 ```
 /apm-3-initiate-implementation
@@ -288,7 +288,7 @@ You'll repeat this cycle:
 
 ### Handover Procedure: Managing Context Window Limits
 
-When agents approach the context window limit, perform a **Handover Procedure** for smooth continuation.
+When Agents approach the context window limit, perform a **Handover Procedure** for smooth continuation.
 
 <div align="center">
   <img 
@@ -300,11 +300,11 @@ When agents approach the context window limit, perform a **Handover Procedure** 
 </div>
 
 1.  **Detect the Limit:** Watch for context window usage (if your IDE provides a visualization) or signs like repeated questions or generic responses.
-2.  **Request a Handover:** Ask the agent to begin a Handover Procedure using the appropriate command.
-      * The agent will produce a **Handover File** (active, undocumented context) and a **Handover Prompt** (onboarding instructions).
-3.  **Open a New Agent Session:** Start a new chat for the same agent role (e.g., "Agent_Backend_2") and initialize it.
+2.  **Request a Handover:** Ask the Agent to begin a Handover Procedure using the appropriate command.
+      * The Agent will produce a **Handover File** (active, undocumented context) and a **Handover Prompt** (onboarding instructions).
+3.  **Open a New Agent Session:** Start a new chat for the same Agent role (e.g., "Agent_Backend_2") and initialize it.
 4.  **Initialize the New Agent:** Paste the **Handover Prompt** (and provide the Handover File as context if needed) as the first message.
-5.  **Verify and Resume:** **Verify the new agent's understanding** of the project state. Once verified, authorize the agent to continue work.
+5.  **Verify and Resume:** **Verify the new Agent's understanding** of the project state. Once verified, authorize the Agent to continue work.
 
 ---
 
@@ -324,7 +324,7 @@ When agents approach the context window limit, perform a **Handover Procedure** 
 
 ---
 
-**Congratulations!** You've successfully launched your first APM session. The structured, agentic spec-driven approach provides reliable project execution and prevents the chaos typical of AI collaboration.
+**Congratulations!** You've successfully launched your first APM session. The structured, Agentic spec-driven approach provides reliable project execution and prevents the chaos typical of AI collaboration.
 
 **Additional Resources:**
 
