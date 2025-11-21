@@ -49,6 +49,18 @@ Rather than employing predetermined agent roles, APM enables **dynamic domain id
 * **Workload Balancing**: If a domain has excessive task assignments (typically 8+ tasks), the Setup Agent splits the domain (e.g., `Agent_Backend_API` and `Agent_Backend_Database`) to distribute the workload.
 * **Emergent Expertise**: Implementation Agents receive descriptive identifiers and responsibilities that match the actual work needed, activating the relevant expertise in the LLM without token-heavy persona descriptions.
 
+### 4. Cross-Agent Context Dependency Management
+
+One of the primary challenges in multi-agent systems is context fragmentation, when the Backend Agent doesn't know what the Frontend Agent built or vice versa. APM addresses this by tracking context dependencies between tasks, and performing context injections when cross-agent dependencies arise.
+
+The Manager Agent facilitates this connection using a specific protocol in the **Task Assignment Prompt**. When cross-agent dependencies come up during task assinment, it instructs the agent on *how* to acquire the necessary context from the Memory System.
+
+1.  **Dependency Overview:** Explicitly states which previous tasks (and Memory Logs) contain the required information.
+2.  **Producer Output Summary:** The Manager reads the "Producer's" Memory Log and summarizes key details (e.g., "The API endpoint accepts JSON payload X and returns Y").
+3.  **Integration Steps:** Concrete instructions for the current agent to **read the specific files** created by the previous agent (e.g., "Read `src/models/User.ts` before writing the controller").
+
+By enforcing this protocol, APM ensures that isolated agents operate with perfect awareness of each other's work without performing costly context dumps or manual context repairs.
+
 ---
 
 ## Prompt Engineering: Optimizing LLM Interaction Fidelity
