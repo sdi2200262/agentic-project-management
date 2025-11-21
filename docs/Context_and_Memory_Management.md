@@ -24,6 +24,10 @@ Example of a typical Dynamic Meory Bank:
     └── ...
 ```
 
+### Stateless Operations (Ad-Hoc Agents)
+
+Unlike Manager and Implementation Agents, **Ad-Hoc Agents are stateless**. They do not create Memory Logs or have dedicated folders within the `.apm/Memory/` system. Their outputs are ephemeral—meant to be pasted back into the main agent’s session as immediate solutions, without being stored in the project's persistent history. When an Ad-Hoc Agent is used for a task, the corresponding Memory Log for that task will note the delegation and summarize relevant details for the Manager’s awareness.
+
 ### Memory Artifact Hierarchy
 
 * **The Memory Root (`Memory_Root.md`)**: It is intended for the Manager Agent, providing concise, high-level summaries of completed phases with references to the individual Memory Logs, global architectural decisions, and current project status, enabling a clear view of the project's overall trajectory without requiring review of individual task logs.
