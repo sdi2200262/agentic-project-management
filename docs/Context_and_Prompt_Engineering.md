@@ -62,6 +62,17 @@ The Manager Agent facilitates this connection using a specific protocol in the *
 
 By enforcing this protocol, APM ensures that isolated Agents operate with perfect awareness of each other's work without performing costly context dumps or manual context repairs.
 
+### 5. Ad-Hoc Context Isolation
+
+APM introduces **Ad-Hoc Agents** specifically to solve the problem of "Context Pollution."
+
+Certain tasks, such as debugging a complex stack trace or researching a new library, require ingesting massive amounts of tokens. If an Implementation Agent performs this work directly, its context window becomes filled with "noise," displacing the critical instructions and file structure needed for the actual task execution. To address this Implementation Agents offload this "noisy" work to temporary Ad-Hoc instances using **Delegation Prompts**.
+
+1.  **Isolation:** The Ad-Hoc Agent is initialized and provided *only* the Delegation Prompt. It has zero knowledge of the broader project history, effectively creating a "clean room" environment.
+2.  **Execution:** It consumes the necessary tokens (e.g., reading 10 library files) to solve the specific problem.
+3.  **Distillation:** It returns a clean, summarized answer to the Implementation Agent.
+4.  **Termination:** The Ad-Hoc session is closed. The "noise" is discarded, and only the solution enters the main project context.
+
 ---
 
 ## Prompt Engineering: Optimizing Instruction Accuracy
