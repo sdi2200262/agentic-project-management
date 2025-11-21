@@ -38,7 +38,7 @@ APM distributes the project context across multiple, isolated agent instances to
 | **Setup Agent** | Gathers requirements, designs solution architecture, and creates the implementation plan. | Does not participate in ongoing management or task execution. |
 | **Manager Agent** | Oversees coordination, task assignment, decision-making, and maintains project state via Implementation Plan and Memory System. | Does not engage in direct code writing or detailed implementation (unless specifically instructed). |
 | **Implementation Agent** | Executes assigned development tasks, integrates required context, and handles domain-specific work. | No access to overall project history or authority to change project scope. |
-| **Ad-Hoc Agent** | Handles focused, high-context tasks temporarily delegated (e.g., debugging, research) by other agents. | Only operates within the context explicitly provided for the delegated task. |
+| **Ad-Hoc Agent** | Handles focused, high-context tasks temporarily delegated (e.g., debugging, research) by other Agents. | Only operates within the context explicitly provided for the delegated task. |
 
 
 ### 3. Dynamic Domain Specialization and Workload Distribution
@@ -59,7 +59,7 @@ The Manager Agent facilitates this connection using a specific protocol in the *
 2.  **Producer Output Summary:** The Manager reads the "Producer's" Memory Log and summarizes key details (e.g., "The API endpoint accepts JSON payload X and returns Y").
 3.  **Integration Steps:** Concrete instructions for the current agent to **read the specific files** created by the previous agent (e.g., "Read `src/models/User.ts` before writing the controller").
 
-By enforcing this protocol, APM ensures that isolated agents operate with perfect awareness of each other's work without performing costly context dumps or manual context repairs.
+By enforcing this protocol, APM ensures that isolated Agents operate with perfect awareness of each other's work without performing costly context dumps or manual context repairs.
 
 ---
 
