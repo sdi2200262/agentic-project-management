@@ -30,36 +30,38 @@ Example of a typical Dynamic Meory Bank:
 
 * **Phase Directories & Memory Logs**: Phase Directories contain task Memory Logs that are written by Implementation Agents and read by the Manager Agent. Each Memory Log provides a compact summary of the corresponding task's execution, and is named according to the convention `Task_<Phase>_<ID>_<Slug>.md` (e.g., `Task_1_2_Database_Schema.md`), as mapped from the Implementation Plan.
 
-## Context Archive: Scaling & Onboarding
+### Context Archive: Scaling & Onboarding
 
 As the project progresses, the Memory System evolves into a comprehensive **context archive**. This archive maps the project's specifications (the Implementation Plan) directly to its execution history (the Memory Logs).
 
 This structured mapping enables efficient scalability:
 
   * **Seamless Onboarding:** New Agents can get up to speed by reviewing only the Memory Logs relevant to their assinged tasks —such as previous decisions, outputs, and files— without needing to read the entire codebase or unrelated history.
-  * **Efficient Expansion:** When introducing new features or components, Agents can precisely locate and use related Memory Logs (e.g., "Read `Task_1_2_Database.md` before starting the new API task"), allowing for targeted information transfer and minimizing unnecessary context loading.
+  * **Efficient Expansion:** When introducing new features, Agents can target specific historical logs (e.g., "Read `Task_1_2_Database.md`"). This allows for precise information retrieval without loading the entire project history.
+    
+> The specific protocol for injecting dependencies into an agent is detailed in [Context & Prompt Engineering > Cross-Agent Context Injection](Context_and_Prompt_Engineering.md#4-cross-agent-context-dependency-management).
 
 ---
 
-## Memory Log: Context Abstraction
+## The Memory Log Artifact
 
-The **Memory Log** serves as a concrete context abstraction layer, distilling the detailed execution information available to Implementation Agents into a compact summary that enables the Manager to maintain oversight of the project's big picture without delving into task-level specifics.
+The **Memory Log** is the atomic unit of project history. It acts as a concrete record, distilling the detailed execution information from an Implementation Agent into a standardized file format.
 
 ### Standardized Log Format
 
-To ensure parsing fidelity, every Memory Log follows a strict Markdown structure:
+To ensure parsing accuracy by the Manager, every Memory Log follows a strict Markdown structure:
 
-1.  **Status Metadata:** YAML frontmatter indicating `status: complete` or `status: blocked` and other important information up front.
+1.  **Status Metadata:** YAML frontmatter indicating `status: complete` or `important_findings:yes` etc.
 2.  **Execution Summary:** A concise narrative of what was built.
 3.  **File Manifest:** A list of all files created or modified (e.g., `src/components/Button.tsx`).
-4.  **Key Decisions:** Technical trade-offs made during execution (e.g., "Chose `zod` over `yup` for validation because...").
-5.  **Next Steps/Recommendations:** Guidance for the Manager - if needed.
+4.  **Key Decisions:** Technical trade-offs made during execution.
+5.  **Next Steps:** Guidance or recommendations for the Manager.
 
-The Manager reads this log to verify the task. It does **not** need to read the source code files unless the log flags a critical issue or ambiguity.
+> The Manager reads this log to verify the task without needing to parse the raw code files, effectively reducing the context load by orders of magnitude.
 
------
+---
 
-## Context Preservation: The Handover Protocol
+## Handover Protocol
 
 When an agent's context window fills, APM employs a **Two-Artifact Handover System** to transfer "working memory" to a new instance.
 
