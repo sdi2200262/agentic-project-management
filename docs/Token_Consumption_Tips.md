@@ -37,7 +37,7 @@ Choose the model allocation strategy that matches your budget and project stakes
 
 ---
 
-## Model Recommendations by Agent Role
+## Model Recommendations by Agent Type
 
 ### Setup Agent
 
