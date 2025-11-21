@@ -64,7 +64,7 @@ By enforcing this protocol, APM ensures that isolated Agents operate with perfec
 
 ### 5. Ad-Hoc Context Isolation
 
-APM introduces **Ad-Hoc Agents** specifically to solve the problem of "Context Pollution."
+APM introduces **Ad-Hoc Agents** specifically to solve the problem of "context pollution."
 
 Certain tasks, such as debugging a complex stack trace or researching a new library, require ingesting massive amounts of tokens. If an Implementation Agent performs this work directly, its context window becomes filled with "noise," displacing the critical instructions and file structure needed for the actual task execution. To address this Implementation Agents offload this "noisy" work to temporary Ad-Hoc instances using **Delegation Prompts**.
 
