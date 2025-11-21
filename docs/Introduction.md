@@ -25,8 +25,8 @@ APM addresses context window limitations and context decay by treating the AI no
 
 Instead of one long chat history, APM distributes the workload:
 1.  **Specialization**: Agents focus on specific domains (Planning, Management, Implementation).
-2.  **Persistence**: A file-based Memory System preserves project history outside of the agent's context, keeping a large context archive.
-3.  **Continuity**: Structured Handover Protocols transfer "working memory" between agents when context limits are reached.
+2.  **Persistence**: A file-based Memory System preserves project history outside of the Agent's context, keeping a large context archive.
+3.  **Continuity**: Structured Handover Protocols transfer "working memory" between Agents when context limits are reached.
 
 ### Visual Workflow Overview
 
@@ -45,7 +45,7 @@ The following diagram illustrates the end-to-end workflow, from the Setup Phase 
 
 ## Core Components
 
-APM coordinates four specialized agent types using a "Manager-Worker" topology.
+APM coordinates four specialized Agent types using a "Manager-Worker" topology.
 
 ### 1. The Agents
 
@@ -54,9 +54,9 @@ APM coordinates four specialized agent types using a "Manager-Worker" topology.
 | **Setup Agent** | **Architect** | Operates once at the start. Conducts discovery, gathers requirements, and generates the detailed *Implementation Plan*. Tasks in the plan are grouped by field (eg. Frontend, Backend etc.). |
 | **Manager Agent** | **Coordinator** | Maintains the "big picture." Assigns tasks, reviews work, manages context dependencies, and orchestrates the project. |
 | **Implementation Agent** | **Developer** | Executes specific tasks (coding, writing, design). Receives only tasks from a specific group in the plan, to avoid context creep. Operates in a focused context scope and logs work to Memory. |
-| **Ad-Hoc Agent** | **Specialist** | Temporary instances for isolated tasks (debugging, research etc.). They solve specific problems and close, preventing context pollution or overfill of the calling agent. |
+| **Ad-Hoc Agent** | **Specialist** | Temporary instances for isolated tasks (debugging, research etc.). They solve specific problems and close, preventing context pollution or overfill of the calling Agent. |
 
-> For a detailed breakdown of agent capabilities, see [Agent Types](Agent_Types.md).
+> For a detailed breakdown of Agent capabilities, see [Agent Types](Agent_Types.md).
 
 ### 2. Context Management
 
@@ -64,7 +64,7 @@ APM manages the context of multiple Agents with explicit protocols and artifacts
 
 * **Implementation Plan**: The source of truth for project structure and progress.
 * **Dynamic Memory Bank**: A folder structure of Markdown logs where Implementation Agents document their work. Memory Logs are mapped to tasks of the Implementation Plan, keeping an organized context archive of the sesion. The Manager reads these logs to track progress without needing the implementation details, focusing on the big-picture.
-* **Handover Protocol**: A distinct procedure to transfer context (user preferences, undocumented insights and working memory) to a fresh agent instance before the context window fills up.
+* **Handover Protocol**: A distinct procedure to transfer context (user preferences, undocumented insights and working memory) to a fresh Agent instance before the context window fills up.
 
 ---
 

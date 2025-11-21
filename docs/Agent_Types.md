@@ -7,11 +7,11 @@ sidebar_position: 4
 
 # Agent Types - APM v0.5
 
-APM employs four distinct agent types, each with clear responsibilities and carefully scoped context. These are functional specializations that leverage LLM expert capabilities through targeted task assignments and scoped context rather than artificial personas.
+APM employs four distinct Agent types, each with clear responsibilities and carefully scoped context. These are functional specializations that leverage LLM expert capabilities through targeted task assignments and scoped context rather than artificial personas.
 
 ## Agent Specialization Architecture
 
-APM achieves specialization through **Context Scoping**. Instead of relying on prompt engineering to create "characters," APM provides each agent with only the files and instructions relevant to their specific role.
+APM achieves specialization through **Context Scoping**. Instead of relying on prompt engineering to create "characters," APM provides each Agent with only the files and instructions relevant to their specific role.
 
 * **Setup Agent:** Sees the entire project vision, requirements and constraints.
 * **Manager Agent:** Sees the plan and progress logs but does not get into implementation details.
@@ -25,7 +25,7 @@ APM achieves specialization through **Context Scoping**. Instead of relying on p
 | **Setup Agent** | **Architect** | Project requirements, PRDs - **full project vision** | Project Start Only |
 | **Manager Agent** | **Coordinator** | Implementation Plan, Task Assingments, Memory Logs - **big picture** | Entire Project |
 | **Implementation Agent** | **Builder** | Specific Task Assignment, Context Dependency Outputs - **tight scope** | As Assigned |
-| **Ad-Hoc Agent** | **Specialist** | Isolated context-heavy tasks - **only what the calling agent provides** | Temporary / As Needed |
+| **Ad-Hoc Agent** | **Specialist** | Isolated context-heavy tasks - **only what the calling Agent provides** | Temporary / As Needed |
 
 ---
 
@@ -71,7 +71,7 @@ Implementation Agents are the workhorses. A project typically has multiple speci
 
 ### Core Responsibilities
 1.  **Execution:** Performs work based strictly on the **Task Assignment Prompt** and User instructions.
-2.  **Context Dependency Integration:** Explicitly reads outputs from other agents (as instructed by the Manager) to ensure compatibility.
+2.  **Context Dependency Integration:** Explicitly reads outputs from other Agents (as instructed by the Manager) to ensure compatibility.
 3.  **Memory Logging:** Documents execution outputs, file changes, and technical decisions in a standardized **Memory Log**.
 4.  **Error Escalation:** If a task gets blocked, Imlpementation Agents generate a **Delegation Prompt** for an Ad-Hoc Agent instead of spiraling into debugging loops. This keeps their context intact and enables more efficient and focused task executions.
 
@@ -104,6 +104,6 @@ Ad-Hoc Agents are "disposable" instances used to solve specific problems without
 ---
 
 **Next Steps:**
-* Learn how to select the right model for each agent in [Token Consumption Tips](Token_Consumption_Tips.md).
+* Learn how to select the right model for each Agent in [Token Consumption Tips](Token_Consumption_Tips.md).
 * See how Context Scoping works in [Context and Prompt Engineering](Context_and_Prompt_Engineering.md).
-* Customize agent behaviors in [Modifying APM](Modifying_APM.md).
+* Customize Agent behaviors in [Modifying APM](Modifying_APM.md).

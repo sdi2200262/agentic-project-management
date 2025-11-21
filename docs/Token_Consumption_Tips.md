@@ -67,8 +67,8 @@ Implementation context is tightly scoped, making it safe to switch models based 
 
 **Efficiency Tactics for Task Execution:**
 
-* **Step Combination:** For multi-step tasks, request the agent to combine related steps (e.g., `"Combine config setup and dependency installation"`). This reduces confirmation overhead.
-* **Context Injection:** If a task requires a file, attach it manually to the prompt. This allows the agent to skip calling file read tools, saving tokens.
+* **Step Combination:** For multi-step tasks, request the Agent to combine related steps (e.g., `"Combine config setup and dependency installation"`). This reduces confirmation overhead.
+* **Context Injection:** If a task requires a file, attach it manually to the prompt. This allows the Agent to skip calling file read tools, saving tokens.
 * **Iterative Correction:** When a step fails on a multi-step tasks, or if the task drifts , ask for a revision immediately. Do not proceed to the next step on a shaky foundation.
 
 ### Ad-Hoc Agents 
@@ -89,7 +89,7 @@ This phase consumes the most tokens but offers the highest ROI.
     * **Use** for complex projects or first-time users.
 
 ### 2. Handover Procedures
-Handovers are expensive because the agent must reconstruct context from logs and files.
+Handovers are expensive because the Agent must reconstruct context from logs and files.
 
 * **Proactive Timing (Recommended):** Initiate a handover when you reach **70-80%** of the context window. This helps prevent carrying over "contaminated" or outdated context, avoiding costly rework and unnecessary token usage.
-* **Strategic Triggering:** When nearing context window limits, initiate handovers *before* starting a complex multi-step task to ensure the new agent has a clean window for the heavy lifting.
+* **Strategic Triggering:** When nearing context window limits, initiate handovers *before* starting a complex multi-step task to ensure the new Agent has a clean window for the heavy lifting.

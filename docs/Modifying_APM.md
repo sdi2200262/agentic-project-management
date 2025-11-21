@@ -99,7 +99,7 @@ Using MCP tools has proven to be very helpful both during planning and coordinat
 
 ### Enabling MCP in APM
 
-To make agents aware of these tools, add a capability block to their **Initiation Prompts**:
+To make Agents aware of these tools, add a capability block to their **Initiation Prompts**:
 
 ```markdown
 ### Tool Usage Protocol (MCP)
