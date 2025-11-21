@@ -7,9 +7,9 @@ sidebar_position: 8
 
 # Context and Prompt Engineering - APM v0.5
 
-APM's design relies on advanced context and prompt engineering techniques that work together to create reliable, efficient AI workflows. This document explores how APM constructs operational environments for LLMs and engineers prompts for maximum parsing fidelity and token efficiency.
+APM's design relies on advanced context and prompt engineering techniques that work together to create reliable, efficient AI workflows. This document explores how APM constructs operational environments for LLMs and engineers prompts for maximum parsing accuracy and token efficiency.
 
-## Context Engineering: Constructing LLM Operational Reality
+## Context Engineering: Establishing Operational Environments
 
 Context engineering in APM focuses on establishing clear operational boundaries and responsibilities. Unlike approaches that rely on personality-based role definitions, APM establishes a framework where specialization emerges from focused context scopes and defined process gates.
 
@@ -22,7 +22,8 @@ A critical architectural component of APM is the concept of **Context Abstractio
 **The Solution**: After task execution Implementation Agents compress their task execution context into compact documents to act as an abstraction layer between the raw codebase and the project management level:
 
 1.  **Execution Level**: Implementation Agents operate with full access to the codebase, processing high volumes of tokens to read files, write code, and debug errors.
-2.  **Abstraction Process**: Upon task completion, the Implementation Agent synthesizes their work into a standardized **Memory Log**. This log abstracts the execution details into key outcomes, decisions, and artifact locations.
+2.  **Abstraction Process**: Upon task completion, the Implementation Agent synthesizes their work into a standardized **Memory Log**. This process compresses thousands of tokens of execution data (file reads, trial-and-error) into a few hundred tokens of clear summary.
+    * For the specific file structure of a Memory Log, see [Context & Memory Management > The Memory Log Artifact](Context_and_Memory_Management.md#the-memory-log-artifact).
 3.  **Management Level**: The Manager Agent reviews the **Memory Log** (the abstraction) rather than parsing every line of code or raw chat history. If necessary, they can use references in the Memory Log to investigate further details as needed.
 
 This architecture enables the Manager Agent to efficiently coordinate complex projects, operating primarily on the abstracted layer while retaining the option to drill down into execution details only when critical issues arise. 
@@ -47,7 +48,7 @@ Rather than employing predetermined agent roles, APM enables **dynamic domain id
 
 * **Domain Analysis**: The Setup Agent analyzes the project context to identify distinct domains of work. All subsequently identified tasks are categorized under these specific domains.
 * **Workload Balancing**: If a domain has excessive task assignments (typically 8+ tasks), the Setup Agent splits the domain (e.g., `Agent_Backend_API` and `Agent_Backend_Database`) to distribute the workload.
-* **Emergent Expertise**: Implementation Agents receive descriptive identifiers and responsibilities that match the actual work needed, activating the relevant expertise in the LLM without token-heavy persona descriptions.
+* **Dynamic Specialization**: Implementation Agents receive descriptive identifiers and responsibilities that match the actual work needed. This activates the relevant knowledge in the model without relying on token-heavy persona descriptions.
 
 ### 4. Cross-Agent Context Dependency Management
 
@@ -63,7 +64,7 @@ By enforcing this protocol, APM ensures that isolated Agents operate with perfec
 
 ---
 
-## Prompt Engineering: Optimizing LLM Interaction Fidelity
+## Prompt Engineering: Optimizing Instruction Accuracy
 
 ### Structured Markdown for Parsing
 
@@ -93,7 +94,7 @@ APM employs a tiered system of prompt assets, ranging from static initialization
 
 These are the prompts provided by the User either to initialize an Agent, or to instruct it to perform an action (slash-commands from the `agentic-pm` CLI).
 
-The initiation prompts for each Agent instance establish their "Operational Contract", defining their responsibilities, boundaries, and the protocols they must follow. They instruct each agent to look for further instructions in the provided guides when needed. Think of these like System Prompts for your APM Agents.
+The initiation prompts for each Agent instance establish their **core responsibilities**, defining their boundaries and the protocols they must follow. They instruct each agent to look for further instructions in the provided guides when needed. Think of these like System Prompts for your APM Agents.
 
 Action prompts (such as Handovers and Delegations) are clear, direct instructions that guide Agents to perform specific workflow actions at designated stages during your APM session.
 
@@ -109,6 +110,6 @@ The most advanced component of APM is the use of **Meta-Prompts** - prompts gene
 
 * **Task Assignment Prompts**: The Manager Agent extracts the task requirements  and dependency context from the Implementation Plan to create a specific, self-contained prompt for an Implementation Agent.
 * **Memory Logs**: The Implementation Agents compress all their task execution context into compact documents for the Manager Agent to review.
-* **Handover Prompts & Files**: An expiring agent synthesizes its current state, user preferences, and undocumented context into a prompt and a file for its successor.
+* **Handover Prompts & Files**: An expiring agent synthesizes its current state, user preferences, and undocumented context into a prompt and a file for its successor. These artifacts onboard the new instance and help resume work immediately.
 
 These prompts have standardized format and are populated to contain exact operational context between isolated agent sessions.
