@@ -308,7 +308,7 @@ template version compatible with your current CLI version.
         if (!guidesInstalled) guidesInstalled = true;
       }
 
-      // Create Memory directory with empty Memory_Root.md
+      // Create Memory directory with Memory_Root.md header template
       const apmDir = join(process.cwd(), '.apm');
       const memoryDir = join(apmDir, 'Memory');
       if (!existsSync(memoryDir)) {
@@ -316,15 +316,25 @@ template version compatible with your current CLI version.
       }
       const memoryRootPath = join(memoryDir, 'Memory_Root.md');
       if (!existsSync(memoryRootPath)) {
-        writeFileSync(memoryRootPath, '');
-        console.log(chalk.gray('  Created Memory/Memory_Root.md'));
+        const memoryRootHeader = `# <Project Name> – APM Memory Root
+**Memory Strategy:** Dynamic-MD
+**Project Overview:** [To be filled by Manager Agent before first phase execution]
+`;
+        writeFileSync(memoryRootPath, memoryRootHeader);
+        console.log(chalk.gray('  Created Memory/Memory_Root.md with header template'));
       }
 
-      // Create empty Implementation_Plan.md
+      // Create Implementation_Plan.md with header template
       const implementationPlanPath = join(apmDir, 'Implementation_Plan.md');
       if (!existsSync(implementationPlanPath)) {
-        writeFileSync(implementationPlanPath, '');
-        console.log(chalk.gray('  Created Implementation_Plan.md'));
+        const implementationPlanHeader = `# <Project Name> – APM Implementation Plan
+**Memory Strategy:** Dynamic-MD
+**Last Modification:** [To be filled by Setup Agent before Project Breakdown]
+**Project Overview:** [To be filled by Setup Agent before Project Breakdown]
+
+`;
+        writeFileSync(implementationPlanPath, implementationPlanHeader);
+        console.log(chalk.gray('  Created Implementation_Plan.md with header template'));
       }
 
       // Clean up temp directory

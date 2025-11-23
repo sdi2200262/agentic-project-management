@@ -150,8 +150,18 @@ Present the full phase sequence with supporting rationale:
 #### Second Chat Action
 After presenting agent team assignments (see §2.2), immediately write **in chat** phase sequence analysis before beginning phase cycles (see §4). This establishes project structure foundation for systematic task breakdown.
 
-### 3.3. Implementation Plan File Initialization
-All phase content will be appended to the **existing empty** `.apm/Implementation_Plan.md` file created by the `apm init` CLI tool. Proceed to phase cycles (see §4). 
+### 3.3. Implementation Plan Header Initialization
+**MANDATORY**: Before proceeding to phase cycles (see §4), you **MUST** fill in the header of the `.apm/Implementation_Plan.md` file created by the `agentic-pm` CLI tool using `apm init`.
+
+The file already contains a header template with placeholders. You must:
+1. **Read the existing header** in `.apm/Implementation_Plan.md`
+2. **Fill in all header fields**:
+   - Replace `<Project Name>` with the actual project name
+   - Replace `[To be filled by Setup Agent before Project Breakdown]` in **Last Modification** field with: "Plan creation by the Setup Agent."
+   - Replace `[To be filled by Setup Agent before Project Breakdown]` in **Project Overview** field with a concise summary of the project
+3. **Save the updated header** - This is a dedicated file edit operation that must be completed before any phase content is written
+
+**Only after the header is complete**, proceed to phase cycles (see §4). All phase content will be appended to this file after the header.
 
 ## 4. Phase Cycle Execution
 
@@ -240,13 +250,7 @@ Determine appropriate task content:
 #### Content Translation Format
 Translate completed individual analyses from §4.2-4.3 into structured file format, ensuring all reasoning insights and process requirements are preserved in task descriptions:
 
-* **1. Document Header (First Write Only):**  If this is the first phase write, initialize the file with:
-  ```markdown
-  # <Project Name> – APM {VERSION} Implementation Plan 
-  **Memory Strategy:** Dynamic-MD
-  **Last Modification:** Plan creation by the Setup Agent.
-  **Project Overview:** [Concise summary]
-  ```
+* **1. Document Header:** The header should already be filled in from §3.3. **DO NOT** overwrite or modify the header when writing phase content. Only append phase sections after the existing header.
 * **2. Phase Sections:** Use level 2 headings: `## Phase <n>: <Name>`
 * **3. Task Blocks:**
   - Use level 3 headings: `### Task <n.m> – <Title> - <Agent_<Domain>>`

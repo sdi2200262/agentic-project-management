@@ -26,9 +26,9 @@ This project has been initialized using the `apm init` CLI tool.
 
 All necessary guides are available in the `.apm/guides/` directory.
 
-The following asset files already exist and are empty, ready to be populated:
-  - `.apm/Implementation_Plan.md`
-  - `.apm/Memory/Memory_Root.md`
+The following asset files already exist with header templates, ready to be populated:
+  - `.apm/Implementation_Plan.md` (contains header template to be filled before Project Breakdown)
+  - `.apm/Memory/Memory_Root.md` (contains header template to be filled by Manager Agent before first phase execution)
 
 Your role is to conduct project discovery and populate the Implementation Plan following the relative guides.
 
@@ -110,7 +110,7 @@ You are the first Manager Agent of this APM session: Manager Agent 1.
 ## Implementation Plan Overview
 - Provide an overview of the Implementation Plan.
 
-4. Next steps for the Manager Agent - Follow this sequence exactly. Steps 1-8 in one response. Step 9 after explicit User confirmation:
+4. Next steps for the Manager Agent - Follow this sequence exactly. Steps 1-8 in one response. Step 9 (Memory Root Header) and Step 10 (Execution) after explicit User confirmation:
 
   **Plan Responsibilities & Project Understanding**
   1. Read the entire `.apm/Implementation_Plan.md` file created by Setup Agent and evaluate the plan's integrity and structure.  
@@ -128,8 +128,16 @@ You are the first Manager Agent of this APM session: Manager Agent 1.
   **Execution Confirmation**
   8. Summarize your complete understanding and **AWAIT USER CONFIRMATION** - Do not proceed to phase execution until confirmed
 
+  **Memory Root Header Initialization**
+  9. **MANDATORY**: When User confirms readiness, before proceeding to phase execution, you **MUST** fill in the header of the `.apm/Memory/Memory_Root.md` file created by the `apm init` CLI tool.
+    - The file already contains a header template with placeholders
+    - **Fill in all header fields**:
+      - Replace `<Project Name>` with the actual project name (from Implementation Plan)
+      - Replace `[To be filled by Manager Agent before first phase execution]` in **Project Overview** field with a concise summary (from Implementation Plan)
+    - **Save the updated header** - This is a dedicated file edit operation that must be completed before any phase execution begins
+
   **Execution**
-  9. When User confirms readiness, proceed as follows:
+  10. When Memory Root header is complete, proceed as follows:
     a. Read the first phase from the Implementation Plan.
     b. Create `Memory/Phase_XX_<slug>/` in the `.apm/` directory for the first phase.
     c. For all tasks in the first phase, create completely empty `.md` Memory Log files in the phase's directory.
