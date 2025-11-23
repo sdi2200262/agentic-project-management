@@ -114,8 +114,6 @@ Implementation Agents operate in a focused context scope, only being aware of wh
 
 The User is the active "Human-in-the-Loop" overseeing and guiding task execution. Additionally,  you can combine steps to save tokens (e.g., `"Step 1 looks good. Combine steps 2 and 3 in your next response."`) or request strict explanations when needed.
 
-After completing task execution and Memory Logging, Implementation Agents output a Final Task Report code block written from the User's perspective. This report includes task completion status, execution notes, and key flags. The User copies this report and pastes it back to the Manager Agent for review.
-
 ```mermaid
 graph LR
     A[Task Assignment<br/>Execution] --> B{Task Format?}
@@ -141,7 +139,7 @@ graph LR
 
 Upon completion or if facing a serious blocker, the Implementation Agent creates a **Memory Log** summarizing the output, decisions, and file changes. The Memory Log serves as a *"context abstraction layer"* between the Manager's big-picture and the Implementation Agent's execution details.
 
-The User returns to the Manager Agent and reports the task completion (e.g., `"Task 1.2 is complete. Review the log at .apm/Memory/Phase_01/Task_1_2_Auth.md and proceed accordingly."`).
+After completing task execution and Memory Logging, Implementation Agents output a Final Task Report code block written from the User's perspective. This report includes task completion status, execution notes, and key flags. The User copies this report and pastes it back to the Manager Agent for review.
 
 The Manager reviews the log and decides to **Continue** to the next task, **Request Corrections** by issuing a follow-up pronpt, or **Update the Plan** if the task revealed a need to do so.
 
