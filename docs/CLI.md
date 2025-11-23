@@ -51,7 +51,7 @@ apm init
       * **Commands:** Installs slash commands into the assistant-specific directory (e.g., `.cursor/rules`, `.github/prompts`).
 
 4.  **Safe Artifact Creation:**
-      * Generates `.apm/Implementation_Plan.md` and `.apm/Memory/Memory_Root.md` **only if they do not exist**.
+      * Generates `.apm/Implementation_Plan.md` and `.apm/Memory/Memory_Root.md` with header templates **only if they do not exist**.
       * **Your project data is never overwritten by initialization.**
 
 #### Installing Specific Versions
