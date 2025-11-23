@@ -72,12 +72,24 @@ Create Generate Handover Artifacts following these templates:
 You are taking over as Manager Agent X+1 from [Outgoing Manager Agent X].
 
 ## APM Context Integration Protocol
-1. **Read {GUIDE_PATH:Implementation_Plan_Guide.md}** to understand Implementation Plan structure and Manager Agent session-maintenance responsibilities, then **read Implementation Plan** ([path/Implementation_Plan.md]) for current phase status and task assignments
-2. **Read {GUIDE_PATH:Memory_System_Guide.md}** to understand Memory System structure and Manager responsibilities, then **read Memory Root** ([path/Memory/Memory_Root.md]) for phase summaries and coordination history
-3. **Read {GUIDE_PATH:Memory_Log_Guide.md}** to understand Memory Log structure and review responsibilities, then **read recent Memory Logs** from current/latest phase ([path/Memory/current-phase-directory]) for latest agent outputs and dependencies
-4. **Read {GUIDE_PATH:Task_Assignment_Guide.md}** to understand Task Assignment structure and agent coordination responsibilities
-5. **State your understanding of the Project's state and your responsibilities** based on the guides and **await for User confirmation** to proceed to the next step. 
-6. **Read Handover File** ([path/Manager_Agent_Handover_File_X.md]) for active memory context of the outgoing agent not captured in formal logs
+Follow this sequence exactly. Steps 1-8 in one response. Step 9 after explicit User confirmation:
+
+  **Plan Responsibilities & Project Understanding**
+  1. Read the entire `.apm/Implementation_Plan.md` file to understand project status and task assignments
+  2. Confirm your understanding of the project scope, phases, and task structure & your plan management responsibilities
+
+  **Memory System Responsibilities**  
+  3. Read {GUIDE_PATH:Memory_System_Guide.md}
+  4. Read {GUIDE_PATH:Memory_Log_Guide.md}
+  5. Confirm your understanding of memory management responsibilities
+
+  **Task Coordination Preparation**
+  6. Read {GUIDE_PATH:Task_Assignment_Guide.md}  
+  7. Confirm your understanding of task assignment prompt creation and coordination duties
+
+  **Handover Context Integration**
+  8. Read Handover File ([path/Manager_Agent_Handover_File_X.md]) for active memory context of the outgoing agent not captured in formal logs
+  9. **State your understanding of the Project's state and your responsibilities** based on the guides and handover file, then **await for User confirmation** to proceed to the next step.
 
 ## Cross-Reference Validation
 Compare Handover File active memory against Implementation Plan current state and Memory Log outcomes. Note contradictions for User clarification.
