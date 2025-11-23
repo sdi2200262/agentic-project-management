@@ -25,10 +25,15 @@ Project decomposition transforms Context Synthesis findings into structured task
 ### 1.2. Project Breakdown Sequence
 The Setup Agent is to follow this systematic high-level-to-detail progression with mandatory progression gates and integration verification:
 
+To maintain efficiency, you must execute the **entire Project Breakdown Sequence in a single response**. To prevent pattern-matching and quality degradation, you must **INTERLEAVE** your analysis:
+
 1. **Domain Analysis** (§2) → Agent assignments **in chat**
 2. **Phase Definition** (§3) → Phase sequence **in chat** 
-3. **Phase Cycles** (§4) → Task breakdown **in chat** + documentation **in file** + **integration verification**
-4. **Final Review** (§5) → Agent splitting + cross-agent dependency marking + **process requirement validation** **in file**
+3. **Phase Cycles** (§4) – **Strict Interleaved Sequence:** For each phase, perform **complete Phase X Analysis** in chat: execute **Phase Context Integration & Task Identification** (§4.1), then **Individual Task Complete Analysis** (§4.2) for ALL tasks, then **Phase Dependency Assessment** (§4.3).
+   - **Only after** completing all Phase X Analysis in chat, append Phase X contents to file following **Phase Documentation Procedure** (§4.4).
+   - **Then and only then** move to Phase X+1 and repeat the complete cycle.
+   - **Repeat** this strict interleaved sequence for all phases without batching or skipping file writes **unless explicitly instructed by the User**.
+4. **Final Review** (§5) → Agent splitting (§5.1) + cross-agent dependency marking (§5.2) + **process requirement validation in file**
 5. **Plan Approval** (§5.3) → User approval based on file + chat contents
 
 **Progression Gates**: Each step must complete before proceeding to next step
@@ -41,7 +46,7 @@ Strategic context switching prevents pattern matching:
 **File Operations**: Document each completed phase cycle, agent splitting updates, cross-agent dependency additions
 **Context Breaks**: File writes interrupt continuous chat writing, providing fresh perspective for each subsequent phases thus avoiding pattern-matching
 
-Simple file format (basic indentation, minimal structure - see §4.6) prevents template formation while preserving content for later formatting through {GUIDE_PATH:Implementation_Plan_Guide.md}
+Structured file format (see §4.4) prevents template formation while ensuring the output is immediately ready for Manager Agent consumption.
 
 ## 2. Domain Analysis & Agent Assignment
 
@@ -235,15 +240,28 @@ Determine appropriate task content:
 #### Content Translation Format
 Translate completed individual analyses from §4.2-4.3 into structured file format, ensuring all reasoning insights and process requirements are preserved in task descriptions:
 
-**File Structure Requirements:**
-- Phase header with name and all assigned agents: `Phase <n>: <Phase_Name> - <All_Agents_Assigned>`
-- Task entries with agent assignments (and dependency notations if any): `Task <n.1>: <Task_Name> - Agent_<Domain>`
-- Multi-step tasks use numbered list format (1, 2, 3...)
-- Single-step tasks use bullet point format (-)
-- Dependency notation format: `Task <n.2>: <Task_Name> - Agent_<Domain> - Depends on Task <n.1> output`
-- Preserve all individual analysis insights, process requirements, and implementation specifications from chat breakdown
-- Preserve content descriptions exactly as justified in individual analysis
-- Ad-Hoc delegation steps: prefix with `Ad-Hoc Delegation – <Purpose>` as a single line (optional short guide ref); no extended content in file
+* **1. Document Header (First Write Only):**  If this is the first phase write, initialize the file with:
+  ```markdown
+  # <Project Name> – APM {VERSION} Implementation Plan 
+  **Memory Strategy:** Dynamic-MD
+  **Last Modification:** Plan creation by the Setup Agent.
+  **Project Overview:** [Concise summary]
+  ```
+* **2. Phase Sections:** Use level 2 headings: `## Phase <n>: <Name>`
+* **3. Task Blocks:**
+  - Use level 3 headings: `### Task <n.m> – <Title> - <Agent_<Domain>>`
+  - Directly under heading, add these meta-fields:
+    - **Objective:** One-sentence task goal.
+    - **Output:** Concrete deliverable (e.g., "Auth module files").
+    - **Guidance:** Key technical constraints or approach. Guidance for the Manager Agent to assign the task successfully.
+* **4. Sub-Task Formatting:**
+  - **Single-step**: Unordered list (`-`) for instructions.
+  - **Multi-step**: Ordered list (`1.`, `2.`) for sequential steps.
+  - **Content**: Steps/bullets derived in your Chat Analysis (§4.2) with additional detail (if needed). Preserve all individual analysis insights, process requirements, and implementation specifications from chat breakdown
+  - **Ad-Hoc delegation steps:** prefix with `Ad-Hoc Delegation – <Purpose>` as a single line (optional short guide ref); no extended content in file
+* **5. Dependency Format:** Add to the `Guidance` field of the Consumer Task:
+  - Same-agent: `**Depends on: Task X.Y Output**`
+  - Cross-agent: `**Depends on: Task X.Y Output by Agent Z**`
 
 ## 5. Final Review & Cross-Agent Integration
 
@@ -299,6 +317,13 @@ Present **in chat** high-level plan statistics:
 - Reference detailed breakdown reasoning from previous chat exchanges (§2-§4)
 - Confirm that Context Synthesis insights, including process requirements and quality standards, are reflected in task specifications
 - Handle modification requests through targeted revisions to affected plan sections
-- Iterate until explicit User approval to proceed to {GUIDE_PATH:Project_Breakdown_Review_Guide.md}
+- Iterate until explicit User approval.
+
+#### Next Step Routing:
+Once the plan is approved:
+1. **If User requests Systematic Review:** Proceed to read {GUIDE_PATH:Project_Breakdown_Review_Guide.md}`.
+2. **If User skips Review:** Proceed directly to **Manager Bootstrap Creation**.
+  - **CRITICAL:** You must generate the Bootstrap Prompt using the **EXACT TEMPLATE** defined in your initiation prompt {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md}.
+  - **Context Recovery:** If you cannot retrieve the template word-for-word from your context, you must **READ** the {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md} file to refresh your memory before generating the prompt. Do not approximate the template.
 
 **End of Guide**

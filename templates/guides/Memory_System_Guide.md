@@ -28,6 +28,8 @@ Main responsibilities of the Manager Agent when maintaining the Memory System du
 **Example: Task "Task 2.1 - Deploy Updates | Agent_Backend" → `Task_2_1_Deploy_Updates.md`**
 
 2. After each task execution, review the Memory Log **populated by the Implementation Agent**, provided via the User.
+   - If the log contains `important_findings: true` or `compatibility_issues: true`, you **MUST** inspect the referenced output files/artifacts to validate the findings before making a decision.
+   
 
 3. At phase end, append a summary to `.apm/Memory/Memory_Root.md`:
     ```markdown

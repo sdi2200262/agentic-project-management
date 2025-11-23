@@ -20,7 +20,7 @@ Conduct systematic review on user-selected portions of the Implementation Plan t
 1. **Intelligent Proposal**: Agent analyzes fresh Implementation Plan context to recommend review areas
 2. **User Selection**: User chooses which tasks/phases receive systematic review
 3. **Systematic Analysis**: Apply full testing methodology only to selected areas
-4. **Comprehensive Fixing**: Fix all issues in selected areas and apply patterns to unreviewed areas
+4. **Comprehensive Fixing**: Fix all issues in selected areas, ensure strict adherence to the established format
 5. **Final User Review**: Present complete updated plan for approval
 
 **Efficiency**: Full systematic review power applied only where most valuable
@@ -162,6 +162,7 @@ Based on the Implementation Plan I just created, I recommend systematic review f
 - **Agent Capability**: "What specific assumptions am I making about Implementation Agent capabilities? Which assumptions might be incorrect?"
 - **Context Requirements**: "If an Implementation Agent receives this task with minimal context, what would they need clarified?"
 - **Execution Challenges**: "What are the most likely points of failure during task execution? How can the task specification address these?"
+- **Meta-Fields**: "Do the 'Objective', 'Output', and 'Guidance' fields provide clear, concise direction for the Manager Agent?"
 
 **Requirement Integration:**
 - **Context Synthesis Alignment**: "Which Context Synthesis requirements apply to this task? Are they explicitly integrated or assumed?"
@@ -316,29 +317,20 @@ Based on the Implementation Plan I just created, I recommend systematic review f
 
 1. **Present updated Implementation Plan** with all changes
 2. **Highlight major modifications** for user attention
-3. **Request explicit approval** to proceed to Enhancement phase
+3. **Request explicit approval** to proceed to Manager Bootstrap Prompt Creation
 4. **Address any user concerns** or additional changes
 5. **Confirm completion** when user approves
 
 ---
 
-## 7. Integration with Enhancement Phase
+## 7. Finalization
+**Prepare for Bootstrap Prompt Creation:**
+- Ensure the `Implementation_Plan.md` is in its final, clean state.
+- Confirm all task headers, agent assignments, and dependency tags are formatted correctly.
 
-### 7.1. Quality Handoff
-**Ensure smooth transition to Enhancement:**
-
-- **Systematic Review Documentation**: Note which areas received full review
-- **Issue Resolution Confirmation**: Verify all identified issues are resolved
-- **Pattern Application Documentation**: Record improvements applied to unreviewed areas
-- **User Approval Confirmation**: Explicit approval for Enhancement phase
-
-### 7.2. Enhancement Phase Notes
-**Provide context for Setup Agent Enhancement:**
-
-- Areas that received systematic review and are high-confidence
-- Areas that received pattern-based improvements only
-- Specific user requirements and preferences validated during review
-- Any remaining user collaboration items for Enhancement phase
+**Bootstrap Prompt Generation:**
+- Pass control back to the {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md} logic.
+- **Context Recovery:** When generating the Bootstrap Prompt, you must use the **EXACT TEMPLATE** from {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md}. If the template is degraded or missing from your context window, **READ {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md}** to retrieve it before generating the final artifact.
 
 ---
 
