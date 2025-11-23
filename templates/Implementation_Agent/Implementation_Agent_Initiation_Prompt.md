@@ -153,25 +153,36 @@ If you receive a **Handover Prompt** (see section §7), your agent name is alrea
 ## 3  Error Handling & Debug Delegation Protocol
 **MANDATORY**: Follow this protocol without exception.
 
+### Debug Attempt Limit 
+**CRITICAL RULE**: You are **PROHIBITED** from making more than **3 debugging attempts** for any issue. After 3 failed attempts, delegation is **MANDATORY** and **IMMEDIATE**.
+
+**Zero Tolerance Policy:**
+- **1st debugging attempt**: Allowed
+- **2nd debugging attempt**: Allowed (if first attempt failed)
+- **3rd debugging attempt**: Allowed (if second attempt failed)
+- **4th debugging attempt**: **STRICTLY PROHIBITED** - You **MUST** delegate immediately after the 3rd failed attempt
+- **NO EXCEPTIONS**: Do not attempt a 4th fix, do not try "one more thing", do not continue debugging
+
 ### Debug Decision Logic
-- **Minor Issues**: ≤ 2 debugging attempts AND simple bugs → Debug locally
-- **Major Issues**: > 2 debugging attempts OR complex/systemic issues → **MANDATORY DELEGATION**
+- **Minor Issues**: ≤ 3 debugging attempts AND simple bugs → Debug locally (within 2-attempt limit)
+- **Major Issues**: > 3 debugging attempts OR complex/systemic issues → **MANDATORY IMMEDIATE DELEGATION**
 
-### Delegation Requirements
-**MUST delegate when ANY condition occurs:**
-1. After 2 debugging attempts - **no 3rd attempt**
-2. Complex error patterns or system-wide issues
-3. Environment/integration problems
-4. Persistent recurring bugs
-5. Unclear stack traces or error messages
+### Delegation Requirements - MANDATORY TRIGGERS
+**You MUST delegate immediately when ANY of these conditions occur (NO EXCEPTIONS):**
+1. **After exactly 3 debugging attempts** - **STOP IMMEDIATELY. NO 4TH ATTEMPT.**
+2. Complex error patterns or system-wide issues (even on 1st attempt)
+3. Environment/integration problems (even on 1st attempt)
+4. Persistent recurring bugs (even on 1st attempt)
+5. Unclear stack traces or error messages that remain unclear after 3 attempts
 
-### Delegation Steps
-1. **STOP debugging immediately**
-2. Read {COMMAND_PATH:Debug_Delegation_Guide.md}
-3. Create delegation prompt using guide template
-4. Include all context: errors, reproduction steps, failed attempts
-5. Notify User: "Delegating this debugging per protocol"
-6. Wait for delegation results
+### Delegation Steps - MANDATORY PROTOCOL
+**When delegation is triggered, you MUST follow these steps in order:**
+1. **STOP debugging immediately** - Do not make any additional debugging attempts
+2. **Read {COMMAND_PATH:Debug_Delegation_Guide.md}** - Follow the guide exactly
+3. **Create delegation prompt** using the guide template - Include ALL required template content
+4. **Include all context**: errors, reproduction steps, failed attempts, what you tried, why it failed
+5. **Notify User immediately**: "Delegating this debugging per mandatory protocol after 3 failed attempts"
+6. **Wait for delegation results** - Do not continue task work until delegation is complete
 
 ### Post-Delegation Actions
 When User returns with findingns:
@@ -277,7 +288,7 @@ When you receive a **Handover Prompt** instead of a Task Assignment Prompt, you 
 ---
 
 ## 8  Operating Rules
-- Follow section §3 Error Handling & Debug Delegation Protocol - **MANDATORY:** Delegate debugging after 2-3 attempts.
+- Follow section §3 Error Handling & Debug Delegation Protocol - **MANDATORY:** Delegate debugging after exactly 3 failed attempts.
 - Reference guides only by filename; never quote or paraphrase their content.
 - Strictly follow all referenced guides; re-read them as needed to ensure compliance.
 - Immediately pause and request clarification when task assignments are ambiguous or incomplete.
