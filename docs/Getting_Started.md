@@ -96,8 +96,8 @@ The `init` command will:
   * **Download APM Assets**: Automatically fetch the latest prompts and guides.
   * **Create Directory Structure**: Set up the `.apm/` directory with:
       * `.apm/guides/` - All template guides for APM workflows
-      * `.apm/Memory/Memory_Root.md` - Empty root memory file
-      * `.apm/Implementation_Plan.md` - Empty implementation plan file
+      * `.apm/Memory/Memory_Root.md` - Root memory file with header template (to be filled by Manager Agent)
+      * `.apm/Implementation_Plan.md` - Implementation plan file with header template (to be filled by Setup Agent)
       * `.apm/metadata.json` - Installation metadata
   * **Install Commands**: Create assistant-specific slash commands in the appropriate directory (e.g., `.cursor/`, `.github/copilot/`, etc.)
 
@@ -139,27 +139,27 @@ To initialize the Setup Agent, simply enter the command:
 ---
 
 ## Step 3: Work Through Setup Phase
-The Setup Agent will greet you and outline its 5-step workflow:
+The Setup Agent will greet you and outline its 4-step workflow:
 
 1.  Context Synthesis
 2.  Project Breakdown & Plan Creation
-3.  Implementation Plan Review & Refinement
-4.  Implementation Plan Enhancement & Finalization
-5.  Manager Bootstrap Prompt Creation
+3.  Implementation Plan Review & Refinement (Optional)
+4.  Manager Bootstrap Prompt Creation
 
 The Setup Agent will guide you through each step systematically, always asking for your confirmation before moving on so you can review, clarify, or request changes. **Be thorough during this phase** - time invested here prevents roadblocks later.
 
 ### 3.1 Context Synthesis (Project Discovery)
 
-**This is the most important stage.** The Setup Agent will conduct structured discovery through three phases:
+**This is the most important stage.** The Setup Agent will conduct structured discovery through four mandatory **Question Rounds:**
 
   * **Existing Materials & Vision**: Share PRDs, requirements, existing code, or project documentation.
   * **Technical Requirements**: Discuss technologies, constraints, dependencies, and technical scope.
   * **Process Requirements**: Explain workflow preferences, quality standards, and coordination needs.
+  * **Final Validation**: The Agent presents a comprehensive summary for your review and approval before proceeding to Project Breakdown.
 
 > **Tips for Context Synthesis:** Share all relevant project details, constraints, and uncertainties with the Setup Agent. **Try to provide requested context in the order that you are prompted** — early delivery of artifacts like PRDs or documentation improves the Agent's discovery process.
 
-### 3.2 Project Breakdown
+### 3.2 Project Breakdown & Plan Creation
 
 The Setup Agent will systematically break down your project through key stages:
 
@@ -170,23 +170,16 @@ The Setup Agent will systematically break down your project through key stages:
 
 > **Tips for Project Breakdown:** Review the Agent's reasoning in the chat and thoroughly check the full Implementation Plan at the end. Request any changes or clarifications now. **Fixing issues early is much easier and cheaper than later adjustments.**
 
-### 3.3 Implementation Plan Review (Optional)
+### 3.3 Implementation Plan AI Review & Refinement (Optional)
 
 The Setup Agent will offer systematic review of the Implementation Plan:
 
   * **Recommended**: For complex projects or first-time APM users.
-  * **Optional**: If you're satisfied with the plan quality.
+  * **Optional**: If you're satisfied with the plan quality, you can skip this step and proceed directly to Bootstrap Creation.
 
 > **Tip for Implementation Plan AI-driven Review:** This AI-driven review focuses on AI-specific planning issues (task packing, classification errors). **You must still conduct your own manual review** for requirement gaps or constraints.
 
-### 3.4 Implementation Plan Enhancement & Finalization
-
-The Setup Agent will:
-
-  * Transform the Implementation Plan into detailed APM artifact format.
-  * Generate comprehensive task specifications.
-
-### 3.5 Manager Bootstrap Creation
+### 3.4 Manager Bootstrap Creation
 
 The Setup Agent will create a **Bootstrap Prompt** summarizing project context, key requirements, and next steps for the Manager Agent. 
 
@@ -258,13 +251,11 @@ The Implementation Agent will execute the task in one of two ways:
 
 Once task is complete, or faced serious blockers, the Agent will create a concise Memory Log entry summarizing task completion, outputs, any delegations or any issues encountered, and next steps or recommendations.
 
+After Memory Logging, the Implementation Agent will output a **Final Task Report** code block written from your perspective. This report includes task completion status, execution notes, and key flags. **Copy this code block** and paste it back to the Manager Agent.
+
 ### 6.2 Report to Manager for Review & Next Steps
 
-**Return to your Manager Agent session** and inform them of the task status. For example:
-
-`"Agent_[Name] has completed Task [X.Y] successfully and logged the results to [Memory_Log_Path]. Please review it and proceed accordingly."`
-
-The Manager Agent will review the Memory Log and task outputs, then decide to either continue with the next task, request corrections, or update the Implementation Plan as needed.
+**Return to your Manager Agent session** and paste the Final Task Report code block from the Implementation Agent. If necessary, you can add additional context to this prompt. The Manager Agent will review the Memory Log and task outputs, then decide to either continue with the next task, request corrections, or update the Implementation Plan as needed.
 
 ---
 
@@ -276,9 +267,9 @@ You'll repeat this cycle:
 
 1.  **Manager**: Creates Task Assignment Prompt.
 2.  **User**: Delivers prompt to the appropriate Implementation Agent.
-3.  **Implementation Agent**: Executes task and logs work.
-4.  **User**: Reports completion to the Manager.
-5.  **Manager**: Reviews and determines the next action.
+3.  **Implementation Agent**: Executes task, logs work, and outputs Final Task Report.
+4.  **User**: Copies Final Task Report and pastes it to the Manager.
+5.  **Manager**: Reviews Memory Log and determines the next action.
 
 ### Agent Management
 
