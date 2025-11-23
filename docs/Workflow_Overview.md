@@ -25,9 +25,8 @@ graph LR
     C --> D[Project<br/>Breakdown]
     D --> E{User Chooses<br/>Review?}
     E -->|Yes| F[Systematic<br/>Review]
-    E -->|No| G[Enhancement &<br/>Memory Init]
-    F --> G
-    G --> H[Bootstrap<br/>Creation]
+    E -->|No| H[Bootstrap<br/>Creation]
+    F --> H
     H --> I[Manager Agent<br/>Handoff]
     
     classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
@@ -42,10 +41,11 @@ The Agent leads the User through three distinct discovery phases:
   1.  **Existing Materials & Vision:** Focuses on high-level scope, PRDs, existing codebases, and project documentation.
   2.  **Technical Requirements:** Drills down into specific stack choices, architectural constraints, dependencies, and other technical matters.
   3.  **Process Requirements:** Aligns on workflow preferences, coding standards, testing protocols, and review gates.
+  4.  **Final Validation:** Presents a comprehensive summary for user review and approval before proceeding to Project Breakdown.
 
-The Agent enforces **mandatory follow-up cycles** for each phase. It analyzes your responses and requests clarifications or missing details before advancing to the next topic, ensuring no critical requirements are overlooked. Early delivery of foundational documents (like PRDs) allows the Agent to tailor its technical questions in subsequent phases.
+The Agent enforces **mandatory iterative follow-up cycles** for each Question Round (1-3) and requires explicit user approval in Question Round 4. It analyzes your responses and requests clarifications or missing details before advancing to the next Question Round, ensuring no critical requirements are overlooked. Early delivery of foundational documents (like PRDs) allows the Agent to tailor its technical questions in subsequent Question Rounds.
 
-### 2. Project Breakdown (Chat-to-File Methodology)
+### 2. Project Breakdown & Plan Creation
 Once context is established, the Setup Agent initiates the Project Breakdown. It uses a carefully designed "Chat-to-File" procedure designed to overcome common LLM limitations (like lazy planning or pattern matching) by forcing the model to articulate its reasoning in the chat before writing to the file. This process is often called "forced chain-of-thought" as it forces non-CoT models to use much higher quality reasoning while still utilizing their advanced agentic capabilities.
 
 The Agent executes a systematic 4-step progression to transform requirements into a concrete plan:
@@ -56,19 +56,14 @@ The Agent executes a systematic 4-step progression to transform requirements int
 
 The Agent will produce the plan incrementally, explaining its reasoning logic as it generates the file content. The User can review the finalized plan to request modifications and verify the Agent's rationale as presented in the chat.
 
-### 3. Implementation Plan AI Review (Optional)
+### 3. Implementation Plan AI Review & Refinement (Optional)
 Before finalizing the plan, you can opt for a systematic, agent-driven quality assurance pass. This step is designed to catch specific AI planning pitfalls—such as "task packing" (squeezing too much work into one task) or pattern matching, that might cause issues during execution.
 
 This is not a generic re-read. The Setup Agent applies an analytical testing framework to specific sections of the plan you select. It challenges its own previous planning decisions to identify risks, ambiguity, or missing context. The Agent will present a critique of the selected sections. You must review these findings and approve or reject the proposed modifications.
 
 > **Crucial:** This AI review focuses on structural and logical integrity. It does not replace your manual review for requirements or domain constraints.
 
-### 4. Implementation Plan Enhancement & Finalization
-Once the structure is approved, the Setup Agent performs the final transformation of the draft plan into the detailed APM Artifact. This step bridges the gap between a detailed plan and actionable instructions for Implementation Agents.
-
-The Agent takes the detailed task list generated during the Project Breakdown phase and expands it following a specific format. It generates comprehensive specifications for every task, including detailed acceptance criteria, technical boundaries, and specific file paths. This rewrite, replaces the draft structure with verbose task specifications required for the [Task Loop Phase](#task-loop-phase).
-
-### 5. Manager Bootstrap
+### 4. Manager Bootstrap
 
 Finaly, the Agent generates a **Bootstrap Prompt**. This prompt acts as the "seed" for the Manager Agent, containing the user intent, project context, and initialization instructions.
 
@@ -97,7 +92,7 @@ graph LR
 ```
 
 ### 1. Manager Initialization
-The Manager parses a specialized prompt (either a **Bootstrap Prompt** from the Setup Phase or a **Handover Prompt** from a previous session) to understand the current project state. It then reads the required guides, the `Implementation_Plan.md` and the `Memory_Root.md` to build its mental model.
+The Manager parses a specialized prompt (either a **Bootstrap Prompt** from the Setup Phase or a **Handover Prompt** from a previous session) to understand the current project state. It then reads the required guides and the `Implementation_Plan.md` to build its mental model.
   
 After completing these steps, the Manager summarizes its understanding and requests user authorization to proceed. To continue, the User reviews the Agent's summary and explicitly **authorizes** the Manager to proceed before any tasks are assigned. This is to make clarifications or corrections if the Manager's understanding seems incorrect, before proceeding to project execution.
 
@@ -118,6 +113,8 @@ If Cross-Agent Dependencies exist, the Agent explicitly reads files/outputs from
 Implementation Agents operate in a focused context scope, only being aware of what is in their task assignments, preventing "context pollution" from unrelated project work.
 
 The User is the active "Human-in-the-Loop" overseeing and guiding task execution. Additionally,  you can combine steps to save tokens (e.g., `"Step 1 looks good. Combine steps 2 and 3 in your next response."`) or request strict explanations when needed.
+
+After completing task execution and Memory Logging, Implementation Agents output a Final Task Report code block written from the User's perspective. This report includes task completion status, execution notes, and key flags. The User copies this report and pastes it back to the Manager Agent for review.
 
 ```mermaid
 graph LR
@@ -150,7 +147,7 @@ The Manager reviews the log and decides to **Continue** to the next task, **Requ
 
 ### 5. Error Handling (Ad-Hoc Delegation)
 
-APM tries to prevent Implementation Agents from spiraling into long debugging loops that waste tokens and corrupt context. If an Implementation Agent cannot solve an issue after **2 attempts**, it triggers the **Ad-Hoc Delegation Protocol**.
+APM tries to prevent Implementation Agents from spiraling into long debugging loops that waste tokens and corrupt context. If an Implementation Agent cannot solve an issue after **3 attempts**, it triggers the **Ad-Hoc Delegation Protocol**.
 
 The issue is handed to a temporary **Ad-Hoc Agent**. The blocked Implementation Agent creates a **Delegation Prompt** describing the bug and how to reproduce it.
 
@@ -159,7 +156,7 @@ The User copies and pastes the delegation prompt into an Ad-Hoc Agent chat sessi
 ```mermaid
 graph LR
     B{Issue Complexity?}
-    B -->|Simple| C[Debug Locally<br/>2 Attempts]
+    B -->|Simple| C[Debug Locally<br/>3 Attempts]
     B -->|Complex| D[Implementation Agent<br/>Issues Ad-Hoc<br/>Delegation Prompt]
     C -->|Issue Persists| D
 

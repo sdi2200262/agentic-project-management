@@ -73,7 +73,8 @@ Implementation Agents are the workhorses. A project typically has multiple speci
 1.  **Execution:** Performs work based strictly on the **Task Assignment Prompt** and User instructions.
 2.  **Context Dependency Integration:** Explicitly reads outputs from other Agents (as instructed by the Manager) to ensure compatibility.
 3.  **Memory Logging:** Documents execution outputs, file changes, and technical decisions in a standardized **Memory Log**.
-4.  **Error Escalation:** If a task gets blocked, Imlpementation Agents generate a **Delegation Prompt** for an Ad-Hoc Agent instead of spiraling into debugging loops. This keeps their context intact and enables more efficient and focused task executions.
+4.  **Final Task Report:** Outputs a Final Task Report code block after Memory Logging, written from the User's perspective for Manager Agent review.
+5.  **Error Escalation:** If a task gets blocked, Implementation Agents generate a **Delegation Prompt** for an Ad-Hoc Agent instead of spiraling into debugging loops. This keeps their context intact and enables more efficient and focused task executions.
 
 ### Execution Patterns
 * **Single-Step:** For atomic tasks (e.g., "Create a utility function"). executed and logged in one response.
