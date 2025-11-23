@@ -73,7 +73,7 @@ You are taking over as [Agent_Type X+1] for ongoing task execution from [Outgoin
 
 ## Context Integration Protocol
 1. **Read {GUIDE_PATH:Memory_Log_Guide.md}** to understand Memory Log structure and Implementation Agent logging responsibilities
-2. **Read outgoing agent's Memory Logs** (chronological order) ([path/to/memory-logs]) to understand task execution history, outcomes, and blockers
+2. **Read ALL outgoing agent's Memory Logs** (in strict ascending numerical and chronological order; for example, review Task X.1 prior to Task X.2) ([path/to/memory-logs]) to understand task execution history, outcomes, and blockers
 3. **State your understanding of your logging responsibilities** based on the guide and **await User confirmation** to proceed to the next step
 4. **Read Handover File** ([path/Agent_Type_Handover_File_X.md]) for active memory context of the outgoing agent not captured in Memory Logs
 
@@ -127,4 +127,4 @@ last_completed_task: [Task ID]
 ---
 
 ## 5 File Organization and Naming
-Store Implementation Agent Handover Files in `.apm/Memory/Handovers/[Agent_Name]_Handovers/`. Use naming: `[Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
+Store Implementation Agent Handover Files in `.apm/Memory/Handovers/[Your_Agent_Name]_Handovers/`. Use naming: `[Your_Agent_Name]_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
