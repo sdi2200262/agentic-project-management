@@ -193,7 +193,7 @@ The Setup Agent will create a **Bootstrap Prompt** summarizing project context, 
 
 1.  **Open New Chat**: Create another dedicated chat session in "Agent" mode.
 2.  **Name It Clearly**: Use a clear name, such as "Manager Agent" or "APM Manager 1."
-3.  **Model Choice**: Select a model as recommended in the [Prerequisites](#prerequisites).
+3.  **Model Choice**: Select a premium or budget model as recommended in the [Prerequisites](#prerequisites).
 
 ### 4.2 Run Manager Agent Initialization Command
 
@@ -209,39 +209,47 @@ The Manager Agent requires the Bootstrap Prompt to receive initial project conte
 
 **Paste the Bootstrap Prompt** created by your Setup Agent.
 
-The Manager Agent will review project materials, initialize the Memory System, and confirm understanding before requesting authorization to begin tasks. **Authorize the Manager Agent** once you confirm their understanding is accurate. For example:
+The Manager Agent will review project materials and the required guides and then summarize understanding before requesting authorization to begin tasks. **Authorize the Manager Agent** once you confirm their understanding is accurate. For example:
 
 `"Your understanding of your responsibilities is complete. Please proceed to phase 1 execution."`
+
+The Manager Agent will **initialize the Memory System** and create a **Task Assignment Prompt** for the first task in your Implementation Plan. The prompt will be presented **in a markdown code block** for easy copy-paste.
+
+<div align="center">
+  <video 
+    controls 
+    autoplay 
+    loop 
+    muted 
+    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
+  >
+    <source src={require('@site/static/docs-video/cursor-apm-manager-agent-budget-model.mp4').default} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
 
 ---
 
 ## Step 5: First Task Assignment
 
-### 5.1 Manager Creates Task Assignment
-
-The Manager Agent will create a **Task Assignment Prompt** for the first task in your Implementation Plan. The prompt will be presented **in a markdown code block** for easy copy-paste.
-
-### 5.2 Initialize Implementation Agent
+### 5.1 Initialize Implementation Agent
 
 1.  **Open New Chat**: Create another dedicated chat session for the assigned Implementation Agent.
 2.  **Name Appropriately**: Use the Agent name from the Implementation Plan (e.g., "Agent_Frontend").
-3.  **Enter the Implementation Agent Initialization Command**:
+3.  **Model Choice**: Select a premium or budget model as recommended in the [Prerequisites](#prerequisites).
+4.  **Enter the Implementation Agent Initialization Command**:
 ```
 /apm-3-initiate-implementation
 ```
 The Implementation Agent will confirm its role, read the Memory Log Guide, and wait for the Task Assignment.
 
-### 5.3 Deliver Task Assignment
+### 5.2 Deliver Task Assignment
 
 **Copy the Task Assignment Prompt** from the Manager Agent and **paste it to the Implementation Agent**.
 
 The Implementation Agent will confirm task requirements, carry out the work, and report completion with a Memory Log entry.
 
----
-
-## Step 6: Complete First Task Cycle
-
-### 6.1 Task Execution & Memory Logging
+### 5.3 Task Execution & Memory Logging
 The Implementation Agent will execute the task in one of two ways:
   * **Single-Step Tasks**: Agent completes all subtasks and proceeds directly to Memory Logging.
   * **Multi-Step Tasks**: Agent executes step-by-step with your confirmation at each stage. You can provide feedback and request modifications between steps.
@@ -253,9 +261,22 @@ Once task is complete, or faced serious blockers, the Agent will create a concis
 
 After Memory Logging, the Implementation Agent will output a **Final Task Report** code block written from your perspective. This report includes task completion status, execution notes, and key flags. **Copy this code block** and paste it back to the Manager Agent.
 
-### 6.2 Report to Manager for Review & Next Steps
+### 5.4 Report to Manager for Review & Next Steps
 
 **Return to your Manager Agent session** and paste the Final Task Report code block from the Implementation Agent. If necessary, you can add additional context to this prompt. The Manager Agent will review the Memory Log and task outputs, then decide to either continue with the next task, request corrections, or update the Implementation Plan as needed.
+
+<div align="center">
+  <video 
+    controls 
+    autoplay 
+    loop 
+    muted 
+    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
+  >
+    <source src={require('@site/static/docs-video/cursor-apm-first-task-assignment.mp4').default} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
 
 ---
 
