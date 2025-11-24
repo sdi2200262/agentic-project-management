@@ -302,14 +302,6 @@ You'll repeat this cycle:
 
 When Agents approach the context window limit, perform a **Handover Procedure** for smooth continuation.
 
-<div align="center">
-  <img 
-    src={require('@site/static/docs-img/cursor-apm-handover-implementation.png').default} 
-    alt="Handover Implementation Agents using `/apm-6-handover-implementation` command" 
-    width="1200" 
-    style={{ maxWidth: '100%', borderRadius: '14px' }}
-  />
-</div>
 
 1.  **Detect the Limit:** Watch for context window usage (if your IDE provides a visualization) or signs like repeated questions or generic responses.
 2.  **Request a Handover:** Ask the Agent to begin a Handover Procedure using the appropriate command.
@@ -317,6 +309,21 @@ When Agents approach the context window limit, perform a **Handover Procedure** 
 3.  **Open a New Agent Session:** Start a new chat for the same Agent role (e.g., "Agent_Backend_2") and initialize it.
 4.  **Initialize the New Agent:** Paste the **Handover Prompt** (and provide the Handover File as context if needed) as the first message.
 5.  **Verify and Resume:** **Verify the new Agent's understanding** of the project state. Once verified, authorize the Agent to continue work.
+
+<div align="center">
+  <video 
+    controls 
+    autoplay 
+    loop 
+    muted 
+    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
+  >
+    <source src={require('@site/static/docs-video/cursor-apm-handover.mp4').default} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+> **Note:** In the video above, the Handover is performed before the Implementation Agent's context window fills, purely for demonstration. In actual APM workflows, you should perform handovers proactively, ideally when your Agent is nearing 80–90% of their context window limit.
 
 ---
 
