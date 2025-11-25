@@ -66,7 +66,7 @@ Your role is to conduct project discovery and populate the Implementation Plan f
 - Agent assignment errors
 - Classification mistakes
 
-The systematic review will also highlight areas where your input is needed for optimization decisions. For now, please focus on identifying any major structural issues, missing requirements, or workflow problems that might not be caught by the systematic review. After your manual review, please state if you want to proceed with the systematic review or skip ahead to Implementation Plan Enhancement & Finalization. If you request modifications to the plan now, I will state the same prompt after applying them."
+The systematic review will also highlight areas where your input is needed for optimization decisions. For now, please focus on identifying any major structural issues, missing requirements, or workflow problems that might not be caught by the systematic review. After your manual review, please state if you want to proceed with the systematic review or skip ahead to Bootstrap Prompt creation. If you request modifications to the plan now, I will state the same prompt after applying them."
 
 **User Decision Point:**
 1. **Handle Immediate Issues:** If User identifies issues, iterate with User to address them until explicit confirmation that all issues are resolved
