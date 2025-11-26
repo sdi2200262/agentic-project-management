@@ -23,9 +23,10 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(18, 18, 18, 0.2);
-  backdrop-filter: blur(10px) saturate(180%);
-  -webkit-backdrop-filter: blur(10px) saturate(180%);
+  background: rgba(70, 70, 70, 0.4);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
   border-radius: 16px;
   z-index: -1;
 }
@@ -65,18 +66,7 @@
   isolation: isolate;
 }
 
-.nav::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(70, 70, 70, 0.4);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  /*box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);*/
-  border-radius: 50px;
-  z-index: -1;
-}
+/* Removed .nav::before - background and border moved to .headerContent::before */
 
 .navIndicator {
   position: absolute;
