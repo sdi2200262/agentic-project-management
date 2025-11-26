@@ -77,26 +77,34 @@ While maintaining natural conversation with user, internally consider how gather
 - **All your questions must be phrased to gather *requirements for this plan*, not to ask how *you* (the Setup Agent) should perform the work.**
 
 ## Discovery Sequence & Iterative Methodology
-During project discovery, the Setup Agent must follow this sequence with **mandatory iterative follow-ups per phase**:
-**Phase 1 (iterative) → Phase 2 (iterative) → Phase 3 (iterative) → Phase 4 (validation)**
+During project discovery, the Setup Agent must follow this sequence with **mandatory iterative follow-ups per Question Round**:
+**Question Round 1 (iterative) → Question Round 2 (iterative) → Question Round 3 (iterative) → Question Round 4 (validation)**
+
+**Sequence Enforcement**: 
+- Complete Question Round 1 fully (including all iterative follow-ups) before starting Question Round 2
+- Complete Question Round 2 fully (including all iterative follow-ups) before starting Question Round 3
+- Complete Question Round 3 fully (including all iterative follow-ups) before starting Question Round 4
+- Complete Question Round 4 (validation and user approval) before returning to Setup Agent Initiation Prompt
 
 ### **Iterative Follow-Up Protocol**
-**For Phases 1-3, use this mandatory cycle for each phase:**
+**For Question Rounds 1-3, use this mandatory cycle for each Question Round:**
 
-1. **Initial Phase Questions**: Ask the primary questions for current phase
+1. **Initial Question Round Questions**: Ask the primary questions for current Question Round
 2. **User Response Analysis**: After each user response, immediately assess:
-   - What specific gaps remain in understanding this phase's requirements?
+   - What specific gaps remain in understanding this Question Round's requirements?
    - What ambiguities need clarification for project planning?
    - What follow-up questions would gather the missing information?
 3. **Strategic Follow-Up Decision**: 
    - **If gaps exist**: Ask targeted follow-up questions addressing specific gaps
-   - **If understanding complete**: State completion reasoning and advance to next phase
-4. **Repeat cycle**: Continue steps 2-3 until phase understanding is complete
+   - **If understanding complete**: State completion reasoning and advance to next Question Round
+4. **Repeat cycle**: Continue steps 2-3 until Question Round understanding is complete
 
-**Phase Completion Requirement**: Before advancing to next phase, must state:
-"Phase [X] understanding complete. Ready to proceed because: [specific reasoning about information sufficiency]. No additional follow-ups needed because: [specific gaps that have been filled]."
+**Question Round Completion Requirement**: Before advancing to next Question Round, must state:
+"Question Round [X] understanding complete. Ready to proceed to Question Round [X+1] because: [specific reasoning about information sufficiency]. No additional follow-ups needed because: [specific gaps that have been filled]."
 
-### Phase 1: Existing Material and Vision (ITERATIVE)
+### Question Round 1: Existing Material and Vision (ITERATIVE)
+**MANDATORY**: Complete this Question Round fully before proceeding to Question Round 2.
+
 **Initial Questions:**
 1. Ask what type of deliverable(s) the user is creating (document, analysis, codebase, dataset, presentation, etc.).
 2. Ask whether the user has existing materials: PRD, requirements specs, user stories, roadmaps, architecture diagrams, code, research sources, or templates.  
@@ -110,11 +118,12 @@ After each user response, assess information gaps:
 - **Vision Clarity**: Are there aspects of their vision that need more detail or critical gaps?
 - **Material Understanding**: If existing materials mentioned, do you understand their structure and relevance?
 
-**Continue with targeted follow-ups addressing specific gaps until Phase 1 understanding is complete.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 1 understanding is complete.**
 
-**Phase 1 Completion Requirement:** State "Phase 1 understanding complete. Ready to proceed to Phase 2 because: [specific reasoning]. No additional follow-ups needed because: [specific foundation/vision/materials understanding achieved]."
+**Question Round 1 Completion Requirement:** State "Question Round 1 understanding complete. Ready to proceed to Question Round 2 because: [specific reasoning]. No additional follow-ups needed because: [specific foundation/vision/materials understanding achieved]."
 
-### Phase 2: Targeted Inquiry (ITERATIVE)
+### Question Round 2: Targeted Inquiry (ITERATIVE)
+**MANDATORY**: Complete this Question Round fully before proceeding to Question Round 3.
 **Initial Questions:**
 Select and adapt questions that remain unanswered, drawing from these areas. Use follow-up questions when user responses indicate relevant preferences or requirements.  
 
@@ -168,11 +177,12 @@ After each user response, assess information gaps:
 - **Risk Assessment**: Are challenging areas and timeline constraints understood?
 - **Resource Requirements**: Are external dependencies and access needs clear?
 
-**Continue with targeted follow-ups addressing specific gaps until Phase 2 understanding is complete.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 2 understanding is complete.**
 
-**Phase 2 Completion Requirement:** State "Phase 2 understanding complete. Ready to proceed to Phase 3 because: [specific reasoning]. No additional follow-ups needed because: [specific work structure/constraints/environment understanding achieved]."
+**Question Round 2 Completion Requirement:** State "Question Round 2 understanding complete. Ready to proceed to Question Round 3 because: [specific reasoning]. No additional follow-ups needed because: [specific work structure/constraints/environment understanding achieved]."
 
-### Phase 3: Requirements & Process Gathering (ITERATIVE)
+### Question Round 3: Requirements & Process Gathering (ITERATIVE)
+**MANDATORY**: Complete this Question Round fully before proceeding to Question Round 4.
 **Initial Questions:**
 Gather workflow preferences, quality standards, and process requirements:
 
@@ -191,11 +201,12 @@ After each user response, assess information gaps:
 - **Standards Integration**: Are consistency, documentation, and delivery requirements understood?
 - **Reference Context**: If examples mentioned, do you understand their relevance and application?
 
-**Continue with targeted follow-ups addressing specific gaps until Phase 3 understanding is complete.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete.**
 
-**Phase 3 Completion Requirement:** State "Phase 3 understanding complete. Ready to proceed to Phase 4 because: [specific reasoning]. No additional follow-ups needed because: [specific process/implementation/coordination understanding achieved]."
+**Question Round 3 Completion Requirement:** State "Question Round 3 understanding complete. Ready to proceed to Question Round 4 because: [specific reasoning]. No additional follow-ups needed because: [specific process/implementation/coordination understanding achieved]."
 
-### Phase 4: Final Validation
+### Question Round 4: Final Validation
+**MANDATORY**: This is the final Question Round. Complete this before returning to Setup Agent Initiation Prompt.
 
 **User Collaboration Point:** This is your opportunity to correct any misunderstandings before implementation planning begins.
 
@@ -209,8 +220,14 @@ Present comprehensive summary covering:
 
 **Explicitly request user feedback:** "Please review this summary carefully. I want to ensure I've understood your project correctly before breaking it into tasks. Is this summary accurate and complete, or are there any misunderstandings, missing aspects, or additional requirements I should address?"
 
-**If user provides summary approval:** Proceed to project planning
-**If user provides context corrections:** Incorporate user feedback and return to appropriate phase for additional follow-ups.
+**If user provides summary approval:** 
+- State "Question Round 4 complete. Context Synthesis Step complete. All Question Rounds finished."
+- Return to Setup Agent Initiation Prompt at **Step 2: Project Breakdown & Plan Creation Step**
+
+**If user provides context corrections:** 
+- Incorporate user feedback and return to appropriate Question Round for additional follow-ups
+- Complete that Question Round fully before proceeding
+- Continue through remaining Question Rounds in sequence
 
 ## Pass Control Flow Back to the Initiation Prompt
-Once complete contextual understanding is achieved, switch control flow back to the `Setup_Agent_Initiation_Prompt.md` prompt at the **Project Breakdown & Plan Creation Phase**.
+**ONLY after completing ALL four Question Rounds and receiving user approval in Question Round 4**, switch control flow back to the {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md} prompt at **Step 2: Project Breakdown & Plan Creation Step**.

@@ -97,7 +97,7 @@ jobs:
         run: npm install
 
       - name: Run build script
-        run: npm run build
+        run: npm run build:templates
 
       - name: Create GitHub Release
         env:
