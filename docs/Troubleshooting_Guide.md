@@ -24,7 +24,7 @@ Issues in the Setup Phase can affect the entire project, so it's best to resolve
 * **Major/Foundational Requirements:** If you omitted something critical (like a PRD, core architectural constraint, or key specification), it can severely compromise the Setup Agent's understanding and the resulting Implementation Plan.
 
 **Recommended Action (Major Omissions):**
-It's best to **roll back and restart Context Synthesis**. Restarting early is less costly (in tokens and time) than correcting major flaws after Project Breakdown or Enhancement. Ensure high-level documents and core requirements are provided early, ideally in Phase 1, as this shapes the Agent's entire discovery strategy.
+It's best to **roll back and restart Context Synthesis**. Restarting early is less costly (in tokens and time) than correcting major flaws after Project Breakdown. Ensure high-level documents and core requirements are provided early, ideally in the first discovery phase, as this shapes the Agent's entire discovery strategy.
 
 ### 2. Interrupted Project Breakdown
 
@@ -39,21 +39,6 @@ It's best to **roll back and restart Context Synthesis**. Restarting early is le
 
 > **Important:** Carefully review the complete output after recovery. If the sequence became too disjointed, evaluate context window usage and decide if restarting the Setup Agent is necessary.
 
-### 3. Interrupted Implementation Plan Enhancement
-
-**Scenario:** Similar to Project Breakdown, the Enhancement phase (where the simple plan is transformed into the detailed APM artifact format) gets interrupted.
-
-**Recommended Action:** Follow the same troubleshooting steps as for an Interrupted Project Breakdown (instructing the Agent to continue, potentially switching models carefully).
-
-**Alternative Recovery (If Near Context Limit):**
-If the interruption happens near the context window limit, you can:
-1.  Start a **new Setup Agent session**.
-2.  Repeat **Context Synthesis** to give the new Agent the project requirements.
-3.  Provide the **finalized (but simple) Implementation Plan file** (`.apm/Implementation_Plan.md`) created *before* the enhancement attempt.
-4.  Instruct the new Agent to **skip Project Breakdown & Review** and proceed directly to the **Enhancement** step using the provided file.
-5.  The rest of the Setup Phase (Enhancement, Bootstrap Prompt) will complete in the new session.
-
-> **Warning:** This alternative is experimental. Use it only as a last resort and carefully verify the resulting enhanced Implementation Plan.
 
 ---
 
@@ -86,7 +71,7 @@ Troubleshooting during the Task Loop often requires context-aware solutions, as 
 * **Major Revisions:** Return to the Setup Agent.
     * **If original Setup Agent session has context space:** Continue in that session.
     * **If original session is near full:** Start a **new Setup Agent session**. Repeat **Context Synthesis**, providing the original context, a summary of progress (including completed tasks from the Memory System), and the required changes.
-    * **For both cases:** Instruct the Setup Agent to perform **Project Breakdown only on the sections needing revision**. During **Enhancement**, only enhance the revised sections. **Skip Memory System initialization**.
+    * **For both cases:** Instruct the Setup Agent to perform **Project Breakdown only on the sections needing revision**.
     * Copy the **new Bootstrap Prompt** and provide it to the Manager Agent, explaining the major revisions.
 
 ---

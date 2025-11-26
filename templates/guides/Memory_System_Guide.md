@@ -15,11 +15,15 @@ The Dynamic-MD Memory System organizes memory with the following structure:
 ## 2  Manager Agent Responsibilities
 Main responsibilities of the Manager Agent when maintaining the Memory System during an APM session:
 
-1. Keep the Memory System structure (folders/logs) in sync with the current Implementation Plan. Update as Phases or Tasks change.
+1. **Memory Root Header Initialization (First Session Only)**: Before starting the first phase execution, fill in the header of `.apm/Memory/Memory_Root.md`. The file is pre-created by the `agentic-pm` CLI tool using `apm init`, with a header template containing placeholders. Replace all placeholders with actual values before proceeding to phase execution.
 
-2. After each phase, create and append a concise summary referencing the relevant Memory Logs.
+2. Keep the Memory System structure (folders/logs) in sync with the current Implementation Plan. Update as Phases or Tasks change.
+
+3. After each phase, create and append a concise summary referencing the relevant Memory Logs.
 
 ### Phase and Task Management
+**Note**: The Memory Root header must be filled before the first phase execution begins (see responsibility #1 above).
+
 1. On phase entry, create `.apm/Memory/Phase_XX_<slug>/` if missing. For each task in the phase, create a **completely empty** Memory Log, following {GUIDE_PATH:Memory_Log_Guide.md}:
     - `Task_Y_Z_<slug>.md`
 
@@ -28,6 +32,8 @@ Main responsibilities of the Manager Agent when maintaining the Memory System du
 **Example: Task "Task 2.1 - Deploy Updates | Agent_Backend" → `Task_2_1_Deploy_Updates.md`**
 
 2. After each task execution, review the Memory Log **populated by the Implementation Agent**, provided via the User.
+   - If the log contains `important_findings: true` or `compatibility_issues: true`, you **MUST** inspect the referenced output files/artifacts to validate the findings before making a decision.
+   
 
 3. At phase end, append a summary to `.apm/Memory/Memory_Root.md`:
     ```markdown

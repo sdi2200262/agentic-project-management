@@ -1,6 +1,6 @@
 {
   "name": "agentic-pm",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Agentic Project Management CLI",
   "scripts": {
     "build:templates": "node scripts/build.js",
@@ -40,8 +40,8 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^7.9.0",
-    "axios": "^1.12.2",
     "adm-zip": "^0.5.16",
+    "axios": "^1.12.2",
     "chalk": "^5.6.2",
     "commander": "^11.1.0",
     "fs-extra": "^11.2.0",

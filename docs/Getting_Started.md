@@ -96,8 +96,8 @@ The `init` command will:
   * **Download APM Assets**: Automatically fetch the latest prompts and guides.
   * **Create Directory Structure**: Set up the `.apm/` directory with:
       * `.apm/guides/` - All template guides for APM workflows
-      * `.apm/Memory/Memory_Root.md` - Empty root memory file
-      * `.apm/Implementation_Plan.md` - Empty implementation plan file
+      * `.apm/Memory/Memory_Root.md` - Root memory file with header template (to be filled by Manager Agent)
+      * `.apm/Implementation_Plan.md` - Implementation plan file with header template (to be filled by Setup Agent)
       * `.apm/metadata.json` - Installation metadata
   * **Install Commands**: Create assistant-specific slash commands in the appropriate directory (e.g., `.cursor/`, `.github/copilot/`, etc.)
 
@@ -139,27 +139,27 @@ To initialize the Setup Agent, simply enter the command:
 ---
 
 ## Step 3: Work Through Setup Phase
-The Setup Agent will greet you and outline its 5-step workflow:
+The Setup Agent will greet you and outline its 4-step workflow:
 
 1.  Context Synthesis
 2.  Project Breakdown & Plan Creation
-3.  Implementation Plan Review & Refinement
-4.  Implementation Plan Enhancement & Finalization
-5.  Manager Bootstrap Prompt Creation
+3.  Implementation Plan Review & Refinement (Optional)
+4.  Manager Bootstrap Prompt Creation
 
 The Setup Agent will guide you through each step systematically, always asking for your confirmation before moving on so you can review, clarify, or request changes. **Be thorough during this phase** - time invested here prevents roadblocks later.
 
 ### 3.1 Context Synthesis (Project Discovery)
 
-**This is the most important stage.** The Setup Agent will conduct structured discovery through three phases:
+**This is the most important stage.** The Setup Agent will conduct structured discovery through four mandatory **Question Rounds:**
 
   * **Existing Materials & Vision**: Share PRDs, requirements, existing code, or project documentation.
   * **Technical Requirements**: Discuss technologies, constraints, dependencies, and technical scope.
   * **Process Requirements**: Explain workflow preferences, quality standards, and coordination needs.
+  * **Final Validation**: The Agent presents a comprehensive summary for your review and approval before proceeding to Project Breakdown.
 
 > **Tips for Context Synthesis:** Share all relevant project details, constraints, and uncertainties with the Setup Agent. **Try to provide requested context in the order that you are prompted** — early delivery of artifacts like PRDs or documentation improves the Agent's discovery process.
 
-### 3.2 Project Breakdown
+### 3.2 Project Breakdown & Plan Creation
 
 The Setup Agent will systematically break down your project through key stages:
 
@@ -170,23 +170,16 @@ The Setup Agent will systematically break down your project through key stages:
 
 > **Tips for Project Breakdown:** Review the Agent's reasoning in the chat and thoroughly check the full Implementation Plan at the end. Request any changes or clarifications now. **Fixing issues early is much easier and cheaper than later adjustments.**
 
-### 3.3 Implementation Plan Review (Optional)
+### 3.3 Implementation Plan AI Review & Refinement (Optional)
 
 The Setup Agent will offer systematic review of the Implementation Plan:
 
   * **Recommended**: For complex projects or first-time APM users.
-  * **Optional**: If you're satisfied with the plan quality.
+  * **Optional**: If you're satisfied with the plan quality, you can skip this step and proceed directly to Bootstrap Creation.
 
 > **Tip for Implementation Plan AI-driven Review:** This AI-driven review focuses on AI-specific planning issues (task packing, classification errors). **You must still conduct your own manual review** for requirement gaps or constraints.
 
-### 3.4 Implementation Plan Enhancement & Finalization
-
-The Setup Agent will:
-
-  * Transform the Implementation Plan into detailed APM artifact format.
-  * Generate comprehensive task specifications.
-
-### 3.5 Manager Bootstrap Creation
+### 3.4 Manager Bootstrap Creation
 
 The Setup Agent will create a **Bootstrap Prompt** summarizing project context, key requirements, and next steps for the Manager Agent. 
 
@@ -200,7 +193,7 @@ The Setup Agent will create a **Bootstrap Prompt** summarizing project context, 
 
 1.  **Open New Chat**: Create another dedicated chat session in "Agent" mode.
 2.  **Name It Clearly**: Use a clear name, such as "Manager Agent" or "APM Manager 1."
-3.  **Model Choice**: Select a model as recommended in the [Prerequisites](#prerequisites).
+3.  **Model Choice**: Select a premium or budget model as recommended in the [Prerequisites](#prerequisites).
 
 ### 4.2 Run Manager Agent Initialization Command
 
@@ -216,39 +209,47 @@ The Manager Agent requires the Bootstrap Prompt to receive initial project conte
 
 **Paste the Bootstrap Prompt** created by your Setup Agent.
 
-The Manager Agent will review project materials, initialize the Memory System, and confirm understanding before requesting authorization to begin tasks. **Authorize the Manager Agent** once you confirm their understanding is accurate. For example:
+The Manager Agent will review project materials and the required guides and then summarize understanding before requesting authorization to begin tasks. **Authorize the Manager Agent** once you confirm their understanding is accurate. For example:
 
 `"Your understanding of your responsibilities is complete. Please proceed to phase 1 execution."`
+
+The Manager Agent will **initialize the Memory System** and create a **Task Assignment Prompt** for the first task in your Implementation Plan. The prompt will be presented **in a markdown code block** for easy copy-paste.
+
+<div align="center">
+  <video 
+    controls 
+    autoplay 
+    loop 
+    muted 
+    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
+  >
+    <source src={require('@site/static/docs-video/cursor-apm-manager-agent-budget-model.mp4').default} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
 
 ---
 
 ## Step 5: First Task Assignment
 
-### 5.1 Manager Creates Task Assignment
-
-The Manager Agent will create a **Task Assignment Prompt** for the first task in your Implementation Plan. The prompt will be presented **in a markdown code block** for easy copy-paste.
-
-### 5.2 Initialize Implementation Agent
+### 5.1 Initialize Implementation Agent
 
 1.  **Open New Chat**: Create another dedicated chat session for the assigned Implementation Agent.
 2.  **Name Appropriately**: Use the Agent name from the Implementation Plan (e.g., "Agent_Frontend").
-3.  **Enter the Implementation Agent Initialization Command**:
+3.  **Model Choice**: Select a premium or budget model as recommended in the [Prerequisites](#prerequisites).
+4.  **Enter the Implementation Agent Initialization Command**:
 ```
 /apm-3-initiate-implementation
 ```
 The Implementation Agent will confirm its role, read the Memory Log Guide, and wait for the Task Assignment.
 
-### 5.3 Deliver Task Assignment
+### 5.2 Deliver Task Assignment
 
 **Copy the Task Assignment Prompt** from the Manager Agent and **paste it to the Implementation Agent**.
 
 The Implementation Agent will confirm task requirements, carry out the work, and report completion with a Memory Log entry.
 
----
-
-## Step 6: Complete First Task Cycle
-
-### 6.1 Task Execution & Memory Logging
+### 5.3 Task Execution & Memory Logging
 The Implementation Agent will execute the task in one of two ways:
   * **Single-Step Tasks**: Agent completes all subtasks and proceeds directly to Memory Logging.
   * **Multi-Step Tasks**: Agent executes step-by-step with your confirmation at each stage. You can provide feedback and request modifications between steps.
@@ -258,13 +259,24 @@ The Implementation Agent will execute the task in one of two ways:
 
 Once task is complete, or faced serious blockers, the Agent will create a concise Memory Log entry summarizing task completion, outputs, any delegations or any issues encountered, and next steps or recommendations.
 
-### 6.2 Report to Manager for Review & Next Steps
+After Memory Logging, the Implementation Agent will output a **Final Task Report** code block written from your perspective. This report includes task completion status, execution notes, and key flags. **Copy this code block** and paste it back to the Manager Agent.
 
-**Return to your Manager Agent session** and inform them of the task status. For example:
+### 5.4 Report to Manager for Review & Next Steps
 
-`"Agent_[Name] has completed Task [X.Y] successfully and logged the results to [Memory_Log_Path]. Please review it and proceed accordingly."`
+**Return to your Manager Agent session** and paste the Final Task Report code block from the Implementation Agent. If necessary, you can add additional context to this prompt. The Manager Agent will review the Memory Log and task outputs, then decide to either continue with the next task, request corrections, or update the Implementation Plan as needed.
 
-The Manager Agent will review the Memory Log and task outputs, then decide to either continue with the next task, request corrections, or update the Implementation Plan as needed.
+<div align="center">
+  <video 
+    controls 
+    autoplay 
+    loop 
+    muted 
+    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
+  >
+    <source src={require('@site/static/docs-video/cursor-apm-first-task-assignment.mp4').default} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
 
 ---
 
@@ -276,9 +288,9 @@ You'll repeat this cycle:
 
 1.  **Manager**: Creates Task Assignment Prompt.
 2.  **User**: Delivers prompt to the appropriate Implementation Agent.
-3.  **Implementation Agent**: Executes task and logs work.
-4.  **User**: Reports completion to the Manager.
-5.  **Manager**: Reviews and determines the next action.
+3.  **Implementation Agent**: Executes task, logs work, and outputs Final Task Report.
+4.  **User**: Copies Final Task Report and pastes it to the Manager.
+5.  **Manager**: Reviews Memory Log and determines the next action.
 
 ### Agent Management
 
@@ -290,14 +302,6 @@ You'll repeat this cycle:
 
 When Agents approach the context window limit, perform a **Handover Procedure** for smooth continuation.
 
-<div align="center">
-  <img 
-    src={require('@site/static/docs-img/cursor-apm-handover-implementation.png').default} 
-    alt="Handover Implementation Agents using `/apm-6-handover-implementation` command" 
-    width="1200" 
-    style={{ maxWidth: '100%', borderRadius: '14px' }}
-  />
-</div>
 
 1.  **Detect the Limit:** Watch for context window usage (if your IDE provides a visualization) or signs like repeated questions or generic responses.
 2.  **Request a Handover:** Ask the Agent to begin a Handover Procedure using the appropriate command.
@@ -305,6 +309,21 @@ When Agents approach the context window limit, perform a **Handover Procedure** 
 3.  **Open a New Agent Session:** Start a new chat for the same Agent role (e.g., "Agent_Backend_2") and initialize it.
 4.  **Initialize the New Agent:** Paste the **Handover Prompt** (and provide the Handover File as context if needed) as the first message.
 5.  **Verify and Resume:** **Verify the new Agent's understanding** of the project state. Once verified, authorize the Agent to continue work.
+
+<div align="center">
+  <video 
+    controls 
+    autoplay 
+    loop 
+    muted 
+    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
+  >
+    <source src={require('@site/static/docs-video/cursor-apm-handover.mp4').default} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+> **Note:** In the video above, the Handover is performed before the Implementation Agent's context window fills, purely for demonstration. In actual APM workflows, you should perform handovers proactively, ideally when your Agent is nearing 80–90% of their context window limit.
 
 ---
 

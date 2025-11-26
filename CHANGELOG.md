@@ -7,6 +7,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.5.2] - 2025-11-26
+
+### Added
+
+* **Header Templates:** CLI now creates `Implementation_Plan.md` and `Memory_Root.md` with pre-filled header templates containing placeholders. Setup Agent must fill Implementation Plan header before Project Breakdown, and Manager Agent must fill Memory Root header before first phase execution.
+
+### Changed
+
+* **Workflow Streamlining:** Removed Enhancement phase and `Implementation_Plan_Guide.md`. Setup workflow now consists of 4 steps instead of 5, with structured file format built directly into Project Breakdown Guide.
+* **Context Synthesis:** Renamed terminology from "Phase" to "Question Round" with stricter sequence enforcement and mandatory completion requirements.
+* **Error Handling:** Strengthened Implementation Agent error handling protocol with 3-attempt limit before mandatory delegation (increased from 2 attempts).
+* **Project Breakdown:** Added stricter instructions for interleaved Project Breakdown sequence with strict guardrails to prevent pattern matching and ensure quality task breakdown.
+* **Task Assignment:** Added Reporting Protocol requiring Implementation Agents to output Final Task Report code blocks for better UX.
+* **Agent Management:** Added Agent Name Registration & Assignment Validation protocol for Implementation Agents to prevent task assignment errors.
+
+### Removed
+
+* **Implementation_Plan_Guide.md:** Removed separate Enhancement guide. Structured format now integrated directly into Project Breakdown Guide workflow.
+
+---
+
 ## [0.5.0] - 2025-10-29
 
 ### Added

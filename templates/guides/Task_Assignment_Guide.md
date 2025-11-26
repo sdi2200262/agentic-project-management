@@ -77,6 +77,11 @@ Implementation Plan: **Task X.Y - [Title]** assigned to **[Agent_<Domain>]**
 Upon completion, you **MUST** log work in: `[memory_log_path]`
 Follow {GUIDE_PATH:Memory_Log_Guide.md} instructions.
 
+## Reporting Protocol
+After logging, you **MUST** output a **Final Task Report** code block.
+- **Format:** Use the exact template provided in your {COMMAND_PATH:Implementation_Agent_Initiation_Prompt.md} instructions.
+- **Perspective:** Write it from the User's perspective so they can copy-paste it back to the Manager.
+
 ## Ad-Hoc Delegation
 [Only include if ad_hoc_delegation: true]
 [Manager fills this section with section §7 content guidance, including explicit command references for Debug/Research delegations ({COMMAND_PATH:Debug_Delegation_Guide.md} or {COMMAND_PATH:Research_Delegation_Guide.md})]
@@ -198,29 +203,30 @@ If [specific integration aspect] is ambiguous after completing integration steps
 - Provide comprehensive output summary and usage guidance
 - Include User clarification protocol for complex integrations
 
-## 5. Memory Log Review
-When Implementation Agent returns, **review Memory Log per {GUIDE_PATH:Memory_Log_Guide.md} section §5**. Assess task completion status, identify blockers, and verify outputs match Implementation Plan expectations.
+## 4. Memory Log Review
+When Implementation Agent returns, **review Memory Log per {GUIDE_PATH:Memory_Log_Guide.md} section §5**. Assess task completion status, identify blockers, and verify outputs match Implementation Plan expectations. Scan the log's YAML frontmatter:
+- If `important_findings: true` or `compatibility_issue: true`: Read the specific source files or outputs referenced in the log to verify the findings. **Do not proceed based on the log contents alone.**
 
-## 6. Next Action Framework
+## 5. Next Action Framework
 Based on log review, determine appropriate next step:
 
-### 6.1. Continue Workflow
+### 5.1. Continue Workflow
 - Task complete and successful → Issue **next Task Assignment Prompt** per Implementation Plan (Task Loop continues)
 - Phase complete → **Create phase summary**, begin next phase
 
-### 6.2. Follow-Up Actions
+### 5.2. Follow-Up Actions
 - Task needs refinement → Send correction **follow-up prompt** to same agent (if technical blockers persist, consider **Ad-Hoc delegation in the follow-up prompt**)
 - Plan assumptions invalid or any other changes needed → **Update Implementation Plan**
 
-### 6.3. Decision Criteria
+### 5.3. Decision Criteria
 - **Complete**: All deliverables produced, requirements met
 - **Partial**: Some progress made, specific issues identified
 - **Blocked**: Cannot proceed without external input or resolution
 
-## 7. Ad-Hoc Delegation Protocol
+## 6. Ad-Hoc Delegation Protocol
 Set `ad_hoc_delegation: true` only when Implementation Plan contains explicit delegation steps for the task.
 
-### 7.1. Manager Responsibilities  
+### 6.1. Manager Responsibilities  
 When Implementation Plan contains explicit delegation steps, Manager Agents must:
 - Extract delegation requirements from Implementation Plan step
 - **Identify delegation type** (Debug, Research, or other) from the Implementation Plan delegation step
@@ -232,7 +238,7 @@ When Implementation Plan contains explicit delegation steps, Manager Agents must
 - **Research Delegation**: Reference {COMMAND_PATH:Research_Delegation_Guide.md}  
 - **Custom Delegations**: Reference appropriate custom command files if available
 
-### 7.2. Integration Requirements
+### 6.2. Integration Requirements
 - Implementation Agent creates delegation prompt and manages workflow
 - Ad-Hoc agents work in a separate branch managed by the assigning Implementation Agent; they do not log into Memory
 - Original agent incorporates findings and logs delegation while User deletes delegation chat session (optional)
