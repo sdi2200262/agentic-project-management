@@ -18,7 +18,7 @@
   position: absolute;
   width: 1224px;
   height: 644px;
-  top: 50%;
+  top: 65%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
@@ -37,27 +37,6 @@
   }
   to {
     opacity: 1;
-  }
-}
-
-.heroSvg {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0;
-  animation: fadeInSvg 0.8s ease-in-out forwards;
-}
-
-@keyframes fadeInSvg {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
   }
 }
 
