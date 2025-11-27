@@ -7,6 +7,7 @@
   right: 0;
   z-index: 1000;
   padding: 1.5rem 2rem;
+  overflow: hidden;
 }
 
 .headerContent {
@@ -158,5 +159,173 @@
   .navButton {
     font-size: 0.8rem;
     padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Mobile Menu Toggle Button */
+.mobileMenuToggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.toggleArrow {
+  transition: transform 0.3s ease;
+}
+
+.toggleArrowUp {
+  transform: rotate(180deg);
+}
+
+/* Mobile GitHub Link */
+.githubLinkMobile {
+  display: none;
+  color: #ffffff;
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+/* Mobile Navigation */
+.mobileNav {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding: 0;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+}
+
+.mobileNavOpen {
+  max-height: 350px;
+  padding: 0.75rem 1rem 1rem 1rem;
+  opacity: 1;
+}
+
+.mobileNavButton {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.mobileNavButton:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile Header Styles */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem;
+  }
+
+  .headerContent {
+    max-width: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    margin: 0;
+  }
+
+  .headerContent::before {
+    border-radius: 12px;
+    transition: border-radius 0.3s ease;
+  }
+
+  .headerExpanded .headerContent::before {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .headerExpanded .mobileNav {
+    background: rgba(70, 70, 70, 0.4);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+  }
+
+  .logoSection {
+    margin-right: 0;
+    flex-shrink: 0;
+    transform: scale(0.85);
+    transform-origin: left center;
+  }
+
+  .centerWrapper {
+    display: none;
+  }
+
+  .githubLink {
+    display: none;
+  }
+
+  .githubLinkMobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobileMenuToggle {
+    display: flex;
+  }
+
+  .mobileNav {
+    display: flex;
+  }
+}
+
+/* Tablet breakpoint */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .header {
+    padding: 1rem;
+  }
+
+  .headerContent {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .logoSection {
+    margin-right: 2rem;
+  }
+
+  .centerWrapper {
+    position: relative;
+    left: auto;
+    transform: none;
+  }
+
+  .nav {
+    gap: 0.25rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .navButton {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .githubLink {
+    position: relative;
+    right: auto;
   }
 }
