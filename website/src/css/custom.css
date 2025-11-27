@@ -23,6 +23,12 @@
   --ifm-navbar-background-color: #01323e;
   --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
   
+  /* Mobile sidebar/menu - needs light text on dark background */
+  --ifm-menu-color: #ffffff;
+  --ifm-menu-color-active: #5eead4;
+  --ifm-menu-color-background-active: rgba(94, 234, 212, 0.15);
+  --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.1);
+  
   /* Text colors */
   --ifm-font-color-base: #1a1a1a;
   --ifm-font-color-base-inverse: #ffffff;
@@ -473,4 +479,34 @@
 /* Prevent hover effects on navbar logo */
 .navbar__brand * {
   pointer-events: none;
+}
+
+/* -------------------------------- Global HTML/Body Background -------------------------------- */
+/* Dark theme uses dark background globally */
+[data-theme='dark'] {
+  background-color: #121212;
+}
+
+/* Light theme uses white background for docs */
+:root {
+  background-color: #ffffff;
+}
+
+/* Light theme mobile sidebar styling */
+:root .navbar-sidebar {
+  background-color: #01323e;
+}
+
+:root .navbar-sidebar .menu__link {
+  color: #ffffff;
+}
+
+:root .navbar-sidebar .menu__link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #5eead4;
+}
+
+:root .navbar-sidebar .menu__link--active {
+  color: #5eead4;
+  background-color: rgba(94, 234, 212, 0.15);
 }

@@ -248,7 +248,7 @@
   }
 
   .heroTitle {
-    font-size: 2.5rem;
+    font-size: 2rem;
     text-align: center;
     margin-bottom: 1rem;
   }
@@ -304,15 +304,15 @@
     width: 1224px;
     height: 644px;
     top: auto;
-    bottom: -180px;
+    bottom: -120px;
     left: 50%;
-    transform: translateX(-50%) scale(0.25);
+    transform: translateX(-50%) scale(0.35);
     transform-origin: center center;
   }
 
   .heroWrapper {
     min-height: auto;
-    padding-bottom: 120px;
+    padding-bottom: 160px;
   }
 }
 
