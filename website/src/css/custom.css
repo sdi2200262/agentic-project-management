@@ -476,14 +476,14 @@
 }
 
 /* -------------------------------- Global HTML/Body Background -------------------------------- */
-/* Dark theme uses dark background globally */
-[data-theme='dark'] {
-  background-color: #121212;
-}
-
-/* Light theme uses white background for docs */
+/* Light theme uses white background for docs - must come BEFORE dark theme to allow override */
 :root {
   background-color: #ffffff;
+}
+
+/* Dark theme uses dark background globally - must come AFTER :root to override it */
+[data-theme='dark'] {
+  background-color: #121212;
 }
 
 /* Light theme mobile sidebar styling - only when NOT in dark mode */
