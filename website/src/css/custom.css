@@ -474,3 +474,33 @@
 .navbar__brand * {
   pointer-events: none;
 }
+
+/* -------------------------------- Global HTML/Body Background -------------------------------- */
+/* Light theme uses white background for docs - must come BEFORE dark theme to allow override */
+:root {
+  background-color: #ffffff;
+}
+
+/* Dark theme uses dark background globally - must come AFTER :root to override it */
+[data-theme='dark'] {
+  background-color: #121212;
+}
+
+/* Light theme mobile sidebar styling - only when NOT in dark mode */
+:root:not([data-theme='dark']) .navbar-sidebar {
+  background-color: #01323e;
+}
+
+:root:not([data-theme='dark']) .navbar-sidebar .menu__link {
+  color: #ffffff;
+}
+
+:root:not([data-theme='dark']) .navbar-sidebar .menu__link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #5eead4;
+}
+
+:root:not([data-theme='dark']) .navbar-sidebar .menu__link--active {
+  color: #5eead4;
+  background-color: rgba(94, 234, 212, 0.15);
+}

@@ -125,3 +125,73 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 0.9375rem;
+    margin-bottom: 2rem;
+  }
+
+  .contributorsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .contributorCard {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    aspect-ratio: 1;
+    gap: 0.5rem;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .contributorInfo {
+    align-items: center;
+    text-align: center;
+  }
+
+  .username {
+    font-size: 0.75rem;
+    text-align: center;
+  }
+
+  .contributions {
+    display: none;
+  }
+}
+
+/* Tablet Responsive Styles */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .contributorsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.875rem;
+  }
+
+  .contributorCard {
+    padding: 0.875rem 1rem;
+  }
+
+  .avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .username {
+    font-size: 0.875rem;
+  }
+
+  .contributions {
+    font-size: 0.75rem;
+  }
+}
+
