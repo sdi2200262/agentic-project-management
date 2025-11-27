@@ -296,22 +296,23 @@
     align-self: center;
     justify-self: center;
     font-size: 1.125rem;
-    margin-top: 0.5rem;
+    margin-top: 2.5rem;
     order: 3;
   }
 
   .blob {
-    width: 100%;
-    max-width: 400px;
-    height: 300px;
+    width: 1224px;
+    height: 644px;
     top: auto;
-    bottom: 0;
-    transform: translateX(-50%);
+    bottom: -180px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.25);
+    transform-origin: center center;
   }
 
   .heroWrapper {
     min-height: auto;
-    padding-bottom: 200px;
+    padding-bottom: 120px;
   }
 }
 
