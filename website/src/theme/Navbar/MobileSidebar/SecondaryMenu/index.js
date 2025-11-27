@@ -13,10 +13,22 @@ function SecondaryMenuBackButton(props) {
     </button>
   );
 }
+
+// Check if navbar has actual navigational items (not just search/html)
+function hasNavigationalItems(items) {
+  return items.some(item => 
+    item.type !== 'search' && 
+    item.type !== 'html' && 
+    (item.to || item.href || item.items)
+  );
+}
+
 // The secondary menu slides from the right and shows contextual information
 // such as the docs sidebar
 export default function NavbarMobileSidebarSecondaryMenu() {
-  const isPrimaryMenuEmpty = useThemeConfig().navbar.items.length === 0;
+  const navbarItems = useThemeConfig().navbar.items;
+  // Treat navbar as empty if it only has search/html items (no actual navigation)
+  const isPrimaryMenuEmpty = navbarItems.length === 0 || !hasNavigationalItems(navbarItems);
   const secondaryMenu = useNavbarSecondaryMenu();
   return (
     <>
