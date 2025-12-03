@@ -151,6 +151,21 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin: 0 -0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.assistantItem:hover,
+.assistantItemHovered {
+  background-color: rgba(102, 181, 183, 0.15);
+}
+
+.assistantItemHovered .assistantName {
+  color: #66B5B7;
 }
 
 .assistantArrow {
@@ -158,6 +173,12 @@
   color: #66B5B7;
   font-size: 0.75rem;
   min-width: 12px;
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+.assistantArrowVisible {
+  opacity: 1;
 }
 
 .assistantName {
@@ -173,12 +194,7 @@
   font-weight: bold;
   margin: 0.5rem 0;
   font-style: italic;
-}
-
-.navigationHint {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.7rem;
-  margin-top: 0.5rem;
+  transition: color 0.2s ease;
 }
 
 /* Icons Section - 3x2 grid */
@@ -196,6 +212,13 @@
   padding: 0;
   background: none;
   border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.iconItem:hover {
+  transform: scale(1.1);
 }
 
 .iconImage {
