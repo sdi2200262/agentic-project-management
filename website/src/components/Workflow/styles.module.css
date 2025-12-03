@@ -1,0 +1,219 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500&family=Inconsolata&display=swap');
+
+.workflowSection {
+  width: 100%;
+  max-width: 1350px;
+  padding: 2rem;
+  margin: 0 auto;
+}
+
+.mainHeading {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 3rem;
+  color: #ffffff;
+  margin: 0 0 3rem 0;
+  text-align: left;
+}
+
+.phasesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.phase {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.phaseHeader {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* PhaseBox Styles */
+.phaseBox {
+  background-color: #66B5B7;
+  border-radius: 8px;
+  padding: 2rem;
+  min-width: 120px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.phaseLabel {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.phaseNumber {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 3rem;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+}
+
+.phaseTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 2rem;
+  color: #ffffff;
+  margin: 0;
+}
+
+.phaseContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.phaseDescription {
+  display: flex;
+  flex-direction: column;
+}
+
+.phaseDescription p {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.phaseSvg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svgImage {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .workflowSection {
+    padding: 1.5rem;
+  }
+
+  .mainHeading {
+    font-size: 2.5rem;
+  }
+
+  .phasesContainer {
+    gap: 3rem;
+  }
+
+  .phaseHeader {
+    gap: 1.5rem;
+  }
+
+  .phaseBox {
+    min-width: 100px;
+    min-height: 100px;
+    padding: 1.5rem;
+  }
+
+  .phaseNumber {
+    font-size: 2.5rem;
+  }
+
+  .phaseTitle {
+    font-size: 1.75rem;
+  }
+
+  .phaseContent {
+    gap: 2rem;
+  }
+
+  .phaseDescription p {
+    font-size: 1rem;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .workflowSection {
+    padding: 1rem;
+  }
+
+  .mainHeading {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .phasesContainer {
+    gap: 3rem;
+  }
+
+  .phase {
+    gap: 1.5rem;
+  }
+
+  .phaseHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .phaseBox {
+    min-width: 80px;
+    min-height: 80px;
+    padding: 1rem;
+  }
+
+  .phaseLabel {
+    font-size: 0.75rem;
+  }
+
+  .phaseNumber {
+    font-size: 2rem;
+  }
+
+  .phaseTitle {
+    font-size: 1.5rem;
+  }
+
+  .phaseContent {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .phaseDescription {
+    order: 1;
+  }
+
+  .phaseSvg {
+    order: 2;
+  }
+
+  .phaseDescription p {
+    font-size: 0.9375rem;
+    text-align: center;
+  }
+
+  .svgImage {
+    max-width: 100%;
+  }
+}
+
