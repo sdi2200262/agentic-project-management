@@ -3,6 +3,49 @@ import styles from './styles.module.css';
 import APMLogo from '@site/src/components/APMLogo';
 import packageJson from '../../../../package.json';
 
+const ASSISTANT_DATA = {
+  'Cursor': {
+    url: 'https://cursor.com',
+    description: 'Optimized for Cursor IDE'
+  },
+  'GitHub Copilot': {
+    url: 'https://github.com/features/copilot',
+    description: 'Optimized for GitHub Copilot'
+  },
+  'Claude Code': {
+    url: 'https://www.claude.com/product/claude-code',
+    description: 'Optimized for Claude Code'
+  },
+  'Gemini CLI': {
+    url: 'https://geminicli.com',
+    description: 'Optimized for Gemini CLI'
+  },
+  'Qwen Code': {
+    url: 'https://qwenlm.github.io/qwen-code-docs/',
+    description: 'Optimized for Qwen Code'
+  },
+  'opencode': {
+    url: 'https://opencode.ai',
+    description: 'Optimized for opencode'
+  },
+  'Windsurf': {
+    url: 'https://windsurf.com',
+    description: 'Optimized for Windsurf'
+  },
+  'Kilo Code': {
+    url: 'https://kilocode.com',
+    description: 'Optimized for Kilo Code'
+  },
+  'Auggie CLI': {
+    url: 'https://docs.augmentcode.com/cli/overview',
+    description: 'Optimized for Auggie CLI'
+  },
+  'Roo Code': {
+    url: 'https://roocode.com',
+    description: 'Optimized for Roo Code'
+  }
+};
+
 const SUPPORTED_ASSISTANTS = [
   'Cursor',
   'GitHub Copilot',
@@ -17,22 +60,27 @@ const SUPPORTED_ASSISTANTS = [
 ];
 
 const ICON_ASSISTANTS = [
-  { name: 'Claude Code', logo: '/agentic-project-management/img/claude-logo.svg' },
-  { name: 'Cursor', logo: '/agentic-project-management/img/cursor-logo.svg' },
-  { name: 'GitHub Copilot', logo: '/agentic-project-management/img/github-copilot-logo.svg' },
-  { name: 'Kilo Code', logo: '/agentic-project-management/img/kilo-code-logo.svg' },
-  { name: 'Windsurf', logo: '/agentic-project-management/img/windsurf-logo.svg' },
-  { name: 'Gemini CLI', logo: '/agentic-project-management/img/gemini-logo.svg' }
+  { name: 'Claude Code', logo: '/agentic-project-management/img/claude-logo.svg', url: ASSISTANT_DATA['Claude Code'].url },
+  { name: 'Cursor', logo: '/agentic-project-management/img/cursor-logo.svg', url: ASSISTANT_DATA['Cursor'].url },
+  { name: 'GitHub Copilot', logo: '/agentic-project-management/img/github-copilot-logo.svg', url: ASSISTANT_DATA['GitHub Copilot'].url },
+  { name: 'Kilo Code', logo: '/agentic-project-management/img/kilo-code-logo.svg', url: ASSISTANT_DATA['Kilo Code'].url },
+  { name: 'Windsurf', logo: '/agentic-project-management/img/windsurf-logo.svg', url: ASSISTANT_DATA['Windsurf'].url },
+  { name: 'Gemini CLI', logo: '/agentic-project-management/img/gemini-logo.svg', url: ASSISTANT_DATA['Gemini CLI'].url }
 ];
 
 const ICONS_TO_DISPLAY = 6;
-const DEFAULT_ASSISTANT_DESCRIPTION = 'Optimized for Cursor IDE';
+const DEFAULT_ASSISTANT = 'Cursor';
 const TERMINAL_BUTTON_COUNT = 3;
 
 export default function About() {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [hoveredAssistant, setHoveredAssistant] = useState(DEFAULT_ASSISTANT);
   
   const toggleExpanded = () => setIsExpanded(!isExpanded);
+  
+  const getDescription = () => {
+    return ASSISTANT_DATA[hoveredAssistant]?.description || ASSISTANT_DATA[DEFAULT_ASSISTANT].description;
+  };
 
   return (
     <div className={styles.aboutSection}>
@@ -67,13 +115,21 @@ export default function About() {
             {ICON_ASSISTANTS.slice(0, ICONS_TO_DISPLAY).map((assistant) => {
               const isOriginalColor = ['Claude Code', 'Cursor', 'Gemini CLI'].includes(assistant.name);
               return (
-                <div key={assistant.name} className={styles.iconItem}>
+                <a
+                  key={assistant.name}
+                  href={assistant.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.iconItem}
+                  onMouseEnter={() => setHoveredAssistant(assistant.name)}
+                  onMouseLeave={() => setHoveredAssistant(DEFAULT_ASSISTANT)}
+                >
                   <img 
                     src={assistant.logo} 
                     alt={assistant.name}
                     className={`${styles.iconImage} ${isOriginalColor ? styles.iconImageOriginal : ''}`}
                   />
-                </div>
+                </a>
               );
             })}
           </div>
@@ -109,20 +165,28 @@ export default function About() {
             </div>
             
             <div className={styles.assistantsList}>
-              {SUPPORTED_ASSISTANTS.map((assistant, index) => (
-                <div key={assistant} className={styles.assistantItem}>
-                  <span className={styles.assistantArrow}>{index === 0 ? '>' : ' '}</span>
-                  <span className={styles.assistantName}>{assistant}</span>
-                </div>
-              ))}
+              {SUPPORTED_ASSISTANTS.map((assistant) => {
+                const isHovered = hoveredAssistant === assistant;
+                const assistantInfo = ASSISTANT_DATA[assistant];
+                return (
+                  <a
+                    key={assistant}
+                    href={assistantInfo?.url || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${styles.assistantItem} ${isHovered ? styles.assistantItemHovered : ''}`}
+                    onMouseEnter={() => setHoveredAssistant(assistant)}
+                    onMouseLeave={() => setHoveredAssistant(DEFAULT_ASSISTANT)}
+                  >
+                    <span className={`${styles.assistantArrow} ${isHovered ? styles.assistantArrowVisible : ''}`}>{'>'}</span>
+                    <span className={styles.assistantName}>{assistant}</span>
+                  </a>
+                );
+              })}
             </div>
             
             <div className={styles.assistantDescription}>
-              {DEFAULT_ASSISTANT_DESCRIPTION}
-            </div>
-            
-            <div className={styles.navigationHint}>
-              ↑↓ navigate • ↵ select
+              {getDescription()}
             </div>
           </div>
         </div>
