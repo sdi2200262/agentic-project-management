@@ -4,6 +4,8 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Footer from '@theme/Footer';
 import LandingHeader from '@site/src/components/LandingHeader';
 import Hero from '@site/src/components/Hero';
+import About from '@site/src/components/About';
+import Workflow from '@site/src/components/Workflow';
 import Contributors from '@site/src/components/Contributors';
 import styles from './index.module.css';
 
@@ -38,17 +40,11 @@ export default function Home() {
         </section>
 
         <section id="about" className={styles.section}>
-          <div className={styles.sectionContent}>
-            <h2>About</h2>
-            <p>Content for About section</p>
-          </div>
+          <About />
         </section>
 
-        <section id="features" className={styles.section}>
-          <div className={styles.sectionContent}>
-            <h2>Features</h2>
-            <p>Content for Features section</p>
-          </div>
+        <section id="workflow" className={styles.section}>
+          <Workflow />
         </section>
 
         <section id="contributors" className={styles.section}>
