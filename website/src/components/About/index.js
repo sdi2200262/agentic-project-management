@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from './styles.module.css';
+import APMLogo from '@site/src/components/APMLogo';
+import packageJson from '../../../../package.json';
 
 const SUPPORTED_ASSISTANTS = [
   'Cursor',
@@ -18,13 +20,19 @@ const ICON_ASSISTANTS = [
   { name: 'Claude Code', logo: '/agentic-project-management/img/claude-logo.svg' },
   { name: 'Cursor', logo: '/agentic-project-management/img/cursor-logo.svg' },
   { name: 'GitHub Copilot', logo: '/agentic-project-management/img/github-copilot-logo.svg' },
-  { name: 'Gemini CLI', logo: '/agentic-project-management/img/gemini-logo.svg' },
+  { name: 'Kilo Code', logo: '/agentic-project-management/img/kilo-code-logo.svg' },
   { name: 'Windsurf', logo: '/agentic-project-management/img/windsurf-logo.svg' },
-  { name: 'Kilo Code', logo: '/agentic-project-management/img/kilo-code-logo.svg' }
+  { name: 'Gemini CLI', logo: '/agentic-project-management/img/gemini-logo.svg' }
 ];
+
+const ICONS_TO_DISPLAY = 6;
+const DEFAULT_ASSISTANT_DESCRIPTION = 'Optimized for Cursor IDE';
+const TERMINAL_BUTTON_COUNT = 3;
 
 export default function About() {
   const [isExpanded, setIsExpanded] = useState(false);
+  
+  const toggleExpanded = () => setIsExpanded(!isExpanded);
 
   return (
     <div className={styles.aboutSection}>
@@ -53,65 +61,78 @@ export default function About() {
             The framework provides specialized prompts and guides optimized for each platform, ensuring smooth integration 
             with your existing development workflow.
           </p>
+          
+          {/* Icons Section - 3x2 grid */}
+          <div className={styles.iconsSection}>
+            {ICON_ASSISTANTS.slice(0, ICONS_TO_DISPLAY).map((assistant) => {
+              const isOriginalColor = ['Claude Code', 'Cursor', 'Gemini CLI'].includes(assistant.name);
+              return (
+                <div key={assistant.name} className={styles.iconItem}>
+                  <img 
+                    src={assistant.logo} 
+                    alt={assistant.name}
+                    className={`${styles.iconImage} ${isOriginalColor ? styles.iconImageOriginal : ''}`}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Right Column: CLI Replica (Desktop/Tablet only) */}
         <div className={styles.cliReplica}>
           <div className={styles.terminalHeader}>
             <div className={styles.terminalButtons}>
-              <span className={styles.terminalButton}></span>
-              <span className={styles.terminalButton}></span>
-              <span className={styles.terminalButton}></span>
+              {Array.from({ length: TERMINAL_BUTTON_COUNT }).map((_, i) => (
+                <span key={i} className={styles.terminalButton}></span>
+              ))}
             </div>
-            <span className={styles.terminalTitle}>apm init</span>
+            <span className={styles.terminalTitle}>agentic-pm</span>
           </div>
           <div className={styles.terminalBody}>
-            <div className={styles.terminalPrompt}>
-              <span className={styles.promptSymbol}>$</span>
-              <span className={styles.promptText}> apm init</span>
-            </div>
-            <div className={styles.terminalOutput}>
-              <div className={styles.cliMessage}>Which AI assistant are you using?</div>
-              <div className={styles.assistantsList}>
-                {SUPPORTED_ASSISTANTS.map((assistant, index) => (
-                  <div key={assistant} className={styles.assistantItem}>
-                    <span className={styles.assistantNumber}>{index + 1}</span>
-                    <span className={styles.assistantName}>{assistant}</span>
-                  </div>
-                ))}
+            {/* Terminal prompt line */}
+            <div className={styles.terminalPromptLine}>% apm init</div>
+            {/* APM Logo and Version - Centered */}
+            <div className={styles.logoContainer}>
+              <div className={styles.bannerLogo}>
+                <APMLogo fontSize={12} />
               </div>
+              <div className={styles.bannerVersion}>
+                Agentic Project Management v{packageJson.version}
+              </div>
+            </div>
+            
+            {/* Assistants List */}
+            <div className={styles.cliPrompt}>
+              <span className={styles.promptQuestion}>?</span>
+              <span className={styles.cliMessage}> Which AI assistant are you using?</span>
+            </div>
+            
+            <div className={styles.assistantsList}>
+              {SUPPORTED_ASSISTANTS.map((assistant, index) => (
+                <div key={assistant} className={styles.assistantItem}>
+                  <span className={styles.assistantArrow}>{index === 0 ? '>' : ' '}</span>
+                  <span className={styles.assistantName}>{assistant}</span>
+                </div>
+              ))}
+            </div>
+            
+            <div className={styles.assistantDescription}>
+              {DEFAULT_ASSISTANT_DESCRIPTION}
+            </div>
+            
+            <div className={styles.navigationHint}>
+              ↑↓ navigate • ↵ select
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Icons Section (Desktop/Tablet: 6 icons, Mobile: 3 icons) */}
-      <div className={styles.iconsSection}>
-        {ICON_ASSISTANTS.slice(0, 3).map((assistant) => (
-          <div key={assistant.name} className={styles.iconItem}>
-            <img 
-              src={assistant.logo} 
-              alt={assistant.name}
-              className={styles.iconImage}
-            />
-          </div>
-        ))}
-        {ICON_ASSISTANTS.slice(3, 6).map((assistant) => (
-          <div key={assistant.name} className={styles.iconItem}>
-            <img 
-              src={assistant.logo} 
-              alt={assistant.name}
-              className={styles.iconImage}
-            />
-          </div>
-        ))}
       </div>
 
       {/* Mobile: Expandable Assistants List */}
       <div className={styles.mobileAssistants}>
         <button 
           className={styles.expandButton}
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={toggleExpanded}
           aria-expanded={isExpanded}
         >
           <span>Supported Assistants</span>
@@ -121,6 +142,7 @@ export default function About() {
             height="16" 
             viewBox="0 0 16 16" 
             fill="currentColor"
+            aria-hidden="true"
           >
             <path d="M8 10L4 6h8l-4 4z"/>
           </svg>
