@@ -142,10 +142,11 @@ export default function About() {
                 <span key={i} className={styles.terminalButton}></span>
               ))}
             </div>
-            {/*<span className={styles.terminalTitle}>agentic-pm</span>*/}
           </div>
           <div className={styles.terminalBody}>
             {/* Terminal prompt line */}
+            <div className={styles.terminalPromptLine}> <span className={styles.highlight}>$</span> npm install -g agentic-pm</div>
+            <div className={styles.terminalPromptLine}>added 65 packages in 3s</div>
             <div className={styles.terminalPromptLine}> <span className={styles.highlight}>$</span> apm init</div>
             {/* APM Logo and Version - Centered */}
             <div className={styles.logoContainer}>
