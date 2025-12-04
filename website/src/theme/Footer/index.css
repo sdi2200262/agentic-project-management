@@ -39,15 +39,33 @@
 
 .footer-logo-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   padding-right: 2rem;
+  gap: 1rem;
 }
 
-.footer-logo-container * {
+.footer-logo-container > div {
   pointer-events: none;
   cursor: default;
+}
+
+.footer-logo-container a {
+  pointer-events: auto;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.footer-logo-container a:hover {
+  opacity: 0.8;
+}
+
+.footer-image {
+  max-width: 120px;
+  height: auto;
+  opacity: 1;
 }
 
 /* Links section with columns */
@@ -131,6 +149,7 @@
 
 .footer-copyright-left {
   text-align: left;
+  font-size: 1.2rem;
 }
 
 .footer-copyright-right {
@@ -158,6 +177,11 @@
   .footer-logo-container {
     padding-right: 0;
     order: -1;
+    gap: 0.75rem;
+  }
+
+  .footer-image {
+    max-width: 100px;
   }
 
   .footer-links-container {
