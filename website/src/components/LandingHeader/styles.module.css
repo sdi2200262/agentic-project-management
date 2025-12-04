@@ -24,7 +24,6 @@
   content: '';
   position: absolute;
   inset: 0;
-  /* Dark theme */
   background: rgba(70, 70, 70, 0.4);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -33,7 +32,6 @@
   z-index: -1;
 }
 
-/* Light theme header */
 :global([data-theme='light']) .headerContent::before {
   background: rgba(255, 255, 255, 0.7);
   border: 1.5px solid rgba(0, 0, 0, 0.1);
@@ -74,13 +72,12 @@
   isolation: isolate;
 }
 
-/* Removed .nav::before - background and border moved to .headerContent::before */
+/* Navigation background moved to header content pseudo-element */
 
 .navIndicator {
   position: absolute;
   height: calc(100% - 1rem);
   top: 0.5rem;
-  /* Dark theme */
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -92,7 +89,6 @@
   z-index: 0;
 }
 
-/* Light theme nav indicator */
 :global([data-theme='light']) .navIndicator {
   background: rgba(0, 0, 0, 0.08);
   border: 1.5px solid rgba(0, 0, 0, 0.15);
@@ -118,7 +114,6 @@
   -webkit-backdrop-filter: none;
 }
 
-/* Light theme nav button */
 :global([data-theme='light']) .navButton {
   color: #2C2C2C;
 }

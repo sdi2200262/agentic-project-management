@@ -11,14 +11,9 @@
   font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
   font-size: 3rem;
-  /* Dark theme */
-  color: #ffffff;
+  color: var(--ifm-font-color-base);
   margin: 0 0 2rem 0;
   text-align: left;
-}
-
-:global([data-theme='light']) .mainHeading {
-  color: #2C2C2C;
 }
 
 .contentGrid {
@@ -38,37 +33,28 @@
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   font-size: 1.5rem;
-  /* Dark theme */
-  color: #ffffff;
+  color: var(--ifm-font-color-base);
   margin: 0;
   line-height: 1.4;
 }
 
-:global([data-theme='light']) .subHeading {
-  color: #2C2C2C;
-}
-
 .highlight {
-  color: #66B5B7;
+  color: var(--ifm-color-primary);
 }
 
 .paragraph {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 1.125rem;
-  /* Dark theme */
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--ifm-color-content);
   line-height: 1.6;
   margin: 0;
 }
 
-:global([data-theme='light']) .paragraph {
-  color: rgba(44, 44, 44, 0.9);
-}
-
-/* CLI Replica Styles */
+/* ========================================
+ * TERMINAL EMULATOR COMPONENT
+ * ======================================== */
 .cliReplica {
-  /* Dark theme */
   background-color: #1a1a1a;
   border-radius: 8px;
   overflow: hidden;
@@ -83,7 +69,6 @@
 }
 
 .terminalHeader {
-  /* Dark theme */
   background-color: #252525;
   padding: 0.75rem 1rem;
   display: flex;
@@ -106,7 +91,6 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  /* Dark theme */
   background-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -129,17 +113,14 @@
 }
 
 .terminalPromptLine {
-  /* Dark theme */
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--ifm-font-color-base);
   margin-bottom: 1rem;
   font-weight: bold;
 }
 
-:global([data-theme='light']) .terminalPromptLine {
-  color: rgba(44, 44, 44, 0.9);
-}
-
-/* Logo Container - Simplified */
+/* ========================================
+ * LOGO SECTION
+ * ======================================== */
 .logoContainer {
   display: flex;
   flex-direction: column;
@@ -156,7 +137,7 @@
 
 .bannerVersion {
   text-align: center;
-  color: #66B5B7;
+  color: var(--ifm-color-primary);
   font-weight: bold;
   font-size: 1rem;
 }
@@ -169,18 +150,13 @@
 }
 
 .promptQuestion {
-  color: #66B5B7;
+  color: var(--ifm-color-primary);
   font-weight: bold;
 }
 
 .cliMessage {
-  /* Dark theme */
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--ifm-font-color-base);
   font-weight: 700;
-}
-
-:global([data-theme='light']) .cliMessage {
-  color: rgba(44, 44, 44, 0.9);
 }
 
 .assistantsList {
@@ -208,12 +184,12 @@
 }
 
 .assistantItemHovered .assistantName {
-  color: #66B5B7;
+  color: var(--ifm-color-primary);
 }
 
 .assistantArrow {
   font-family: 'Inconsolata', monospace;
-  color: #66B5B7;
+  color: var(--ifm-color-primary);
   font-size: 0.75rem;
   min-width: 12px;
   transition: opacity 0.2s ease;
@@ -226,19 +202,13 @@
 
 .assistantName {
   font-family: 'Inconsolata', monospace;
-  /* Dark theme */
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--ifm-font-color-base);
   font-size: 1rem;
   font-weight: bold;
 }
 
-:global([data-theme='light']) .assistantName {
-  color: rgba(44, 44, 44, 0.9);
-}
-
 .assistantDescription {
-  /* Dark theme */
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--ifm-color-content-secondary);
   font-size: 0.9rem;
   font-weight: bold;
   margin: 0.5rem 0;
@@ -246,11 +216,9 @@
   transition: color 0.2s ease;
 }
 
-:global([data-theme='light']) .assistantDescription {
-  color: rgba(44, 44, 44, 0.6);
-}
-
-/* Icons Section - 3x2 grid */
+/* ========================================
+ * ASSISTANT ICONS GRID
+ * ======================================== */
 .iconsSection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -264,7 +232,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Light theme - match terminal emulator background */
 :global([data-theme='light']) .iconsSection {
   background-color: #E8E3D8;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -305,7 +272,9 @@
 }
 
 
-/* Mobile Expandable List */
+/* ========================================
+ * MOBILE ASSISTANT LIST
+ * ======================================== */
 .mobileAssistants {
   display: none;
 }
@@ -316,7 +285,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  /* Dark theme */
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -342,7 +310,7 @@
 
 .chevron {
   transition: transform 0.3s ease;
-  color: #66B5B7;
+  color: var(--ifm-color-primary);
 }
 
 .chevronExpanded {
@@ -396,7 +364,6 @@
   font-weight: 500;
   text-align: center;
   text-decoration: none;
-  /* Dark theme */
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
