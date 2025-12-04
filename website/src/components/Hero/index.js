@@ -13,6 +13,8 @@ export default function Hero() {
   const canvasRefMobile = useRef(null);
   const animationRef = useRef(null);
   const animationRefMobile = useRef(null);
+  const frameRef = useRef(null);
+  const frameRefMobile = useRef(null);
 
   const handleCopy = () => {
     navigator.clipboard.writeText('npm install -g agentic-pm');
@@ -118,10 +120,16 @@ export default function Hero() {
       }
       
       ctx.fill(animation.renderFrame());
-      requestAnimationFrame(renderFrame);
+      frameRef.current = requestAnimationFrame(renderFrame);
     };
     
+    // Start the animation loop
+    frameRef.current = requestAnimationFrame(renderFrame);
+    
     return () => {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
     };
   }, []);
 
@@ -223,10 +231,16 @@ export default function Hero() {
       }
       
       ctx.fill(animation.renderFrame());
-      requestAnimationFrame(renderFrame);
+      frameRefMobile.current = requestAnimationFrame(renderFrame);
     };
     
+    // Start the animation loop
+    frameRefMobile.current = requestAnimationFrame(renderFrame);
+    
     return () => {
+      if (frameRefMobile.current) {
+        cancelAnimationFrame(frameRefMobile.current);
+      }
     };
   }, []);
 
