@@ -35,8 +35,8 @@ export default function APMLogo({ fontSize = 16, className = '' }) {
   
   // Define colors for each letter based on theme
   const colorA = colorMode === 'dark' ? '#ffffff' : '#2C2C2C';  // white/dark for letter "A"
-  const colorP = '#00d9ff';  // cyan for letter "P" 
-  const colorM = '#00d9ff';  // cyan for letter "M"
+  const colorP = '#66B5B7';  // teal for letter "P"
+  const colorM = '#66B5B7';  // teal for letter "M"
   
   const style = {
     fontFamily: 'monospace',
