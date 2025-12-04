@@ -19,7 +19,7 @@
 .phasesContainer {
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 6rem;
 }
 
 .phase {
@@ -31,10 +31,6 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
-  align-items: start;
-}
-
-.phaseContentCentered {
   align-items: center;
 }
 
@@ -94,9 +90,18 @@
   font-size: 1.125rem;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
-  margin: 0;
+  margin: 0 0 1.5rem 0;
   padding-top: 0;
+  padding-bottom: 0;
+}
+
+.phaseDescription:last-child {
+  margin-bottom: 0;
   padding-bottom: 2rem;
+}
+
+.highlight {
+  color: #66B5B7;
 }
 
 .phaseSvg {
@@ -109,6 +114,7 @@
 .phaseSvgRight {
   padding-left: 0;
   padding-right: 2rem;
+  margin-left: -1rem;
 }
 
 .svgImage {
@@ -116,6 +122,7 @@
   height: auto;
   max-width: 100%;
   object-fit: contain;
+  display: block;
 }
 
 .svgImageSetup {
@@ -123,7 +130,15 @@
 }
 
 .svgImageTaskLoop {
-  max-width: 90%;
+  max-width: 100%;
+}
+
+.phaseContentCentered .phaseDescription:last-child {
+  padding-bottom: 0;
+}
+
+.phaseContentTaskLoop {
+  grid-template-columns: 0.9fr 1.1fr;
 }
 
 /* Tablet Responsive */
@@ -137,7 +152,7 @@
   }
 
   .phasesContainer {
-    gap: 3rem;
+    gap: 4.5rem;
   }
 
   .phaseContent {
@@ -164,6 +179,12 @@
 
   .phaseDescription {
     font-size: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0;
+  }
+
+  .phaseDescription:last-child {
+    margin-bottom: 0;
     padding-bottom: 1.5rem;
   }
 }
@@ -181,7 +202,7 @@
   }
 
   .phasesContainer {
-    gap: 3rem;
+    gap: 4rem;
   }
 
   .phaseContent {
@@ -223,8 +244,14 @@
 
   .phaseDescription {
     font-size: 0.9375rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0;
     text-align: center;
+  }
+
+  .phaseDescription:last-child {
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
   }
 
   .phaseSvg {

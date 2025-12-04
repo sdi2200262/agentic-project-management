@@ -15,7 +15,7 @@ function Phase({ phaseNumber, title, description, svgPath, svgAlt, isSetupPhase,
 
   return (
     <div className={styles.phase}>
-      <div className={`${styles.phaseContent} ${isCentered ? styles.phaseContentCentered : ''}`}>
+      <div className={`${styles.phaseContent} ${isCentered ? styles.phaseContentCentered : ''} ${isTaskLoopPhase ? styles.phaseContentTaskLoop : ''}`}>
         {isReversed ? (
           <>
             <div className={`${styles.phaseSvg} ${styles.phaseSvgRight}`}>
@@ -30,7 +30,7 @@ function Phase({ phaseNumber, title, description, svgPath, svgAlt, isSetupPhase,
                 <PhaseBox phaseNumber={phaseNumber} />
                 <h3 className={styles.phaseTitle}>{title}</h3>
               </div>
-              <p className={styles.phaseDescription}>{description}</p>
+              {description}
             </div>
           </>
         ) : (
@@ -40,7 +40,7 @@ function Phase({ phaseNumber, title, description, svgPath, svgAlt, isSetupPhase,
                 <PhaseBox phaseNumber={phaseNumber} />
                 <h3 className={styles.phaseTitle}>{title}</h3>
               </div>
-              <p className={styles.phaseDescription}>{description}</p>
+              {description}
             </div>
             <div className={styles.phaseSvg}>
               <img 
@@ -63,8 +63,17 @@ export default function Workflow() {
       <div className={styles.phasesContainer}>
         <Phase
           phaseNumber={1}
-          title="Setup"
-          description="The Setup Agent conducts comprehensive project planning through structured discovery. It systematically breaks down your project into phases, tasks, and subtasks, creating a detailed Implementation Plan. Tasks are grouped by domain (e.g., Frontend, Backend) and assigned to specialized Implementation Agents. This phase ensures a solid architectural foundation before any code is written."
+          title="The Setup Phase"
+          description={
+            <>
+              <p className={styles.phaseDescription}>
+                In the first phase, a <span className={styles.highlight}>Setup Agent</span> conducts comprehensive planning after collaborative project discovery. This phase ensures a solid architectural foundation before any code is written.
+              </p>
+              <p className={styles.phaseDescription}>
+                It systematically breaks down your project into phases, tasks, and subtasks, creating a detailed <span className={styles.highlight}>Implementation Plan</span>. Tasks are grouped by domain (e.g., Frontend, Backend) and assigned to specialized <span className={styles.highlight}>Implementation Agents</span>.
+              </p>
+            </>
+          }
           svgPath="/agentic-project-management/img/apm-setup-phase-horizontal.svg"
           svgAlt="APM Setup Phase Workflow"
           isSetupPhase={true}
@@ -72,8 +81,17 @@ export default function Workflow() {
         
         <Phase
           phaseNumber={2}
-          title="Task Loop"
-          description="The Manager Agent coordinates the project while Implementation Agents execute the work. The Manager creates Task Assignment Prompts that you deliver to Implementation Agents. After execution, Agents log their work to Memory, and the Manager reviews progress to determine next actions. This cycle repeats until the project is complete, with structured handover procedures maintaining continuity when context limits are reached."
+          title="The Task Loop Phase"
+          description={
+            <>
+              <p className={styles.phaseDescription}>
+                In the second phase, a <span className={styles.highlight}>Manager Agent</span> coordinates the project by assigning tasks and reviewing the workers' logs to determine next actions.
+              </p>
+              <p className={styles.phaseDescription}>
+                <span className={styles.highlight}>Implementation Agents</span> receive their assigned tasks, carry out the work, and log progress to <span className={styles.highlight}>Memory</span>. This cycle repeats until project completion, with structured handovers ensuring continuity as context limits are reached.
+              </p>
+            </>
+          }
           svgPath="/agentic-project-management/img/apm-task-loop-phase.svg"
           svgAlt="APM Task Loop Phase Workflow"
           isTaskLoopPhase={true}
