@@ -2,6 +2,7 @@ import React from 'react';
 import FooterOriginal from '@theme-original/Footer';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import APMLogo from '../../components/APMLogo';
 import './index.css';
 
@@ -11,6 +12,7 @@ export {FooterOriginal as Footer};
 // Wrapper component (used by Docusaurus theme)
 export default function FooterWrapper(props) {
   const {footer} = useThemeConfig();
+  const imageUrl = useBaseUrl('/img/cobuter-man-black-and-white-no-bg.png');
 
   // Safety check for footer config
   const footerLinks = footer?.links || [];
@@ -55,6 +57,18 @@ export default function FooterWrapper(props) {
               <APMLogo fontSize={16} />
             </div>
           </Link>
+          <a 
+            href="https://github.com/sdi2200262"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'none' }}
+          >
+            <img 
+              src={imageUrl}
+              alt="Cobuter Man" 
+              className="footer-image"
+            />
+          </a>
         </div>
       </div>
 
