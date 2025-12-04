@@ -94,10 +94,10 @@ jobs:
           fi
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run build script
-        run: npm run build:templates
+        run: npm run build:cli
 
       - name: Create GitHub Release
         env:
