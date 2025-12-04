@@ -25,37 +25,50 @@
 .phase {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+}
+
+.phaseContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.phaseContentCentered {
+  align-items: center;
+}
+
+.phaseTextColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.phaseTextColumnRight {
+  text-align: right;
+}
+
+.phaseTextColumnRight .phaseHeader {
+  justify-content: flex-end;
 }
 
 .phaseHeader {
   display: flex;
   align-items: center;
   gap: 2rem;
+  margin-bottom: 0.5rem;
 }
 
-/* PhaseBox Styles */
 .phaseBox {
   background-color: #66B5B7;
   border-radius: 8px;
-  padding: 2rem;
-  min-width: 120px;
-  min-height: 120px;
+  padding: 0.75rem 1.25rem;
+  min-width: 70px;
+  min-height: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-}
-
-.phaseLabel {
-  font-family: 'Archivo Black', sans-serif;
-  font-weight: 400;
-  font-size: 0.875rem;
-  color: #ffffff;
-  text-align: center;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.5rem;
 }
 
 .phaseNumber {
@@ -70,36 +83,32 @@
 .phaseTitle {
   font-family: 'Inter', sans-serif;
   font-weight: 500;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: #ffffff;
   margin: 0;
 }
 
-.phaseContent {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: start;
-}
-
 .phaseDescription {
-  display: flex;
-  flex-direction: column;
-}
-
-.phaseDescription p {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 1.125rem;
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
   margin: 0;
+  padding-top: 0;
+  padding-bottom: 2rem;
 }
 
 .phaseSvg {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: 2rem;
+}
+
+.phaseSvgRight {
+  padding-left: 0;
+  padding-right: 2rem;
 }
 
 .svgImage {
@@ -107,6 +116,14 @@
   height: auto;
   max-width: 100%;
   object-fit: contain;
+}
+
+.svgImageSetup {
+  transform: scale(1.1);
+}
+
+.svgImageTaskLoop {
+  max-width: 90%;
 }
 
 /* Tablet Responsive */
@@ -123,14 +140,18 @@
     gap: 3rem;
   }
 
+  .phaseContent {
+    gap: 2rem;
+  }
+
   .phaseHeader {
     gap: 1.5rem;
   }
 
   .phaseBox {
-    min-width: 100px;
-    min-height: 100px;
-    padding: 1.5rem;
+    min-width: 60px;
+    min-height: 60px;
+    padding: 0.5rem 1rem;
   }
 
   .phaseNumber {
@@ -138,15 +159,12 @@
   }
 
   .phaseTitle {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
 
-  .phaseContent {
-    gap: 2rem;
-  }
-
-  .phaseDescription p {
+  .phaseDescription {
     font-size: 1rem;
+    padding-bottom: 1.5rem;
   }
 }
 
@@ -166,8 +184,21 @@
     gap: 3rem;
   }
 
-  .phase {
+  .phaseContent {
+    grid-template-columns: 1fr;
     gap: 1.5rem;
+  }
+
+  .phaseTextColumn {
+    order: 1;
+  }
+
+  .phaseTextColumnRight {
+    text-align: left;
+  }
+
+  .phaseTextColumnRight .phaseHeader {
+    justify-content: flex-start;
   }
 
   .phaseHeader {
@@ -177,13 +208,9 @@
   }
 
   .phaseBox {
-    min-width: 80px;
-    min-height: 80px;
-    padding: 1rem;
-  }
-
-  .phaseLabel {
-    font-size: 0.75rem;
+    min-width: 50px;
+    min-height: 50px;
+    padding: 0.5rem 0.75rem;
   }
 
   .phaseNumber {
@@ -191,29 +218,22 @@
   }
 
   .phaseTitle {
-    font-size: 1.5rem;
-  }
-
-  .phaseContent {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    font-size: 1.75rem;
   }
 
   .phaseDescription {
-    order: 1;
+    font-size: 0.9375rem;
+    padding-bottom: 1.5rem;
+    text-align: center;
   }
 
   .phaseSvg {
     order: 2;
-  }
-
-  .phaseDescription p {
-    font-size: 0.9375rem;
-    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .svgImage {
     max-width: 100%;
   }
 }
-
