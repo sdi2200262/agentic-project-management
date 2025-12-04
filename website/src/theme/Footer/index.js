@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import FooterOriginal from '@theme-original/Footer';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import Link from '@docusaurus/Link';
@@ -12,7 +12,9 @@ export {FooterOriginal as Footer};
 // Wrapper component (used by Docusaurus theme)
 export default function FooterWrapper(props) {
   const {footer} = useThemeConfig();
+  const [isHovered, setIsHovered] = useState(false);
   const imageUrl = useBaseUrl('/img/cobuter-man-black-and-white-no-bg.png');
+  const hoverImageUrl = useBaseUrl('/img/cobuter-man-black-and-white-no-bg-hover.png');
 
   // Safety check for footer config
   const footerLinks = footer?.links || [];
@@ -62,11 +64,13 @@ export default function FooterWrapper(props) {
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: 'none' }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             <img 
-              src={imageUrl}
+              src={isHovered ? hoverImageUrl : imageUrl}
               alt="Cobuter Man" 
-              className="footer-image"
+              className={`footer-image ${isHovered ? 'footer-image-hover' : ''}`}
             />
           </a>
         </div>
