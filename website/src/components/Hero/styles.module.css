@@ -72,8 +72,14 @@
   font-size: 4rem;
   margin: 0 0 1.5rem 0;
   line-height: 1;
+  /* Dark theme */
   color: #ffffff;
   text-align: left;
+}
+
+/* Light theme */
+:global([data-theme='light']) .heroTitle {
+  color: #2C2C2C;
 }
 
 .heroTitle span {
@@ -92,9 +98,14 @@
   font-weight: 400;
   font-size: 1.125rem;
   margin: 0;
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.5;
   text-align: left;
+}
+
+:global([data-theme='light']) .heroVersion {
+  color: rgba(44, 44, 44, 0.7);
 }
 
 .statsContainer {
@@ -110,7 +121,12 @@
   gap: 0.5rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.9375rem;
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.8);
+}
+
+:global([data-theme='light']) .statItem {
+  color: rgba(44, 44, 44, 0.8);
 }
 
 .statIcon {
@@ -129,7 +145,12 @@
 
 .statValue {
   font-weight: 400;
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.8);
+}
+
+:global([data-theme='light']) .statValue {
+  color: rgba(44, 44, 44, 0.8);
 }
 
 .centerButtons {
@@ -157,15 +178,21 @@
   font-size: 1.5rem;
   margin: 0;
   line-height: 1.5;
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.9);
   text-align: right;
   position: relative;
   z-index: 1;
 }
 
+:global([data-theme='light']) .bottomRight {
+  color: rgba(44, 44, 44, 0.9);
+}
+
 .installCommand {
   display: flex;
   align-items: center;
+  /* Dark theme */
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -175,11 +202,17 @@
   box-sizing: border-box;
 }
 
+:global([data-theme='light']) .installCommand {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 .commandText {
   font-family: 'Inconsolata', monospace;
   font-weight: 400;
   font-size: 1.125rem;
   flex: 1;
+  /* Dark theme */
   color: #ffffff;
   background: transparent;
   border: none;
@@ -187,11 +220,16 @@
   text-align: left;
 }
 
+:global([data-theme='light']) .commandText {
+  color: #2C2C2C;
+}
+
 .copyButton {
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
+  /* Dark theme */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
   padding: 0.5rem;
@@ -202,9 +240,19 @@
   height: 36px;
 }
 
+:global([data-theme='light']) .copyButton {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: rgba(44, 44, 44, 0.7);
+}
+
 .copyButton:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: #ffffff;
+}
+
+:global([data-theme='light']) .copyButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: #2C2C2C;
 }
 
 .githubButton {
@@ -212,6 +260,7 @@
   font-weight: 400;
   font-size: 1.125rem;
   padding: 0.875rem 1.5rem;
+  /* Dark theme */
   background-color: #ffffff;
   border: 1px solid #ffffff;
   border-radius: 8px;
@@ -228,20 +277,36 @@
   box-sizing: border-box;
 }
 
+:global([data-theme='light']) .githubButton {
+  background-color: #2C2C2C;
+  border: 1px solid #2C2C2C;
+  color: #F5F1E8;
+}
+
 .githubButton:hover {
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
   text-decoration: none;
 }
 
+:global([data-theme='light']) .githubButton:hover {
+  box-shadow: 0 0 20px rgba(44, 44, 44, 0.3);
+}
+
 .statsBadge {
   font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
   margin-left: 0.5rem;
   padding: 0.25rem 0.5rem;
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 4px;
+}
+
+:global([data-theme='light']) .statsBadge {
+  color: rgba(44, 44, 44, 0.6);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /* Mobile Responsive Styles */

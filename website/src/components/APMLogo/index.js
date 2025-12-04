@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import styles from './styles.module.css';
 
 /**
@@ -6,8 +7,34 @@ import styles from './styles.module.css';
  * Based on the ASCII art from utils.js, converted to React/SVG
  */
 export default function APMLogo({ fontSize = 16, className = '' }) {
-  // Define colors for each letter
-  const colorA = '#ffffff';  // white for letter "A"
+  // Safely get color mode - use state with default for SSR
+  const [colorMode, setColorMode] = useState('light');
+  
+  useEffect(() => {
+    // Read theme from DOM on client side
+    if (ExecutionEnvironment.canUseDOM) {
+      const getTheme = () => {
+        return document.documentElement.getAttribute('data-theme') || 'light';
+      };
+      
+      setColorMode(getTheme());
+      
+      // Watch for theme changes
+      const observer = new MutationObserver(() => {
+        setColorMode(getTheme());
+      });
+      
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+      });
+      
+      return () => observer.disconnect();
+    }
+  }, []);
+  
+  // Define colors for each letter based on theme
+  const colorA = colorMode === 'dark' ? '#ffffff' : '#2C2C2C';  // white/dark for letter "A"
   const colorP = '#00d9ff';  // cyan for letter "P" 
   const colorM = '#00d9ff';  // cyan for letter "M"
   
