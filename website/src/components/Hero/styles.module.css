@@ -27,6 +27,10 @@
   transition: opacity 0s;
 }
 
+.blobQuote {
+  display: none;
+}
+
 .blobVisible {
   animation: fadeInBlob 1s ease-in-out forwards;
 }
@@ -72,8 +76,15 @@
   text-align: left;
 }
 
-.heroTitle div {
+.heroTitle span {
   line-height: 1;
+  display: block;
+}
+
+.titleLine1,
+.titleLine2,
+.titleLine3 {
+  display: block;
 }
 
 .heroVersion {
@@ -132,9 +143,15 @@
   padding-top: 0rem;
 }
 
-.bottomRight {
+.quoteContainer {
   grid-column: 2;
   grid-row: 3;
+  position: relative;
+  align-self: end;
+  justify-self: end;
+}
+
+.bottomRight {
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   font-size: 1.5rem;
@@ -142,8 +159,8 @@
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
   text-align: right;
-  align-self: end;
-  justify-self: end;
+  position: relative;
+  z-index: 1;
 }
 
 .installCommand {
@@ -253,6 +270,14 @@
     margin-bottom: 1rem;
   }
 
+  .heroTitle span {
+    display: inline;
+  }
+
+  .heroTitle span:not(:last-child)::after {
+    content: ' ';
+  }
+
   .statsContainer {
     flex-direction: row;
     align-items: center;
@@ -289,30 +314,49 @@
     display: none;
   }
 
-  .bottomRight {
+  .quoteContainer {
     grid-column: unset;
     grid-row: unset;
-    text-align: center;
-    align-self: center;
-    justify-self: center;
-    font-size: 1.125rem;
-    margin-top: 2.5rem;
     order: 3;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 6rem;
+  }
+
+  .bottomRight {
+    text-align: center;
+    font-size: 1.125rem;
+    position: relative;
+    z-index: 1;
   }
 
   .blob {
+    display: none;
+  }
+
+  .blobQuote {
+    display: block;
+    position: absolute;
     width: 1224px;
     height: 644px;
-    top: auto;
-    bottom: -120px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%) scale(0.35);
+    transform: translate(-50%, -50%) scale(0.35);
     transform-origin: center center;
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .blobQuote.blobVisible {
+    animation: fadeInBlob 1s ease-in-out forwards;
   }
 
   .heroWrapper {
     min-height: auto;
-    padding-bottom: 160px;
+    padding-bottom: 0;
   }
 }
 

@@ -10,7 +10,9 @@ export default function Hero() {
   const [blobReady, setBlobReady] = React.useState(false);
   const { githubStars, npmDownloads, isLoading } = useStats();
   const canvasRef = useRef(null);
+  const canvasRefMobile = useRef(null);
   const animationRef = useRef(null);
+  const animationRefMobile = useRef(null);
 
   const handleCopy = () => {
     navigator.clipboard.writeText('npm install -g agentic-pm');
@@ -123,6 +125,111 @@ export default function Hero() {
     };
   }, []);
 
+  // Mobile blob rendering
+  useEffect(() => {
+    const canvas = canvasRefMobile.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size
+    const width = 1320;
+    const height = 695;
+    const devicePixelRatio = window.devicePixelRatio || 1;
+    
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+
+    // Create animation with default timestamp provider
+    const animation = canvasPath();
+    animationRefMobile.current = animation;
+
+    // Load pattern image
+    let fillPattern = null;
+    const patternImage = new Image();
+    patternImage.crossOrigin = 'anonymous';
+    
+    // Set up pattern once image loads
+    patternImage.onload = () => {
+      try {
+        fillPattern = ctx.createPattern(patternImage, 'no-repeat');
+        if (fillPattern && fillPattern.setTransform) {
+          try {
+            const scaleX = width / patternImage.width;
+            const scaleY = height / patternImage.height;
+            const matrix = new DOMMatrix();
+            matrix.scaleSelf(scaleX, scaleY);
+            fillPattern.setTransform(matrix);
+          } catch (e) {
+            console.warn('Pattern transform not supported, using default');
+          }
+        }
+        
+        requestAnimationFrame(renderFrame);
+        setBlobReady(true);
+      } catch (e) {
+        console.warn('Failed to create pattern:', e);
+        fillPattern = null;
+        requestAnimationFrame(renderFrame);
+        setBlobReady(true);
+      }
+    };
+    
+    patternImage.onerror = () => {
+      console.warn('Failed to load blob image pattern from:', patternImage.src);
+      fillPattern = null;
+      requestAnimationFrame(renderFrame);
+      setBlobReady(true);
+    };
+    
+    patternImage.src = '/agentic-project-management/img/blobimg.png';
+
+    const baseSize = Math.min(width, height); 
+    
+    // Initialize with wiggle animation 
+    wigglePreset(
+      animation,
+      {
+        extraPoints: 8,
+        randomness: 4,
+        seed: Math.random(),
+        size: baseSize,
+      },
+      {
+        offsetX: (width - baseSize) / 2,
+        offsetY: (height - baseSize) / 2,
+      },
+      {
+        speed: 2, 
+        initialTransition: 500, 
+      }
+    );
+
+    const renderFrame = () => {
+      ctx.clearRect(0, 0, width, height);
+      
+      if (fillPattern) {
+        ctx.fillStyle = fillPattern;
+      } else {
+        const gradient = ctx.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, '#ec576b');
+        gradient.addColorStop(1, '#ff6b7a');
+        ctx.fillStyle = gradient;
+      }
+      
+      ctx.fill(animation.renderFrame());
+      requestAnimationFrame(renderFrame);
+    };
+    
+    return () => {
+    };
+  }, []);
+
   return (
     <div className={styles.heroWrapper}>
       <canvas 
@@ -132,9 +239,9 @@ export default function Hero() {
       <div className={styles.heroContent}>
       <div className={styles.topLeft}>
         <h1 className={styles.heroTitle}>
-          <div>Agentic</div>
-          <div>Project</div>
-          <div>Management</div>
+          <span className={styles.titleLine1}>Agentic</span>
+          <span className={styles.titleLine2}>Project</span>
+          <span className={styles.titleLine3}>Management</span>
         </h1>
         <div className={styles.statsContainer}>
           <div className={styles.statItem}>
@@ -184,11 +291,17 @@ export default function Hero() {
         </a>
       </div>
 
-      <p className={styles.bottomRight}>
-        Manage complex projects<br />
-        with a team of AI assistants,<br />
-        smoothly and efficiently.
-      </p>
+      <div className={styles.quoteContainer}>
+        <canvas 
+          ref={canvasRefMobile}
+          className={`${styles.blob} ${styles.blobQuote} ${blobReady ? styles.blobVisible : ''}`} 
+        />
+        <p className={styles.bottomRight}>
+          Manage complex projects<br />
+          with a team of AI assistants,<br />
+          smoothly and efficiently.
+        </p>
+      </div>
       </div>
     </div>
   );
