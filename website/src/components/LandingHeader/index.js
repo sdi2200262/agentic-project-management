@@ -58,9 +58,21 @@ export default function LandingHeader() {
   };
 
   useEffect(() => {
+    // Disable scroll indicator on mobile/tablet (max-width: 1024px) since nav is hidden
+    const isMobileOrTablet = () => window.innerWidth <= 1024;
+    
+    if (isMobileOrTablet()) {
+      return; // Skip scroll handler on mobile/tablet
+    }
+    
+    let ticking = false; // Flag to prevent multiple queued callbacks
+    
     const handleScroll = () => {
       // Don't update active section while animating from a click
-      if (isAnimating) return;
+      if (isAnimating) {
+        ticking = false;
+        return;
+      }
       
       const scrollSections = ['home', 'about', 'workflow', 'contributors'];
       const scrollPosition = window.scrollY + 200; // Offset for header
@@ -75,12 +87,22 @@ export default function LandingHeader() {
           }
         }
       }
+      
+      ticking = false; // Reset flag after processing
     };
 
-    window.addEventListener('scroll', handleScroll);
+    const onScroll = () => {
+      if (!ticking) {
+        // Queue the handler to run on the next animation frame
+        requestAnimationFrame(handleScroll);
+        ticking = true; // Set flag to prevent queuing multiple callbacks
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
     handleScroll(); // Check initial position
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, [isAnimating]);
 
   // Initialize indicator after mount

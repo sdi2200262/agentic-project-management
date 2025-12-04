@@ -95,8 +95,11 @@
   90% { transform: translate(-2px, -1px) rotate(-0.5deg); }
 }
 
-.footer-image-hover {
-  animation: jitter 0.4s ease-in-out infinite;
+/* Hover effect only on devices that support hover (desktop) */
+@media (hover: hover) {
+  .footer-image-hover {
+    animation: jitter 0.4s ease-in-out infinite;
+  }
 }
 
 /* Links section with columns */

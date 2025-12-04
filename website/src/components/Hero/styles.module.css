@@ -27,10 +27,6 @@
   transition: opacity 0s;
 }
 
-.blobQuote {
-  display: none;
-}
-
 .blobVisible {
   animation: fadeInBlob 1s ease-in-out forwards;
 }
@@ -399,24 +395,6 @@
 
   .blob {
     display: none;
-  }
-
-  .blobQuote {
-    display: block;
-    position: absolute;
-    width: 1224px;
-    height: 644px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.35);
-    transform-origin: center center;
-    z-index: 0;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .blobQuote.blobVisible {
-    animation: fadeInBlob 1s ease-in-out forwards;
   }
 
   .heroWrapper {

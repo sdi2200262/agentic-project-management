@@ -380,6 +380,11 @@
     display: none;
   }
 
+  /* Hide nav indicator on mobile since nav is hidden */
+  .navIndicator {
+    display: none;
+  }
+
   .rightActions {
     display: none;
   }
@@ -430,5 +435,10 @@
   .githubLink {
     position: relative;
     right: auto;
+  }
+
+  /* Hide nav indicator on tablet since it's not useful with breadcrumb-style nav */
+  .navIndicator {
+    display: none;
   }
 }
