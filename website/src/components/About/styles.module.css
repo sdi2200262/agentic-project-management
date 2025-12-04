@@ -11,9 +11,14 @@
   font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
   font-size: 3rem;
+  /* Dark theme */
   color: #ffffff;
   margin: 0 0 2rem 0;
   text-align: left;
+}
+
+:global([data-theme='light']) .mainHeading {
+  color: #2C2C2C;
 }
 
 .contentGrid {
@@ -33,9 +38,14 @@
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   font-size: 1.5rem;
+  /* Dark theme */
   color: #ffffff;
   margin: 0;
   line-height: 1.4;
+}
+
+:global([data-theme='light']) .subHeading {
+  color: #2C2C2C;
 }
 
 .highlight {
@@ -46,13 +56,19 @@
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 1.125rem;
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.9);
   line-height: 1.6;
   margin: 0;
 }
 
+:global([data-theme='light']) .paragraph {
+  color: rgba(44, 44, 44, 0.9);
+}
+
 /* CLI Replica Styles */
 .cliReplica {
+  /* Dark theme */
   background-color: #1a1a1a;
   border-radius: 8px;
   overflow: hidden;
@@ -60,13 +76,25 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+:global([data-theme='light']) .cliReplica {
+  background-color: #E8E3D8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .terminalHeader {
+  /* Dark theme */
   background-color: #252525;
   padding: 0.75rem 1rem;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme='light']) .terminalHeader {
+  background-color: #D4CFC4;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .terminalButtons {
@@ -78,7 +106,12 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
+  /* Dark theme */
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme='light']) .terminalButton {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .terminalTitle {
@@ -96,9 +129,14 @@
 }
 
 .terminalPromptLine {
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 1rem;
   font-weight: bold;
+}
+
+:global([data-theme='light']) .terminalPromptLine {
+  color: rgba(44, 44, 44, 0.9);
 }
 
 /* Logo Container - Simplified */
@@ -136,8 +174,13 @@
 }
 
 .cliMessage {
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.9);
   font-weight: 700;
+}
+
+:global([data-theme='light']) .cliMessage {
+  color: rgba(44, 44, 44, 0.9);
 }
 
 .assistantsList {
@@ -183,18 +226,28 @@
 
 .assistantName {
   font-family: 'Inconsolata', monospace;
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   font-weight: bold;
 }
 
+:global([data-theme='light']) .assistantName {
+  color: rgba(44, 44, 44, 0.9);
+}
+
 .assistantDescription {
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.9rem;
   font-weight: bold;
   margin: 0.5rem 0;
   font-style: italic;
   transition: color 0.2s ease;
+}
+
+:global([data-theme='light']) .assistantDescription {
+  color: rgba(44, 44, 44, 0.6);
 }
 
 /* Icons Section - 3x2 grid */
@@ -250,6 +303,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
+  /* Dark theme */
   background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -260,6 +314,12 @@
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: 2rem;
+}
+
+:global([data-theme='light']) .expandButton {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #2C2C2C;
 }
 
 .expandButton:hover {
@@ -279,10 +339,16 @@
 .assistantsListMobile {
   margin-top: 1rem;
   padding: 1rem;
+  /* Dark theme */
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   animation: slideDown 0.3s ease;
+}
+
+:global([data-theme='light']) .assistantsListMobile {
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 @keyframes slideDown {
@@ -300,8 +366,14 @@
   padding: 0.75rem 1rem;
   font-family: 'Inter', sans-serif;
   font-size: 0.9375rem;
+  /* Dark theme */
   color: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+:global([data-theme='light']) .assistantItemMobile {
+  color: rgba(44, 44, 44, 0.9);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .assistantItemMobile:last-child {

@@ -4,7 +4,7 @@
  * work well for content-centric websites.
  */
 
-/* Light Theme - Based on screenshot with grayish navbar */
+/* Light Theme - Warm beige palette */
 :root {
   /* Primary colors - Teal/Blue palette for light theme */
   --ifm-color-primary: #14b8a6; /* Teal */
@@ -15,40 +15,40 @@
   --ifm-color-primary-lighter: #5eead4;
   --ifm-color-primary-lightest: #99f6e4;
   
-  /* Background colors */
-  --ifm-background-color: #ffffff;
-  --ifm-background-surface-color: #f8f9fa;
+  /* Background colors - Warm beige */
+  --ifm-background-color: #F5F1E8;
+  --ifm-background-surface-color: #E8E3D8;
   
   /* Navbar - Grayish background for light theme */
   --ifm-navbar-background-color: #01323e;
   --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
   
-  /* Text colors */
-  --ifm-font-color-base: #1a1a1a;
+  /* Text colors - Dark charcoal for warm beige background */
+  --ifm-font-color-base: #2C2C2C;
   --ifm-font-color-base-inverse: #ffffff;
-  --ifm-color-content: #1a1a1a;
-  --ifm-color-content-secondary: #6b7280;
+  --ifm-color-content: #2C2C2C;
+  --ifm-color-content-secondary: #5a5a5a;
   
-  /* Code blocks */
+  /* Code blocks - Warm light backgrounds */
   --ifm-code-font-size: 95%;
-  --ifm-code-background: #f4f4f5;
+  --ifm-code-background: #E8E3D8;
   --ifm-code-color: #e11d48;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
   
   /* Links */
   --ifm-link-color: #14b8a6;
   --ifm-link-hover-color: #0d9488;
   
-  /* Buttons and UI elements */
-  --ifm-color-emphasis-100: #f4f4f5;
-  --ifm-color-emphasis-200: #e4e4e7;
-  --ifm-color-emphasis-300: #d4d4d8;
+  /* Buttons and UI elements - Warm gray tones */
+  --ifm-color-emphasis-100: #E8E3D8;
+  --ifm-color-emphasis-200: #D4CFC4;
+  --ifm-color-emphasis-300: #C0BBB0;
   --ifm-color-emphasis-500: #71717a;
   --ifm-color-emphasis-600: #52525b;
   --ifm-color-emphasis-700: #3f3f46;
   
-  /* Borders */
-  --ifm-border-color: #e4e4e7;
+  /* Borders - Warm gray */
+  --ifm-border-color: #D4CFC4;
   
   /* Footer */
   --ifm-footer-background-color: #01323e;
@@ -57,34 +57,34 @@
   --ifm-footer-link-hover-color: #5eead4;
   
   /* Table of contents */
-  --ifm-toc-border-color: #e4e4e7;
+  --ifm-toc-border-color: #D4CFC4;
   
   /* Admonitions */
   --ifm-alert-background-color: #f0fdfa;
   --ifm-alert-border-color: #14b8a6;
   --ifm-alert-color: #0f766e;
   
-  /* Markdown content styling for light theme */
-  --ifm-heading-color: #1a1a1a;
-  --ifm-hr-border-color: #e4e4e7;
-  --ifm-blockquote-background-color: #f0fdfabd;
+  /* Markdown content styling for light theme - Warm beige */
+  --ifm-heading-color: #2C2C2C;
+  --ifm-hr-border-color: #D4CFC4;
+  --ifm-blockquote-background-color: #E8E3D8;
   --ifm-blockquote-color: #0f766e;
   --ifm-blockquote-border-left-color: #14b8a6;
-  --ifm-table-border-color: #e4e4e7;
-  --ifm-table-head-background-color: #f4f4f5; /* Different from rows, matching theme */
+  --ifm-table-border-color: #D4CFC4;
+  --ifm-table-head-background-color: #E8E3D8; /* Different from rows, matching theme */
   --ifm-table-stripe-background: rgba(20, 184, 166, 0.05); /* Light cyan for light theme */
   
-  /* Additional markdown element colors - customize these as needed */
-  --markdown-paragraph-color: #1a1a1a;
-  --markdown-list-color: #1a1a1a;
+  /* Additional markdown element colors - Warm beige theme */
+  --markdown-paragraph-color: #2C2C2C;
+  --markdown-list-color: #2C2C2C;
   --markdown-list-marker-color: #14b8a6; /* Cyan - keep as is */
-  --markdown-strong-color: #1a1a1a; /* Black bold for light theme */
+  --markdown-strong-color: #2C2C2C; /* Dark bold for light theme */
   --markdown-em-color: #0d9488;
-  --markdown-image-border-color: #e4e4e7;
+  --markdown-image-border-color: #D4CFC4;
   --markdown-image-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --markdown-kbd-background: #f4f4f5;
-  --markdown-kbd-border: #d4d4d8;
-  --markdown-kbd-color: #1a1a1a;
+  --markdown-kbd-background: #E8E3D8;
+  --markdown-kbd-border: #D4CFC4;
+  --markdown-kbd-color: #2C2C2C;
   
   /* Inline code styling - cyan text, cyan border, low opacity cyan background */
   --markdown-inline-code-color: #14b8a6; /* Cyan text */
@@ -476,9 +476,9 @@
 }
 
 /* -------------------------------- Global HTML/Body Background -------------------------------- */
-/* Light theme uses white background for docs - must come BEFORE dark theme to allow override */
+/* Light theme uses warm beige background for docs - must come BEFORE dark theme to allow override */
 :root {
-  background-color: #ffffff;
+  background-color: #F5F1E8;
 }
 
 /* Dark theme uses dark background globally - must come AFTER :root to override it */
