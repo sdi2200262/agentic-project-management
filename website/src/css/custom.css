@@ -19,8 +19,8 @@
   --ifm-background-color: #F5F1E8;
   --ifm-background-surface-color: #E8E3D8;
   
-  /* Navbar - Match landing header glassmorphism style for light theme */
-  --ifm-navbar-background-color: rgba(255, 255, 255, 0.7);
+  /* Navbar - Solid background for light theme (lighter than warm beige bg, glassmorphism removed to fix sidebar) */
+  --ifm-navbar-background-color: #FAF8F3;
   --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
   
   /* Text colors - Dark charcoal for warm beige background */
@@ -50,8 +50,8 @@
   /* Borders - Warm gray */
   --ifm-border-color: #D4CFC4;
   
-  /* Footer - Match landing header style for light theme, slightly dimmer than navbar */
-  --ifm-footer-background-color: rgba(255, 255, 255, 0.5);
+  /* Footer - Solid background for light theme (matches navbar) */
+  --ifm-footer-background-color: #FAF8F3;
   --ifm-footer-color: #2C2C2C;
   --ifm-footer-link-color: #14b8a6;
   --ifm-footer-link-hover-color: #0d9488;
@@ -103,8 +103,8 @@
   --ifm-color-primary-lighter: #7dd3fc; /* Blue-teal blend */
   --ifm-color-primary-lightest: #99f6e4;
   
-  /* Navbar - Match landing header glassmorphism style for dark theme */
-  --ifm-navbar-background-color: rgba(70, 70, 70, 0.4);
+  /* Navbar - Solid background for dark theme (glassmorphism removed to fix sidebar) */
+  --ifm-navbar-background-color: #1b1b1e;
   --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   
   /* Text colors - White */
@@ -134,8 +134,8 @@
   /* Borders */
   --ifm-border-color: #3f3f46;
   
-  /* Footer - Match landing header style for dark theme */
-  --ifm-footer-background-color: rgba(70, 70, 70, 0.4);
+  /* Footer - Solid background for dark theme (matches navbar) */
+  --ifm-footer-background-color: #1b1b1e;
   --ifm-footer-color: #ffffff;
   --ifm-footer-link-color: #5eead4;
   --ifm-footer-link-hover-color: #2dd4bf;
@@ -424,22 +424,7 @@
 
 /* -------------------------------- Docs Nav Bar Styling -------------------------------- */
 
-/* Navbar glassmorphism effect to match landing header */
-.navbar {
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1.5px solid rgba(255, 255, 255, 0.25);
-}
-
-/* Light theme navbar */
-:root:not([data-theme='dark']) .navbar {
-  border-bottom: 1.5px solid rgba(0, 0, 0, 0.1);
-}
-
-/* Dark theme navbar */
-[data-theme='dark'] .navbar {
-  border-bottom: 1.5px solid rgba(255, 255, 255, 0.25);
-}
+/* Navbar glassmorphism effects REMOVED to fix sidebar issue */
 
 /* Navbar text colors to match landing header */
 :root:not([data-theme='dark']) .navbar__item,
@@ -452,22 +437,7 @@
   color: #ffffff;
 }
 
-/* Footer glassmorphism effect to match landing header */
-.footer {
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-top: 1.5px solid rgba(255, 255, 255, 0.25);
-}
-
-/* Light theme footer */
-:root:not([data-theme='dark']) .footer {
-  border-top: 1.5px solid rgba(0, 0, 0, 0.1);
-}
-
-/* Dark theme footer */
-[data-theme='dark'] .footer {
-  border-top: 1.5px solid rgba(255, 255, 255, 0.25);
-}
+/* Footer glassmorphism effects REMOVED to fix sidebar issue */
 
 /* GitHub icon styling */
 .header-github-link {
@@ -533,10 +503,7 @@
 
 /* Light theme mobile sidebar styling - only when NOT in dark mode */
 :root:not([data-theme='dark']) .navbar-sidebar {
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1.5px solid rgba(0, 0, 0, 0.1);
+  background-color: #FAF8F3;
 }
 
 :root:not([data-theme='dark']) .navbar-sidebar .menu__link {
