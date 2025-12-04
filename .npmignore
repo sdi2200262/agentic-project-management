@@ -1,4 +1,4 @@
-# Build and test
+# Build and test (exclude from NPM package)
 scripts/
 *.test.js
 
@@ -9,15 +9,20 @@ scripts/
 node_modules/
 templates/
 
-# Documentation
+# Documentation (exclude source docs and website, but keep essential CLI docs)
 docs/
 assets/
 website/
 CONTRIBUTING.md
 CODE_OF_CONDUCT.md
-CHANGELOG.md
 
-# Configuration
+# Configuration (exclude development config)
 .eslintrc*
 .prettierrc*
 build-config.json
+
+# CI/CD
+.github/
+
+# Development files
+docusaurus_start.log
