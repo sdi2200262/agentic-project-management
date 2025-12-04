@@ -117,11 +117,11 @@ jobs:
              if [[ -n "${{ github.event.inputs.release_notes }}" ]]; then
                RELEASE_NOTES="${{ github.event.inputs.release_notes }}"
              else
-               RELEASE_NOTES="Template update templates ${NEXT_BUILD} for APM CLI v${CLI_VERSION}."
+               RELEASE_NOTES="Template update - Build ${NEXT_BUILD} for APM CLI v${CLI_VERSION}."
              fi
              gh release create "$NEW_TAG" \
                dist/*.zip \
-               --title "APM Templates v${CLI_VERSION} Templates ${NEXT_BUILD}" \
+               --title "APM Templates v${CLI_VERSION} Build ${NEXT_BUILD}" \
                --notes "$RELEASE_NOTES" \
                --target "$GITHUB_SHA" # Explicitly target the commit SHA
           fi

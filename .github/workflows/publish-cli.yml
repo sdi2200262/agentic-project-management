@@ -23,12 +23,10 @@ jobs:
   publish_cli_on_merge:
     # Run only if PR was merged AND had a release label AND contained src changes
     # OR if it was a manual trigger
+    # Note: Label checking is done in the step, not here, to avoid expression syntax issues
     if: |
       (
-        github.event.pull_request.merged == true &&
-        (contains(github.event.pull_request.labels.*.name, 'release:patch') ||
-         contains(github.event.pull_request.labels.*.name, 'release:minor') ||
-         contains(github.event.pull_request.labels.*.name, 'release:major'))
+        github.event.pull_request.merged == true
       ) ||
       github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -60,20 +58,34 @@ jobs:
         id: get_label
         if: github.event_name == 'pull_request' && steps.check_pr_files.outputs.src_changed == 'true'
         run: |
+          # Get PR labels from GitHub API
+          PR_LABELS=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "${{ github.event.pull_request.url }}/labels" | jq -r '.[].name')
+          
+          echo "PR Labels: $PR_LABELS"
+          
           VERSION_TYPE=""
-          if contains(github.event.pull_request.labels.*.name, 'release:major'); then
+          if echo "$PR_LABELS" | grep -q "release:major"; then
             VERSION_TYPE="major"
-          elif contains(github.event.pull_request.labels.*.name, 'release:minor'); then
+          elif echo "$PR_LABELS" | grep -q "release:minor"; then
             VERSION_TYPE="minor"
-          elif contains(github.event.pull_request.labels.*.name, 'release:patch'); then
+          elif echo "$PR_LABELS" | grep -q "release:patch"; then
             VERSION_TYPE="patch"
           fi
-          # Check for multiple release labels (error case)
-          LABEL_COUNT=$(echo "$VERSION_TYPE" | wc -w)
-          if [[ "$LABEL_COUNT" -ne 1 ]]; then
+          
+          # Check if exactly one release label was found
+          if [[ -z "$VERSION_TYPE" ]]; then
              echo "Error: PR must have exactly one release:* label (patch, minor, or major)."
              exit 1
           fi
+          
+          # Check for multiple release labels (error case)
+          LABEL_COUNT=$(echo "$PR_LABELS" | grep -c "release:" || echo "0")
+          if [[ "$LABEL_COUNT" -ne 1 ]]; then
+             echo "Error: PR must have exactly one release:* label (patch, minor, or major). Found $LABEL_COUNT release labels."
+             exit 1
+          fi
+          
           echo "Detected version type from label: $VERSION_TYPE"
           echo "version_type=$VERSION_TYPE" >> $GITHUB_OUTPUT
 
