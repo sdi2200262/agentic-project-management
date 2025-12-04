@@ -77,6 +77,18 @@ export default function Contributors() {
           </a>
         ))}
       </div>
+      <p className={styles.contributeText}>
+        Considering contributing? Check out our{' '}
+        <a
+          href="https://github.com/sdi2200262/agentic-project-management/blob/main/CONTRIBUTING.md"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.contributeLink}
+        >
+          contributing guidelines
+        </a>
+        .
+      </p>
       {hasMore && (
         <div className={styles.seeAllContainer}>
           <a
