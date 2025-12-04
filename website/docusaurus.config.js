@@ -4,7 +4,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 const config = {
   title: 'Agentic Project Management',
   tagline: 'Manage complex projects with a team of AI assistants.',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/apm-logo.svg',
 
   // Set the production url of your site here
   url: 'https://agentic-project-management.dev',
@@ -69,7 +69,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/apm-social-card.png',
       docs: {
         sidebar: {
           hideable: true,
@@ -81,6 +81,10 @@ const config = {
       },
       navbar: {
         title: 'Agentic PM',
+        logo: {
+          alt: 'Agentic Project Management Logo',
+          src: 'img/apm-logo.svg',
+        },
         items: [
           {
             type: 'search',
