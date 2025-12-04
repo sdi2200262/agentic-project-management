@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import FooterOriginal from '@theme-original/Footer';
 import {useThemeConfig} from '@docusaurus/theme-common';
 import Link from '@docusaurus/Link';
@@ -13,8 +13,16 @@ export {FooterOriginal as Footer};
 export default function FooterWrapper(props) {
   const {footer} = useThemeConfig();
   const [isHovered, setIsHovered] = useState(false);
+  const [supportsHover, setSupportsHover] = useState(false);
   const imageUrl = useBaseUrl('/img/cobuter-man-black-and-white-no-bg.png');
   const hoverImageUrl = useBaseUrl('/img/cobuter-man-black-and-white-no-bg-hover.png');
+
+  // Check if device supports hover (desktop only) - only on client side
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setSupportsHover(window.matchMedia('(hover: hover)').matches);
+    }
+  }, []);
 
   // Safety check for footer config
   const footerLinks = footer?.links || [];
@@ -64,8 +72,8 @@ export default function FooterWrapper(props) {
             target="_blank"
             rel="noopener noreferrer"
             style={{ textDecoration: 'none' }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={() => supportsHover && setIsHovered(true)}
+            onMouseLeave={() => supportsHover && setIsHovered(false)}
           >
             <img 
               src={isHovered ? hoverImageUrl : imageUrl}
