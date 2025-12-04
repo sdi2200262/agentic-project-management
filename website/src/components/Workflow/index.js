@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './styles.module.css';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 function PhaseBox({ phaseNumber }) {
   return (
@@ -57,6 +58,10 @@ function Phase({ phaseNumber, title, description, svgPath, svgAlt, isSetupPhase,
 }
 
 export default function Workflow() {
+  const {siteConfig} = useDocusaurusContext();
+  const baseUrl = siteConfig.baseUrl;
+  const docsUrl = `${baseUrl.replace(/\/$/, '')}/docs`;
+
   return (
     <div className={styles.workflowSection}>
       <h2 className={styles.mainHeading}>Workflow</h2>
@@ -89,6 +94,11 @@ export default function Workflow() {
               </p>
               <p className={styles.phaseDescription}>
                 <span className={styles.highlight}>Implementation Agents</span> receive their assigned tasks, carry out the work, and log progress to <span className={styles.highlight}>Memory</span>. This cycle repeats until project completion, with structured handovers ensuring continuity as context limits are reached.
+              </p>
+              <br />
+              <br />
+              <p className={styles.phaseDescription}>
+                For more details, see the <a href={docsUrl} className={styles.docsLink}>documentation</a>.
               </p>
             </>
           }

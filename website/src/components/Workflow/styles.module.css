@@ -104,6 +104,17 @@
   color: #66B5B7;
 }
 
+.docsLink {
+  color: #66B5B7;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.docsLink:hover {
+  color: #7fc5c7;
+  text-decoration: underline;
+}
+
 .phaseSvg {
   display: flex;
   align-items: center;
