@@ -134,13 +134,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 2rem;
+  /* Dark theme - match terminal emulator background */
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Light theme - match terminal emulator background */
+:global([data-theme='light']) .phaseSvg {
+  background-color: #E8E3D8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .phaseSvgRight {
-  padding-left: 0;
-  padding-right: 2rem;
-  margin-left: -1rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  margin-left: 0;
 }
 
 .svgImage {
@@ -152,7 +165,9 @@
 }
 
 .svgImageSetup {
-  transform: scale(1.1);
+  width: 100%;
+  max-width: 100%;
+  height: auto;
 }
 
 .svgImageTaskLoop {
@@ -287,11 +302,20 @@
 
   .phaseSvg {
     order: 2;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* Maintain background and border on mobile - match terminal emulator */
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  :global([data-theme='light']) .phaseSvg {
+    background-color: #E8E3D8;
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .svgImage {
