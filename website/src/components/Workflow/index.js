@@ -10,7 +10,7 @@ function PhaseBox({ phaseNumber }) {
   );
 }
 
-function Phase({ phaseNumber, title, description, svgPath, svgAlt, isSetupPhase, isTaskLoopPhase }) {
+function Phase({ phaseNumber, title, description, svgPath, svgAlt, isSetupPhase, isTaskLoopPhase, docsUrl }) {
   const isCentered = isSetupPhase || isTaskLoopPhase;
   const isReversed = isTaskLoopPhase;
 
@@ -25,6 +25,11 @@ function Phase({ phaseNumber, title, description, svgPath, svgAlt, isSetupPhase,
                 alt={svgAlt}
                 className={`${styles.svgImage} ${styles.svgImageTaskLoop}`}
               />
+              {isTaskLoopPhase && docsUrl && (
+                <p className={styles.docsLinkMobile}>
+                  For more details, see the <a href={docsUrl} className={styles.docsLink}>documentation</a>.
+                </p>
+              )}
             </div>
             <div className={`${styles.phaseTextColumn} ${styles.phaseTextColumnRight}`}>
               <div className={styles.phaseHeader}>
@@ -95,16 +100,12 @@ export default function Workflow() {
               <p className={styles.phaseDescription}>
                 <span className={styles.highlight}>Implementation Agents</span> receive their assigned tasks, carry out the work, and log progress to <span className={styles.highlight}>Memory</span>. This cycle repeats until project completion, with structured handovers ensuring continuity as context limits are reached.
               </p>
-              <br />
-              <br />
-              <p className={styles.phaseDescription}>
-                For more details, see the <a href={docsUrl} className={styles.docsLink}>documentation</a>.
-              </p>
             </>
           }
           svgPath="/agentic-project-management/img/apm-task-loop-phase.svg"
           svgAlt="APM Task Loop Phase Workflow"
           isTaskLoopPhase={true}
+          docsUrl={docsUrl}
         />
       </div>
     </div>

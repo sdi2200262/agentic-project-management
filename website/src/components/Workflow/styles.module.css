@@ -223,20 +223,25 @@
 
   .phaseTextColumn {
     order: 1;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
   }
 
   .phaseTextColumnRight {
-    text-align: left;
+    text-align: center;
   }
 
   .phaseTextColumnRight .phaseHeader {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .phaseHeader {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
+    width: 100%;
   }
 
   .phaseBox {
@@ -267,11 +272,32 @@
 
   .phaseSvg {
     order: 2;
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .svgImage {
-    max-width: 100%;
+    max-width: 85%;
+    width: 100%;
   }
+
+  .docsLinkMobile {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.9375rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin: 1rem 0 0 0;
+    text-align: center;
+    padding: 0;
+    display: block;
+  }
+}
+
+/* Hide docs link on desktop */
+.docsLinkMobile {
+  display: none;
 }
