@@ -1,107 +1,94 @@
+---
+id: introduction
+slug: /introduction
+sidebar_label: Introduction
+sidebar_position: 3
+---
+
 # APM v0.5 - Agentic Project Management Framework
 
 **A Structured, Multi-Agent Workflow System for Complex Project Execution with AI Assistants**
 
-## Table of Contents
+Agentic Project Management (APM) is an open-source framework that structures AI-driven software development. It transforms a single, overloaded AI chat session into a coordinated team of specialized AI Agents, enabling complex project execution using AI Assistants like Cursor, Windsurf, Copilot and more.
 
-- [What is APM?](#what-is-apm)
-- [The Problem APM Solves](#the-problem-apm-solves)
-- [APM's Approach](#apms-approach)
-- [Multi-Agent Coordination](#multi-agent-coordination)
-- [The APM Workflow](#the-apm-workflow)
-- [Core Framework and Customization](#core-framework-and-customization)
-- [Documentation Overview](#documentation-overview)
-- [Visual Workflow Overview](#visual-workflow-overview)
+Building on the emerging practice of Spec-Driven Development, which embodies the **first plan, then execute** philosophy with AI Assistants, APM adds structured workload distribution and management across a team of specialized Agents. This enhanced approach is called **Agentic Spec-Driven Development**.
 
-## What is APM?
+## The Challenge: Context Decay
 
-Agentic Project Management (APM) is a structured multi-agent workflow framework for managing complex projects within AI IDE environments. It applies real-world project management principles to AI-driven workflows, including task breakdown, role assignment, progress tracking, and seamless handoffs between team members. 
+Managing large projects with AI assistants presents a fundamental systemic challenge: **Context Window Limits**.
 
-APM offers an Agentic Spec-driven Development experience that prioritizes explicit context management and ensures continuity throughout sessions.
+As conversations extend, context degrades. The AI loses track of original requirements, produces contradictory code, and hallucinates details. In an AI Assistant, where context is often aggressively pruned to save costs, this leads to a disruption in project continuity.
 
-APM utilizes chat sessions in your AI IDE as separate agent instances, each with its own context scope and memory. By distributing the project's workload among these agents, APM enables more focused interactions, reduces cognitive load, and minimizes the risk of context loss or hallucinations, resulting in more reliable and consistent outcomes.
+## The Solution: Structured Multi-Agent Architecture
 
-## The Problem APM Solves
+APM addresses context window limitations and context decay by treating the AI not as a single continuous assistant, but as distinct **Agent Instances** with specific roles and intelligently scoped contexts.
 
-Managing large projects with AI assistants presents systematic challenges. Extended conversations frequently lead to context degradation where the AI loses track of original requirements, produces contradictory suggestions, or generates inaccurate details. These issues arise from fundamental limitations of LLMs: **Context Window Limits**
+Instead of one long chat history, APM distributes the workload:
+1.  **Specialization**: Agents focus on specific domains (Planning, Management, Implementation).
+2.  **Persistence**: A file-based Memory System preserves project history outside of the Agent's context, keeping a large context archive.
+3.  **Continuity**: Structured Handover Protocols transfer "working memory" between Agents when context limits are reached.
 
-This constraint feels "heavier" within AI IDEs, when often times Context Windows are shrunk even further to maintain profitable interactions with the model's provider. As conversations grow, the AI struggles to keep track of everything, leading to confusion, errors, and wasted time.
+### Visual Workflow Overview
 
-APM addresses these issues by emphasizing structured interaction, explicit context management and integration, and efficient, targeted cross-agent communication through meta-prompting.
-
-## APM's Approach
-
-The framework uses multiple AI agent instances, each with a specific role and clear responsibilities, coordinated through structured protocols and persistent memory/context management.
-
-The result is a workflow that feels more like working with a well organized team than wrestling with a single overloaded AI assistant.
-
-> Think of APM like running a software development team. You have a project manager who understands the big picture, developers who focus on specific tasks, and clear documentation that keeps everyone aligned. Developers document each task execution, and the manager reviews the logs for coordination. The difference is that your "team members" are AI assistants in separate chat sessions.
-
----
-
-## Multi-Agent Coordination
-
-APM v0.5 employs a sophisticated multi-agent system built around four specialized agent types:
-
-*   **1. Setup Agent:** Initiates the project session, creating the needed APM assets. The Setup Agent conducts comprehensive project discovery, transforms requirements into a detailed Implementation Plan, and initializes the Memory System that enables effective coordination. Once session is initialized it passes control to the Manager Agent.
-
-*   **2. Manager Agent:** Coordinates the project session and makes all the important decisions. The Manager Agent maintains the big picture, creates targeted task assignments for Implementation Agents, reviews completed work, and orchestrates the overall project flow while preserving context continuity between agent instances.
-
-*   **3. Implementation Agents:** Execute focused task assignments by the Manager. Task domains vary: coding, design, analysis, writing, research etc. while Implementation Agent instances are assigned groups of same-domain tasks. They always log their work to preserve context and ensure project continuation.
-
-*   **4. Ad-Hoc Agents:** Temporary agents for isolated tasks (e.g., debugging, research, analysis) outside the main workflow as workflow "branches". They run in separate chat sessions with minimal scoped context, are assigned by Implementation Agents, and return findings for integration. Ad-Hoc Agents don’t make project decisions, just solve a specific problem, report back, and close, preventing context overload in core agents.
-
-> In APM, agent types are **not artificial "personas"**. Instead, their specialization arises organically from clearly defined responsibilities and tightly scoped context for each agent instance. By supplying each agent with only the information relevant to their specific role and tasks, APM ensures reliable responses, without wasting tokens on unnecessary persona descriptions.
-
-### Context Management
-APM preserves context with a carefully designed adaptation of the traditional Memory Bank and a context Handover Procedure. For tasks that require isolated, context-intensive work (such as research or debugging), Ad-Hoc Agent instances handle these activities separately, preventing unnecessary strain on the core agents' context.
-
-*   **Dynamic Memory Bank**: An adaptation of the traditional single-file Memory Bank that maps Memory Log files to the tasks of an Implementation Plan. Memory Logs are stored in a directory structure with folders mapped to the Implementation Plan's phases.
-
-*   **Ad-Hoc Agent Delegation**: Workflow branches for handling debugging, research, or analysis tasks through temporary agent instances that work in isolated context scopes.
-
-*   **Handover Protocol**: A context transfer mechanism using structured handover files and prompts to seamlessly transition between agent instances when context limits are reached.
-
-## The APM Workflow
-
-APM v0.5 operates through two workflow phases:
-
-1. **Setup Phase**: Comprehensive project discovery and planning through the Setup Agent & initialization of session assets
-2. **Task Loop Phase**: Coordinated task assignment & execution via Manager and Implementation Agents
-
-Plus **Handover Procedure**: as distinct events for seamless context transfer when agents approach memory limits
-
----
-
-## Core Framework and Customization
-
-In APM v0.5, the core framework is installed and managed via the `apm init` CLI tool. Instead of a `/prompts` directory, the CLI automatically installs the necessary files into your project's workspace:
-
-* **Guides:** All workflow guides are placed in the `.apm/guides/` directory for agent reference and user customization.
-* **Commands:** Agent slash commands (initiation prompts, handover guides, ad-hoc delegations) are installed directly into your selected AI assistant's command directory (e.g., `.cursor/commands`, `.github/prompts`, `.claude/commands`).
-
-This automated setup ensures all assets are correctly placed and version-managed. Customization is done by editing the files in these directories after running `init`.
-
-
-## Documentation Overview
-
-APM's documentation is organized to support both quick starts and deep dives:
-
-- **Core Framework Documentation**: Available in the `/docs` directory
-- **Visual Guides**: PDF guides in `/docs/guides` that complement the mainn documentation suite
-
-For a complete documentation index, see the [Documentation Hub](README.md).
-
-
-## Visual Workflow Overview
-
-Below is a visual overview of the APM workflow, illustrating the full process from the Setup Phase through the Task Loop Phase, including workflow branches of Ad-Hoc Delegations.
-> **Note:** This overview omits some intermediate steps and sub-processes in both the Setup Phase and Task Loop Phase for brevity. For a complete, detailed workflow breakdown, see the [Workflow Overview](Workflow_Overview.md) document.
+The following diagram illustrates the end-to-end workflow, from the Setup Phase to the Task Loop and Ad-Hoc delegations.
 
 <div align="center">
-  <img src="../assets/apm-workflow-diagram.png" alt="APM v0.5 - Agentic Spec-driven Development" width="1200" style="max-width: 100%;"/>
+  <img 
+    src={require('@site/static/docs-img/apm-workflow-diagram.png').default} 
+    alt="APM v0.5 - Agentic Spec-driven Development" 
+    width="1200" 
+    style={{ maxWidth: '100%', borderRadius: '14px' }}
+  />
 </div>
 
 ---
 
-APM is an Open Source project, and contributions to both the framework and its documentation are encouraged. You can contribute by posting an Issue for bugs, feature requests, or questions, or by submitting a Pull Request (PR) with improvements, fixes, or documentation enhancements/refinements. For details on contributions and guidelines, please see the [CONTRIBUTING.md](../CONTRIBUTING.md) file.
+## Core Components
+
+APM coordinates four specialized Agent types using a "Manager-Worker" topology.
+
+### 1. The Agents
+
+| Agent Type | Role | Responsibility |
+| :--- | :--- | :--- |
+| **Setup Agent** | **Architect** | Operates once at the start. Conducts discovery, gathers requirements, and generates the detailed *Implementation Plan*. Tasks in the plan are grouped by field (eg. Frontend, Backend etc.). |
+| **Manager Agent** | **Coordinator** | Maintains the "big picture." Assigns tasks, reviews work, manages context dependencies, and orchestrates the project. |
+| **Implementation Agent** | **Developer** | Executes specific tasks (coding, writing, design). Receives only tasks from a specific group in the plan, to avoid context creep. Operates in a focused context scope and logs work to Memory. |
+| **Ad-Hoc Agent** | **Specialist** | Temporary instances for isolated tasks (debugging, research etc.). They solve specific problems and close, preventing context pollution or overfill of the calling Agent. |
+
+> For a detailed breakdown of Agent capabilities, see [Agent Types](Agent_Types.md).
+
+### 2. Context Management
+
+APM manages the context of multiple Agents with explicit protocols and artifacts:
+
+* **Implementation Plan**: The source of truth for project structure and progress.
+* **Dynamic Memory Bank**: A folder structure of Markdown logs where Implementation Agents document their work. Memory Logs are mapped to tasks of the Implementation Plan, keeping an organized context archive of the sesion. The Manager reads these logs to track progress without needing the implementation details, focusing on the big-picture.
+* **Handover Protocol**: A distinct procedure to transfer context (user preferences, undocumented insights and working memory) to a fresh Agent instance before the context window fills up.
+
+---
+
+## The Workflow Phases
+
+APM operates in two distinct phases:
+
+### Phase 1: Setup
+The **Setup Agent** interviews the user to build a comprehensive context foundation. It systematically breaks the project down into phases, tasks and subtasks, creating a detailed **Implementation Plan**. Tasks are grouped by field, and each field is assigned to an **Implementation Agent** for execution.
+
+### Phase 2: Task Loop
+The **Manager Agent** and **Implementation Agents** enter a coordination loop:
+1.  **Assign**: Manager creates specific *Task Assignment Prompts* that the User sends to the Implementation Agents
+2.  **Execute**: Implementation Agent performs the task and *logs to Memory*.
+3.  **Review**: Manager *reviews the Memory Log* and decides the next action.
+
+---
+
+## Installation & Usage
+
+APM is installed via the [`agentic-pm`](https://www.npmjs.com/package/agentic-pm) CLI, which scaffolds the necessary guides and prompt templates into your project workspace. To get started with installation and your first session, see [Getting Started](Getting_Started.md).
+
+---
+
+## Contributing
+
+APM is an Open Source project, and contributions to both the framework and its documentation are encouraged. You can contribute by posting an Issue for bugs, feature requests, or questions, or by submitting a Pull Request (PR) with improvements, fixes, or documentation enhancements/refinements. For details on contributions and guidelines, please see the [CONTRIBUTING.md](https://github.com/sdi2200262/agentic-project-management/blob/main/CONTRIBUTING.md) file.

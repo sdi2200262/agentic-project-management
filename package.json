@@ -3,9 +3,13 @@
   "version": "0.5.1",
   "description": "Agentic Project Management CLI",
   "scripts": {
-    "build": "node scripts/build.js",
+    "build": "npm run build:cli && npm run build:website",
+    "build:cli": "node scripts/build.js",
+    "build:website": "cd website && npm run build",
+    "start:website": "cd website && npm run start",
     "test": "vitest run --reporter=basic",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "deploy:website": "cd website && npm run deploy"
   },
   "repository": {
     "type": "git",
@@ -37,8 +41,8 @@
   },
   "dependencies": {
     "@inquirer/prompts": "^7.9.0",
-    "axios": "^1.12.2",
     "adm-zip": "^0.5.16",
+    "axios": "^1.12.2",
     "chalk": "^5.6.2",
     "commander": "^11.1.0",
     "fs-extra": "^11.2.0",
