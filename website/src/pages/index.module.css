@@ -48,7 +48,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 4rem;
+  padding-top: 6rem;
+  padding-bottom: 4rem;
   scroll-margin-top: 80px; /* Account for fixed header */
 }
 
