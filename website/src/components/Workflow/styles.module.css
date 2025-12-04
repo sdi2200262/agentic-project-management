@@ -1,0 +1,330 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500&family=Inconsolata&display=swap');
+
+.workflowSection {
+  width: 100%;
+  max-width: 1350px;
+  padding: 2rem;
+  margin: 0 auto;
+}
+
+.mainHeading {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 3rem;
+  color: var(--ifm-font-color-base);
+  margin: 0 0 3rem 0;
+  text-align: left;
+}
+
+.phasesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.phase {
+  display: flex;
+  flex-direction: column;
+}
+
+.phaseContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.phaseTextColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.phaseTextColumnRight {
+  text-align: right;
+}
+
+.phaseTextColumnRight .phaseHeader {
+  justify-content: flex-end;
+}
+
+.phaseHeader {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.phaseBox {
+  background-color: #66B5B7;
+  border-radius: 8px;
+  padding: 0.75rem 1.25rem;
+  min-width: 70px;
+  min-height: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.phaseNumber {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 3rem;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1;
+}
+
+.phaseTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--ifm-font-color-base);
+  margin: 0;
+}
+
+.phaseDescription {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1.125rem;
+  color: var(--ifm-color-content);
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.phaseDescription:last-child {
+  margin-bottom: 0;
+  padding-bottom: 2rem;
+}
+
+.highlight {
+  color: var(--ifm-color-primary);
+}
+
+.docsLink {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.docsLink:hover {
+  color: var(--ifm-color-primary-light);
+  text-decoration: underline;
+}
+
+.phaseSvg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Dark theme - match terminal emulator background */
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme='light']) .phaseSvg {
+  background-color: #E8E3D8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.phaseSvgRight {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  margin-left: 0;
+}
+
+.svgImage {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.svgImageSetup {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.svgImageTaskLoop {
+  max-width: 100%;
+}
+
+.phaseContentCentered .phaseDescription:last-child {
+  padding-bottom: 0;
+}
+
+.phaseContentTaskLoop {
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .workflowSection {
+    padding: 1.5rem;
+  }
+
+  .mainHeading {
+    font-size: 2.5rem;
+  }
+
+  .phasesContainer {
+    gap: 4.5rem;
+  }
+
+  .phaseContent {
+    gap: 2rem;
+  }
+
+  .phaseHeader {
+    gap: 1.5rem;
+  }
+
+  .phaseBox {
+    min-width: 60px;
+    min-height: 60px;
+    padding: 0.5rem 1rem;
+  }
+
+  .phaseNumber {
+    font-size: 2.5rem;
+  }
+
+  .phaseTitle {
+    font-size: 2rem;
+  }
+
+  .phaseDescription {
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0;
+  }
+
+  .phaseDescription:last-child {
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .workflowSection {
+    padding: 1rem;
+  }
+
+  .mainHeading {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .phasesContainer {
+    gap: 4rem;
+  }
+
+  .phaseContent {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .phaseTextColumn {
+    order: 1;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phaseTextColumnRight {
+    text-align: center;
+  }
+
+  .phaseTextColumnRight .phaseHeader {
+    justify-content: center;
+  }
+
+  .phaseHeader {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .phaseBox {
+    min-width: 50px;
+    min-height: 50px;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .phaseNumber {
+    font-size: 2rem;
+  }
+
+  .phaseTitle {
+    font-size: 1.75rem;
+  }
+
+  .phaseDescription {
+    font-size: 0.9375rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0;
+    text-align: center;
+  }
+
+  .phaseDescription:last-child {
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
+  }
+
+  .phaseSvg {
+    order: 2;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Maintain background and border on mobile - match terminal emulator */
+    background-color: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  :global([data-theme='light']) .phaseSvg {
+    background-color: #E8E3D8;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .svgImage {
+    max-width: 85%;
+    width: 100%;
+  }
+
+  .docsLinkMobile {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.9375rem;
+    color: var(--ifm-color-content);
+    line-height: 1.6;
+    margin: 1rem 0 0 0;
+    text-align: center;
+    padding: 0;
+    display: block;
+  }
+}
+
+/* Hide docs link on desktop */
+.docsLinkMobile {
+  display: none;
+}

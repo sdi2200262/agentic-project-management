@@ -1,168 +1,110 @@
+---
+id: agent-types
+slug: /agent-types
+sidebar_label: Agent Types
+sidebar_position: 4
+---
+
 # Agent Types - APM v0.5
 
-APM employs four distinct agent types, each with clear responsibilities and carefully scoped context. These agents are **not** "personas" or role-playing characters; they are functional specializations that **leverage modern LLMs' built-in expert capabilities** through focused task assignments and targeted context management.
-
-## Table of Contents
-
-- [Agent Specialization Architecture](#agent-specialization-architecture)
-- [Quick Agent Comparison](#quick-agent-comparison)
-- [1. Setup Agent](#1-setup-agent)
-- [2. Manager Agent](#2-manager-agent)
-- [3. Implementation Agents](#3-implementation-agents)
-- [4. Ad-Hoc Agents](#4-ad-hoc-agents)
+APM employs four distinct Agent types, each with clear responsibilities and carefully scoped context. These are functional specializations that leverage LLM expert capabilities through targeted task assignments and scoped context rather than artificial personas.
 
 ## Agent Specialization Architecture
 
-**APM achieves agent specialization by providing each agent with carefully scoped, task-relevant context**, rather than relying on artificial personas. Agents develop expertise organically from the information and responsibilities assigned to them, without relying on character-based role-play.
+APM achieves specialization through **Context Scoping**. Instead of relying on prompt engineering to create "characters," APM provides each Agent with only the files and instructions relevant to their specific role.
 
-**APM's Approach:**
-- **Context-Driven Specialization**: Agents develop domain expertise through exposure to focused, relevant context; not personalitty traits
-- **Responsibility-Based Emergence**: Specialization emerges from the specific tasks and decisions each agent handles
-- **Natural Adaptation**: Models naturally adapt their responses based on the scoped context they receive
-- **Token-Efficient**: No wasted tokens on persona descriptions; every token serves the actual work needed
+* **Setup Agent:** Sees the entire project vision, requirements and constraints.
+* **Manager Agent:** Sees the plan and progress logs but does not get into implementation details.
+* **Implementation Agent:** Sees assigned tasks and dependency context in great detail but no broad project history.
+* **Ad-Hoc Agent:** Sees whatever the calling Agent and/or the User wants them to see.
 
-## Quick Agent Comparison
+### Quick Agent Comparison
 
-| Agent Type               | Primary Function                                                                                     | When Active            | Key Strengths                                |
-| ------------------------ | ---------------------------------------------------------------------------------------------------- | ---------------------- | -------------------------------------------- |
-| **Setup Agent**          | Initializes project assets, understands project goals & requirements and creates Implementation Plan | Project start only     | Comprehensive project discovery & planning   |
-| **Manager Agent**        | Oversees coordination, makes project decisions, assigns tasks, reviews work                          | Entire project         | Maintains big-picture context                |
-| **Implementation Agent** | Executes domain-specific tasks                                                                       | As assigned by Manager | Focused execution, detailed logging          |
-| **Ad-Hoc Agent**         | Handles isolated, context-heavy tasks                                                                | Temporary              | Prevents core agent context overload         |
+| Agent Type | Role | Context Scope | Active Phase |
+| :--- | :--- | :--- | :--- |
+| **Setup Agent** | **Architect** | Project requirements, PRDs - **full project vision** | Project Start Only |
+| **Manager Agent** | **Coordinator** | Implementation Plan, Task Assingments, Memory Logs - **big picture** | Entire Project |
+| **Implementation Agent** | **Builder** | Specific Task Assignment, Context Dependency Outputs - **tight scope** | As Assigned |
+| **Ad-Hoc Agent** | **Specialist** | Isolated context-heavy tasks - **only what the calling Agent provides** | Temporary / As Needed |
 
 ---
 
 ## 1. Setup Agent
 
-**Primary Function**: Session asset initialization and comprehensive planning through structured project discovery and breakdown.
+**Role:** The Session Architect.
 
-**Operational Context**: Fresh session initiation with user-provided project information. No prior project history.
+**Operational Context:** Fresh session. No prior project history.
+
+The Setup Agent is a temporary instance that exists solely to translate user requirements into a structured Implementation Plan. It operates through mandatory progression gates to ensure no step is skipped and no detail is overlooked.
 
 ### Core Responsibilities
-
-1. **Context Synthesis**: Conduct systematic project discovery through guided, strategic questionnaire methodology
-2. **Project Breakdown**: Transform project goals & requirements into structured Implementation Plan draft using systematic analysis
-3. **Implementation Plan Review (Optional)**: Apply targeted systematic review on User-selected sections of the Implementation Plan draft for quality assurance and task optimization
-4. **Implementation Plan Enhancement & Finalization**: Generate detailed APM Implementation Plan artifact.
-5. **Manager Bootstrap**: Create initialization prompt for Manager Agent handoff
-
-### Operational Workflow
-
-**Sequential Process**: Setup Agent operates through mandatory progression gates; each phase must complete before advancing to the next. This prevents incomplete planning and ensures comprehensive project foundation.
-
-**Context Transfer**: Upon completion, Setup Agent generates Manager Bootstrap Prompt containing all project context, User intent, Implementation Plan and Memory System initialization. Setup Agent session ends when Manager Agent assumes control.
-
-### Key Characteristics
-- **Temporary Instance**: Operates only during project initialization
-- **Comprehensive Scope**: Full project understanding and planning authority
-- **Systematic Methodology**: Reads structured guides during project discovery, planning, review and enhancement for consistent quality
+1.  **Context Synthesis:** systematically interviews the user to gather technical, functional, and process requirements.
+2.  **Project Breakdown:** Analyzes the requirements to create a domain-driven task list (Frontend, Backend, DevOps).
+3.  **Plan Generation:** Transforms the raw task list into the detailed **APM Implementation Plan artifact**.
+4.  **Bootstrap Creation:** Generates the **Bootstrap Prompt** to pass project context to the Manager Agent.
 
 ---
 
 ## 2. Manager Agent
 
-**Primary Function**: Project coordination and decision-making, task assignment and review, and workflow orchestration throughout the APM session.
+**Role:** The Project Orchestrator.
 
-**Operational Context**: Receives Bootstrap Prompt or Handover context. Maintains project oversight through Implementation Plan and Memory System management. Coordinates Implementation Agent instances through Task Assignment Prompts.
+**Operational Context:** Maintains the "Big Picture" via the Implementation Plan and Memory System.
+
+The Manager Agent is the central authority. It generally does not write code itself, except when specifically instructed; its main function is to orchestrate the workflow. It is responsible for decision-making, quality assurance, and maintaining the project state.
 
 ### Core Responsibilities
-
-1. **Session Context Management**: Process Bootstrap or Handover prompts to establish operational awareness
-2. **Implementation Plan Maintenance**: Review, validate, and update project structure as requirements evolve
-3. **Task Assignment Creation**: Generate detailed Task Assignment Prompts with dependency context and execution specifications
-4. **Work Review & Evaluation**: Assess Implementation Agent log entries and task outputs and determine next actions
-5. **Cross-Agent Coordination**: Manage context dependencies between different Implementation Agent instances
-6. **Handover Execution**: Transfer context to replacement Manager Agent instances when approaching context limits
-
-### Operational Workflow
-
-**Task Loop Management**: Manager Agent operates in Task Loop cycles. This continues until project completion or context handover requirements.
-> Issues Task Assignment → Reviews Memory Log → Makes Next Action Decision
-
-**Context Integration**: For cross-agent dependencies, Manager Agent provides comprehensive context integration instructions to Implementation Agents, ensuring seamless coordination between different agent instances.
-
-### Key Characteristics
-- **Central Coordinator**: Maintains project overview and decision-making authority
-- **Memory System Maintenence**: Responsible phase initialization, Memory Log review and phase summary creation
-- **Implementation Plan Maintenence**: Responsible for Implementation Plan updates/modifications based on execution findings, project progress or User requests
-- **Context Continuity**: Ensures project context coherence across Implementation Agent instances
+1.  **Orchestration:** Selects the next logical task from the Implementation Plan.
+2.  **Task Assignment:** Generates precise **Task Assignment Prompts**, injecting necessary context from dependencies if needed (e.g., "Read the API schema generated by the Backend Agent").
+3.  **Review:** Analyzes **Memory Logs** from Implementation Agents to verify task completion against acceptance criteria. Issues follow-up prompts on partial completions.
+4.  **Plan Maintenance:** Updates the Implementation Plan if new requirements or blockers emerge during execution.
 
 ---
 
 ## 3. Implementation Agents
 
-**Primary Function**: Focused task execution with detailed logging and distinct domain work.
+**Role:** The Developer.
 
-**Operational Context**: Receives Task Assignment Prompts from Manager Agent with specific execution and context integration instructions.
+**Operational Context:** Highly focused. Receives only the context necessary for the current task. Accumulates context as tasks are assigned.
+
+Implementation Agents are the workhorses. A project typically has multiple specialized instances (e.g., `Agent_Frontend`, `Agent_Backend`). They execute tasks like producing code, doing research, testing etc.
 
 ### Core Responsibilities
-
-1. **Task Execution**: Execute assigned work following single-step or multi-step patterns as specified
-2. **Dependency Integration**: Process cross-agent or same-agent dependency context before main task execution  
-3. **User Collaboration**: Coordinate with user for external actions, clarifications and approval/feedback processes
-4. **Ad-Hoc Delegation**: Delegate complex debugging, research, or analysis work to specialized Ad-Hoc agents when required or specified
-5. **Memory Logging**: Document all work, decisions, and execution outcomes in designated Memory Log using standardized format
-6. **Handover Execution**: Transfer context to replacement Implementation Agent instances when approaching context limits
+1.  **Execution:** Performs work based strictly on the **Task Assignment Prompt** and User instructions.
+2.  **Context Dependency Integration:** Explicitly reads outputs from other Agents (as instructed by the Manager) to ensure compatibility.
+3.  **Memory Logging:** Documents execution outputs, file changes, and technical decisions in a standardized **Memory Log**.
+4.  **Final Task Report:** Outputs a Final Task Report code block after Memory Logging, written from the User's perspective for Manager Agent review.
+5.  **Error Escalation:** If a task gets blocked, Implementation Agents generate a **Delegation Prompt** for an Ad-Hoc Agent instead of spiraling into debugging loops. This keeps their context intact and enables more efficient and focused task executions.
 
 ### Execution Patterns
-
-**Single-Step Tasks:**
-- Complete all subtasks in one response
-- Focused executions, bug fixes, simple integrations
-- Direct execution followed by immediate Memory Logging
-
-**Multi-Step Tasks:**  
-- Execute work across multiple responses with user confirmation points
-- Complex executions, research phases, integration work
-- Step-by-step progression with user iteration opportunities
-- Steps can be combined via User request/specification
-
-**Dependency Context Integration**:
-- **Same-Agent Dependencies**: Simple contextual references to previous work
-- **Cross-Agent Dependencies**: Comprehensive integration steps with file reading requirements
-
-### Error Handling Protocol
-
-**Minor Issues** (≤2 debugging exchanges): Debug locally
-**Major Issues** (>2 exchanges OR complex/systemic problems): **Mandatory delegation to Ad-Hoc Debug agents**
-
-**Delegation Requirements**: Stop debugging immediately, create delegation prompt, wait for findings, then integrate results or escalate to Manager Agent.
-
-### Key Characteristics
-
-- **Domain-Focused**: Each agent instance handles related tasks in specific domain (Frontend, Backend, Research, Design etc.)
-- **Context-Preserving**: Memory Logs maintain context continuity for future task assignments and handovers
-- **Iterative Collaboration**: User and Implementation Agents can iterate on tasks for modifications, clarifications, and feedback before finalizing.
-- **User-Interactive**: Guides and cooperates with the User for any required actions outside the IDE, such as setting up accounts, configuring services, or managing credentials.
-- **Technical Guidance**: Provide detailed technical explanations of approach and implementation when requested by the User
+* **Single-Step:** For atomic tasks (e.g., "Create a utility function"). executed and logged in one response.
+* **Multi-Step:** For complex logic. Executed iteratively with User confirmation at each step to prevent context drift. Users may request multiple steps to be combined for greater token efficiency, but this can lead to reduced output quality.
 
 ---
 
-## 4. Ad-Hoc Agents  
+## 4. Ad-Hoc Agents
 
-**Primary Function**: Temporary agent instances for isolated, context-intensive work outside main workflow.
+**Role:** The Temporary Specialist - aka "The Intern".
 
-**Operational Context**: Minimal scoped context in separate chat sessions working on distinct workflow branches. Assigned by Implementation Agents for focused delegation work.
+**Operational Context:** Isolated. Created for a single specific purpose and discarded afterwards. Just like in real life.
+
+Ad-Hoc Agents are "disposable" instances used to solve specific problems without polluting the context of long-running Agents. Implementation Agents typically offload context-heavy work to Ad-Hoc Agents, pausing their own progress, or shifting focus to something else while they wait until the Ad-Hoc Agent returns the necessary results.
 
 ### Core Responsibilities
+* **Isolation:** Ensures that the extensive context required to solve a bug (e.g., reading 50 library files) does not clog the memory of the main builders. Current official Ad-Hoc delegation workflows include:
+  * **Debugging**: analyzing complex error logs or stack traces that would overwhelm an Implementation Agent's context
+  * **Research**: investigating documentation or libraries to answer a specific technical question
 
-1. **Temporary Specialization**: Handle focused delegation work within assigned scope boundaries
-2. **Workflow Integration**: Maintain APM session integrity for seamless findings integration back to the Implementation Agent's context
-3. **Scope Respect**: Work only within delegation boundaries without expanding into project coordination
-
-### Operational Workflow
-
-**3-Step Process**:
-1. **Assessment**: Scope assessment and confirmation with clarification questions if needed
-2. **Execution**: Complete delegation work + present findings + request confirmation (all in one response)
-3. **Delivery**: Provide final results in markdown code block format for copy-paste integration back to the Implementation Agent's chat session
-
-### Key Characteristics
-
-- **Isolated Context**: Work in separate chat sessions/workflow branches to prevent main agent context overload
-- **Focused Scope**: Avoid scope creep beyond assigned delegation boundaries
-- **Temporary Duration**: Session ends when delegation is complete or escalated
+### Workflow
+1.  **Delegate:** The Implementation Agent assigns a specific task to an Ad-Hoc Agent -either following instructions in the Task Assignment Prompt or upon encountering a blocker- by issuing a **Delegation Prompt**.
+2.  **Initialize:** User opens a temporary chat, initializes an Ad-Hoc Agent instance and pastes the Delegation Prompt.
+3.  **Solve:** Ad-Hoc Agent executes the delegated work in collaboration with the User.
+4.  **Deliver:** Agent provides a clean summary of their findigns in a Markdown code block to be pasted back into the calling Agent's session.
+5.  **Terminate:** User returns to the calling Agent with the findigns and the Ad-Hoc session is closed.
 
 ---
 
-**See [`Token_Consumption_Tips.md`](Token_Consumption_Tips.md) for best models to use with each agent instance and [`Modifying_APM.md`](Modifying_APM.md) for ways to enhance agent capabilities with custom tools and prompts.**
+**Next Steps:**
+* Learn how to select the right model for each Agent in [Token Consumption Tips](Token_Consumption_Tips.md).
+* See how Context Scoping works in [Context and Prompt Engineering](Context_and_Prompt_Engineering.md).
+* Customize Agent behaviors in [Modifying APM](Modifying_APM.md).
