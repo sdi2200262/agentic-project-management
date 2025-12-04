@@ -21,7 +21,7 @@ export default function LandingHeader() {
       // Don't update active section while animating from a click
       if (isAnimating) return;
       
-      const scrollSections = ['home', 'about', 'features', 'contributors'];
+      const scrollSections = ['home', 'about', 'workflow', 'contributors'];
       const scrollPosition = window.scrollY + 200; // Offset for header
 
       for (const sectionId of scrollSections) {
@@ -56,7 +56,7 @@ export default function LandingHeader() {
     if (!navRef.current || !isInitialized) return { width: 0, left: 0 };
     
     const buttons = Array.from(navRef.current.querySelectorAll('button'));
-    const sectionMap = ['home', 'about', 'features', 'contributors', 'documentation'];
+    const sectionMap = ['home', 'about', 'workflow', 'contributors', 'documentation'];
     const index = sectionMap.indexOf(section);
     
     if (index === -1 || !buttons[index]) return { width: 0, left: 0 };
@@ -178,12 +178,12 @@ export default function LandingHeader() {
             About
           </button>
           <button 
-            onClick={() => handleNavigation('features')} 
-            onMouseEnter={() => setHoveredSection('features')}
+            onClick={() => handleNavigation('workflow')} 
+            onMouseEnter={() => setHoveredSection('workflow')}
             onMouseLeave={() => setHoveredSection(null)}
             className={styles.navButton}
           >
-            Features
+            Workflow
           </button>
           <button 
             onClick={() => handleNavigation('contributors')} 
@@ -226,8 +226,8 @@ export default function LandingHeader() {
         <button onClick={() => handleNavigation('about')} className={styles.mobileNavButton}>
           About
         </button>
-        <button onClick={() => handleNavigation('features')} className={styles.mobileNavButton}>
-          Features
+        <button onClick={() => handleNavigation('workflow')} className={styles.mobileNavButton}>
+          Workflow
         </button>
         <button onClick={() => handleNavigation('contributors')} className={styles.mobileNavButton}>
           Contributors
