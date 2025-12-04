@@ -9,17 +9,12 @@ import Workflow from '@site/src/components/Workflow';
 import Contributors from '@site/src/components/Contributors';
 import styles from './index.module.css';
 
+/**
+ * Home page component - main landing page with all sections
+ * @returns {JSX.Element} Home page component
+ */
 export default function Home() {
-  const history = useHistory();
-  const {siteConfig} = useDocusaurusContext();
-  const baseUrl = siteConfig.baseUrl;
-
-
-  const handleGoToDocs = () => {
-    // Construct the correct docs URL with baseUrl
-    const docsUrl = `${baseUrl.replace(/\/$/, '')}/docs`;
-    history.push(docsUrl);
-  };
+  // Note: history and baseUrl are available if needed for future navigation features
 
   return (
     <div className={styles.landingPage}>
