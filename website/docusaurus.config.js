@@ -36,6 +36,9 @@ const config = {
       {
         hashed: true,
         language: ['en'],
+        indexBlog: false,
+        indexPages: false,
+        docsRouteBasePath: 'docs',
       },
     ],
   ],
