@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 110" width="320" height="110">
+  <style>
+    .a { fill: #2C2C2C; }
+    .p { fill: #66B5B7; }
+    @media (prefers-color-scheme: dark) {
+      .a { fill: #ffffff; }
+    }
+    text {
+      font-family: monospace;
+      font-size: 14px;
+      white-space: pre;
+    }
+  </style>
+  <text x="10" y="20"><tspan xml:space="preserve">    </tspan><tspan class="a">█████╗</tspan><tspan xml:space="preserve"> </tspan><tspan class="p">██████╗</tspan><tspan xml:space="preserve"> </tspan><tspan class="p">███╗   ███╗</tspan></text>
+  <text x="10" y="35"><tspan xml:space="preserve">  </tspan><tspan class="a"> ██╔══██╗</tspan><tspan class="p">██╔══██╗</tspan><tspan class="p">████╗ ████║</tspan></text>
+  <text x="10" y="50"><tspan class="p">█████████████████╔╝</tspan><tspan class="p">██╔████╔██║</tspan></text>
+  <text x="10" y="65"><tspan class="p">╚══</tspan><tspan class="a">██</tspan><tspan class="p">═══</tspan><tspan class="a">██</tspan><tspan class="p">═██╔═══╝ </tspan><tspan class="p">██║╚██╔╝██║</tspan></text>
+  <text x="10" y="80"><tspan xml:space="preserve">   </tspan><tspan class="a">██║  ██║</tspan><tspan class="p">██║     </tspan><tspan class="p">██║ ╚═╝ ██║</tspan></text>
+  <text x="10" y="95"><tspan xml:space="preserve">   </tspan><tspan class="a">╚═╝  ╚═╝</tspan><tspan class="p">╚═╝     </tspan><tspan class="p">╚═╝     ╚═╝</tspan></text>
+</svg>
