@@ -94,20 +94,19 @@ export default function About() {
           </h3>
           
           <p className={styles.paragraph}>
-            Agentic Project Management (APM) is an open-source framework that structures AI-driven software development. 
-            It transforms a single, overloaded AI chat session into a coordinated team of specialized <span className={styles.highlight}>AI Agents</span>, 
-            enabling complex project execution using AI Assistants. Building on the emerging practice of <span className={styles.highlight}>Agentic Spec-Driven Development</span>, 
-            APM adds structured workload distribution and management across a team of specialized Agents.
+            Agentic Project Management (APM) is an open-source framework that structures AI-driven software development. It turns a single, overloaded AI chat session into a coordinated <span className={styles.highlight}>team of specialized AI Agents</span>.<br />
+          </p>
+          <p className={styles.paragraph}>
+            Building on the emerging practice of spec-driven workflows, APM establishes <span className={styles.highlight}>Agentic Spec-Driven Development</span>, adding efficient workload distribution and context management to ensure continuity for comlpex projects and long-running development sessions.
           </p>
           
-          <h3 className={styles.subHeading}>
+          <h3 className={styles.subHeading} style={{ paddingTop: '1.25rem' }}>
             <span className={styles.highlight}>Integrates Seamlessly</span> with your favourite AI IDEs.
           </h3>
           
           <p className={styles.paragraph}>
-            APM works with any <span className={styles.highlight}>AI assistant</span> that supports chat-based interactions. 
-            The framework provides specialized prompts and guides optimized for each platform, ensuring smooth integration 
-            with your existing development workflow.
+            APM integrates with your favorite <span className={styles.highlight}>AI assistants</span> via the <span className={styles.highlight}>agentic-pm</span> CLI.<br />
+            Run <span className={styles.highlight}>apm init</span> to set up optimized prompts and guides for your platform.
           </p>
           
           {/* Icons Section - 3x2 grid */}
@@ -143,11 +142,11 @@ export default function About() {
                 <span key={i} className={styles.terminalButton}></span>
               ))}
             </div>
-            <span className={styles.terminalTitle}>agentic-pm</span>
+            {/*<span className={styles.terminalTitle}>agentic-pm</span>*/}
           </div>
           <div className={styles.terminalBody}>
             {/* Terminal prompt line */}
-            <div className={styles.terminalPromptLine}>% apm init</div>
+            <div className={styles.terminalPromptLine}> <span className={styles.highlight}>$</span> apm init</div>
             {/* APM Logo and Version - Centered */}
             <div className={styles.logoContainer}>
               <div className={styles.bannerLogo}>
