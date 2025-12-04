@@ -59,12 +59,12 @@ export const SUPPORTED_ASSISTANTS = [
 ];
 
 export const ICON_ASSISTANTS = [
-  { name: 'Claude Code', logo: '/agentic-project-management/img/claude-logo.svg', url: ASSISTANT_DATA['Claude Code'].url },
-  { name: 'Cursor', logo: '/agentic-project-management/img/cursor-logo.svg', url: ASSISTANT_DATA['Cursor'].url },
-  { name: 'GitHub Copilot', logo: '/agentic-project-management/img/github-copilot-logo.svg', url: ASSISTANT_DATA['GitHub Copilot'].url },
-  { name: 'Kilo Code', logo: '/agentic-project-management/img/kilo-code-logo.svg', url: ASSISTANT_DATA['Kilo Code'].url },
-  { name: 'Windsurf', logo: '/agentic-project-management/img/windsurf-logo.svg', url: ASSISTANT_DATA['Windsurf'].url },
-  { name: 'Gemini CLI', logo: '/agentic-project-management/img/gemini-logo.svg', url: ASSISTANT_DATA['Gemini CLI'].url }
+  { name: 'Claude Code', logo: '/img/claude-logo.svg', url: ASSISTANT_DATA['Claude Code'].url },
+  { name: 'Cursor', logo: '/img/cursor-logo.svg', url: ASSISTANT_DATA['Cursor'].url },
+  { name: 'GitHub Copilot', logo: '/img/github-copilot-logo.svg', url: ASSISTANT_DATA['GitHub Copilot'].url },
+  { name: 'Kilo Code', logo: '/img/kilo-code-logo.svg', url: ASSISTANT_DATA['Kilo Code'].url },
+  { name: 'Windsurf', logo: '/img/windsurf-logo.svg', url: ASSISTANT_DATA['Windsurf'].url },
+  { name: 'Gemini CLI', logo: '/img/gemini-logo.svg', url: ASSISTANT_DATA['Gemini CLI'].url }
 ];
 
 export const ICONS_TO_DISPLAY = 6;
