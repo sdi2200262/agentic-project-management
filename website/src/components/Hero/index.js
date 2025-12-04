@@ -14,6 +14,7 @@ export default function Hero() {
   const frameRef = useRef(null);
   const isVisibleRef = useRef(true);
   const isMobileRef = useRef(false);
+  const renderFrameRef = useRef(null);
 
   const handleCopy = () => {
     navigator.clipboard.writeText('npm install -g agentic-pm');
@@ -40,12 +41,19 @@ export default function Hero() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        isVisibleRef.current = entries[0].isIntersecting;
+        const isVisible = entries[0].isIntersecting;
+        isVisibleRef.current = isVisible;
+        
         // Pause animations when off-screen
-        if (!isVisibleRef.current) {
+        if (!isVisible) {
           if (frameRef.current) {
             cancelAnimationFrame(frameRef.current);
             frameRef.current = null;
+          }
+        } else {
+          // Resume animation when back on-screen
+          if (renderFrameRef.current && !frameRef.current) {
+            frameRef.current = requestAnimationFrame(renderFrameRef.current);
           }
         }
       },
@@ -145,7 +153,10 @@ export default function Hero() {
     );
 
     const renderFrame = () => {
-      if (!isVisibleRef.current) return; // Don't render when off-screen
+      if (!isVisibleRef.current) {
+        frameRef.current = null;
+        return; // Don't render when off-screen
+      }
       
       ctx.clearRect(0, 0, width, height);
       
@@ -161,6 +172,9 @@ export default function Hero() {
       ctx.fill(animation.renderFrame());
       frameRef.current = requestAnimationFrame(renderFrame);
     };
+    
+    // Store renderFrame in ref so it can be accessed by IntersectionObserver
+    renderFrameRef.current = renderFrame;
     
     // Start the animation loop
     frameRef.current = requestAnimationFrame(renderFrame);
