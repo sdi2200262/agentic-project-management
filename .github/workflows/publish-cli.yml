@@ -106,7 +106,7 @@ jobs:
 
       - name: Install dependencies
         if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
-        run: npm install
+        run: npm ci
 
       # --- Versioning & Tagging ---
       - name: Bump version, Commit, Tag, Push
