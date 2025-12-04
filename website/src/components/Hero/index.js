@@ -26,8 +26,8 @@ export default function Hero() {
     if (!ctx) return;
 
     // Set canvas size
-    const width = 1224;
-    const height = 644;
+    const width = 1320;
+    const height = 695;
     const devicePixelRatio = window.devicePixelRatio || 1;
     
     canvas.width = width * devicePixelRatio;

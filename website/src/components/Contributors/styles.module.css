@@ -82,6 +82,25 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
+.contributeText {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin: 2rem 0 0 0;
+}
+
+.contributeLink {
+  color: #66B5B7;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contributeLink:hover {
+  color: #7fc5c7;
+  text-decoration: underline;
+}
+
 .seeAllContainer {
   display: flex;
   justify-content: center;

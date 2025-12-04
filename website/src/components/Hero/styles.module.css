@@ -16,9 +16,9 @@
 
 .blob {
   position: absolute;
-  width: 1224px;
-  height: 644px;
-  top: 65%;
+  width: 1821px;
+  height: 650px;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
