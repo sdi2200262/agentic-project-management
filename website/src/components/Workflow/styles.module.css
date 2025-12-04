@@ -11,14 +11,9 @@
   font-family: 'Archivo Black', sans-serif;
   font-weight: 400;
   font-size: 3rem;
-  /* Dark theme */
-  color: #ffffff;
+  color: var(--ifm-font-color-base);
   margin: 0 0 3rem 0;
   text-align: left;
-}
-
-:global([data-theme='light']) .mainHeading {
-  color: #2C2C2C;
 }
 
 .phasesContainer {
@@ -85,29 +80,19 @@
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   font-size: 2.5rem;
-  /* Dark theme */
-  color: #ffffff;
+  color: var(--ifm-font-color-base);
   margin: 0;
-}
-
-:global([data-theme='light']) .phaseTitle {
-  color: #2C2C2C;
 }
 
 .phaseDescription {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 1.125rem;
-  /* Dark theme */
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--ifm-color-content);
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
   padding-top: 0;
   padding-bottom: 0;
-}
-
-:global([data-theme='light']) .phaseDescription {
-  color: rgba(44, 44, 44, 0.9);
 }
 
 .phaseDescription:last-child {
@@ -116,17 +101,17 @@
 }
 
 .highlight {
-  color: #66B5B7;
+  color: var(--ifm-color-primary);
 }
 
 .docsLink {
-  color: #66B5B7;
+  color: var(--ifm-color-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .docsLink:hover {
-  color: #7fc5c7;
+  color: var(--ifm-color-primary-light);
   text-decoration: underline;
 }
 
@@ -145,7 +130,6 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Light theme - match terminal emulator background */
 :global([data-theme='light']) .phaseSvg {
   background-color: #E8E3D8;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -331,18 +315,13 @@
     font-family: 'Inter', sans-serif;
     font-weight: 400;
     font-size: 0.9375rem;
-    /* Dark theme */
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--ifm-color-content);
     line-height: 1.6;
     margin: 1rem 0 0 0;
     text-align: center;
     padding: 0;
     display: block;
   }
-}
-
-:global([data-theme='light']) .docsLinkMobile {
-  color: rgba(44, 44, 44, 0.9);
 }
 
 /* Hide docs link on desktop */

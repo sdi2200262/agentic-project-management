@@ -4,9 +4,9 @@
  * work well for content-centric websites.
  */
 
-/* Light Theme - Warm beige palette */
+/* Light Theme*/
 :root {
-  /* Primary colors - Teal/Blue palette for light theme */
+  /* Primary colors */
   --ifm-color-primary: #14b8a6; /* Teal */
   --ifm-color-primary-dark: #0d9488;
   --ifm-color-primary-darker: #0f766e;
@@ -19,17 +19,17 @@
   --ifm-background-color: #F5F1E8;
   --ifm-background-surface-color: #E8E3D8;
   
-  /* Navbar - Solid background for light theme (lighter than warm beige bg, glassmorphism removed to fix sidebar) */
+  /* Navbar */
   --ifm-navbar-background-color: #FAF8F3;
   --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
   
-  /* Text colors - Dark charcoal for warm beige background */
+  /* Text colors */
   --ifm-font-color-base: #2C2C2C;
   --ifm-font-color-base-inverse: #ffffff;
   --ifm-color-content: #2C2C2C;
   --ifm-color-content-secondary: #5a5a5a;
   
-  /* Code blocks - Warm light backgrounds */
+  /* Code blocks */
   --ifm-code-font-size: 95%;
   --ifm-code-background: #E8E3D8;
   --ifm-code-color: #e11d48;
@@ -39,7 +39,7 @@
   --ifm-link-color: #14b8a6;
   --ifm-link-hover-color: #0d9488;
   
-  /* Buttons and UI elements - Warm gray tones */
+  /* UI elements */
   --ifm-color-emphasis-100: #E8E3D8;
   --ifm-color-emphasis-200: #D4CFC4;
   --ifm-color-emphasis-300: #C0BBB0;
@@ -47,10 +47,10 @@
   --ifm-color-emphasis-600: #52525b;
   --ifm-color-emphasis-700: #3f3f46;
   
-  /* Borders - Warm gray */
+  /* Borders */
   --ifm-border-color: #D4CFC4;
   
-  /* Footer - Solid background for light theme (matches navbar) */
+  /* Footer */
   --ifm-footer-background-color: #FAF8F3;
   --ifm-footer-color: #2C2C2C;
   --ifm-footer-link-color: #14b8a6;
@@ -64,50 +64,50 @@
   --ifm-alert-border-color: #14b8a6;
   --ifm-alert-color: #0f766e;
   
-  /* Markdown content styling for light theme - Warm beige */
+  /* Markdown content */
   --ifm-heading-color: #2C2C2C;
   --ifm-hr-border-color: #D4CFC4;
   --ifm-blockquote-background-color: #E8E3D8;
   --ifm-blockquote-color: #0f766e;
   --ifm-blockquote-border-left-color: #14b8a6;
   --ifm-table-border-color: #D4CFC4;
-  --ifm-table-head-background-color: #E8E3D8; /* Different from rows, matching theme */
-  --ifm-table-stripe-background: rgba(20, 184, 166, 0.05); /* Light cyan for light theme */
+  --ifm-table-head-background-color: #E8E3D8;
+  --ifm-table-stripe-background: rgba(20, 184, 166, 0.05);
   
-  /* Additional markdown element colors - Warm beige theme */
+  /* Markdown elements */
   --markdown-paragraph-color: #2C2C2C;
   --markdown-list-color: #2C2C2C;
-  --markdown-list-marker-color: #14b8a6; /* Cyan - keep as is */
-  --markdown-strong-color: #2C2C2C; /* Dark bold for light theme */
+  --markdown-list-marker-color: #14b8a6;
+  --markdown-strong-color: #2C2C2C;
   --markdown-em-color: #0d9488;
   --markdown-image-border-color: #D4CFC4;
   --markdown-image-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   --markdown-kbd-background: #E8E3D8;
   --markdown-kbd-border: #D4CFC4;
   --markdown-kbd-color: #2C2C2C;
-  
-  /* Inline code styling - cyan text, cyan border, low opacity cyan background */
+
+  /* Inline code */
   --markdown-inline-code-color: #14b8a6; /* Cyan text */
   --markdown-inline-code-border: #14b8a6; /* Cyan border */
   --markdown-inline-code-background: rgba(20, 184, 166, 0.1); /* Low opacity cyan background */
 }
 
-/* Dark Theme - Matching screenshot colors */
+/* Dark Theme*/
 [data-theme='dark'] {
-  /* Primary colors - Teal/Blue gradient palette */
-  --ifm-color-primary: #2dd4bf; /* Lighter teal */
+  /* Primary colors */
+  --ifm-color-primary: #2dd4bf;
   --ifm-color-primary-dark: #14b8a6;
   --ifm-color-primary-darker: #0d9488;
   --ifm-color-primary-darkest: #0f766e;
   --ifm-color-primary-light: #5eead4;
-  --ifm-color-primary-lighter: #7dd3fc; /* Blue-teal blend */
+  --ifm-color-primary-lighter: #7dd3fc;
   --ifm-color-primary-lightest: #99f6e4;
   
-  /* Navbar - Solid background for dark theme (glassmorphism removed to fix sidebar) */
+  /* Navbar */
   --ifm-navbar-background-color: #1b1b1e;
   --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   
-  /* Text colors - White */
+  /* Text colors */
   --ifm-font-color-base: #ffffff;
   --ifm-font-color-base-inverse: #0a0a0a;
   --ifm-color-content: #ffffff;
@@ -117,13 +117,13 @@
   --ifm-code-font-size: 95%;
   --ifm-code-background: #1a1a1a;
   --ifm-code-color: #5eead4;
-  --docusaurus-highlighted-code-line-bg: rgba(45, 212, 191, 0.2); /* Teal highlight */
+  --docusaurus-highlighted-code-line-bg: rgba(45, 212, 191, 0.2);
   
   /* Links */
   --ifm-link-color: #5eead4;
   --ifm-link-hover-color: #2dd4bf;
   
-  /* Buttons and UI elements - Dark grey boxes */
+  /* UI elements */
   --ifm-color-emphasis-100: #27272a;
   --ifm-color-emphasis-200: #3f3f46;
   --ifm-color-emphasis-300: #52525b;
@@ -134,7 +134,7 @@
   /* Borders */
   --ifm-border-color: #3f3f46;
   
-  /* Footer - Solid background for dark theme (matches navbar) */
+  /* Footer */
   --ifm-footer-background-color: #1b1b1e;
   --ifm-footer-color: #ffffff;
   --ifm-footer-link-color: #5eead4;
@@ -160,22 +160,22 @@
   /* Tables */
   --ifm-table-border-color: #3f3f46;
   --ifm-table-head-border-color: #0b0b0c;
-  --ifm-table-head-background-color: #3f3f46d7; /* Lighter gray to stand out more, matching theme */
-  --ifm-table-stripe-background: rgba(45, 212, 191, 0.1); /* Dark cyan for dark theme */
+  --ifm-table-head-background-color: #3f3f46d7;
+  --ifm-table-stripe-background: rgba(45, 212, 191, 0.1);
   
-  /* Additional markdown element colors for dark theme - customize these as needed */
+  /* Markdown elements */
   --markdown-paragraph-color: #ffffff;
   --markdown-list-color: #ffffff;
-  --markdown-list-marker-color: #5eead4; /* Cyan - keep as is */
-  --markdown-strong-color: #ffffff; /* White bold for dark theme */
+  --markdown-list-marker-color: #5eead4;
+  --markdown-strong-color: #ffffff;
   --markdown-em-color: #5eead4;
   --markdown-image-border-color: #3f3f46;
   --markdown-image-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   --markdown-kbd-background: #27272a;
   --markdown-kbd-border: #3f3f46;
   --markdown-kbd-color: #ffffff;
-  
-  /* Inline code styling - cyan text, cyan border, low opacity cyan background */
+
+  /* Inline code */
   --markdown-inline-code-color: #5eead4; /* Cyan text */
   --markdown-inline-code-border: #5eead4; /* Cyan border */
   --markdown-inline-code-background: rgba(94, 234, 212, 0.1); /* Low opacity cyan background */
@@ -194,7 +194,7 @@
   color: var(--ifm-color-content);
 }
 
-/* Headings - customize individual heading levels */
+/* Headings */
 .markdown h1,
 .markdown h2,
 .markdown h3,
@@ -210,13 +210,6 @@
   color: var(--ifm-heading-color);
   font-weight: 600;
 }
-
-/* Individual heading level customization (uncomment to customize) */
-/*
-.markdown h1 { color: #your-color; }
-.markdown h2 { color: #your-color; }
-.markdown h3 { color: #your-color; }
-*/
 
 /* Paragraphs */
 .markdown p,
@@ -239,7 +232,7 @@
   text-decoration: underline;
 }
 
-/* Inline code - cyan text, cyan border, low opacity cyan background */
+/* Inline code */
 .markdown code:not(pre code),
 .theme-doc-markdown code:not(pre code) {
   background-color: var(--markdown-inline-code-background);
@@ -266,7 +259,7 @@
   background: transparent;
   border: none;
   padding: 0;
-  color: var(--ifm-code-color); /* Use original code color for code blocks */
+  color: var(--ifm-code-color);
 }
 
 /* Blockquotes */
@@ -296,7 +289,7 @@
   color: var(--ifm-font-color-base);
   font-weight: 600;
   padding: 0.75rem;
-  border: 1px solid var(--ifm-table-head-border-color, var(--ifm-table-border-color)); /* Use header border color if defined, otherwise fallback to regular border */
+  border: 1px solid var(--ifm-table-head-border-color, var(--ifm-table-border-color));
 }
 
 .markdown table td,
@@ -424,7 +417,7 @@
 
 /* -------------------------------- Docs Nav Bar Styling -------------------------------- */
 
-/* Navbar glassmorphism effects REMOVED to fix sidebar issue */
+/* Navbar styling */
 
 /* Navbar text colors to match landing header */
 :root:not([data-theme='dark']) .navbar__item,
@@ -437,7 +430,7 @@
   color: #ffffff;
 }
 
-/* Footer glassmorphism effects REMOVED to fix sidebar issue */
+/* Footer styling */
 
 /* GitHub icon styling */
 .header-github-link {
@@ -467,10 +460,6 @@
   transition: fill 0.2s ease;
 }
 
-.header-github-link svg {
-  fill: var(--ifm-font-color-base);
-}
-
 /* Navbar brand (logo) styling */
 .navbar__brand {
   padding-left: 0.5rem !important;
@@ -491,17 +480,14 @@
 }
 
 /* -------------------------------- Global HTML/Body Background -------------------------------- */
-/* Light theme uses warm beige background for docs - must come BEFORE dark theme to allow override */
 :root {
   background-color: #F5F1E8;
 }
 
-/* Dark theme uses dark background globally - must come AFTER :root to override it */
 [data-theme='dark'] {
   background-color: #121212;
 }
 
-/* Light theme mobile sidebar styling - only when NOT in dark mode */
 :root:not([data-theme='dark']) .navbar-sidebar {
   background-color: #FAF8F3;
 }
