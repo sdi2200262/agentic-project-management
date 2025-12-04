@@ -137,7 +137,8 @@
 /* Separator */
 .footer-separator {
   border: none;
-  border-top: 1px solid #ffffff;
+  border-top: 1px solid var(--ifm-footer-color);
+  opacity: 0.2;
   margin-top: 0.5rem;
   margin-bottom: 0;
   width: 100%;
