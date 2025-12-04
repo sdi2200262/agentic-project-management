@@ -261,12 +261,14 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Light theme - match terminal emulator background */
 :global([data-theme='light']) .iconsSection {
   background-color: #E8E3D8;
   border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .iconItem {
@@ -349,46 +351,72 @@
 
 .assistantsListMobile {
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   padding: 1rem;
-  /* Dark theme */
-  background-color: rgba(255, 255, 255, 0.03);
+  /* Dark theme - solid background to prevent grid showing through */
+  background-color: #1a1a1a;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  animation: slideDown 0.3s ease;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease, margin-top 0.3s ease;
 }
 
 :global([data-theme='light']) .assistantsListMobile {
-  background-color: rgba(0, 0, 0, 0.03);
+  /* Light theme - solid background to prevent grid showing through */
+  background-color: #E8E3D8;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.assistantsListMobileExpanded {
+  max-height: 1000px;
+  opacity: 1;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.assistantsListMobileCollapsed {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
 }
 
 .assistantItemMobile {
   padding: 0.75rem 1rem;
   font-family: 'Inter', sans-serif;
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
   /* Dark theme */
-  color: rgba(255, 255, 255, 0.9);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 :global([data-theme='light']) .assistantItemMobile {
-  color: rgba(44, 44, 44, 0.9);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.05);
+  color: #2C2C2C;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.assistantItemMobile:last-child {
-  border-bottom: none;
+.assistantItemMobile:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme='light']) .assistantItemMobile:active {
+  background: rgba(0, 0, 0, 0.1);
 }
 
 /* Tablet Responsive */
