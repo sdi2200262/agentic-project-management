@@ -3,7 +3,7 @@
  */
 
 export const BLOB_CONFIG = {
-  IMAGE_PATH: '/agentic-project-management/img/blobimg.png',
+  IMAGE_PATH: '/img/blobimg.png',
   MOBILE_BREAKPOINT: 768,
   MAX_WIDTH: 1320,
   MAX_HEIGHT: 695,
