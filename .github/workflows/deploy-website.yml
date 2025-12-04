@@ -37,14 +37,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
           cache-dependency-path: website/package-lock.json
 
       - name: Install dependencies
         run: |
           cd website
-          npm ci
+          npm ci --legacy-peer-deps
 
       - name: Build website
         run: |
