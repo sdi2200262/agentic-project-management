@@ -142,12 +142,14 @@
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Light theme - match terminal emulator background */
 :global([data-theme='light']) .phaseSvg {
   background-color: #E8E3D8;
   border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .phaseSvgRight {
@@ -311,11 +313,13 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   :global([data-theme='light']) .phaseSvg {
     background-color: #E8E3D8;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
   .svgImage {

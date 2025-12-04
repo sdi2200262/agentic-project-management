@@ -211,15 +211,22 @@ export default function About() {
             <path d="M8 10L4 6h8l-4 4z"/>
           </svg>
         </button>
-        {isExpanded && (
-          <div className={styles.assistantsListMobile}>
-            {SUPPORTED_ASSISTANTS.map((assistant) => (
-              <div key={assistant} className={styles.assistantItemMobile}>
+        <div className={`${styles.assistantsListMobile} ${isExpanded ? styles.assistantsListMobileExpanded : styles.assistantsListMobileCollapsed}`}>
+          {SUPPORTED_ASSISTANTS.map((assistant) => {
+            const assistantInfo = ASSISTANT_DATA[assistant];
+            return (
+              <a
+                key={assistant}
+                href={assistantInfo?.url || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.assistantItemMobile}
+              >
                 {assistant}
-              </div>
-            ))}
-          </div>
-        )}
+              </a>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
