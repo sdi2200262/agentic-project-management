@@ -3,7 +3,7 @@ This guide defines how Implementation Agents log their work for Manager Agents a
 
 Both Manager and Implementation Agents must read this guide during session initialization. Implementation Agents reference it when logging; Manager Agents use it when reviewing logs.
 
-## 1. Memory System Variant Overview
+## 1. Memory System Overview
 Summary of the Dynamic-MD Memory System variant, its storage layout and log format:
 
 - Storage: `.apm/Memory/` folder with subfolders `Phase_XX_<slug>/`
@@ -11,9 +11,15 @@ Summary of the Dynamic-MD Memory System variant, its storage layout and log form
 
 Memory Logs are populated by Implementation Agents after each task execution or when blockers occur. Manager Agents review logs to track progress and plan next steps.
 
-## 2. Dynamic-MD Variant Memory Log Format
-All Memory Log entries must follow a precise structure to ensure clarity, traceability, and context retention. For Dynamic-MD systems, each log is in a dedicated file created empty by Manager Agent, then populated by Implementation Agent. Use parsable Markdown with YAML front-matter and minimal formatting. Include optional sections only when their front-matter boolean is true:
+## 2. Dynamic-MD Memory Log Format
+All Memory Log entries must follow a precise structure to ensure clarity, traceability, and context retention. For the Dynamic-MD Memory System, each log is in a dedicated file created empty by Manager Agent, then populated by Implementation Agent. Use parsable Markdown with YAML front-matter and minimal formatting. Include optional sections only when their front-matter boolean is true:
 
+### 2.1 Frontmatter Flags
+- `important_findings: [true|false]` -> Set to **true** if you discovered architectural constraints, new requirements, or critical context that necessitates a further review by the Manager.
+- `compatibility_issues: [true|false]` -> Set to **true** if the task output conflicts with existing systems or requires a plan update.
+
+
+### Memory Log Template
 ```yaml
 ---
 agent: [Agent ID]
@@ -73,6 +79,7 @@ Main responsibilities and workflow steps for Manager Agents when maintaining the
 1. **Create Empty Logs:** At the start of each phase, create **completely empty** log files (or inline sections) for all phase tasks.  **DO NOT populate any content.** Implementation Agents will fill in the entire structure when executing tasks.
 2. **Attach to Assignments:** Include the appropriate empty log file path (or inline section) with each task assignment prompt sent to Implementation Agents.
 3. **Review Completed Logs:** When the User returns with a completed task, review the log content for:
+  - If `important_findings` or `compatibility_issues` are **true**, you are required to read the referenced files and artifacts to validate the context before decision-making.
   - Task completion status and quality
   - Any blockers or issues requiring attention
   - Outputs that inform subsequent task assignments

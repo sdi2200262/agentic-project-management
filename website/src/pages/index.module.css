@@ -1,0 +1,83 @@
+.landingPage {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  background-color: #121212;
+  color: #ffffff;
+}
+
+:global([data-theme='light']) .landingPage {
+  background-color: #F5F1E8;
+  color: #2C2C2C;
+}
+
+:global([data-theme='dark']) .landingPage {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+.contentWrapper {
+  position: relative;
+  padding-top: 80px; /* Space for fixed header */
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.contentWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 100px 100px;
+  background-position: center center;
+  mask-image:
+    linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 5%, black 95%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  z-index: 0;
+  pointer-events: none;
+}
+
+:global([data-theme='light']) .contentWrapper::before {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+}
+
+
+.section {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 6rem;
+  padding-bottom: 4rem;
+  scroll-margin-top: 80px; /* Account for fixed header */
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.sectionContent {
+  max-width: 1200px;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  box-sizing: border-box;
+}

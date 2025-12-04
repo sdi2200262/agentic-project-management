@@ -1,6 +1,6 @@
 # Agentic Project Management (APM)
 
-[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.0)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.2-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.2) [![Website](https://img.shields.io/badge/website-agentic--project--management.dev-blue)](https://agentic-project-management.dev)
 
 *Manage complex projects with a team of AI assistants, smoothly and efficiently.*
 
@@ -83,26 +83,28 @@ Follow these simple steps to start using APM in your project:
 6. **Follow the established APM workflow:** <br/>
 Setup Phase (Project Discovery & Planning) → Task Loop Phase (Plan Execution)
 
-For step-by-step guidance, see the **[Getting Started Guide](docs/Getting_Started.md)**. For detailed CLI behavior and policies, see the **[CLI Guide](docs/CLI.md)**.
+For step-by-step guidance with video coverage, see the **[Getting Started Guide](https://agentic-project-management.dev/docs/getting-started)**. For detailed CLI behavior and policies, see the **[CLI Guide](https://agentic-project-management.dev/docs/cli)**.
 
 ## Documentation
+
+Full documentation is available at [agentic-project-management.dev](https://agentic-project-management.dev)
 
 APM v0.5 includes comprehensive documentation covering all aspects of the framework:
 
 | Document | Description |
 |----------|-------------|
-| **[Introduction](docs/Introduction.md)** | Overview of APM concepts, goals, and core framework |
-| **[Getting Started](docs/Getting_Started.md)** | Step-by-step setup and first session guide |
-| **[Agent Types](docs/Agent_Types.md)** | Different agent roles and specializations |
-| **[Workflow Overview](docs/Workflow_Overview.md)** | Complete workflow walkthrough with process diagrams |
-| **[Token Consumption Tips](docs/Token_Consumption_Tips.md)** | Cost optimization strategies and model recommendations |
-| **[Modifying APM](docs/Modifying_APM.md)** | Customization of APM assets and advanced features |
-| **[Troubleshooting Guide](docs/Troubleshooting_Guide.md)** | Troubleshooting for common issues |
-| **[Context & Memory Management](docs/Context_and_Memory_Management.md)** (advanced) | How APM handles context and manages memory across agent instances  |
-| **[Context & Prompt Engineering](docs/Context_and_Prompt_Engineering.md)** (advanced) | Prompt and context engineering techniques used throughout the framework |
-| **[CLI Guide](docs/CLI.md)** | Detailed CLI usage, behaviors, policies |
+| **[Introduction](https://agentic-project-management.dev/docs/introduction)** | Overview of APM concepts, goals, and core framework |
+| **[Getting Started](https://agentic-project-management.dev/docs/getting-started)** | Step-by-step setup and first session guide |
+| **[Agent Types](https://agentic-project-management.dev/docs/agent-types)** | Different agent roles and specializations |
+| **[Workflow Overview](https://agentic-project-management.dev/docs/workflow-overview)** | Complete workflow walkthrough with process diagrams |
+| **[Token Consumption Tips](https://agentic-project-management.dev/docs/token-consumption-tips)** | Cost optimization strategies and model recommendations |
+| **[Modifying APM](https://agentic-project-management.dev/docs/modifying-apm)** | Customization of APM assets and advanced features |
+| **[Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide)** | Troubleshooting for common issues |
+| **[Context & Memory Management](https://agentic-project-management.dev/docs/context-and-memory-management)** (advanced) | How APM handles context and manages memory across agent instances  |
+| **[Context & Prompt Engineering](https://agentic-project-management.dev/docs/context-and-prompt-engineering)** (advanced) | Prompt and context engineering techniques used throughout the framework |
+| **[CLI Guide](https://agentic-project-management.dev/docs/cli)** | Detailed CLI usage, behaviors, policies |
 
-For a complete documentation index with recommended reading order, see the **[Documentation Hub](docs/README.md)**.
+For a complete documentation index with recommended reading order, visit the **[Documentation Hub](https://agentic-project-management.dev/docs)**.
 
 ## Contributing
 

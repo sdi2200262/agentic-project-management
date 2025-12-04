@@ -1,0 +1,469 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500&family=Inconsolata&display=swap');
+
+.aboutSection {
+  width: 100%;
+  max-width: 1350px;
+  padding: 2rem;
+  margin: 0 auto;
+}
+
+.mainHeading {
+  font-family: 'Archivo Black', sans-serif;
+  font-weight: 400;
+  font-size: 3rem;
+  color: var(--ifm-font-color-base);
+  margin: 0 0 2rem 0;
+  text-align: left;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.subHeading {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: var(--ifm-font-color-base);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.highlight {
+  color: var(--ifm-color-primary);
+}
+
+.paragraph {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 1.125rem;
+  color: var(--ifm-color-content);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ========================================
+ * TERMINAL EMULATOR COMPONENT
+ * ======================================== */
+.cliReplica {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme='light']) .cliReplica {
+  background-color: #E8E3D8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.terminalHeader {
+  background-color: #252525;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme='light']) .terminalHeader {
+  background-color: #D4CFC4;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.terminalButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.terminalButton {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme='light']) .terminalButton {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.terminalTitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.terminalBody {
+  padding: 1.5rem;
+  font-family: 'Inconsolata', monospace;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.terminalPromptLine {
+  color: var(--ifm-font-color-base);
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+/* ========================================
+ * LOGO SECTION
+ * ======================================== */
+.logoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  gap: 0.75rem;
+}
+
+.bannerLogo {
+  display: flex;
+  justify-content: center;
+}
+
+.bannerVersion {
+  text-align: center;
+  color: var(--ifm-color-primary);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.cliPrompt {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0.75rem 0 0.5rem 0;
+}
+
+.promptQuestion {
+  color: var(--ifm-color-primary);
+  font-weight: bold;
+}
+
+.cliMessage {
+  color: var(--ifm-font-color-base);
+  font-weight: 700;
+}
+
+.assistantsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+}
+
+.assistantItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  margin: 0 -0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.assistantItem:hover,
+.assistantItemHovered {
+  background-color: rgba(102, 181, 183, 0.15);
+}
+
+.assistantItemHovered .assistantName {
+  color: var(--ifm-color-primary);
+}
+
+.assistantArrow {
+  font-family: 'Inconsolata', monospace;
+  color: var(--ifm-color-primary);
+  font-size: 0.75rem;
+  min-width: 12px;
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+.assistantArrowVisible {
+  opacity: 1;
+}
+
+.assistantName {
+  font-family: 'Inconsolata', monospace;
+  color: var(--ifm-font-color-base);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.assistantDescription {
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+  font-style: italic;
+  transition: color 0.2s ease;
+}
+
+/* ========================================
+ * ASSISTANT ICONS GRID
+ * ======================================== */
+.iconsSection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+  /* Dark theme - match terminal emulator background */
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme='light']) .iconsSection {
+  background-color: #E8E3D8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.iconItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.iconItem:hover {
+  transform: scale(1.1);
+}
+
+.iconImage {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.iconImageOriginal {
+  filter: none;
+}
+
+.iconItem:hover .iconImage {
+  opacity: 1;
+}
+
+
+/* ========================================
+ * MOBILE ASSISTANT LIST
+ * ======================================== */
+.mobileAssistants {
+  display: none;
+}
+
+.expandButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 2rem;
+}
+
+:global([data-theme='light']) .expandButton {
+  background-color: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #2C2C2C;
+}
+
+.expandButton:hover {
+  background-color: rgba(102, 181, 183, 0.1);
+  border-color: #66B5B7;
+}
+
+.chevron {
+  transition: transform 0.3s ease;
+  color: var(--ifm-color-primary);
+}
+
+.chevronExpanded {
+  transform: rotate(180deg);
+}
+
+.assistantsListMobile {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  /* Dark theme - solid background to prevent grid showing through */
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease, margin-top 0.3s ease;
+}
+
+:global([data-theme='light']) .assistantsListMobile {
+  /* Light theme - solid background to prevent grid showing through */
+  background-color: #E8E3D8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.assistantsListMobileExpanded {
+  max-height: 1000px;
+  opacity: 1;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.assistantsListMobileCollapsed {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+}
+
+.assistantItemMobile {
+  padding: 0.75rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+:global([data-theme='light']) .assistantItemMobile {
+  background: rgba(0, 0, 0, 0.05);
+  color: #2C2C2C;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.assistantItemMobile:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme='light']) .assistantItemMobile:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Tablet Responsive */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .aboutSection {
+    padding: 1.5rem;
+  }
+
+  .mainHeading {
+    font-size: 2.5rem;
+  }
+
+  .contentGrid {
+    gap: 2rem;
+  }
+
+  .subHeading {
+    font-size: 1.25rem;
+  }
+
+  .paragraph {
+    font-size: 1rem;
+  }
+
+  .iconImage {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .aboutSection {
+    padding: 1rem;
+  }
+
+  .mainHeading {
+    font-size: 2rem;
+    text-align: center;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .cliReplica {
+    display: none;
+  }
+
+  .iconsSection {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .iconsSection .iconItem:nth-child(n+4) {
+    display: none;
+  }
+
+  .mobileAssistants {
+    display: block;
+  }
+
+  .subHeading {
+    font-size: 1.125rem;
+    text-align: center;
+  }
+
+  .paragraph {
+    font-size: 0.9375rem;
+    text-align: center;
+  }
+
+  .textContent {
+    text-align: center;
+  }
+
+  .iconImage {
+    width: 48px;
+    height: 48px;
+  }
+}
+

@@ -1,0 +1,439 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1.5rem 2rem;
+  overflow: hidden;
+}
+
+.headerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  isolation: isolate;
+}
+
+.headerContent::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(70, 70, 70, 0.4);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  z-index: -1;
+}
+
+:global([data-theme='light']) .headerContent::before {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Section */
+.logoSection {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-right: 12rem;
+}
+
+/* Center wrapper to maintain equal spacing */
+.centerWrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logoSection * {
+  pointer-events: none;
+}
+
+/* Navigation */
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  isolation: isolate;
+}
+
+/* Navigation background moved to header content pseudo-element */
+
+.navIndicator {
+  position: absolute;
+  height: calc(100% - 1rem);
+  top: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  /*box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);*/
+  border-radius: 50px;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+:global([data-theme='light']) .navIndicator {
+  background: rgba(0, 0, 0, 0.08);
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+}
+
+.navButton {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.95rem;
+  padding: 0.6rem 1.5rem;
+  background: transparent;
+  /* Dark theme */
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
+  filter: none;
+  -webkit-filter: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+:global([data-theme='light']) .navButton {
+  color: #2C2C2C;
+}
+
+.navButton:active {
+  transform: scale(0.98);
+}
+
+/* Right Actions Container (Desktop) */
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: absolute;
+  right: 2rem;
+}
+
+/* Color Mode Toggle */
+.colorModeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* GitHub Link */
+.githubLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  /* Dark theme */
+  color: #ffffff;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+}
+
+:global([data-theme='light']) .githubLink {
+  color: #2C2C2C;
+}
+
+.githubLink:hover {
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+  .header {
+    padding: 0.5rem 1rem;
+  }
+  
+  .nav {
+    gap: 0.25rem;
+    padding: 0.4rem 0.5rem;
+  }
+  
+  .navButton {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .logoText {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .logoText {
+    display: none;
+  }
+  
+  .nav {
+    flex-wrap: wrap;
+  }
+  
+  .navButton {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Mobile Menu Toggle Button */
+.mobileMenuToggle {
+  display: none;
+  background: transparent;
+  border: none;
+  /* Dark theme */
+  color: #ffffff;
+  cursor: pointer;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: color 0.2s ease;
+}
+
+:global([data-theme='light']) .mobileMenuToggle {
+  color: #2C2C2C;
+}
+
+.toggleArrow {
+  transition: transform 0.3s ease;
+}
+
+.toggleArrowUp {
+  transform: rotate(180deg);
+}
+
+/* Right Actions Container (Mobile) */
+.rightActionsMobile {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  position: absolute;
+  right: 0.75rem;
+}
+
+/* Color Mode Toggle (Mobile) */
+.colorModeToggleMobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile GitHub Link */
+.githubLinkMobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Dark theme */
+  color: #ffffff;
+  padding: 0;
+  background: none;
+  border: none;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+:global([data-theme='light']) .githubLinkMobile {
+  color: #2C2C2C;
+}
+
+.githubLinkMobile:hover {
+  opacity: 0.8;
+}
+
+/* Mobile Navigation */
+.mobileNav {
+  display: none;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding: 0;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+}
+
+.mobileNavOpen {
+  max-height: 350px;
+  padding: 0.75rem 1rem 1rem 1rem;
+  opacity: 1;
+}
+
+.mobileNavButton {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  /* Dark theme */
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+:global([data-theme='light']) .mobileNavButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: #2C2C2C;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mobileNavButton:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme='light']) .mobileNavButton:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.mobileThemeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  /* Dark theme */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme='light']) .mobileThemeToggle {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Header Styles */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem;
+  }
+
+  .headerContent {
+    max-width: none;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    margin: 0;
+  }
+
+  .headerContent::before {
+    border-radius: 12px;
+    transition: border-radius 0.3s ease;
+  }
+
+  .headerExpanded .headerContent::before {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .headerExpanded .mobileNav {
+    /* Dark theme */
+    background: rgba(70, 70, 70, 0.4);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+  }
+
+  :global([data-theme='light']) .headerExpanded .mobileNav {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .logoSection {
+    margin-right: 0;
+    flex-shrink: 0;
+    transform: scale(0.85);
+    transform-origin: left center;
+  }
+
+  .centerWrapper {
+    display: none;
+  }
+
+  /* Hide nav indicator on mobile since nav is hidden */
+  .navIndicator {
+    display: none;
+  }
+
+  .rightActions {
+    display: none;
+  }
+
+  .rightActionsMobile {
+    display: flex;
+  }
+
+  .mobileMenuToggle {
+    display: flex;
+  }
+
+  .mobileNav {
+    display: flex;
+  }
+}
+
+/* Tablet breakpoint */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .header {
+    padding: 1rem;
+  }
+
+  .headerContent {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .logoSection {
+    margin-right: 2rem;
+  }
+
+  .centerWrapper {
+    position: relative;
+    left: auto;
+    transform: none;
+  }
+
+  .nav {
+    gap: 0.25rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .navButton {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .githubLink {
+    position: relative;
+    right: auto;
+  }
+
+  /* Hide nav indicator on tablet since it's not useful with breadcrumb-style nav */
+  .navIndicator {
+    display: none;
+  }
+}

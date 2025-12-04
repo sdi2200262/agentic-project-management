@@ -1,47 +1,23 @@
+---
+id: workflow-overview
+slug: /workflow-overview
+sidebar_label: Workflow Overview
+sidebar_position: 6
+---
+
 # Workflow Overview - APM v0.5
 
-APM operates through two workflow phases:
-1. **Setup Phase**: Comprehensive project discovery and planning
-2. **Task Loop Phase**: Coordinated task assignment & execution
+APM establishes an **Agentic Spec-Driven Development** workflow that operates through two main phases:
+1. **Setup Phase** with the *Setup Agent*
+2. **Task Loop** with the *Manager, Implementation and Ad-Hoc Agents,* supported by **Handover Procedures** for context management.
 
-Plus **Handover Procedures** as distinct events when agents approach memory limits.
-
-## Table of Contents
-
-- [Notes for specific AI IDEs](#notes-for-specific-ai-ides)
-- [Setup Phase](#setup-phase)
-  - [Setup Agent Initialization](#setup-agent-initialization)
-  - [1. Context Synthesis & Project Discovery](#1-context-synthesis--project-discovery)
-  - [2. Project Breakdown & Implementation Plan Creation](#2-project-breakdown--implementation-plan-creation)
-  - [3. Implementation Plan Review (Optional)](#3-implementation-plan-review-optional)
-  - [4. Implementation Plan Enhancement & Finalization](#4-implementation-plan-enhancement--finalization)
-  - [5. Manager Bootstrap Creation](#5-manager-bootstrap-creation)
-- [Task Loop Phase](#task-loop-phase)
-  - [Manager Agent Initialization](#manager-agent-initialization)
-  - [Task Assignment Prompt Creation](#task-assignment-prompt-creation)
-  - [Implementation Agent Task Execution](#implementation-agent-task-execution)
-  - [Error Handling & Ad-Hoc Debugger Delegation](#error-handling--ad-hoc-debugger-delegation)
-  - [Memory Logging & Review](#memory-logging--review)
-- [Handover Procedures](#handover-procedures)
-  - [When to Consider Handovers](#when-to-consider-handovers)
-  - [Handover Eligibility Requirements](#handover-eligibility-requirements)
+> **Note on AI IDEs:** For specific behaviors and settings regarding IDEs like GitHub Copilot (e.g., context summarization issues), please refer to the [Getting Started](Getting_Started.md#notes-for-specific-ai-ides) guide.
 
 ---
 
-## Notes for specific AI IDEs
-
-> **As of August 2025, GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism that is known to be buggy and can break cached context, disrupting APM workflows.
->   - **Setup Phase**: If the summarization mechanism triggers, the agent may lose track of guides and procedures. **Stop the response immediately**, then re-provide the required prompts and guides (e.g., Setup Agent initiation prompt, planning guides) before continuing.
->   - **Task Loop Phase**: The cycle is more resilient, but the same issue can occur. If summarization mechanism triggers, and you noticed degrading response quality **stop the response**, re-provide the necessary prompts/guides or task context, and verify the agent has re-established understanding before proceeding.
->
-> **Tip:** Consider disabling the summarization mechanism by setting `github.copilot.chat.summarizeAgentConversationHistory.enabled` to `false` in your Copilot settings.
->
-> > Additional notes for specific IDEs will be added here as new releases occur and user feedback is collected.
-
----
 ## Setup Phase
 
-The Setup Agent conducts comprehensive project initialization through systematic progression gates. Each step must complete before advancing to the next. **Use powerful frontier models with agentic capabilities for the Setup Agent, like Claude Sonnet 4.** 
+The Setup Phase is a mandatory linear sequence. It functions as the project's architectural stage, ensuring a solid plan exists before any code is written.
 
 ```mermaid
 graph LR
@@ -49,115 +25,53 @@ graph LR
     C --> D[Project<br/>Breakdown]
     D --> E{User Chooses<br/>Review?}
     E -->|Yes| F[Systematic<br/>Review]
-    E -->|No| G[Enhancement &<br/>Memory Init]
-    F --> G
-    G --> H[Bootstrap<br/>Creation]
+    E -->|No| H[Bootstrap<br/>Creation]
+    F --> H
     H --> I[Manager Agent<br/>Handoff]
     
     classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
 
-### Setup Agent Initialization
+### 1. Context Synthesis & Discovery
 
-The Setup Phase begins when the User initiates the Setup Agent, which then starts a comprehensive 5-step sequence defined below.
+The Setup Agent initiates a structured, interactive interview process to build a complete "contextual foundation." This stage is critical for preventing downstream issues and ensuring the plan matches your specific constraints.
 
-### 1. Context Synthesis & Project Discovery
-The Setup Agent proceeds to Context Synthesis for project discovery:
+The Agent leads the User through three distinct discovery phases:
+  1.  **Existing Materials & Vision:** Focuses on high-level scope, PRDs, existing codebases, and project documentation.
+  2.  **Technical Requirements:** Drills down into specific stack choices, architectural constraints, dependencies, and other technical matters.
+  3.  **Process Requirements:** Aligns on workflow preferences, coding standards, testing protocols, and review gates.
+  4.  **Final Validation:** Presents a comprehensive summary for user review and approval before proceeding to Project Breakdown.
 
-**User Actions:**
-- Respond to a structured discovery questionnaire across three phases
-- Provide detailed project information, requirements, and constraints
-- Validate the Setup Agent's understanding or expand
+The Agent enforces **mandatory iterative follow-up cycles** for each Question Round (1-3) and requires explicit user approval in Question Round 4. It analyzes your responses and requests clarifications or missing details before advancing to the next Question Round, ensuring no critical requirements are overlooked. Early delivery of foundational documents (like PRDs) allows the Agent to tailor its technical questions in subsequent Question Rounds.
 
-**Setup Agent Actions:**
-- Conduct systematic discovery through a three-phase methodology:
-  - **Phase 1**: Existing materials, PRDs, project vision, and scope assessment
-  - **Phase 2**: Targeted inquiry across technical requirements, dependencies, constraints
-  - **Phase 3**: Process requirements, workflow preferences, quality standards  
-- Use mandatory follow-up cycles for each discovery phase until understanding is complete
-- Retain insights for the systematic breakdown phase
+### 2. Project Breakdown & Plan Creation
+Once context is established, the Setup Agent initiates the Project Breakdown. It uses a carefully designed "Chat-to-File" procedure designed to overcome common LLM limitations (like lazy planning or pattern matching) by forcing the model to articulate its reasoning in the chat before writing to the file. This process is often called "forced chain-of-thought" as it forces non-CoT models to use much higher quality reasoning while still utilizing their advanced agentic capabilities.
 
-### 2. Project Breakdown & Implementation Plan Creation
-After complete contextual understanding has been achieved in Context Synthesis, the Setup Agent proceeds to Project Breakdown using a systematic chat-to-file procedure:
+The Agent executes a systematic 4-step progression to transform requirements into a concrete plan:
+  1.  **Domain Analysis:** Identifies distinct work areas (e.g., Frontend, Backend, DevOps) and assigns them to specialized Implementation Agents to ensure separation of concerns.
+  2.  **Phase Definition:** Establishes the logical sequence of development (e.g., "Phase 1: Foundation" → "Phase 2: Core Features").
+  3.  **Phase Cycles & Task Breakdown:** The Agent analyzes tasks phase-by-phase. It  assesses dependencies, applies **anti-packing guardrails** and other quality checks, *in the chat* before committing them to the plan.
+  4.  **Final Review & Generation:** The Agent balances agent workloads, marks cross-agent dependencies, and finalizes the `Implementation_Plan.md` file.
 
-**User Actions:**
-- Review domain analysis, agent assignments, and phase cycles in chat
-- Review the final holistic review and refinement in chat
-- Review the structured Implementation Plan file as it develops through phase cycles
-- Provide feedback for immediate modifications, tweaks, or gaps.
-    > **Tip:** Spend ample time carefully reviewing and refining the Implementation Plan in collaboration with the Setup Agent. When working with AI, it's crucial to be thorough and proactive. Meticulously combing through the plan at this early stage helps prevent roadblocks and issues later. Always plan ahead and ensure the Implementation Plan fully matches your project needs before moving forward.
-- Once the Implementation Plan meets the User's project requirements and preferences, the User may choose whether to proceed with a systematic, agent-driven review or skip to enhancement.
+The Agent will produce the plan incrementally, explaining its reasoning logic as it generates the file content. The User can review the finalized plan to request modifications and verify the Agent's rationale as presented in the chat.
 
-**Setup Agent Actions:**
-Execute systematic progression through the mandatory gates:
-  1. **Domain Analysis** (in chat): Identify work domains → Create initial Implementation Agent assignments
-  2. **Phase Definition** (in chat): Define phase sequence → Establish project progression logic  
-  3. **Phase Cycles** (in chat + file): 
-     - Task identification with anti-packing guardrails (in chat)
-     - Complete individual analysis for each task (in chat)
-     - Initial task dependency assessment (in chat)
-     - File appendix in simple format (in file)
-  4. **Final Review** (in chat + file): Agent workload balancing + cross-agent dependency marking
-  5. **Plan Approval**: Present the complete file and chat reasoning for User review
+### 3. Implementation Plan AI Review & Refinement (Optional)
+Before finalizing the plan, you can opt for a systematic, agent-driven quality assurance pass. This step is designed to catch specific AI planning pitfalls—such as "task packing" (squeezing too much work into one task) or pattern matching, that might cause issues during execution.
 
-**Immediate Review Checkpoint:** Immediately after the Project Breakdown completes (before optional systematic review or enhancement), perform a full end-to-end review of the Implementation Plan. Fix mismatches and structural issues now to prevent costly downstream changes and token spend. Match the Plan to your project's needs and your workflow preferences.
+This is not a generic re-read. The Setup Agent applies an analytical testing framework to specific sections of the plan you select. It challenges its own previous planning decisions to identify risks, ambiguity, or missing context. The Agent will present a critique of the selected sections. You must review these findings and approve or reject the proposed modifications.
 
-**The Setup Agent employs a systematic chat-to-file procedure carefully designed to address core LLM limitations such as pattern matching, artificial dependencies, and hallucinations.** This approach ensures that the entire Implementation Plan's reasoning and decision-making process is transparently provided in a single, comprehensive response. By ‘forcing’ chain-of-thought (CoT) reasoning, this method unlocks deep reasoning capabilities in powerful ‘non-thinking’ models commonly available across most AI IDEs and subscription tiers.
+> **Crucial:** This AI review focuses on structural and logical integrity. It does not replace your manual review for requirements or domain constraints.
 
-**Important:** Some AI IDE system prompts or even certain "thinking" models may not follow this chat-to-file procedure as intended. For example, they might split the process into multiple responses, or their two-pane (thinking/response) architecture may disrupt the intended flow. If this occurs, please ensure the entire sequence is completed as described.
+### 4. Manager Bootstrap
 
-**This approach is intentionally crafted for robust, agentic non-thinking models, which are the default in most AI IDEs.** 
-
-> **Note:** If you encounter any issues during this process, please refer to the relevant section of the [Troubleshooting Guide](./docs/Troubleshooting_Guide.pdf) for detailed assistance.
-
-### 3. Implementation Plan Review (Optional)
-If the User opts for a systematic review, the Setup Agent highlights plan sections needing extra attention. For the areas the User selects, the Setup Agent reviews for AI-specific planning issues—like task-packing, misclassified tasks, or other LLM-related errors, rather than rechecking the entire project context. Major context gaps may still be flagged if found. This agent-driven review is optional and is intended to optimize workflow clarity, smoothness, and AI-oriented planning practices, rather than to ensure the Implementation Plan fully and accurately reflects the project's actual requirements. **The User should always conduct their own comprehensive review of the Implementation Plan before relying on the Agent's review.**
-
-**User Actions:**
-- Select specific phases/tasks for detailed analysis if reviewing
-- Review Setup Agent's analytical findings and approve plan modifications
-
-**Setup Agent Actions:**
-- Propose high-value review areas based on plan complexity analysis
-- Apply analytical testing/review framework to user-selected areas only
-- Challenge previous planning decisions through structured questioning
-- Apply improvements identified through the review process
-
-### 4. Implementation Plan Enhancement & Finalization
-In this exchange, the Setup Agent transforms the Implementation Plan into a detailed APM artifact.
-
-**User Actions:**
-- Review the enhanced Implementation Plan with detailed task specifications
-- Request modifications to any artifacts, if needed
-
-**Setup Agent Actions:**
-- Transform the simple plan into a detailed APM artifact with comprehensive task specifications
-
-> **Note:** If you encounter any issues during this process, please refer to the relevant section of the [Troubleshooting Guide](./docs/Troubleshooting_Guide.pdf) for detailed assistance.
-
-### 5. Manager Bootstrap Creation
-The final step of the Setup Agent workflow is to generate a comprehensive Bootstrap Prompt for initializing the first Manager Agent chat session.
-
-**User Actions:**
-- Review the Bootstrap Prompt for completeness and accuracy
-- Copy the Bootstrap Prompt to the first (already initialized) Manager Agent chat session
-- Close the Setup Agent session upon successful Manager initialization
-
-**Setup Agent Actions:**
-- Generate a comprehensive Bootstrap Prompt containing:
-  - YAML frontmatter 
-  - User intent and requirements summary  
-  - Implementation Plan overview and execution guidance
-  - Memory system initialization instructions
-  - Next action specifications for Manager Agent
-- Complete context transfer preparation and end Setup Agent session
+Finaly, the Agent generates a **Bootstrap Prompt**. This prompt acts as the "seed" for the Manager Agent, containing the user intent, project context, and initialization instructions.
 
 ---
 
 ## Task Loop Phase
 
-Manager and Implementation Agents coordinate through structured task assignment and review cycles until project completion. **While powerful models can enhance performance for these agent instances, APM v0.5 also works effectively with more economical alternatives such as Cursor's Auto model mixture or Copilot's GPT-4.1 base model, providing a viable cost-effective option.**
+The Manager Agent coordinates the project, while Implementation Agents execute the work. This cycle repeats until the project is complete.
 
 ```mermaid
 graph LR
@@ -177,60 +91,28 @@ graph LR
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
 
-### Manager Agent Initialization
-Upon initialization, the Manager Agent expects either the Bootstrap Prompt (if it is the first manager of the session) or a Handover Prompt (if it is a subsequent manager in the session). This ensures the Manager Agent receives all necessary context and resources to begin or resume managing the project.
+### 1. Manager Initialization
+The Manager parses a specialized prompt (either a **Bootstrap Prompt** from the Setup Phase or a **Handover Prompt** from a previous session) to understand the current project state. It then reads the required guides and the `Implementation_Plan.md` to build its mental model.
+  
+After completing these steps, the Manager summarizes its understanding and requests user authorization to proceed. To continue, the User reviews the Agent's summary and explicitly **authorizes** the Manager to proceed before any tasks are assigned. This is to make clarifications or corrections if the Manager's understanding seems incorrect, before proceeding to project execution.
 
-**User Actions:**
-- Provide either the Bootstrap Prompt or a Handover Prompt to the new Manager Agent session
-- Confirm the Manager Agent's understanding of project scope and responsibilities; provide clarification if issues exist
-- Authorize the Manager Agent to begin coordination duties and task execution following established protocols
+### 2. Task Assignment Prompt Creation
+The Manager analyzes the next task in the `Implementation_Plan.md` to determine its requirements, and it constructs a detailed [**Meta-Prompt**](Context_and_Prompt_Engineering.md#apm-prompt-asset-architecture) designed to ensure the Implementation Agent has exactly the context needed to execute it successfully. This **Task Assignment Prompt** is presented in a Markdown code block in-chat, for the User to copy-paste to the corresponding Implementation Agent's chat session.
 
-**Manager Agent Actions:**
-- Parse YAML front matter for asset locations and format specifications from the received prompt (Bootstrap or Handover)
-- Read all required guides and ensure understanding of session responsibilities, procedures, and protocols
-- Confirm understanding of project context and requirements, and request User authorization before proceeding with coordination duties
+When fetching the next task, the Manager Agent scans for context dependencies. It distinguishes between **Same-Agent Dependencies** (which rely on the same agent's active context) and **Cross-Agent Dependencies** (which require explicit file reading and integration steps). If the task relies on a different agent's work, the Task Assignment includes a specific `## Context from Dependencies` section with instructions to read relevant output files.
 
-### Task Assignment Prompt Creation
-Task Assignment Prompts are carefully structured meta-prompts created by the Manager Agent that guide Implementation Agents in executing specific tasks according to the project plan.
+### 3. Task Execution (Implementation Agents)
 
-**User Actions:**
-- Deliver Task Assignment Prompts to appropriate Implementation Agent chat sessions
-- Coordinate between Manager and Implementation Agents as the communication bridge
+After receiving a Task Assignment Prompt, an Implementation Agent executes the work based on the task type:
 
-**Manager Agent Actions:**
-- Examine task contents in the Implementation Plan for dependency declarations and context requirements
-- Determine dependency handling approach:
-  - **Same-Agent Dependencies**: Simple contextual reference approach
-  - **Cross-Agent Dependencies**: Comprehensive integration context approach
-- Create a structured Task Assignment Prompt containing:
-  - YAML front matter with execution type and dependency flags
-  - Task reference from the Implementation Plan
-  - Context from dependencies (adjusted approach)
-  - Detailed instructions based on Implementation Plan specifications
-  - Expected outputs and success criteria
-  - Memory Logging path and instructions
+  * **Single-Step:** For atomic tasks, the Agent completes the work and logs to Memory, in one response.
+  * **Multi-Step:** For complex tasks, the Agent executes the work step-by-step, requiring User confirmation at each checkpoint. This allows for course correction between steps.
 
-### Implementation Agent Task Execution
-The Implementation Agent executes assigned tasks according to Task Assignment Prompts and the project plan, following clear execution and logging protocols. Tasks contain dependency context integration instructions and can be single-step or multi-step depending on execution requirements:
+If Cross-Agent Dependencies exist, the Agent explicitly reads files/outputs from previous task executions by other Agents before starting their own.
 
-**Dependency Integration**:
-- **Cross-Agent**: Complete all integration steps + Step 1 of the main task (or full task if single-step)
-- **Same-Agent**: Minimal context reference, direct task execution
+Implementation Agents operate in a focused context scope, only being aware of what is in their task assignments, preventing "context pollution" from unrelated project work.
 
-**Single-Step Tasks:**
-- Complete all subtasks in one response
-- Direct execution → immediate Memory Logging
-
-**Multi-Step Tasks:**
-- Execute Step 1 → User confirmation → Step 2 → confirmation → continue
-- User iteration/feedback/guidance opportunities at each step
-- **Step combination available**: Adjacent steps can be combined when requested by the User or pre-specified in the Task Assignment Prompt for efficiency
-- Final step completion → Memory Logging
-
-**Explanation Protocol**:
-- **User Requests**: Users can request explanations for complex tasks at Manager level or during task execution
-- **Timing**: Brief introduction before execution, detailed explanation after completion
-- **Scope**: Technical approach, decision rationale, architectural impact, integration considerations
+The User is the active "Human-in-the-Loop" overseeing and guiding task execution. Additionally,  you can combine steps to save tokens (e.g., `"Step 1 looks good. Combine steps 2 and 3 in your next response."`) or request strict explanations when needed.
 
 ```mermaid
 graph LR
@@ -253,24 +135,26 @@ graph LR
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
 
-### Error Handling & Ad-Hoc Debugger Delegation
+### 4. Memory Logging & Review
 
-**Error Escalation Protocol**:
-- **Minor Issues** (≤2 debugging exchanges): Debug locally (up to two attempts)
-- **Major Issues** (>2 exchanges OR complex/systemic): **Mandatory Ad-Hoc Debugger delegation**
+Upon completion or if facing a serious blocker, the Implementation Agent creates a **Memory Log** summarizing the output, decisions, and file changes. The Memory Log serves as a *"context abstraction layer"* between the Manager's big-picture and the Implementation Agent's execution details.
 
-**Ad-Hoc Delegation Workflow**:
+After completing task execution and Memory Logging, Implementation Agents output a Final Task Report code block written from the User's perspective. This report includes task completion status, execution notes, and key flags. The User copies this report and pastes it back to the Manager Agent for review.
 
-1. **Implementation Agent**: Stop debugging, create a delegation prompt using the appropriate Debug Delegation guide
-2. **User**: Open a new Ad-Hoc agent session, paste the delegation prompt  
-3. **Ad-Hoc Agent**: Execute a three-step workflow (Bug Assessment/Reproduction → Execution → Delivery)
-4. **User**: Return findings to the Implementation Agent session
-5. **Implementation Agent**: Integrate the solution or escalate to the Manager
+The Manager reviews the log and decides to **Continue** to the next task, **Request Corrections** by issuing a follow-up pronpt, or **Update the Plan** if the task revealed a need to do so.
+
+### 5. Error Handling (Ad-Hoc Delegation)
+
+APM tries to prevent Implementation Agents from spiraling into long debugging loops that waste tokens and corrupt context. If an Implementation Agent cannot solve an issue after **3 attempts**, it triggers the **Ad-Hoc Delegation Protocol**.
+
+The issue is handed to a temporary **Ad-Hoc Agent**. The blocked Implementation Agent creates a **Delegation Prompt** describing the bug and how to reproduce it.
+
+The User copies and pastes the delegation prompt into an Ad-Hoc Agent chat session, collaborates with the temporary Agent to resolve the bug, and after a solution is found, returns to the original Implementation Agent with the fix. If the problem remains unresolved, it may be escalated back to the Manager for further guidance.
 
 ```mermaid
 graph LR
     B{Issue Complexity?}
-    B -->|Simple| C[Debug Locally<br/>2 Attempts]
+    B -->|Simple| C[Debug Locally<br/>3 Attempts]
     B -->|Complex| D[Implementation Agent<br/>Issues Ad-Hoc<br/>Delegation Prompt]
     C -->|Issue Persists| D
 
@@ -288,35 +172,11 @@ graph LR
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
 
-### Memory Logging & Review
-After every Task Assignment, a Memory Log must be created to capture all key information about task execution: outcomes, issues, next steps, etc., following a standardized format. This ensures the Manager Agent has a complete, structured record of what occurred.
-
-**User Actions:**
-- If prompted, confirm task completion quality before authorizing Memory Logging
-- Report completed tasks and Memory Log completion to Manager Agent session
-- Facilitate communication between Implementation and Manager Agents
-
-**Implementation Agent Actions:**
-- Complete standardized Memory Log format with:
-  - Status, outputs, issues, and next steps documentation
-  - Detailed work summary and decision rationale
-- Report completion status to the User for Manager review coordination
-
-**Manager Agent Actions:**
-- Analyze Memory Logs for completion status, quality, and outputs
-- Make next action decisions:
-  - **Continue Forward**: Issue next Task Assignment Prompt
-  - **Request Corrections**: Create follow-up prompt for same agent
-    - **Assign Debugging**: Engage Ad-Hoc agents for complex issues
-  - **Update Plan**: Modify Implementation Plan based on execution findings
-- Create phase summaries when phases complete
-- Maintain memory system organization per selected strategy
-
 ---
 
 ## Handover Procedures
 
-Context transfer protocols when agents approach memory limits, maintaining project continuity across agent instances. **Handover procedures can be used with any model tier, as they primarily involve structured context transfer rather than complex reasoning. However, more capable models will provide better context synthesis and verification.**
+When an Agent's context window approaches its limits, a Handover is required to maintain performance and project continuity. This is a standard procedure, not a failure state.
 
 ```mermaid
 graph LR
@@ -335,91 +195,22 @@ graph LR
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
 
-### When to Consider Handovers
+### The Handover Process
+A Handover Procedure transfers the outgoing Agent's working memory, insights, user preferences, and not-logged context, to a fresh instance to ensure seamless continuity.
 
-**Proactive handover timing is critical for maintaining project quality.** Don't wait until an agent completely fails or starts hallucinating. By then, the context transfer may already be compromised.
+#### 1. Trigger & Eligibility
+Handovers must be proactive. Waiting until the context window is full may cause hallucinated or corrupted handovers. The procedure must be performed *between* tasks (after a Memory Log is completed), never during active execution.
 
-- **Context Window Awareness:**
-  - **Visual Indicators**: Most AI IDEs have some kind of context usage visualization; initiate handover at 80-90% capacity
-- **General Rule of Thumb:**
-    - **Implementation Agents**: Consider handover after 5-10 task cycles, depending on task complexity
-    - **Manager Agents**: Consider handover after 10-15 task cycles for first Manager (context gathering burden), 15-20 for replacement Managers
+Watch for context usage (~80-90% capacity) or signs of context degradation (repetitive questions, forgetting constraints) and when needed command the "full" Agent to begin the handover protocol once the current task cycle is fully resolved.
 
-**Performance Warning Signs:**
-- Repetitive questions about information provided earlier
-- Contradicting previous decisions or advice
-- Generic responses lacking project-specific context
-- Forgotten project details or requirements
-- Misremembering task assignments or project structure
+#### 2. Artifact Creation (The Two-Artifact System)
+The Agent distills its "mental state" into two distinct components:
+  * **Handover File:** A Markdown file capturing undocumented insights, effective workflow patterns, and specific user preferences that are not recorded in formal Memory Logs.
+  * **Handover Prompt:** A structured meta-prompt containing onboarding instructions and reading protocols for the new Agent. It is presented in a Markdown code block for copy-paste to the new Agent instance.
 
-### Handover Eligibility Requirements
+#### 3. Initialization & Verification
+The new Agent is initialized and given the Handover Prompt, which instructs it to read the Handover File and the relevant Memory Logs to reconstruct the required context.
 
-**Critical:** Handovers can only occur during specific workflow states. Requests during active work are denied with completion requirements.
+The new Agent will summarize its understanding. The User **must** carefully review the summary to make sure no hallucinations or broken context has been transferred to the new Agent instance. Once verified, the User authorizes the new Agent to continue from where the previous left off.
 
-**Implementation Agent Handover Eligibility:**
-- Complete task execution cycle finished
-- Task work completed OR blocked with clear identification  
-- Ad-Hoc delegation completed and findings integrated (if any)
-- Memory Log thoroughly completed following standard format
-- User reporting of task status completed
-
-**Manager Agent Handover Eligibility:**
-- Complete task loop cycle finished
-- Task Assignment issued AND Implementation Agent execution complete
-- Memory Log received back from User with task results
-- Memory Log reviewed and next action decision made
-
-**Important:** Some AI IDE system prompts or models may not respect handover timing restrictions. If an agent agrees to handover during ineligible periods, complete the current critical step first, then manually verify eligibility before proceeding.
-
-### Handover Artifact Creation
-
-**The two-artifact handover system ensures comprehensive context transfer while maintaining structured initialization for replacement agents.**
-
-**User Actions:**
-- Review handover artifacts for completeness and accuracy
-- Verify that the Handover File & Prompt captures current project state and working context before new session initialization
-    - **Tip:** Take time to review the Handover File & Prompt content; if the current agent missed important context, the replacement agent will inherit those gaps.
-
-**Current Agent Actions:**
-- Create comprehensive two-artifact system when approaching context limits:
-  - **Handover File** (`<Agent>_Handover_File_<X>.md`): Current project status, recent work completed, key decisions and rationale, known issues/blockers, User preferences and effective approaches, working insights not captured in Memory Logs
-  - **Handover Prompt** (presented in chat as markdown code block): APM framework onboarding instructions for replacement agent, Handover File reading and context integration protocols, current session state and immediate next actions, user verification requirements before proceeding
-
-**The Handover File serves as active memory context that formal Memory Logs don't capture:** User preferences, working insights, effective approaches, and project intuition developed during the session. By combining a context dump in the Handover File for non-workflow context retained in collaboration with the accurate history from Memory Logs, we achieve a complete context transfer to the next agent instance.
-
-### Handover Execution Process
-
-**Context transfer requires careful verification to ensure replacement agents understand both the technical project state and the working relationship established with the user.**
-
-**User Actions:**
-- Validate the current agent's handover artifacts for completeness and project accuracy
-- Open a new replacement agent session (same agent type, clear naming) & initialize
-- Paste the Handover Prompt as the very first message to the new agent
-- **Carefully verify** the new agent's context understanding by examining their understanding summary and/or asking clarification questions before authorizing operations
-    - **Important:** Be thorough in verification; replacement agents may confidently misunderstand context while appearing knowledgeable
-- Archive/close the previous agent session only after successful handover verification
-
-**Current Agent Actions:**
-- Prepare comprehensive handover artifacts following established guide protocols
-- Ensure complete context transfer preparation, including working insights and User interaction patterns
-
-**New Agent Actions:**
-- Process Handover File thoroughly for complete context integration
-- Demonstrate understanding of project state, recent progress, immediate priorities, and working relationship with the User
-- Ask specific clarification questions about any ambiguous context points
-    - **Never** proceed with operations until receiving explicit User authorization
-
-### Common Handover Issues
-
-**Common Handover Issues:**
-- **Overconfident Replacement**: New agents may claim understanding without thoroughly processing context; address during verification
-- **Context Gaps**: If the outgoing agent missed important information, the replacement inherits those gaps; address during verification
-- **Model Variations**: Different models may interpret handover context differently; be prepared to provide clarifications
-- **Working Relationship**: Replacement agents need to rebuild understanding of your communication style and preferences
-
-> **Note:** For guidance on how to recover from common Handover issues, refer to the relevant paragraph of the `Troubleshooting` section of the [APM User Guide](../guides/APM_User_Guide.pdf).
-
-
----
-
-**APM workflow ensures systematic project progression through structured agent coordination, comprehensive context management, and seamless continuity during context transfers.**
+> **Note:** For recovery from failed handovers, see the relevant section in the [Troubleshooting Guide](Troubleshooting_Guide.md#troubleshooting-guide---apm-v05)

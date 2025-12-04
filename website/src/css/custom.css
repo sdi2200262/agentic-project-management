@@ -1,0 +1,507 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* Light Theme*/
+:root {
+  /* Primary colors */
+  --ifm-color-primary: #14b8a6; /* Teal */
+  --ifm-color-primary-dark: #0d9488;
+  --ifm-color-primary-darker: #0f766e;
+  --ifm-color-primary-darkest: #115e59;
+  --ifm-color-primary-light: #2dd4bf;
+  --ifm-color-primary-lighter: #5eead4;
+  --ifm-color-primary-lightest: #99f6e4;
+  
+  /* Background colors - Warm beige */
+  --ifm-background-color: #F5F1E8;
+  --ifm-background-surface-color: #E8E3D8;
+  
+  /* Navbar */
+  --ifm-navbar-background-color: #FAF8F3;
+  --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  
+  /* Text colors */
+  --ifm-font-color-base: #2C2C2C;
+  --ifm-font-color-base-inverse: #ffffff;
+  --ifm-color-content: #2C2C2C;
+  --ifm-color-content-secondary: #5a5a5a;
+  
+  /* Code blocks */
+  --ifm-code-font-size: 95%;
+  --ifm-code-background: #E8E3D8;
+  --ifm-code-color: #e11d48;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
+  
+  /* Links */
+  --ifm-link-color: #14b8a6;
+  --ifm-link-hover-color: #0d9488;
+  
+  /* UI elements */
+  --ifm-color-emphasis-100: #E8E3D8;
+  --ifm-color-emphasis-200: #D4CFC4;
+  --ifm-color-emphasis-300: #C0BBB0;
+  --ifm-color-emphasis-500: #71717a;
+  --ifm-color-emphasis-600: #52525b;
+  --ifm-color-emphasis-700: #3f3f46;
+  
+  /* Borders */
+  --ifm-border-color: #D4CFC4;
+  
+  /* Footer */
+  --ifm-footer-background-color: #FAF8F3;
+  --ifm-footer-color: #2C2C2C;
+  --ifm-footer-link-color: #14b8a6;
+  --ifm-footer-link-hover-color: #0d9488;
+  
+  /* Table of contents */
+  --ifm-toc-border-color: #D4CFC4;
+  
+  /* Admonitions */
+  --ifm-alert-background-color: #f0fdfa;
+  --ifm-alert-border-color: #14b8a6;
+  --ifm-alert-color: #0f766e;
+  
+  /* Markdown content */
+  --ifm-heading-color: #2C2C2C;
+  --ifm-hr-border-color: #D4CFC4;
+  --ifm-blockquote-background-color: #E8E3D8;
+  --ifm-blockquote-color: #0f766e;
+  --ifm-blockquote-border-left-color: #14b8a6;
+  --ifm-table-border-color: #D4CFC4;
+  --ifm-table-head-background-color: #E8E3D8;
+  --ifm-table-stripe-background: rgba(20, 184, 166, 0.05);
+  
+  /* Markdown elements */
+  --markdown-paragraph-color: #2C2C2C;
+  --markdown-list-color: #2C2C2C;
+  --markdown-list-marker-color: #14b8a6;
+  --markdown-strong-color: #2C2C2C;
+  --markdown-em-color: #0d9488;
+  --markdown-image-border-color: #D4CFC4;
+  --markdown-image-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --markdown-kbd-background: #E8E3D8;
+  --markdown-kbd-border: #D4CFC4;
+  --markdown-kbd-color: #2C2C2C;
+
+  /* Inline code */
+  --markdown-inline-code-color: #14b8a6; /* Cyan text */
+  --markdown-inline-code-border: #14b8a6; /* Cyan border */
+  --markdown-inline-code-background: rgba(20, 184, 166, 0.1); /* Low opacity cyan background */
+}
+
+/* Dark Theme*/
+[data-theme='dark'] {
+  /* Primary colors */
+  --ifm-color-primary: #2dd4bf;
+  --ifm-color-primary-dark: #14b8a6;
+  --ifm-color-primary-darker: #0d9488;
+  --ifm-color-primary-darkest: #0f766e;
+  --ifm-color-primary-light: #5eead4;
+  --ifm-color-primary-lighter: #7dd3fc;
+  --ifm-color-primary-lightest: #99f6e4;
+  
+  /* Navbar */
+  --ifm-navbar-background-color: #1b1b1e;
+  --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  
+  /* Text colors */
+  --ifm-font-color-base: #ffffff;
+  --ifm-font-color-base-inverse: #0a0a0a;
+  --ifm-color-content: #ffffff;
+  --ifm-color-content-secondary: #a1a1aa;
+  
+  /* Code blocks */
+  --ifm-code-font-size: 95%;
+  --ifm-code-background: #1a1a1a;
+  --ifm-code-color: #5eead4;
+  --docusaurus-highlighted-code-line-bg: rgba(45, 212, 191, 0.2);
+  
+  /* Links */
+  --ifm-link-color: #5eead4;
+  --ifm-link-hover-color: #2dd4bf;
+  
+  /* UI elements */
+  --ifm-color-emphasis-100: #27272a;
+  --ifm-color-emphasis-200: #3f3f46;
+  --ifm-color-emphasis-300: #52525b;
+  --ifm-color-emphasis-500: #71717a;
+  --ifm-color-emphasis-600: #a1a1aa;
+  --ifm-color-emphasis-700: #d4d4d8;
+  
+  /* Borders */
+  --ifm-border-color: #3f3f46;
+  
+  /* Footer */
+  --ifm-footer-background-color: #1b1b1e;
+  --ifm-footer-color: #ffffff;
+  --ifm-footer-link-color: #5eead4;
+  --ifm-footer-link-hover-color: #2dd4bf;
+  
+  /* Table of contents */
+  --ifm-toc-border-color: #3f3f46;
+  
+  /* Admonitions */
+  --ifm-alert-background-color: rgba(14, 165, 233, 0.1); /* Blue-teal tint */
+  --ifm-alert-border-color: #2dd4bf;
+  --ifm-alert-color: #5eead4;
+  
+  /* Markdown content styling */
+  --ifm-heading-color: #ffffff;
+  --ifm-hr-border-color: #3f3f46;
+  
+  /* Blockquotes */
+  --ifm-blockquote-background-color: #48484fd1;
+  --ifm-blockquote-color: #ffffff;
+  --ifm-blockquote-border-left-color: #2dd4bf;
+  
+  /* Tables */
+  --ifm-table-border-color: #3f3f46;
+  --ifm-table-head-border-color: #0b0b0c;
+  --ifm-table-head-background-color: #3f3f46d7;
+  --ifm-table-stripe-background: rgba(45, 212, 191, 0.1);
+  
+  /* Markdown elements */
+  --markdown-paragraph-color: #ffffff;
+  --markdown-list-color: #ffffff;
+  --markdown-list-marker-color: #5eead4;
+  --markdown-strong-color: #ffffff;
+  --markdown-em-color: #5eead4;
+  --markdown-image-border-color: #3f3f46;
+  --markdown-image-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --markdown-kbd-background: #27272a;
+  --markdown-kbd-border: #3f3f46;
+  --markdown-kbd-color: #ffffff;
+
+  /* Inline code */
+  --markdown-inline-code-color: #5eead4; /* Cyan text */
+  --markdown-inline-code-border: #5eead4; /* Cyan border */
+  --markdown-inline-code-background: rgba(94, 234, 212, 0.1); /* Low opacity cyan background */
+}
+
+/* ========================================
+ * MARKDOWN CONTENT STYLING
+ * ========================================
+ * Customize markdown rendering colors and styles here.
+ * All selectors target elements within .markdown or .theme-doc-markdown
+ * ======================================== */
+
+/* Base markdown container */
+.markdown,
+.theme-doc-markdown {
+  color: var(--ifm-color-content);
+}
+
+/* Headings */
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6,
+.theme-doc-markdown h1,
+.theme-doc-markdown h2,
+.theme-doc-markdown h3,
+.theme-doc-markdown h4,
+.theme-doc-markdown h5,
+.theme-doc-markdown h6 {
+  color: var(--ifm-heading-color);
+  font-weight: 600;
+}
+
+/* Paragraphs */
+.markdown p,
+.theme-doc-markdown p {
+  color: var(--markdown-paragraph-color);
+  line-height: 1.7;
+}
+
+/* Links */
+.markdown a,
+.theme-doc-markdown a {
+  color: var(--ifm-link-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.markdown a:hover,
+.theme-doc-markdown a:hover {
+  color: var(--ifm-link-hover-color);
+  text-decoration: underline;
+}
+
+/* Inline code */
+.markdown code:not(pre code),
+.theme-doc-markdown code:not(pre code) {
+  background-color: var(--markdown-inline-code-background);
+  color: var(--markdown-inline-code-color);
+  border: 1px solid var(--markdown-inline-code-border);
+  border-radius: 4px;
+  padding: 0.2rem 0.4rem;
+  font-size: var(--ifm-code-font-size);
+  font-family: var(--ifm-font-family-monospace);
+}
+
+/* Code blocks */
+.markdown pre,
+.theme-doc-markdown pre {
+  background-color: var(--ifm-code-background);
+  border: 1px solid var(--ifm-border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.markdown pre code,
+.theme-doc-markdown pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--ifm-code-color);
+}
+
+/* Blockquotes */
+.markdown blockquote,
+.theme-doc-markdown blockquote {
+  color: var(--ifm-blockquote-color);
+  border-left: 4px solid var(--ifm-blockquote-border-left-color);
+  margin: 1.5rem 0;
+  font-style: italic;
+  background-color: var(--ifm-blockquote-background-color);
+  padding: 1rem 1rem 1rem 1.5rem;
+  border-radius: 4px;
+}
+
+/* Tables */
+.markdown table,
+.theme-doc-markdown table {
+  border-color: var(--ifm-table-border-color);
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.markdown table th,
+.theme-doc-markdown table th {
+  background-color: var(--ifm-table-head-background-color);
+  color: var(--ifm-font-color-base);
+  font-weight: 600;
+  padding: 0.75rem;
+  border: 1px solid var(--ifm-table-head-border-color, var(--ifm-table-border-color));
+}
+
+.markdown table td,
+.theme-doc-markdown table td {
+  padding: 0.75rem;
+  border: 1px solid var(--ifm-table-border-color);
+}
+
+.markdown table tr:nth-child(2n),
+.theme-doc-markdown table tr:nth-child(2n) {
+  background-color: var(--ifm-table-stripe-background);
+}
+
+/* Horizontal rules */
+.markdown hr,
+.theme-doc-markdown hr {
+  border-color: var(--ifm-hr-border-color);
+  border-width: 1px;
+  margin: 2rem 0;
+}
+
+/* Lists */
+.markdown ul,
+.markdown ol,
+.theme-doc-markdown ul,
+.theme-doc-markdown ol {
+  color: var(--markdown-list-color);
+  padding-left: 2rem;
+  margin: 1rem 0;
+}
+
+.markdown li,
+.theme-doc-markdown li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+.markdown ul li::marker,
+.theme-doc-markdown ul li::marker {
+  color: var(--markdown-list-marker-color);
+}
+
+.markdown ol li::marker,
+.theme-doc-markdown ol li::marker {
+  color: var(--markdown-list-marker-color);
+}
+
+/* Nested lists */
+.markdown ul ul,
+.markdown ol ol,
+.markdown ul ol,
+.markdown ol ul,
+.theme-doc-markdown ul ul,
+.theme-doc-markdown ol ol,
+.theme-doc-markdown ul ol,
+.theme-doc-markdown ol ul {
+  margin: 0.5rem 0;
+}
+
+/* Strong (bold) text */
+.markdown strong,
+.theme-doc-markdown strong {
+  color: var(--markdown-strong-color);
+  font-weight: 700;
+}
+
+/* Emphasis (italic) text */
+.markdown em,
+.theme-doc-markdown em {
+  color: var(--markdown-em-color);
+  font-style: italic;
+}
+
+/* Images */
+.markdown img,
+.theme-doc-markdown img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--markdown-image-border-color);
+  border-radius: 6px;
+  box-shadow: var(--markdown-image-shadow);
+  margin: 1.5rem 0;
+}
+
+/* Keyboard keys (kbd) */
+.markdown kbd,
+.theme-doc-markdown kbd {
+  background-color: var(--markdown-kbd-background);
+  border: 1px solid var(--markdown-kbd-border);
+  border-radius: 4px;
+  color: var(--markdown-kbd-color);
+  padding: 0.2rem 0.4rem;
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9em;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Definition lists */
+.markdown dl,
+.theme-doc-markdown dl {
+  margin: 1rem 0;
+}
+
+.markdown dt,
+.theme-doc-markdown dt {
+  font-weight: 600;
+  color: var(--ifm-heading-color);
+  margin-top: 1rem;
+}
+
+.markdown dd,
+.theme-doc-markdown dd {
+  margin-left: 2rem;
+  color: var(--markdown-paragraph-color);
+}
+
+/* ------------------------------------ TOC Styling -------------------------------------- */
+
+/* Remove vertical border from TOC */
+.table-of-contents,
+.theme-doc-toc-mobile,
+[class*="table-of-contents"] {
+  border-left: none !important;
+}
+
+/* -------------------------------- Docs Nav Bar Styling -------------------------------- */
+
+/* Navbar styling */
+
+/* Navbar text colors to match landing header */
+:root:not([data-theme='dark']) .navbar__item,
+:root:not([data-theme='dark']) .navbar__link {
+  color: #2C2C2C;
+}
+
+[data-theme='dark'] .navbar__item,
+[data-theme='dark'] .navbar__link {
+  color: #ffffff;
+}
+
+/* Footer styling */
+
+/* GitHub icon styling */
+.header-github-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: none !important;
+  border: none;
+  text-decoration: none;
+}
+
+.header-github-link:hover {
+  opacity: 0.6;
+}
+
+.header-github-link:before {
+  display: none;
+}
+
+.header-github-link svg {
+  fill: var(--ifm-font-color-base);
+  width: 20px;
+  height: 20px;
+  transition: fill 0.2s ease;
+}
+
+/* Navbar brand (logo) styling */
+.navbar__brand {
+  padding-left: 0.5rem !important;
+  margin-right: 0.5rem !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.navbar__logo {
+  padding-left: 2rem !important;
+}
+
+/* Prevent hover effects on navbar logo */
+.navbar__brand * {
+  pointer-events: none;
+}
+
+/* -------------------------------- Global HTML/Body Background -------------------------------- */
+:root {
+  background-color: #F5F1E8;
+}
+
+[data-theme='dark'] {
+  background-color: #121212;
+}
+
+:root:not([data-theme='dark']) .navbar-sidebar {
+  background-color: #FAF8F3;
+}
+
+:root:not([data-theme='dark']) .navbar-sidebar .menu__link {
+  color: #2C2C2C;
+}
+
+:root:not([data-theme='dark']) .navbar-sidebar .menu__link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #14b8a6;
+}
+
+:root:not([data-theme='dark']) .navbar-sidebar .menu__link--active {
+  color: #14b8a6;
+  background-color: rgba(20, 184, 166, 0.1);
+}
