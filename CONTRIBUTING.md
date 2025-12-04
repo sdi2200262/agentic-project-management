@@ -27,7 +27,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 
 ### Documentation Contributions
 
-APM v0.4 includes comprehensive documentation, and contributions to improve it are always welcome. Please note that documentation changes are treated with extra care to ensure clarity, accuracy, and consistency across the framework.
+APM includes comprehensive documentation, and contributions to improve it are always welcome. Please note that documentation changes are treated with extra care to ensure clarity, accuracy, and consistency across the framework.
 
 ### High-Priority Areas Seeking Contributions:
 
