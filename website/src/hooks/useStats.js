@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getCachedData, setCachedData } from '../utils/cache';
 import { fetchGitHubStats, fetchNPMStats } from '../utils/api';
-
-const CACHE_KEY = 'apm-github-npm-stats';
-const DEFAULT_TTL = 60 * 60 * 1000; // 1 hour in milliseconds
+import { CACHE_CONFIG } from '../constants/cache';
 
 /**
  * Custom hook to fetch and cache GitHub and NPM statistics
@@ -22,7 +20,7 @@ export function useStats() {
         setError(null);
 
         // Check cache first
-        const cached = getCachedData(CACHE_KEY, DEFAULT_TTL);
+        const cached = getCachedData(CACHE_CONFIG.STATS_KEY, CACHE_CONFIG.DEFAULT_TTL);
         if (cached) {
           setGithubStars(cached.githubStars);
           setNpmDownloads(cached.npmDownloads);
@@ -44,12 +42,12 @@ export function useStats() {
 
         // Cache the results
         setCachedData(
-          CACHE_KEY,
+          CACHE_CONFIG.STATS_KEY,
           {
             githubStars: stars,
             npmDownloads: downloads,
           },
-          DEFAULT_TTL
+          CACHE_CONFIG.DEFAULT_TTL
         );
       } catch (err) {
         console.error('Error loading stats:', err);
