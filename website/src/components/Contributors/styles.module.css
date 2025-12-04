@@ -167,25 +167,41 @@
     padding: 1rem;
     aspect-ratio: 1;
     gap: 0.75rem;
+    min-height: 0;
   }
 
   .avatar {
     width: 56px;
     height: 56px;
+    flex-shrink: 0;
   }
 
   .contributorInfo {
     align-items: center;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    flex: 1;
+    justify-content: center;
   }
 
   .username {
     font-size: 0.875rem;
     text-align: center;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    display: block;
   }
 
   .contributions {
-    display: none;
+    display: block;
+    font-size: 0.75rem;
+    text-align: center;
+    margin-top: 0.25rem;
   }
 }
 
