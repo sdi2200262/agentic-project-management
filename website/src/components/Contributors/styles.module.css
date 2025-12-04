@@ -49,11 +49,14 @@
   transition: all 0.2s ease;
   cursor: pointer;
   gap: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
 }
 
 :global([data-theme='light']) .contributorCard {
   background-color: rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .contributorCard:hover {
@@ -229,15 +232,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 0.75rem;
     aspect-ratio: 1;
-    gap: 0.75rem;
+    gap: 0.5rem;
     min-height: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
 
   .avatar {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     flex-shrink: 0;
   }
 
@@ -250,23 +257,54 @@
     min-width: 0;
     flex: 1;
     justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   .username {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     text-align: center;
     white-space: normal;
     word-wrap: break-word;
     overflow-wrap: break-word;
     width: 100%;
-    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+    max-height: 2.4em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-bottom: 0.125rem;
   }
 
   .contributions {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     text-align: center;
-    margin-top: 0.25rem;
+    margin-top: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    line-height: 1.2;
+  }
+}
+
+/* Very small screens - show only avatars */
+@media (max-width: 480px) {
+  .contributorCard {
+    padding: 0.5rem;
+    gap: 0;
+  }
+
+  .avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  .contributorInfo {
+    display: none;
   }
 }
 
