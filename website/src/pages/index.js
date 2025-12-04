@@ -14,15 +14,6 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   const baseUrl = siteConfig.baseUrl;
 
-  // Set dark background on html/body for landing page to prevent white overscroll
-  useEffect(() => {
-    const originalBgColor = document.documentElement.style.backgroundColor;
-    document.documentElement.style.backgroundColor = '#121212';
-    
-    return () => {
-      document.documentElement.style.backgroundColor = originalBgColor;
-    };
-  }, []);
 
   const handleGoToDocs = () => {
     // Construct the correct docs URL with baseUrl

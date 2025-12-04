@@ -24,12 +24,19 @@
   content: '';
   position: absolute;
   inset: 0;
+  /* Dark theme */
   background: rgba(70, 70, 70, 0.4);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1.5px solid rgba(255, 255, 255, 0.25);
   border-radius: 16px;
   z-index: -1;
+}
+
+/* Light theme header */
+:global([data-theme='light']) .headerContent::before {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Logo Section */
@@ -73,6 +80,7 @@
   position: absolute;
   height: calc(100% - 1rem);
   top: 0.5rem;
+  /* Dark theme */
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -84,16 +92,23 @@
   z-index: 0;
 }
 
+/* Light theme nav indicator */
+:global([data-theme='light']) .navIndicator {
+  background: rgba(0, 0, 0, 0.08);
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+}
+
 .navButton {
   font-family: 'Archivo Black', sans-serif;
   font-size: 0.95rem;
   padding: 0.6rem 1.5rem;
   background: transparent;
+  /* Dark theme */
   color: #ffffff;
   border: none;
   border-radius: 50px;
   cursor: pointer;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, color 0.2s ease;
   white-space: nowrap;
   position: relative;
   z-index: 2;
@@ -103,8 +118,29 @@
   -webkit-backdrop-filter: none;
 }
 
+/* Light theme nav button */
+:global([data-theme='light']) .navButton {
+  color: #2C2C2C;
+}
+
 .navButton:active {
   transform: scale(0.98);
+}
+
+/* Right Actions Container (Desktop) */
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: absolute;
+  right: 2rem;
+}
+
+/* Color Mode Toggle */
+.colorModeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* GitHub Link */
@@ -115,11 +151,14 @@
   padding: 0;
   background: none;
   border: none;
+  /* Dark theme */
   color: #ffffff;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, color 0.2s ease;
   text-decoration: none;
-  position: absolute;
-  right: 6rem;
+}
+
+:global([data-theme='light']) .githubLink {
+  color: #2C2C2C;
 }
 
 .githubLink:hover {
@@ -167,6 +206,7 @@
   display: none;
   background: transparent;
   border: none;
+  /* Dark theme */
   color: #ffffff;
   cursor: pointer;
   padding: 0.5rem;
@@ -175,6 +215,11 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  transition: color 0.2s ease;
+}
+
+:global([data-theme='light']) .mobileMenuToggle {
+  color: #2C2C2C;
 }
 
 .toggleArrow {
@@ -185,13 +230,42 @@
   transform: rotate(180deg);
 }
 
+/* Right Actions Container (Mobile) */
+.rightActionsMobile {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  position: absolute;
+  right: 0.75rem;
+}
+
+/* Color Mode Toggle (Mobile) */
+.colorModeToggleMobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Mobile GitHub Link */
 .githubLinkMobile {
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Dark theme */
   color: #ffffff;
   padding: 0;
   background: none;
   border: none;
+  text-decoration: none;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+:global([data-theme='light']) .githubLinkMobile {
+  color: #2C2C2C;
+}
+
+.githubLinkMobile:hover {
+  opacity: 0.8;
 }
 
 /* Mobile Navigation */
@@ -216,17 +290,42 @@
   font-family: 'Archivo Black', sans-serif;
   font-size: 0.9rem;
   padding: 0.75rem 1rem;
+  /* Dark theme */
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+:global([data-theme='light']) .mobileNavButton {
+  background: rgba(0, 0, 0, 0.05);
+  color: #2C2C2C;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .mobileNavButton:active {
   background: rgba(255, 255, 255, 0.2);
+}
+
+:global([data-theme='light']) .mobileNavButton:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.mobileThemeToggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  /* Dark theme */
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+:global([data-theme='light']) .mobileThemeToggle {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* Mobile Header Styles */
@@ -256,12 +355,18 @@
   }
 
   .headerExpanded .mobileNav {
+    /* Dark theme */
     background: rgba(70, 70, 70, 0.4);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1.5px solid rgba(255, 255, 255, 0.25);
     border-top: none;
     border-radius: 0 0 12px 12px;
+  }
+
+  :global([data-theme='light']) .headerExpanded .mobileNav {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1.5px solid rgba(0, 0, 0, 0.1);
   }
 
   .logoSection {
@@ -275,14 +380,12 @@
     display: none;
   }
 
-  .githubLink {
+  .rightActions {
     display: none;
   }
 
-  .githubLinkMobile {
+  .rightActionsMobile {
     display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .mobileMenuToggle {

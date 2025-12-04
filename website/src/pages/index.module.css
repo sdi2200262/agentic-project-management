@@ -6,8 +6,21 @@
   max-width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;
-  background-color: #121212 !important;
-  color: #ffffff !important;
+  /* Dark theme defaults */
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Light theme */
+:global([data-theme='light']) .landingPage {
+  background-color: #F5F1E8;
+  color: #2C2C2C;
+}
+
+/* Dark theme */
+:global([data-theme='dark']) .landingPage {
+  background-color: #121212;
+  color: #ffffff;
 }
 
 .contentWrapper {
@@ -26,6 +39,7 @@
   left: 0;
   right: 0;
   bottom: 0;
+  /* Dark theme grid */
   background-image: 
     linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
@@ -43,11 +57,13 @@
   pointer-events: none;
 }
 
-/* Force light mode styling regardless of theme */
-:global([data-theme='dark']) .landingPage {
-  background-color: #121212 !important;
-  color: #ffffff !important;
+/* Light theme grid */
+:global([data-theme='light']) .contentWrapper::before {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
 }
+
 
 .section {
   min-height: 100vh;
