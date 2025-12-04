@@ -7,15 +7,12 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://sdi2200262.github.io',
+  url: 'https://agentic-project-management.dev',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/agentic-project-management/',
+  // For custom domain, this should be '/'
+  baseUrl: '/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'sdi2200262', // Usually your GitHub org/user name.
-  projectName: 'agentic-project-management', // Usually your repo name.
+  // Custom domain deployment - no GitHub Pages specific config needed
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
