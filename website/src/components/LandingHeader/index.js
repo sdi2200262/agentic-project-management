@@ -148,14 +148,8 @@ export default function LandingHeader() {
           />
         </button>
 
-        {/* Theme Toggle and GitHub Link (visible on mobile) */}
+        {/* GitHub Link (visible on mobile in retracted header) */}
         <div className={styles.rightActionsMobile}>
-          <div className={styles.colorModeToggleMobile}>
-            <ColorModeToggle
-              value={colorMode}
-              onChange={setColorMode}
-            />
-          </div>
           <a
             href={GITHUB_URL}
             target="_blank"
@@ -216,14 +210,8 @@ export default function LandingHeader() {
           </nav>
         </div>
 
-        {/* Theme Toggle and GitHub Link (desktop) */}
+        {/* GitHub Link and Theme Toggle (desktop) */}
         <div className={styles.rightActions}>
-          <div className={styles.colorModeToggle}>
-            <ColorModeToggle
-              value={colorMode}
-              onChange={setColorMode}
-            />
-          </div>
           <a
             href={GITHUB_URL}
             target="_blank"
@@ -233,6 +221,12 @@ export default function LandingHeader() {
           >
             <GitHubIcon size={32} />
           </a>
+          <div className={styles.colorModeToggle}>
+            <ColorModeToggle
+              value={colorMode}
+              onChange={setColorMode}
+            />
+          </div>
         </div>
       </div>
 

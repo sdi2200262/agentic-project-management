@@ -58,6 +58,7 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin-top: 1rem;
 }
 
 :global([data-theme='light']) .cliReplica {
@@ -215,25 +216,44 @@
 }
 
 /* ========================================
+ * INTEGRATION BOX (wraps heading, paragraph, and icons)
+ * ======================================== */
+.integrationBox {
+  margin-top: 1.25rem;
+  padding: 1.5rem;
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:global([data-theme='light']) .integrationBox {
+  background-color: #E8E3D8;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.integrationBox .subHeading {
+  padding-top: 0;
+}
+
+.integrationBox .paragraph {
+  margin-bottom: 0;
+}
+
+/* ========================================
  * ASSISTANT ICONS GRID
  * ======================================== */
 .iconsSection {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
-  margin-top: 2rem;
-  /* Dark theme - match terminal emulator background */
-  background-color: #1a1a1a;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 1.25rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-:global([data-theme='light']) .iconsSection {
-  background-color: #E8E3D8;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 1.5rem;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .iconItem {
@@ -462,6 +482,16 @@
   .iconImage {
     width: 48px;
     height: 48px;
+  }
+
+  .integrationBox {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .integrationBox .subHeading,
+  .integrationBox .paragraph {
+    text-align: center;
   }
 }
 
