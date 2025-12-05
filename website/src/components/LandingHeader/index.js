@@ -148,14 +148,8 @@ export default function LandingHeader() {
           />
         </button>
 
-        {/* Theme Toggle and GitHub Link (visible on mobile) */}
+        {/* GitHub Link (visible on mobile in retracted header) */}
         <div className={styles.rightActionsMobile}>
-          <div className={styles.colorModeToggleMobile}>
-            <ColorModeToggle
-              value={colorMode}
-              onChange={setColorMode}
-            />
-          </div>
           <a
             href={GITHUB_URL}
             target="_blank"

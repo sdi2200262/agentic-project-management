@@ -31,16 +31,18 @@ export default function About() {
             Building on the emerging practice of spec-driven workflows, APM establishes <span className={styles.highlight}>Agentic Spec-Driven Development</span>, adding efficient workload distribution and context management to ensure continuity for comlpex projects and long-running development sessions.
           </p>
           
-          <h3 className={styles.subHeading} style={{ paddingTop: '1.25rem' }}>
-            <span className={styles.highlight}>Integrates Seamlessly</span> with your favourite AI IDEs.
-          </h3>
-          
-          <p className={styles.paragraph}>
-            APM integrates with your favorite <span className={styles.highlight}>AI assistants</span> via the <span className={styles.highlight}>agentic-pm</span> CLI.<br />
-            Run <span className={styles.highlight}>apm init</span> to set up optimized prompts and guides for your platform.
-          </p>
-          
-          <AssistantIcons onAssistantHover={hoverHandlers.onMouseEnter} />
+          <div className={styles.integrationBox}>
+            <h3 className={styles.subHeading}>
+              <span className={styles.highlight}>Integrates Seamlessly</span> with your favourite AI IDEs.
+            </h3>
+            
+            <p className={styles.paragraph}>
+              APM integrates with your favorite <span className={styles.highlight}>AI assistants</span> via the <span className={styles.highlight}>agentic-pm</span> CLI.<br />
+              Run <span className={styles.highlight}>apm init</span> to set up optimized prompts and guides for your platform.
+            </p>
+            
+            <AssistantIcons onAssistantHover={hoverHandlers.onMouseEnter} />
+          </div>
         </div>
 
         {/* Right Column: CLI Replica (Desktop/Tablet only) */}
