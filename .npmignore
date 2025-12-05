@@ -1,6 +1,7 @@
 # Build and test (exclude from NPM package)
 scripts/
 *.test.js
+dist/
 
 # Development
 .git

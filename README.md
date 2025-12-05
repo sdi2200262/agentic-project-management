@@ -1,6 +1,6 @@
 # Agentic Project Management (APM)
 
-[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.2-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.2) [![Website](https://img.shields.io/badge/website-agentic--project--management.dev-blue)](https://agentic-project-management.dev)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.3-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.3) [![Website](https://img.shields.io/badge/website-agentic--project--management.dev-blue)](https://agentic-project-management.dev)
 
 *Manage complex projects with a team of AI assistants, smoothly and efficiently.*
 
