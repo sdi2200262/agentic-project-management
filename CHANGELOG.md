@@ -7,6 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.5.3] - 2025-12-05
+
+### Fixed
+
+* **NPM Package:** Fixed `.npmignore` to exclude `dist/` directory from published package. Previous releases (v0.5.2 and earlier) incorrectly included build artifacts (zip files) in the npm package.
+
+---
+
 ## [0.5.2] - 2025-11-26
 
 ### Added
