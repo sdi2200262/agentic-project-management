@@ -1,7 +1,8 @@
 # Build and test (exclude from NPM package)
 scripts/
 *.test.js
-dist/ # Exclude build artifacts from npm package
+dist
+dist/**
 
 # Development
 .git
