@@ -1,6 +1,4 @@
-import React from 'react';
-import {useHistory} from '@docusaurus/router';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useEffect } from 'react';
 import Footer from '@theme/Footer';
 import LandingHeader from '@site/src/components/LandingHeader';
 import Hero from '@site/src/components/Hero';
@@ -14,7 +12,15 @@ import styles from './index.module.css';
  * @returns {JSX.Element} Home page component
  */
 export default function Home() {
-  // Note: history and baseUrl are available if needed for future navigation features
+  // Hide native scrollbar on landing page only
+  useEffect(() => {
+    // Add class to html element for CSS targeting
+    document.documentElement.classList.add('landing-page-active');
+    
+    return () => {
+      document.documentElement.classList.remove('landing-page-active');
+    };
+  }, []);
 
   return (
     <div className={styles.landingPage}>

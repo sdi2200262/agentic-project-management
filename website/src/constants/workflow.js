@@ -3,17 +3,18 @@
  */
 
 import React from 'react';
+import styles from '../components/Workflow/styles.module.css';
 
 /**
  * Setup phase description content
  */
 export const SETUP_PHASE_DESCRIPTION = (
   <>
-    <p className="phaseDescription">
-      In the first phase, a <span className="highlight">Setup Agent</span> conducts comprehensive planning after collaborative project discovery. This phase ensures a solid architectural foundation before any code is written.
+    <p className={styles.phaseDescription}>
+      In the first phase, a <span className={styles.highlight}>Setup Agent</span> conducts comprehensive planning after collaborative project discovery. This phase ensures a solid architectural foundation before any code is written.
     </p>
-    <p className="phaseDescription">
-      It systematically breaks down your project into phases, tasks, and subtasks, creating a detailed <span className="highlight">Implementation Plan</span>. Tasks are grouped by domain (e.g., Frontend, Backend) and assigned to specialized <span className="highlight">Implementation Agents</span>.
+    <p className={styles.phaseDescription}>
+      It systematically breaks down your project into phases, tasks, and subtasks, creating a detailed <span className={styles.highlight}>Implementation Plan</span>. Tasks are grouped by domain (e.g., Frontend, Backend) and assigned to specialized <span className={styles.highlight}>Implementation Agents</span>.
     </p>
   </>
 );
@@ -23,11 +24,11 @@ export const SETUP_PHASE_DESCRIPTION = (
  */
 export const TASK_LOOP_PHASE_DESCRIPTION = (
   <>
-    <p className="phaseDescription">
-      In the second phase, a <span className="highlight">Manager Agent</span> coordinates the project by assigning tasks and reviewing the workers' logs to determine next actions.
+    <p className={styles.phaseDescription}>
+      In the second phase, a <span className={styles.highlight}>Manager Agent</span> coordinates the project by assigning tasks and reviewing the workers' logs to determine next actions.
     </p>
-    <p className="phaseDescription">
-      <span className="highlight">Implementation Agents</span> receive their assigned tasks, carry out the work, and log progress to <span className="highlight">Memory</span>. This cycle repeats until project completion, with structured handovers ensuring continuity as context limits are reached.
+    <p className={styles.phaseDescription}>
+      <span className={styles.highlight}>Implementation Agents</span> receive their assigned tasks, carry out the work, and log progress to <span className={styles.highlight}>Memory</span>. This cycle repeats until project completion, with structured handovers ensuring continuity as context limits are reached.
     </p>
   </>
 );
