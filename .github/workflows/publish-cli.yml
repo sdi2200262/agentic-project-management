@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   publish_cli_on_merge:
-    # Run only if PR was merged AND had a release label AND contained src changes
+    # Run only if PR was merged AND had a release label AND contained release-relevant changes (src/, .npmignore, or package.json)
     # OR if it was a manual trigger
     # Note: Label checking is done in the step, not here, to avoid expression syntax issues
     if: |
@@ -39,10 +39,12 @@ jobs:
         with:
           ref: ${{ github.ref_name || github.base_ref || 'main' }} # Use the current branch for manual triggers, target branch for PRs
           fetch-depth: 0 # Fetch full history for versioning/tagging
-          token: ${{ secrets.GITHUB_TOKEN }} # Use default GitHub token
+          # Note: GH_PAT secret is optional. If not set, checkout uses GITHUB_TOKEN by default.
+          # Set GH_PAT secret to bypass branch protection rules when pushing.
+          token: ${{ secrets.GH_PAT }}
 
       # --- Logic for PR Trigger ---
-      - name: Check for src changes in PR (PR Trigger Only)
+      - name: Check for release-relevant changes in PR (PR Trigger Only)
         id: check_pr_files
         if: github.event_name == 'pull_request'
         run: |
@@ -51,12 +53,13 @@ jobs:
             "${{ github.event.pull_request.url }}/files" | jq -r '.[].filename')
 
           echo "Files changed in PR: $PR_FILES"
-          SRC_CHANGED=$(echo "$PR_FILES" | grep -q '^src/' && echo "true" || echo "false")
-          echo "src_changed=$SRC_CHANGED" >> $GITHUB_OUTPUT
+          # Check for changes in src/, .npmignore, or package.json (all trigger releases)
+          RELEASE_RELEVANT=$(echo "$PR_FILES" | grep -qE '^(src/|\.npmignore|package\.json)' && echo "true" || echo "false")
+          echo "release_relevant=$RELEASE_RELEVANT" >> $GITHUB_OUTPUT
 
       - name: Determine Version Bump Type from Label (PR Trigger Only)
         id: get_label
-        if: github.event_name == 'pull_request' && steps.check_pr_files.outputs.src_changed == 'true'
+        if: github.event_name == 'pull_request' && steps.check_pr_files.outputs.release_relevant == 'true'
         run: |
           # Get PR labels from GitHub API
           PR_LABELS=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
@@ -91,7 +94,7 @@ jobs:
 
       # --- Setup Node & Git ---
       - name: Setup Node.js
-        # Run if manual trigger OR (PR trigger AND src changed AND label found)
+        # Run if manual trigger OR (PR trigger AND release-relevant changes AND label found)
         if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
         uses: actions/setup-node@v4
         with:
@@ -100,9 +103,17 @@ jobs:
 
       - name: Configure Git user
         if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
+        env:
+          # Note: GH_PAT secret is optional. If not set, git push will use GITHUB_TOKEN (may fail with branch protection)
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Configure git to use PAT for pushing (bypasses branch protection)
+          # If GH_PAT is not set, git will use the token from checkout action
+          if [ -n "$GH_PAT" ]; then
+            git remote set-url origin https://${GH_PAT}@github.com/${{ github.repository }}.git
+          fi
 
       - name: Install dependencies
         if: github.event_name == 'workflow_dispatch' || steps.get_label.outputs.version_type != ''
