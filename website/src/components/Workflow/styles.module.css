@@ -244,10 +244,12 @@
     flex-direction: column;
   }
 
+  .phaseTextColumn,
   .phaseTextColumnRight {
     text-align: center;
   }
 
+  .phaseTextColumn .phaseHeader,
   .phaseTextColumnRight .phaseHeader {
     justify-content: center;
   }
