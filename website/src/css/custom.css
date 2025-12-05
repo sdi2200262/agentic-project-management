@@ -507,3 +507,22 @@
   color: #14b8a6;
   background-color: rgba(20, 184, 166, 0.1);
 }
+
+/* Hide scrollbar on landing page */
+html.landing-page-active,
+html.landing-page-active body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Force scroll container behavior so WebKit can target the scrollbar */
+  overflow: auto;
+}
+
+html.landing-page-active::-webkit-scrollbar,
+html.landing-page-active body::-webkit-scrollbar,
+html.landing-page-active *::-webkit-scrollbar {
+  display: none;
+  -webkit-appearance: none;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}

@@ -24,11 +24,13 @@ export default function About() {
             Failing to plan, <span className={styles.highlight}>is planning to fail.</span>
           </h3>
           
+          <br />
+          
           <p className={styles.paragraph}>
             Agentic Project Management (APM) is an open-source framework that structures AI-driven software development. It turns a single, overloaded AI chat session into a coordinated <span className={styles.highlight}>team of specialized AI Agents</span>.<br />
           </p>
           <p className={styles.paragraph}>
-            Building on the emerging practice of spec-driven workflows, APM establishes <span className={styles.highlight}>Agentic Spec-Driven Development</span>, adding efficient workload distribution and context management to ensure continuity for comlpex projects and long-running development sessions.
+            Building on the emerging practice of spec-driven workflows, APM establishes <a href="/docs/introduction"><span className={styles.highlight}>Agentic Spec-Driven Development</span></a>, adding efficient workload distribution and context management to ensure continuity for comlpex projects and long-running development sessions.
           </p>
           
           <div className={styles.integrationBox}>
@@ -36,9 +38,10 @@ export default function About() {
               <span className={styles.highlight}>Integrates Seamlessly</span> with your favourite AI IDEs.
             </h3>
             
+            <br />
+
             <p className={styles.paragraph}>
-              APM integrates with your favorite <span className={styles.highlight}>AI assistants</span> via the <span className={styles.highlight}>agentic-pm</span> CLI.<br />
-              Run <span className={styles.highlight}>apm init</span> to set up optimized prompts and guides for your platform.
+              APM uses the <a href="https://www.npmjs.com/package/agentic-pm" target="_blank" rel="noopener noreferrer"><span className={styles.highlight}>agentic-pm</span></a> CLI to integrate with your favorite AI assistants. Run <span className={styles.highlight}>apm init</span> to set up optimized prompts and guides for your platform.
             </p>
             
             <AssistantIcons onAssistantHover={hoverHandlers.onMouseEnter} />
