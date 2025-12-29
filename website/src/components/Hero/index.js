@@ -46,7 +46,7 @@ export default function Hero() {
               <div className={styles.statItem}>
                 <span className={styles.heroVersion}>NPM:</span>
                 <span className={styles.statValue}>
-                  {formatNumber(npmDownloads)} this week
+                  {formatNumber(npmDownloads)}
                 </span>
               </div>
             )}
