@@ -84,7 +84,7 @@
 .contributorInfo {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   flex: 1;
   min-width: 0;
 }
@@ -100,6 +100,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+  text-align: center;
 }
 
 :global([data-theme='light']) .username {

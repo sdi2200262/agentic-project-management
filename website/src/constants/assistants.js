@@ -32,7 +32,7 @@ export const ASSISTANT_DATA = {
     description: 'Optimized for Windsurf'
   },
   'Kilo Code': {
-    url: 'https://kilocode.com',
+    url: 'https://kilo.ai/',
     description: 'Optimized for Kilo Code'
   },
   'Auggie CLI': {

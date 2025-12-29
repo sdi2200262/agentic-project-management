@@ -37,8 +37,9 @@ export async function fetchGitHubStats() {
  */
 export async function fetchNPMStats() {
   try {
+    const today = new Date().toISOString().split('T')[0];
     const response = await fetch(
-      `https://api.npmjs.org/downloads/point/last-week/${NPM_PACKAGE}`
+      `https://api.npmjs.org/downloads/point/2024-01-01:${today}/${NPM_PACKAGE}`
     );
     
     if (!response.ok) {
