@@ -19,11 +19,11 @@
   
   /* Background colors - Warm beige */
   --ifm-background-color: #F5F1E8;
-  --ifm-background-surface-color: #E8E3D8;
+  --ifm-background-surface-color: #E0DBD2;
   
   /* Navbar */
-  --ifm-navbar-background-color: #FAF8F3;
-  --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  --ifm-navbar-background-color: #E0DBD2;
+  --ifm-navbar-shadow: none;
   
   /* Text colors */
   --ifm-font-color-base: #2C2C2C;
@@ -33,7 +33,7 @@
   
   /* Code blocks */
   --ifm-code-font-size: 95%;
-  --ifm-code-background: #E8E3D8;
+  --ifm-code-background: #E0DBD2;
   --ifm-code-color: #e11d48;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
   
@@ -42,7 +42,7 @@
   --ifm-link-hover-color: #0d9488;
   
   /* UI elements */
-  --ifm-color-emphasis-100: #E8E3D8;
+  --ifm-color-emphasis-100: #E0DBD2;
   --ifm-color-emphasis-200: #D4CFC4;
   --ifm-color-emphasis-300: #C0BBB0;
   --ifm-color-emphasis-500: #71717a;
@@ -53,7 +53,7 @@
   --ifm-border-color: #D4CFC4;
   
   /* Footer */
-  --ifm-footer-background-color: #FAF8F3;
+  --ifm-footer-background-color: #E0DBD2;
   --ifm-footer-color: #2C2C2C;
   --ifm-footer-link-color: #14b8a6;
   --ifm-footer-link-hover-color: #0d9488;
@@ -69,11 +69,11 @@
   /* Markdown content */
   --ifm-heading-color: #2C2C2C;
   --ifm-hr-border-color: #D4CFC4;
-  --ifm-blockquote-background-color: #E8E3D8;
+  --ifm-blockquote-background-color: #E0DBD2;
   --ifm-blockquote-color: #0f766e;
   --ifm-blockquote-border-left-color: #14b8a6;
   --ifm-table-border-color: #D4CFC4;
-  --ifm-table-head-background-color: #E8E3D8;
+  --ifm-table-head-background-color: #E0DBD2;
   --ifm-table-stripe-background: rgba(20, 184, 166, 0.05);
   
   /* Markdown elements */
@@ -84,7 +84,7 @@
   --markdown-em-color: #0d9488;
   --markdown-image-border-color: #D4CFC4;
   --markdown-image-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  --markdown-kbd-background: #E8E3D8;
+  --markdown-kbd-background: #E0DBD2;
   --markdown-kbd-border: #D4CFC4;
   --markdown-kbd-color: #2C2C2C;
 
@@ -106,8 +106,8 @@
   --ifm-color-primary-lightest: #99f6e4;
   
   /* Navbar */
-  --ifm-navbar-background-color: #1b1b1e;
-  --ifm-navbar-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --ifm-navbar-background-color: #1a1a1a;
+  --ifm-navbar-shadow: none;
   
   /* Text colors */
   --ifm-font-color-base: #ffffff;
@@ -137,7 +137,7 @@
   --ifm-border-color: #3f3f46;
   
   /* Footer */
-  --ifm-footer-background-color: #1b1b1e;
+  --ifm-footer-background-color: #1a1a1a;
   --ifm-footer-color: #ffffff;
   --ifm-footer-link-color: #5eead4;
   --ifm-footer-link-hover-color: #2dd4bf;
@@ -525,4 +525,22 @@ html.landing-page-active *::-webkit-scrollbar {
   width: 0 !important;
   height: 0 !important;
   background: transparent !important;
+}
+
+/* Navbar Border */
+.navbar {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .navbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Footer Border */
+.footer-custom {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] .footer-custom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
