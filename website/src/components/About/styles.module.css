@@ -62,7 +62,7 @@
 }
 
 :global([data-theme='light']) .cliReplica {
-  background-color: #E8E3D8;
+  background-color: #E0DBD2;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -228,7 +228,7 @@
 }
 
 :global([data-theme='light']) .integrationBox {
-  background-color: #E8E3D8;
+  background-color: #E0DBD2;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -356,7 +356,7 @@
 
 :global([data-theme='light']) .assistantsListMobile {
   /* Light theme - solid background to prevent grid showing through */
-  background-color: #E8E3D8;
+  background-color: #E0DBD2;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
