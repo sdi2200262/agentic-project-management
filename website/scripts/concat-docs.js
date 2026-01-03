@@ -29,7 +29,7 @@ const DOC_ORDER = [
 // Paths
 const DOCS_DIR = path.resolve(__dirname, '../../docs');
 const STATIC_DIR = path.resolve(__dirname, '../static');
-const OUTPUT_FILE = path.join(STATIC_DIR, 'all_docs.md');
+const OUTPUT_FILE = path.join(STATIC_DIR, 'apm_full_docs.md');
 
 function main() {
   console.log('📚 Concatenating documentation files...');
