@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import clsx from 'clsx';
 import Content from '@theme-original/DocSidebar/Desktop/Content';
 import styles from './styles.module.css';
 
 export default function ContentWrapper(props) {
+  const { siteConfig } = useDocusaurusContext();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [copying, setCopying] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [closeTimeout, setCloseTimeout] = useState(null);
+
+  // Helper to get base URL without trailing slash
+  const getBaseUrl = () => {
+    const baseUrl = siteConfig.baseUrl || '/';
+    return baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  };
 
   // Function to copy all docs
   const copyAllDocs = async () => {
     try {
       setCopying(true);
-      // Use the correct path with baseUrl
-      const baseUrl = '/agentic-project-management';
-      const response = await fetch(`${baseUrl}/all_docs.md`);
+      const baseUrl = getBaseUrl();
+      const response = await fetch(`${baseUrl}/apm_full_docs.md`);
 
       if (!response.ok) {
         throw new Error(`Failed to fetch all docs: ${response.status}`);
@@ -27,26 +35,29 @@ export default function ContentWrapper(props) {
       }
 
       await navigator.clipboard.writeText(content);
+      
+      setCopying(false);
+      setCopied(true);
 
-      // Close dropdown after a short delay
+      // Close dropdown after a delay to show feedback
       const timeout = setTimeout(() => {
         setDropdownOpen(false);
-      }, 1000);
+        setCopied(false);
+      }, 2000);
       setCloseTimeout(timeout);
     } catch (error) {
       console.error('Failed to copy all docs:', error);
       alert('Failed to copy all docs. Please try downloading instead.');
-    } finally {
       setCopying(false);
     }
   };
 
   // Function to download all docs
   const downloadAllDocs = () => {
-    const baseUrl = '/agentic-project-management';
+    const baseUrl = getBaseUrl();
     const link = document.createElement('a');
-    link.href = `${baseUrl}/all_docs.md`;
-    link.download = 'apm-complete-documentation.md';
+    link.href = `${baseUrl}/apm_full_docs.md`;
+    link.download = 'apm_full_docs.md';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -118,7 +129,7 @@ export default function ContentWrapper(props) {
               <button
                 className={styles.dropdownItem}
                 onClick={copyAllDocs}
-                disabled={copying}
+                disabled={copying || copied}
               >
                 <svg
                   width="16"
@@ -130,10 +141,16 @@ export default function ContentWrapper(props) {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  {copied ? (
+                    <polyline points="20 6 9 17 4 12" />
+                  ) : (
+                    <>
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </>
+                  )}
                 </svg>
-                <span>{copying ? 'Copying...' : 'Copy all docs'}</span>
+                <span>{copying ? 'Copying...' : (copied ? 'Copied!' : 'Copy all docs')}</span>
               </button>
               <button
                 className={styles.dropdownItem}
