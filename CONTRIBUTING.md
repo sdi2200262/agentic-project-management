@@ -69,6 +69,31 @@ APM includes comprehensive documentation, and contributions to improve it are al
    git checkout -b feature/description-of-change
    ```
 
+4. **Install website dependencies (if working on documentation):**
+   ```bash
+   cd website
+   npm install
+   ```
+
+### Troubleshooting Website Build Issues
+
+#### Search Plugin Compatibility
+
+The Docusaurus website uses `@easyops-cn/docusaurus-search-local` for search functionality. This plugin may fail to load on some environments (particularly Windows/WSL) due to missing `File` API support in certain Node.js contexts.
+
+**If you encounter build errors related to the search plugin:**
+
+- **The build will automatically skip the plugin** if it fails to load, showing a warning instead of crashing. The website will build successfully without search functionality.
+- **To manually disable the search plugin**, set the environment variable:
+  ```bash
+  DISABLE_SEARCH_PLUGIN=true npm run build
+  ```
+- **Note:** The plugin works correctly on:
+  - macOS and Linux (most configurations)
+  - GitHub Actions/Pages (Node.js 20 on Ubuntu)
+
+If you experience issues, the build will continue without search functionality. This is expected behavior and does not indicate a problem with your changes.
+
 ### Making Changes
 
 APM v0.5 uses a build system that processes source files into distributable assets. Understanding where to make changes is crucial:
