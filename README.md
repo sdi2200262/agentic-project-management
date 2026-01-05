@@ -13,7 +13,7 @@ APM uses various context retention techniques, coordinating a team of specialize
 Think of it like having a project manager, developers, ad-hoc specialists, and a setup/configuration expert all powered by AI and working together under your guidance.
 
 <p align="center">
-  <img src="assets/apm-banner.png" alt="apm-banner" style="max-width:1100px; width:80%; height:auto;" />
+  <img src="assets/apm-banner.png" alt="apm-banner" style="border-radius: 16px; display: block; margin-left: auto; margin-right: auto;" />
 </p>
 
 ## Installation
