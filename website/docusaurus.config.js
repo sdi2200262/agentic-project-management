@@ -1,5 +1,60 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 
+// Helper function to safely load the search plugin
+function getSearchPlugin() {
+  if (process.env.DISABLE_SEARCH_PLUGIN === 'true') {
+    console.warn('\nWarning: Search plugin disabled via DISABLE_SEARCH_PLUGIN environment variable.\n');
+    return null;
+  }
+  
+  if (typeof File === 'undefined') {
+    console.warn(
+      '\nWarning: File API is not available in this environment.\n' +
+      'Skipping @easyops-cn/docusaurus-search-local plugin to avoid build errors.\n' +
+      'The search functionality will be disabled.\n'
+    );
+    return null;
+  }
+  
+  try {
+    const pluginPath = require.resolve('@easyops-cn/docusaurus-search-local');
+    require(pluginPath);
+    
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const serverIndexPath = path.join(path.dirname(pluginPath), 'dist', 'server', 'server', 'index.js');
+      
+      if (fs.existsSync(serverIndexPath)) {
+        require(serverIndexPath);
+      }
+    } catch (serverError) {
+      throw serverError;
+    }
+    
+    return [
+      pluginPath,
+      {
+        hashed: true,
+        language: ['en'],
+        indexBlog: false,
+        indexPages: false,
+        docsRouteBasePath: 'docs',
+      },
+    ];
+  } catch (error) {
+    console.warn(
+      '\nWarning: Failed to load @easyops-cn/docusaurus-search-local plugin.\n' +
+      'The search functionality will be disabled.\n' +
+      `Error: ${error.message}\n` +
+      'This is a non-fatal error; the build will continue.\n'
+    );
+    return null;
+  }
+}
+
+const searchPlugin = getSearchPlugin();
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'Agentic Project Management',
@@ -31,16 +86,8 @@ const config = {
   },
 
   plugins: [
-    [
-      require.resolve('@easyops-cn/docusaurus-search-local'),
-      {
-        hashed: true,
-        language: ['en'],
-        indexBlog: false,
-        indexPages: false,
-        docsRouteBasePath: 'docs',
-      },
-    ],
+    // Conditionally include search plugin - skip if loading failed
+    ...(searchPlugin ? [searchPlugin] : []),
   ],
 
   presets: [
@@ -86,10 +133,11 @@ const config = {
           src: 'img/apm-logo.svg',
         },
         items: [
-          {
+          // Only show search if plugin is loaded
+          ...(searchPlugin ? [{
             type: 'search',
             position: 'right',
-          },
+          }] : []),
           {
             type: 'html',
             position: 'right',
