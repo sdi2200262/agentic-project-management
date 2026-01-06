@@ -8,8 +8,8 @@ The Memory System uses a **Dynamic-MD** architecture to store project history as
 ### 1.1. Memory System Architecture
 
 - **Storage Location:** `.apm/Memory/`
-- **Root Document:** `Memory_Root.md` - high-level project state and phase summaries
-- **Phase Directories:** `Phase_<NN>_<Slug>/` - contain Task Memory Logs and Delegation Logs
+- **Root Document:** `Memory_Root.md` - high-level project state, phase summaries and working notes
+- **Phase Directories:** `Phase_<NN>_<Slug>/` - contain Task Memory Logs and Delegation Memory Logs
 - **Handover Storage:** `Handovers/` - contain agent handover files
 
 ### 1.2. Directory Structure
@@ -22,13 +22,13 @@ The Memory System uses a **Dynamic-MD** architecture to store project history as
 ├── Phase_01_<Slug>/
 │   ├── Task_01_01_<Slug>.md
 │   ├── Task_01_02_<Slug>.md
-│   └── Delegation_01_01_Debug_<Slug>.md         # Side-by-side with Task logs
+│   └── Delegation_01_01_Debug_<Slug>.md         # Delegation Memory Logs placed side-by-side with Task Memory Logs
 ├── Phase_02_<Slug>/
 │   └── ...
 └── Handovers/
-    ├── Manager_Handovers/
+    ├── Manager_Handovers/                       # Manager Agent Handovers
     │   └── Manager_Handover_<N>.md
-    └── <Agent_ID>_Handovers/
+    └── <Agent_ID>_Handovers/                    # Implementation Agent Handovers
         └── <Agent_ID>_Handover_<N>.md
 ```
 
@@ -46,57 +46,58 @@ The `Memory_Root.md` file tracks high-level project state. It is initialized by 
 - **Project Overview:** Concise project summary from Implementation Plan
 - **Manager Handovers:** Count of Manager Agent handovers (increment on each handover)
 
-**Phase Summaries:** Appended after each phase completion (see §4.5).
+**Phase Summaries:** Appended after each phase completion (see §3.5).
 
 ### 2.2. Task Memory Logs
 
 Task Memory Logs are written by Implementation Agents after task execution. Manager Agents review these logs to track progress and make coordination decisions.
 
+**Naming Convention:** `Task_<PhaseNum>_<SequentialNum>_<Slug>.md`
+
 **Expected Structure:**
 
-```yaml
----
-agent: <Agent_ID>
-task_ref: <Task_ID>
-status: Completed | Partial | Blocked
-validation_result: Passed | Failed
-failure_point: null | Execution | Validation | <description>
-delegation: true | false
-important_findings: true | false
-compatibility_issues: true | false
----
-```
+**YAML Frontmatter Fields:**
+- `agent`: Implementation Agent identifier (e.g., `Agent_Frontend`)
+- `task_id`: Task reference from Implementation Plan (e.g., `Task 2.1`)
+- `status`: `Completed` (all work finished) | `Partial` (some progress, issues identified) | `Blocked` (cannot proceed)
+- `validation_result`: `Passed` (criteria met) | `Failed` (criteria not met)
+- `failure_point`: `null` (no failure) | `Execution` (task work failed) | `Validation` (work done, validation failed) | `<description>`
+- `delegation`: `true` if Ad-Hoc Delegation occurred during task
+- `important_findings`: `true` if discoveries require Manager attention (see §3.4)
+- `compatibility_issues`: `true` if output conflicts with existing systems (see §3.4)
 
-**Key Sections to Review:**
-- **Summary:** 1-2 sentence outcome description
-- **Output:** File paths, deliverables, artifacts created
-- **Issues:** Blockers or errors encountered
-- **Validation Result:** Whether task passed its defined validation criteria
-- **Important Findings:** Flag `true` requires deeper artifact inspection
-- **Compatibility Issues:** Flag `true` requires plan review consideration
+**Markdown Body Sections:**
+- `## Summary`: 1-2 sentence outcome description
+- `## Details`: Work performed, decisions made, steps taken
+- `## Output`: File paths, deliverables, artifacts created
+- `## Validation`: Description of validation performed and result
+- `## Issues`: Blockers or errors encountered, or "None"
+- `## Compatibility Concerns`: (only if `compatibility_issues: true`) Description of issues
+- `## Delegation`: (only if `delegation: true`) Summary with delegation log reference
+- `## Important Findings`: (only if `important_findings: true`) Project-relevant discoveries
+- `## Next Steps`: Recommendations for follow-up actions, or "None"
 
-### 2.3. Delegation Logs
+### 2.3. Delegation Memory Logs
 
-Delegation Logs are written by Ad-Hoc Agents after completing delegated work. They are stored side-by-side with Task Memory Logs in the phase directory.
+Delegation Memory Logs are written by Ad-Hoc Agents after completing delegated work. They are stored side-by-side with Task Memory Logs in the phase directory.
 
 **Naming Convention:** `Delegation_<PhaseNum>_<SequentialNum>_<Type>_<Slug>.md`
 
 **Expected Structure:**
 
-```yaml
----
-delegation_type: Debug | Research | Refactor | <Custom>
-delegating_agent: <Agent_ID>
-phase: <Phase_Number>
-status: Resolved | Unresolved | Escalated
----
-```
+**YAML Frontmatter Fields:**
+- `delegation_type`: `Debug` (isolated debugging) | `Research` (documentation research) | `Refactor` (code restructuring) | `<Custom>`
+- `delegating_agent`: Agent that initiated the delegation (e.g., `Agent_Backend`, `Manager`)
+- `phase`: Phase number where delegation was initiated
+- `status`: `Resolved` (issue solved, ready for integration) | `Unresolved` (partial findings) | `Escalated` (requires Manager intervention)
 
-**Key Sections to Review:**
-- **Summary:** Delegation outcome
-- **Findings:** Key discoveries or solutions
-- **Resolution:** How the issue was resolved or why it remains unresolved
-- **Integration Notes:** How calling agent should integrate findings
+**Markdown Body Sections:**
+- `## Summary`: 1-2 sentence delegation outcome description
+- `## Delegation Context`: Why delegated, what calling agent was trying to accomplish
+- `## Findings`: Key discoveries, solutions, or information gathered
+- `## Resolution`: How the issue was resolved, or why it remains unresolved
+- `## Integration Notes`: Guidance for how calling agent should integrate findings
+- `## Escalation Justification`: (only if `status: Escalated`) Reasoning for Manager intervention
 
 ---
 
@@ -133,7 +134,7 @@ Create **completely empty** Memory Log files for all phase tasks before issuing 
 
 ### 3.4. Log Review Protocol
 
-When User returns with completed task:
+When User returns with a Task Report:
 
 **Action 1:** Read the Task Memory Log at the provided path
 
@@ -143,29 +144,30 @@ When User returns with completed task:
 
 **Action 3:** Assess task status:
 - `Completed` + `validation_result: Passed` → Task successful, proceed to next action
-- `Completed` + `validation_result: Failed` → Review failure_point, determine follow-up
-- `Partial` → Review Issues section, determine follow-up or delegation
-- `Blocked` → Review Issues section, determine escalation path
+- `Completed` + `validation_result: Failed` → Review `failure_point`, determine follow-up
+- `Partial` → Review Issues section, determine follow-up or Ad-Hoc Delegation
+- `Blocked` → Review Issues section, determine Escalation path
 
 **Action 4:** Determine next action:
 - Continue with next Task Assignment
 - Issue follow-up prompt to same agent
 - Update Implementation Plan if needed
-- Initiate Ad-Hoc delegation if technical blocker persists
+- Initiate Ad-Hoc Delegation if technical blocker persists
 
-### 3.5. Phase Summary Creation
+### 3.5. Memory Root Management
 
-At phase completion, append summary to Memory Root:
+At phase completion, append a phase summary to Memory Root:
 
 ```markdown
 ## Phase <NN> – <Phase Name> Summary
-**Outcome:** [≤200 words summarizing phase results]
+**Outcome:** [Summarize phase results]
 **Agents Involved:** [List of Implementation Agents who worked on this phase]
-**Task Logs:**
+**Task Memory Logs:**
 - [Task_NN_MM_Slug.md] - [Status]
 - [Task_NN_MM_Slug.md] - [Status]
-**Delegation Logs:**
+**Delegation Memory Logs:**
 - [Delegation_NN_MM_Type_Slug.md] - [Status] (if any)
+**Notes:** [Include undocumented context, working insights, important findings, compatibility issues]
 ```
 
 Keep summaries ≤30 lines. Reference log files rather than duplicating content.
