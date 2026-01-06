@@ -9,7 +9,7 @@ The Memory System uses a **Dynamic-MD** architecture to store project history as
 
 - **Storage Location:** `.apm/Memory/`
 - **Root Document:** `Memory_Root.md` - high-level project state, phase summaries and working notes
-- **Phase Directories:** `Phase_<NN>_<Slug>/` - contain Task Memory Logs and Delegation Memory Logs
+- **Phase Directories:** `Phase_<PhaseNum>_<Slug>/` - contain Task Memory Logs and Delegation Memory Logs
 - **Handover Storage:** `Handovers/` - contain agent handover files
 
 ### 1.2. Directory Structure
@@ -117,7 +117,7 @@ Before starting first phase execution, fill in the Memory Root header:
 
 On phase entry:
 
-**Action 1:** Create phase directory if missing: `.apm/Memory/Phase_<NN>_<Slug>/`
+**Action 1:** Create phase directory if missing: `.apm/Memory/Phase_<PhaseNum>_<Slug>/`
 **Action 2:** Create empty Task Memory Log files for all tasks in the phase (see §3.3)
 **Action 3:** Proceed with first Task Assignment for the phase
 
@@ -159,14 +159,14 @@ When User returns with a Task Report:
 At phase completion, append a phase summary to Memory Root:
 
 ```markdown
-## Phase <NN> – <Phase Name> Summary
+## Phase <PhaseNum> – <Phase Name> Summary
 **Outcome:** [Summarize phase results]
 **Agents Involved:** [List of Implementation Agents who worked on this phase]
 **Task Memory Logs:**
-- [Task_NN_MM_Slug.md] - [Status]
-- [Task_NN_MM_Slug.md] - [Status]
+- [Task_<PhaseNum>_<SequentialNum>_<Slug>.md] - [Status]
+- [Task_<PhaseNum>_<SequentialNum>_<Slug>.md] - [Status]
 **Delegation Memory Logs:**
-- [Delegation_NN_MM_Type_Slug.md] - [Status] (if any)
+- [Delegation_<PhaseNum>_<SequentialNum>_<Type>_<Slug>.md] - [Status] (if any)
 **Notes:** [Include undocumented context, working insights, important findings, compatibility issues]
 ```
 
