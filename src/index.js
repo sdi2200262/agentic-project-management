@@ -319,6 +319,10 @@ template version compatible with your current CLI version.
         const memoryRootHeader = `# <Project Name> – APM Memory Root
 **Memory Strategy:** Dynamic-MD
 **Project Overview:** [To be filled by Manager Agent before first phase execution]
+**Manager Handovers:** 0
+
+---
+
 `;
         writeFileSync(memoryRootPath, memoryRootHeader);
         console.log(chalk.gray('  Created Memory/Memory_Root.md with header template'));
@@ -331,6 +335,8 @@ template version compatible with your current CLI version.
 **Memory Strategy:** Dynamic-MD
 **Last Modification:** [To be filled by Setup Agent before Project Breakdown]
 **Project Overview:** [To be filled by Setup Agent before Project Breakdown]
+
+---
 
 `;
         writeFileSync(implementationPlanPath, implementationPlanHeader);
