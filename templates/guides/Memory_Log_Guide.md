@@ -8,26 +8,31 @@ Memory Logs capture task-level and delegation-level context using structured Mar
 ### 1.1. Log Types
 
 - **Task Memory Logs:** Written by Implementation Agents after task execution
-- **Delegation Logs:** Written by Ad-Hoc Agents after completing delegated work
+- **Delegation Memory Logs:** Written by Ad-Hoc Agents after completing delegated work
 
 ### 1.2. Audience
 
 - **Implementation Agents:** Read this guide to understand Task Memory Log format and workflow
-- **Ad-Hoc Agents:** Read this guide to understand Delegation Log format and workflow
+- **Ad-Hoc Agents:** Read this guide to understand Delegation Memory Log format and workflow
 
 ---
 
 ## 2. Task Memory Log Format
 
 Task Memory Logs are stored in phase directories with naming convention:
-`.apm/Memory/Phase_<NN>_<Slug>/Task_<NN>_<MM>_<Slug>.md`
+`.apm/Memory/Phase_<NN>_<Slug>/Task_<PhaseNum>_<SequentialNum>_<Slug>.md`
+
+Where:
+- `<PhaseNum>`: Phase number
+- `<SequentialNum>`: Sequential task number within the phase
+- `<Slug>`: Brief descriptive slug
 
 ### 2.1. YAML Frontmatter Schema
 
 ```yaml
 ---
 agent: <Agent_ID>
-task_ref: <Task_ID>
+task_id: <Task_ID>
 status: Completed | Partial | Blocked
 validation_result: Passed | Failed
 failure_point: null | Execution | Validation | <description>
@@ -39,11 +44,11 @@ compatibility_issues: true | false
 
 **Field Descriptions:**
 - `agent`: Your agent identifier (e.g., `Agent_Frontend`)
-- `task_ref`: Task reference from Implementation Plan (e.g., `Task 2.1`)
+- `task_id`: Task reference from Implementation Plan (e.g., `Task 2.1`)
 - `status`: Overall task status
   - `Completed`: All work finished (validation may have passed or failed)
   - `Partial`: Some progress made, specific issues identified
-  - `Blocked`: Cannot proceed without external input or resolution
+  - `Blocked`: Cannot proceed for whatever reason
 - `validation_result`: Whether task passed its defined validation criteria
   - `Passed`: Validation criteria met
   - `Failed`: Validation criteria not met
@@ -52,14 +57,14 @@ compatibility_issues: true | false
   - `Execution`: Task work itself failed
   - `Validation`: Work completed but validation failed
   - `<description>`: Other failure with explanation
-- `delegation`: Set `true` if Ad-Hoc delegation occurred during task
+- `delegation`: Set `true` if Ad-Hoc Delegation occurred during task
 - `important_findings`: Set `true` if discoveries require Manager attention
 - `compatibility_issues`: Set `true` if output conflicts with existing systems
 
 ### 2.2. Markdown Body Template
 
 ```markdown
-# Task Log: <Task Reference>
+# Task Memory Log: <Task_ID>
 
 ## Summary
 [1-2 sentences describing main outcome]
@@ -97,14 +102,14 @@ compatibility_issues: true | false
 
 ---
 
-## 3. Delegation Log Format
+## 3. Delegation Memory Log Format
 
 Delegation Logs are stored in phase directories alongside Task Memory Logs with naming convention:
-`.apm/Memory/Phase_<NN>_<Slug>/Delegation_<NN>_<MM>_<Type>_<Slug>.md`
+`.apm/Memory/Phase_<NN>_<Slug>/Delegation_<PhaseNum>_<SequentialNum>_<Type>_<Slug>.md`
 
 Where:
-- `<NN>`: Phase number
-- `<MM>`: Sequential delegation number within the phase
+- `<PhaseNum>`: Phase number
+- `<SequentialNum>`: Sequential delegation number within the phase
 - `<Type>`: Delegation type (Debug, Research, Refactor, or custom)
 - `<Slug>`: Brief descriptive slug
 
@@ -149,32 +154,38 @@ status: Resolved | Unresolved | Escalated
 
 ## Integration Notes
 [Specific guidance for how the calling agent should integrate these findings]
+
+## Escalation Justification
+[only include if status: Escalated]
+[Concise reasoning on why this delegation requires Manager intervention]
 ```
 
 ---
 
-## 4. Implementation Agent Workflow
+## 4. Implementation Agent Responsibilities
 
-### 4.1. Task Execution and Logging Sequence
+### 4.1. Task Memory Log Creation
 
-**Action 1:** Receive Task Assignment with `memory_log_path` in YAML frontmatter
+After task execution, fill in the Task Memory Log at the path provided in the Task Assignment (`memory_log_path`):
 
-**Action 2:** Execute task work following the Task Assignment instructions
-
-**Action 3:** Perform validation according to task's defined validation criteria:
-- **Programmatic:** Run tests, compile, execute and verify expected behavior
-- **Artifact:** Verify files exist, format is correct, content is complete
-- **User:** Request user review/approval for subjective outputs
-
-**Action 4:** Fill in the Memory Log at `memory_log_path`:
-- Complete ALL frontmatter fields accurately
-- Set `validation_result` based on validation outcome
+**Action 1:** Complete ALL YAML frontmatter fields accurately:
+- Set `agent` to your agent identifier
+- Set `task_id` to the task reference from the assignment
+- Set `status` based on task outcome (`Completed`, `Partial`, or `Blocked`)
+- Set `validation_result` based on validation outcome (`Passed` or `Failed`)
 - Set `failure_point` if validation failed or task blocked
-- Complete all applicable body sections
+- Set boolean flags (`delegation`, `important_findings`, `compatibility_issues`) as appropriate
 
-**Action 5:** Output Task Report to User (keep post-amble minimal)
+**Action 2:** Complete all applicable Markdown body sections:
+- Always include: Summary, Details, Output, Validation, Issues, Next Steps
+- Include conditional sections only when their corresponding flag is `true`
 
-### 4.2. Validation Failure Handling
+**Action 3:** Output Task Report to User (keep post-amble minimal)
+
+### 4.2. Validation Result Recording
+
+If validation passes:
+- Set `status: Completed`, `validation_result: Passed`, `failure_point: null`
 
 If validation fails:
 - Set `status: Completed` (work was done)
@@ -191,25 +202,28 @@ If execution fails before validation:
 
 ---
 
-## 5. Ad-Hoc Agent Workflow
+## 5. Ad-Hoc Agent Responsibilities
 
-### 5.1. Delegation Logging Sequence
+### 5.1. Delegation Memory Log Creation
 
-**Action 1:** Receive Delegation Prompt with delegation context
+After completing delegated work, create and fill the Delegation Memory Log:
 
-**Action 2:** Execute delegated work (debug, research, refactor, etc.)
-
-**Action 3:** Determine delegation log path:
-- Get phase number from delegation context
+**Action 1:** Determine delegation log path:
+- Get phase number from Delegation Prompt context
 - Get next sequential delegation number for that phase
 - Construct path: `.apm/Memory/Phase_<NN>_<Slug>/Delegation_<NN>_<MM>_<Type>_<Slug>.md`
 
-**Action 4:** Create and fill Delegation Log:
-- Create the file at the determined path
-- Complete ALL frontmatter fields
-- Complete all body sections with findings
+**Action 2:** Complete ALL YAML frontmatter fields:
+- Set `delegation_type` to the type of work performed
+- Set `delegating_agent` to the agent that initiated the delegation
+- Set `phase` to the phase number
+- Set `status` based on outcome (`Resolved`, `Unresolved`, or `Escalated`)
 
-**Action 5:** Output Delegation Report to User (keep post-amble minimal)
+**Action 3:** Complete all Markdown body sections:
+- Always include: Summary, Delegation Context, Findings, Resolution, Integration Notes
+- Include Escalation Justification only if `status: Escalated`
+
+**Action 4:** Output Delegation Report to User (keep post-amble minimal)
 
 ### 5.2. Setup Phase Delegations
 
