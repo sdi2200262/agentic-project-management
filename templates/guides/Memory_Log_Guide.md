@@ -20,7 +20,7 @@ Memory Logs capture task-level and delegation-level context using structured Mar
 ## 2. Task Memory Log Format
 
 Task Memory Logs are stored in phase directories with naming convention:
-`.apm/Memory/Phase_<NN>_<Slug>/Task_<PhaseNum>_<SequentialNum>_<Slug>.md`
+`.apm/Memory/Phase_<PhaseNum>_<Slug>/Task_<PhaseNum>_<SequentialNum>_<Slug>.md`
 
 Where:
 - `<PhaseNum>`: Phase number
@@ -64,7 +64,7 @@ compatibility_issues: true | false
 ### 2.2. Markdown Body Template
 
 ```markdown
-# Task Memory Log: <Task_ID>
+# Task Memory Log: <Task_ID> - <Slug>
 
 ## Summary
 [1-2 sentences describing main outcome]
@@ -138,7 +138,7 @@ status: Resolved | Unresolved | Escalated
 ### 3.2. Markdown Body Template
 
 ```markdown
-# Delegation Log: <Title>
+# Delegation Memory Log: <Slug>
 
 ## Summary
 [1-2 sentences describing delegation outcome]
@@ -268,7 +268,7 @@ After completing Memory Log or Delegation Log:
 ```yaml
 ---
 agent: Agent_Backend
-task_ref: Task 2.3
+task_id: Task 2.3
 status: Completed
 validation_result: Passed
 failure_point: null
@@ -278,7 +278,7 @@ compatibility_issues: false
 ---
 ```
 ```markdown
-# Task Log: Task 2.3 - API User Endpoint
+# Task Memory Log: Task 2.3 - API User Endpoint
 
 ## Summary
 Implemented POST /api/users endpoint with input validation. All tests passing.
