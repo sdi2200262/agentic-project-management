@@ -1,233 +1,371 @@
 # APM {VERSION} - Context Synthesis Guide
-This guide defines how the Setup Agent collects all information needed to build an accurate and detailed Implementation Plan. The goal is gathering enough context to break work into focused, manageable tasks that can be assigned to specialized agents. At this stage, the Setup Agent passes control flow to this guide.
 
-## Principles for Discovery & Objectives
+## 1. Overview
 
-### Discovery Methodology
-- Aim for clarity and sufficiency for task breakdown, not exhaustive interrogation
-- Reuse existing documentation before asking new questions  
-- Adapt language and depth to project size, type, and user expertise
-- Use iterative follow-up questions based on user responses to gather complete information needed for project planning
+This guide defines the discovery methodology for the Context Synthesis Procedure. The goal is gathering sufficient context to create an accurate Implementation Plan that can be executed by other Agents. This guides explains:
+- WHAT information to gather during discovery
+- HOW to structure questioning and follow-ups
+- WHEN to research vs. ask clarifying questions
 
-### Context Retention for Task Planning
-As you gather responses, internally note planning implications for the structured work breakdown that follows:
+### 1.1. Project Discovery Objectives
 
-#### Complexity Awareness
-When user describes challenging/complex aspects → Flag these areas for careful breakdown for later planning
-When user expresses uncertainty about approach → Note investigation and research needs for planning phase
-When user mentions "first this, then that" or similar phrases or patterns → Retain sequential workflow patterns
-When user describes parallel work streams or independent deliverables → Retain concurrent workflow patterns for flexible task assignment
+Gather sufficient context across four categories:
+- **Vision:** Project goals, deliverables, success criteria
+- **Technical:** Requirements, constraints, environments, dependencies
+- **Process:** Workflow preferences, quality standards, coordination requirements
+- **Validation:** Success states and criteria, acceptance tests, completion indicators
 
-#### Work Organization Memory  
-When user explains independent vs dependent work → Remember workflow relationships and dependencies for planning
-When user describes different skill areas → Retain domain boundaries for agent assignment decisions
-When user mentions external dependencies → Flag coordination and environment needs for planning
-When user identifies bottlenecks or critical path items → Note priority sequencing requirements for task ordering decisions
-When user provides examples or references similar work → Capture relevant context for efficient informed planning decisions
+**Goal:** Sufficient context to create an Implementation Plan that enables a Manager Agent to coordinate effectively and Implementation Agents to execute focused tasks.
 
-#### Scope Understanding
-When user describes deliverable scale → Carry forward scope implications for workload sizing
-When user mentions timeline or other constraints → Retain urgency factors for planning decisions
-When user identifies risk areas → Flag for extra attention during work breakdown
-When user specifies quality standards or acceptance criteria → Preserve validation requirements for completion assessment planning
+### 1.2. Methodology Principles
 
-#### Process & Implementation Requirements
-When user mentions specific workflow preferences or methodologies → Retain implementation approach requirements for task specification integration
-When user describes quality standards, validation needs, or approval processes → Note explicit verification steps that could become task-level requirements
-When user references formatting requirements, style guidelines, or consistency standards → Preserve as implementation constraints for task execution guidance
-When user specifies delivery requirements, documentation standards, or output formats → Flag for integration into relevant task descriptions
-When user describes tool preferences, environment constraints, or technical requirements → Note for task execution guidance and agent instruction specification
-When user indicates tracking requirements, progress validation, or completion criteria → Note explicit review checkpoints as task-level or phase-level implementation requirements
+- **Clarity over exhaustion:** Aim for sufficient contextual understanding, not exhaustive interrogation
+- **Leverage existing material:** Before beginning Question Round 1, scan the workspace for existing materials (README, PRD, requirements, specs). If found, ask User permission to read them and use findings to skip redundant questions.
+- **Adapt to context:** Adapt language and depth to project size, type and user expertise
+- **Iterate within Question Rounds:** Use iterative follow-up questions based on User responses to fill gaps in current Question Round - not later
+- **Research when blocked:** When user clarification is insufficient, use research delegation protocols - See §8 Research Delegation Protocol
 
-These retained insights inform adaptive work breakdown during the Implementation Plan creation phase.
+## 2. Internal Planning Framework
 
-## Internal Strategic Framework
-**CRITICAL**: Never expose multi-agent concepts to user. Maintain natural conversation while operating with internal strategic awareness of your planning role.
+### 2.1. Setup Agent Role Context
 
-### Setup Agent Role Clarity
-**YOU ARE THE PLANNER, NOT THE EXECUTOR**:
-- **Your Role**: Create detailed Implementation Plan that other agents will use
-- **Manager Agent Role**: Will manage project execution using your Implementation Plan  
-- **Implementation Agent Role**: Will execute individual tasks you specify in the plan
-- **Your Responsibility**: Break down user requirements into actionable tasks for OTHER agents to execute
+**Maintain natural conversation while operating with internal strategic awareness. YOU ARE THE PLANNER, NOT THE EXECUTOR:**
+- **Your Role:** Break down user requirements into a detailed Implementation Plan with actionable that other Agents will execute
+- **Manager Agent Role:** Will coordinate project execution using your Implementation Plan and assign tasks to Implementation Agents
+- **Implementation Agent Role:** Will execute individual tasks you (Setup Agent) specify in the plan and the Manager Agent assings to them
 
-### Context Synthesis Planning Process
-You are gathering requirements to create an Implementation Plan that will enable:
-- **Manager Agent** to coordinate specialized Implementation Agents effectively
-- **Implementation Agents** to execute focused, well-defined granular tasks 
-- **User** to collaborate with Implementation Agents on external actions when needed
-- **Quality Standards & Requirements** to be embedded in task specifications for Implementation Agent compliance
+All questions gather context for the Implementation Plan, not how you (Setup Agent) should perform work.
 
-### Strategic Planning Considerations
-While maintaining natural conversation with user, internally consider how gathered information will translate into Implementation Plan elements:
+### 2.2. Context Retention Categories
 
-- **Task Granularity**: How to break work into focused tasks that Implementation Agents can execute independently
-- **Agent Specialization**: What domain boundaries make sense for assigning different Implementation Agents
-- **Coordination Points**: Where Implementation Agents will need Manager Agent coordination or cross-agent collaboration
-- **User Involvement Points**: What actions require User input, approval, or external platform access that Implementation Agents cannot handle
-- **Task Dependencies**: What must be completed before other work can begin
-- **Quality Integration**: How to embed user preferences as explicit Implementation Agent task requirements
+As you receive User input, internally note planning implications:
 
-### Planning Perspective Framework
-**Remember**: You are designing a workflow for others to execute:
-- **Manager Agent** will coordinate timing, dependencies, and cross-agent handoffs using your plan structure
-- **Implementation Agents** will receive Task Assignment Prompts based on your Implementation Plan
-- **User** will provide input, approve work, and handle external actions as specified in your task breakdowns
-- **Your Plan Quality** directly determines Implementation Agent success - be precise and comprehensive
-- **All your questions must be phrased to gather *requirements for this plan*, not to ask how *you* (the Setup Agent) should perform the work.**
+**Complexity Awareness:**
+- User describes challenging/complex aspects → Flag for careful breakdown
+- User expresses uncertainty about approach → Note investigation and research needs
+- User mentions sequential patterns ("first this, then that") → Retain sequential workflow patterns
+- User describes parallel work streams → Retain concurrent workflow patterns
 
-## Discovery Sequence & Iterative Methodology
-During project discovery, the Setup Agent must follow this sequence with **mandatory iterative follow-ups per Question Round**:
-**Question Round 1 (iterative) → Question Round 2 (iterative) → Question Round 3 (iterative) → Question Round 4 (validation)**
+**Work Organization Memory:**
+- User explains independent vs dependent work → Remember workflow relationships and dependencies
+- User describes different skill areas → Retain domain boundaries for agent assignment
+- User mentions external dependencies → Flag coordination and environment needs
+- User identifies bottlenecks or critical path items → Note priority sequencing requirements
+- User provides examples or references → Capture for informed planning decisions
 
-**Sequence Enforcement**: 
-- Complete Question Round 1 fully (including all iterative follow-ups) before starting Question Round 2
-- Complete Question Round 2 fully (including all iterative follow-ups) before starting Question Round 3
-- Complete Question Round 3 fully (including all iterative follow-ups) before starting Question Round 4
-- Complete Question Round 4 (validation and user approval) before returning to Setup Agent Initiation Prompt
+**Domain Organization:**
+- User describes distinct but related work areas → Note potential for unified or separated handling
+- User mentions tight coupling between domains → Flag for unified assignment consideration
+- User expresses preference for coordination style → Retain for domain grouping decisions
+- User indicates expertise boundaries → Note for separation consideration
+- User describes handoff expectations between areas → Capture coordination preferences
 
-### **Iterative Follow-Up Protocol**
-**For Question Rounds 1-3, use this mandatory cycle for each Question Round:**
+**Process & Implementation Requirements:**
+- User mentions workflow preferences → Retain for task specification integration
+- User describes validation needs or approval processes → Note explicit verification steps
+- User references formatting or style guidelines → Preserve as implementation constraints
+- User specifies delivery or documentation standards → Flag for task descriptions
+- User describes tool preferences or technical requirements → Note for execution guidance
+- User indicates tracking or progress validation requirements → Note as task or phase requirements
 
-1. **Initial Question Round Questions**: Ask the primary questions for current Question Round
-2. **User Response Analysis**: After each user response, immediately assess:
-   - What specific gaps remain in understanding this Question Round's requirements?
-   - What ambiguities need clarification for project planning?
-   - What follow-up questions would gather the missing information?
-3. **Strategic Follow-Up Decision**: 
-   - **If gaps exist**: Ask targeted follow-up questions addressing specific gaps
-   - **If understanding complete**: State completion reasoning and advance to next Question Round
-4. **Repeat cycle**: Continue steps 2-3 until Question Round understanding is complete
+**Scope Understanding:**
+- User describes deliverable scale → Carry forward scope implications for workload sizing
+- User mentions timeline constraints → Retain urgency factors for planning decisions
+- User identifies risk areas → Flag for extra attention during breakdown
+- User specifies quality standards or acceptance criteria → Preserve validation requirements
 
-**Question Round Completion Requirement**: Before advancing to next Question Round, must state:
-"Question Round [X] understanding complete. Ready to proceed to Question Round [X+1] because: [specific reasoning about information sufficiency]. No additional follow-ups needed because: [specific gaps that have been filled]."
+### 2.3. Planning Perspective
 
-### Question Round 1: Existing Material and Vision (ITERATIVE)
-**MANDATORY**: Complete this Question Round fully before proceeding to Question Round 2.
+While maintaining natural conversation, internally consider how gathered information translates to Implementation Plan elements:
 
-**Initial Questions:**
-1. Ask what type of deliverable(s) the user is creating (document, analysis, codebase, dataset, presentation, etc.).
-2. Ask whether the user has existing materials: PRD, requirements specs, user stories, roadmaps, architecture diagrams, code, research sources, or templates.  
-3. Ask for the user's current plan or vision if not covered by materials.
-4. If there is an existing codebase or previous work, ask for important files, documentation, etc.
+- **Task Granularity:** How to break work into focused tasks that Implementation Agents can execute independently
+- **Agent Specialization:** What domain boundaries make sense for assigning different Implementation Agents
+- **Domain Organization:** Whether related domains benefit from unified handling (tighter coordination) or separation (parallel progress)
+- **Coordination Points:** Where Implementation Agents will need Manager Agent coordination or cross-agent collaboration
+- **User Involvement Points:** What actions require User input, approval, guidance or external platform/tool access
+- **Task Dependencies:** What must be completed before other work can begin
+- **Quality Integration:** How to embed user preferences as explicit task requirements
 
-**Iterative Follow-Up Cycle:**
-After each user response, assess information gaps:
-- **Project Foundation**: Is the project type and scope clear enough to identify work domains?
-- **Existing Context**: Do you understand the existing foundation and what needs to be built?
-- **Vision Clarity**: Are there aspects of their vision that need more detail or critical gaps?
-- **Material Understanding**: If existing materials mentioned, do you understand their structure and relevance?
+## 3. Question Round Protocol
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 1 understanding is complete.**
+### 3.1. Iteration Procedure
 
-**Question Round 1 Completion Requirement:** State "Question Round 1 understanding complete. Ready to proceed to Question Round 2 because: [specific reasoning]. No additional follow-ups needed because: [specific foundation/vision/materials understanding achieved]."
+For each Question Round (1-3), use this iteration cycle:
+1. Ask the initial questions defined for the current Round
+2. After each User response, assess gaps: What specific gaps remain? What ambiguities need clarification? What follow-ups would gather missing information?
+3. Strategic decision: If gaps exist, ask targeted follow-up questions; if understanding complete, state completion reasoning and advance
+4. Repeat steps 2-3 until current Round understanding is complete - See §3.3 Round Completion Requirements and §4.3, §5.3, §6.3 for each Round's Gap Assessment Criteria
 
-### Question Round 2: Targeted Inquiry (ITERATIVE)
-**MANDATORY**: Complete this Question Round fully before proceeding to Question Round 3.
-**Initial Questions:**
-Select and adapt questions that remain unanswered, drawing from these areas. Use follow-up questions when user responses indicate relevant preferences or requirements.  
+**Anti-Repetition Guidance:** Track what has been answered across the conversation. Ask only for missing specifics, not topics already covered. Fill gaps in current Round; try to not defer to later Rounds. If gaps cannot be resolved through User clarification during iteration, consider delegating research. See §8 Research Delegation Protocol.
 
-**Project Purpose and Scope**  
-- What problem does the project solve? What defines success and completion?  
-- What are the essential features, sections, or deliverables?  
-- What skills/expertise areas does this involve? (writing, analysis, design, coding, research, visualization, etc.)
+**Efficiency Guidance:** When asking initial questions, combine related items naturally in conversation. Adapt depth based on project complexity - smaller projects need lighter discovery than large multi-domain efforts.
 
-**Work Structure and Dependencies**
+### 3.2. Validation Gathering
+
+You must capture and suggest clear success states and criteria for each User requirement to inform Implementation Plan task Validation fields. If the User does not specify how a requirement will be validated, proactively propose concrete success measures (e.g., functional checks, acceptance tests, measurable outcomes) and ask if these suggestions align with their expectations. Use targeted follow-ups such as: "You mentioned [feature X]. Would success mean [suggested success state]?", "Would it be complete when [proposed criteria]?", "Should passing [test/check] validate [component Z]?"
+
+If the requirement is subjective (e.g., relies on User review or personal judgment), simply ask how the User would determine success, or gently propose acceptance indicators without being specific.
+
+Integrate this validation gathering and suggestion process into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
+
+### 3.3. Round Completion Requirements
+
+Before advancing to the next Round (Rounds 1-3 only), output the following **Round Completion block** with specific reasoning and planning implications relevant to that Round's focus:
+
+```
+**Question Round [N] complete.**
+
+**Context Gathered**:
+[Summarize key information obtained in this Round, aligned with the Round's focus areas]
+
+**Planning Implications**:
+[Note any dependencies, complexity flags, domain boundaries, validation needs, or other planning-relevant insights identified - include only what applies]
+
+No additional follow-ups needed for this Round because: [specific reasoning about information sufficiency for this Round's focus areas].
+
+Ready to proceed to Question Round [N+1].
+```
+
+**Round-Specific Focus:**
+- **Round 1**: Project foundation, problem and purpose, essential scope, required skills, existing materials, vision clarity
+- **Round 2**: Work structure, dependencies, technical and resource requirements, complexity assessment, validation criteria
+- **Round 3**: Technical constraints and preferences, process preferences, coordination needs, domain organization, standards
+
+After completing Rounds 1 and 2 and displaying this **Round Completion block**, immediately begin the next Question Round's Initial Questions. See §4.2, §5.2 for Rounds 2 and 3 Initial Questions respectively.
+
+After completing Round 3 and displaying this **Round Completion block**, immediately proceed to Question Round 4 and present the Contextual Understanding Summary. See §7 Question Round 4: Final Validation.
+
+## 4. Question Round 1: Existing Materials and Vision
+
+### 4.1. Focus Areas
+
+Project type and deliverables; problem and purpose; essential features and scope; required skills and expertise areas; existing documentation and materials; current plan or vision; previous work and codebase context.
+
+### 4.2. Initial Questions
+
+1. What type of deliverable(s) are you creating? (document, analysis, codebase, dataset, presentation, etc.)
+2. What problem does the project solve? What defines success and completion?
+3. What are the essential features, sections, or deliverables?
+4. What skills/expertise areas does this involve? (writing, analysis, design, coding, research, visualization, etc.)
+5. Do you have existing materials? (PRD, requirements specs, user stories, roadmaps, architecture diagrams, code, research sources, templates)
+6. What is your current plan or vision if not already covered by the above?
+7. If there is an existing codebase or previous work, what are the important files or documentation?
+
+**Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
+
+### 4.3. Gap Assessment Criteria
+
+After each User response, assess:
+- **Project Foundation:** Is the project type and deliverable format clear?
+- **Problem and Purpose:** Do you understand the problem being solved and success criteria?
+- **Essential Scope:** Are the essential features, sections, or deliverables identified?
+- **Skills and Expertise:** Are the required skill/expertise areas clear?
+- **Existing Context:** Do you understand the existing foundation and what needs to be built?
+- **Vision Clarity:** Are there aspects of their vision that need more detail or clarification?
+- **Material Understanding:** If existing materials mentioned, do you understand their structure and relevance?
+
+**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §8 Research Delegation Protocol.
+
+**Continue with targeted follow-ups addressing specific gaps until Question Round 1 understanding is complete. Before proceeding to Round 2, you must understand: project type and deliverable format, problem being solved and success criteria, essential features and scope, required skill/expertise areas, what exists vs. what needs to be created, user's vision and primary goals, relevant existing materials and their role. See §3.3 Round Completion Requirements.**
+
+## 5. Question Round 2: Technical Requirements
+
+### 5.1. Focus Areas
+
+Work structure and dependencies; technical and resource requirements; complexity and risk assessment; validation criteria; timeline constraints.
+
+### 5.2. Initial Questions
+
+Select and adapt questions that remain unanswered from these areas:
+
+**Work Structure and Dependencies:**
 - Which parts can be done independently vs. need sequential order?
 - What are the most challenging or time-consuming aspects?
 - Any dependencies between different parts of the work?
 - What intermediate deliverables would help track progress?
 
-**Work Environment and Mental Model Requirements:**
+**Technical and Resource Requirements:**
 - Does this work involve different technical environments or platforms?
-- Are there distinct types of thinking required? (eg. creative design vs analytical vs technical implementation vs development vs research)
-- Which parts require deep domain expertise vs general implementation skills?
-- Are there natural handoff points where one type of work ends and another begins?
-
-**Execution and Coordination Requirements:**
-- Which deliverables can be prepared/built within development tools vs require external platform interaction?
-- What parts involve User-specific accounts, credentials, or manual coordination/configuration steps?
-
-**Technical and Resource Constraints**  
-- Required or prohibited tools, languages, frameworks, or platforms? What is the intended tech stack/toolchain?  
-- External resources needed? (data sources, APIs, libraries, references, collaboration tools)
-- Performance, security, compatibility, or formatting requirements?  
 - What is the deployment/delivery environment?
+- External resources needed? (data sources, APIs, libraries, references)
+- What actions require access outside the development environment?
+- Which deliverables can be prepared/built within development tools vs require external platform interaction?
 
-**Platform and Access Requirements:**
-- What actions require access outside the development environment? (cloud dashboards, deployment platforms, external services)
-- Are there setup, configuration, or deployment steps that require specific account access or manual coordination?
-- Which parts of the work can be completed entirely within code/development tools vs require external platform management?
-
-**Timeline and Risks**  
-- What is the target timeline or deadline?  
+**Complexity and Risk Assessment:**
+- What is the target timeline or deadline?
 - What are the anticipated challenging areas or known risks?
-- Any parts that require external input or review before proceeding?
+- Any parts requiring external input or review before proceeding?
 
-**Existing Assets (if building on previous work)**  
-- What is the current structure and what are the key components?  
-- What build systems, tools, or processes are currently used?
+**Existing Assets (if building on previous work):**
+- What is the current structure and key components?
+- What existing functionality or content should be preserved or modified?
 
-**Iterative Follow-Up Cycle:**
-After each user response, assess information gaps:
-- **Work Structure**: Do you understand dependencies, challenging aspects, and intermediate deliverables?
-- **Technical Constraints**: Are tools, frameworks, performance requirements clear?
-- **Environment Requirements**: Do you understand what requires external coordination vs IDE work?
-- **Process Preferences**: Are workflow, quality standards, and coordination needs clear?
-- **Risk Assessment**: Are challenging areas and timeline constraints understood?
-- **Resource Requirements**: Are external dependencies and access needs clear?
+**Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 2 understanding is complete.**
+**Validation Gathering:** If a requirement is missing clear success states and criteria, ask the User to clarify or define them. See §3.2 Validation Gathering.
 
-**Question Round 2 Completion Requirement:** State "Question Round 2 understanding complete. Ready to proceed to Question Round 3 because: [specific reasoning]. No additional follow-ups needed because: [specific work structure/constraints/environment understanding achieved]."
+### 5.3. Gap Assessment Criteria
 
-### Question Round 3: Requirements & Process Gathering (ITERATIVE)
-**MANDATORY**: Complete this Question Round fully before proceeding to Question Round 4.
-**Initial Questions:**
-Gather workflow preferences, quality standards, and process requirements:
+After each User response, assess:
+- **Work Structure:** Do you understand dependencies, challenging aspects, and intermediate deliverables?
+- **Technical and Resource Requirements:** Are environment needs, external resources, and platform requirements clear?
+- **Complexity Assessment:** Are challenging areas, timeline constraints, and known risks understood?
+- **Validation Criteria:** Have success states and criteria been captured for core requirements?
 
-"To ensure I have complete context for project planning, let me explore any additional requirements and process/implementation preferences:
-- Are there specific workflow patterns, quality standards, or validation approaches you prefer for this type of work?
-- Do you have particular technical constraints, implementation preferences, or tools that should guide the approach?  
+**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §8 Research Delegation Protocol.
+
+**Continue with targeted follow-ups addressing specific gaps until Question Round 2 understanding is complete. Before proceeding to Round 3, you must understand: work breakdown structure and dependencies, technical and resource requirements, complexity and risk factors, validation criteria for core requirements. See §3.3 Round Completion Requirements.**
+
+## 6. Question Round 3: Implementation Approach and Quality
+
+### 6.1. Focus Areas
+
+Technical constraints and preferences; workflow preferences and methodologies; quality standards and validation approaches; coordination and approval requirements; domain organization preferences; consistency and documentation standards.
+
+### 6.2. Initial Questions
+
+Select and adapt questions that remain unanswered from these areas:
+
+**Technical Constraints and Preferences:**
+- Required or prohibited tools, languages, frameworks, or platforms?
+- Performance, security, compatibility, or formatting requirements?
+- Are there setup, configuration, or deployment steps requiring specific account access?
+- What parts involve User-specific accounts, credentials, or manual coordination steps?
+- If existing build systems, tools, or processes were mentioned in Round 2, what are they and how should they be used?
+
+**Workflow Preferences and Methodologies:**
+- Are there specific workflow patterns, quality standards, or validation approaches you prefer?
 - Are there coordination requirements, review processes, or approval gates that should be built into the work structure?
+
+**Consistency and Documentation Standards:**
 - Any consistency standards, documentation requirements, or delivery formats I should incorporate?
-- Do you have examples, templates, or reference materials that illustrate your preferred approach?"
+- Do you have examples, templates, or reference materials that illustrate your preferred approach?
 
-**Iterative Follow-Up Cycle:**
-After each user response, assess information gaps:
-- **Process Requirements**: Are workflow patterns, quality standards, and validation approaches clear?
-- **Implementation Preferences**: Do you understand technical constraints and tool preferences?
-- **Coordination Needs**: Are review processes, approval gates, and collaboration requirements clear?
-- **Standards Integration**: Are consistency, documentation, and delivery requirements understood?
-- **Reference Context**: If examples mentioned, do you understand their relevance and application?
+**Domain Organization (if distinct but related domains were identified in earlier Rounds):**
+- "I notice [domain A] and [domain B] are related. Would you prefer these handled together for tighter coordination, or separately for parallel progress?"
+- "Are [domain A] and [domain B] areas that could be typically handled together, or separate specializations in your view?"
+- Are there natural handoff points where one type of work ends and another begins?
+- Which parts require deep domain expertise vs general implementation skills?
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete.**
+**Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Question Round 3 Completion Requirement:** State "Question Round 3 understanding complete. Ready to proceed to Question Round 4 because: [specific reasoning]. No additional follow-ups needed because: [specific process/implementation/coordination understanding achieved]."
+**Validation Gathering:** If a process or preference is missing clear success states and criteria, ask the User to clarify or define them. See §3.2 Validation Gathering.
 
-### Question Round 4: Final Validation
-**MANDATORY**: This is the final Question Round. Complete this before returning to Setup Agent Initiation Prompt.
+### 6.3. Gap Assessment Criteria
 
-**User Collaboration Point:** This is your opportunity to correct any misunderstandings before implementation planning begins.
+After each User response, assess:
+- **Technical Constraints and Preferences:** Are required/prohibited tools, frameworks, platforms, and performance requirements clear?
+- **Access and Coordination:** Do you understand account access needs, credential requirements, and manual coordination steps?
+- **Workflow Preferences:** Are workflow patterns, quality standards, and validation approaches clear?
+- **Coordination Needs:** Are review processes, approval gates, and collaboration requirements clear?
+- **Domain Organization:** If distinct but related domains exist, do you understand User's preference for unified vs separated handling?
+- **Standards Integration:** Are consistency, documentation, and delivery requirements understood?
+- **Reference Context:** If examples mentioned, do you understand their relevance and application?
 
-#### Summary for User Validation
-Present comprehensive summary covering:
-- Work domains and complexity level identified: [Summarize the 3-5 major work areas and their difficulty]
-- Critical dependencies and sequencing requirements: [Outline what must happen before what]  
-- Implementation preferences and process requirements: [Detail any workflow, quality, or technical constraints captured]
-- Complex/risky aspects requiring careful breakdown: [Highlight challenging areas that need extra attention]
-- External coordination requirements: [Note any handoffs, approvals, or user-guided actions needed]
+**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §8 Research Delegation Protocol.
 
-**Explicitly request user feedback:** "Please review this summary carefully. I want to ensure I've understood your project correctly before breaking it into tasks. Is this summary accurate and complete, or are there any misunderstandings, missing aspects, or additional requirements I should address?"
+**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Round 4, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §3.3 Round Completion Requirements.**
 
-**If user provides summary approval:** 
-- State "Question Round 4 complete. Context Synthesis Step complete. All Question Rounds finished."
-- Return to Setup Agent Initiation Prompt at **Step 2: Project Breakdown & Plan Creation Step**
+## 7. Question Round 4: Final Validation
 
-**If user provides context corrections:** 
-- Incorporate user feedback and return to appropriate Question Round for additional follow-ups
-- Complete that Question Round fully before proceeding
-- Continue through remaining Question Rounds in sequence
+Present comprehensive Contextual Understanding Summary for User review. The summary must be accurate and complete before proceeding to Project Breakdown.
 
-## Pass Control Flow Back to the Initiation Prompt
-**ONLY after completing ALL four Question Rounds and receiving user approval in Question Round 4**, switch control flow back to the {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md} prompt at **Step 2: Project Breakdown & Plan Creation Step**.
+Output the following **Contextual Understanding Summary block**:
+
+```
+**Contextual Understanding Summary**
+
+**Requirements and Deliverables:**
+[Summarize essential features, scope, timeline, and skill areas from Round 2]
+
+**Work Domains and Complexity:**
+[Summarize the major work areas and their difficulty level]
+
+**Domain Organization:**
+[Note any User preferences for unified vs separated domain handling]
+
+**Dependencies and Sequencing:**
+[Outline what must happen before what]
+
+**Technical and Resource Requirements:**
+[Detail environment, platforms, external resources, and access needs from Round 2]
+
+**Technical Constraints and Standards:**
+[Detail tools, frameworks, performance requirements, and technical preferences from Round 3]
+
+**Workflow and Quality Standards:**
+[Detail workflow preferences, quality standards, coordination needs, and documentation requirements from Round 3]
+
+**Complex/Risky Aspects Requiring Careful Breakdown:**
+[Highlight challenging areas that need extra attention]
+
+**External Coordination Requirements:**
+[Note any handoffs, approval checkpoints, or user-guided actions needed]
+
+**Validation Criteria:**
+[Summarize success states and criteria captured for the requirements, constraints and preferences listed above]
+```
+
+If User requests corrections, return to the relevant Question Round, gather additional context through follow-ups, then present updated summary.
+
+## 8. Research Delegation Protocol
+
+### 8.1. When to Research
+
+**Research IS appropriate when:** User cannot answer (genuinely doesn't know, not just hasn't considered), further clarification questions won't resolve the gap, the gap is specific and bounded, and the answer enables better planning.
+
+**Research is NOT appropriate when:** User should decide (preferences, requirements, acceptance criteria), scope is too broad (would require multiple delegations), or research IS the project deliverable (belongs in Implementation Plan, not Setup).
+
+### 8.2. Research Approach Decision
+
+Choose approach based on scope:
+- **Self-Research:** Small scope, can be completed 'quickly' using available tools (e.g., explore existing codebase documentation or architecture)
+- **Delegation:** Bounded scope, specific question, needs dedicated focus (e.g., research best practices for a specific technology or existing codebase too large to explore 'quickly' using available tools)
+- **Note for Plan:** Large scope, multiple questions, or research is central to project (leave as research task in Implementation Plan)
+
+### 8.3. Self-Research Procedure
+
+For small-scope research using available tools:
+- **Action 1:** Identify the specific question to answer
+- **Action 2:** Use available tools to explore codebase, read documentation
+- **Action 3:** Keep scope limited to avoid excessive context consumption
+- **Action 4:** Integrate findings into current Question Round
+
+Appropriate for brownfield projects needing architecture understanding, understanding existing code structure or patterns, reading project documentation or configuration.
+
+### 8.4. Delegation Procedure
+
+When delegation is appropriate, output the following **Delegation Request block**:
+
+```
+**DELEGATION REQUEST**: Research - <Brief Topic>
+
+**Question to Research**: <Specific question>
+**Why This Helps Planning**: <How this information will inform the Implementation Plan>
+**Why User Clarification Insufficient**: <Why this needs research, not more questions>
+
+**Context Warning**: Setup Agent operates in a single session without handover capability. Delegation consumes context window capacity. Proceed only if this information is essential for creating an accurate Implementation Plan.
+
+**Options**:
+- Approve: I will create a Delegation Prompt for an Ad-Hoc Agent
+- Decline: I will note this as a research need for the Implementation Plan
+- Self-Research: If scope is small, I can explore this myself using file tools
+
+Your choice?
+```
+
+**If User approves:**
+- **Action 1:** Read the Research Delegation Guide: {COMMAND_PATH:Research_Delegation_Guide.md}
+- **Action 2:** Create Delegation Prompt following the guide
+- **Action 3:** User opens Ad-Hoc Agent session and provides delegated research task
+- **Action 4:** Ad-Hoc Agent logs findings to `.apm/Memory/Phase_00_Setup/Delegation_00_<SequentialNum>_Research_<Slug>.md`
+- **Action 5:** Ad-Hoc Agent returns Delegation Report to User
+- **Action 6:** User returns to Setup Agent with report
+
+**After delegation completes:**
+- **Action 1:** Read the Delegation Memory Log at provided path
+- **Action 2:** Integrate findings into current Question Round
+
+---
+
+**End of Guide**
