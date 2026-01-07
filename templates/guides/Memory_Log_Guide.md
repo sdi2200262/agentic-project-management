@@ -1,9 +1,8 @@
 # APM {VERSION} - Memory Log Guide
-This guide defines how Implementation Agents and Ad-Hoc Agents log their work to the APM Memory System.
 
 ## 1. Overview
 
-Memory Logs capture task-level and delegation-level context using structured Markdown files. These logs enable Manager Agents to track progress and make coordination decisions without parsing raw code or chat history.
+This guide defines how APM Implementation Agents and Ad-Hoc Agents log their work to the APM Memory System. APM Memory Logs capture task-level and delegation-level context using structured Markdown files. These logs enable APM Manager Agents to track progress and make coordination decisions without parsing raw code or chat history.
 
 ### 1.1. Log Types
 
@@ -14,8 +13,6 @@ Memory Logs capture task-level and delegation-level context using structured Mar
 
 - **Implementation Agents:** Read this guide to understand Task Memory Log format and workflow
 - **Ad-Hoc Agents:** Read this guide to understand Delegation Memory Log format and workflow
-
----
 
 ## 2. Task Memory Log Format
 
@@ -100,12 +97,10 @@ compatibility_issues: true | false
 [Recommendations for follow-up actions, or "None"]
 ```
 
----
-
 ## 3. Delegation Memory Log Format
 
 Delegation Logs are stored in phase directories alongside Task Memory Logs with naming convention:
-`.apm/Memory/Phase_<NN>_<Slug>/Delegation_<PhaseNum>_<SequentialNum>_<Type>_<Slug>.md`
+`.apm/Memory/Phase_<PhaseNum>_<Slug>/Delegation_<PhaseNum>_<SequentialNum>_<Type>_<Slug>.md`
 
 Where:
 - `<PhaseNum>`: Phase number
@@ -160,27 +155,22 @@ status: Resolved | Unresolved | Escalated
 [Concise reasoning on why this delegation requires Manager intervention]
 ```
 
----
-
 ## 4. Implementation Agent Responsibilities
 
 ### 4.1. Task Memory Log Creation
 
 After task execution, fill in the Task Memory Log at the path provided in the Task Assignment (`memory_log_path`):
-
-**Action 1:** Complete ALL YAML frontmatter fields accurately:
-- Set `agent` to your agent identifier
-- Set `task_id` to the task reference from the assignment
-- Set `status` based on task outcome (`Completed`, `Partial`, or `Blocked`)
-- Set `validation_result` based on validation outcome (`Passed` or `Failed`)
-- Set `failure_point` if validation failed or task blocked
-- Set boolean flags (`delegation`, `important_findings`, `compatibility_issues`) as appropriate
-
-**Action 2:** Complete all applicable Markdown body sections:
-- Always include: Summary, Details, Output, Validation, Issues, Next Steps
-- Include conditional sections only when their corresponding flag is `true`
-
-**Action 3:** Output Task Report to User (keep post-amble minimal)
+- **Action 1:** Complete ALL YAML frontmatter fields accurately:
+  - Set `agent` to your agent identifier
+  - Set `task_id` to the task reference from the assignment
+  - Set `status` based on task outcome (`Completed`, `Partial`, or `Blocked`)
+  - Set `validation_result` based on validation outcome (`Passed` or `Failed`)
+  - Set `failure_point` if validation failed or task blocked
+  - Set boolean flags (`delegation`, `important_findings`, `compatibility_issues`) as appropriate
+- **Action 2:** Complete all applicable Markdown body sections:
+  - Always include: Summary, Details, Output, Validation, Issues, Next Steps
+  - Include conditional sections only when their corresponding flag is `true`
+- **Action 3:** Output Task Report to User (keep post-amble minimal)
 
 ### 4.2. Validation Result Recording
 
@@ -200,30 +190,24 @@ If execution fails before validation:
 - Set `failure_point: Execution` or specific description
 - Document blockers in Issues section
 
----
-
 ## 5. Ad-Hoc Agent Responsibilities
 
 ### 5.1. Delegation Memory Log Creation
 
 After completing delegated work, create and fill the Delegation Memory Log:
-
-**Action 1:** Determine delegation log path:
-- Get phase number from Delegation Prompt context
-- Get next sequential delegation number for that phase
-- Construct path: `.apm/Memory/Phase_<NN>_<Slug>/Delegation_<NN>_<MM>_<Type>_<Slug>.md`
-
-**Action 2:** Complete ALL YAML frontmatter fields:
-- Set `delegation_type` to the type of work performed
-- Set `delegating_agent` to the agent that initiated the delegation
-- Set `phase` to the phase number
-- Set `status` based on outcome (`Resolved`, `Unresolved`, or `Escalated`)
-
-**Action 3:** Complete all Markdown body sections:
-- Always include: Summary, Delegation Context, Findings, Resolution, Integration Notes
-- Include Escalation Justification only if `status: Escalated`
-
-**Action 4:** Output Delegation Report to User (keep post-amble minimal)
+- **Action 1:** Determine delegation log path:
+  - Get phase number from Delegation Prompt context
+  - Get next sequential delegation number for that phase
+  - Construct path: `.apm/Memory/Phase_<PhaseNum>_<Slug>/Delegation_<PhaseNum>_<SequentialNum>_<Type>_<Slug>.md`
+- **Action 2:** Complete ALL YAML frontmatter fields:
+  - Set `delegation_type` to the type of work performed
+  - Set `delegating_agent` to the agent that initiated the delegation
+  - Set `phase` to the phase number
+  - Set `status` based on outcome (`Resolved`, `Unresolved`, or `Escalated`)
+- **Action 3:** Complete all Markdown body sections:
+  - Always include: Summary, Delegation Context, Findings, Resolution, Integration Notes
+  - Include Escalation Justification only if `status: Escalated`
+- **Action 4:** Output Delegation Report to User (keep post-amble minimal)
 
 ### 5.2. Setup Phase Delegations
 
@@ -232,8 +216,6 @@ For delegations initiated by Setup Agent (during Context Synthesis or Project Br
 - Directory is `Phase_00_Setup/`
 - Create directory if it doesn't exist
 - Example: `.apm/Memory/Phase_00_Setup/Delegation_00_01_Research_Tech_Stack.md`
-
----
 
 ## 6. Content Guidelines
 
