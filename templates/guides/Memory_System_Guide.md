@@ -147,6 +147,14 @@ When User returns with a Task Report:
     - Update Implementation Plan if needed
     - Initiate Ad-Hoc Delegation if technical blocker persists
 
+**Escalation Path Determination:**
+
+When a task is `Blocked` or repeated follow-ups fail to resolve issues:
+- **Delegation candidate:** Technical blocker that isolated debugging/research could resolve → Initiate Ad-Hoc Delegation
+- **Plan modification candidate:** Blocker reveals incorrect assumptions, missing dependencies, or scope,requirements or constraints issues → Update Implementation Plan accordingly before continuing
+- **User decision required:** Blocker requires external action, access, or decision outside Agent capabilities → Present options to User with clear recommendation(s)
+- **Scope exceeds current phase:** Blocker affects multiple phases or requires architectural changes → Pause current phase, reassess plan structure with User
+
 ### 3.5. Memory Root Management
 
 At phase completion, append a phase summary to Memory Root:
@@ -164,6 +172,44 @@ At phase completion, append a phase summary to Memory Root:
 ```
 
 Keep summaries ≤30 lines. Reference log files rather than duplicating content.
+
+## 4. Content Guidelines
+
+### 4.1. Memory Root Management
+
+- **Project Overview:** Copy the exact Project Overview paragram from the Implementation Plan header
+- **Phase Summaries:** Keep to ≤30 lines; reference log files rather than duplicating their content
+- **Notes field:** Capture undocumented context, working insights, and cross-phase observations that don't belong in individual logs
+
+### 4.2. Phase Directory Organization
+
+- **Naming consistency:** Always derive slugs from Implementation Plan task/phase titles
+- **Empty log creation:** Create all empty logs of a phase before it's first Task Assignment
+- **Delegation logs placement:** Store side-by-side with Task Memory Logs in the same phase directory
+
+
+### 4.3. Log Review Standards
+
+- **Flag-driven depth:** When `important_findings` or `compatibility_issues` flags are true, you MUST investigate beyond the log itself
+- **Status-driven decisions:** Use the status+validation_result matrix in §3.4 to determine next action; do not improvise
+- **Plan alignment:** Any insight that affects project scope, requirements, constraints, or approach must be reflected in Implementation Plan updates
+- **Escalation discipline:** Follow the Escalation Path Determination framework in §3.4; do not skip directly to User escalation when delegation or plan modification could resolve the issue
+
+
+### 4.4. Communication Tone on Log Review
+
+- **Managerial perspective:** Focus on coordination, progress, and decisions; leave implementation details to logs
+- **Concise updates:** When reporting to User, summarize log findings briefly; User can read full logs if needed
+- **Actionable framing:** Every status update should conclude with clear next action or decision request
+- **Escalation clarity:** When escalating to User, present the situation, options considered, and a clear recommendation
+
+### 4.5. Common Mistakes to Avoid
+
+- **Duplicating log content:** Phase summaries should reference logs, not reproduce them
+- **Ignoring flags:** The `important_findings` and `compatibility_issues` flags exist to force deeper review; skipping this breaks the coordination loop
+- **Forgetting Memory Root updates:** Phase summaries must be appended after each phase completion
+- **Inconsistent naming:** Deviating from the naming conventions breaks cross-referencing between Implementation Plan and Memory
+- **Premature User escalation:** Defaulting to "ask User" before considering delegation or plan modification options
 
 ---
 
