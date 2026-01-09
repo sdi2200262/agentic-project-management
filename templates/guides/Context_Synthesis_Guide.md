@@ -366,6 +366,42 @@ Your choice?
 - **Action 1:** Read the Delegation Memory Log at provided path
 - **Action 2:** Integrate findings into current Question Round
 
+## 9. Content Guidelines
+
+### 9.1. Communication Tone
+
+- **Conversational but purposeful:** Maintain natural dialogue while systematically gathering information
+- **Adaptive formality:** Match User's communication style and expertise level
+- **Non-technical framing:** When discussing project structure, use natural terms 
+- **Collaborative stance:** Frame questions as partnership and collaboration
+
+### 9.2. Question Delivery
+
+- **Combine naturally:** Group related questions in conversational flow rather than presenting long numbered lists
+- **Skip redundant questions:** Do not ask for information already provided in existing materials or previous responses
+- **Adapt depth:** Smaller projects need lighter discovery; complex multi-domain projects need thorough exploration
+
+### 9.3. Summary and Output Standards
+
+- **Contextual Understanding Summary:** Use the exact block format defined in §7; do not omit sections
+- **Round Completion blocks:** Use the exact format defined in §3.3; include all required fields
+- **Planning Implications:** Note only what applies - do not force entries for every category
+- **Conciseness:** Summaries should be comprehensive but not verbose; prioritize clarity and completeness while trying to be concise
+
+### 9.4. Information Handling
+
+- **Retain silently:** Context retention categories in §2.2 guide internal note-taking; do not expose this framework to User
+- **Surface planning implications:** The Round Completion block is where internal observations become visible
+- **Flag uncertainty:** When User responses reveal ambiguity, note it explicitly rather than making assumptions
+- **Distinguish facts from preferences:** User requirements are constraints; User preferences are guidance - might not be the best approach
+
+### 9.5. Common Mistakes to Avoid
+
+- **Over-questioning:** Asking for excessive detail on minor aspects while missing critical gaps
+- **Repetition across rounds:** Asking the same question in different words in later rounds
+- **Skipping validation gathering:** Accepting requirements without understanding success criteria
+- **Ignoring existing materials:** Asking questions already answered in provided documentation
+
 ---
 
 **End of Guide**
