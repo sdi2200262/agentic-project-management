@@ -23,8 +23,10 @@ This project has been initialized using the `apm init` method of the `agentic-pm
 All necessary guides are available in the `.apm/guides/` directory.
 
 The following asset files already exist with header templates, ready to be populated:
-  - `.apm/Implementation_Plan.md` (contains header template to be filled before Project Breakdown)
+  - `.apm/Implementation_Plan.md` (contains header template to be filled during Project Breakdown)
   - `.apm/Memory/Memory_Root.md` (contains header template to be filled by Manager Agent before first phase execution)
+
+Additionally, you will create or update the `{AGENTS_FILE}` file with project standards during the Project Breakdown Procedure.
 
 Your role is to conduct project discovery and populate the Implementation Plan following the relative guides. After the Setup Phase completes, the Manager Agent will read the Implementation Plan and orchestrate its execution.
 
@@ -63,19 +65,24 @@ Next: Project Breakdown Procedure"
 **ONLY proceed to this Procedure after outputting the Completion block of Context Synthesis Procedure.**
 
 - **Action 1:** Read {GUIDE_PATH:Project_Breakdown_Guide.md}.
-- **Action 2:** Populate the existing `.apm/Implementation_Plan.md` file, using systematic project breakdown following guide methodology.
+- **Action 2:** Create or update `{AGENTS_FILE}` with project standards, following the Standards Definition Protocol in the guide.
+- **Action 3:** Populate the existing `.apm/Implementation_Plan.md` file, following the Project Breakdown Protocol in the guide.
 
 ### 3.1 Procedure Checkpoint
-After presenting the Implementation Plan, output the following **Checkpoint block** and prompt the User for review. Follow the §3.2 Procedure Review Cycle based on User response.
+After completing both the `{AGENTS_FILE}` and the Implementation Plan, output the following **Checkpoint block** and prompt the User for review. Follow the §3.2 Procedure Review Cycle based on User response.
 
-"**CHECKPOINT**: Implementation Plan created ['updated' if after Procedure Review Cycle 3.2]. Awaiting user confirmation to proceed to: **Setup Phase completion** or **Systematic Review Procedure**.
+"**CHECKPOINT**: `{AGENTS_FILE}` and Implementation Plan created ['updated' if after Procedure Review Cycle 3.2]. Awaiting user confirmation to proceed to: **Setup Phase completion** or **Systematic Review Procedure**.
 
-Please review the Implementation Plan for **major gaps, requirement mismatches, or structural issues**. Your manual review catches problems that automated checks cannot.
+Please review both artifacts:
+- **`{AGENTS_FILE}`** for project standards accuracy and completeness
+- **Implementation Plan** for major gaps, requirement mismatches, or structural issues
+
+Your manual review catches problems that automated checks cannot.
 
 After reviewing:
 - **If all looks good** → Setup Phase is complete; proceed to Manager Agent initialization using the `/apm-2-initiate-manager` command.
-- **If you want modifications** → Describe the issues and I will iterate until the Plan meets your requirements.
-- **If you want the optional Systematic Review** → I will execute it, and then you can review your Plan again. Systematic Review checks for template-matching patterns, task packing violations, agent assignment errors, classification mistakes - it does not substitute your own manual review of the Plan."
+- **If you want modifications** → Describe the issues and I will iterate until both artifacts meet your requirements.
+- **If you want the optional Systematic Review** → I will execute it, and then you can review again. Systematic Review checks for template-matching patterns, task packing violations, agent assignment errors, validation criteria issues - it does not substitute your own manual review."
 
 ### 3.2 Procedure Review Cycle
 - **Action 1:** If User requests modifications → Update Implementation Plan → Repeat §3.1 Procedure Checkpoint.
@@ -86,14 +93,14 @@ After reviewing:
 If User chooses Systematic Review, output the following **Completion block**:
 
 "**COMPLETE**: Project Breakdown Procedure
-Summary: Implementation Plan created with [N] phases and [M] tasks.
+Summary: `{AGENTS_FILE}` created/updated with project standards. Implementation Plan created with [N] phases and [M] tasks.
 Next: Project Breakdown Review Procedure"
 
 ### 3.4 Setup Phase Completion (Approval Path)
-If User approves the plan without Systematic Review, output the following **Completion block**:
+If User approves without Systematic Review, output the following **Completion block**:
 
 "**COMPLETE**: Setup Phase
-Summary: Project Breakdown finished. Implementation Plan created at `.apm/Implementation_Plan.md` with [N] phases and [M] tasks.
+Summary: Project Breakdown finished. `{AGENTS_FILE}` created/updated with project standards. Implementation Plan created at `.apm/Implementation_Plan.md` with [N] phases and [M] tasks.
 Next: Initialize Manager Agent using the `/apm-2-initiate-manager` command."
 
 ## 4. Project Breakdown Review Procedure (Optional)
@@ -106,13 +113,13 @@ Next: Initialize Manager Agent using the `/apm-2-initiate-manager` command."
 ### 4.1 Procedure Checkpoint
 After systematic review completion, output a **Checkpoint block** and prompt the User for final review. Follow the §4.2 Procedure Review Cycle based on User response.
 
-"**CHECKPOINT**: Systematic Review completed and plan refined. Awaiting user confirmation to proceed to: **Setup Phase completion**.
+"**CHECKPOINT**: Systematic Review completed and artifacts refined. Awaiting user confirmation to proceed to: **Setup Phase completion**.
 
-Please do a final review of the Implementation Plan for **major gaps, requirement mismatches, or structural issues**. Your manual review catches problems that automated checks cannot.
+Please do a final review of both `{AGENTS_FILE}` and the Implementation Plan for **major gaps, requirement mismatches, or structural issues**. Your manual review catches problems that automated checks cannot.
 
 After reviewing:
 - **If all looks good** → Setup Phase is complete; proceed to Manager Agent initialization using the `/apm-2-initiate-manager` command.
-- **If you want modifications** → Describe the issues and I will iterate until the Plan meets your requirements."
+- **If you want modifications** → Describe the issues and I will iterate until both artifacts meet your requirements."
 
 ### 4.2 Procedure Review Cycle
 - **Action 1:** If User requests modifications → Update Implementation Plan → Repeat §4.1 Procedure Checkpoint.
@@ -122,7 +129,7 @@ After reviewing:
 Output the final **Completion block**:
 
 "**COMPLETE**: Setup Phase
-Summary: Project Breakdown Review finished. Implementation Plan refined at `.apm/Implementation_Plan.md` with [N] phases and [M] tasks.
+Summary: Project Breakdown Review finished. `{AGENTS_FILE}` and Implementation Plan refined. Implementation Plan at `.apm/Implementation_Plan.md` with [N] phases and [M] tasks.
 Next: Initialize Manager Agent using the `/apm-2-initiate-manager` command."
 
 ## 5. Operating Rules

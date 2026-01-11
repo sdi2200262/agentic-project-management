@@ -191,9 +191,9 @@ Keep summaries ≤30 lines. Reference log files rather than duplicating content.
 ### 4.3. Log Review Standards
 
 - **Flag-driven depth:** When `important_findings` or `compatibility_issues` flags are true, you MUST investigate beyond the log itself
-- **Status-driven decisions:** Use the status+validation_result matrix in §3.4 to determine next action; do not improvise
+- **Status-driven decisions:** Use the status+validation_result matrix in §3.4 Log Review Protocol to determine next action; do not improvise
 - **Plan alignment:** Any insight that affects project scope, requirements, constraints, or approach must be reflected in Implementation Plan updates
-- **Escalation discipline:** Follow the Escalation Path Determination framework in §3.4; do not skip directly to User escalation when delegation or plan modification could resolve the issue
+- **Escalation discipline:** Follow the Escalation Path Determination framework in §3.4 Log Review Protocol; do not skip directly to User escalation when delegation or plan modification could resolve the issue
 
 
 ### 4.4. Communication Tone on Log Review
