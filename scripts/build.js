@@ -100,7 +100,7 @@ function parseFrontmatter(content) {
  * @param {Date} [now] - Optional timestamp for deterministic testing
  * @returns {string} Content with placeholders replaced
  */
-function replacePlaceholders(content, version, targetDirectories, format, options = {}) {
+function replacePlaceholders(content, version, targetDirectories, format, target, options = {}) {
   const { now = new Date(), commandFileMap = {} } = options;
   let replaced = content
     .replace(/{VERSION}/g, version)
@@ -119,6 +119,10 @@ function replacePlaceholders(content, version, targetDirectories, format, option
 
   const argsPlaceholder = format === 'toml' ? '{{args}}' : '$ARGUMENTS';
   replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
+
+  // Replace {AGENTS_FILE} with target-specific agents file name
+  const agentsFileName = target.id === 'claude' ? 'CLAUDE.md' : 'AGENTS.md';
+  replaced = replaced.replace(/{AGENTS_FILE}/g, agentsFileName);
 
   return replaced;
 }
@@ -217,8 +221,8 @@ async function build(config, version) {
       const isCommand = frontmatter.command_name !== undefined;
       const category = isCommand ? 'command' : 'guide';
 
-      const processedBody = replacePlaceholders(body, version, target.directories, target.format, { commandFileMap });
-      const processedFull = replacePlaceholders(content, version, target.directories, target.format, { commandFileMap });
+      const processedBody = replacePlaceholders(body, version, target.directories, target.format, target, { commandFileMap });
+      const processedFull = replacePlaceholders(content, version, target.directories, target.format, target, { commandFileMap });
 
       const originalFilename = path.basename(templatePath, '.md');
       let outputFilename;

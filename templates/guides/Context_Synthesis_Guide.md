@@ -20,10 +20,10 @@ Gather sufficient context across four categories:
 ### 1.2. Methodology Principles
 
 - **Clarity over exhaustion:** Aim for sufficient contextual understanding, not exhaustive interrogation
-- **Leverage existing material:** Before beginning Question Round 1, scan the workspace for existing materials (README, PRD, requirements, specs). If found, ask User permission to read them and use findings to skip redundant questions.
+- **Leverage existing material:** Before beginning Question Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{AGENTS_FILE}`). If any are found, prompt the User to confirm which materials are relevant to the project, then read those files and use the findings to avoid asking redundant questions.
 - **Adapt to context:** Adapt language and depth to project size, type and user expertise
 - **Iterate within Question Rounds:** Use iterative follow-up questions based on User responses to fill gaps in current Question Round - not later
-- **Research when blocked:** When user clarification is insufficient, use research delegation protocols - See §8 Research Delegation Protocol
+- **Research when blocked:** When user clarification is insufficient, use research delegation protocols. See §8 Research Delegation Protocol.
 
 ## 2. Internal Planning Framework
 
@@ -36,7 +36,30 @@ Gather sufficient context across four categories:
 
 All questions gather context for the Implementation Plan, not how you (Setup Agent) should perform work.
 
-### 2.2. Context Retention Categories
+### 2.2. Planning Perspective
+
+While maintaining natural conversation, internally consider how gathered information translates to Implementation Plan elements:
+
+- **Task Granularity:** How to break work into focused tasks that Implementation Agents can execute independently
+- **Agent Specialization:** What domain boundaries make sense for assigning different Implementation Agents
+- **Domain Organization:** Whether related domains benefit from unified handling (tighter coordination) or separation (parallel progress)
+- **Coordination Points:** Where Implementation Agents will need Manager Agent coordination or cross-agent collaboration
+- **User Involvement Points:** What actions require User input, approval, guidance or external platform/tool access
+- **Task Dependencies:** What must be completed before other work can begin
+- **Quality Integration:** How to embed user preferences as explicit task requirements
+- **Validation Strategy:** How to validate success of each requirement and what criteria apply
+
+### 2.3. Validation Criteria Types
+
+Context Synthesis gathers validation criteria that will be categorized into three types for the Implementation Plan:
+
+- **Programmatic**: Automated verification - tests pass, builds succeed, CI checks pass, scripts execute correctly, linting passes, type checking succeeds
+- **Artifact**: File/output existence and structure - documentation exists, config files present, deliverables have required format and sections, schemas validate
+- **User**: Human judgment required - design approval, content review, architectural decisions, subjective quality assessment
+
+Most requirements combine multiple types (e.g., code changes need Programmatic tests + User review). During discovery, gather the validation criteria and success states depending on the project's requirements.
+
+### 2.4. Context Retention Categories
 
 As you receive User input, internally note planning implications:
 
@@ -68,23 +91,24 @@ As you receive User input, internally note planning implications:
 - User describes tool preferences or technical requirements → Note for execution guidance
 - User indicates tracking or progress validation requirements → Note as task or phase requirements
 
+**Standards Awareness** (informs `{AGENTS_FILE}` creation):
+- User mentions coding conventions or style guides → Retain for standards
+- User describes testing requirements or coverage expectations → Note for standards
+- User specifies documentation format or comment standards → Capture for standards
+- User mentions commit message format or workflow conventions → Retain for standards
+- User references linting rules or static analysis requirements → Note for standards
+
+**Validation Awareness:**
+- User mentions automated checks (tests, CI, linting) → Note as Programmatic validation
+- User describes required outputs or deliverables → Note as Artifact validation
+- User indicates approval or review requirements → Note as User validation
+- User specifies acceptance criteria or success states → Capture and categorize by validation type
+
 **Scope Understanding:**
 - User describes deliverable scale → Carry forward scope implications for workload sizing
 - User mentions timeline constraints → Retain urgency factors for planning decisions
 - User identifies risk areas → Flag for extra attention during breakdown
 - User specifies quality standards or acceptance criteria → Preserve validation requirements
-
-### 2.3. Planning Perspective
-
-While maintaining natural conversation, internally consider how gathered information translates to Implementation Plan elements:
-
-- **Task Granularity:** How to break work into focused tasks that Implementation Agents can execute independently
-- **Agent Specialization:** What domain boundaries make sense for assigning different Implementation Agents
-- **Domain Organization:** Whether related domains benefit from unified handling (tighter coordination) or separation (parallel progress)
-- **Coordination Points:** Where Implementation Agents will need Manager Agent coordination or cross-agent collaboration
-- **User Involvement Points:** What actions require User input, approval, guidance or external platform/tool access
-- **Task Dependencies:** What must be completed before other work can begin
-- **Quality Integration:** How to embed user preferences as explicit task requirements
 
 ## 3. Question Round Protocol
 
@@ -94,19 +118,30 @@ For each Question Round (1-3), use this iteration cycle:
 1. Ask the initial questions defined for the current Round
 2. After each User response, assess gaps: What specific gaps remain? What ambiguities need clarification? What follow-ups would gather missing information?
 3. Strategic decision: If gaps exist, ask targeted follow-up questions; if understanding complete, state completion reasoning and advance
-4. Repeat steps 2-3 until current Round understanding is complete - See §3.3 Round Completion Requirements and §4.3, §5.3, §6.3 for each Round's Gap Assessment Criteria
+4. Repeat steps 2-3 until current Round understanding is complete. See §3.3 Round Completion Requirements and §4.3 Gap Assessment Criteria, §5.3 Gap Assessment Criteria, §6.3 Gap Assessment Criteria for each Round.
 
 **Anti-Repetition Guidance:** Track what has been answered across the conversation. Ask only for missing specifics, not topics already covered. Fill gaps in current Round; try to not defer to later Rounds. If gaps cannot be resolved through User clarification during iteration, consider delegating research. See §8 Research Delegation Protocol.
 
 **Efficiency Guidance:** When asking initial questions, combine related items naturally in conversation. Adapt depth based on project complexity - smaller projects need lighter discovery than large multi-domain efforts.
 
-### 3.2. Validation Gathering
+### 3.2. Validation Criteria Gathering
 
-You must capture and suggest clear success states and criteria for each User requirement to inform Implementation Plan task Validation fields. If the User does not specify how a requirement will be validated, proactively propose concrete success measures (e.g., functional checks, acceptance tests, measurable outcomes) and ask if these suggestions align with their expectations. Use targeted follow-ups such as: "You mentioned [feature X]. Would success mean [suggested success state]?", "Would it be complete when [proposed criteria]?", "Should passing [test/check] validate [component Z]?"
+You must capture and suggest clear success states and criteria for each User requirement to inform Implementation Plan task Validation fields. If the User does not specify how a requirement will be validated, proactively propose concrete success measures and ask if these suggestions align with their expectations.
 
-If the requirement is subjective (e.g., relies on User review or personal judgment), simply ask how the User would determine success, or gently propose acceptance indicators without being specific.
+**Gathering Approach:**
+- Use targeted follow-ups based on what the User has described: "You mentioned [feature X]. Would success mean [suggested success state]?", "Would it be complete when [proposed criteria]?"
+- If the requirement is subjective (relies on User review or personal judgment), ask how they would determine success, or gently propose acceptance indicators
+- Adapt questions to the specific requirement - do not use a fixed question list
 
-Integrate this validation gathering and suggestion process into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
+**Type Awareness:**
+When gathering validation criteria, consider which validation type(s) will apply:
+- If success can be checked automatically (tests, builds, CI, linting) → Programmatic
+- If success means a file or artifact exists with correct and expected structure and data → Artifact
+- If success requires human judgment or approval → User
+
+Many requirements need multiple types. Capture all applicable criteria; type categorization happens in §7 Question Round 4: Final Validation.
+
+Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
 
 ### 3.3. Round Completion Requirements
 
@@ -131,7 +166,7 @@ Ready to proceed to Question Round [N+1].
 - **Round 2**: Work structure, dependencies, technical and resource requirements, complexity assessment, validation criteria
 - **Round 3**: Technical constraints and preferences, process preferences, coordination needs, domain organization, standards
 
-After completing Rounds 1 and 2 and displaying this **Round Completion block**, immediately begin the next Question Round's Initial Questions. See §4.2, §5.2 for Rounds 2 and 3 Initial Questions respectively.
+After completing Rounds 1 and 2 and displaying this **Round Completion block**, immediately begin the next Question Round's Initial Questions. See §4.2 Initial Questions and §5.2 Initial Questions for Rounds 2 and 3 respectively.
 
 After completing Round 3 and displaying this **Round Completion block**, immediately proceed to Question Round 4 and present the Contextual Understanding Summary. See §7 Question Round 4: Final Validation.
 
@@ -150,8 +185,9 @@ Project type and deliverables; problem and purpose; essential features and scope
 5. Do you have existing materials? (PRD, requirements specs, user stories, roadmaps, architecture diagrams, code, research sources, templates)
 6. What is your current plan or vision if not already covered by the above?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
-
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
+
+**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan in §1.2 Methodology Principles, include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your repository. Do you have one elsewhere, or should we create one during Project Breakdown?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during Project Breakdown.
 
 ### 4.3. Gap Assessment Criteria
 
@@ -202,7 +238,7 @@ Select and adapt questions that remain unanswered from these areas:
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Validation Gathering:** If a requirement is missing clear success states and criteria, ask the User to clarify or define them. See §3.2 Validation Gathering.
+**Validation Criteria Gathering:** As requirements emerge, gather validation criteria following §3.2 Validation Gathering.
 
 ### 5.3. Gap Assessment Criteria
 
@@ -210,7 +246,7 @@ After each User response, assess:
 - **Work Structure:** Do you understand dependencies, challenging aspects, and intermediate deliverables?
 - **Technical and Resource Requirements:** Are environment needs, external resources, and platform requirements clear?
 - **Complexity Assessment:** Are challenging areas, timeline constraints, and known risks understood?
-- **Validation Criteria:** Have success states and criteria been captured for core requirements?
+- **Validation Criteria Coverage:** Have validation criteria and success states been captured for core requirements?
 
 **Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §8 Research Delegation Protocol.
 
@@ -249,18 +285,20 @@ Select and adapt questions that remain unanswered from these areas:
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Validation Gathering:** If a process or preference is missing clear success states and criteria, ask the User to clarify or define them. See §3.2 Validation Gathering.
+**Standards Gathering:** As process preferences and constraints emerge, note standards that should apply universally (these inform `{AGENTS_FILE}` content).
+
+**Validation Criteria Gathering:** Continue gathering validation criteria following §3.2 Validation Gathering.
 
 ### 6.3. Gap Assessment Criteria
 
 After each User response, assess:
-- **Technical Constraints and Preferences:** Are required/prohibited tools, frameworks, platforms, and performance requirements clear?
+- **Technical Constraints:** Are required/prohibited tools, frameworks, platforms, and performance requirements clear?
 - **Access and Coordination:** Do you understand account access needs, credential requirements, and manual coordination steps?
-- **Workflow Preferences:** Are workflow patterns, quality standards, and validation approaches clear?
-- **Coordination Needs:** Are review processes, approval gates, and collaboration requirements clear?
+- **Workflow Preferences:** Are workflow patterns, quality standards, and coordination approaches clear?
+- **Approval Requirements:** Are review processes, approval gates, and collaboration requirements clear?
 - **Domain Organization:** If distinct but related domains exist, do you understand User's preference for unified vs separated handling?
-- **Standards Integration:** Are consistency, documentation, and delivery requirements understood?
-- **Reference Context:** If examples mentioned, do you understand their relevance and application?
+- **Standards:** Are coding conventions, documentation requirements, and workflow conventions understood for `{AGENTS_FILE}`?
+- **Validation Coverage:** Have validation criteria and success states been gathered for process and quality requirements?
 
 **Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §8 Research Delegation Protocol.
 
@@ -276,25 +314,22 @@ Output the following **Contextual Understanding Summary block**:
 **Contextual Understanding Summary**
 
 **Requirements and Deliverables:**
-[Summarize essential features, scope, timeline, and skill areas from Round 2]
+[Summarize essential features, scope, timeline, and skill areas]
 
 **Work Domains and Complexity:**
 [Summarize the major work areas and their difficulty level]
-
-**Domain Organization:**
-[Note any User preferences for unified vs separated domain handling]
 
 **Dependencies and Sequencing:**
 [Outline what must happen before what]
 
 **Technical and Resource Requirements:**
-[Detail environment, platforms, external resources, and access needs from Round 2]
+[Detail environment, platforms, external resources, and access needs]
 
 **Technical Constraints and Standards:**
-[Detail tools, frameworks, performance requirements, and technical preferences from Round 3]
+[Detail tools, frameworks, performance requirements, and technical preferences]
 
 **Workflow and Quality Standards:**
-[Detail workflow preferences, quality standards, coordination needs, and documentation requirements from Round 3]
+[Detail workflow preferences, quality standards, coordination needs, and documentation requirements]
 
 **Complex/Risky Aspects Requiring Careful Breakdown:**
 [Highlight challenging areas that need extra attention]
@@ -302,8 +337,22 @@ Output the following **Contextual Understanding Summary block**:
 **External Coordination Requirements:**
 [Note any handoffs, approval checkpoints, or user-guided actions needed]
 
-**Validation Criteria:**
-[Summarize success states and criteria captured for the requirements, constraints and preferences listed above]
+**Validation Approach:**
+- Programmatic: [Summary of automated checks - tests, CI, linting, builds]
+- Artifact: [Summary of required documentation, deliverables, file outputs]
+- User: [Summary of what requires explicit user approval or review]
+
+**Project Standards** (for `{AGENTS_FILE}`):
+- Existing file: [Yes/No - if yes, summary of existing standards to preserve]
+- Code standards: [Gathered conventions, style guide, formatting]
+- Testing standards: [Gathered coverage requirements, test types]
+- Documentation standards: [Gathered comment format, README requirements]
+- Workflow standards: [Gathered commit format, branch naming, PR requirements]
+
+**Domain Organization:**
+- Identified domains: [List of work domains identified]
+- Coupling directives: [Which domains are tightly coupled and should share an agent]
+- Separation directives: [Which domains must remain separate]
 ```
 
 If User requests corrections, return to the relevant Question Round, gather additional context through follow-ups, then present updated summary.
@@ -383,14 +432,14 @@ Your choice?
 
 ### 9.3. Summary and Output Standards
 
-- **Contextual Understanding Summary:** Use the exact block format defined in §7; do not omit sections
-- **Round Completion blocks:** Use the exact format defined in §3.3; include all required fields
+- **Contextual Understanding Summary:** Use the exact block format defined in §7 Question Round 4: Final Validation; do not omit sections
+- **Round Completion blocks:** Use the exact format defined in §3.3 Round Completion Requirements; include all required fields
 - **Planning Implications:** Note only what applies - do not force entries for every category
 - **Conciseness:** Summaries should be comprehensive but not verbose; prioritize clarity and completeness while trying to be concise
 
 ### 9.4. Information Handling
 
-- **Retain silently:** Context retention categories in §2.2 guide internal note-taking; do not expose this framework to User
+- **Retain silently:** Context retention categories in §2.4 Context Retention Categories guide internal note-taking; do not expose this framework to User
 - **Surface planning implications:** The Round Completion block is where internal observations become visible
 - **Flag uncertainty:** When User responses reveal ambiguity, note it explicitly rather than making assumptions
 - **Distinguish facts from preferences:** User requirements are constraints; User preferences are guidance - might not be the best approach
