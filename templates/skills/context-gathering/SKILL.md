@@ -9,12 +9,19 @@ description: Project discovery through structured elicitation of requirements, c
 
 **Reading Agent:** Planner Agent
 
-This skill defines the discovery methodology for the Context Gathering procedure. The goal is gathering sufficient context to create an accurate Implementation Plan that can be executed by other Agents. This skill explains:
-- WHAT information to gather during discovery
-- HOW to structure questioning and follow-ups
-- WHEN to research vs. ask clarifying questions
+This skill defines the discovery methodology for the Context Gathering procedure. The goal is gathering sufficient context to create an accurate Implementation Plan that can be executed by other Agents.
 
-### 1.1 Skill Objectives
+### 1.1 How to Use This Skill
+
+**Execute the Procedure.** The Procedure section contains the actions to perform. Follow each subsection sequentially through all Question Rounds. See §3 Context Gathering Procedure.
+
+**Use Problem Space for reasoning.** When interpreting responses, identifying gaps, or adapting questioning depth, consult the relevant reasoning subsection. See §2 Problem Space.
+
+**Use Policies for decisions.** When encountering branch points (advance vs. follow-up, delegate vs. clarify), apply the relevant policy to determine the appropriate action. See §4 Policies.
+
+**Output only structured blocks.** Present round summaries and validation using the Round Completion Block, Contextual Understanding Summary, and Delegation Request Block formats. Do not expose internal deliberation beyond these structured outputs. See §5 Structural Specifications.
+
+### 1.2 Objectives
 
 Gather sufficient context across four categories:
 - **Vision:** Project goals, deliverables, success criteria
@@ -24,13 +31,13 @@ Gather sufficient context across four categories:
 
 **Goal:** Sufficient context to create an Implementation Plan that enables a Manager Agent to coordinate effectively and Worker Agents to execute focused tasks.
 
-### 1.2 Methodology Principles
+### 1.3 Methodology Principles
 
 - **Clarity over exhaustion:** Aim for sufficient contextual understanding, not exhaustive interrogation
 - **Leverage existing material:** Before beginning Question Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{AGENTS_FILE}`). If any are found, prompt the User to confirm which materials are relevant to the project, then read those files and use the findings to avoid asking redundant questions.
 - **Adapt to context:** Adapt language and depth to project size, type and user expertise
 - **Iterate within Question Rounds:** Use iterative follow-up questions based on User responses to fill gaps in current Question Round - not later
-- **Research when blocked:** When user clarification is insufficient, apply the research delegation policy. See section §8.2 Research Delegation Policy.
+- **Research when blocked:** When user clarification is insufficient, apply the research delegation policy. See §4.2 Research Delegation Policy.
 
 ---
 
@@ -191,23 +198,36 @@ Most requirements combine multiple types (e.g., code changes need Programmatic t
 
 ---
 
-## 3. Question Round Protocol
+## 3. Context Gathering Procedure
+
+This section defines the sequential actions that accomplish Context Gathering. The procedure transforms User responses into structured context for the Implementation Plan.
+
+**Output Blocks:** Round completions use the **Round Completion Block** format. Final validation uses the **Contextual Understanding Summary** format. Research delegation uses the **Delegation Request Block** format. Reasoning content draws from §2 Problem Space for interpretation guidance and §4 Policies for branch point decisions. See §5 Structural Specifications.
+
+**Procedure Flow:**
+1. Question Round Protocol → Governs iteration within each round
+2. Question Round 1 → Existing Materials and Vision
+3. Question Round 2 → Technical Requirements
+4. Question Round 3 → Implementation Approach and Quality
+5. Final Validation → Contextual Understanding Summary presentation and approval
+
+### 3.1 Question Round Protocol
 
 This protocol governs how Question Rounds flow. It defines the iteration pattern and validation gathering approach that applies across all rounds.
 
-### 3.1 Iteration Cycle
+#### 3.1.1 Iteration Cycle
 
 For each Question Round (1-3), use this iteration cycle:
 1. Ask the initial questions defined for the current Round
 2. After each User response, assess gaps: What specific gaps remain? What ambiguities need clarification? What follow-ups would gather missing information?
-3. Strategic decision: Apply the Round Advancement Policy to determine whether to follow up or advance. See section §8.1 Round Advancement Policy.
+3. Strategic decision: Apply the Round Advancement Policy to determine whether to follow up or advance. See §4.1 Round Advancement Policy.
 4. Repeat steps 2-3 until current Round understanding is complete
 
-**Anti-Repetition Guidance:** Track what has been answered across the conversation. Ask only for missing specifics, not topics already covered. Fill gaps in current Round; do not defer to later Rounds. If gaps cannot be resolved through User clarification during iteration, apply the Research Delegation Policy. See section §8.2 Research Delegation Policy.
+**Anti-Repetition Guidance:** Track what has been answered across the conversation. Ask only for missing specifics, not topics already covered. Fill gaps in current Round; do not defer to later Rounds. If gaps cannot be resolved through User clarification during iteration, apply the Research Delegation Policy. See §4.2 Research Delegation Policy.
 
-**Efficiency Guidance:** When asking initial questions, combine related items naturally in conversation. Adapt depth based on project complexity - smaller projects need lighter discovery than large multi-domain efforts. See section §2.5 Questioning Depth Adaptation.
+**Efficiency Guidance:** When asking initial questions, combine related items naturally in conversation. Adapt depth based on project complexity - smaller projects need lighter discovery than large multi-domain efforts. See §2.5 Questioning Depth Adaptation.
 
-### 3.2 Validation Criteria Gathering
+#### 3.1.2 Validation Criteria Gathering
 
 You must capture and suggest clear success states and criteria for each User requirement to inform Implementation Plan task Validation fields. If the User does not specify how a requirement will be validated, proactively propose concrete success measures and ask if these suggestions align with their expectations.
 
@@ -222,19 +242,17 @@ When gathering validation criteria, consider which validation type(s) will apply
 - If success means a file or artifact exists with correct and expected structure and data → Artifact
 - If success requires human judgment or approval → User
 
-Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Final Validation. See section §7 Final Validation.
+Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Final Validation. See §3.5 Final Validation.
 
 Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
 
----
+### 3.2 Question Round 1: Existing Materials and Vision
 
-## 4. Question Round 1: Existing Materials and Vision
-
-### 4.1 Focus Areas
+#### 3.2.1 Focus Areas
 
 Project type and deliverables; problem and purpose; essential features and scope; required skills and expertise areas; existing documentation and materials; current plan or vision; previous work and codebase context.
 
-### 4.2 Initial Questions
+#### 3.2.2 Initial Questions
 
 1. What type of deliverable(s) are you creating? (document, analysis, codebase, dataset, presentation, etc.)
 2. What problem does the project solve? What defines success and completion?
@@ -246,9 +264,9 @@ Project type and deliverables; problem and purpose; essential features and scope
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see section §1.2 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during Work Breakdown.
+**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see §1.3 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during Work Breakdown.
 
-### 4.3 Gap Assessment Criteria
+#### 3.2.3 Gap Assessment Criteria
 
 After each User response, assess:
 - **Project Foundation:** Is the project type and deliverable format clear?
@@ -259,19 +277,17 @@ After each User response, assess:
 - **Vision Clarity:** Are there aspects of their vision that need more detail or clarification?
 - **Material Understanding:** If existing materials mentioned, do you understand their structure and relevance?
 
-**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See section §8.2 Research Delegation Policy.
+**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §4.2 Research Delegation Policy.
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 1 understanding is complete. Before proceeding to Round 2, you must understand: project type and deliverable format, problem being solved and success criteria, essential features and scope, required skill/expertise areas, what exists vs. what needs to be created, user's vision and primary goals, relevant existing materials and their role. See section §8.1 Round Advancement Policy.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 1 understanding is complete. Before proceeding to Round 2, you must understand: project type and deliverable format, problem being solved and success criteria, essential features and scope, required skill/expertise areas, what exists vs. what needs to be created, user's vision and primary goals, relevant existing materials and their role. See §4.1 Round Advancement Policy.**
 
----
+### 3.3 Question Round 2: Technical Requirements
 
-## 5. Question Round 2: Technical Requirements
-
-### 5.1 Focus Areas
+#### 3.3.1 Focus Areas
 
 Work structure and dependencies; technical and resource requirements; complexity and risk assessment; validation criteria; timeline constraints.
 
-### 5.2 Initial Questions
+#### 3.3.2 Initial Questions
 
 Select and adapt questions that remain unanswered from these areas:
 
@@ -299,9 +315,9 @@ Select and adapt questions that remain unanswered from these areas:
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Validation Criteria Gathering:** As requirements emerge, gather validation criteria. See section §3.2 Validation Criteria Gathering.
+**Validation Criteria Gathering:** As requirements emerge, gather validation criteria. See §3.1.2 Validation Criteria Gathering.
 
-### 5.3 Gap Assessment Criteria
+#### 3.3.3 Gap Assessment Criteria
 
 After each User response, assess:
 - **Work Structure:** Do you understand dependencies, challenging aspects, and intermediate deliverables?
@@ -309,19 +325,17 @@ After each User response, assess:
 - **Complexity Assessment:** Are challenging areas, timeline constraints, and known risks understood?
 - **Validation Criteria Coverage:** Have validation criteria and success states been captured for core requirements?
 
-**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See section §8.2 Research Delegation Policy.
+**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §4.2 Research Delegation Policy.
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 2 understanding is complete. Before proceeding to Round 3, you must understand: work breakdown structure and dependencies, technical and resource requirements, complexity and risk factors, validation criteria for core requirements. See section §8.1 Round Advancement Policy.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 2 understanding is complete. Before proceeding to Round 3, you must understand: work breakdown structure and dependencies, technical and resource requirements, complexity and risk factors, validation criteria for core requirements. See §4.1 Round Advancement Policy.**
 
----
+### 3.4 Question Round 3: Implementation Approach and Quality
 
-## 6. Question Round 3: Implementation Approach and Quality
-
-### 6.1 Focus Areas
+#### 3.4.1 Focus Areas
 
 Technical constraints and preferences; workflow preferences and methodologies; quality standards and validation approaches; coordination and approval requirements; domain organization preferences; consistency and documentation standards.
 
-### 6.2 Initial Questions
+#### 3.4.2 Initial Questions
 
 Select and adapt questions that remain unanswered from these areas:
 
@@ -350,9 +364,9 @@ Select and adapt questions that remain unanswered from these areas:
 
 **Standards Gathering:** As process preferences and constraints emerge, note standards that should apply universally (these inform `{AGENTS_FILE}` content).
 
-**Validation Criteria Gathering:** Continue gathering validation criteria. See section §3.2 Validation Criteria Gathering.
+**Validation Criteria Gathering:** Continue gathering validation criteria. See §3.1.2 Validation Criteria Gathering.
 
-### 6.3 Gap Assessment Criteria
+#### 3.4.3 Gap Assessment Criteria
 
 After each User response, assess:
 - **Technical Constraints:** Are required/prohibited tools, frameworks, platforms, and performance requirements clear?
@@ -363,33 +377,31 @@ After each User response, assess:
 - **Standards:** Are coding conventions, documentation requirements, and workflow conventions understood for `{AGENTS_FILE}`?
 - **Validation Coverage:** Have validation criteria and success states been gathered for process and quality requirements?
 
-**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See section §8.2 Research Delegation Policy.
+**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §4.2 Research Delegation Policy.
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Final Validation, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See section §8.1 Round Advancement Policy.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Final Validation, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §4.1 Round Advancement Policy.**
 
----
-
-## 7. Final Validation
+### 3.5 Final Validation
 
 After completing the three Question Rounds, present the gathered context for User review and approval. This is not a question round; it is a validation step to confirm accuracy before proceeding to Work Breakdown.
 
-### 7.1 Summary Presentation
+#### 3.5.1 Summary Presentation
 
-Present a comprehensive Contextual Understanding Summary consolidating all gathered context. See section §9.2 Contextual Understanding Summary for the format.
+Present a comprehensive Contextual Understanding Summary consolidating all gathered context. See §5.2 Contextual Understanding Summary.
 
 The summary must be:
 - **Complete:** All sections populated based on gathered information
 - **Accurate:** Reflects what the User communicated, not assumptions
 - **Categorized:** Validation criteria assigned to appropriate types (Programmatic, Artifact, User)
 
-### 7.2 User Review
+#### 3.5.2 User Review
 
 After presenting the summary, ask the User to review for accuracy and completeness. The User may:
 - **Approve:** Summary is accurate; proceed to Work Breakdown
 - **Request corrections:** Specific sections need adjustment
 - **Provide additional context:** New information not previously covered
 
-### 7.3 Correction Handling
+#### 3.5.3 Correction Handling
 
 If User requests corrections:
 1. Identify which Question Round's focus area the correction relates to
@@ -404,11 +416,11 @@ Repeat until User approves the summary.
 
 ---
 
-## 8. Policies
+## 4. Policies
 
 This section defines the decision rules that govern choices at branch points during Context Gathering execution.
 
-### 8.1 Round Advancement Policy
+### 4.1 Round Advancement Policy
 
 **Decision Domain:** When to advance to the next Question Round vs. continue with follow-ups in the current Round.
 
@@ -424,7 +436,7 @@ This section defines the decision rules that govern choices at branch points dur
 
 **Round Completion Requirements:**
 
-Before advancing to the next Round (Rounds 1-3 only), output a Round Completion Block. See section §9.1 Round Completion Block for the format.
+Before advancing to the next Round (Rounds 1-3 only), output a Round Completion Block. See §5.1 Round Completion Block.
 
 **Round-Specific Completion Criteria:**
 - **Round 1**: Project foundation, problem and purpose, essential scope, required skills, existing materials, vision clarity
@@ -433,9 +445,9 @@ Before advancing to the next Round (Rounds 1-3 only), output a Round Completion 
 
 After completing Rounds 1 and 2 and displaying the Round Completion Block, immediately begin the next Question Round's Initial Questions.
 
-After completing Round 3 and displaying the Round Completion Block, immediately proceed to Final Validation and present the Contextual Understanding Summary. See section §7 Final Validation.
+After completing Round 3 and displaying the Round Completion Block, immediately proceed to Final Validation and present the Contextual Understanding Summary. See §3.5 Final Validation.
 
-### 8.2 Research Delegation Policy
+### 4.2 Research Delegation Policy
 
 **Decision Domain:** When to delegate research to a Delegate Agent vs. continue with User clarification vs. defer to Implementation Plan.
 
@@ -469,7 +481,7 @@ Appropriate for: brownfield projects needing architecture understanding, underst
 
 **Delegation Actions:**
 
-When delegation is appropriate, output a Delegation Request Block. See section §9.3 Delegation Request Block for the format.
+When delegation is appropriate, output a Delegation Request Block. See §5.3 Delegation Request Block.
 
 If User approves:
 1. Read the Research Delegation skill: {SKILL_PATH:delegate-research/SKILL.md}
@@ -483,7 +495,7 @@ After delegation completes:
 1. Read the Delegation Memory Log at provided path
 2. Integrate findings into current Question Round
 
-### 8.3 Ambiguous Response Policy
+### 4.3 Ambiguous Response Policy
 
 **Decision Domain:** How to handle User responses that are unclear, incomplete, or contradictory.
 
@@ -504,7 +516,7 @@ After delegation completes:
 - For undecided items, propose options and ask for preference
 - For unknown items, assess if research would help or if it should be deferred to Implementation Plan
 
-### 8.4 Additional Materials Policy
+### 4.4 Additional Materials Policy
 
 **Decision Domain:** When to request existing documentation or materials from the User.
 
@@ -527,11 +539,11 @@ After delegation completes:
 
 ---
 
-## 9. Structural Specifications
+## 5. Structural Specifications
 
 This section defines the output formats for blocks used during Context Gathering.
 
-### 9.1 Round Completion Block
+### 5.1 Round Completion Block
 
 Output this block before advancing from Rounds 1, 2, or 3 to the next Round:
 
@@ -549,7 +561,7 @@ No additional follow-ups needed for this Round because: [specific reasoning abou
 Ready to proceed to Question Round [N+1].
 ```
 
-### 9.2 Contextual Understanding Summary
+### 5.2 Contextual Understanding Summary
 
 Output this Summary Block during Final Validation for User review:
 
@@ -598,9 +610,9 @@ Output this Summary Block during Final Validation for User review:
 - Separation directives: [Which domains must remain separate]
 ```
 
-### 9.3 Delegation Request Block
+### 5.3 Delegation Request Block
 
-Output this block when research delegation is appropriate. See section §8.2 Research Delegation Policy.
+Output this block when research delegation is appropriate. See §4.2 Research Delegation Policy.
 
 ```
 **DELEGATION REQUEST**: Research - <Brief Topic>
@@ -620,36 +632,36 @@ Your choice?
 
 ---
 
-## 10. Content Guidelines
+## 6. Content Guidelines
 
-### 10.1 Communication Tone
+### 6.1 Communication Tone
 
 - **Conversational but purposeful:** Maintain natural dialogue while systematically gathering information
 - **Adaptive formality:** Match User's communication style and expertise level
 - **Non-technical framing:** When discussing project structure, use natural terms
 - **Collaborative stance:** Frame questions as partnership and collaboration
 
-### 10.2 Question Delivery
+### 6.2 Question Delivery
 
 - **Combine naturally:** Group related questions in conversational flow rather than presenting long numbered lists
 - **Skip redundant questions:** Do not ask for information already provided in existing materials or previous responses
 - **Adapt depth:** Smaller projects need lighter discovery; complex multi-domain projects need thorough exploration
 
-### 10.3 Summary and Output Standards
+### 6.3 Summary and Output Standards
 
-- **Contextual Understanding Summary:** Use the exact format; do not omit sections. See section §9.2 Contextual Understanding Summary.
-- **Round Completion Blocks:** Use the exact format; include all required fields. See section §9.1 Round Completion Block.
+- **Contextual Understanding Summary:** Use the exact format; do not omit sections. See §5.2 Contextual Understanding Summary.
+- **Round Completion Blocks:** Use the exact format; include all required fields. See §5.1 Round Completion Block.
 - **Planning Implications:** Note only what applies - do not force entries for every category
 - **Conciseness:** Summaries should be comprehensive but not verbose; prioritize clarity and completeness while being concise
 
-### 10.4 Information Handling
+### 6.4 Information Handling
 
-- **Retain silently:** Context categorization guides internal note-taking; do not expose this problem space to User. See section §2.4 Context Categorization.
+- **Retain silently:** Context categorization guides internal note-taking; do not expose this problem space to User. See §2.4 Context Categorization.
 - **Surface planning implications:** The Round Completion Block is where internal observations become visible
 - **Flag uncertainty:** When User responses reveal ambiguity, note it explicitly rather than making assumptions
 - **Distinguish facts from preferences:** User requirements are constraints; User preferences are guidance
 
-### 10.5 Common Mistakes to Avoid
+### 6.5 Common Mistakes to Avoid
 
 - **Over-questioning:** Asking for excessive detail on minor aspects while missing critical gaps
 - **Repetition across rounds:** Asking the same question in different words in later rounds
