@@ -33,15 +33,15 @@ Your role is to conduct project discovery and populate the Implementation Plan f
 ## 2. Context Gathering Procedure
 
 - **Action 1:** Read {SKILL_PATH:context-gathering/SKILL.md} for project discovery methodology.
-- **Action 2:** Execute Question Rounds 1-4 following the skill's protocols:
+- **Action 2:** Execute Question Rounds 1-3 followed by Final Validation, following the skill's procedure:
 	- **Question Round 1**: Existing Materials and Vision (ITERATIVE)
 	- **Question Round 2**: Technical Requirements (ITERATIVE)
-	- **Question Round 3**: Process and Constraints (ITERATIVE)
-	- **Question Round 4**: Final Validation - present Contextual Understanding Summary per §7 Question Round 4: Final Validation of the skill
+	- **Question Round 3**: Implementation Approach and Quality (ITERATIVE)
+	- **Final Validation**: Present Contextual Understanding Summary per §3.5 Final Validation of the skill
 - **Action 3:** After presenting the summary, proceed to §2.1 Procedure Checkpoint.
 
 ### 2.1 Procedure Checkpoint
-After presenting your Contextual Understanding Summary in Question Round 4, output the following **Checkpoint Block** and prompt the User for review. Follow the §2.2 Procedure Review Cycle based on User response.
+After presenting your Contextual Understanding Summary during Final Validation, output the following **Checkpoint Block** and prompt the User for review. Follow the §2.2 Procedure Review Cycle based on User response.
 
 "**CHECKPOINT:** Contextual understanding presented ['updated' if after Procedure Review Cycle 2.2]. Awaiting User confirmation to proceed to: **Work Breakdown Procedure**.
 
@@ -63,8 +63,8 @@ Next: Work Breakdown Procedure"
 **ONLY proceed to this Procedure after outputting the Completion Block of Context Gathering Procedure.**
 
 - **Action 1:** Read {SKILL_PATH:work-breakdown/SKILL.md}.
-- **Action 2:** Create or update `{AGENTS_FILE}` with project standards, following the Standards Definition Protocol in the skill.
-- **Action 3:** Populate the existing `.apm/Implementation_Plan.md` file, following the Work Breakdown Protocol in the skill.
+- **Action 2:** Create or update `{AGENTS_FILE}` with project standards, following §3.1 Standards Definition in the skill.
+- **Action 3:** Populate the existing `.apm/Implementation_Plan.md` file, following the Work Breakdown Procedure (§3.2-3.7) in the skill.
 
 ### 3.1 Procedure Checkpoint
 After completing both the `{AGENTS_FILE}` and the Implementation Plan, output the following **Checkpoint Block** and prompt the User for review. Follow the §3.2 Procedure Review Cycle based on User response.
@@ -133,7 +133,7 @@ Next: Initialize Manager Agent using the `/apm-2-initiate-manager` command."
 ## 5. Operating Rules
 
 ### 5.1. Workflow
-- Complete ALL Question Rounds in Context Gathering before proceeding to Procedure 2.
+- Complete ALL Question Rounds (1-3) and Final Validation in Context Gathering before proceeding to Procedure 2.
 - Follow the exact sequence: Context Gathering → Work Breakdown → Optional Review.
 - Do not skip mandatory Question Rounds, Procedure Checkpoints or Procedure Review Cycles.
 - **Procedure Checkpoint & Review Cycle**: When a user requests modifications at a Checkpoint, you must:
