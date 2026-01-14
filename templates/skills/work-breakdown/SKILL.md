@@ -1,13 +1,18 @@
-# APM {VERSION} - Project Breakdown Guide
+---
+name: work-breakdown
+description: Decomposition of gathered context into the Implementation Plan with domain analysis, stage definition, and task breakdown. Defines the Work Breakdown procedure for the Planner Agent.
+---
 
-This guide defines the methodology for the Project Breakdown Procedure, which transforms gathered context into structured project artifacts through forced Chain-of-Thought reasoning, ensuring well-considered task breakdowns.
+# APM {VERSION} - Work Breakdown Skill
+
+This skill defines the methodology for the Work Breakdown procedure, which transforms gathered context into structured project artifacts through forced Chain-of-Thought reasoning, ensuring well-considered task breakdowns.
 
 ## 1. Overview
 
 ### 1.1. Objectives
 
 - Translate gathered context into actionable project structure
-- Define Implementation Agents based on domain organization
+- Define Worker Agents based on domain organization
 - Create tasks with clear objectives, outputs, validation criteria, and dependencies
 - Establish project standards for consistent Agent behavior
 
@@ -15,15 +20,15 @@ This guide defines the methodology for the Project Breakdown Procedure, which tr
 
 **`{AGENTS_FILE}`:** Universal project standards that apply to all Agents. Leverages the always-apply rule pattern in AI Assistants.
 
-**Implementation Plan:** Detailed task breakdown organized by phases, with Agent assignments, validation criteria, and dependency chains for Manager Agent consumption.
+**Implementation Plan:** Detailed task breakdown organized by stages, with Agent assignments, validation criteria, and dependency chains for Manager Agent consumption.
 
 ### 1.3. Scope Adaptation
 
-The breakdown frameworks in this guide provide criteria for making decomposition decisions, not fixed definitions. All concepts (domains, phases, tasks, steps) are relative to project scope and complexity.
+The breakdown frameworks in this skill provide criteria for making decomposition decisions, not fixed definitions. All concepts (domains, stages, tasks, steps) are relative to project scope and complexity.
 
-Phase, task and step definitions should always be adjusted based on the actual size and complexity of the project. Break down the work to provide the right level of detail for the project's needs, applying more granularity when justified by complexity and less when simplicity allows. Let the real scope and requirements guide how work units are identified and organized.
+Stage, task and step definitions should always be adjusted based on the actual size and complexity of the project. Break down the work to provide the right level of detail for the project's needs, applying more granularity when justified by complexity and less when simplicity allows. Let the real scope and requirements guide how work units are identified and organized.
 
-Adapt the methodology to the project based on Context Synthesis findings about scale, complexity, and requirements. The frameworks guide your reasoning; the project's actual scope determines appropriate granularity.
+Adapt the methodology to the project based on Context Gathering findings about scale, complexity, and requirements. The frameworks guide your reasoning; the project's actual scope determines appropriate granularity.
 
 ## 2. Forced Chain-of-Thought Framework
 
@@ -41,7 +46,7 @@ Project Breakdown uses forced Chain-of-Thought (CoT), requiring explicit reasoni
 
 ### 2.2. Chat vs File Separation
 
-**Chat (reasoning):** Domain analysis, phase sequencing, task breakdown reasoning, dependency identification, review decisions. All deliberation happens in chat where User can observey the decision making process and intervene.
+**Chat (reasoning):** Domain analysis, stage sequencing, task breakdown reasoning, dependency identification, review decisions. All deliberation happens in chat where User can observey the decision making process and intervene.
 
 **File (output):** Structured definitions only. Clean, actionable specifications without reasoning artifacts.
 
@@ -51,7 +56,7 @@ Project Breakdown uses forced Chain-of-Thought (CoT), requiring explicit reasoni
 
 ### 3.1. Input Categories
 
-Project Breakdown requires the following context from Context Synthesis.
+Work Breakdown requires the following context from Context Gathering.
 
 **Project Definition:**
 - Project vision, goals, and success criteria
@@ -77,7 +82,7 @@ Project Breakdown requires the following context from Context Synthesis.
 - Coding conventions and style requirements
 - Testing requirements and coverage expectations
 - Documentation and commit conventions
-- Existing `{AGENTS_FILE}` contents (if found during Context Synthesis workspace scan)
+- Existing `{AGENTS_FILE}` contents (if found during Context Gathering workspace scan)
 
 **Validation Approach:**
 - Programmatic validation patterns (tests, CI, automated checks)
@@ -90,7 +95,7 @@ Each input category translates to specific artifacts:
 
 **Project Definition → Implementation Plan Structure**
 - Vision and goals → Project Overview header field
-- Success criteria and deliverables → Phase and Task objectives
+- Success criteria and deliverables → Stage and Task objectives
 - Scope boundaries → Explicit distinction between Agent and User work
 
 **Technical Requirements → Task Definitions**
@@ -105,7 +110,7 @@ Each input category translates to specific artifacts:
 - Coordination requirements → Dependency markers, User validation needs
 
 **Domain Organization → Agent Assignments**
-- Identified domains → Implementation Agent definitions
+- Identified domains → Worker Agent definitions
 - Coupling directives → Merged Agent assignments
 - Separation directives → Distinct Agent boundaries
 
@@ -149,7 +154,7 @@ The number of domains and their level of detail should be determined by the actu
 
 ### 4.1. Domain Identification
 
-Identify logical work domains from Context Synthesis findings. Each domain represents a distinct area requiring a specific mental model or skill set.
+Identify logical work domains from Context Gathering findings. Each domain represents a distinct area requiring a specific mental model or skill set.
 
 **Identification patterns:**
 
@@ -169,15 +174,15 @@ Domain granularity requires balancing two concerns: **over-separation** (too man
 
 **Split indicators (over-consolidation):**
 - Work requires fundamentally different mental models or skill sets
-- Context switching would disrupt Implementation Agent execution flow
+- Context switching would disrupt Worker Agent execution flow
 - Domain scope is too broad for consistent technical knowledge requirements
-- Coupling directives from Context Synthesis indicate separation
+- Coupling directives from Context Gathering indicate separation
 
 **Combine indicators (over-separation):**
 - Domains share the same mental model and skill requirements
 - Work naturally builds upon itself with tight dependencies
 - Separation would create excessive cross-Agent coordination
-- Coupling directives from Context Synthesis indicate unified handling
+- Coupling directives from Context Gathering indicate unified handling
 
 **Granularity decision framework:**
 - Do all tasks within this domain require similar thinking approach?
@@ -187,71 +192,71 @@ Domain granularity requires balancing two concerns: **over-separation** (too man
 
 ### 4.3. Agent Assignment
 
-Assign Implementation Agents based on identified domains:
+Assign Worker Agents based on identified domains:
 
 **Assignment criteria:**
-- One Implementation Agent per identified logical domain
+- One Worker Agent per identified logical domain
 - Descriptive identifiers reflecting domain or domains scope: `[Name] Agent`
 - Minimize cross-Agent dependencies through coherent domain boundaries
 - Note that workload review may require Agent subdivision; see §8.6 Plan Finalization.
 
-## 5. Phase Analysis Framework
+## 5. Stage Analysis Framework
 
-The number and granularity of phases should be based on the actual size and complexity of the project, following the adaptation guidelines in §1.3. Always match phase analysis to what is needed for this project, rather than applying fixed patterns.
+The number and granularity of stages should be based on the actual size and complexity of the project, following the adaptation guidelines in §1.3. Always match stage analysis to what is needed for this project, rather than applying fixed patterns.
 
-### 5.1. Phase Identification
+### 5.1. Stage Identification
 
-Identify logical project phases from Context Synthesis workflow patterns. Each phase represents a milestone grouping of related work.
+Identify logical project stages from Context Gathering workflow patterns. Each stage represents a milestone grouping of related work.
 
 **Identification patterns:**
 
 *Complexity Pattern Analysis:*
-- Layered complexity → Hierarchical phases with progressive dependencies
-- Sequential patterns → Linear phases following natural workflow
-- Concurrent work streams → Parallel phases organized by domain or component
+- Layered complexity → Hierarchical stages with progressive dependencies
+- Sequential patterns → Linear stages following natural workflow
+- Concurrent work streams → Parallel stages organized by domain or component
 
 *Start-to-Finish Logic:*
 - Project initiation from retained context
-- Continuity workflow between phases
+- Continuity workflow between stages
 - Completion and deliverable boundaries
 - Natural progression without forced dependencies
-- Parallel, no-dependency phases: order by practical preference
+- Parallel, no-dependency stages: order by practical preference
 
-### 5.2. Phase Granularity Balance
+### 5.2. Stage Granularity Balance
 
-Phase granularity requires balancing two concerns: **over-fragmentation** (too many small phases creating unnecessary checkpoints) and **over-consolidation** (merged phases obscuring natural milestones).
+Stage granularity requires balancing two concerns: **over-fragmentation** (too many small stages creating unnecessary checkpoints) and **over-consolidation** (merged stages obscuring natural milestones).
 
 **Split indicators (over-consolidation):**
-- Phase contains unrelated work streams with no natural connection
+- Stage contains unrelated work streams with no natural connection
 - Extensive research requirements block subsequent work
-- Testing and validation requirements warrant dedicated phases
+- Testing and validation requirements warrant dedicated stages
 - Bottlenecks and critical path items create natural boundaries
-- Phase scope is too broad to deliver coherent value
+- Stage scope is too broad to deliver coherent value
 
 **Combine indicators (over-fragmentation):**
-- Phases are artificially separated with immediate handoffs
-- Simple or limited scope doesn't warrant separate phases
+- Stages are artificially separated with immediate handoffs
+- Simple or limited scope doesn't warrant separate stages
 - Separation creates unnecessary coordination overhead
-- Combined phases would still deliver coherent, independent value
+- Combined stages would still deliver coherent, independent value
 
 **Granularity decision framework:**
-- Does each phase deliver independent value toward project completion?
-- Do phase boundaries align with workflow relationships and natural checkpoints?
-- Does phase organization reduce or increase coordination complexity?
-- Does phase scope support Implementation Agent context preservation?
+- Does each stage deliver independent value toward project completion?
+- Do stage boundaries align with workflow relationships and natural checkpoints?
+- Does stage organization reduce or increase coordination complexity?
+- Does stage scope support Worker Agent context preservation?
 
-### 5.3. Phase Structure
+### 5.3. Stage Structure
 
-Each phase in the Implementation Plan contains:
+Each stage in the Implementation Plan contains:
 
-**Phase header:** `## Phase N: [Name]`
+**Stage header:** `## Stage N: [Name]`
 
-**Naming phases:** Phase names should reflect the domain(s), objectives, and main deliverables of the phase. Choose clear, goal-oriented names that describe the key work being accomplished.
+**Naming stages:** Stage names should reflect the domain(s), objectives, and main deliverables of the stage. Choose clear, goal-oriented names that describe the key work being accomplished.
 
-**Phase contents:**
-- Tasks for the phase (see §6 Task Analysis Framework)
+**Stage contents:**
+- Tasks for the stage (see §6 Task Analysis Framework)
 - Each task contains steps (see §7 Step Analysis Framework)
-- Task dependencies within and across phases
+- Task dependencies within and across stages
 
 ## 6. Task Analysis Framework
 
@@ -259,10 +264,10 @@ The number and granularity of tasks and steps should be based on the actual size
 
 ### 6.1. Task Identification
 
-Derive tasks from phase objectives by identifying distinct work units that advance the phase toward completion.
+Derive tasks from stage objectives by identifying distinct work units that advance the stage toward completion.
 
 **Identification process:**
-1. Review phase objective and required deliverables
+1. Review stage objective and required deliverables
 2. Identify what work units are needed to produce those deliverables
 3. Group related work that shares context, domain, and validation approach
 4. Assess each potential task against granularity criteria (§6.2)
@@ -277,14 +282,14 @@ Derive tasks from phase objectives by identifying distinct work units that advan
 
 Task granularity requires balancing two failure modes: **task packing** (too much in one task) and **over-decomposition** (too many tiny tasks). Neither extreme serves project execution well.
 
-**Validation and iteration:** The validation criteria enable Implementation Agents to iterate on failures. Programmatic and Artifact validation allow autonomous correction cycles. User validation provides natural checkpoints where human judgment guides iteration. Task scope should align with the validation approach, matching the iteration pattern to the work's requirements.
+**Validation and iteration:** The validation criteria enable Worker Agents to iterate on failures. Programmatic and Artifact validation allow autonomous correction cycles. User validation provides natural checkpoints where human judgment guides iteration. Task scope should align with the validation approach, matching the iteration pattern to the work's requirements.
 
 **Split indicators (task packing):**
 - Multiple unrelated deliverables combined
 - Work spans multiple Agent domains or skill sets
 - Internal dependencies where later steps require earlier steps to be validated first
 - Validation criteria cover unrelated concerns
-- Complexity significantly exceeds peer tasks in the phase
+- Complexity significantly exceeds peer tasks in the stage
 
 **Combine indicators (over-decomposition):**
 - Related work artificially separated into sequential micro-tasks
@@ -381,45 +386,47 @@ Each step in a task contains:
 
 **Steps vs sub-tasks:** If a step requires its own validation before subsequent steps can proceed, it indicates task packing. The "step" is actually a separate task. Split accordingly.
 
-### 7.4. Ad-Hoc Delegation Steps
+### 7.4. Delegate Agent Steps
 
 When investigation, exploration, research or generally context-heavy and isolated work is needed within a task, include a delegation step.
 
-**Format:** "Ad-Hoc Delegation: <purpose>"
+**Format:** "Delegate Agent: <purpose>"
 
-**Ad-Hoc Delegation Usage Patterns and Guide References:**
-- **Debug delegation:** For complex bugs that require isolated debugging focus. Include guide reference: {GUIDE_PATH:Debug_Delegation_Guide.md}
-- **Research delegation:** For knowledge gaps that require research to inform later steps. Include guide reference: {GUIDE_PATH:Research_Delegation_Guide.md}
-- **Refactor delegation:** For code restructuring or clean-up requiring an isolated refactoring scope. Include guide reference if a relevant guide exists.
+**Delegation Usage Patterns and Skill References:**
+- **Debug delegation:** For complex bugs that require isolated debugging focus. Include skill reference: {SKILL_PATH:delegate-debug}
+- **Research delegation:** For knowledge gaps that require research to inform later steps. Include skill reference: {SKILL_PATH:delegate-research}
+- **Refactor delegation:** For code restructuring or clean-up requiring an isolated refactoring scope. Include skill reference if a relevant skill exists.
 - **Other delegation:** For any other context-heavy or investigation step not covered above, clearly describe the specific purpose and scope of the delegation step in the task.
 
-**Note:** Always include the relevant delegation guide reference for debug and research steps as shown. For 'other' and 'refactor', add guide references if available and be explicit about the purpose.
+**Note:** Always include the relevant delegation skill reference for debug and research steps as shown. For 'other' and 'refactor', add skill references if available and be explicit about the purpose.
 
-## 8. Project Breakdown Protocol
+## 8. Work Breakdown Protocol
 
 **Progression Gates:** Each action must complete before proceeding to the next. No skipping or batching unless explicitly instructed by User.
 
-**Deliberation Scaling:** Reasoning depth matches decision complexity. All decisions trace to Context Synthesis inputs and framework criteria (§4-7). Use "User specified/requested during Context Synthesis" attribution where applicable.
+**Deliberation Scaling:** Reasoning depth matches decision complexity. All decisions trace to Context Gathering inputs and framework criteria (§4-7). Use "User specified/requested during Context Gathering" attribution where applicable.
+
+**Output Blocks:** This protocol uses **Reasoning Blocks** and **Summary Blocks** to present analysis in chat. Each analysis type (Domain Analysis, Stage Analysis, Task Analysis, etc.) follows the Reasoning Block format.
 
 **Protocol Flow:**
 - Standards Definition → Write to `{AGENTS_FILE}`
 - Implementation Plan Header Initialization → Update Implementation Plan header (Project Name and Project Overview)
 - Domain Analysis → Update Implementation Plan header (Agents field)
-- Phase & Task Analysis → Identify ALL phases with objectives AND tasks, update Implementation Plan header (Phases field)
-- Phase Cycles → Per phase: detailed task analysis for identified tasks, append to Implementation Plan body
+- Stage & Task Analysis → Identify ALL stages with objectives AND tasks, update Implementation Plan header (Stages field)
+- Stage Cycles → Per stage: detailed task analysis for identified tasks, append to Implementation Plan body
 - Plan Finalization → Workload review, dependency review
 - User Approval → Review and iterate
 
 ### 8.1. Standards Definition
 
-**Action 1:** Categorize standards from Context Synthesis in chat:
+**Action 1:** Categorize standards from Context Gathering in chat:
 ```
-- [Category]: [standards] → APM_STANDARDS because User specified [requirement] during Context Synthesis / [applies universally]
+- [Category]: [standards] → APM_STANDARDS because User specified [requirement] during Context Gathering / [applies universally]
 - [Category]: [standards] → Task guidance because User requested [specific approach] for [certain work]
 - ...
 ```
 
-**Action 2:** Reference `{AGENTS_FILE}` status from Context Synthesis:
+**Action 2:** Reference `{AGENTS_FILE}` status from Context Gathering:
 - If existing file found: Note contents to preserve outside APM_STANDARDS block
 - If no existing file: New file will be created with APM_STANDARDS block only
 
@@ -427,7 +434,7 @@ When investigation, exploration, research or generally context-heavy and isolate
 - If file exists: Preserve existing content outside block, append APM_STANDARDS block
 - If creating new: Create file with APM_STANDARDS block only
 
-**Duplication Avoidance:** If universal standards gathered during Context Synthesis overlap with existing file contents, reference them from inside APM_STANDARDS block (e.g., "See [Section] above") rather than duplicating. Only add new standards not already covered.
+**Duplication Avoidance:** If universal standards gathered during Context Gathering overlap with existing file contents, reference them from inside APM_STANDARDS block (e.g., "See [Section] above") rather than duplicating. Only add new standards not already covered.
 
 **Namespace block structure:**
 ```
@@ -448,33 +455,33 @@ APM_STANDARDS {
 
 ### 8.2. Implementation Plan Header Initialization
 
-**Action 1:** Determine project name from Context Synthesis:
-- If User specified a project name during Context Synthesis: Use that name exactly as provided
-- If no name specified: Generate a concise, descriptive name based on project type, deliverable, and primary purpose from Context Synthesis findings
+**Action 1:** Determine project name from Context Gathering:
+- If User specified a project name during Context Gathering: Use that name exactly as provided
+- If no name specified: Generate a concise, descriptive name based on project type, deliverable, and primary purpose from Context Gathering findings
 
 **Action 2:** Update Implementation Plan header:
 - Replace `<Project Name>` in title with determined project name
-- Fill **Project Overview** field with 3-5 sentences synthesizing high-level project description from Context Synthesis inputs:
+- Fill **Project Overview** field with 3-5 sentences synthesizing high-level project description from Context Gathering inputs:
 	- Project type and primary deliverable
 	- Core problem being solved or goal being achieved
 	- Essential scope and key features
 	- Success criteria or completion indicators
 	- Keep overview concise and focused on what the project accomplishes, not how it will be built
-- Fill **Last Modification** field: "Plan creation by the Setup Agent."
+- Fill **Last Modification** field: "Plan creation by the Planner Agent."
 
 ### 8.3. Domain Analysis Protocol
 
 **Action 1:** Present domain decisions in chat (applying §4.1-4.2):
 ```
 **Domain Analysis:**
-- [Domain]: requires [mental model/skill set] → separate because User specified [separation directive] during Context Synthesis / [distinct expertise reasoning]
-- [Domain]: requires [mental model/skill set] → combined with [X] because User requested [coupling directive] during Context Synthesis / [shared model reasoning]
+- [Domain]: requires [mental model/skill set] → separate because User specified [separation directive] during Context Gathering / [distinct expertise reasoning]
+- [Domain]: requires [mental model/skill set] → combined with [X] because User requested [coupling directive] during Context Gathering / [shared model reasoning]
 - ...
 ```
 
-**Action 2:** Present Implementation Agent assignments:
+**Action 2:** Present Worker Agent assignments:
 ```
-**Proposed Implementation Agents:**
+**Proposed Worker Agents:**
 - [Name] Agent: [domains] - [responsibility, scope]
 - [Name] Agent: [domains] - [responsibility, scope]
 - ...
@@ -485,46 +492,46 @@ APM_STANDARDS {
 * **Agents:** [Name] Agent, [Name] Agent ...
 ```
 
-### 8.4. Phase Analysis Protocol
+### 8.4. Stage Analysis Protocol
 
-Identify all phases and their tasks upfront. Detailed task analysis occurs in §8.5 Phase Cycles.
+Identify all stages and their tasks upfront. Detailed task analysis occurs in §8.5 Stage Cycles.
 
-**Action 1:** Present phase structure with task identification in chat. For each phase (applying §5.1-5.2, §6.1-6.2):
+**Action 1:** Present stage structure with task identification in chat. For each stage (applying §5.1-5.2, §6.1-6.2):
 
 ```
-**Phase Analysis:**
-* **Phase [N]:** [Name]
-- **Objective:** [phase goal]
+**Stage Analysis:**
+* **Stage [N]:** [Name]
+- **Objective:** [stage goal]
 - **Boundary:** [start condition] → [end milestone] because [workflow/dependency reasoning]
 - **Tasks:**
   - **Task N.1:** [Name] - delivers [output] because [task necessity reasoning per §6.1-6.2]
   - **Task N.2:** [Name] - delivers [output] because [task necessity reasoning]
   - ...
 
-**Note:** If a phase requires foundational research before other tasks can proceed, include an Ad-Hoc Research task at position N.1. Only include research tasks when genuine uncertainty or knowledge gaps exist.
+**Note:** If a stage requires foundational research before other tasks can proceed, include a Delegate Agent Research task at position N.1. Only include research tasks when genuine uncertainty or knowledge gaps exist.
 ```
 
 **Action 2:** Update Implementation Plan header:
-- Fill **Phases** field with count and list
+- Fill **Stages** field with count and list
 
-### 8.5. Phase Cycles Protocol
+### 8.5. Stage Cycles Protocol
 
-For each phase identified in §8.4, complete detailed task analysis for the tasks identified within that phase. Execute this cycle in phase order, completing all tasks for the current phase before proceeding to the next.
+For each stage identified in §8.4, complete detailed task analysis for the tasks identified within that stage. Execute this cycle in stage order, completing all tasks for the current stage before proceeding to the next.
 
-**Action 1:** State context integration for current phase:
+**Action 1:** State context integration for current stage:
 ```
-**Phase Context:**
-* **Phase [N]:** [Name]
-* **Context Synthesis Inputs:** User specified [requirements/constraints] that influence task execution
+**Stage Context:**
+* **Stage [N]:** [Name]
+* **Context Gathering Inputs:** User specified [requirements/constraints] that influence task execution
 ```
 
-**Action 2:** Complete task analysis for each task identified in §8.4 for this phase:
+**Action 2:** Complete task analysis for each task identified in §8.4 for this stage:
 
 ```
 **Task Analysis:**
 * **Task [X.Y]:** [Name] (identified in §8.4)
 - **Scope:** [goal] → [deliverables]
-- **Context Input:** User specified [requirement] during Context Synthesis / [relevant constraints]
+- **Context Input:** User specified [requirement] during Context Gathering / [relevant constraints]
 - **Agent:** [Name] Agent because [domain fit] / User requested [agent preference]
 - **Validation:** [Type(s) from §3.3] because [deliverable] requires [automated check / artifact verification / user judgment]. If User type: Agent pauses for review.
 - **Dependencies:** Task [A.B] by [Agent] for [what's needed] | None
@@ -538,12 +545,12 @@ For each phase identified in §8.4, complete detailed task analysis for the task
 - ...
 ```
 
-**Action 3:** Append phase to Implementation Plan body:
-- Phase header: `## Phase N: [Name]`
+**Action 3:** Append stage to Implementation Plan body:
+- Stage header: `## Stage N: [Name]`
 - Task blocks following format from §6.3 Task Structure
-- Single write operation per phase cycle
+- Single write operation per stage cycle
 
-**Proceed to next phase from §8.4. Repeat Actions 1-3 until all phases documented.**
+**Proceed to next stage from §8.4. Repeat Actions 1-3 until all stages documented.**
 
 ### 8.6. Plan Finalization
 
@@ -590,7 +597,7 @@ For each phase identified in §8.4, complete detailed task analysis for the task
 ```
 **Implementation Plan Summary:**
 * **Agents:** [count] ([list names])
-* **Phases:** [count] ([list names with task counts])
+* **Stages:** [count] ([list names with task counts])
 * **Total Tasks:** [count]
 * **Cross-Agent Dependencies:** [count]
 ```
@@ -604,9 +611,23 @@ For each phase identified in §8.4, complete detailed task analysis for the task
 
 **Action 2:** Handle modification requests through targeted revisions. Iterate until explicit User approval.
 
-## 9. Content Guidelines
+## 9. Procedure Completion
 
-### 9.1. Quality Standards
+After Work Breakdown is complete and the User approves both `{AGENTS_FILE}` and the Implementation Plan:
+
+1. **Procedure Checkpoint**: The calling command (Planner Agent Initiation Prompt) handles the Checkpoint Block and Procedure Review Cycle
+2. **Procedure Completion**: After User approval, the calling command outputs a **Completion Block**
+3. **Progression Gate**: The agent must NOT proceed to the next phase until the Completion Block is output
+
+The Work Breakdown procedure is complete when:
+- `{AGENTS_FILE}` has been created/updated with project standards
+- Implementation Plan has been populated with all stages and tasks
+- Plan Finalization review (workload and dependencies) has been completed
+- The Completion Block has been output by the calling command
+
+## 10. Content Guidelines
+
+### 10.1. Quality Standards
 
 **Implementation Plan:**
 - Each task understandable without external reference
@@ -619,7 +640,7 @@ For each phase identified in §8.4, complete detailed task analysis for the task
 - Concrete and actionable (not "write good code")
 - No duplication of existing project standards in the file; reference instead
 
-### 9.2. Common Mistakes
+### 10.2. Common Mistakes
 
 - **Task packing:** Multiple deliverables in one task → Split with dependencies
 - **Over-decomposition:** Excessive tiny tasks → Tasks should be meaningful work units
@@ -628,4 +649,4 @@ For each phase identified in §8.4, complete detailed task analysis for the task
 
 ---
 
-**End of Guide**
+**End of Skill**
