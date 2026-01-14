@@ -58,7 +58,7 @@ function resolveAssistantExpectations(target) {
   return {
     ...defaults,
     ...overrides,
-    guideArgsPlaceholder: overrides.guideArgsPlaceholder ?? defaults.argsPlaceholder,
+    skillArgsPlaceholder: overrides.skillArgsPlaceholder ?? defaults.argsPlaceholder,
     target,
   };
 }
@@ -70,8 +70,8 @@ function expectMarkdownCommandContent(content, { argsPlaceholder, target, comman
     expect(content.includes(target.directories.commands)).toBe(true);
   }
 
-  if (target.directories?.guides) {
-    expect(content.includes(target.directories.guides)).toBe(true);
+  if (target.directories?.skills) {
+    expect(content.includes(target.directories.skills)).toBe(true);
   }
 
   // The template body includes {COMMAND_PATH:Example.md}; after build it should reference the
@@ -235,25 +235,37 @@ describe('replacePlaceholders()', () => {
     const template = [
       'Version: {VERSION}',
       'Time: {TIMESTAMP}',
-      'Guide: {GUIDE_PATH:guide.md}',
+      'Skill: {SKILL_PATH:skill.md}',
       'Cmd: {COMMAND_PATH:cmd.md}',
       'Args: {ARGS}',
+      'Agents: {AGENTS_FILE}',
     ].join('\n');
 
-    const out = replacePlaceholders(template, '1.2.3', { guides: '/g', commands: '/c' }, 'markdown');
+    const mockTarget = { id: 'test', name: 'Test' };
+    const out = replacePlaceholders(template, '1.2.3', { skills: '/s', commands: '/c' }, 'markdown', mockTarget);
 
     expect(out).toMatch(/Version: 1\.2\.3/);
     expect(out.includes('{TIMESTAMP}')).toBe(false);
-    expect(out).toMatch(/Guide: \/g\/(guide\.md|guide\.md)/);
+    expect(out).toMatch(/Skill: \/s\/(skill\.md|skill\.md)/);
     expect(out).toMatch(/Cmd: \/c\/(cmd\.md|cmd\.md)/);
     expect(out).toMatch(/Args: \$ARGUMENTS/);
+    expect(out).toMatch(/Agents: AGENTS\.md/);
   });
 
   it('replaces version, timestamp, paths and args (toml)', () => {
-    const template = 'Args: {ARGS}\nGuide: {GUIDE_PATH:guide.md}\n';
-    const out = replacePlaceholders(template, '9.9.9', { guides: '/G', commands: '/C' }, 'toml');
+    const template = 'Args: {ARGS}\nSkill: {SKILL_PATH:skill.md}\nAgents: {AGENTS_FILE}\n';
+    const mockTarget = { id: 'gemini', name: 'Gemini' };
+    const out = replacePlaceholders(template, '9.9.9', { skills: '/S', commands: '/C' }, 'toml', mockTarget);
     expect(out).toMatch(/Args: \{\{args\}\}/);
-    expect(out).toMatch(/Guide: \/G\/(guide\.md|guide\.md)/);
+    expect(out).toMatch(/Skill: \/S\/(skill\.md|skill\.md)/);
+    expect(out).toMatch(/Agents: AGENTS\.md/);
+  });
+
+  it('uses CLAUDE.md for claude target', () => {
+    const template = 'Agents: {AGENTS_FILE}';
+    const claudeTarget = { id: 'claude', name: 'Claude Code' };
+    const out = replacePlaceholders(template, '1.0.0', { skills: '/s', commands: '/c' }, 'markdown', claudeTarget);
+    expect(out).toMatch(/Agents: CLAUDE\.md/);
   });
 });
 
@@ -311,9 +323,9 @@ async function createTestFixtures(dir, options = {}) {
   const sourceDir = path.join(dir, 'templates');
   await fs.ensureDir(path.join(sourceDir, 'commands'));
 
-  const defaultGuideTemplate = [
-    '# Guide Title',
-    'This is a guide for {VERSION}.',
+  const defaultSkillTemplate = [
+    '# Skill Title',
+    'This is a skill for {VERSION}.',
     'Args echo: {ARGS}',
   ].join('\n');
 
@@ -325,15 +337,15 @@ async function createTestFixtures(dir, options = {}) {
     '---',
     'Body with placeholders:',
     ' - {ARGS}',
-    ' - {GUIDE_PATH:Guide.md}',
+    ' - {SKILL_PATH:Skill.md}',
     ' - {COMMAND_PATH:Example.md}',
   ].join('\n');
 
-  const guideTemplate = options.guideTemplate ?? defaultGuideTemplate;
+  const skillTemplate = options.skillTemplate ?? defaultSkillTemplate;
   const commandTemplate = options.commandTemplate ?? defaultCommandTemplate;
   const packageVersion = options.packageVersion ?? '0.0.0';
 
-  await fs.writeFile(path.join(sourceDir, 'Guide.md'), guideTemplate, 'utf8');
+  await fs.writeFile(path.join(sourceDir, 'Skill.md'), skillTemplate, 'utf8');
   await fs.writeFile(path.join(sourceDir, 'commands', 'Example.md'), commandTemplate, 'utf8');
 
   await writePackageJson(dir, packageVersion);
@@ -343,7 +355,7 @@ async function createTestFixtures(dir, options = {}) {
 
 // ---------------------------------------------------------------------------
 describe('build()', () => {
-  it('generates command and guide outputs for both markdown and toml targets', async () => {
+  it('generates command and skill outputs for both markdown and toml targets', async () => {
     await withTempDir('build-run', async (dir) => {
       const sourceDir = await createTestFixtures(dir);
       const outDir = path.join(dir, 'out');
@@ -356,14 +368,14 @@ describe('build()', () => {
             name: 'GitHub Copilot',
             bundleName: 'apm-copilot.zip',
             format: 'markdown',
-            directories: { guides: '.github/prompts', commands: '.github/prompts' },
+            directories: { skills: '.github/skills', commands: '.github/prompts' },
           },
           {
             id: 'gemini',
             name: 'Gemini CLI',
             bundleName: 'apm-gemini.zip',
             format: 'toml',
-            directories: { guides: '.gemini/guides', commands: '.gemini/commands' },
+            directories: { skills: '.gemini/skills', commands: '.gemini/commands' },
           },
         ],
       };
@@ -377,18 +389,18 @@ describe('build()', () => {
       // Verify ZIP contents
       const copilotZipFile = new AdmZip(copilotZip);
       const copilotEntries = copilotZipFile.getEntries();
-      
+
       const copilotCmdEntry = copilotEntries.find(e => e.entryName === 'commands/apm-low-run.prompt.md');
       expect(copilotCmdEntry).toBeTruthy();
       const copilotCmdContent = copilotCmdEntry.getData().toString('utf8');
       expect(copilotCmdContent.includes('$ARGUMENTS')).toBe(true);
-      expect(copilotCmdContent.includes('.github/prompts')).toBe(true);
+      expect(copilotCmdContent.includes('.github/skills')).toBe(true);
 
-      const copilotGuideEntry = copilotEntries.find(e => e.entryName === 'guides/Guide.md');
-      expect(copilotGuideEntry).toBeTruthy();
-      const copilotGuideContent = copilotGuideEntry.getData().toString('utf8');
-      expect(copilotGuideContent.includes('$ARGUMENTS')).toBe(true);
-      expect(copilotGuideContent.includes('0.5.0-test')).toBe(true);
+      const copilotSkillEntry = copilotEntries.find(e => e.entryName === 'skills/Skill.md');
+      expect(copilotSkillEntry).toBeTruthy();
+      const copilotSkillContent = copilotSkillEntry.getData().toString('utf8');
+      expect(copilotSkillContent.includes('$ARGUMENTS')).toBe(true);
+      expect(copilotSkillContent.includes('0.5.0-test')).toBe(true);
 
       // Verify temporary build directory was cleaned up
       const copilotBuildDir = path.join(outDir, 'copilot-build');
@@ -409,10 +421,10 @@ describe('build()', () => {
       expect(/prompt\s*=\s*"""[\s\S]*"""/m.test(geminiCmdContent)).toBe(true);
       expect(geminiCmdContent.includes('description:')).toBe(false);
       expect(geminiCmdContent.includes('{{args}}')).toBe(true);
-      expect(geminiCmdContent.includes('.gemini/guides')).toBe(true);
+      expect(geminiCmdContent.includes('.gemini/skills')).toBe(true);
 
-      const geminiGuideEntry = geminiEntries.find(e => e.entryName === 'guides/Guide.md');
-      expect(geminiGuideEntry).toBeTruthy();
+      const geminiSkillEntry = geminiEntries.find(e => e.entryName === 'skills/Skill.md');
+      expect(geminiSkillEntry).toBeTruthy();
 
       // Verify temporary build directory was cleaned up
       const geminiBuildDir = path.join(outDir, 'gemini-build');
@@ -423,8 +435,8 @@ describe('build()', () => {
     });
   });
 
-  it('treats frontmatter without command_name as a guide', async () => {
-    await withTempDir('build-guide-fm', async (dir) => {
+  it('treats frontmatter without command_name as a skill', async () => {
+    await withTempDir('build-skill-fm', async (dir) => {
       const sourceDir = path.join(dir, 'templates');
       const outDir = path.join(dir, 'out');
       await fs.ensureDir(path.join(sourceDir, 'commands'));
@@ -435,12 +447,12 @@ describe('build()', () => {
         '---',
         'Content here',
       ].join('\n');
-      await fs.writeFile(path.join(sourceDir, 'SomeGuide.md'), template, 'utf8');
+      await fs.writeFile(path.join(sourceDir, 'SomeSkill.md'), template, 'utf8');
 
       const cfg = {
         build: { sourceDir, outputDir: outDir, cleanOutput: true },
         targets: [
-          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { guides: '.github/prompts', commands: '.github/prompts' } },
+          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { skills: '.github/skills', commands: '.github/prompts' } },
         ],
       };
 
@@ -453,10 +465,10 @@ describe('build()', () => {
 
       // Verify ZIP contents
       const zip = new AdmZip(zipPath);
-      const guideEntry = zip.getEntry('guides/SomeGuide.md');
-      expect(guideEntry).toBeTruthy();
-      const guideContent = guideEntry.getData().toString('utf8');
-      expect(guideContent.includes('Content here')).toBe(true);
+      const skillEntry = zip.getEntry('skills/SomeSkill.md');
+      expect(skillEntry).toBeTruthy();
+      const skillContent = skillEntry.getData().toString('utf8');
+      expect(skillContent.includes('Content here')).toBe(true);
 
       // Verify temp directory was cleaned up
       const buildDir = path.join(outDir, 'copilot-build');
@@ -477,13 +489,13 @@ describe('build()', () => {
       await fs.ensureDir(outDir);
       await fs.writeFile(existingFile, 'existing content', 'utf8');
 
-      const guideTemplate = '# Guide\nContent';
-      await fs.writeFile(path.join(sourceDir, 'Guide.md'), guideTemplate, 'utf8');
+      const skillTemplate = '# Skill\nContent';
+      await fs.writeFile(path.join(sourceDir, 'Skill.md'), skillTemplate, 'utf8');
 
       const cfg = {
         build: { sourceDir, outputDir: outDir, cleanOutput: false },
         targets: [
-          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { guides: '.', commands: '.' } },
+          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { skills: '.', commands: '.' } },
         ],
       };
 
@@ -498,10 +510,10 @@ describe('build()', () => {
       const zipPath = path.join(outDir, 'apm-copilot.zip');
       expect(await fs.pathExists(zipPath)).toBe(true);
 
-      // Verify ZIP contains the guide
+      // Verify ZIP contains the skill
       const zip = new AdmZip(zipPath);
-      const guideEntry = zip.getEntry('guides/Guide.md');
-      expect(guideEntry).toBeTruthy();
+      const skillEntry = zip.getEntry('skills/Skill.md');
+      expect(skillEntry).toBeTruthy();
 
       // Verify temp directory was cleaned up
       const buildDir = path.join(outDir, 'copilot-build');
@@ -529,7 +541,7 @@ describe('build()', () => {
       const cfg = {
         build: { sourceDir, outputDir: outDir, cleanOutput: true },
         targets: [
-          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { guides: '.github/prompts', commands: '.github/prompts' } },
+          { id: 'copilot', name: 'GitHub Copilot', bundleName: 'apm-copilot.zip', format: 'markdown', directories: { skills: '.github/skills', commands: '.github/prompts' } },
         ],
       };
 
@@ -596,11 +608,11 @@ describe('build() - Verified assistant targets', () => {
         const cmdContent = cmdEntry.getData().toString('utf8');
         assertCommandContent(cmdContent, expectations);
 
-        const guideEntry = zip.getEntry('guides/Guide.md');
-        expect(guideEntry).toBeTruthy();
-        const guideContent = guideEntry.getData().toString('utf8');
-        expect(guideContent.includes(expectations.guideArgsPlaceholder)).toBe(true);
-        expect(guideContent.includes(versionUnderTest)).toBe(true);
+        const skillEntry = zip.getEntry('skills/Skill.md');
+        expect(skillEntry).toBeTruthy();
+        const skillContent = skillEntry.getData().toString('utf8');
+        expect(skillContent.includes(expectations.skillArgsPlaceholder)).toBe(true);
+        expect(skillContent.includes(versionUnderTest)).toBe(true);
 
         const buildDir = path.join(outDir, `${target.id}-build`);
         expect(await fs.pathExists(buildDir)).toBe(false);

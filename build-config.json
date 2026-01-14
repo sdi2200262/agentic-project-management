@@ -12,7 +12,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".github/prompts",
-        "guides": ".apm/guides"
+        "skills": ".github/skills"
       }
     },
     {
@@ -22,7 +22,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".claude/commands",
-        "guides": ".apm/guides"
+        "skills": ".claude/skills"
       }
     },
     {
@@ -32,7 +32,7 @@
       "format": "toml",
       "directories": {
         "commands": ".gemini/commands",
-        "guides": ".apm/guides"
+        "skills": ".gemini/skills"
       }
     },
     {
@@ -42,7 +42,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".cursor/commands",
-        "guides": ".apm/guides"
+        "skills": ".cursor/skills"
       }
     },
     {
@@ -52,7 +52,7 @@
       "format": "toml",
       "directories": {
         "commands": ".qwen/commands",
-        "guides": ".apm/guides"
+        "skills": ".qwen/skills"
       }
     },
     {
@@ -62,7 +62,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".opencode/command",
-        "guides": ".apm/guides"
+        "skills": ".opencode/skills"
       }
     },
     {
@@ -72,7 +72,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".windsurf/workflows",
-        "guides": ".apm/guides"
+        "skills": ".windsurf/skills"
       }
     },
     {
@@ -82,7 +82,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".kilocode/workflows",
-        "guides": ".apm/guides"
+        "skills": ".kilocode/skills"
       }
     },
     {
@@ -92,7 +92,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".augment/commands",
-        "guides": ".apm/guides"
+        "skills": ".augment/skills"
       }
     },
     {
@@ -102,7 +102,7 @@
       "format": "markdown",
       "directories": {
         "commands": ".roo/commands",
-        "guides": ".apm/guides"
+        "skills": ".roo/skills"
       }
     }
   ]
