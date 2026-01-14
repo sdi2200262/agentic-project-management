@@ -317,9 +317,11 @@ template version compatible with your current CLI version.
       const memoryRootPath = join(memoryDir, 'Memory_Root.md');
       if (!existsSync(memoryRootPath)) {
         const memoryRootHeader = `# <Project Name> – APM Memory Root
-**Memory Strategy:** Dynamic-MD
-**Project Overview:** [To be filled by Manager Agent before first phase execution]
 **Manager Handovers:** 0
+**Worker Agent Handovers:** 0
+[List of Worker Agents and their handover counts]
+**Task Memory Logs:** 0
+**Delegation Memory Logs:** 0
 
 ---
 
@@ -332,9 +334,10 @@ template version compatible with your current CLI version.
       const implementationPlanPath = join(apmDir, 'Implementation_Plan.md');
       if (!existsSync(implementationPlanPath)) {
         const implementationPlanHeader = `# <Project Name> – APM Implementation Plan
-**Memory Strategy:** Dynamic-MD
-**Last Modification:** [To be filled by Setup Agent before Project Breakdown]
-**Project Overview:** [To be filled by Setup Agent before Project Breakdown]
+* **Last Modification:** [To be filled by Planner Agent before Work Breakdown]
+* **Project Overview:** [To be filled by Planner Agent before Work Breakdown]
+* **Agents:** [To be filled by Planner Agent during Work Breakdown]
+* **Stages:** [To be filled by Planner Agent during Work Breakdown]
 
 ---
 

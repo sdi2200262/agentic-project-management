@@ -85,14 +85,15 @@ function parseFrontmatter(content) {
 
 /**
  * Replaces template placeholders with target-specific values
- * 
+ *
  * Supported placeholders:
  * - {VERSION}: Package version
  * - {TIMESTAMP}: ISO timestamp
- * - {GUIDE_PATH:filename}: Path to guide file
+ * - {SKILL_PATH:path}: Path to skill file (e.g., {SKILL_PATH:context-gathering/SKILL.md})
  * - {COMMAND_PATH:filename}: Path to command file
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
- * 
+ * - {AGENTS_FILE}: Platform-specific agents file name
+ *
  * @param {string} content - Template content with placeholders
  * @param {string} version - Version string
  * @param {Object} targetDirectories - Target directory configuration
@@ -106,8 +107,9 @@ function replacePlaceholders(content, version, targetDirectories, format, target
     .replace(/{VERSION}/g, version)
     .replace(/{TIMESTAMP}/g, now.toISOString());
 
-  replaced = replaced.replace(/{GUIDE_PATH:([^}]+)}/g, (_match, filename) => {
-    return path.join(targetDirectories.guides, filename);
+  // Support new SKILL_PATH placeholder
+  replaced = replaced.replace(/{SKILL_PATH:([^}]+)}/g, (_match, skillPath) => {
+    return path.join(targetDirectories.skills, skillPath);
   });
 
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, filename) => {
@@ -174,12 +176,12 @@ async function build(config, version) {
   for (const target of targets) {
     const targetBuildDir = path.join(outputDir, `${target.id}-build`);
     const commandsDir = path.join(targetBuildDir, 'commands');
-    const guidesDir = path.join(targetBuildDir, 'guides');
+    const skillsDir = path.join(targetBuildDir, 'skills');
 
     console.log(`\nProcessing target: ${target.name} (${target.id})`);
 
     await fs.ensureDir(commandsDir);
-    await fs.ensureDir(guidesDir);
+    await fs.ensureDir(skillsDir);
 
     const templateFiles = await findMdFiles(buildConfig.sourceDir);
     console.log(`Found ${templateFiles.length} template files`);
@@ -219,7 +221,7 @@ async function build(config, version) {
       const { frontmatter, content: body } = parseFrontmatter(content);
 
       const isCommand = frontmatter.command_name !== undefined;
-      const category = isCommand ? 'command' : 'guide';
+      const category = isCommand ? 'command' : 'skill';
 
       const processedBody = replacePlaceholders(body, version, target.directories, target.format, target, { commandFileMap });
       const processedFull = replacePlaceholders(content, version, target.directories, target.format, target, { commandFileMap });
@@ -249,13 +251,13 @@ async function build(config, version) {
           finalContent = processedFull;
         }
       } else {
-        // Guide files: keep original name, always markdown
+        // Skill files: keep original name, always markdown
         fileExtension = '.md';
         outputFilename = `${originalFilename}${fileExtension}`;
         finalContent = processedFull;
       }
 
-      const outputDirPath = isCommand ? commandsDir : guidesDir;
+      const outputDirPath = isCommand ? commandsDir : skillsDir;
       const outputPath = path.join(outputDirPath, outputFilename);
 
       await fs.writeFile(outputPath, finalContent);

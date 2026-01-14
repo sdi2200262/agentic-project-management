@@ -1,27 +1,32 @@
-# APM {VERSION} - Memory Log Guide
+---
+name: memory-logging
+description: Creation and population of Memory Logs following defined formats. Defines the Memory Logging procedure for Worker Agents and Delegate Agents.
+---
+
+# APM {VERSION} - Memory Logging Skill
 
 ## 1. Overview
 
-This guide defines how APM Implementation Agents and Ad-Hoc Agents log their work to the APM Memory System. APM Memory Logs capture task-level and delegation-level context using structured Markdown files. These logs enable APM Manager Agents to track progress and make coordination decisions without parsing raw code or chat history.
+This skill defines how APM Worker Agents and Delegate Agents log their work to the APM Memory System. APM Memory Logs capture task-level and delegation-level context using structured Markdown files. These logs enable APM Manager Agents to track progress and make coordination decisions without parsing raw code or chat history.
 
 ### 1.1. Log Types
 
-- **Task Memory Logs:** Written by Implementation Agents after task execution
-- **Delegation Memory Logs:** Written by Ad-Hoc Agents after completing delegated work
+- **Task Memory Logs:** Written by Worker Agents after task execution
+- **Delegation Memory Logs:** Written by Delegate Agents after completing delegated work
 
 ### 1.2. Audience
 
-- **Implementation Agents:** Read this guide to understand Task Memory Log format and workflow
-- **Ad-Hoc Agents:** Read this guide to understand Delegation Memory Log format and workflow
+- **Worker Agents:** Read this skill to understand Task Memory Log format and workflow
+- **Delegate Agents:** Read this skill to understand Delegation Memory Log format and workflow
 
 ## 2. Task Memory Log Format
 
-Task Memory Logs are stored in phase directories with naming convention:
-`.apm/Memory/Phase_<PhaseNum>_<Slug>/Task_<PhaseNum>_<SequentialNum>_<Slug>.md`
+Task Memory Logs are stored in stage directories with naming convention:
+`.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
 
 Where:
-- `<PhaseNum>`: Phase number
-- `<SequentialNum>`: Sequential task number within the phase
+- `<StageNum>`: Stage number
+- `<SequentialNum>`: Sequential task number within the stage
 - `<Slug>`: Brief descriptive slug
 
 ### 2.1. YAML Frontmatter Schema
@@ -40,7 +45,7 @@ compatibility_issues: true | false
 ```
 
 **Field Descriptions:**
-- `agent`: Your agent identifier (e.g., `Agent_Frontend`)
+- `agent`: Your agent identifier (e.g., `Frontend Agent`)
 - `task_id`: Task reference from Implementation Plan (e.g., `Task 2.1`)
 - `status`: Overall task status
   - `Completed`: All work finished (validation may have passed or failed)
@@ -54,7 +59,7 @@ compatibility_issues: true | false
   - `Execution`: Task work itself failed
   - `Validation`: Work completed but validation failed
   - `<description>`: Other failure with explanation
-- `delegation`: Set `true` if Ad-Hoc Delegation occurred during task
+- `delegation`: Set `true` if Delegate Agent delegation occurred during task
 - `important_findings`: Set `true` if discoveries require Manager attention
 - `compatibility_issues`: Set `true` if output conflicts with existing systems
 
@@ -87,7 +92,7 @@ compatibility_issues: true | false
 
 ## Delegation
 [Only include if delegation: true]
-[Summary of Ad-Hoc delegation: type, outcome, delegation log reference]
+[Summary of Delegate Agent delegation: type, outcome, Delegation Memory Log reference]
 
 ## Important Findings
 [Only include if important_findings: true]
@@ -99,16 +104,16 @@ compatibility_issues: true | false
 
 ## 3. Delegation Memory Log Format
 
-Delegation Logs are stored in phase directories alongside Task Memory Logs with naming convention:
-`.apm/Memory/Phase_<PhaseNum>_<Slug>/Delegation_<PhaseNum>_<SequentialNum>_<Type>_<Slug>.md`
+Delegation Memory Logs are stored in stage directories alongside Task Memory Logs with naming convention:
+`.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
 
 Where:
-- `<PhaseNum>`: Phase number
-- `<SequentialNum>`: Sequential delegation number within the phase
+- `<StageNum>`: Stage number
+- `<SequentialNum>`: Sequential delegation number within the stage
 - `<Type>`: Delegation type (Debug, Research, Refactor, or custom)
 - `<Slug>`: Brief descriptive slug
 
-Example: `Delegation_01_02_Debug_Auth_Middleware.md`
+Example: `Delegation_Log_01_02_Debug_Auth_Middleware.md`
 
 ### 3.1. YAML Frontmatter Schema
 
@@ -123,8 +128,8 @@ status: Resolved | Unresolved | Escalated
 
 **Field Descriptions:**
 - `delegation_type`: Type of delegation performed
-- `delegating_agent`: Agent that initiated the delegation (e.g., `Agent_Backend`, `Manager`)
-- `phase`: Phase number where delegation was initiated
+- `delegating_agent`: Agent that initiated the delegation (e.g., `Backend Agent`, `Manager`)
+- `stage`: Stage number where delegation was initiated
 - `status`: Delegation outcome
   - `Resolved`: Issue solved, findings ready for integration
   - `Unresolved`: Issue not fully solved, partial findings available
@@ -155,7 +160,7 @@ status: Resolved | Unresolved | Escalated
 [Concise reasoning on why this delegation requires Manager intervention]
 ```
 
-## 4. Implementation Agent Responsibilities
+## 4. Worker Agent Responsibilities
 
 ### 4.1. Task Memory Log Creation
 
@@ -190,32 +195,32 @@ If execution fails before validation:
 - Set `failure_point: Execution` or specific description
 - Document blockers in Issues section
 
-## 5. Ad-Hoc Agent Responsibilities
+## 5. Delegate Agent Responsibilities
 
 ### 5.1. Delegation Memory Log Creation
 
 After completing delegated work, create and fill the Delegation Memory Log:
 - **Action 1:** Determine delegation log path:
-  - Get phase number from Delegation Prompt context
-  - Get next sequential delegation number for that phase
-  - Construct path: `.apm/Memory/Phase_<PhaseNum>_<Slug>/Delegation_<PhaseNum>_<SequentialNum>_<Type>_<Slug>.md`
+  - Get stage number from Delegation Prompt context
+  - Get next sequential delegation number for that stage
+  - Construct path: `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
 - **Action 2:** Complete ALL YAML frontmatter fields:
   - Set `delegation_type` to the type of work performed
   - Set `delegating_agent` to the agent that initiated the delegation
-  - Set `phase` to the phase number
+  - Set `stage` to the stage number
   - Set `status` based on outcome (`Resolved`, `Unresolved`, or `Escalated`)
 - **Action 3:** Complete all Markdown body sections:
   - Always include: Summary, Delegation Context, Findings, Resolution, Integration Notes
   - Include Escalation Justification only if `status: Escalated`
 - **Action 4:** Output Delegation Report to User (keep post-amble minimal)
 
-### 5.2. Setup Phase Delegations
+### 5.2. Planning Phase Delegations
 
-For delegations initiated by Setup Agent (during Context Synthesis or Project Breakdown):
-- Phase number is `00`
-- Directory is `Phase_00_Setup/`
+For delegations initiated by Planner Agent (during Context Gathering or Work Breakdown):
+- Stage number is `00`
+- Directory is `Stage_00_Planning/`
 - Create directory if it doesn't exist
-- Example: `.apm/Memory/Phase_00_Setup/Delegation_00_01_Research_Tech_Stack.md`
+- Example: `.apm/Memory/Stage_00_Planning/Delegation_Log_00_01_Research_Tech_Stack.md`
 
 ## 6. Content Guidelines
 
@@ -249,7 +254,7 @@ After completing Memory Log or Delegation Log:
 **Good logging:**
 ```yaml
 ---
-agent: Agent_Backend
+agent: Backend Agent
 task_id: Task 2.3
 status: Completed
 validation_result: Passed
@@ -287,4 +292,4 @@ None
 
 ---
 
-**End of Guide**
+**End of Skill**
