@@ -7,36 +7,274 @@ description: Creation and population of Memory Logs following defined formats. D
 
 ## 1. Overview
 
-This skill defines how APM Worker Agents and Delegate Agents log their work to the APM Memory System. APM Memory Logs capture task-level and delegation-level context using structured Markdown files. These logs enable APM Manager Agents to track progress and make coordination decisions without parsing raw code or chat history.
+**Reading Agent:** Worker Agent, Delegate Agent
 
-### 1.1. Log Types
+This skill defines how Worker Agents and Delegate Agents log their work to the Memory System. Memory Logs capture task-level and delegation-level context using structured Markdown files, enabling the Manager Agent to track progress and make coordination decisions without parsing raw code or chat history.
+
+### 1.1 How to Use This Skill
+
+**Execute the Procedure.** Follow the procedure subsection matching your agent type. See §3 Memory Logging Procedure.
+- Worker Agents: §3.1 Task Memory Log Procedure
+- Delegate Agents: §3.2 Delegation Memory Log Procedure
+
+**Use Problem Space for reasoning.** Consult §2.1 Detail Level Reasoning for calibrating detail. Consult §2.3 Status Reasoning for your agent type's subsection. Worker Agents also consult §2.2 Flag Assessment Reasoning.
+
+**Use Policies for decisions.** Consult §4.1 Status Policy for your agent type's subsection. Consult §4.3 Detail Level Policy for detail decisions. Worker Agents also apply §4.2 Flag Assessment Policy.
+
+**Output only structured blocks.** Populate Memory Logs using the formats in §5 Structural Specifications. Worker Agents use §5.1; Delegate Agents use §5.2. Keep post-completion communication minimal.
+
+### 1.2 Objectives
+
+- Capture task and delegation outcomes in a structured, reviewable format
+- Enable Manager Agent coordination through consistent log structure
+- Preserve execution context for progress tracking and handoff continuity
+- Flag important findings and compatibility issues for Manager attention
+
+### 1.3 Log Types
 
 - **Task Memory Logs:** Written by Worker Agents after task execution
 - **Delegation Memory Logs:** Written by Delegate Agents after completing delegated work
 
-### 1.2. Audience
+### 1.4 Reading This Skill
 
-- **Worker Agents:** Read this skill to understand Task Memory Log format and workflow
-- **Delegate Agents:** Read this skill to understand Delegation Memory Log format and workflow
+Some sections apply to only one agent type. These sections are marked with **(Worker Agent)** or **(Delegate Agent)** in the heading. Sections without a marker apply to both agent types.
 
-## 2. Task Memory Log Format
+---
 
-Task Memory Logs are stored in stage directories with naming convention:
-`.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
+## 2. Problem Space
 
-Where:
-- `<StageNum>`: Stage number
+This section establishes the reasoning approach for Memory Log creation. It guides how to determine appropriate detail level, assess flag values, and select status.
+
+### 2.1 Detail Level Reasoning
+
+Memory Logs serve the Manager Agent's coordination needs, not archival documentation. Calibrate detail to support coordination decisions.
+
+**Information Value Assessment:**
+- Does this detail help the Manager understand what was accomplished?
+- Would this detail affect the Manager's next coordination decision?
+- Can this detail be found by reading the referenced artifacts directly?
+
+**Detail Inclusion Guidance:**
+- Include: Outcomes, key decisions, blockers, validation results, artifacts produced
+- Summarize: Implementation approach, steps taken, rationale for choices
+- Reference (don't reproduce): Large code blocks, full file contents, verbose outputs
+- Exclude: Routine operations, trivial details, information recoverable from artifacts
+
+### 2.2 Flag Assessment Reasoning (Worker Agent)
+
+Boolean flags in YAML frontmatter signal conditions requiring Manager attention. Set flags based on coordination impact, not subjective importance.
+
+**Important Findings Assessment:**
+- Did execution reveal information that affects other tasks or project scope?
+- Did execution uncover dependencies, risks, or constraints not in the Implementation Plan?
+- Would the Manager need this information to make accurate coordination decisions?
+
+**Compatibility Issues Assessment:**
+- Does the output conflict with existing systems, patterns, or conventions?
+- Did execution reveal integration concerns affecting other agents' work?
+- Are there breaking changes or migration requirements?
+
+### 2.3 Status Reasoning
+
+Status reflects outcome—whether the objective was achieved. Select status based on the end state, not effort expended. For field values and valid combinations, see §4.1 Status Policy.
+
+#### 2.3.1 Worker Agent Status
+
+Consider what happened during task execution:
+- Did the objective get achieved with all validation passing? → Success
+- Did the task fail despite iteration attempts? → Failed
+- Is the task in an intermediate state where guidance would help? → Partial
+- Are external factors blocking progress entirely? → Blocked
+
+**Partial Status Reasoning:**
+
+Partial represents an intermediate state where the Worker pauses to seek guidance rather than continuing iteration.
+
+**When to pause (use Partial):**
+- Validation is ambiguous—some criteria passed, some failed, unclear if iteration will help
+- Important findings emerged that could affect other tasks or project direction
+- Iteration stalled—same failures recurring despite fix attempts
+- Approach uncertainty—multiple valid paths forward, choice depends on factors outside Worker's scope
+
+**When to continue iterating (don't log yet):**
+- Validation failed but the cause is clear and fixable
+- No findings require Manager awareness
+- Progress is being made toward resolution
+
+#### 2.3.2 Delegate Agent Status
+
+Consider the delegation outcome:
+- Was the issue solved with findings ready for integration? → Resolved
+- Was the issue not fully solved but partial findings available? → Unresolved
+- Does the issue require Manager intervention beyond the calling agent? → Escalated
+
+**Escalated Status Reasoning:**
+
+Use Escalated when the delegated work reveals issues that the calling agent cannot address—systemic problems, incorrect Implementation Plan assumptions, or decisions requiring Manager coordination across multiple agents.
+
+---
+
+## 3. Memory Logging Procedure
+
+This section defines the sequential actions for creating Memory Logs. Worker Agents follow §3.1; Delegate Agents follow §3.2.
+
+**Output Blocks:** Memory Logs use the **Task Memory Log Format** or **Delegation Memory Log Format**. Status and flag decisions draw from §2 Problem Space for reasoning guidance and §4 Policies for decision rules. See §5 Structural Specifications.
+
+**Procedure Flow:**
+1. Task Memory Log Procedure (Worker Agents) OR
+2. Delegation Memory Log Procedure (Delegate Agents)
+
+### 3.1 Task Memory Log Procedure (Worker Agent)
+
+After task execution, populate the Task Memory Log at the path provided in the Task Assignment (`memory_log_path`).
+
+**Action 1:** Complete YAML frontmatter fields:
+- Set `agent` to your agent identifier
+- Set `task_id` to the task reference from the assignment
+- Set `status` based on task outcome. See §4.1 Status Policy.
+- Set `failure_point` based on where failure occurred (null if Success). See §4.1 Status Policy.
+- Set boolean flags (`delegation`, `important_findings`, `compatibility_issues`). See §4.2 Flag Assessment Policy.
+
+**Action 2:** Complete Markdown body sections:
+- Always include: Summary, Details, Output, Validation, Issues, Next Steps
+- Include conditional sections only when their corresponding flag is `true`
+- Apply detail level guidance. See §2.1 Detail Level Reasoning.
+
+**Action 3:** Output Task Report to User. Keep post-amble minimal—User and Manager can read the log directly.
+
+### 3.2 Delegation Memory Log Procedure (Delegate Agent)
+
+After completing delegated work, create and populate the Delegation Memory Log.
+
+**Action 1:** Determine delegation log path:
+- Get stage number from Delegation Prompt context
+- Get next sequential delegation number for that stage
+- Construct path: `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
+- Create directory if it doesn't exist
+
+**Planning Phase Note:** For delegations initiated by Planner Agent (during Context Gathering or Work Breakdown), use stage `00` and directory `Stage_00_Planning/`. Example: `Delegation_Log_00_01_Research_Tech_Stack.md`
+
+**Action 2:** Complete YAML frontmatter fields:
+- Set `delegation_type` to the type of work performed
+- Set `delegating_agent` to the agent that initiated the delegation
+- Set `stage` to the stage number
+- Set `status` based on outcome (`Resolved`, `Unresolved`, or `Escalated`)
+
+**Action 3:** Complete Markdown body sections:
+- Always include: Summary, Delegation Context, Findings, Resolution, Integration Notes
+- Include Escalation Justification only if `status: Escalated`
+- Apply detail level guidance. See §2.1 Detail Level Reasoning.
+
+**Action 4:** Output Delegation Report to User. Keep post-amble minimal.
+
+---
+
+## 4. Policies
+
+This section defines the decision rules that govern choices during Memory Log creation.
+
+### 4.1 Status Policy
+
+**Decision Domain:** How to set status fields.
+
+#### 4.1.1 Worker Agent Status
+
+**Status Field:**
+- **Success:** Task objective achieved, all validation criteria passed
+- **Failed:** Task attempted, validation did not pass after iteration attempts
+- **Partial:** Intermediate state requiring Manager decision—execution incomplete, validation ambiguous, or findings warrant pausing
+- **Blocked:** Cannot proceed due to external factors (missing dependencies, access issues, unresolvable blockers)
+
+**Failure Point Field:**
+- **null:** No failure (status is Success)
+- **Execution:** Failed during task work before validation could be performed
+- **Validation:** Task work completed but validation criteria not met
+- **\<description\>:** Other specific failure or reason for Partial/Blocked status
+
+**Valid Combinations:**
+
+| Status | Failure Point | Meaning |
+|--------|---------------|---------|
+| Success | null | Task objective achieved, all validation passed |
+| Failed | Validation | Work done, validation failed after iteration |
+| Failed | Execution | Could not complete work properly |
+| Partial | Execution | Work incomplete, cannot proceed independently |
+| Partial | Validation | Some validation passed, some failed—needs guidance |
+| Partial | \<description\> | Pausing due to findings or ambiguous state |
+| Blocked | \<description\> | External factors prevent progress |
+
+**Invalid Combinations:**
+- `Success` with any failure_point other than `null`
+- `Failed` with `failure_point: null`
+
+#### 4.1.2 Delegate Agent Status
+
+**Status Field:**
+- **Resolved:** Issue solved, findings ready for integration by calling agent
+- **Unresolved:** Issue not fully solved, partial findings available
+- **Escalated:** Issue requires Manager intervention beyond the calling agent's scope
+
+### 4.2 Flag Assessment Policy (Worker Agent)
+
+**Decision Domain:** How to set boolean flags (`delegation`, `important_findings`, `compatibility_issues`).
+
+**Delegation Flag:**
+- **true:** Delegate Agent delegation occurred during task execution
+- **false:** No delegation occurred
+
+**Important Findings Flag:**
+- **true:** Discoveries require Manager attention—information that affects other tasks, reveals undocumented dependencies, or impacts project scope
+- **false:** No findings beyond normal task execution
+
+**Compatibility Issues Flag:**
+- **true:** Output conflicts with existing systems—breaking changes, integration concerns, or migration requirements affecting other agents' work
+- **false:** No compatibility concerns identified
+
+**Default:** When uncertain whether a finding is "important" or an issue is a "compatibility" concern, set the flag to `true`. False negatives (missing flags) are worse than false positives (extra flags) for coordination.
+
+### 4.3 Detail Level Policy
+
+**Decision Domain:** How much detail to include in Memory Log sections.
+
+**Include Full Detail When:**
+- Information directly affects Manager's next coordination decision
+- Context would be lost without explicit documentation
+- Findings are not recoverable from referenced artifacts
+
+**Summarize When:**
+- Implementation details that don't affect coordination
+- Standard operations performed as expected
+- Information that provides context but isn't decision-critical
+
+**Reference Without Reproducing When:**
+- Code blocks exceed 20 lines
+- Full file contents available at documented paths
+- Verbose outputs (logs, traces) saved to separate files
+
+**Default:** When uncertain, prefer concise summaries with artifact references over verbose inline content.
+
+---
+
+## 5. Structural Specifications
+
+This section defines the output formats for Memory Logs.
+
+### 5.1 Task Memory Log Format (Worker Agent)
+
+**Location:** `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
+
+**Naming Convention:**
+- `<StageNum>`: Stage number (zero-padded, e.g., 01, 02)
 - `<SequentialNum>`: Sequential task number within the stage
-- `<Slug>`: Brief descriptive slug
+- `<Slug>`: Brief descriptive slug derived from task title
 
-### 2.1. YAML Frontmatter Schema
+**YAML Frontmatter Schema:**
 
 ```yaml
 ---
 agent: <Agent_ID>
 task_id: <Task_ID>
-status: Completed | Partial | Blocked
-validation_result: Passed | Failed
+status: Success | Failed | Partial | Blocked
 failure_point: null | Execution | Validation | <description>
 delegation: true | false
 important_findings: true | false
@@ -44,26 +282,7 @@ compatibility_issues: true | false
 ---
 ```
 
-**Field Descriptions:**
-- `agent`: Your agent identifier (e.g., `Frontend Agent`)
-- `task_id`: Task reference from Implementation Plan (e.g., `Task 2.1`)
-- `status`: Overall task status
-  - `Completed`: All work finished (validation may have passed or failed)
-  - `Partial`: Some progress made, specific issues identified
-  - `Blocked`: Cannot proceed for whatever reason
-- `validation_result`: Whether task passed its defined validation criteria
-  - `Passed`: Validation criteria met
-  - `Failed`: Validation criteria not met
-- `failure_point`: Where failure occurred (only set if status is not `Completed` with `Passed` validation)
-  - `null`: No failure
-  - `Execution`: Task work itself failed
-  - `Validation`: Work completed but validation failed
-  - `<description>`: Other failure with explanation
-- `delegation`: Set `true` if Delegate Agent delegation occurred during task
-- `important_findings`: Set `true` if discoveries require Manager attention
-- `compatibility_issues`: Set `true` if output conflicts with existing systems
-
-### 2.2. Markdown Body Template
+**Markdown Body Template:**
 
 ```markdown
 # Task Memory Log: <Task_ID> - <Slug>
@@ -102,26 +321,25 @@ compatibility_issues: true | false
 [Recommendations for follow-up actions, or "None"]
 ```
 
-## 3. Delegation Memory Log Format
+### 5.2 Delegation Memory Log Format (Delegate Agent)
 
-Delegation Memory Logs are stored in stage directories alongside Task Memory Logs with naming convention:
-`.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
+**Location:** `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
 
-Where:
+**Naming Convention:**
 - `<StageNum>`: Stage number
 - `<SequentialNum>`: Sequential delegation number within the stage
 - `<Type>`: Delegation type (Debug, Research, Refactor, or custom)
 - `<Slug>`: Brief descriptive slug
 
-Example: `Delegation_Log_01_02_Debug_Auth_Middleware.md`
+**Example:** `Delegation_Log_01_02_Debug_Auth_Middleware.md`
 
-### 3.1. YAML Frontmatter Schema
+**YAML Frontmatter Schema:**
 
 ```yaml
 ---
 delegation_type: Debug | Research | Refactor | <Custom>
 delegating_agent: <Agent_ID>
-phase: <Phase_Number>
+stage: <Stage_Number>
 status: Resolved | Unresolved | Escalated
 ---
 ```
@@ -135,7 +353,7 @@ status: Resolved | Unresolved | Escalated
   - `Unresolved`: Issue not fully solved, partial findings available
   - `Escalated`: Issue requires Manager intervention
 
-### 3.2. Markdown Body Template
+**Markdown Body Template:**
 
 ```markdown
 # Delegation Memory Log: <Slug>
@@ -156,139 +374,42 @@ status: Resolved | Unresolved | Escalated
 [Specific guidance for how the calling agent should integrate these findings]
 
 ## Escalation Justification
-[only include if status: Escalated]
+[Only include if status: Escalated]
 [Concise reasoning on why this delegation requires Manager intervention]
 ```
 
-## 4. Worker Agent Responsibilities
-
-### 4.1. Task Memory Log Creation
-
-After task execution, fill in the Task Memory Log at the path provided in the Task Assignment (`memory_log_path`):
-- **Action 1:** Complete ALL YAML frontmatter fields accurately:
-  - Set `agent` to your agent identifier
-  - Set `task_id` to the task reference from the assignment
-  - Set `status` based on task outcome (`Completed`, `Partial`, or `Blocked`)
-  - Set `validation_result` based on validation outcome (`Passed` or `Failed`)
-  - Set `failure_point` if validation failed or task blocked
-  - Set boolean flags (`delegation`, `important_findings`, `compatibility_issues`) as appropriate
-- **Action 2:** Complete all applicable Markdown body sections:
-  - Always include: Summary, Details, Output, Validation, Issues, Next Steps
-  - Include conditional sections only when their corresponding flag is `true`
-- **Action 3:** Output Task Report to User (keep post-amble minimal)
-
-### 4.2. Validation Result Recording
-
-If validation passes:
-- Set `status: Completed`, `validation_result: Passed`, `failure_point: null`
-
-If validation fails:
-- Set `status: Completed` (work was done)
-- Set `validation_result: Failed`
-- Set `failure_point: Validation`
-- Document what failed in the Validation section
-- Include remediation suggestions in Next Steps
-
-If execution fails before validation:
-- Set `status: Blocked` or `Partial`
-- Set `validation_result: Failed`
-- Set `failure_point: Execution` or specific description
-- Document blockers in Issues section
-
-## 5. Delegate Agent Responsibilities
-
-### 5.1. Delegation Memory Log Creation
-
-After completing delegated work, create and fill the Delegation Memory Log:
-- **Action 1:** Determine delegation log path:
-  - Get stage number from Delegation Prompt context
-  - Get next sequential delegation number for that stage
-  - Construct path: `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
-- **Action 2:** Complete ALL YAML frontmatter fields:
-  - Set `delegation_type` to the type of work performed
-  - Set `delegating_agent` to the agent that initiated the delegation
-  - Set `stage` to the stage number
-  - Set `status` based on outcome (`Resolved`, `Unresolved`, or `Escalated`)
-- **Action 3:** Complete all Markdown body sections:
-  - Always include: Summary, Delegation Context, Findings, Resolution, Integration Notes
-  - Include Escalation Justification only if `status: Escalated`
-- **Action 4:** Output Delegation Report to User (keep post-amble minimal)
-
-### 5.2. Planning Phase Delegations
-
-For delegations initiated by Planner Agent (during Context Gathering or Work Breakdown):
-- Stage number is `00`
-- Directory is `Stage_00_Planning/`
-- Create directory if it doesn't exist
-- Example: `.apm/Memory/Stage_00_Planning/Delegation_Log_00_01_Research_Tech_Stack.md`
+---
 
 ## 6. Content Guidelines
 
-### 6.1. Writing Effectively
+### 6.1 Writing and Output Handling
 
 - Summarize outcomes instead of listing every action taken
 - Focus on key decisions and their rationale
 - Reference artifacts by path rather than including large code blocks
 - Include code snippets only for novel, complex, or critical logic (≤20 lines)
-- Link actions to requirements from the task/delegation description
-
-### 6.2. Code and Output Handling
-
-- For code changes: show relevant snippets with file paths, not entire files
 - For large outputs: save to separate file and reference the path
 - For error messages: include relevant stack traces or diagnostic details
-- For configurations: note key settings changed and why
 
-### 6.3. Post-Completion Brevity
+### 6.2 Good vs Poor Logging
 
-After completing Memory Log or Delegation Log:
-- Keep post-amble minimal
-- Do not over-explain what was logged
-- User and Manager can read the artifact directly
+| Aspect | Poor | Good |
+|--------|------|------|
+| **Summary** | "Made some changes and fixed issues" | "Implemented POST /api/users with validation. All tests passing." |
+| **Details** | "I worked on the endpoint and there were some issues but I fixed them" | "Added registration route with email/password validation using express-validator" |
+| **Output** | "Changed some files" | "Modified: `routes/users.js`, `server.js`" |
+| **Validation** | "It works now" | "Test suite: 5/5 passing. Manual testing confirmed expected responses." |
 
-### 6.4. Quality Comparison
+**Key Difference:** Good logging is specific, references artifacts by path, and states outcomes clearly. Poor logging is vague and leaves the Manager guessing.
 
-**Poor logging:**
-"I worked on the API endpoint. I made some changes to the file. There were some issues but I fixed them. The endpoint works now."
+### 6.3 Common Mistakes to Avoid
 
-**Good logging:**
-```yaml
----
-agent: Backend Agent
-task_id: Task 2.3
-status: Completed
-validation_result: Passed
-failure_point: null
-delegation: false
-important_findings: false
-compatibility_issues: false
----
-```
-```markdown
-# Task Memory Log: Task 2.3 - API User Endpoint
-
-## Summary
-Implemented POST /api/users endpoint with input validation. All tests passing.
-
-## Details
-- Added user registration route in routes/users.js using express-validator
-- Implemented email format, password length, and required name validation
-- Updated CORS settings in server.js for frontend integration
-
-## Output
-- Modified: `routes/users.js`, `server.js`
-- Endpoint: POST /api/users accepts {email, password, name}
-- Returns: 201 on success, 400 on validation error
-
-## Validation
-Ran test suite: 5/5 tests passing. Manual testing confirmed expected responses for valid and invalid inputs.
-
-## Issues
-None
-
-## Next Steps
-None
-```
+- **Setting flags too conservatively:** False negatives (missing flags) hurt coordination more than false positives (extra flags). When uncertain, set the flag to `true`.
+- **Including excessive detail:** Logs serve coordination, not archival documentation. Reference artifacts rather than reproducing them.
+- **Forgetting conditional sections:** When a flag is `true`, the corresponding section must be included (Compatibility Concerns, Delegation, Important Findings).
+- **Using Partial when iteration could help:** Partial is for pausing to seek guidance, not for giving up early. If the cause of failure is clear and fixable, continue iterating.
+- **Vague summaries:** "Made some changes and fixed issues" is not useful. Specify what was done and what the outcome was.
+- **Missing artifact references:** When deliverables are produced, list file paths in the Output section.
 
 ---
 
