@@ -19,7 +19,7 @@ This skill defines the discovery methodology for the Context Gathering procedure
 
 **Use Policies for decisions.** When encountering branch points (advance vs. follow-up, delegate vs. clarify), apply the relevant policy to determine the appropriate action. See §4 Policies.
 
-**Output only structured blocks.** Present round summaries and validation using the Round Completion Block, Contextual Understanding Summary, and Delegation Request Block formats. Do not expose internal deliberation beyond these structured outputs. See §5 Structural Specifications.
+**Output only structured blocks.** Present checkpoints, summaries, completions and ask for research delegations using the Checkpoint Block, the Summary Block, the Completion Block and Request Block formats. Do not expose internal deliberation beyond these structured outputs. See §5 Structural Specifications.
 
 ### 1.2 Objectives
 
@@ -131,11 +131,22 @@ As you receive User input, internally categorize and retain planning implication
 - User indicates tracking or progress validation requirements → Note as task or stage requirements
 
 **Standards Awareness** (informs `{AGENTS_FILE}` creation):
-- User mentions coding conventions or style guides → Retain for standards
-- User describes testing requirements or coverage expectations → Note for standards
-- User specifies documentation format or comment standards → Capture for standards
-- User mentions commit message format or workflow conventions → Retain for standards
-- User references linting rules or static analysis requirements → Note for standards
+Watch for any project-wide standards or conventions that should apply universally. Examples of signals (not exhaustive - each project is unique):
+- User mentions coding conventions, style guides, or formatting preferences
+- User describes testing requirements or coverage expectations
+- User specifies documentation format or comment standards
+- User mentions commit message format or workflow conventions
+- User references linting rules or static analysis requirements
+
+**Specification Awareness** (informs `Specifications.md` creation):
+Watch for design decisions and technical details that need formal documentation. Examples of signals (not exhaustive - each project is unique):
+- User describes data structures, schemas, or models
+- User discusses API design, endpoints, or contracts
+- User makes architectural decisions or describes system design
+- User mentions existing specification documents (reference rather than duplicate)
+- User describes integration requirements or interfaces
+- User indicates system boundaries or component relationships
+- User discusses design decisions and their rationale
 
 **Validation Awareness:**
 - User mentions automated checks (tests, CI, linting) → Note as Programmatic validation
@@ -202,14 +213,17 @@ Most requirements combine multiple types (e.g., code changes need Programmatic t
 
 This section defines the sequential actions that accomplish Context Gathering. The procedure transforms User responses into structured context for the Implementation Plan.
 
-**Output Blocks:** Round completions use the **Round Completion Block** format. Final validation uses the **Contextual Understanding Summary** format. Research delegation uses the **Delegation Request Block** format. Reasoning content draws from §2 Problem Space for interpretation guidance and §4 Policies for branch point decisions. See §5 Structural Specifications.
+**Progression Gates:** Each action must complete before proceeding to the next. No skipping or batching unless explicitly instructed by User.
 
-**Procedure Flow:**
+**Output Blocks:** Round completions use the **Round Completion Block** format. Procedure Checkpoint uses the **Understanding Summary** format. Requests (such as research delegation) use the **Request Block** format. Reasoning content draws from §2 Problem Space for interpretation guidance and §4 Policies for branch point decisions. See §5 Structural Specifications.
+
+**Procedure:**
 1. Question Round Protocol → Governs iteration within each round
 2. Question Round 1 → Existing Materials and Vision
 3. Question Round 2 → Technical Requirements
 4. Question Round 3 → Implementation Approach and Quality
-5. Final Validation → Contextual Understanding Summary presentation and approval
+5. Procedure Checkpoint → Understanding Summary presentation and modification handling
+6. Procedure Completion → Progression Gate to Work Breakdown
 
 ### 3.1 Question Round Protocol
 
@@ -242,7 +256,7 @@ When gathering validation criteria, consider which validation type(s) will apply
 - If success means a file or artifact exists with correct and expected structure and data → Artifact
 - If success requires human judgment or approval → User
 
-Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Final Validation. See §3.5 Final Validation.
+Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Procedure Checkpoint. See §3.5 Procedure Checkpoint.
 
 Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
 
@@ -379,40 +393,41 @@ After each User response, assess:
 
 **Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §4.2 Research Delegation Policy.
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Final Validation, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §4.1 Round Advancement Policy.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Procedure Checkpoint, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §4.1 Round Advancement Policy.**
 
-### 3.5 Final Validation
+### 3.5 Procedure Checkpoint
 
-After completing the three Question Rounds, present the gathered context for User review and approval. This is not a question round; it is a validation step to confirm accuracy before proceeding to Work Breakdown.
+After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to Work Breakdown.
 
-#### 3.5.1 Summary Presentation
+* **Action 1:** Present the Understanding Summary Block consolidating all gathered context. See §5.2 Understanding Summary Block.
 
-Present a comprehensive Contextual Understanding Summary consolidating all gathered context. See §5.2 Contextual Understanding Summary.
+* **Action 2:** Immediately after the summary, output the Checkpoint Block:
+  ```
+  **CHECKPOINT:** Context Gathering complete. Understanding presented [updated if after modifications].
 
-The summary must be:
-- **Complete:** All sections populated based on gathered information
-- **Accurate:** Reflects what the User communicated, not assumptions
-- **Categorized:** Validation criteria assigned to appropriate types (Programmatic, Artifact, User)
+  Please review my understanding carefully. I want to ensure I have understood your requirements correctly before generating the Plan.
 
-#### 3.5.2 User Review
+  **Your options:**
+  - **Modifications needed** → Describe any misunderstandings, missing requirements or constraints and I will update.
+  - **All looks good** → I will proceed to the Work Breakdown Procedure.
+  ```
 
-After presenting the summary, ask the User to review for accuracy and completeness. The User may:
-- **Approve:** Summary is accurate; proceed to Work Breakdown
-- **Request corrections:** Specific sections need adjustment
-- **Provide additional context:** New information not previously covered
+* **Action 3:** Handle User response:
+  - If User requests modifications → Identify which Question Round's focus area the modification relates to → Use that Round's questioning approach for targeted follow-ups → Update relevant summary sections → Return to Action 1 with updated summary
+  - If User approves (or indicates no modifications needed) → Proceed to §3.6 Procedure Completion
 
-#### 3.5.3 Correction Handling
+### 3.6 Procedure Completion
 
-If User requests corrections:
-1. Identify which Question Round's focus area the correction relates to
-2. Return to that Round's questioning approach for targeted follow-ups
-3. Gather the additional or corrected context
-4. Update the relevant summary sections
-5. Re-present the updated Contextual Understanding Summary
+Output the Completion Block. This is a **Progression Gate** - do NOT proceed to Work Breakdown until this block is output.
 
-Repeat until User approves the summary.
+* **Action 1:** Output the Completion Block:
+  ```
+  **COMPLETE:** Context Gathering Procedure
+  Summary: All Question Rounds completed. Project context gathered and validated.
+  Next: Work Breakdown Procedure
+  ```
 
-**Procedure Complete:** The Context Gathering Procedure is complete when the User approves the Contextual Understanding Summary.
+**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to Work Breakdown Procedure.
 
 ---
 
@@ -445,7 +460,7 @@ Before advancing to the next Round (Rounds 1-3 only), output a Round Completion 
 
 After completing Rounds 1 and 2 and displaying the Round Completion Block, immediately begin the next Question Round's Initial Questions.
 
-After completing Round 3 and displaying the Round Completion Block, immediately proceed to Final Validation and present the Contextual Understanding Summary. See §3.5 Final Validation.
+After completing Round 3 and displaying the Round Completion Block, immediately proceed to Procedure Checkpoint. See §3.5 Procedure Checkpoint.
 
 ### 4.2 Research Delegation Policy
 
@@ -469,31 +484,30 @@ Choose approach based on scope:
 - **Delegation:** Bounded scope, specific question, needs dedicated focus (e.g., research best practices for a specific technology or existing codebase too large to explore quickly)
 - **Note for Plan:** Large scope, multiple questions, or research is central to project (leave as research task in Implementation Plan)
 
-**Self-Research Actions:**
-
-For small-scope research using available tools:
-1. Identify the specific question to answer
-2. Use available tools to explore codebase, read documentation
-3. Keep scope limited to avoid excessive context consumption
-4. Integrate findings into current Question Round
-
-Appropriate for: brownfield projects needing architecture understanding, understanding existing code structure or patterns, reading project documentation or configuration.
-
 **Delegation Actions:**
 
-When delegation is appropriate, output a Delegation Request Block. See §5.3 Delegation Request Block.
+When delegation is appropriate output a Delegation Request Block. See §5.3 Delegation Request Block
 
-If User approves:
-1. Read the Research Delegation skill: {SKILL_PATH:delegate-research/SKILL.md}
-2. Create Delegation Prompt following the skill
-3. User opens Delegate Agent session and provides delegated research task
-4. Delegate Agent logs findings to `.apm/Memory/Stage_00_Planning/Delegation_Log_00_<SequentialNum>_Research_<Slug>.md`
-5. Delegate Agent returns Delegation Report to User
-6. User returns to Planner Agent with report
+**If User approves delegation:**
+* **Action 1:** Check if `.apm/Memory/Stage_00_Planning/` exists. If not, create it (first delegation only). This directory stores delegation logs during the Planning Phase.
+* **Action 2:** Read the Research Delegation skill: {SKILL_PATH:delegate-research/SKILL.md}
+* **Action 3:** Provide the User the Delegation Prompt following the skill. User then opens Delegate Agent Session and provides delegated research task.
+* **Action 5:** Delegate Agent logs findings to `.apm/Memory/Stage_00_Planning/Delegation_Log_00_<SequentialNum>_Research_<Slug>.md`
+* **Action 6:** Delegate Agent returns Delegation Report to User.
+* **Action 7:** User returns to Planner Agent with report.
+* **Action 8:** Read the Delegation Memory Log at provided path.
+* **Action 9:** Integrate findings into current Question Round.
 
-After delegation completes:
-1. Read the Delegation Memory Log at provided path
-2. Integrate findings into current Question Round
+**If User declines:**
+* **Action 1:** Note the research question as Implementation Plan requirement.
+* **Action 2:** Continue with current Question Round using available information.
+
+**If User selects self-research:**
+Only appropriate when scope is small and can be completed quickly. Prioritize context preservation; if research requires reading many files or extensive exploration, recommend delegation or note as Implementation Plan requirement.
+* **Action 1:** Identify the specific question to answer.
+* **Action 2:** Use available tools to explore codebase, read documentation.
+* **Action 3:** Stop if scope expands beyond initial estimate; recommend delegation.
+* **Action 4:** Integrate findings into current Question Round.
 
 ### 4.3 Ambiguous Response Policy
 
@@ -545,10 +559,9 @@ This section defines the output formats for blocks used during Context Gathering
 
 ### 5.1 Round Completion Block
 
-Output this block before advancing from Rounds 1, 2, or 3 to the next Round:
-
+Output this Completion Block before advancing from Rounds 1, 2, or 3 to the next Round:
 ```
-**Question Round [N] complete.**
+## Question Round [N] Complete:
 
 **Context Gathered**:
 [Summarize key information obtained in this Round, aligned with the Round's focus areas]
@@ -561,12 +574,11 @@ No additional follow-ups needed for this Round because: [specific reasoning abou
 Ready to proceed to Question Round [N+1].
 ```
 
-### 5.2 Contextual Understanding Summary
+### 5.2 Understanding Summary Block
 
-Output this Summary Block during Final Validation for User review:
-
+Output this Summary Block during Procedure Checkpoint for User review:
 ```
-**Contextual Understanding Summary**
+## Understanding Summary:
 
 **Requirements and Deliverables:**
 [Summarize essential features, scope, timeline, and skill areas]
@@ -597,25 +609,26 @@ Output this Summary Block during Final Validation for User review:
 - Artifact: [Summary of required documentation, deliverables, file outputs]
 - User: [Summary of what requires explicit user approval or review]
 
-**Project Standards** (for `{AGENTS_FILE}`):
-- Existing file: [Yes/No - if yes, summary of existing standards to preserve]
-- Code standards: [Gathered conventions, style guide, formatting]
-- Testing standards: [Gathered coverage requirements, test types]
-- Documentation standards: [Gathered comment format, README requirements]
-- Workflow standards: [Gathered commit format, branch naming, PR requirements]
-
 **Domain Organization:**
 - Identified domains: [List of work domains identified]
 - Coupling directives: [Which domains are tightly coupled and should share an agent]
 - Separation directives: [Which domains must remain separate]
+
+**Project Standard Indicators** (for `{AGENTS_FILE}`):
+- Existing file: [Yes/No - if yes, summary of existing standards to preserve]
+- [List standards gathered during discovery - categories vary by project. Examples: coding conventions, testing requirements, documentation format, commit conventions, linting rules, etc. Only include what emerged from this project's context.]
+
+**Specification Indicators** (for `Specifications.md`):
+[List specification-relevant items gathered during discovery - categories vary by project. Examples: data structures, API design, architectural decisions, integration requirements, design rationale, reference documents to link rather than duplicate, etc. Only include what emerged from this project's context.]
 ```
 
 ### 5.3 Delegation Request Block
 
 Output this block when research delegation is appropriate. See §4.2 Research Delegation Policy.
-
 ```
-**DELEGATION REQUEST**: Research - <Brief Topic>
+## Delegation Request: 
+
+**Research - <Brief Topic>**
 
 **Question to Research**: <Specific question>
 **Why This Helps Planning**: <How this information will inform the Implementation Plan>
@@ -649,7 +662,7 @@ Your choice?
 
 ### 6.3 Summary and Output Standards
 
-- **Contextual Understanding Summary:** Use the exact format; do not omit sections. See §5.2 Contextual Understanding Summary.
+- **Understanding Summary:** Use the exact format; do not omit sections. See §5.2 Understanding Summary.
 - **Round Completion Blocks:** Use the exact format; include all required fields. See §5.1 Round Completion Block.
 - **Planning Implications:** Note only what applies - do not force entries for every category
 - **Conciseness:** Summaries should be comprehensive but not verbose; prioritize clarity and completeness while being concise

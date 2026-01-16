@@ -32,7 +32,9 @@ This skill defines the methodology for the Work Breakdown procedure, which trans
 
 **`{AGENTS_FILE}`:** Universal project standards that apply to all Agents. Leverages the always-apply rule pattern in AI Assistants.
 
-**Implementation Plan:** Detailed task breakdown organized by stages, with Agent assignments, validation criteria, and dependency chains for Manager Agent consumption.
+**`Specifications.md`:** Coordination-level specifications translated from gathered context. Formalizes design decisions and constraints that inform the Implementation Plan. Free-form structure determined by project needs.
+
+**`Implementation_Plan.md`:** Detailed task breakdown organized by stages, with Agent assignments, validation criteria, and dependency chains for Manager Agent consumption. Implements the specifications.
 
 ### 1.4 Scope Adaptation
 
@@ -352,35 +354,61 @@ This section defines the sequential actions that accomplish Work Breakdown. The 
 
 **Output Blocks:** All analysis must be presented using the **Reasoning Block** and **Summary Block** formats. Reasoning content draws from the relevant Problem Space subsection (§2.4-2.8) and decision rules from the relevant Policy (§4.1-4.5). Do not output internal deliberation outside these structured blocks. See §5 Structural Specifications.
 
-**Procedure Flow:**
-1. Standards Definition → Write to `{AGENTS_FILE}`
-2. Implementation Plan Header → Update Implementation Plan header
-3. Domain Definition → Update Implementation Plan header (Agents field)
-4. Stage Definition → Identify ALL stages with objectives AND tasks, update header
-5. Stage Cycles → Per stage: detailed task breakdown, append to Implementation Plan body
-6. Plan Finalization → Workload review, dependency review
-7. User Approval → Review and iterate
+**Procedure:**
+1. Standards Analysis → Write to `{AGENTS_FILE}`
+2. Specifications Analysis → Create `Specifications.md`
+3. Implementation Plan Header → Update Implementation Plan header
+4. Domain Analysis → Update Implementation Plan header (Agents field)
+5. Stage Analysis → Identify ALL stages with objectives AND tasks, update header (Stages field)
+6. Stage Cycles → Per stage: detailed task breakdown, append to Implementation Plan body
+7. Plan Finalization → Workload review, dependency review
+8. User Approval → Direct to review
+9. Procedure Checkpoint → Present artifacts, offer options (modifications, work-breakdown-review or session completion)
+10. Procedure Completion (Review Path) → If systematic review requested
 
-### 3.1 Standards Definition
+### 3.1 Standards Analysis
 
-**Action 1:** Categorize standards from Context Gathering in chat:
+Apply the APM_STANDARDS Block format when executing these actions. See §5.1 APM_STANDARDS Block. Present reasoning using §5.6 Reasoning Block.
+
+**Action 1:** Analyze standards from Context Gathering and present reasoning in chat:
 ```
+**Standards Analysis:**
+- Existing `{AGENTS_FILE}`: [Yes - contents to preserve outside APM_STANDARDS block / No - new file will be created]
 - [Category]: [standards] → APM_STANDARDS because User specified [requirement] during Context Gathering / [applies universally]
 - [Category]: [standards] → Task guidance because User requested [specific approach] for [certain work]
 - ...
 ```
 
-**Action 2:** Reference `{AGENTS_FILE}` status from Context Gathering:
-- If existing file found: Note contents to preserve outside APM_STANDARDS block
-- If no existing file: New file will be created with APM_STANDARDS block only
-
-**Action 3:** Write APM_STANDARDS block to `{AGENTS_FILE}`:
+**Action 2:** Write APM_STANDARDS block to `{AGENTS_FILE}`:
 - If file exists: Preserve existing content outside block, append APM_STANDARDS block
 - If creating new: Create file with APM_STANDARDS block only
+- Use markdown headings for categories, determine relevant sections based on gathered context
 
 **Duplication Avoidance:** If universal standards gathered during Context Gathering overlap with existing file contents, reference them from inside APM_STANDARDS block (e.g., "See [Section] above") rather than duplicating. Only add new standards not already covered.
 
-### 3.2 Implementation Plan Header
+### 3.2 Specifications Analysis
+
+Apply the Specifications Format when executing these actions. See §5.2 Specifications Format. Present reasoning using §5.6 Reasoning Block.
+
+**Action 1:** Analyze specifications from Context Gathering and present reasoning in chat:
+```
+**Specifications Analysis:**
+- Existing spec documents to reference: [List if any, otherwise "None"]
+- [Category]: [specification items] → Specifications.md because [reasoning from Context Gathering]
+- [Category]: [specification items] → Reference existing doc because User mentioned [document]
+- ...
+- Approach: [Reference existing docs / Create new specifications / Hybrid]
+```
+
+**Action 2:** Update `.apm/Specifications.md`:
+- Replace `<Project Name>` in title with project name (same as Implementation Plan)
+- Fill **Last Modification** field: "Plan creation by the Planner Agent."
+- Add specification content below the header separator
+- Use markdown headings for categories, determine relevant sections based on gathered context
+
+**Duplication Avoidance:** If User has existing specification documents, reference them rather than duplicating. Use format: "See [document name], [section] for [specification type]." Only add new specifications not already covered elsewhere.
+
+### 3.3 Implementation Plan Header
 
 **Action 1:** Determine project name from Context Gathering:
 - If User specified a project name during Context Gathering: Use that name exactly as provided
@@ -396,7 +424,7 @@ This section defines the sequential actions that accomplish Work Breakdown. The 
   - Keep overview concise and focused on what the project accomplishes, not how it will be built
 - Fill **Last Modification** field: "Plan creation by the Planner Agent."
 
-### 3.3 Domain Definition
+### 3.4 Domain Analysis
 
 Apply the Domain Reasoning guidance when executing these actions. See §2.4 Domain Reasoning.
 
@@ -421,11 +449,11 @@ Apply the Domain Reasoning guidance when executing these actions. See §2.4 Doma
 * **Agents:** [Name] Agent, [Name] Agent ...
 ```
 
-### 3.4 Stage Definition
+### 3.5 Stage Analysis
 
 Apply the Stage Reasoning and Task Reasoning guidance when executing these actions. See §2.5 Stage Reasoning and §2.6 Task Reasoning.
 
-Identify all stages and their tasks upfront. Detailed task breakdown occurs later. See §3.5 Stage Cycle Protocol.
+Identify all stages and their tasks upfront. Detailed task breakdown occurs later. See §3.6 Stage Cycle Protocol.
 
 **Action 1:** Present stage structure with task identification in chat. For each stage:
 
@@ -445,9 +473,9 @@ Identify all stages and their tasks upfront. Detailed task breakdown occurs late
 **Action 2:** Update Implementation Plan header:
 - Fill **Stages** field with count and list
 
-### 3.5 Stage Cycle Protocol
+### 3.6 Stage Cycle Protocol
 
-This protocol governs how stage documentation cycles flow. For each stage defined earlier, complete detailed task breakdown. See §3.4 Stage Definition for the stage list. Execute this cycle in stage order, completing all tasks for the current stage before proceeding to the next.
+This protocol governs how stage documentation cycles flow. For each stage defined earlier, complete detailed task breakdown. See §3.5 Stage Analysis for the stage list. Execute this cycle in stage order, completing all tasks for the current stage before proceeding to the next.
 
 Apply the Task Reasoning and Step Reasoning guidance when executing these actions. See §2.6 Task Reasoning and §2.7 Step Reasoning.
 
@@ -458,11 +486,11 @@ Apply the Task Reasoning and Step Reasoning guidance when executing these action
 * **Context Gathering Inputs:** User specified [requirements/constraints] that influence task execution
 ```
 
-**Action 2:** Complete task analysis for each task defined earlier for this stage. See §3.4 Stage Definition:
+**Action 2:** Complete task analysis for each task defined earlier for this stage. See §3.5 Stage Analysis:
 
 ```
 **Task Analysis:**
-* **Task [X.Y]:** [Name] (identified in §3.4)
+* **Task [X.Y]:** [Name] (identified in §3.5)
 - **Scope:** [goal] → [deliverables]
 - **Context Input:** User specified [requirement] during Context Gathering / [relevant constraints]
 - **Agent:** [Name] Agent because [domain fit] / User requested [agent preference]
@@ -474,18 +502,18 @@ Apply the Task Reasoning and Step Reasoning guidance when executing these action
   ...
 - **Granularity Check:** [concrete for tracing / adjustment needed]
 
-* **Task [X.Y]:** [Name] (identified in §3.4)
+* **Task [X.Y]:** [Name] (identified in §3.5)
 - ...
 ```
 
 **Action 3:** Append stage to Implementation Plan body:
 - Stage header: `## Stage N: [Name]`
-- Task blocks following the format in §5.3 Task Format
+- Task blocks following the format in §5.4 Task Format
 - Single write operation per stage cycle
 
-**Proceed to next stage. See §3.4 Stage Definition for the stage list. Repeat Actions 1-3 until all stages documented.**
+**Proceed to next stage. See §3.5 Stage Analysis for the stage list. Repeat Actions 1-3 until all stages documented.**
 
-### 3.6 Plan Finalization
+### 3.7 Plan Finalization
 
 **Action 1 - Workload Assessment:** Count tasks per Agent. Flag Agents with 8+ tasks for subdivision review. See §2.8 Workload Distribution.
 
@@ -535,16 +563,54 @@ Apply the Task Reasoning and Step Reasoning guidance when executing these action
 * **Cross-Agent Dependencies:** [count]
 ```
 
-### 3.7 User Approval
+### 3.8 User Approval
 
 **Action 1:** Direct User to review:
 - `{AGENTS_FILE}` for universal standards
+- `Specifications.md` for design decisions and constraints
 - Implementation Plan for task breakdown
 - Chat history for reasoning trace
 
-**Action 2:** Handle modification requests through targeted revisions. Iterate until explicit User approval.
+**Action 2:** Proceed to §3.9 Procedure Checkpoint.
 
-**Procedure Complete:** The Work Breakdown Procedure is complete when the User approves both `{AGENTS_FILE}` and the Implementation Plan.
+### 3.9 Procedure Checkpoint (Soft Terminal State)
+
+After completing `{AGENTS_FILE}`, `Specifications.md`, and the Implementation Plan, output the checkpoint. This checkpoint IS the soft terminal state - no additional confirmation needed from the User to complete the session.
+
+**Action 1:** Output the Checkpoint Block:
+
+```
+**CHECKPOINT:** Work Breakdown complete. Artifacts created [updated if after modifications].
+
+Please review the following artifacts:
+- **`{AGENTS_FILE}`** for project standards accuracy and completeness
+- **`Specifications.md`** for design decisions and constraints accuracy
+- **Implementation Plan** (.apm/Implementation_Plan.md) with [N] stages and [M] tasks
+
+Your manual review catches problems that automated checks cannot.
+
+**Your options:**
+- **Modifications needed** → Describe the issues and I will iterate until artifacts meet your requirements.
+- **Want Systematic Review** → Say so and I will execute the optional Work Breakdown Review Procedure.
+- **All looks good** → This session is complete. Proceed to initialize the Manager Agent using the `/apm-2-initiate-manager` command.
+```
+
+**Action 2:** Handle User response:
+- If User requests modifications → Update artifacts → Return to Action 1 with updated state
+- If User wants Systematic Review → Proceed to §3.10 Procedure Completion (Review Path)
+- If User proceeds to Manager Agent (or indicates approval) → Session is complete, no further output needed
+
+### 3.10 Procedure Completion (Review Path)
+
+Output the Completion Block. This is a **Progression Gate** for proceeding to the optional Work Breakdown Review Procedure:
+
+```
+**COMPLETE:** Work Breakdown Procedure
+Summary: `{AGENTS_FILE}` created/updated. Specifications.md created. Implementation Plan created with [N] stages and [M] tasks.
+Next: Work Breakdown Review Procedure
+```
+
+**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to Work Breakdown Review Procedure.
 
 ---
 
@@ -687,7 +753,29 @@ APM_STANDARDS {
   - **Include:** Coding conventions, testing requirements, documentation standards, version control practices, universal constraints (security, accessibility, performance)
   - **Exclude:** Architecture decisions (Manager scope), task-specific guidance (Implementation Plan scope), progress tracking (Memory System scope)
 
-### 5.2 Stage Format
+### 5.2 Specifications Format
+
+The structure for `.apm/Specifications.md`:
+
+```markdown
+# <Project Name> – APM Specifications
+**Last Modification:** [Date and description]
+
+---
+
+[Free-form specification content]
+```
+
+**Content Rules:**
+- **Structure:** Use markdown headings (`##`) for major categories, determine relevant sections based on gathered context
+- **Specificity:** Each specification must be concrete and actionable
+- **Consistency:** Use consistent terminology and formatting across all specifications
+- **Scope:** Design decisions and technical details that inform the Implementation Plan:
+  - **Include:** Data structures, API contracts, architectural decisions, integration requirements, design rationale, technical constraints
+  - **Exclude:** Universal standards (`{AGENTS_FILE}` scope), task-specific guidance (Implementation Plan scope)
+- **References:** When User has existing specification documents, reference them rather than duplicating content
+
+### 5.3 Stage Format
 
 Each stage in the Implementation Plan follows this format:
 
@@ -696,11 +784,11 @@ Each stage in the Implementation Plan follows this format:
 **Naming stages:** Stage names should reflect the domain(s), objectives, and main deliverables of the stage. Choose clear, goal-oriented names that describe the key work being accomplished.
 
 **Stage contents:**
-- Tasks for the stage following the Task Format. See §5.3 Task Format.
-- Each task contains steps following the Step Format. See §5.4 Step Format.
+- Tasks for the stage following the Task Format. See §5.4 Task Format.
+- Each task contains steps following the Step Format. See §5.5 Step Format.
 - Task dependencies within and across stages
 
-### 5.3 Task Format
+### 5.4 Task Format
 
 Each task in the Implementation Plan follows this format:
 
@@ -724,7 +812,7 @@ Each task in the Implementation Plan follows this format:
 3. [Step description]
 ```
 
-### 5.4 Step Format
+### 5.5 Step Format
 
 Each step in a task follows this format:
 
@@ -738,7 +826,7 @@ Each step in a task follows this format:
 
 **Steps vs sub-tasks:** If a step requires its own validation before subsequent steps can proceed, it indicates task packing. The "step" is actually a separate task. See §4.3 Task Split/Combine Policy.
 
-### 5.5 Reasoning Block
+### 5.6 Reasoning Block
 
 Documents structured reasoning during analysis phases. Reasoning draws from §2 Problem Space for identification and granularity guidance, and from §4 Policies for split/combine decisions.
 
@@ -749,15 +837,17 @@ Documents structured reasoning during analysis phases. Reasoning draws from §2 
 - ...
 ```
 
-**Usage:** Domain Analysis, Stage Analysis, Task Analysis, Agent Subdivision, Cross-Agent Dependencies Review.
+**Usage:** Standards Analysis, Specifications Analysis, Domain Analysis, Stage Analysis, Task Analysis, Agent Subdivision, Cross-Agent Dependencies Review.
 
 **Reasoning Sources by Analysis Type:**
+- Standards Analysis → §3.1 Standards Analysis
+- Specifications Analysis → §3.2 Specifications Analysis
 - Domain Analysis → §2.4 Domain Reasoning + §4.1 Domain Split/Combine Policy
 - Stage Analysis → §2.5 Stage Reasoning + §4.2 Stage Split/Combine Policy
 - Task Analysis → §2.6 Task Reasoning + §4.3 Task Split/Combine Policy
 - Step definition → §2.7 Step Reasoning + §4.4 Step Split/Combine Policy
 
-### 5.6 Summary Block
+### 5.7 Summary Block
 
 Presents consolidated information for User review:
 
