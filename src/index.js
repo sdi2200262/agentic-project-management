@@ -317,11 +317,8 @@ template version compatible with your current CLI version.
       const memoryRootPath = join(memoryDir, 'Memory_Root.md');
       if (!existsSync(memoryRootPath)) {
         const memoryRootHeader = `# <Project Name> – APM Memory Root
-**Manager Handovers:** 0
-**Worker Agent Handovers:** 0
-[List of Worker Agents and their handover counts]
-**Task Memory Logs:** 0
-**Delegation Memory Logs:** 0
+**Project Overview:** [To be filled by Manager Agent before first stage execution]
+**Manager Handoffs:** 0
 
 ---
 
@@ -344,6 +341,19 @@ template version compatible with your current CLI version.
 `;
         writeFileSync(implementationPlanPath, implementationPlanHeader);
         console.log(chalk.gray('  Created Implementation_Plan.md with header template'));
+      }
+
+      // Create Specifications.md with header template
+      const specificationsPath = join(apmDir, 'Specifications.md');
+      if (!existsSync(specificationsPath)) {
+        const specificationsHeader = `# <Project Name> – APM Specifications
+**Last Modification:** [To be filled by Planner Agent during Work Breakdown]
+
+---
+
+`;
+        writeFileSync(specificationsPath, specificationsHeader);
+        console.log(chalk.gray('  Created Specifications.md with header template'));
       }
 
       // Clean up temp directory
