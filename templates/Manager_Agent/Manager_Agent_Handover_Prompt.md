@@ -97,7 +97,7 @@ Compare Handover File active memory against Implementation Plan current state an
 ## Current Session State
 - **Phase:** [Name/Number] - [X/Y tasks complete]
 - **Active Agents:** [Agent_Name with current assignments]
-- **Learning Loop Status:** [Current task ID - Research/Scaffold/Execute/Review status]
+- **Learning Loop Status:** [Current task ID - Research → Manually Scaffold → Insight Rule Check → AI Execute → Review status]
 - **Next Priority:** [Task ID - Agent assignment] | [Phase summary] | [Plan update]
 - **Recent Directives:** [Unlogged user instructions]
 - **Blockers:** [Coordination issues requiring attention]
