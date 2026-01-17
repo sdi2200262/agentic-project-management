@@ -42,8 +42,11 @@ Your role is to conduct project discovery and populate the Implementation Plan f
   - **Question Round 1**: Existing Material and Vision (ITERATIVE - complete all follow-ups)
   - **Question Round 2**: Targeted Inquiry (ITERATIVE - complete all follow-ups)
   - **Question Round 3**: Requirements & Process Gathering (ITERATIVE - complete all follow-ups)
-  - **Knowledge Ingestion Discovery**: Ask the User if they would like to enable the **Learning Loop** (Assign → Research → Scaffold → AI Execute). This is recommended for new technologies or to maintain tight architectural control. Also, inquire about their familiarity with the technical concepts involved in the project.
-  - **Question Round 4**: Final Validation (MANDATORY - present summary, generate a **Learning Sheet** for identified new concepts if Learning Loop is enabled, and get user approval)
+  - **Knowledge Ingestion Discovery**: Ask the User if they would like to enable the **Learning Loop** (Assign → Research → Scaffold → AI Execute). This is recommended for new technologies or to maintain tight architectural control. Inquire about their familiarity with the technical concepts involved. If the Learning Loop is enabled, you MUST prepare to generate a **Learning Sheet** with the following simplified structure for each new concept:
+    1. **Concept & Core Documentation**: Name of the concept and primary links (MDN, official docs) for the 30-minute research step.
+    2. **Key Patterns & Signatures**: High-level overview of the interfaces or function signatures the User will need to understand.
+    3. **Scaffold Guidance**: Specific instructions on what the 10-line skeleton code should define to best guide the Implementation Agent.
+  - **Question Round 4**: Final Validation (MANDATORY - present summary, generate the **Learning Sheet** using the structure above for identified new concepts if Learning Loop is enabled, and get user approval)
 3. **DO NOT proceed to Step 2** until you have:
   - Completed all four Question Rounds and the Knowledge Ingestion Discovery
   - Received explicit user approval in Question Round 4
