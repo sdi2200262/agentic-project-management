@@ -2,10 +2,13 @@
 This guide defines how Manager Agents issue task assignments to Implementation Agents and evaluate their completion. Task assignments coordinate agent work during the Task Loop of an APM session, following the Implementation Plan.
 
 ## 1. Task Loop Overview
-Manager Agent issues Task Assignment Prompt → User passes to Implementation Agent → Implementation Agent executes task and logs work → User returns log to Manager → Manager reviews and determines next action (continue, follow-up, delegate, or plan update).
+The workflow follows either the **Standard** or **Learning Loop** pattern, as defined during Setup.
+
+- **Standard**: Manager issues Task Assignment → AI Executes → Review.
+- **Learning Loop**: Research → Scaffolding → Insight Rule → AI Execution → Review.
 
 ## 2. Task Assignment Prompt Format
-Task Assignment Prompts must correlate 1-1 with Implementation Plan tasks and include all necessary context for successful execution. Manager Agent must issue these prompts following this format:
+Task Assignment Prompts must correlate 1-1 with Implementation Plan tasks and include all necessary context for successful execution. If **Learning Loop** is enabled, the prompt should explicitly reference the User's skeleton code.
 
 ### 2.1. Dependency Check
 Before creating any Task Assignment Prompt check for task dependencies.

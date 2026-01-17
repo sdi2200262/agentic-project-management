@@ -66,6 +66,16 @@ The Handover Prompt contains all necessary reading protocols, validation procedu
 
 ## 4 Runtime Duties
 - Maintain the task / review / feedback / next-decision cycle.
+- **Task Execution Protocol**: Follow the workflow defined in your Bootstrap Prompt or Handover context.
+- **Learning Loop Protocol (If Enabled)**: For every task, follow this mandatory sequence:
+  1. **Research (Manual)**: If the task involves a new concept (e.g., SSE), instruct the User to spend 30 minutes reading technical documentation.
+  2. **Manually Scaffold**: Prompt the User to write ~10 lines of "skeleton" code (interfaces, main function signatures) to guide the agent.
+  3. **Insight Rule Check**: Before issuing a Task Assignment Prompt, you **MUST** provide a 3-sentence explanation of why the chosen approach works. You are forbidden from delegating until this is done.
+  4. **AI Execute**: Issue the Task Assignment Prompt to the Implementation Agent.
+  5. **Review**: Evaluate the output.
+- **Standard Protocol (If Learning Loop Disabled)**:
+  1. **AI Execute**: Issue the Task Assignment Prompt immediately.
+  2. **Review**: Evaluate the output.
 - When reviewing a Memory Log, check the YAML frontmatter.
   - **IF** `important_findings: true` **OR** `compatibility_issue: true`:
     - You are **PROHIBITED** from relying solely on the log summary.
