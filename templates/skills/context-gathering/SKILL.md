@@ -131,19 +131,18 @@ As you receive User input, internally categorize and retain planning implication
 - User indicates tracking or progress validation requirements → Note as task or stage requirements
 
 **Standards Awareness** (informs `{AGENTS_FILE}` creation):
-Watch for any project-wide standards or conventions that should apply universally. Examples of signals (not exhaustive - each project is unique):
-- User mentions coding conventions, style guides, or formatting preferences
-- User describes testing requirements or coverage expectations
-- User specifies documentation format or comment standards
-- User mentions commit message format or workflow conventions
-- User references linting rules or static analysis requirements
+Watch for any project-wide standards or conventions that should apply universally. Each project defines what standards are relevant. Signals include:
+- User mentions conventions, style guides, or formatting preferences
+- User describes quality requirements or validation expectations
+- User specifies documentation or output format standards
+- User mentions workflow conventions or process requirements
 
 **Specification Awareness** (informs `Specifications.md` creation):
 Watch for design decisions and constraints that need formal documentation - anything that would inform how the Implementation Plan should be structured or how tasks should be approached. Each project defines what specifications are relevant. Signals include:
 - User makes design decisions or describes how things should work
 - User mentions existing specification documents (reference rather than duplicate)
 - User describes constraints, requirements, or boundaries that affect implementation
-- User discusses rationale for technical choices
+- User discusses rationale for choices that affect implementation approach
 
 **Validation Awareness:**
 - User mentions automated checks (tests, CI, linting) → Note as Programmatic validation
@@ -292,6 +291,8 @@ After each User response, assess:
 
 **Continue with targeted follow-ups addressing specific gaps until Question Round 1 understanding is complete. Before proceeding to Round 2, you must understand: project type and deliverable format, problem being solved and success criteria, essential features and scope, required skill/expertise areas, what exists vs. what needs to be created, user's vision and primary goals, relevant existing materials and their role. See §4.1 Round Advancement Policy.**
 
+**Early Validation Handling:** If User mentions validation criteria, success states, or acceptance indicators during Round 1, capture them silently for later integration. Do not probe for validation detail in this Round. Validation gathering occurs in Rounds 2 and 3 per §3.1.2.
+
 ### 3.3 Question Round 2: Technical Requirements
 
 #### 3.3.1 Focus Areas
@@ -326,6 +327,10 @@ Select and adapt questions that remain unanswered from these areas:
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
+**Standards Gathering:** As technical requirements and constraints emerge, note standards that should apply universally (these inform `{AGENTS_FILE}` content).
+
+**Specifications Gathering:** As design decisions and constraints emerge, note specifications that should be formally documented (these inform `Specifications.md` creation).
+
 **Validation Criteria Gathering:** As requirements emerge, gather validation criteria. See §3.1.2 Validation Criteria Gathering.
 
 #### 3.3.3 Gap Assessment Criteria
@@ -334,11 +339,13 @@ After each User response, assess:
 - **Work Structure:** Do you understand dependencies, challenging aspects, and intermediate deliverables?
 - **Technical and Resource Requirements:** Are environment needs, external resources, and platform requirements clear?
 - **Complexity Assessment:** Are challenging areas, timeline constraints, and known risks understood?
+- **Standards:** Are any project-wide standards or conventions emerging that should apply universally?
+- **Specifications:** Are any design decisions or constraints emerging that should be formally documented?
 - **Validation Criteria Coverage:** Have validation criteria and success states been captured for core requirements?
 
 **Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §4.2 Research Delegation Policy.
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 2 understanding is complete. Before proceeding to Round 3, you must understand: work breakdown structure and dependencies, technical and resource requirements, complexity and risk factors, validation criteria for core requirements. See §4.1 Round Advancement Policy.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 2 understanding is complete. Before proceeding to Round 3, you must understand: work breakdown structure and dependencies, technical and resource requirements, complexity and risk factors, emerging standards and specifications, validation criteria for core requirements. See §4.1 Round Advancement Policy.**
 
 ### 3.4 Question Round 3: Implementation Approach and Quality
 
@@ -375,6 +382,8 @@ Select and adapt questions that remain unanswered from these areas:
 
 **Standards Gathering:** As process preferences and constraints emerge, note standards that should apply universally (these inform `{AGENTS_FILE}` content).
 
+**Specifications Gathering:** As design decisions and constraints emerge, note specifications that should be formally documented (these inform `Specifications.md` creation).
+
 **Validation Criteria Gathering:** Continue gathering validation criteria. See §3.1.2 Validation Criteria Gathering.
 
 #### 3.4.3 Gap Assessment Criteria
@@ -386,6 +395,7 @@ After each User response, assess:
 - **Approval Requirements:** Are review processes, approval gates, and collaboration requirements clear?
 - **Domain Organization:** If distinct but related domains exist, do you understand User's preference for unified vs separated handling?
 - **Standards:** Are coding conventions, documentation requirements, and workflow conventions understood for `{AGENTS_FILE}`?
+- **Specifications:** Are design decisions, constraints, and implementation-relevant choices documented for `Specifications.md`?
 - **Validation Coverage:** Have validation criteria and success states been gathered for process and quality requirements?
 
 **Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §4.2 Research Delegation Policy.
@@ -452,8 +462,8 @@ Before advancing to the next Round (Rounds 1-3 only), output a Round Completion 
 
 **Round-Specific Completion Criteria:**
 - **Round 1**: Project foundation, problem and purpose, essential scope, required skills, existing materials, vision clarity
-- **Round 2**: Work structure, dependencies, technical and resource requirements, complexity assessment, validation criteria
-- **Round 3**: Technical constraints and preferences, process preferences, coordination needs, domain organization, standards
+- **Round 2**: Work structure, dependencies, technical and resource requirements, complexity assessment, emerging standards and specifications, validation criteria
+- **Round 3**: Technical constraints and preferences, process preferences, coordination needs, domain organization, standards, specifications
 
 After completing Rounds 1 and 2 and displaying the Round Completion Block, immediately begin the next Question Round's Initial Questions.
 
@@ -613,7 +623,7 @@ Output this Summary Block during Procedure Checkpoint for User review:
 
 **Project Standard Indicators** (for `{AGENTS_FILE}`):
 - Existing file: [Yes/No - if yes, summary of existing standards to preserve]
-- [List standards gathered during discovery - categories vary by project. Examples: coding conventions, testing requirements, documentation format, commit conventions, linting rules, etc. Only include what emerged from this project's context.]
+- [List standards gathered during discovery - categories vary by project type. Only include what emerged from this project's context.]
 
 **Specification Indicators** (for `Specifications.md`):
 [List design decisions and constraints gathered during discovery that should be formally documented. Categories vary by project—only include what emerged from this project's context and is relevant to informing the Implementation Plan.]
