@@ -227,9 +227,9 @@ For non-Success status, assess the scope of the issue:
 
 | Scope | Approach |
 |-------|----------|
-| Small | Self-investigate and/or issue follow-up to same Worker Agent |
-| Bounded | Propose delegation to User, or make minor artifact adjustments if appropriate |
-| Large | Collaborate with User to determine direction before proceeding |
+| Small | Self-investigate and/or issue follow-up Task Assignment to the same Worker Agent|
+| Bounded | Issue follow-up Task Assignment, propose Delegation, or make minor artifact adjustments (within Manager authority) |
+| Large | Propose delegation for investigation-resolvable issues, or collaborate with User on artifact changes |
 
 **Small-Scope Response:**
 
@@ -243,7 +243,9 @@ For straightforward issues requiring minor investigation or clarification:
 
 **Bounded-Scope Response:**
 
-For issues requiring focused investigation or minor artifact updates:
+For issues requiring Worker retry, focused investigation, or minor artifact updates. Select approach based on issue nature:
+
+*Follow-up path:* When the issue is a straightforward correction or retry that does not require investigation or artifact changes, issue a follow-up Task Assignment to the same Worker Agent with clarified guidance. Then proceed with coordination.
 
 *Delegation path:* When a technical issue requires context-intensive debugging or research, output a Delegation Request Block. See §5.5 Delegation Request Block.
 
@@ -255,11 +257,15 @@ For issues requiring focused investigation or minor artifact updates:
 **If User declines delegation:**
 Note the issue for follow-up Task Assignment or adjust approach based on User's preference.
 
-*Minor artifact adjustment path:* When findings warrant small artifact updates (single task clarification, isolated spec addition, minor standard adjustment), follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` §3 Artifact Maintenance Procedure for assessment and update guidance. Then proceed with coordination.
+*Minor artifact adjustment path:* When findings warrant small artifact updates within Manager authority (single task clarification, isolated spec addition, minor standard adjustment), follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` §3 Artifact Maintenance Procedure for assessment and update guidance. Then proceed with coordination.
 
 **Large-Scope Response:**
 
-For systemic issues, significant artifact changes, or decisions requiring User judgment:
+For systemic issues, multi-stage impacts, or decisions requiring User judgment. Select approach based on issue nature:
+
+*Delegation path:* When the issue is investigation-resolvable (complex debugging, extensive research) but does not require coordination artifact changes, output a Delegation Request Block. See §5.5 Delegation Request Block. Follow the same delegation actions as Bounded-Scope Response.
+
+*Artifact maintenance path:* When coordination artifacts require significant changes (multiple tasks affected, design direction change, scope adjustment), follow this sequence:
 
 * **Action 1:** Follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` §3 Artifact Maintenance Procedure to assess affected artifacts and cascade implications
 * **Action 2:** Present situation to User using the Coordination Decision Block format. See §5.6 Coordination Decision Block.
