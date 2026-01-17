@@ -143,7 +143,7 @@ After completing delegated work, create and populate the Delegation Memory Log.
 - Construct path: `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
 - Create directory if it doesn't exist
 
-**Planning Phase Note:** For delegations initiated by Planner Agent (during Context Gathering or Work Breakdown), use stage `00` and directory `Stage_00_Planning/`. Example: `Delegation_Log_00_01_Research_Tech_Stack.md`
+**Planning Phase Note:** For delegations initiated by Planner Agent (during `{SKILL_PATH:context-gathering/SKILL.md}` or `{SKILL_PATH:work-breakdown/SKILL.md}`), use stage `00` and directory `Stage_00_Planning/`. Example: `Delegation_Log_00_01_Research_Tech_Stack.md`
 
 **Action 2:** Complete YAML frontmatter fields:
 - Set `delegation_type` to the type of work performed
