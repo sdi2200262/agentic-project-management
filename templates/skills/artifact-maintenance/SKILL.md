@@ -171,7 +171,7 @@ This reasoning structure guides the Artifact Maintenance Procedure (§3). When U
 
 ## 3. Artifact Maintenance Procedure
 
-This section defines the sequential actions for artifact maintenance. Execute this procedure when memory log review indicates artifact impact (`{SKILL_PATH:memory-maintenance/SKILL.md}` §4.2 references this skill for bounded-scope and large-scope responses).
+This section defines the sequential actions for artifact maintenance. Execute this procedure when memory log review indicates artifact impact requiring coordination artifact updates (`{SKILL_PATH:memory-maintenance/SKILL.md}` §4.2 references this skill for minor adjustments in bounded-scope responses and significant changes in large-scope responses).
 
 **Progression Gates:** Each action must complete before proceeding to the next. For large-scope changes requiring User collaboration, the Manager presents the situation using `{SKILL_PATH:memory-maintenance/SKILL.md}` §5.6 Coordination Decision Block and awaits guidance before proceeding.
 
