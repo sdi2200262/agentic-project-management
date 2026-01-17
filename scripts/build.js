@@ -92,7 +92,8 @@ function parseFrontmatter(content) {
  * - {SKILL_PATH:path}: Path to skill file (e.g., {SKILL_PATH:context-gathering/SKILL.md})
  * - {COMMAND_PATH:filename}: Path to command file
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
- * - {AGENTS_FILE}: Platform-specific agents file name
+ * - {AGENTS_FILE}: Platform-specific agents file name (CLAUDE.md or AGENTS.md)
+ * - {SKILLS_DIR}: Platform-specific skills directory (e.g., .claude/skills, .cursor/skills)
  *
  * @param {string} content - Template content with placeholders
  * @param {string} version - Version string
@@ -125,6 +126,9 @@ function replacePlaceholders(content, version, targetDirectories, format, target
   // Replace {AGENTS_FILE} with target-specific agents file name
   const agentsFileName = target.id === 'claude' ? 'CLAUDE.md' : 'AGENTS.md';
   replaced = replaced.replace(/{AGENTS_FILE}/g, agentsFileName);
+
+  // Replace {SKILLS_DIR} with target-specific skills directory
+  replaced = replaced.replace(/{SKILLS_DIR}/g, targetDirectories.skills);
 
   return replaced;
 }
