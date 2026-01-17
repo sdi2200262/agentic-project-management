@@ -269,7 +269,6 @@ This section defines the output formats for Memory Logs.
 - `<Slug>`: Brief descriptive slug derived from task title
 
 **YAML Frontmatter Schema:**
-
 ```yaml
 ---
 agent: <Agent_ID>
@@ -283,7 +282,6 @@ compatibility_issues: true | false
 ```
 
 **Markdown Body Template:**
-
 ```markdown
 # Task Memory Log: <Task_ID> - <Slug>
 
@@ -337,7 +335,6 @@ compatibility_issues: true | false
 **Example:** `Delegation_Log_01_02_Debug_Auth_Middleware.md`
 
 **YAML Frontmatter Schema:**
-
 ```yaml
 ---
 delegation_type: Debug | Research | Refactor | <Custom>
@@ -356,7 +353,6 @@ status: Resolved | Unresolved
   - `Unresolved`: Issue not fully solved, partial findings available for calling agent to assess
 
 **Markdown Body Template:**
-
 ```markdown
 # Delegation Memory Log: <Slug>
 

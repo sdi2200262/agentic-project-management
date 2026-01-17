@@ -139,14 +139,11 @@ Watch for any project-wide standards or conventions that should apply universall
 - User references linting rules or static analysis requirements
 
 **Specification Awareness** (informs `Specifications.md` creation):
-Watch for design decisions and technical details that need formal documentation. Examples of signals (not exhaustive - each project is unique):
-- User describes data structures, schemas, or models
-- User discusses API design, endpoints, or contracts
-- User makes architectural decisions or describes system design
+Watch for design decisions and constraints that need formal documentation - anything that would inform how the Implementation Plan should be structured or how tasks should be approached. Each project defines what specifications are relevant. Signals include:
+- User makes design decisions or describes how things should work
 - User mentions existing specification documents (reference rather than duplicate)
-- User describes integration requirements or interfaces
-- User indicates system boundaries or component relationships
-- User discusses design decisions and their rationale
+- User describes constraints, requirements, or boundaries that affect implementation
+- User discusses rationale for technical choices
 
 **Validation Awareness:**
 - User mentions automated checks (tests, CI, linting) → Note as Programmatic validation
@@ -619,7 +616,7 @@ Output this Summary Block during Procedure Checkpoint for User review:
 - [List standards gathered during discovery - categories vary by project. Examples: coding conventions, testing requirements, documentation format, commit conventions, linting rules, etc. Only include what emerged from this project's context.]
 
 **Specification Indicators** (for `Specifications.md`):
-[List specification-relevant items gathered during discovery - categories vary by project. Examples: data structures, API design, architectural decisions, integration requirements, design rationale, reference documents to link rather than duplicate, etc. Only include what emerged from this project's context.]
+[List design decisions and constraints gathered during discovery that should be formally documented. Categories vary by project—only include what emerged from this project's context and is relevant to informing the Implementation Plan.]
 ```
 
 ### 5.3 Delegation Request Block

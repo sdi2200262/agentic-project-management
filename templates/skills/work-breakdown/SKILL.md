@@ -736,7 +736,6 @@ This section defines the output formats for artifacts produced during Work Break
 ### 5.1 APM_STANDARDS Block
 
 The namespace block structure for `{AGENTS_FILE}`:
-
 ```
 APM_STANDARDS {
 
@@ -756,7 +755,6 @@ APM_STANDARDS {
 ### 5.2 Specifications Format
 
 The structure for `.apm/Specifications.md`:
-
 ```markdown
 # <Project Name> – APM Specifications
 **Last Modification:** [Date and description]
@@ -770,31 +768,25 @@ The structure for `.apm/Specifications.md`:
 - **Structure:** Use markdown headings (`##`) for major categories, determine relevant sections based on gathered context
 - **Specificity:** Each specification must be concrete and actionable
 - **Consistency:** Use consistent terminology and formatting across all specifications
-- **Scope:** Design decisions and technical details that inform the Implementation Plan:
-  - **Include:** Data structures, API contracts, architectural decisions, integration requirements, design rationale, technical constraints
+- **Scope:** Project-specific design decisions and constraints that inform the Implementation Plan. Content categories vary by project—include what is relevant to this project's coordination needs.
   - **Exclude:** Universal standards (`{AGENTS_FILE}` scope), task-specific guidance (Implementation Plan scope)
 - **References:** When User has existing specification documents, reference them rather than duplicating content
 
 ### 5.3 Stage Format
 
 Each stage in the Implementation Plan follows this format:
-
-**Stage header:** `## Stage N: [Name]`
-
-**Naming stages:** Stage names should reflect the domain(s), objectives, and main deliverables of the stage. Choose clear, goal-oriented names that describe the key work being accomplished.
-
-**Stage contents:**
-- Tasks for the stage following the Task Format. See §5.4 Task Format.
-- Each task contains steps following the Step Format. See §5.5 Step Format.
-- Task dependencies within and across stages
+* **Stage header:** `## Stage N: [Name]`
+* **Naming stages:** Stage names should reflect the domain(s), objectives, and main deliverables of the stage. Choose clear, goal-oriented names that describe the key work being accomplished.
+* **Stage contents:**
+  - Tasks for the stage following the Task Format. See §5.4 Task Format.
+  - Each task contains steps following the Step Format. See §5.5 Step Format.
+  - Task dependencies within and across stages
 
 ### 5.4 Task Format
 
 Each task in the Implementation Plan follows this format:
-
-**Task Header:** `### Task <N.M>: <Title> - <Domain> Agent`
-
-**Task Contents:**
+* **Task Header:** `### Task <N.M>: <Title> - <Domain> Agent`
+* **Task Contents:**
 ```
 * **Objective:** Single-sentence task goal — what this task accomplishes.
 * **Output:** Concrete deliverables — files, components, artifacts functionality produced.
@@ -815,21 +807,17 @@ Each task in the Implementation Plan follows this format:
 ### 5.5 Step Format
 
 Each step in a task follows this format:
-
-**Step format:** Numbered instruction describing a discrete operation.
-
-**Step contents:**
-- Clear, specific instruction that an Agent can execute directly
-- Optional action outcome if needed
-- Optional relevant context where non-obvious
-- References to patterns, files, or prior work when relevant
-
-**Steps vs sub-tasks:** If a step requires its own validation before subsequent steps can proceed, it indicates task packing. The "step" is actually a separate task. See §4.3 Task Split/Combine Policy.
+* **Step format:** Numbered instruction describing a discrete operation.
+* **Step contents:**
+  - Clear, specific instruction that an Agent can execute directly
+  - Optional action outcome if needed
+  - Optional relevant context where non-obvious
+  - References to patterns, files, or prior work when relevant
+* **Steps vs sub-tasks:** If a step requires its own validation before subsequent steps can proceed, it indicates task packing. The "step" might actually be separate task. See §4.3 Task Split/Combine Policy.
 
 ### 5.6 Reasoning Block
 
 Documents structured reasoning during analysis phases. Reasoning draws from §2 Problem Space for identification and granularity guidance, and from §4 Policies for split/combine decisions.
-
 ```
 **<Analysis Type>:**
 - <item>: <reasoning and conclusion>
@@ -850,7 +838,6 @@ Documents structured reasoning during analysis phases. Reasoning draws from §2 
 ### 5.7 Summary Block
 
 Presents consolidated information for User review:
-
 ```
 **<Topic> Summary:**
 * **<Field>:** [value]

@@ -84,7 +84,7 @@ When investigation beyond the log is needed, compare expected outputs from the T
 When flags are set or status is non-Success, consider whether coordination artifacts need updates:
 
 - **Implementation Plan:** Do findings reveal incorrect task definitions, missing dependencies, or scope changes needed?
-- **`Specifications.md`:** Do findings reveal design decisions that need revision or technical constraints that were incorrect?
+- **`Specifications.md`:** Do findings reveal that documented design decisions or constraints need revision?
 - **`{AGENTS_FILE}`:** Do findings reveal universal standards that need adjustment or new standards that should be added?
 
 Artifact updates are coordination decisions. For significant changes (affecting multiple tasks, changing project direction), the Manager must collaborate with the User to determine the appropriate path forward. See §4.2 Coordination Response Policy.
@@ -202,7 +202,7 @@ When flags are set or status is non-Success, determine if coordination artifacts
 | Artifact | Update Indicators |
 |----------|-------------------|
 | Implementation Plan | Task definitions incorrect, missing dependencies revealed, scope changes needed, task ordering issues |
-| `Specifications.md` | Design decisions need revision, technical constraints were incorrect, new specifications emerged |
+| `Specifications.md` | Documented design decisions or constraints need revision, new specifications emerged from execution |
 | `{AGENTS_FILE}` | Universal standards need adjustment, new project-wide conventions identified |
 
 For minor artifact adjustments (single task clarification, small spec addition), the Manager may proceed. For significant changes (multiple tasks affected, design direction change), collaborate with User first. See §4.2 Coordination Response Policy.
@@ -255,24 +255,14 @@ For issues requiring focused investigation or minor artifact updates:
 **If User declines delegation:**
 Note the issue for follow-up Task Assignment or adjust approach based on User's preference.
 
-*Minor artifact adjustment path:* When findings warrant small artifact updates (single task clarification, isolated spec addition, minor standard adjustment):
-* **Action 1:** Identify the specific change needed and affected artifact
-* **Action 2:** Make the update and note the change in the next Task Assignment or stage summary
-* **Action 3:** Proceed with coordination
+*Minor artifact adjustment path:* When findings warrant small artifact updates (single task clarification, isolated spec addition, minor standard adjustment), follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` for assessment and update guidance. Then proceed with coordination.
 
 **Large-Scope Response:**
 
 For systemic issues, significant artifact changes, or decisions requiring User judgment:
 
-* **Action 1:** Examine possible routes forward. Consider:
-    - What artifact changes would each route require?
-    - What is the impact on remaining tasks and stages?
-    - What are the trade-offs between options?
-* **Action 2:** Present situation to User using the Coordination Decision Block format:
-    - Current state and issue summary
-    - Options identified with trade-offs
-    - Recommended path with reasoning
-    - Explicit request for User guidance
+* **Action 1:** Follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` to assess affected artifacts and cascade implications
+* **Action 2:** Present situation to User using the Coordination Decision Block format. See §5.7.
 * **Action 3:** Await User guidance before proceeding with artifact updates or coordination changes
 
 **Artifact Update Thresholds:**
@@ -328,7 +318,6 @@ This section defines the formats and structures for Memory System artifacts.
 ### 5.3 Stage Summary Format
 
 Append this format to Memory Root after each stage completion:
-
 ```markdown
 ## Stage <StageNum> – <Stage Name> Summary
 
@@ -401,7 +390,6 @@ Delegation Memory Logs are written by Delegate Agents. They are stored side-by-s
 ### 5.6 Delegation Request Block
 
 Output this block when proposing delegation for a bounded-scope issue. See §4.2 Coordination Response Policy.
-
 ```
 **DELEGATION REQUEST**: <Debug|Research> - <Brief Topic>
 
@@ -420,7 +408,6 @@ Your choice?
 ### 5.7 Coordination Decision Block
 
 Output this block when presenting large-scope issues to User for collaboration. See §4.2 Coordination Response Policy.
-
 ```
 **COORDINATION DECISION**: <Brief Topic>
 
