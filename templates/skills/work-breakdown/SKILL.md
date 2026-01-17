@@ -93,10 +93,14 @@ Work Breakdown requires context from Context Gathering across these categories:
 - Separation directives (domains that must remain distinct)
 
 **Standards Preferences:**
-- Coding conventions and style requirements
-- Testing requirements and coverage expectations
-- Documentation and commit conventions
-- Existing `{AGENTS_FILE}` contents (if found during Context Gathering workspace scan)
+Standards define *how work is performed* across the project — conventions and process rules that apply universally regardless of what is being built. Each project defines what standards are relevant.
+- Project-wide standards gathered during Context Gathering
+- Existing `{AGENTS_FILE}` contents (if found during workspace scan)
+
+**Specification Indicators:**
+Specifications define *what is being built* - design decisions, requirements, constraints, and rationale that shape the deliverable itself. Each project defines what specifications are relevant.
+- Design decisions and constraints gathered during Context Gathering
+- Existing specification documents to reference (if User mentioned any)
 
 **Validation Approach:**
 - Programmatic validation patterns (tests, CI, automated checks)
@@ -113,6 +117,7 @@ Each input category translates to specific artifacts:
 - **Domain Organization → Agent Assignments:** Identified domains → Worker Agent definitions; Coupling directives → Merged Agent assignments; Separation directives → Distinct Agent boundaries
 - **Validation Approach → Task Validation Fields:** Programmatic patterns → Programmatic validation criteria; Artifact patterns → Artifact validation criteria; User triggers → User validation criteria
 - **Standards Preferences → `{AGENTS_FILE}` Content:** New universal standards → APM_STANDARDS namespace block; Existing `{AGENTS_FILE}` contents → Preserved outside APM_STANDARDS block; Existing standards overlap → Reference from inside block, do not duplicate
+- **Specification Indicators → `Specifications.md` Content:** Design decisions → Formal specification sections; Existing documents → References rather than duplication; Constraints → Implementation boundaries
 
 ### 2.3 Validation Types
 
@@ -363,8 +368,7 @@ This section defines the sequential actions that accomplish Work Breakdown. The 
 6. Stage Cycles → Per stage: detailed task breakdown, append to Implementation Plan body
 7. Plan Finalization → Workload review, dependency review
 8. User Approval → Direct to review
-9. Procedure Checkpoint → Present artifacts, offer options (modifications, work-breakdown-review or session completion)
-10. Procedure Completion (Review Path) → If systematic review requested
+9. Procedure Checkpoint → Present artifacts, handle modifications or complete session
 
 ### 3.1 Standards Analysis
 
@@ -573,12 +577,11 @@ Apply the Task Reasoning and Step Reasoning guidance when executing these action
 
 **Action 2:** Proceed to §3.9 Procedure Checkpoint.
 
-### 3.9 Procedure Checkpoint (Soft Terminal State)
+### 3.9 Procedure Checkpoint & Completion
 
-After completing `{AGENTS_FILE}`, `Specifications.md`, and the Implementation Plan, output the checkpoint. This checkpoint IS the soft terminal state - no additional confirmation needed from the User to complete the session.
+After completing `{AGENTS_FILE}`, `Specifications.md`, and the Implementation Plan, output the checkpoint. This Procedure Checkpoint also serves as the Completion for the Procedure, the Session and Planning Phase.
 
 **Action 1:** Output the Checkpoint Block:
-
 ```
 **CHECKPOINT:** Work Breakdown complete. Artifacts created [updated if after modifications].
 
@@ -589,28 +592,14 @@ Please review the following artifacts:
 
 Your manual review catches problems that automated checks cannot.
 
-**Your options:**
-- **Modifications needed** → Describe the issues and I will iterate until artifacts meet your requirements.
-- **Want Systematic Review** → Say so and I will execute the optional Work Breakdown Review Procedure.
-- **All looks good** → This session is complete. Proceed to initialize the Manager Agent using the `/apm-2-initiate-manager` command.
+**If modifications needed** → Describe the issues and I will iterate until artifacts meet your requirements.
+
+**If no modifications** → Planning Phase is complete. Proceed to initialize the Manager Agent using the `/apm-2-initiate-manager` command.
 ```
 
 **Action 2:** Handle User response:
 - If User requests modifications → Update artifacts → Return to Action 1 with updated state
-- If User wants Systematic Review → Proceed to §3.10 Procedure Completion (Review Path)
-- If User proceeds to Manager Agent (or indicates approval) → Session is complete, no further output needed
-
-### 3.10 Procedure Completion (Review Path)
-
-Output the Completion Block. This is a **Progression Gate** for proceeding to the optional Work Breakdown Review Procedure:
-
-```
-**COMPLETE:** Work Breakdown Procedure
-Summary: `{AGENTS_FILE}` created/updated. Specifications.md created. Implementation Plan created with [N] stages and [M] tasks.
-Next: Work Breakdown Review Procedure
-```
-
-**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to Work Breakdown Review Procedure.
+- If User proceeds to Manager Agent (or indicates no modifications) → Session is complete, no further output needed
 
 ---
 
