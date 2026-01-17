@@ -139,7 +139,7 @@ After completing delegated work, create and populate the Delegation Memory Log.
 
 **Action 1:** Determine delegation log path:
 - Get stage number from Delegation Prompt context
-- Get next sequential delegation number for that stage
+- Get next sequential delegation number: List existing `Delegation_Log_*` files in the stage directory and use the next sequential number (01 if none exist)
 - Construct path: `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
 - Create directory if it doesn't exist
 
@@ -265,7 +265,7 @@ This section defines the output formats for Memory Logs.
 
 **Naming Convention:**
 - `<StageNum>`: Stage number (zero-padded, e.g., 01, 02)
-- `<SequentialNum>`: Sequential task number within the stage
+- `<SequentialNum>`: Task number from task ID, zero-padded (e.g., Task 2.3 → 03)
 - `<Slug>`: Brief descriptive slug derived from task title
 
 **YAML Frontmatter Schema:**

@@ -143,9 +143,11 @@ Execute once at the start of the first Manager Agent session, before issuing the
 
 Execute when entering a new stage, before issuing Task Assignments for that stage.
 * **Action 1:** Create stage directory: `.apm/Memory/Stage_<StageNum>_<Slug>/`
-* **Action 2:** Include the `memory_log_dir` path in each Task Assignment Prompt for that stage
+* **Action 2:** For each Task Assignment, construct and include the full `memory_log_path`:
+    - Format: `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<TaskNum>_<Slug>.md`
+    - Example: Task 2.3 "Deploy API" in Stage 2 → `.apm/Memory/Stage_02_API/Task_Log_02_03_Deploy_API.md`
 
-Worker Agents create their own Task Memory Logs within this directory. See §5.4 Task Memory Log Structure for the expected format.
+Worker Agents write their Task Memory Logs to the provided path. See §5.4 Task Memory Log Structure for the expected format.
 
 **Naming Convention:** Derive stage slug from Implementation Plan stage title. Example: Stage `Stage 2 - API Integration` → `Stage_02_API_Integration/`
 
