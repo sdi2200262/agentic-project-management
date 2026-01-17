@@ -13,7 +13,7 @@ This skill defines how the Manager Agent assesses and maintains coordination art
 
 ### 1.1 How to Use This Skill
 
-**Execute the Procedure.** When memory log review indicates artifact impact (see memory-maintenance §4.1 Log Review Decision Policy), follow the Artifact Maintenance Procedure. See §3 Artifact Maintenance Procedure.
+**Execute the Procedure.** When memory log review indicates artifact impact (see `{SKILL_PATH:memory-maintenance/SKILL.md}` §4.1 Task Memory Log Review Decision Policy), follow the Artifact Maintenance Procedure. See §3 Artifact Maintenance Procedure.
 
 **Use Problem Space for reasoning.** When assessing which artifacts need attention and how changes cascade, consult the relevant reasoning subsection. See §2 Problem Space.
 
@@ -146,7 +146,7 @@ Many changes don't cascade:
 
 Assess whether changes are within Manager authority or require User collaboration.
 
-**Authority Reference:** Memory-maintenance §4.2 Coordination Response Policy defines the authoritative Artifact Update Thresholds table. Consult that table to determine Manager authority vs User collaboration requirements.
+**Authority Reference:** `{SKILL_PATH:memory-maintenance/SKILL.md}` §4.2 Coordination Response Policy defines the authoritative Artifact Update Thresholds table. Consult that table to determine Manager authority vs User collaboration requirements.
 
 **Key distinction:**
 - Manager authority: Changes that don't significantly affect project direction (single task clarification, adding missing dependency, isolated specification addition, minor standard adjustment)
@@ -165,15 +165,15 @@ When assessing artifact changes, structure your reasoning around these elements 
 - **Scope Determination:** Is this within Manager authority or does it require User collaboration based on §2.4?
 - **Proposed Changes:** What specific changes are needed in each affected artifact?
 
-This reasoning structure guides the Artifact Maintenance Procedure (§3). When User collaboration is required, these elements inform the Coordination Decision Block (memory-maintenance §5.7).
+This reasoning structure guides the Artifact Maintenance Procedure (§3). When User collaboration is required, these elements inform the Coordination Decision Block (`{SKILL_PATH:memory-maintenance/SKILL.md}` §5.6).
 
 ---
 
 ## 3. Artifact Maintenance Procedure
 
-This section defines the sequential actions for artifact maintenance. Execute this procedure when memory log review indicates artifact impact (memory-maintenance §4.2 references this skill for bounded-scope and large-scope responses).
+This section defines the sequential actions for artifact maintenance. Execute this procedure when memory log review indicates artifact impact (`{SKILL_PATH:memory-maintenance/SKILL.md}` §4.2 references this skill for bounded-scope and large-scope responses).
 
-**Progression Gates:** Each action must complete before proceeding to the next. For large-scope changes requiring User collaboration, the Manager presents the situation using memory-maintenance §5.7 Coordination Decision Block and awaits guidance before proceeding.
+**Progression Gates:** Each action must complete before proceeding to the next. For large-scope changes requiring User collaboration, the Manager presents the situation using `{SKILL_PATH:memory-maintenance/SKILL.md}` §5.6 Coordination Decision Block and awaits guidance before proceeding.
 
 **Procedure:**
 1. Change Assessment (assess which artifacts need attention)
@@ -195,7 +195,7 @@ Assess which artifact(s) need attention based on findings from memory log review
     - Do findings indicate Implementation Plan issues?
     - Do findings indicate Standards issues?
 
-* **Action 3:** Determine scope using memory-maintenance §4.2 Artifact Update Thresholds to identify whether changes are within Manager authority or require User collaboration.
+* **Action 3:** Determine scope using `{SKILL_PATH:memory-maintenance/SKILL.md}` §4.2 Artifact Update Thresholds to identify whether changes are within Manager authority or require User collaboration.
 
 ### 3.2 Cascade Analysis
 
@@ -216,13 +216,13 @@ Assess whether changes in the primary artifact affect other artifacts.
 
 Execute artifact updates based on assessment findings.
 
-* **Action 1:** Confirm authority using memory-maintenance §4.2 Artifact Update Thresholds:
+* **Action 1:** Confirm authority using `{SKILL_PATH:memory-maintenance/SKILL.md}` §4.2 Artifact Update Thresholds:
     - If within Manager authority: Proceed with updates
-    - If User collaboration required: Present situation using memory-maintenance §5.7 Coordination Decision Block before proceeding
+    - If User collaboration required: Present situation using `{SKILL_PATH:memory-maintenance/SKILL.md}` §5.6 Coordination Decision Block before proceeding
 
 * **Action 2:** Make artifact changes:
     - For `Specifications.md`: Follow existing patterns in the document (see §5.2)
-    - For `Implementation_Plan.md`: Follow the structural formats defined in work-breakdown (see §5.1)
+    - For `Implementation_Plan.md`: Follow the structural formats defined in `{SKILL_PATH:work-breakdown/SKILL.md}` §5 Structural Specifications
     - For `{AGENTS_FILE}`: Follow existing patterns; keep changes within APM_STANDARDS block if present (see §5.3)
 
 * **Action 3:** If cascade was identified, update related artifacts maintaining consistency per §4.2 Consistency Policy.
@@ -282,11 +282,11 @@ After Plan changes, verify that total task scope still implements the Specificat
 
 ## 5. Structural Specifications
 
-This section defines the structural references for modifying artifacts and the format for documenting changes. When User collaboration is required, the Manager uses memory-maintenance §5.7 Coordination Decision Block.
+This section defines the structural references for modifying artifacts and the format for documenting changes. When User collaboration is required, the Manager uses `{SKILL_PATH:memory-maintenance/SKILL.md}` §5.6 Coordination Decision Block.
 
 ### 5.1 Implementation Plan Structural Reference
 
-When modifying the Implementation Plan, maintain consistency with the formats established during Work Breakdown. Reference work-breakdown §5 Structural Specifications:
+When modifying the Implementation Plan, maintain consistency with the formats established during Work Breakdown. Reference `{SKILL_PATH:work-breakdown/SKILL.md}` §5 Structural Specifications:
 
 **Stage Format (work-breakdown §5.3):**
 - Stage header: `## Stage N: [Name]`

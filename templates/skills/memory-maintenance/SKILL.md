@@ -1,6 +1,6 @@
 ---
 name: memory-maintenance
-description: Memory System management including initialization, directory structure, log review, and stage summaries. Defines Memory maintenance procedures for the Manager Agent.
+description: Memory System management including initialization, directory structure, Task Memory Log review, and stage summaries. Defines Memory maintenance procedures for the Manager Agent.
 ---
 
 # APM {VERSION} - Memory Maintenance Skill
@@ -15,9 +15,9 @@ This skill defines how the Manager Agent maintains the Memory System during proj
 
 **Execute the Procedure.** The Procedure section contains the actions to perform for Memory System maintenance. Follow subsections based on the current maintenance need. See §3 Memory Maintenance Procedure.
 
-**Use Problem Space for interpretation.** When interpreting log content or reasoning about summary scope, consult the relevant reasoning subsection. See §2 Problem Space.
+**Use Problem Space for interpretation.** When interpreting Task Memory Log content or reasoning about summary scope, consult the relevant reasoning subsection. See §2 Problem Space.
 
-**Use Policies for decisions.** When determining next actions after log review, apply §4.1 Log Review Decision Policy. For coordination response actions (self-investigation, delegation, or User collaboration), see §4.2 Coordination Response Policy.
+**Use Policies for decisions.** When determining next actions after Task Memory Log review, apply §4.1 Task Memory Log Review Decision Policy. For coordination response actions (self-investigation, delegation, or User collaboration), see §4.2 Coordination Response Policy.
 
 **Output only structured blocks.** Stage summaries, Memory Root updates, and delegation proposals follow the formats defined in Structural Specifications. See §5 Structural Specifications.
 
@@ -25,7 +25,7 @@ This skill defines how the Manager Agent maintains the Memory System during proj
 
 - Initialize and maintain the Memory System structure throughout project execution
 - Review Task Memory Logs to assess completion and determine coordination decisions
-- Identify when log findings warrant updates to coordination artifacts (Implementation Plan, `Specifications.md`, `{AGENTS_FILE}`)
+- Identify when Task Memory Log findings warrant updates to coordination artifacts (Implementation Plan, `Specifications.md`, `{AGENTS_FILE}`)
 - Create stage summaries to preserve high-level progress context
 - Enable efficient handoff and onboarding through structured memory artifacts
 
@@ -48,11 +48,11 @@ See §5.1 Directory Structure for full layout.
 
 ## 2. Problem Space
 
-This section establishes the reasoning approach for Memory System maintenance. It guides how to interpret logs, assess completion quality, and write stage summaries.
+This section establishes the reasoning approach for Memory System maintenance. It guides how to interpret Task Memory Logs, assess completion quality, and write stage summaries.
 
-### 2.1 Log Review Reasoning
+### 2.1 Task Memory Log Review Reasoning
 
-The goal is to extract information needed for the next coordination decision and validate Worker Agent performance. This section guides interpretation; decision rules are in §4.1 Log Review Decision Policy.
+The goal is to extract information needed for the next coordination decision and validate Worker Agent performance. This section guides interpretation; decision rules are in §4.1 Task Memory Log Review Decision Policy.
 
 **Review Focus:**
 - What was the outcome? (status and failure_point)
@@ -73,21 +73,21 @@ Workers set flags based on their scoped observations. The Manager interprets the
 
 - `important_findings: true` — Worker observed something that appeared to have implications beyond their task scope; Manager assesses whether this affects coordination artifacts or other tasks
 - `compatibility_issues: true` — Worker observed conflicts with existing systems they encountered; Manager assesses whether this indicates Implementation Plan, specification, or standards issues
-- `delegation: true` — Worker delegated part of the task; Delegation Memory Log contains context. See §5.5 Delegation Memory Log Structure.
+- `delegation: true` — Worker delegated part of the task; Delegation Memory Log contains context. See `{SKILL_PATH:memory-logging/SKILL.md}` §5.2 for structure.
 
 **Investigation Depth:**
 
-When investigation beyond the log is needed, compare expected outputs from the Task Assignment against actual files and directories referenced in the Memory Log. Verify that claimed deliverables exist and match expectations.
+When investigation beyond the Task Memory Log is needed, compare expected outputs from the Task Assignment against actual files and directories referenced in the log. Verify that claimed deliverables exist and match expectations.
 
-**Artifact Impact Assessment:**
+**Artifact Impact Assessment (Triage):**
 
-When flags are set or status is non-Success, consider whether coordination artifacts need updates:
+When flags are set or status is non-Success, perform quick triage to determine if coordination artifacts might need updates. Ask:
 
 - **Implementation Plan:** Do findings reveal incorrect task definitions, missing dependencies, or scope changes needed?
 - **`Specifications.md`:** Do findings reveal that documented design decisions or constraints need revision?
 - **`{AGENTS_FILE}`:** Do findings reveal universal standards that need adjustment or new standards that should be added?
 
-Artifact updates are coordination decisions. For significant changes (affecting multiple tasks, changing project direction), the Manager must collaborate with the User to determine the appropriate path forward. See §4.2 Coordination Response Policy.
+If any answer is *potentially yes*, artifact maintenance is needed. See `{SKILL_PATH:artifact-maintenance/SKILL.md}` for detailed assessment methodology and update execution. See §4.2 Coordination Response Policy for scope-based handling.
 
 **Issue Scope:**
 
@@ -126,7 +126,7 @@ This section defines the sequential actions for Memory System maintenance. Execu
 **Procedure:**
 1. Memory Root Initialization (first session only)
 2. Stage Directory Creation (on stage entry)
-3. Log Review (after each Task Report)
+3. Task Memory Log Review (after each Task Report)
 4. Stage Summary Creation (on stage completion)
 
 ### 3.1 Memory Root Initialization
@@ -149,19 +149,19 @@ Worker Agents create their own Task Memory Logs within this directory. See §5.4
 
 **Naming Convention:** Derive stage slug from Implementation Plan stage title. Example: Stage `Stage 2 - API Integration` → `Stage_02_API_Integration/`
 
-### 3.3 Log Review
+### 3.3 Task Memory Log Review
 
 Execute when User returns with a Task Report.
 * **Action 1:** Read the Task Memory Log at the provided path
-* **Action 2:** Interpret log content using §2.1 Log Review Reasoning
+* **Action 2:** Interpret log content using §2.1 Task Memory Log Review Reasoning
 * **Action 3:** Check flags and assess artifact impact if flags are set or status is non-Success
-* **Action 4:** Apply §4.1 Log Review Decision Policy to determine coordination decision
+* **Action 4:** Apply §4.1 Task Memory Log Review Decision Policy to determine coordination decision
 * **Action 5:** Execute coordination response per §4.2 Coordination Response Policy
 
 ### 3.4 Stage Summary Creation
 
 Execute when all tasks in a stage are completed.
-* **Action 1:** Review all Task Memory Logs and Delegation Memory Logs for the completed stage. See §5.4 and §5.5 for expected structures.
+* **Action 1:** Review all Task Memory Logs and Delegation Memory Logs for the completed stage. See §5.4 Task Memory Log Structure; see `{SKILL_PATH:memory-logging/SKILL.md}` §5.2 Delegation Memory Log Format.
 * **Action 2:** Synthesize stage-level observations:
     - Overall outcome and deliverables
     - Agents involved and their contributions
@@ -175,7 +175,7 @@ Execute when all tasks in a stage are completed.
 
 This section defines the decision rules that govern choices during Memory System maintenance.
 
-### 4.1 Log Review Decision Policy
+### 4.1 Task Memory Log Review Decision Policy
 
 **Decision Domain:** What coordination decision to make after reviewing a Task Memory Log.
 
@@ -184,7 +184,7 @@ This section defines the decision rules that govern choices during Memory System
 Before assessing status, check flags that require immediate investigation:
 - `important_findings: true` → Read referenced artifacts and assess project-wide implications before any decision
 - `compatibility_issues: true` → Assess impact on Implementation Plan, `Specifications.md`, or `{AGENTS_FILE}` before proceeding
-- `delegation: true` → Locate the Delegation Memory Log using the filename in the Task Memory Log's `## Delegation` section. The log will be in the same stage directory. Read it for full context before proceeding. See §5.5.
+- `delegation: true` → Locate the Delegation Memory Log using the filename in the Task Memory Log's `## Delegation` section. The log will be in the same stage directory. Read it for full context before proceeding.
 
 **Status-Based Decision Flow:**
 
@@ -245,24 +245,24 @@ For straightforward issues requiring minor investigation or clarification:
 
 For issues requiring focused investigation or minor artifact updates:
 
-*Delegation path:* When a technical issue requires context-intensive debugging or research, output a Delegation Request Block. See §5.6 Delegation Request Block.
+*Delegation path:* When a technical issue requires context-intensive debugging or research, output a Delegation Request Block. See §5.5 Delegation Request Block.
 
 **If User approves delegation:**
 * **Action 1:** Read the appropriate delegation skill: `{SKILL_PATH:delegate-debug/SKILL.md}` or `{SKILL_PATH:delegate-research/SKILL.md}`
-* **Action 2:** Create Delegation Prompt following the skill. User opens Delegate Agent session and provides the delegation task. Delegate Agent logs findings and returns Delegation Report to User, who returns to Manager Agent. See §5.5 for expected structure.
+* **Action 2:** Create Delegation Prompt following the skill. User opens Delegate Agent session and provides the delegation task. Delegate Agent logs findings and returns Delegation Report to User, who returns to Manager Agent.
 * **Action 3:** Read the Delegation Memory Log and integrate findings into coordination decision. The log will be in the current stage directory with `delegating_agent: Manager`.
 
 **If User declines delegation:**
 Note the issue for follow-up Task Assignment or adjust approach based on User's preference.
 
-*Minor artifact adjustment path:* When findings warrant small artifact updates (single task clarification, isolated spec addition, minor standard adjustment), follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` for assessment and update guidance. Then proceed with coordination.
+*Minor artifact adjustment path:* When findings warrant small artifact updates (single task clarification, isolated spec addition, minor standard adjustment), follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` §3 Artifact Maintenance Procedure for assessment and update guidance. Then proceed with coordination.
 
 **Large-Scope Response:**
 
 For systemic issues, significant artifact changes, or decisions requiring User judgment:
 
-* **Action 1:** Follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` to assess affected artifacts and cascade implications
-* **Action 2:** Present situation to User using the Coordination Decision Block format. See §5.7.
+* **Action 1:** Follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` §3 Artifact Maintenance Procedure to assess affected artifacts and cascade implications
+* **Action 2:** Present situation to User using the Coordination Decision Block format. See §5.6 Coordination Decision Block.
 * **Action 3:** Await User guidance before proceeding with artifact updates or coordination changes
 
 **Artifact Update Thresholds:**
@@ -368,26 +368,7 @@ Task Memory Logs are written by Worker Agents. Manager Agents review these logs 
 - `## Important Findings`: (only if `important_findings: true`) Project-relevant discoveries
 - `## Next Steps`: Recommendations for follow-up actions, or "None"
 
-### 5.5 Delegation Memory Log Structure
-
-Delegation Memory Logs are written by Delegate Agents. They are stored side-by-side with Task Memory Logs in the stage directory.
-
-**Location:** `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
-
-**YAML Frontmatter Fields:**
-- `delegation_type`: `Debug` | `Research` | `Refactor` | `<Custom>`
-- `delegating_agent`: Agent that initiated the delegation (e.g., `Backend Agent`, `Manager`)
-- `stage`: Stage number where delegation was initiated
-- `status`: `Resolved` | `Unresolved`
-
-**Markdown Body Sections:**
-- `## Summary`: 1-2 sentence delegation outcome description
-- `## Delegation Context`: Why delegated, what calling agent was trying to accomplish
-- `## Findings`: Key discoveries, solutions, or information gathered
-- `## Resolution`: How the issue was resolved, or why it remains unresolved
-- `## Integration Notes`: Guidance for how calling agent should integrate findings
-
-### 5.6 Delegation Request Block
+### 5.5 Delegation Request Block
 
 Output this block when proposing delegation for a bounded-scope issue. See §4.2 Coordination Response Policy.
 ```
@@ -405,7 +386,7 @@ Output this block when proposing delegation for a bounded-scope issue. See §4.2
 Your choice?
 ```
 
-### 5.7 Coordination Decision Block
+### 5.6 Coordination Decision Block
 
 Output this block when presenting large-scope issues to User for collaboration. See §4.2 Coordination Response Policy.
 ```

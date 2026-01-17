@@ -219,7 +219,7 @@ This section defines the sequential actions that accomplish Context Gathering. T
 3. Question Round 2 → Technical Requirements
 4. Question Round 3 → Implementation Approach and Quality
 5. Procedure Checkpoint → Understanding Summary presentation and modification handling
-6. Procedure Completion → Progression Gate to Work Breakdown
+6. Procedure Completion → Progression Gate to `{SKILL_PATH:work-breakdown/SKILL.md}`
 
 ### 3.1 Question Round Protocol
 
@@ -274,7 +274,7 @@ Project type and deliverables; problem and purpose; essential features and scope
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see §1.3 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during Work Breakdown.
+**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see §1.3 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during the Work Breakdown Procedure?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during `{SKILL_PATH:work-breakdown/SKILL.md}` §3 Work Breakdown Procedure.
 
 #### 3.2.3 Gap Assessment Criteria
 
@@ -404,7 +404,7 @@ After each User response, assess:
 
 ### 3.5 Procedure Checkpoint
 
-After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to Work Breakdown.
+After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to `{SKILL_PATH:work-breakdown/SKILL.md}`.
 
 * **Action 1:** Present the Understanding Summary Block consolidating all gathered context. See §5.2 Understanding Summary Block.
 
@@ -416,7 +416,7 @@ After completing the three Question Rounds, present the gathered context for Use
 
   **Your options:**
   - **Modifications needed** → Describe any misunderstandings, missing requirements or constraints and I will update.
-  - **All looks good** → I will proceed to the Work Breakdown Procedure.
+  - **All looks good** → I will proceed to the Work Breakdown Procedure (see `{SKILL_PATH:work-breakdown/SKILL.md}`).
   ```
 
 * **Action 3:** Handle User response:
@@ -425,16 +425,16 @@ After completing the three Question Rounds, present the gathered context for Use
 
 ### 3.6 Procedure Completion
 
-Output the Completion Block. This is a **Progression Gate** - do NOT proceed to Work Breakdown until this block is output.
+Output the Completion Block. This is a **Progression Gate** - do NOT proceed to `{SKILL_PATH:work-breakdown/SKILL.md}` until this block is output.
 
 * **Action 1:** Output the Completion Block:
   ```
   **COMPLETE:** Context Gathering Procedure
   Summary: All Question Rounds completed. Project context gathered and validated.
-  Next: Work Breakdown Procedure
+  Next: `{SKILL_PATH:work-breakdown/SKILL.md}` §3 Work Breakdown Procedure
   ```
 
-**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to Work Breakdown Procedure.
+**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to `{SKILL_PATH:work-breakdown/SKILL.md}` §3 Work Breakdown Procedure.
 
 ---
 
