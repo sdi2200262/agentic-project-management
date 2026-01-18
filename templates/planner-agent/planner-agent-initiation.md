@@ -4,7 +4,7 @@ command_name: initiate-planner
 description: Initializes a new APM Planner Agent Session and starts the Planning Phase with two Procedures.
 ---
 
-# APM {VERSION} – Planner Agent Initiation Prompt
+# APM {VERSION} – Planner Agent Initiation Command
 
 
 ## 1. Overview
