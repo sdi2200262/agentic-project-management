@@ -10,13 +10,10 @@
     "test": "vitest run --reporter=basic",
     "test:watch": "vitest",
     "deploy:website": "cd website && npm run deploy",
-    "apidocs": "npm run apidocs:html && npm run apidocs:dag && npm run apidocs:md",
-    "apidocs:html": "jsdoc -c jsdoc.config.json",
-    "apidocs:md": "documentation build src/** scripts/build.js -f md -o api-docs/API.md",
-    "apidocs:dag": "npm run apidocs:dag:mermaid && npm run apidocs:dag:json",
-    "apidocs:dag:mermaid": "depcruise src scripts/build.js --config --output-type mermaid > api-docs/dependency-graph.mmd",
-    "apidocs:dag:json": "depcruise src scripts/build.js --config --output-type json > api-docs/dependency-graph.json",
-    "apidocs:validate": "depcruise src scripts/build.js --config --output-type err"
+    "deps:dag": "npm run deps:dag:mermaid && npm run deps:dag:json",
+    "deps:dag:mermaid": "depcruise src scripts/build.js --config --output-type mermaid > api-docs/dependency-graph.mmd",
+    "deps:dag:json": "depcruise src scripts/build.js --config --output-type json > api-docs/dependency-graph.json",
+    "deps:validate": "depcruise src scripts/build.js --config --output-type err"
   },
   "repository": {
     "type": "git",
@@ -57,10 +54,7 @@
   },
   "devDependencies": {
     "archiver": "^7.0.1",
-    "clean-jsdoc-theme": "^4.3.0",
     "dependency-cruiser": "^17.3.6",
-    "documentation": "^14.0.3",
-    "jsdoc": "^4.0.5",
     "vitest": "^2.1.3"
   }
 }
