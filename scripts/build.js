@@ -5,12 +5,28 @@
  * Supports Markdown (Claude, Copilot, etc.) and TOML (Gemini, Qwen) formats.
  * 
  * Usage: node build.js
+ * 
+ * @module build
  */
 
 import fs from 'fs-extra';
 import yaml from 'js-yaml';
 import path from 'path';
 import archiver from 'archiver';
+import { fileURLToPath } from 'url';
+import { resolve } from 'path';
+
+/**
+ * Build log levels and prefixes for consistent terminal output
+ * @constant {Object}
+ */
+const LOG = {
+  info: (msg) => console.log(`[INFO] ${msg}`),
+  success: (msg) => console.log(`[SUCCESS] ${msg}`),
+  warn: (msg) => console.log(`[WARN] ${msg}`),
+  error: (msg) => console.error(`[ERROR] ${msg}`),
+  debug: (msg) => process.env.DEBUG === 'true' && console.log(`[DEBUG] ${msg}`)
+};
 
 /**
  * Loads and parses build-config.json
@@ -56,7 +72,7 @@ async function findMdFiles(sourceDir) {
  * @returns {Object} Object with {frontmatter, content} properties
  */
 function parseFrontmatter(content) {
-  // Normalize line endings and remove BOM for robustness
+  // Normalize line endings and remove BOM
   content = content.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   
   const lines = content.split('\n');
@@ -66,6 +82,7 @@ function parseFrontmatter(content) {
   }
 
   const endIndex = lines.indexOf('---', 1);
+  
   if (endIndex === -1) {
     return { frontmatter: {}, content };
   }
@@ -74,10 +91,11 @@ function parseFrontmatter(content) {
   const body = lines.slice(endIndex + 1).join('\n');
 
   let frontmatter = {};
+  
   try {
     frontmatter = yaml.load(frontmatterStr) || {};
-  } catch (error) {
-    console.warn('Failed to parse frontmatter:', error.message);
+  } catch (err) {
+    LOG.warn(`Failed to parse frontmatter: ${err.message}`);
   }
 
   return { frontmatter, content: body };
@@ -85,49 +103,54 @@ function parseFrontmatter(content) {
 
 /**
  * Replaces template placeholders with target-specific values
- *
+ * 
  * Supported placeholders:
  * - {VERSION}: Package version
  * - {TIMESTAMP}: ISO timestamp
- * - {SKILL_PATH:path}: Path to skill file (e.g., {SKILL_PATH:context-gathering/SKILL.md})
+ * - {SKILL_PATH:path}: Path to skill file
  * - {COMMAND_PATH:filename}: Path to command file
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
- * - {AGENTS_FILE}: Platform-specific agents file name (CLAUDE.md or AGENTS.md)
- * - {SKILLS_DIR}: Platform-specific skills directory (e.g., .claude/skills, .cursor/skills)
- *
+ * - {AGENTS_FILE}: Platform-specific agents file name
+ * - {SKILLS_DIR}: Platform-specific skills directory
+ * 
  * @param {string} content - Template content with placeholders
  * @param {string} version - Version string
  * @param {Object} targetDirectories - Target directory configuration
  * @param {string} format - Target format ('markdown' or 'toml')
- * @param {Date} [now] - Optional timestamp for deterministic testing
+ * @param {Object} target - Target configuration object
+ * @param {Object} options - Additional options
+ * @param {Date} options.now - Timestamp for replacement
+ * @param {Object} options.commandFileMap - Map of command filenames
  * @returns {string} Content with placeholders replaced
  */
 function replacePlaceholders(content, version, targetDirectories, format, target, options = {}) {
   const { now = new Date(), commandFileMap = {} } = options;
+  
   let replaced = content
     .replace(/{VERSION}/g, version)
     .replace(/{TIMESTAMP}/g, now.toISOString());
 
-  // Support new SKILL_PATH placeholder
+  // Replace SKILL_PATH placeholder
   replaced = replaced.replace(/{SKILL_PATH:([^}]+)}/g, (_match, skillPath) => {
     return path.join(targetDirectories.skills, skillPath);
   });
 
+  // Replace COMMAND_PATH placeholder
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, filename) => {
-    // Map referenced template filename to the final built command filename for this target
     const base = path.basename(filename, path.extname(filename));
     const resolved = commandFileMap[base] || commandFileMap[filename] || filename;
     return path.join(targetDirectories.commands, resolved);
   });
 
+  // Replace ARGS placeholder based on format
   const argsPlaceholder = format === 'toml' ? '{{args}}' : '$ARGUMENTS';
   replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
 
-  // Replace {AGENTS_FILE} with target-specific agents file name
+  // Replace AGENTS_FILE placeholder
   const agentsFileName = target.id === 'claude' ? 'CLAUDE.md' : 'AGENTS.md';
   replaced = replaced.replace(/{AGENTS_FILE}/g, agentsFileName);
 
-  // Replace {SKILLS_DIR} with target-specific skills directory
+  // Replace SKILLS_DIR placeholder
   replaced = replaced.replace(/{SKILLS_DIR}/g, targetDirectories.skills);
 
   return replaced;
@@ -145,18 +168,122 @@ async function createZipArchive(sourceDir, outputPath) {
     const output = fs.createWriteStream(outputPath);
     const archive = archiver('zip', { zlib: { level: 9 } });
 
-    output.on('close', () => {
-      resolve();
-    });
-
-    archive.on('error', (err) => {
-      reject(err);
-    });
+    output.on('close', () => resolve());
+    archive.on('error', (err) => reject(err));
 
     archive.pipe(output);
     archive.directory(sourceDir, false);
     archive.finalize();
   });
+}
+
+/**
+ * Builds command filename map for COMMAND_PATH placeholder resolution
+ * @param {string[]} templateFiles - Array of template file paths
+ * @param {Object} target - Target configuration
+ * @returns {Promise<Object>} Map of original filename to built filename
+ * @private
+ */
+async function buildCommandFileMap(templateFiles, target) {
+  const commandFileMap = {};
+  
+  for (const templatePath of templateFiles) {
+    const content = await fs.readFile(templatePath, 'utf8');
+    const { frontmatter } = parseFrontmatter(content);
+    
+    if (frontmatter.command_name === undefined) {
+      continue;
+    }
+
+    const originalBase = path.basename(templatePath, '.md');
+    const priority = frontmatter.priority || 'default';
+    const sanitizedCommandName = String(frontmatter.command_name || '').replace(/[^a-zA-Z0-9-_]/g, '-');
+    const fullCommandName = `apm-${priority}-${sanitizedCommandName}`;
+
+    // Determine extension based on target format
+    let finalExt;
+    if (target.format === 'toml') {
+      finalExt = '.toml';
+    } else {
+      finalExt = target.id === 'copilot' ? '.prompt.md' : '.md';
+    }
+    
+    const finalFilename = `${fullCommandName}${finalExt}`;
+    commandFileMap[originalBase] = finalFilename;
+    commandFileMap[`${originalBase}.md`] = finalFilename;
+  }
+  
+  return commandFileMap;
+}
+
+/**
+ * Processes a single template file
+ * @param {string} templatePath - Path to template file
+ * @param {Object} target - Target configuration
+ * @param {string} version - Version string
+ * @param {Object} commandFileMap - Command filename map
+ * @param {string} commandsDir - Output commands directory
+ * @param {string} skillsDir - Output skills directory
+ * @param {string} targetBuildDir - Target build directory
+ * @returns {Promise<void>}
+ * @private
+ */
+async function processTemplate(templatePath, target, version, commandFileMap, commandsDir, skillsDir, targetBuildDir) {
+  const content = await fs.readFile(templatePath, 'utf8');
+  const { frontmatter, content: body } = parseFrontmatter(content);
+
+  const isCommand = frontmatter.command_name !== undefined;
+  const category = isCommand ? 'command' : 'skill';
+
+  const processedBody = replacePlaceholders(body, version, target.directories, target.format, target, { commandFileMap });
+  const processedFull = replacePlaceholders(content, version, target.directories, target.format, target, { commandFileMap });
+
+  const originalFilename = path.basename(templatePath, '.md');
+  let outputFilename;
+  let finalContent;
+
+  if (isCommand && frontmatter.command_name) {
+    const priority = frontmatter.priority || 'default';
+    const sanitizedCommandName = frontmatter.command_name.replace(/[^a-zA-Z0-9-_]/g, '-');
+    const fullCommandName = `apm-${priority}-${sanitizedCommandName}`;
+
+    if (target.format === 'toml') {
+      outputFilename = `${fullCommandName}.toml`;
+      const description = frontmatter.description || 'APM command';
+      finalContent = `description = "${description}"\n\nprompt = """\n${processedBody}\n"""\n`;
+    } else {
+      outputFilename = `${fullCommandName}.md`;
+      finalContent = processedFull;
+    }
+  } else {
+    outputFilename = `${originalFilename}.md`;
+    finalContent = processedFull;
+  }
+
+  const outputDirPath = isCommand ? commandsDir : skillsDir;
+  const outputPath = path.join(outputDirPath, outputFilename);
+
+  await fs.writeFile(outputPath, finalContent);
+  LOG.info(`${category}: ${originalFilename}.md → ${path.relative(targetBuildDir, outputPath)}`);
+}
+
+/**
+ * Renames Copilot command files from .md to .prompt.md
+ * @param {string} commandsDir - Commands directory path
+ * @returns {Promise<void>}
+ * @private
+ */
+async function renameCopilotCommands(commandsDir) {
+  const commandFiles = await fs.readdir(commandsDir);
+  
+  for (const file of commandFiles) {
+    if (file.endsWith('.md') && !file.endsWith('.prompt.md')) {
+      const oldPath = path.join(commandsDir, file);
+      const newPath = path.join(commandsDir, file.replace(/\.md$/, '.prompt.md'));
+      await fs.rename(oldPath, newPath);
+      LOG.info(`Renamed: ${file} → ${path.basename(newPath)}`);
+    }
+  }
 }
 
 /**
@@ -175,133 +302,53 @@ async function build(config, version) {
     await fs.ensureDir(outputDir);
   }
 
-  console.log(`Building ${targets.length} targets to ${outputDir}...`);
+  LOG.info(`Building ${targets.length} targets to ${outputDir}...`);
 
   for (const target of targets) {
     const targetBuildDir = path.join(outputDir, `${target.id}-build`);
     const commandsDir = path.join(targetBuildDir, 'commands');
     const skillsDir = path.join(targetBuildDir, 'skills');
 
-    console.log(`\nProcessing target: ${target.name} (${target.id})`);
+    LOG.info(`\nProcessing target: ${target.name} (${target.id})`);
 
     await fs.ensureDir(commandsDir);
     await fs.ensureDir(skillsDir);
 
     const templateFiles = await findMdFiles(buildConfig.sourceDir);
-    console.log(`Found ${templateFiles.length} template files`);
+    LOG.info(`Found ${templateFiles.length} template files`);
 
-    // Pre-compute command filename mapping for {COMMAND_PATH:*} replacements
-    // Map original template base filename (without extension) -> final built command filename (with correct extension)
-    const commandFileMap = {};
+    // Pre-compute command filename mapping
+    const commandFileMap = await buildCommandFileMap(templateFiles, target);
+
+    // Process all templates
     for (const templatePath of templateFiles) {
-      const content = await fs.readFile(templatePath, 'utf8');
-      const { frontmatter } = parseFrontmatter(content);
-      const isCommand = frontmatter.command_name !== undefined;
-      if (!isCommand) continue;
-
-      const originalBase = path.basename(templatePath, '.md');
-      const priority = frontmatter.priority || 'default';
-      const sanitizedCommandName = String(frontmatter.command_name || '')
-        .replace(/[^a-zA-Z0-9-_]/g, '-');
-      const fullCommandName = `apm-${priority}-${sanitizedCommandName}`;
-
-      // Determine final extension per target
-      let finalExt;
-      if (target.format === 'toml') {
-        finalExt = '.toml';
-      } else {
-        // Markdown
-        finalExt = target.id === 'copilot' ? '.prompt.md' : '.md';
-      }
-      const finalFilename = `${fullCommandName}${finalExt}`;
-
-      // Store mapping by base and by original filename w/ extension for robustness
-      commandFileMap[originalBase] = finalFilename;
-      commandFileMap[`${originalBase}.md`] = finalFilename;
-    }
-
-    for (const templatePath of templateFiles) {
-      const content = await fs.readFile(templatePath, 'utf8');
-      const { frontmatter, content: body } = parseFrontmatter(content);
-
-      const isCommand = frontmatter.command_name !== undefined;
-      const category = isCommand ? 'command' : 'skill';
-
-      const processedBody = replacePlaceholders(body, version, target.directories, target.format, target, { commandFileMap });
-      const processedFull = replacePlaceholders(content, version, target.directories, target.format, target, { commandFileMap });
-
-      const originalFilename = path.basename(templatePath, '.md');
-      let outputFilename;
-      let fileExtension;
-      let finalContent;
-
-      if (isCommand && frontmatter.command_name) {
-        // Command files: apm-{priority}-{command_name}
-        const priority = frontmatter.priority || 'default';
-        const sanitizedCommandName = frontmatter.command_name.replace(/[^a-zA-Z0-9-_]/g, '-');
-        const fullCommandName = `apm-${priority}-${sanitizedCommandName}`;
-
-        if (target.format === 'toml') {
-          // TOML format for Gemini/Qwen CLI
-          fileExtension = '.toml';
-          outputFilename = `${fullCommandName}${fileExtension}`;
-
-          const description = frontmatter.description || 'APM command';
-          finalContent = `description = "${description}"\n\nprompt = """\n${processedBody}\n"""\n`;
-        } else {
-          // Markdown format for most assistants
-          fileExtension = '.md';
-          outputFilename = `${fullCommandName}${fileExtension}`;
-          finalContent = processedFull;
-        }
-      } else {
-        // Skill files: keep original name, always markdown
-        fileExtension = '.md';
-        outputFilename = `${originalFilename}${fileExtension}`;
-        finalContent = processedFull;
-      }
-
-      const outputDirPath = isCommand ? commandsDir : skillsDir;
-      const outputPath = path.join(outputDirPath, outputFilename);
-
-      await fs.writeFile(outputPath, finalContent);
-      console.log(`  ${category}: ${originalFilename}.md → ${path.relative(targetBuildDir, outputPath)}`);
+      await processTemplate(templatePath, target, version, commandFileMap, commandsDir, skillsDir, targetBuildDir);
     }
 
     // Handle target-specific post-processing
     if (target.id === 'copilot') {
-      // Rename all command .md files to .prompt.md for Copilot
-      const commandFiles = await fs.readdir(commandsDir);
-      for (const file of commandFiles) {
-        if (file.endsWith('.md') && !file.endsWith('.prompt.md')) {
-          const oldPath = path.join(commandsDir, file);
-          const newPath = path.join(commandsDir, file.replace(/\.md$/, '.prompt.md'));
-          await fs.rename(oldPath, newPath);
-          console.log(`  Renamed: ${file} → ${path.basename(newPath)}`);
-        }
-      }
+      await renameCopilotCommands(commandsDir);
     }
 
-    console.log(`Completed target: ${target.name}`);
+    LOG.success(`Completed target: ${target.name}`);
 
-    // Create ZIP archive from build directory
+    // Create ZIP archive
     const zipPath = path.join(outputDir, target.bundleName);
-    console.log(`Creating archive: ${target.bundleName}...`);
+    LOG.info(`Creating archive: ${target.bundleName}...`);
     
     try {
       await createZipArchive(targetBuildDir, zipPath);
-      console.log(`Archive created successfully: ${target.bundleName}`);
+      LOG.success(`Archive created: ${target.bundleName}`);
       
-      // Clean up temporary build directory
       await fs.remove(targetBuildDir);
-      console.log(`Cleaned up temporary directory: ${path.basename(targetBuildDir)}`);
-    } catch (error) {
-      console.error(`Failed to create archive for ${target.name}:`, error.message);
-      throw error;
+      LOG.info(`Cleaned up: ${path.basename(targetBuildDir)}`);
+    } catch (err) {
+      LOG.error(`Failed to create archive for ${target.name}: ${err.message}`);
+      throw err;
     }
   }
 
-  console.log('\nBuild completed successfully!');
+  LOG.success('\nBuild completed successfully!');
 }
 
 /**
@@ -311,14 +358,13 @@ async function main() {
   try {
     const config = await loadConfig();
     
-    // Read version dynamically from package.json
     const packageJson = await fs.readFile('package.json', 'utf8');
     const { version } = JSON.parse(packageJson);
 
     await build(config, version);
 
-  } catch (error) {
-    console.error('Build failed:', error.message);
+  } catch (err) {
+    LOG.error(`Build failed: ${err.message}`);
     process.exit(1);
   }
 }
@@ -327,10 +373,6 @@ async function main() {
 export { loadConfig, findMdFiles, parseFrontmatter, replacePlaceholders, createZipArchive, build };
 
 // Run build when executed directly
-// Check if this module is the main module being run
-import { fileURLToPath } from 'url';
-import { resolve } from 'path';
-
 const currentFile = fileURLToPath(import.meta.url);
 const mainFile = resolve(process.argv[1]);
 
