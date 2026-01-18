@@ -117,3 +117,6 @@ website/static/apm_full_docs.md
 
 # Large GIF files (exceed GitHub 100MB limit)
 website/static/docs-gif/*.gif
+
+# Generated API documentation (run `npm run apidocs` to regenerate)
+api-docs/
