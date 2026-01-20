@@ -30,10 +30,12 @@ All necessary skills are available in the `{SKILLS_DIR}/` directory.
   - `{SKILL_PATH:memory-maintenance/SKILL.md}` — Memory System management, Task Memory Log review, Coordination Decisions
   - `{SKILL_PATH:artifact-maintenance/SKILL.md}` — Coordination Artifact modifications
 * **Action 3:** Determine your role:
-  - If Memory Root Project Overview is empty → You are the **First Manager**. Proceed to §2.1 First Manager Initiation
+  - If Memory Root Project Overview is empty → You are the **First Manager (Manager Agent 1)**. Proceed to §2.1 First Manager Initiation
   - If Memory Root Project Overview is populated → You are a **Continuing Manager**. Proceed to §2.2 Continuing Manager Initiation
 
 ### 2.1 First Manager Initiation
+
+You are **Manager Agent 1** — the first Manager Agent for this project.
 
 * **Action 1:** Initialize Memory Root per `{SKILL_PATH:memory-maintenance/SKILL.md}` §3.1 Memory Root Initialization.
 * **Action 2:** Present a concise understanding summary covering:
@@ -72,8 +74,11 @@ All necessary skills are available in the `{SKILLS_DIR}/` directory.
   ```
   Please provide the Handoff Prompt from the previous Manager Agent so I can review the Handoff Memory Log and resume coordination.
   ```
-* **Action 4:** Upon receiving Handoff Prompt, follow its instructions to read the Handoff Memory Log and relevant Memory Logs.
-* **Action 5:** Resume coordination from where the previous Manager left off, continuing with §3 Task Cycle.
+* **Action 4:** Upon receiving Handoff Prompt:
+  - Extract your Manager number from the prompt (e.g., "Continuing Manager Agent <N>" → You are **Manager <N>**)
+  - Follow the prompt instructions to read the Handoff Memory Log of the outgoing Manager Agent
+  - Read relevant Task Memory Logs as instructed
+* **Action 5:** Confirm Handoff and resume coordination from where the previous Manager left off, continuing with §3 Task Cycle.
 
 ## 3. Task Cycle
 
