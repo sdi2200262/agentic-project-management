@@ -237,6 +237,10 @@ Assemble the Task Assignment Prompt using extracted context from the Implementat
     - Delegation section (if `has_delegation_steps: true`)
 * **Action 3:** Output the complete prompt **as a markdown code block** for User copy-paste.
     - **Critical:** Ensure the prompt content contains NO embedded ``` code blocks, as this would break the outer code block boundaries and fragment the prompt. Use indented code blocks (4 spaces) or inline code formatting for code examples instead.
+* **Action 4:** Immediately after outputting the Task Assignment Prompt code block, provide User guidance:
+    ```
+    Copy this Task Assignment Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
+    ```
 
 ### 3.5 FollowUp Task Assignment Prompt Creation
 
@@ -266,6 +270,10 @@ FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than t
     - Contextually integrate extracted content from modified Coordination Artifacts in appropriate sections
 * **Action 5:** Output **as a markdown code block** for User copy-paste.
     - **Critical:** Ensure the prompt content contains NO embedded ``` code blocks, as this would break the outer code block boundaries and fragment the prompt. Use indented code blocks (4 spaces) or inline code formatting for code examples instead.
+* **Action 6:** Immediately after outputting the FollowUp Task Assignment Prompt code block, provide User guidance:
+    ```
+    Copy this FollowUp Task Assignment Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
+    ```
 
 ---
 
