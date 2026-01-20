@@ -1,149 +1,225 @@
 ---
 priority: 5
-command_name: handover-manager
-description: Initiates and guides a Manager Agent through the handover procedure to a new agent instance.
+command_name: Handoff-manager
+description: Initiates and guides the Manager Agent through the Handoff Procedure to transfer coordination context to a Continuing Manager Agent instance.
 ---
 
-# APM {VERSION} - Manager Agent Handover Prompt
-This prompt defines how Manager Agents execute handover procedures to transfer project coordination context to incoming Manager Agent instances when approaching context window limits.
+# APM {VERSION} — Manager Agent Handoff Command
 
----
+## 1. Overview
 
-## 1 Handover Protocol Overview
-Manager Agent Handover Protocol enables seamless context transfer using a two-artifact system while Manager Agent Context Scope includes full project coordination awareness.
-- **Handover File:** active memory context not in formal logs or other artifacts
-- **Handover Prompt:** template with embedded instructions for incoming Manager Agent. 
+This command initiates the Handoff Procedure for a Manager Agent approaching context window limits. The Outgoing Manager creates two artifacts:
 
+- **Handoff Memory Log:** A markdown file stored in `.apm/Memory/Handoffs/Manager_Handoffs/` containing working context NOT captured in Coordination Artifacts or Memory Logs
+- **Handoff Prompt:** A markdown code block for User to copy-paste to a new chat session, instructing the Continuing Manager to reconstruct context procedurally
 
----
-
-## 2 Handover Eligibility and Timing
-Handover procedures are only eligible when the current **complete task execution cycle** is finished. Manager Agent **MUST** have completed:
-
-### Task Loop Cycle Completion Requirements
-- **Task Assignment issued** AND **Implementation Agent execution completed**
-- **Memory Log received back from User** with completed task results
-- **Memory Log thoroughly reviewed** for task completion status, issues, and outputs  
-- **Next action decision made** (continue with next task, follow-up prompt, ad-hoc delegation, or Implementation Plan update)
-
-### Handover Blocking Scenarios  
-**Handover requests MUST be denied when Manager Agent is:**
-- **Waiting for task completion**: Task Assignment issued but Implementation Agent hasn't completed work yet
-- **Waiting for Memory Log**: Implementation Agent completed task but User hasn't returned with Memory Log yet  
-- **Mid-review process**: Memory Log received but review and next action decision incomplete
-- **Any other incomplete task coordination step**
-
-When User requests Handover during non-eligible timing: **finish current critical step** then ask if they still want to commence Handover Procedure.
-
-**Denial Response Format:** "Handover not eligible. Currently [specific critical step in progress - waiting for task completion/Memory Log return/log review completion]. Will confirm handover eligibility upon completion."
+The Continuing Manager reconstructs context by reading Coordination Artifacts, Skills, Memory Logs, and the Handoff Memory Log — not from the Handoff Memory Log alone.
 
 ---
 
-## 3 Handover Execution Process
+## 2. Handoff Eligibility
 
-### Step 1: Handover Request Validation
-Assess current coordination state using section §2 criteria. If not eligible → deny request with completion requirements. If eligible → proceed to context gathering.
+Handoff is only eligible when the current Task Cycle is complete.
 
-### Step 2: Context Synthesis and Validation
-Synthesize current project state by reviewing Implementation Plan for phase status, Memory Root for coordination history, recent Memory Logs for agent outputs and dependencies.
+**Eligibility Requirements:**
 
-### Step 3: Artifact Creation
-Create Manager Handover File and Handover Prompt using templates in section §4. Follow file organization in section §5.
+The Manager MUST have completed:
+- Task Assignment Prompt issued to Worker Agent
+- Task Report received from User
+- Task Memory Log reviewed
+- Coordination Decision made (proceed to next Task, FollowUp, or Coordination Artifact modification)
 
-### Step 4: User Review and Finalization
-Present artifacts to User for review, accept modifications, confirm completeness before User executes handover procedure.
+**Blocking Scenarios:**
 
-#### Handover Procedure Overview
-After confirming completeness, User will open a new chat session, initialize a new Manager Agent instance and paste the Handover Prompt. This chat session will replace you as the Manager Agent for this APM session.
+Handoff requests **MUST be denied** when Manager is:
+- Waiting for Task Report (Task Assignment issued but Worker hasn't completed)
+- Mid-review (Task Report received but Coordination Decision not yet made)
+- Mid-investigation (investigating flags or non-Success status)
+- Mid-artifact modification (Coordination Artifact modification in progress)
 
----
+**Handoff Denial Output:**
 
-## 4 Manager Agent Handover Artifacts
-Create Generate Handover Artifacts following these templates:
+When Handoff is not eligible, deny the request using this template:
+```
+I cannot proceed with the Handoff because I'm currently [blocking scenario: waiting for Task Report / reviewing Task Report / investigating issues / modifying Coordination Artifact]. [Brief description of what's in progress]
 
-### Handover Artifact Overview
-**Two distinct artifacts are created during handover:**
-- **Handover Prompt**: Presented **in chat** as markdown code block for copy-paste to new session
-- **Handover File**: Created as **physical markdown file** in dedicated directory structure
+Handoff requires a complete Task Cycle. The Continuing Manager needs [what's missing] to continue coordination effectively.
 
-### Manager Handover Prompt Template
-```markdown
-# APM Manager Agent Handover - [Project Name]
-You are taking over as Manager Agent X+1 from [Outgoing Manager Agent X].
-
-## APM Context Integration Protocol
-Follow this sequence exactly. Steps 1-8 in one response. Step 9 after explicit User confirmation:
-
-  **Plan Responsibilities & Project Understanding**
-  1. Read the entire `.apm/Implementation_Plan.md` file to understand project status and task assignments
-  2. Confirm your understanding of the project scope, phases, and task structure & your plan management responsibilities
-
-  **Memory System Responsibilities**  
-  3. Read {GUIDE_PATH:Memory_System_Guide.md}
-  4. Read {GUIDE_PATH:Memory_Log_Guide.md}
-  5. Confirm your understanding of memory management responsibilities
-
-  **Task Coordination Preparation**
-  6. Read {GUIDE_PATH:Task_Assignment_Guide.md}  
-  7. Confirm your understanding of task assignment prompt creation and coordination duties
-
-  **Handover Context Integration**
-  8. Read Handover File ([path/Manager_Agent_Handover_File_X.md]) for active memory context of the outgoing agent not captured in formal logs
-  9. **State your understanding of the Project's state and your responsibilities** based on the guides and handover file, then **await for User confirmation** to proceed to the next step.
-
-## Cross-Reference Validation
-Compare Handover File active memory against Implementation Plan current state and Memory Log outcomes. Note contradictions for User clarification.
-
-## Current Session State
-- **Phase:** [Name/Number] - [X/Y tasks complete]
-- **Active Agents:** [Agent_Name with current assignments]
-- **Next Priority:** [Task ID - Agent assignment] | [Phase summary] | [Plan update]
-- **Recent Directives:** [Unlogged user instructions]
-- **Blockers:** [Coordination issues requiring attention]
-
-## User Verification Protocol
-After context synthesis: ask 1-2 assurance questions about project state accuracy, if contradictions found ask specific clarification questions, await explicit User confirmation before proceeding.
-
-**Immediate Next Action:** [Specific coordination task]
-
-Acknowledge receipt and begin APM context integration protocol immediately.
+Once [condition for completion] is done, Handoff will be eligible. Would you like me to proceed with Handoff after I complete this step?
 ```
 
-### Manager Handover File Format
+**After Denial — Complete Current Task Cycle:**
+
+After denying Handoff, you MUST complete the current Task Cycle step that was in progress. Once that step is complete, explicitly confirm completion and re-offer Handoff:
+```
+Handoff was not eligible when requested — I was [specific Task Cycle action in progress].
+
+That Task Cycle step is now complete. Would you still like to proceed with Handoff?
+```
+
+---
+
+## 3. Handoff Procedure
+
+Execute this procedure when User initiates Handoff and eligibility is confirmed.
+
+### 3.1 Eligibility Check
+
+* **Action 1:** Assess current coordination state against §2 Handoff Eligibility criteria
+* **Action 2:** If not eligible → Deny with specific reason, complete current step, then re-confirm with User
+* **Action 3:** If eligible → Proceed to §3.2 Handoff Memory Log Creation
+
+### 3.2 Handoff Memory Log Creation
+
+* **Action 1:** Determine your Manager Agent number:
+  - If you are the First Manager → You are **Manager Agent 1**
+  - If you are a Continuing Manager → Your Manager Agent number is stated in the Handoff Prompt you received at initiation
+* **Action 2:** Calculate Continuing Manager number: `<Your-Manager-Agent-Number> + 1`
+* **Action 3:** Create Handoff Memory Log following §4 Handoff Memory Log Structure, including:
+  - Your Manager Agent number as `outgoing_manager`
+  - Handoff number equals your Manager Agent number (first handoff = Manager_Handoff_Log_1.md)
+  - Tracked Worker Handoffs (most critical) — which Workers performed Handoffs, from which Stage
+  - User preferences, communication patterns observed during this session
+  - Coordination insights or decisions not captured in Coordination Artifacts or Memory Logs
+  - Any working notes that would otherwise be lost
+* **Action 4:** Save to `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Manager Agent Number>.md`
+
+### 3.3 Handoff Prompt Creation
+
+* **Action 1:** Create Handoff Prompt following §5 Handoff Prompt Structure
+* **Action 2:** Include:
+    - Explicit statement: "You are taking over from Manager Agent <Your Manager Agent Number> as Continuing Manager Agent <Continuing Manager Number>"
+    - Instructions for Continuing Manager to read Coordination Artifacts and skills
+    - Path to Handoff Memory Log: `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Manager Agent Number>.md` 
+    - Instructions to read ALL current Stage Memory Logs (all Agents)
+    - Note about reading previous Stage Task Memory Logs when Context Dependencies require
+    - Current session state summary (current Stage, next Task, any blockers)
+    - Immediate next action
+* **Action 3:** Output as markdown code block for User copy-paste
+
+### 3.4 User Review and Finalization
+
+* **Action 1:** Present both artifacts to User:
+    - Handoff Memory Log (created as file)
+    - Handoff Prompt (output as markdown code block)
+* **Action 2:** Request User review:
+    ```
+    Handoff artifacts created:
+    
+    **Handoff Memory Log:** `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md`
+    
+    **Handoff Prompt:** Ready for copy-paste below.
+    
+    Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new chat session to initialize the Continuing Manager.
+    ```
+* **Action 3:** If User requests modifications → Update artifacts accordingly
+* **Action 4:** User copies Handoff Prompt to new session; this session ends
+
+---
+
+## 4. Handoff Memory Log Structure
+
+The Handoff Memory Log contains working context NOT captured in Coordination Artifacts or Memory Logs. The Continuing Manager reconstructs primary context from artifacts and logs—this file provides supplementary context only.
+
+**Location:** `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md`
+
+**YAML Frontmatter Structure:**
+
 ```yaml
 ---
-agent_type: Manager
-agent_id: Manager_[X]
-handover_number: [X]
-current_phase: [Phase <n>: <Name>]
-active_agents: [List of active Implementation Agents]
+outgoing_manager: Manager_<N>
+continuing_manager: Manager_<N+1>
+handoff_number: <N>
+current_stage: <Stage number and name>
+timestamp: <Date/time of Handoff>
 ---
 ```
+
+**Markdown Body Structure:**
 ```markdown
-# Manager Agent Handover File - [Project Name]
+# Manager Agent Handoff Memory Log
 
-## Active Memory Context
-**User Directives:** [Unlogged instructions, priority changes, Implementation Agent feedback]
-**Decisions:** [Coordination choices, assignment rationale, observed User patterns]
+## Tracked Worker Handoffs
 
-## Coordination Status
-**Producer-Consumer Dependencies (unordered list):**
-- [Task X.Y output] → [Available for Task A.B assignment to Agent_Name] or [Task M.N] → [Blocked waiting for Task P.Q completion]
+[List all Worker Agents that performed Handoffs during this Manager Agent session]
 
-**Coordination Insights:** [Agent performance patterns, effective assignment strategies, communication preferences]
+| Worker Agent | Handoff Stage | Current Stage Logs Loaded | Notes |
+|--------------|---------------|---------------------------|-------|
+| <Agent ID> | Stage <N> | [List of logs] | [Any relevant context] |
 
-## Next Actions
-**Ready Assignments:** [Task X.Y → Agent_Name with special context needed]
-**Blocked Items:** [Blocked tasks with description and affected tasks]
-**Phase Transition:** [If approaching phase end - summary requirements and next phase preparation]
+**Context Dependency Implication:** For these Continuing Worker Agents, any Same-Agent Context Dependencies from Stages before their Handoff must be treated as Cross-Agent Context Dependencies.
+
+## User Preferences
+
+[Communication patterns, explanation preferences, feedback style observed during this session]
+
+- [Preference 1]
+- [Preference 2]
+
+## Coordination Insights
+
+[Decisions, rationale, or observations not captured in Coordination Artifacts or Memory Logs]
+
+- [Insight 1]
+- [Insight 2]
 
 ## Working Notes
-**File Patterns:** [Key locations and user preferences]
-**Coordination Strategies:** [Effective task assignment and communication approaches]
-**User Preferences:** [Communication style, task breakdown patterns, quality expectations, explanation preferences for complex areas]
+
+[Any other context that would be lost without explicit capture]
+
+- [Note 1]
+- [Note 2]
 ```
 
 ---
 
-## 5 File Organization and Naming
-Store Manager Agent Handover Files in `.apm/Memory/Handovers/Manager_Agent_Handovers/`. Use naming: `Manager_Agent_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
+## 5. Handoff Prompt Structure
+
+The Handoff Prompt instructs the Continuing Manager to reconstruct context procedurally from Coordination Artifacts, skills, and Memory Logs. The Handoff Memory Log provides supplementary context only. The Handoff Prompt is presented as a **markdown code block** in the chat:
+````markdown
+# APM Manager Agent <N> Handoff
+
+You are taking over from **Manager Agent <N>** as **Continuing Manager Agent <N+1>**.
+
+## Context Reconstruction Protocol
+
+Follow this sequence to reconstruct coordination context:
+
+### Read Handoff Memory Log
+- `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md` (where <N> is the outgoing Manager Agent number from the prompt above)
+- **Critical:** Note all Tracked Worker Handoffs—these affect Context Dependency classification
+
+### Read Current Stage Memory Logs
+Read ALL Memory Logs from the current Stage (Stage <N>):
+- `.apm/Memory/Stage_<N>_<Slug>/` — All Task Memory Logs from all Agents
+
+### Previous Stage Context Dependencies
+When you encounter Context Dependencies referencing Tasks from previous Stages that you have no context of:
+- Read the specific Task Memory Log when you encounter the dependency
+- If the Task Memory Log does not provide sufficient context, read referenced files to reconstruct context needed for accurate Task Assignment Prompt creation
+
+## Current Session State
+
+- **Current Stage:** Stage <N> — <Stage Name>
+- **Stage Progress:** <X>/<Y> Tasks complete
+- **Next Task:** Task <N.M> — <Title> assigned to <Agent>
+- **Blockers:** [Any coordination issues requiring attention, or "None"]
+- **Notes:** [Any working notes from current session important for coordination]
+
+## Immediate Next Action
+
+[Specific next coordination action based on when Handoff was requested]
+
+---
+
+After completing context reconstruction, output a concise understanding summary of:
+1. Project state and current Stage progress and any working notes
+2. Tracked Worker Handoffs and their Context Dependency implications
+3. Immediate next action
+
+Then proceed with coordination duties.
+````
+
+---
+
+**End of Command**
