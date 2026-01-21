@@ -125,22 +125,13 @@ Assess whether modifications are within Manager authority or require User collab
 
 **Authority Scope Assessment:**
 
-Consider the impact and scope of the modification:
+Modification authority depends on scope and impact. Consider:
+- How many Tasks or Stages are affected?
+- Does the modification preserve original intent or change direction?
+- Does it require human judgment on trade-offs?
+- Would it affect project goals or timeline?
 
-*Manager Authority Indicators (bounded modifications):*
-- Single Task affected
-- Clarification or correction that preserves original intent
-- Adding detail without changing direction
-- Isolated modification that doesn't affect other Coordination Artifacts significantly
-- Missing information that should have been there originally but doesn't affect other Coordination Artifacts significantly
-
-*User Collaboration Required Indicators (significant modifications):*
-- Multiple Tasks affected
-- Design direction change
-- Scope expansion or reduction
-- New Stage or major restructure required
-- Trade-offs or decisions that require human judgment
-- Modifications that affect project goals or timeline
+Bounded modifications (single Task, clarification, isolated addition) typically fall within Manager authority. Significant modifications (multiple Tasks, direction change, scope adjustment, restructure) require User collaboration.
 
 **When uncertain about authority scope, prefer User collaboration.** Unauthorized significant modifications create coordination problems that are harder to fix than a brief pause for User input/guidance.
 
@@ -264,52 +255,33 @@ This section defines the decision rules that govern Artifact Maintenance.
 
 **Decision Domain:** How to handle modifications that might affect multiple Coordination Artifacts.
 
-**Bidirectional Coordination Assessment:**
+**Decision Rule:** Assess cascade implications using §2.2 Cascade Patterns Reasoning. When modifying Specifications, assess Implementation Plan impact. When modifying Implementation Plan, assess whether Specifications should be updated. Standards cascade upward very rarely.
 
-Specifications and Implementation Plan influence each other. When modifying either:
-- Specification modification → Assess Implementation Plan impact before considering the modification complete
-- Implementation Plan modification → Assess whether Specifications should be updated to reflect new understanding
+**Distinguishing Cascade Need:** Distinguish execution adjustments within design intent (no cascade) from design assumptions that proved incorrect (cascade warranted).
 
-**Distinguishing Cascade Need:**
-
-Not every Implementation Plan modification requires Specification update. Distinguish between:
-- Execution adjustments within the design intent (no Specification modification needed)
-- Design assumptions that proved incorrect or incomplete (Specification modification warranted)
-
-**Standards Isolation:**
-
-Standards are generally independent from coordination-level Coordination Artifacts:
-- Upward cascade from Standards to Implementation Plan or Specifications is very unlikely
-- Downward cascade from Implementation Plan or Specifications to Standards sometimes occurs
-- If a Standards modification seems to require coordination-level updates, reconsider whether it belongs in Specifications instead
+**Default:** When uncertain whether cascade is needed, assess the related Coordination Artifact rather than assuming isolation.
 
 ### 4.2 Modification Authority Policy
 
 **Decision Domain:** When Manager can execute modifications autonomously vs when User collaboration is required.
 
-**Authority Thresholds:**
+**Decision Rule:** Assess modification scope using §2.3 Modification Authority Reasoning.
 
-| Modification Type | Manager Authority | User Collaboration Required |
-|-------------------|-------------------|----------------------------|
-| Single Task clarification | Yes | No |
-| Adding missing dependency | Yes | No |
-| Isolated Specification addition | Yes | No |
-| Minor Standards adjustment | Yes | No |
-| Multiple Task modifications | No | Yes |
-| Design direction change | No | Yes |
-| Scope expansion or reduction | No | Yes |
-| New Stage or major restructure | No | Yes |
+**Manager Authority (bounded modifications):**
+- Single Task clarification or correction
+- Adding missing dependency
+- Isolated Specification addition
+- Minor Standards adjustment
 
-**Cumulative Scope:**
+**User Collaboration Required (significant modifications):**
+- Multiple Tasks affected
+- Design direction change
+- Scope expansion or reduction
+- New Stage or major restructure
 
-When multiple modifications are identified (including cascades), assess the cumulative scope:
-- Multiple small modifications that together represent significant change → User collaboration required
-- Modifications that individually are within authority but together change project direction → User collaboration required
-- Modifications are isolated, minor, and do not affect project direction → Manager authority
+**Cumulative Scope:** When multiple modifications are identified (including cascades), assess cumulative impact. Multiple small modifications that together represent significant change require User collaboration.
 
-**Default:**
-
-**When authority is unclear, prefer User collaboration.** Brief pause for User input is less costly than unauthorized significant modifications.
+**Default:** When authority is unclear, prefer User collaboration. Brief pause for User input is less costly than unauthorized significant modifications.
 
 ### 4.3 Consistency Policy
 
