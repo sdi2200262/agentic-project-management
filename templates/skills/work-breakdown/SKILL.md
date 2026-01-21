@@ -19,7 +19,7 @@ This skill defines the methodology for the Work Breakdown procedure, which trans
 
 **Use Policies for decisions.** When encountering branch points (split vs. combine, scope boundaries), apply the relevant policy to determine the appropriate action. See §4 Policies.
 
-**Output only structured blocks.** Present reasoning in chat using the Reasoning Block and Summary Block formats. Do not expose internal deliberation beyond these structured outputs—the blocks make your reasoning visible to the User while maintaining clarity. See §5 Structural Specifications.
+**Present reasoning in chat.** All analysis must be presented in chat before file output. Use the natural language output formats shown in §3 Work Breakdown Procedure to make reasoning visible to the User.
 
 ### 1.2 Objectives
 
@@ -48,7 +48,7 @@ Adapt the methodology to the project based on `{SKILL_PATH:context-gathering/SKI
 
 ## 2. Problem Space
 
-This section establishes the reasoning approach for executing Work Breakdown. It guides how to think about domain boundaries, task granularity, dependencies, and workload distribution.
+This section establishes the reasoning approach for executing Work Breakdown. It guides how to think about domain boundaries, task granularity, dependencies, and workload distribution. The granularity guidance in §2.4-§2.7 should be adapted to the project's actual scope and complexity per §1.4 Scope Adaptation.
 
 ### 2.1 Forced Chain-of-Thought Methodology
 
@@ -145,7 +145,7 @@ Validation criteria gathered during context discovery fall into three types. Mos
 
 ### 2.4 Domain Reasoning
 
-This subsection guides reasoning about work domains. The number of domains and their level of detail should be determined by the actual scope and complexity of the project, following the adaptation guidelines. See §1.4 Scope Adaptation.
+This subsection guides reasoning about work domains.
 
 **Identification Patterns:**
 
@@ -161,31 +161,33 @@ Identify logical work domains from Context Gathering findings. Each domain repre
 - Creative vs analytical work streams → Content-oriented vs data-oriented boundaries
 - Configuration vs development activities → Setup-focused vs feature-focused domains
 
-**Granularity Considerations:**
+**Granularity Assessment:**
 
-Domain granularity requires balancing two concerns: **over-separation** (too many small domains creating coordination overhead) and **over-consolidation** (merged domains requiring mental model switching).
+Domain granularity requires balancing two failure modes: **over-separation** (too many small domains creating coordination overhead) and **over-consolidation** (merged domains requiring mental model switching).
 
-*Split indicators (over-consolidation):*
+*Over-consolidation signals:*
 - Work requires fundamentally different mental models or skill sets
 - Context switching would disrupt Worker Agent execution flow
 - Domain scope is too broad for consistent technical knowledge requirements
 - Separation directives from Context Gathering indicate distinct handling
 
-*Combine indicators (over-separation):*
+*Over-separation signals:*
 - Domains share the same mental model and skill requirements
 - Work naturally builds upon itself with tight dependencies
 - Separation would create excessive cross-Agent coordination
 - Coupling directives from Context Gathering indicate unified handling
 
-*Granularity questions:*
+*Assessment questions:*
 - Do all tasks within this domain require similar thinking approach?
 - Does domain scope maintain consistent technical knowledge requirements?
 - Would separation reduce or increase Manager coordination overhead?
 - Does each domain deliver independent value toward project goals?
 
+After assessing domain candidates, apply the decision rules in §4.1 Domain Split/Combine Policy.
+
 ### 2.5 Stage Reasoning
 
-This subsection guides reasoning about project stages. The number and granularity of stages should be based on the actual size and complexity of the project, following the adaptation guidelines. See §1.4 Scope Adaptation.
+This subsection guides reasoning about project stages.
 
 **Identification Patterns:**
 
@@ -203,32 +205,34 @@ Identify logical project stages from Context Gathering workflow patterns. Each s
 - Natural progression without forced dependencies
 - Parallel, no-dependency stages: order by practical preference
 
-**Granularity Considerations:**
+**Granularity Assessment:**
 
-Stage granularity requires balancing two concerns: **over-fragmentation** (too many small stages creating unnecessary checkpoints) and **over-consolidation** (merged stages obscuring natural milestones).
+Stage granularity requires balancing two failure modes: **over-fragmentation** (too many small stages creating unnecessary checkpoints) and **over-consolidation** (merged stages obscuring natural milestones).
 
-*Split indicators (over-consolidation):*
+*Over-consolidation signals:*
 - Stage contains unrelated work streams with no natural connection
 - Extensive research requirements block subsequent work
 - Testing and validation requirements warrant dedicated stages
 - Bottlenecks and critical path items create natural boundaries
 - Stage scope is too broad to deliver coherent value
 
-*Combine indicators (over-fragmentation):*
+*Over-fragmentation signals:*
 - Stages are artificially separated with immediate handoffs
 - Simple or limited scope doesn't warrant separate stages
 - Separation creates unnecessary coordination overhead
 - Combined stages would still deliver coherent, independent value
 
-*Granularity questions:*
+*Assessment questions:*
 - Does each stage deliver independent value toward project completion?
 - Do stage boundaries align with workflow relationships and natural checkpoints?
 - Does stage organization reduce or increase coordination complexity?
 - Does stage scope support Worker Agent context preservation?
 
+After assessing stage candidates, apply the decision rules in §4.2 Stage Split/Combine Policy.
+
 ### 2.6 Task Reasoning
 
-This subsection guides reasoning about tasks within stages. The number and granularity of tasks should be based on the actual size and complexity of the project, following the adaptation guidelines. See §1.4 Scope Adaptation.
+This subsection guides reasoning about tasks within stages.
 
 **Identification Patterns:**
 
@@ -246,35 +250,37 @@ Derive tasks from stage objectives by identifying distinct work units that advan
 - **Clear boundaries:** Has identifiable start conditions (dependencies satisfied, inputs available) and end conditions (validation criteria met)
 - **Validation coverage:** Can be validated through defined criteria that meaningfully confirm the deliverable is complete and correct
 
-**Granularity Considerations:**
+**Granularity Assessment:**
 
 Task granularity requires balancing two failure modes: **task packing** (too much in one task) and **over-decomposition** (too many tiny tasks). Neither extreme serves project execution well.
 
 *Validation and iteration:* The validation criteria enable Worker Agents to iterate on failures. Programmatic and Artifact validation allow autonomous correction cycles. User validation provides natural checkpoints where human judgment guides iteration. Task scope should align with the validation approach, matching the iteration pattern to the work's requirements.
 
-*Split indicators (task packing):*
+*Task packing signals:*
 - Multiple unrelated deliverables combined
 - Work spans multiple Agent domains or skill sets
 - Internal dependencies where later steps require earlier steps to be validated first
 - Validation criteria cover unrelated concerns
 - Complexity significantly exceeds peer tasks in the stage
 
-*Combine indicators (over-decomposition):*
+*Over-decomposition signals:*
 - Related work artificially separated into sequential micro-tasks
 - Tasks that would require immediate handoff to the same Agent
 - Splitting creates coordination overhead without reducing complexity
 - Individual "tasks" are single trivial actions rather than meaningful work
 - Validation could reasonably cover the combined scope
 
-*Granularity questions:*
+*Assessment questions:*
 - Does the proposed scope produce a meaningful, verifiable deliverable?
 - Does the validation approach match the work's actual iteration needs?
 - Would splitting reduce complexity, or just add coordination overhead?
 - Would combining obscure distinct deliverables, or reflect natural work grouping?
 
+After assessing task candidates, apply the decision rules in §4.3 Task Split/Combine Policy.
+
 ### 2.7 Step Reasoning
 
-This subsection guides reasoning about steps within tasks. The number and granularity of steps should be based on the actual size and complexity of the project, following the adaptation guidelines. See §1.4 Scope Adaptation. Steps organize work within a task and support failure tracing—they are not mini-tasks with independent validation.
+This subsection guides reasoning about steps within tasks. Steps organize work within a task and support failure tracing—they are not mini-tasks with independent validation.
 
 **Identification Patterns:**
 
@@ -292,29 +298,31 @@ Derive steps from task objectives by identifying the ordered sub-units of work n
 - **Referenced:** Numbering allows specific step references in communication and failure tracing
 - **Shared validation:** Steps contribute to the task's validation criteria, not their own independent validation
 
-**Granularity Considerations:**
+**Granularity Assessment:**
 
-Step granularity requires balancing two concerns: **over-abstraction** (steps too vague to aid execution) and **micro-decomposition** (trivial actions that add noise without value).
+Step granularity requires balancing two failure modes: **over-abstraction** (steps too vague to aid execution) and **micro-decomposition** (trivial actions that add noise without value).
 
 *Validation role:* Steps support the Agent's ability to trace validation failures to specific work. When validation fails, concrete steps help identify which part of the task needs correction. Design steps with this traceability in mind.
 
-*Split indicators (over-abstraction):*
+*Over-abstraction signals:*
 - A step encompasses multiple distinct operations that could fail independently
 - Failure tracing would be difficult because the step is too broad
 - The step description is vague and doesn't guide execution
 - Breaking down would improve the Agent's ability to organize work
 
-*Combine indicators (micro-decomposition):*
+*Micro-decomposition signals:*
 - Individual steps are trivial actions that don't warrant separate tracking
 - Steps have no meaningful failure modes distinct from adjacent steps
 - The granularity adds noise without aiding organization or traceability
 - Combined steps would still be concrete enough for failure tracing
 
-*Granularity questions:*
+*Assessment questions:*
 - Would this step help trace a validation failure to specific work?
 - Does the step represent a meaningful segment of execution?
 - Would combining adjacent steps lose useful organizational clarity?
 - Would splitting this step improve the Agent's ability to execute or debug?
+
+After assessing step candidates, apply the decision rules in §4.4 Step Split/Combine Policy.
 
 **Delegate Agent Steps:**
 
@@ -357,7 +365,7 @@ This section defines the sequential actions that accomplish Work Breakdown. The 
 
 **Deliberation Scaling:** Reasoning depth matches decision complexity. All decisions trace to Context Gathering inputs and Problem Space guidance. Use "User specified/requested during Context Gathering" attribution where applicable.
 
-**Output Blocks:** All analysis must be presented using the **Reasoning Block** and **Summary Block** formats. Reasoning content draws from the relevant Problem Space subsection (§2.4-2.8) and decision rules from the relevant Policy (§4.1-4.5). Do not output internal deliberation outside these structured blocks. See §5 Structural Specifications.
+**Forced Chain-of-Thought Output:** All analysis must be presented in chat before file output—think in chat, commit to file. Use reasoning triggers like "This task depends on X because [reason]" or "Assigning to Agent because [justification]" per §2.1. Reasoning draws from the relevant Problem Space subsection (§2.4-2.8) and decision rules from the relevant Policy (§4.1-4.5). Each procedure step shows the expected output format.
 
 **Procedure:**
 1. Standards Analysis → Write to `{AGENTS_FILE}`
@@ -372,7 +380,7 @@ This section defines the sequential actions that accomplish Work Breakdown. The 
 
 ### 3.1 Standards Analysis
 
-Apply the APM_STANDARDS Block format when executing these actions. See §5.1 APM_STANDARDS Block. Present reasoning using §5.6 Reasoning Block.
+Apply the APM_STANDARDS Block format when executing these actions. See §5.1 APM_STANDARDS Block.
 
 **Action 1:** Analyze standards from Context Gathering and present reasoning in chat:
 ```
@@ -392,7 +400,7 @@ Apply the APM_STANDARDS Block format when executing these actions. See §5.1 APM
 
 ### 3.2 Specifications Analysis
 
-Apply the Specifications Format when executing these actions. See §5.2 Specifications Format. Present reasoning using §5.6 Reasoning Block.
+Apply the Specifications Format when executing these actions. See §5.2 Specifications Format.
 
 **Action 1:** Analyze specifications from Context Gathering and present reasoning in chat:
 ```
@@ -460,7 +468,6 @@ Apply the Stage Reasoning and Task Reasoning guidance when executing these actio
 Identify all stages and their tasks upfront. Detailed task breakdown occurs later. See §3.6 Stage Cycle Protocol.
 
 **Action 1:** Present stage structure with task identification in chat. For each stage:
-
 ```
 **Stage Analysis:**
 * **Stage [N]:** [Name]
@@ -611,62 +618,65 @@ This section defines the decision rules that govern choices at branch points dur
 
 **Decision Domain:** When to split domains into separate Agents vs. combine into unified handling.
 
-**Split into Separate Agents When:**
+**Decision Rule:** Assess domain candidates using §2.4 Domain Reasoning.
+
+**Split into Separate Agents (over-consolidation signals):**
 - Work requires fundamentally different mental models or skill sets
 - Context switching would disrupt Worker Agent execution flow
-- Domain scope is too broad for consistent technical knowledge requirements
-- User provided separation directives during Context Gathering indicating domains must remain distinct
+- Domain scope too broad for consistent technical knowledge requirements
+- User provided separation directives during Context Gathering
 
-**Combine into Single Agent When:**
-- Domains share the same mental model and skill requirements
+**Combine into Single Agent (over-separation signals):**
+- Domains share same mental model and skill requirements
 - Work naturally builds upon itself with tight dependencies
 - Separation would create excessive cross-Agent coordination
-- User provided coupling directives during Context Gathering indicating unified handling
+- User provided coupling directives during Context Gathering
 
-**Default:** When indicators are balanced, prefer separation to reduce coordination complexity.
+**Default:** When signals are balanced, prefer separation to reduce coordination complexity.
 
 ### 4.2 Stage Split/Combine Policy
 
 **Decision Domain:** When to split work into separate stages vs. combine into a single stage.
 
-**Split into Separate Stages When:**
+**Decision Rule:** Assess stage candidates using §2.5 Stage Reasoning.
+
+**Split into Separate Stages (over-consolidation signals):**
 - Stage contains unrelated work streams with no natural connection
 - Extensive research or investigation requirements block subsequent work
 - Testing and validation requirements warrant dedicated focus
 - Bottlenecks or critical path items create natural boundaries
-- Stage scope is too broad to deliver coherent value
+- Stage scope too broad to deliver coherent value
 
-**Combine into Single Stage When:**
+**Combine into Single Stage (over-fragmentation signals):**
 - Stages are artificially separated with immediate handoffs
 - Simple or limited scope doesn't warrant separate stages
 - Separation creates unnecessary coordination overhead
 - Combined stages would still deliver coherent, independent value
 
-**Default:** When indicators are balanced, prefer fewer stages with clear milestones over many small checkpoints.
+**Default:** When signals are balanced, prefer fewer stages with clear milestones over many small checkpoints.
 
 ### 4.3 Task Split/Combine Policy
 
 **Decision Domain:** When to split work into separate tasks vs. combine into a single task.
 
-**Split into Separate Tasks When:**
-- Multiple unrelated deliverables would be combined
+**Decision Rule:** Assess task candidates using §2.6 Task Reasoning.
+
+**Split into Separate Tasks (task packing signals):**
+- Multiple unrelated deliverables combined
 - Work spans multiple Agent domains or skill sets
-- Internal dependencies exist where later steps require earlier steps to be validated first
-- Validation criteria would cover unrelated concerns
+- Internal dependencies where later steps require earlier steps to be validated first
+- Validation criteria cover unrelated concerns
 - Complexity significantly exceeds peer tasks in the stage
 - Task objective is vague or compound ("implement X and configure Y and document Z")
 
-**Combine into Single Task When:**
-- Related work is artificially separated into sequential micro-tasks
+**Combine into Single Task (over-decomposition signals):**
+- Related work artificially separated into sequential micro-tasks
 - Tasks would require immediate handoff to the same Agent
 - Splitting creates coordination overhead without reducing complexity
 - Individual "tasks" are single trivial actions rather than meaningful work
 - Validation could reasonably cover the combined scope
 
-**Task Packing Detection:** Review each task for packing indicators:
-- If any step is actually a separate deliverable → split
-- If validation criteria cover unrelated concerns → split
-- If task scope significantly exceeds peers → split
+**Task Packing Detection:** Review each task for packing signals. If any step is actually a separate deliverable, if validation criteria cover unrelated concerns, or if task scope significantly exceeds peers, split the task.
 
 **Correction Actions:**
 1. Identify the natural boundaries within the packed task
@@ -675,27 +685,29 @@ This section defines the decision rules that govern choices at branch points dur
 4. Distribute validation criteria to appropriate tasks
 5. Update Agent assignments if split tasks span domains
 
-**Default:** When indicators are balanced, prefer fewer, more substantial tasks over many small ones.
+**Default:** When signals are balanced, prefer fewer, more substantial tasks over many small ones.
 
 ### 4.4 Step Split/Combine Policy
 
 **Decision Domain:** When to split work into separate steps vs. combine into a single step.
 
-**Split into Separate Steps When:**
-- A step encompasses multiple distinct operations that could fail independently
+**Decision Rule:** Assess step candidates using §2.7 Step Reasoning.
+
+**Split into Separate Steps (over-abstraction signals):**
+- Step encompasses multiple distinct operations that could fail independently
 - Failure tracing would be difficult because the step is too broad
-- The step description is vague and doesn't guide execution
+- Step description is vague and doesn't guide execution
 - Breaking down would improve the Agent's ability to organize work
 
-**Combine into Single Step When:**
+**Combine into Single Step (micro-decomposition signals):**
 - Individual steps are trivial actions that don't warrant separate tracking
 - Steps have no meaningful failure modes distinct from adjacent steps
-- The granularity adds noise without aiding organization or traceability
+- Granularity adds noise without aiding organization or traceability
 - Combined steps would still be concrete enough for failure tracing
 
 **Step vs Sub-Task Check:** If a step requires its own validation before subsequent steps can proceed, it indicates task packing—the "step" is actually a separate task. See §4.3 Task Split/Combine Policy.
 
-**Default:** When indicators are balanced, prefer concrete steps that aid failure tracing over vague or trivial ones.
+**Default:** When signals are balanced, prefer concrete steps that aid failure tracing over vague or trivial ones.
 
 ### 4.5 Scope Boundary Policy
 
@@ -779,10 +791,7 @@ Each task in the Implementation Plan follows this format:
 ```
 * **Objective:** Single-sentence task goal — what this task accomplishes.
 * **Output:** Concrete deliverables — files, components, artifacts functionality produced.
-* **Validation:** Binary pass/fail criteria using types in §2.3 Validation Types. Most tasks combine multiple types.
-    - **Programmatic:** Automated checks (tests, builds, CI, linting)
-    - **Artifact:** File/output existence and structure verification
-    - **User:** Human judgment required — triggers pause for review after execution
+* **Validation:** Binary pass/fail criteria. Specify type(s): Programmatic, Artifact, and/or User per §2.3 Validation Types.
 * **Guidance:** Technical constraints, approach specifications, references to existing patterns.
 * **Dependencies:** Prior task knowledge, outputs or deliverables required.
     - **Format:** List dependencies as `Task N.M by <Domain> Agent, Task X.Y <Domain> Agent, ...`
@@ -803,38 +812,6 @@ Each step in a task follows this format:
   - Optional relevant context where non-obvious
   - References to patterns, files, or prior work when relevant
 * **Steps vs sub-tasks:** If a step requires its own validation before subsequent steps can proceed, it indicates task packing. The "step" might actually be separate task. See §4.3 Task Split/Combine Policy.
-
-### 5.6 Reasoning Block
-
-Documents structured reasoning during analysis phases. Reasoning draws from §2 Problem Space for identification and granularity guidance, and from §4 Policies for split/combine decisions.
-```
-**<Analysis Type>:**
-- <item>: <reasoning and conclusion>
-- <item>: <reasoning and conclusion>
-- ...
-```
-
-**Usage:** Standards Analysis, Specifications Analysis, Domain Analysis, Stage Analysis, Task Analysis, Agent Subdivision, Cross-Agent Dependencies Review.
-
-**Reasoning Sources by Analysis Type:**
-- Standards Analysis → §3.1 Standards Analysis
-- Specifications Analysis → §3.2 Specifications Analysis
-- Domain Analysis → §2.4 Domain Reasoning + §4.1 Domain Split/Combine Policy
-- Stage Analysis → §2.5 Stage Reasoning + §4.2 Stage Split/Combine Policy
-- Task Analysis → §2.6 Task Reasoning + §4.3 Task Split/Combine Policy
-- Step definition → §2.7 Step Reasoning + §4.4 Step Split/Combine Policy
-
-### 5.7 Summary Block
-
-Presents consolidated information for User review:
-```
-**<Topic> Summary:**
-* **<Field>:** [value]
-* **<Field>:** [value]
-...
-```
-
-**Usage:** Implementation Plan Summary after Plan Finalization.
 
 ---
 
