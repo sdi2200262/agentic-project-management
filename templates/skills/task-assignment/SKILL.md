@@ -164,30 +164,15 @@ For FollowUp Task Assignments, see §3.5 FollowUp Task Assignment Prompt Creatio
 
 ### 3.1 Context Dependency Analysis
 
-Analyze the Task's Context Dependencies to determine what context the Worker needs.
+Analyze the Task's Context Dependencies to determine what context the Worker needs. For dependency type definitions and reasoning guidance, see §2.1 Context Dependency Reasoning.
 
 * **Action 1:** Read the Task's Dependencies field from the Implementation Plan:
-    - If "None": Skip to §3.2 Specification Context Extraction with `has_dependencies: false`
+    - If "None": Skip to §3.2 with `has_dependencies: false`
     - If dependencies listed: Continue to Action 2
-* **Action 2:** Check  tracked Handoff state for the target Worker:
-    - Has this Worker performed a Handoff?
-    - If yes, from which Stage?
-    - This affects Context Dependency classification in Action 3
-* **Action 3:** For each dependency, determine the Context Dependency type:
-    - Check if producer Task was assigned to the same Worker Agent (Same-Agent) or different Worker Agent (Cross-Agent)
-    - If consumer Task is assigned to a Continuing Worker Agent (has performed Handoff), check if dependency is from current Stage or previous Stage:
-        - Current Stage Same-Agent → Treat as Same-Agent
-        - Previous Stage Same-Agent → Treat as Cross-Agent (Handoff)
-    - Cross-Agent Context Dependencies are bolded in the Implementation Plan
-* **Action 4:** For Cross-Agent Context Dependencies (including Handoff), trace the Context Dependency chain:
-    - Read the producer Task's Dependencies field
-    - Assess relevance of each upstream dependency per §2.1 Context Dependency Reasoning
-    - Continue tracing until reaching non-relevant nodes or chain end
-    - Note all relevant nodes for context extraction
-* **Action 5:** For each relevant Context Dependency:
-    - Read the producer's Task Memory Log 
-    - Note key outputs, file paths, and integration-relevant details
-    - Include file reading instructions, output summaries, and integration requirements
+* **Action 2:** Check tracked Handoff state for the target Worker (has this Worker performed a Handoff? From which Stage?)
+* **Action 3:** Classify each dependency as Same-Agent, Cross-Agent, or Handoff per §2.1
+* **Action 4:** For Cross-Agent/Handoff dependencies, trace the chain per §2.1 Chain Reasoning (stop at non-relevant nodes)
+* **Action 5:** For each relevant dependency, read the producer's Task Memory Log and note key outputs, file paths, and integration details
 
 ### 3.2 Specification Context Extraction
 
@@ -285,56 +270,23 @@ This section defines the decision rules that govern choices during Task Assignme
 
 **Decision Domain:** What Context Dependencies to include and how to classify them.
 
-**Always Include:**
-- All direct dependencies (immediate producers listed in Dependencies field)
-- Cross-Agent Context Dependencies require comprehensive context regardless of complexity
-
-**Handoff Classification:**
-
-When target Worker is a Continuing Worker Agent (has performed Handoff):
-
-| Dependency Source | Classification | Treatment |
-|-------------------|----------------|-----------|
-| Current Stage, Same Worker domain | Same-Agent | Light contextual reference |
-| Previous Stage, Same Worker domain | Cross-Agent (Handoff) | Comprehensive context |
-| Any Stage, Different Worker domain | Cross-Agent | Comprehensive context |
-
-**Chain Tracing Rules:**
-- Trace upstream from each direct dependency
-- Stop tracing a branch when upstream node is not relevant to current Task
-- Non-relevant node acts as abstraction boundary — assume it captured what came before
-
-**Relevance Criteria:**
-- Relevant: Upstream output directly affects current Task Execution (schemas, contracts, patterns)
-- Not relevant: Upstream output fully consumed/transformed by intermediate node
+**Decision Rule:** Classify dependencies using §2.1 Context Dependency Reasoning. Always include all direct dependencies.
 
 **Context Depth by Type:**
+- **Same-Agent** → Light contextual reference
+- **Cross-Agent / Handoff** → Comprehensive integration context
 
-| Context Dependency Type | Context Depth | Rationale |
-|-------------------------|---------------|-----------|
-| Same-Agent | Light contextual reference | Worker has working familiarity |
-| Cross-Agent | Comprehensive integration context | Worker has zero familiarity |
-| Handoff | Comprehensive integration context | Continuing Worker has zero familiarity with previous Stage context |
+**Chain Tracing:** Trace upstream per §2.1. Stop at non-relevant nodes. Include all relevant nodes in context.
+
+**Default:** When uncertain, include rather than risk missing critical information.
 
 ### 4.2 Specification Inclusion Policy
 
 **Decision Domain:** What Specification content to include in Task Assignment.
 
-**Include When:**
-- Specification directly constrains Task implementation approach
-- Task objective references design decisions in Specifications
-- Worker would make incorrect assumptions without this content
-- Specification defines interfaces or contracts Task must implement
+**Decision Rule:** Assess relevance using §2.2 Specification Extraction Reasoning. Include content that directly constrains implementation, defines interfaces/contracts, or prevents incorrect assumptions. Exclude content relating to other domains, already in Guidance field, or providing only background.
 
-**Exclude When:**
-- Specification relates to other domains or Stages
-- Content already captured in Task's Guidance field
-- Specification provides background without actionable constraints
-
-**Extraction Approach:**
-- Contextually integrate relevant Specification content into the Task Assignment to inform Worker decisions
-- Do not reference `Specifications.md` by path — Workers only receive Task Assignments
-- Preserve specificity—include exact constraints, not summaries
+**Extraction Approach:** Contextually integrate relevant content into the Task Assignment. Never reference `Specifications.md` by path—Workers only receive Task Assignments. Preserve specificity with exact constraints, not summaries.
 
 ### 4.3 Delegation Step Policy
 

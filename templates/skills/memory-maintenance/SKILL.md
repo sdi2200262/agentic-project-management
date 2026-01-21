@@ -109,11 +109,6 @@ When investigation is needed, assess the scope to determine the approach:
 - Impacts multiple Tasks or Stages
 - Requires deep technical investigation
 
-**Investigation Approach:**
-
-- **Small scope → Self-investigate:** Manager uses available tools to read files referenced in the Task Memory Log, verify deliverables, or examine related areas.
-- **Large scope → Request Delegation:** Manager requests from the User to perform a Delegation for this issue. If approved, reads the relevant Delegation skill, creates a Delegation Prompt for a Delegate Agent following the skill's methodology, Delegate Agent performs context-intensive investigation and logs findings. Manager reviews Delegation Memory Log to absorb findings without consuming own context window.
-
 **Post-Investigation Outcome Assessment:**
 
 After investigation (whether self or delegated), assess the outcome:
@@ -122,17 +117,15 @@ After investigation (whether self or delegated), assess the outcome:
 2. **FollowUp needed** — Investigation revealed issues that require the same Worker to retry or refine work. Manager creates a FollowUp Task Assignment Prompt with informed instructions based on investigation findings.
 3. **Coordination Artifact modification needed** — Investigation revealed that Coordination Coordination Artifacts (Implementation Plan, Specifications, or Standards) need updates. **Follows methodology in `{SKILL_PATH:artifact-maintenance/SKILL.md}`** for assessment and execution.
 
-All three post-investigation outcomes are possible from both small-scope and large-scope investigation. Small scope is *more likely* to result in no issues or FollowUp needs; large scope is *more likely* to result in FollowUp needs or artifact modification needs. The scope determines *how* to investigate, not *what* outcomes are possible.
+The scope determines *how* to investigate, not *what* outcomes are possible—all three outcomes can result from either scope.
 
 **Coordination Artifact Modification Needs Indicators:**
 
 When assessing whether Coordination Artifact modification is needed, consider:
 
-| Artifact | Modification Indicators |
-|----------|------------------------|
-| Implementation Plan | Task definitions or instructions incorrect, missing dependencies revealed, scope changes needed, Task validation issues, new Tasks needed |
-| Specifications | Documented design decisions or constraints need revision, new specifications emerged from execution, assumptions invalidated |
-| Standards ({AGENTS_FILE}) | Universal conventions need adjustment, new project-wide standards identified, existing standards conflict with execution needs |
+- **Implementation Plan** — Task definitions or instructions incorrect, missing dependencies revealed, scope changes needed, Task validation issues, new Tasks needed
+- **Specifications** — Documented design decisions or constraints need revision, new specifications emerged from execution, assumptions invalidated
+- **Standards ({AGENTS_FILE})** — Universal conventions need adjustment, new project-wide standards identified, existing standards conflict with execution needs
 
 ### 2.3 Stage Summary Reasoning
 
@@ -281,46 +274,22 @@ The Handoff Procedure loads only current Stage Memory Logs for efficiency. This 
 
 **Decision Domain:** What coordination action to take after reviewing a Task Memory Log.
 
-**Investigation Need Decision:**
+**Decision Rule:** Assess the Task Memory Log using §2.2 Coordination Decision Reasoning. The decision follows three sequential assessments:
 
-After reviewing the Task Memory Log, decide if further investigation is needed:
+1. **Investigation Need:** If status is Success with no flags and log contents support this, proceed to next Task. Otherwise, investigation is needed.
 
-| Condition | Decision |
-|-----------|----------|
-| Status = Success, no flags raised, log contents support claim | **Proceed** to next Task |
-| Flags raised (important_findings, compatibility_issues) | **Investigation needed** |
-| Status = Partial, Fail, or Blocked | **Investigation needed** |
+2. **Investigation Scope:** When investigation is needed, assess scope using §2.2 indicators:
+   - **Small scope → Self-investigate:** Manager uses available tools to read files referenced in the Task Memory Log, verify deliverables, or examine related areas
+   - **Large scope → Request Delegation:** Manager requests Delegation from User; Delegate Agent performs context-intensive investigation and logs findings; Manager reviews Delegation Memory Log to absorb findings without consuming own context window
 
-**Investigation Scope Decision:**
+3. **Post-Investigation Outcome:** After investigation, assess outcome per §2.2:
+   - **No issues** → Proceed to next Task (findings may have been false positives due to Worker's limited context)
+   - **FollowUp needed** → Create FollowUp per `{SKILL_PATH:task-assignment/SKILL.md}` §3.4 with informed instructions based on investigation
+   - **Artifact modification needed** → Follow methodology in `{SKILL_PATH:artifact-maintenance/SKILL.md}`
 
-After deciding if investigation is needed, decide if the investigation scope requires Delegation:
+**Default:** When scope is unclear, prefer Delegation over extensive self-investigation to preserve Manager context.
 
-| Scope | Indicators | Approach |
-|-------|------------|----------|
-| Small | Few files to check, straightforward verification, contained issue | **Self-investigate** |
-| Large | Context-intensive, would consume significant context, systemic patterns | **Request Delegation** |
-
-**Default:** When scope is unclear, prefer to request Delegation over extensive self-investigation. Delegation preserves Manager context for coordination work.
-
-**Post-Investigation Decision:**
-
-After investigation is complete (self or delegated), decide on next action based on findings:
-
-| Finding | Decision | Action |
-|---------|----------|--------|
-| No issues found, false positive, or minor clarification resolved | **No issues** | Proceed to next Task |
-| Issues require Worker to retry or refine | **FollowUp needed** | Create FollowUp Task Assignment Prompt per `{SKILL_PATH:task-assignment/SKILL.md}` §3.4 |
-| Findings indicate Coordination Artifacts need updates | **Artifact modification needed** | Handoff to `{SKILL_PATH:artifact-maintenance/SKILL.md}` |
-
-**Artifact Modification Handoff:**
-
-When Coordination Decision determines Coordination Artifact modification is needed:
-1. Note the triggering context (which log, what findings, which flags)
-2. Identify which artifact(s) appear affected (Implementation Plan, Specifications, Standards)
-3. Follow the methodology in `{SKILL_PATH:artifact-maintenance/SKILL.md}` for:
-   - Manager autonomous modifications vs User collaboration is required
-   - Modification need assessment and cascade analysis
-   - Update execution and documentation
+**Artifact Modification Handoff:** When artifact modification is needed, note the triggering context (log, findings, flags), identify affected artifact(s), then follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` methodology.
 
 ---
 
