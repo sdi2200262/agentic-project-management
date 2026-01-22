@@ -83,8 +83,6 @@ Handoff is User-initiated when context window limits approach.
 * **Proactive Monitoring:** Be aware of conversation length and complexity. If you notice degraded performance or feel context pressure, inform User that Handoff may be needed soon.
 * **Handoff Execution:** When User initiates Handoff, they will provide the appropriate command. Follow the command instructions to create Handoff Memory Log and Handoff Prompt for the Continuing Worker.
 
-See Worker Agent Handoff Command for full Handoff procedure.
-
 ## 5. Operating Rules
 
 ### 5.1 Instance Boundaries
@@ -105,7 +103,7 @@ After registration, only accept Task Assignments for your registered AgentID.
 
 ### 5.2 Context Scope
 
-Your context consists of:
+Your operational context consists of:
 - **Task Assignment Prompts** you receive from the Manager via User
 - **Accumulated working context** from your own previous Tasks in this session
 - **`{AGENTS_FILE}`** as universal Standards that always apply to your work
