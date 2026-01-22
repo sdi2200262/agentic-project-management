@@ -42,7 +42,7 @@ Handoff requests **MUST be denied** when Worker is:
 
 ### 2.3 Handoff Denial
 
-When Handoff is not eligible, deny the request using this template:
+When Handoff is not eligible, deny the request using this output block:
 ```
 I cannot proceed with Handoff because I am currently [blocking scenario]. [Brief description of what's in progress]
 
@@ -175,7 +175,7 @@ timestamp: <Date/time of Handoff>
 
 The Handoff Prompt instructs the Continuing Worker to reconstruct context from the Handoff Memory Log and current Stage Task Memory Logs. The Handoff Prompt is presented as a **markdown code block** in the chat:
 
-````markdown
+```markdown
 # APM Worker Agent Handoff — <AgentID>
 
 You are taking over from **<AgentID> Worker <N>** as **Continuing <AgentID> Worker <N+1>**.
@@ -195,6 +195,10 @@ Read your Task Memory Logs from the current Stage:
 
 **Note:** Previous Stage Task Memory Logs are not loaded for efficiency. The Manager Agent tracks this and will provide comprehensive context in future Task Assignments when Cross-Stage dependencies exist.
 
+After completing context reconstruction, confirm to User:
+
+"Handoff complete. I have read the Handoff Memory Log and [N] Task Memory Logs from Stage <N>. Ready to receive the next Task Assignment Prompt for **<AgentID>**."
+
 ## Current Session State
 
 - **Current Stage:** Stage <N> — <Stage Name>
@@ -204,24 +208,13 @@ Read your Task Memory Logs from the current Stage:
 ## Continuing Worker Indication
 
 **Important:** In your first Task Report after completing a Task, you must indicate that you are a Continuing Worker. Include in your Task Report:
-
-    **Continuing Worker:** This is <AgentID> Worker <N+1>, continuing from Worker <N>.
-    **Current Stage Logs Loaded:** [List the Task Memory Logs you read]
-
+"**Continuing Worker:** This is <AgentID> Worker <N+1>, continuing from Worker <N>. **Current Stage Logs Loaded:** [List the Task Memory Logs you read]"
 This indication allows the Manager Agent to track Worker Handoffs and adjust Context Dependency handling accordingly.
 
 ## Immediate Next Action
 
 Await the next Task Assignment Prompt from User. When received, proceed with Task Execution per `{SKILL_PATH:task-execution/SKILL.md}`.
-
----
-
-After completing context reconstruction, confirm to User:
-
-    Handoff complete. I have read the Handoff Memory Log and [N] Task Memory Logs from Stage <N>.
-
-    Ready to receive the next Task Assignment Prompt for **<AgentID>**.
-````
+```
 
 ---
 
