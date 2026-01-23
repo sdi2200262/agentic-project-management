@@ -26,7 +26,7 @@ Additionally, you will create or update the `{AGENTS_FILE}` file at the root of 
 
 ## 2. Context Gathering Procedure
 
-**Action:** Read {SKILL_PATH:context-gathering/SKILL.md} for project discovery methodology.
+Read {SKILL_PATH:context-gathering/SKILL.md} for project discovery methodology.
 
 The skill contains full procedural control:
 - Question Rounds 1-3 with iteration and gap assessment
@@ -40,7 +40,7 @@ Follow the skill through to Procedure Completion. When complete, return here and
 
 **Prerequisite:** Context Gathering Procedure must be complete.
 
-**Action:** Read {SKILL_PATH:work-breakdown/SKILL.md}.
+Read {SKILL_PATH:work-breakdown/SKILL.md}.
 
 The skill contains full procedural control:
 - Standards Analysis for `{AGENTS_FILE}` creation/update
