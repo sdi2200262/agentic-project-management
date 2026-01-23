@@ -15,7 +15,7 @@ This skill defines the methodology for the Work Breakdown procedure, which trans
 
 **Execute the Procedure.** The Procedure section contains the actions to perform. Follow each subsection sequentially. See §3 Work Breakdown Procedure.
 
-**Use Problem Standards for reasoning and decisions.** When making work breakdown decisions, consult the relevant standards subsection (Domain, Stage, Task, or Step Standards) to guide your thinking and apply decision rules. See §2 Problem Standards.
+**Use Operational Standards for reasoning and decisions.** When making work breakdown decisions, consult the relevant standards subsection (Domain, Stage, Task, or Step Standards) to guide your thinking and apply decision rules. See §2 Operational Standards.
 
 **Present reasoning in chat.** All analysis must be presented in chat before file output. Use the natural language output formats shown in §3 Work Breakdown Procedure to make reasoning visible to the User.
 
@@ -40,13 +40,13 @@ The breakdown guidance in this skill provides criteria for making decomposition 
 
 Stage, task and step definitions should always be adjusted based on the actual size and complexity of the project. Break down the work to provide the right level of detail for the project's needs, applying more granularity when justified by complexity and less when simplicity allows. Let the real scope and requirements guide how work units are identified and organized.
 
-Adapt the methodology to the project based on `{SKILL_PATH:context-gathering/SKILL.md}` findings about scale, complexity, and requirements. The guidance in this skill supports your reasoning; the project's actual scope determines appropriate granularity.
+Adapt the methodology to the project based on `{SKILL_PATH:context-gathering}` findings about scale, complexity, and requirements. The guidance in this skill supports your reasoning; the project's actual scope determines appropriate granularity.
 
 ---
 
-## 2. Problem Standards
+## 2. Operational Standards
 
-This section establishes reasoning approaches and decision rules for executing Work Breakdown. It guides how to think about domain boundaries, task granularity, dependencies, and workload distribution. The granularity guidance in §2.4-§2.7 should be adapted to the project's actual scope and complexity per §1.4 Scope Adaptation.
+This section establishes reasoning approaches and decision rules for executing Work Breakdown. It guides how to think about domain boundaries, task granularity, dependencies, and workload distribution. The granularity guidance in §2.4 Domain Standards through §2.7 Step Standards should be adapted to the project's actual scope and complexity per §1.4 Scope Adaptation.
 
 ### 2.1 Forced Chain-of-Thought Methodology
 
@@ -64,7 +64,7 @@ Work Breakdown uses Forced Chain-of-Thought (CoT), requiring explicit reasoning 
 
 ### 2.2 Context Integration
 
-Work Breakdown requires context from `{SKILL_PATH:context-gathering/SKILL.md}` across these categories:
+Work Breakdown requires context from `{SKILL_PATH:context-gathering}` across these categories:
 
 **Project Definition:**
 - Project vision, goals, and success criteria
@@ -273,7 +273,7 @@ Task granularity requires balancing two failure modes: **task packing** (too muc
 - Would splitting reduce complexity, or just add coordination overhead?
 - Would combining obscure distinct deliverables, or reflect natural work grouping?
 
-**Task Packing Detection:** Review each task for packing signals. If any step is actually a separate deliverable, if validation criteria cover unrelated concerns, or if task scope significantly exceeds peers, split the task. See §3.6 for correction procedure.
+**Task Packing Detection:** Review each task for packing signals. If any step is actually a separate deliverable, if validation criteria cover unrelated concerns, or if task scope significantly exceeds peers, split the task. See §3.6 Stage Cycle Protocol.
 
 **Default:** When signals are balanced, prefer fewer, more substantial tasks over many small ones.
 
@@ -327,7 +327,7 @@ Step granularity requires balancing two failure modes: **over-abstraction** (ste
 
 **Delegate Agent Steps:**
 
-When investigation, exploration, research or generally context-heavy and isolated work is needed within a task, include a delegation step using format: "Delegate Agent: <purpose>". See §4.5 Step Format for delegation step requirements and skill references.
+When investigation, exploration, research or generally context-heavy and isolated work is needed within a task, include a delegation step using format: "Delegate Agent: <purpose>". See §4.5 Step Format.
 
 ### 2.8 Workload Distribution
 
@@ -360,7 +360,7 @@ Handle work that falls at the boundary between Agent scope and User scope.
 - Credentials or account access are User-specific
 - Validation requires access outside the development environment
 
-**Task Specification:** When User coordination is required, include explicit coordination step in task. See §3.6 for the task specification procedure.
+**Task Specification:** When User coordination is required, include explicit coordination step in task. See §3.6 Stage Cycle Protocol.
 
 ---
 
@@ -370,9 +370,9 @@ This section defines the sequential actions that accomplish Work Breakdown. The 
 
 **Progression Gates:** Each action must complete before proceeding to the next. No skipping or batching unless explicitly instructed by User.
 
-**Deliberation Scaling:** Reasoning depth matches decision complexity. All decisions trace to Context Gathering inputs and Problem Standards guidance. Use "User specified/requested during Context Gathering" attribution where applicable.
+**Deliberation Scaling:** Reasoning depth matches decision complexity. All decisions trace to Context Gathering inputs and Operational Standards guidance. Use "User specified/requested during Context Gathering" attribution where applicable.
 
-**Forced Chain-of-Thought Output:** All analysis must be presented in chat before file output—think in chat, commit to file. Use reasoning triggers like "This task depends on X because [reason]" or "Assigning to Agent because [justification]" per §2.1. Reasoning draws from the relevant Problem Standards subsection (§2.4-2.9). Each procedure step shows the expected output format.
+**Forced Chain-of-Thought Output:** All analysis must be presented in chat before file output—think in chat, commit to file. Use reasoning triggers like "This task depends on X because [reason]" or "Assigning to Agent because [justification]" per §2.1 Forced Chain-of-Thought Methodology. Reasoning draws from the relevant Operational Standards subsection (§2.4-2.9). Each procedure step shows the expected output format.
 
 **Procedure:**
 1. Standards Analysis → Write to `{AGENTS_FILE}`
@@ -514,29 +514,29 @@ Perform the following actions:
 2. Complete task analysis for each task defined earlier for this stage (see §3.5 Stage Analysis):
    ```
    **Task Analysis:**
-   * **Task [X.Y]:** [Name] (identified in §3.5)
+   * **Task [X.Y]:** [Name] (identified in §3.5 Stage Analysis)
    - **Scope:** [goal] → [deliverables]
    - **Context Input:** User specified [requirement] during Context Gathering / [relevant constraints]
    - **Agent:** [Name] Agent because [domain fit] / User requested [agent preference]
    - **Validation:** [Type(s) from §2.3] because [deliverable] requires [automated check / artifact verification / user judgment]. If User type: Agent pauses for review.
    - **Dependencies:** Task [A.B] by [Agent] for [what's needed] | None
-   - **Steps** (applying §2.7):
+   - **Steps** (applying §2.7 Step Standards):
      1. [Step] - [purpose if non-obvious]
      2. [Step]
      ...
    - **Granularity Check:** [concrete for tracing / adjustment needed]
 
-   * **Task [X.Y]:** [Name] (identified in §3.5)
+   * **Task [X.Y]:** [Name] (identified in §3.5 Stage Analysis)
    - ...
    ```
-   **Task Packing Correction:** If task packing is detected (per §2.6), correct by:
+   **Task Packing Correction:** If task packing is detected (per §2.6 Task Standards), correct by:
    1. Identify the natural boundaries within the packed task
    2. Create separate tasks for each distinct deliverable
    3. Establish dependencies between the new tasks
    4. Distribute validation criteria to appropriate tasks
    5. Update Agent assignments if split tasks span domains
 
-   **User Coordination:** When User coordination is required (per §2.9):
+   **User Coordination:** When User coordination is required (per §2.9 Scope Boundary Standards):
    - Include explicit coordination step in task: "User: [specific action required]"
    - Mark as User validation type if User must verify the outcome
    - Note the dependency clearly so Manager Agent can coordinate timing
@@ -611,9 +611,9 @@ After completing `{AGENTS_FILE}`, `Specifications.md`, and the Implementation Pl
 
 Perform the following actions:
 
-1. Output the Checkpoint Block:
+1. Present the work breakdown results to the User using the following output block:
    ```
-   **CHECKPOINT:** Work Breakdown complete. Artifacts created [updated if after modifications].
+   Work Breakdown complete. Artifacts created [updated if after modifications].
 
    Please review the following artifacts:
    - **`{AGENTS_FILE}`** for project standards accuracy and completeness
@@ -721,8 +721,8 @@ When investigation, exploration, research or generally context-heavy and isolate
 
 * **Format:** "Delegate Agent: <purpose>"
 * **Delegation Usage Patterns and Skill References:**
-  - **Debug delegation:** For complex bugs that require isolated debugging focus. Include skill reference: {SKILL_PATH:delegate-debug/SKILL.md}
-  - **Research delegation:** For knowledge gaps that require research to inform later steps. Include skill reference: {SKILL_PATH:delegate-research/SKILL.md}
+  - **Debug delegation:** For complex bugs that require isolated debugging focus. Include skill reference: {SKILL_PATH:delegate-debug}
+  - **Research delegation:** For knowledge gaps that require research to inform later steps. Include skill reference: {SKILL_PATH:delegate-research}
   - **Refactor delegation:** For code restructuring or clean-up requiring an isolated refactoring scope. Include skill reference if a relevant skill exists.
   - **Other delegation:** For any other context-heavy or investigation step not covered above, clearly describe the specific purpose and scope of the delegation step in the task.
 * **Skill Reference Requirement:** Always include the relevant delegation skill reference for debug and research steps as shown. For other and refactor, add skill references if available and be explicit about the purpose.

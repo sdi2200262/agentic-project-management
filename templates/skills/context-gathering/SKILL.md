@@ -15,9 +15,9 @@ This skill defines the discovery methodology for the Context Gathering procedure
 
 **Execute the Procedure.** The Procedure section contains the actions to perform. Follow each subsection sequentially through all Question Rounds. See §3 Context Gathering Procedure.
 
-**Use Problem Standards for reasoning and decisions.** When interpreting responses, identifying gaps, adapting questioning depth, handling ambiguous responses, or deciding on research delegation, consult the relevant standards subsection. See §2 Problem Standards.
+**Use Operational Standards for reasoning and decisions.** When interpreting responses, identifying gaps, adapting questioning depth, handling ambiguous responses, or deciding on research delegation, consult the relevant standards subsection. See §2 Operational Standards.
 
-**Present outputs in chat.** Present round completions, understanding summaries, and delegation requests using natural language output formats shown inline in §3 and §2.8. Do not expose internal deliberation beyond these outputs.
+**Present outputs in chat.** Present round completions, understanding summaries, and delegation requests using natural language output formats shown inline in §3 Context Gathering Procedure and §2.8 Research Delegation Standards. Do not expose internal deliberation beyond these outputs.
 
 ### 1.2 Objectives
 
@@ -39,7 +39,7 @@ Gather sufficient context across four categories:
 
 ---
 
-## 2. Problem Standards
+## 2. Operational Standards
 
 This section establishes reasoning approaches and decision rules for executing Context Gathering. It guides how to interpret responses, identify gaps, categorize information, adapt questioning depth, handle ambiguous responses, and delegate research.
 
@@ -129,7 +129,7 @@ A gap exists when information required for the Implementation Plan is missing or
 
 **Round Completion Requirements:**
 
-Before advancing to the next Round (Rounds 1-3 only), output a Round Completion text block:
+Before advancing to the next Round (Rounds 1-3 only), present a round summary using the following output block:
 ```
 ## Question Round [N] Complete:
 
@@ -299,7 +299,7 @@ Choose approach based on scope:
 - **Delegation:** Bounded scope, specific question, needs dedicated focus (e.g., research best practices for a specific technology or existing codebase too large to explore quickly)
 - **Note for Plan:** Large scope, multiple questions, or research is central to project (leave as research task in Implementation Plan)
 
-**Delegation Request:** When delegation is appropriate, output a Delegation Request text block. See §3.7 Delegation Handling for the procedure and response handling.
+**Delegation Request:** When delegation is appropriate, output a Delegation Request text block. See §3.7 Delegation Handling.
 
 ---
 
@@ -309,7 +309,7 @@ This section defines the sequential actions that accomplish Context Gathering. T
 
 **Progression Gates:** Each action must complete before proceeding to the next. No skipping or batching unless explicitly instructed by User.
 
-**Output in Chat:** Present round completions (§2.3), understanding summaries (§4.1), and delegation requests (§2.8) using the output formats. Reasoning draws from §2 Problem Standards for interpretation guidance and decision rules.
+**Output in Chat:** Present round completions (§2.3 Gap Identification and Round Advancement Standards), understanding summaries (§4.1 Understanding Summary Format), and delegation requests (§2.8 Research Delegation Standards) using the output formats. Reasoning draws from §2 Operational Standards for interpretation guidance and decision rules.
 
 **Procedure:**
 1. Question Round Protocol → Governs iteration within each round
@@ -317,7 +317,7 @@ This section defines the sequential actions that accomplish Context Gathering. T
 3. Question Round 2 → Technical Requirements
 4. Question Round 3 → Implementation Approach and Quality
 5. Procedure Checkpoint → Understanding Summary presentation and modification handling
-6. Procedure Completion → Progression Gate to `{SKILL_PATH:work-breakdown/SKILL.md}`
+6. Procedure Completion → Progression Gate to `{SKILL_PATH:work-breakdown}`
 7. Delegation Handling → Research delegation procedure when invoked from Question Rounds
 
 ### 3.1 Question Round Protocol
@@ -371,7 +371,7 @@ Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retai
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see §1.3 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during the Work Breakdown Procedure?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during `{SKILL_PATH:work-breakdown/SKILL.md}` §3 Work Breakdown Procedure.
+**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see §1.3 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during the Work Breakdown Procedure?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
 **Gap Assessment Criteria:**
 
@@ -388,7 +388,7 @@ After each User response, assess:
 
 **Continue with targeted follow-ups addressing specific gaps until Question Round 1 understanding is complete. Before proceeding to Round 2, you must understand: project type and deliverable format, problem being solved and success criteria, essential features and scope, required skill/expertise areas, what exists vs. what needs to be created, user's vision and primary goals, relevant existing materials and their role. See §2.3 Gap Identification and Round Advancement Standards.**
 
-**Early Validation Handling:** If User mentions validation criteria, success states, or acceptance indicators during Round 1, capture them silently for later integration. Do not probe for validation detail in this Round. Validation gathering occurs in Rounds 2 and 3 per §3.1.
+**Early Validation Handling:** If User mentions validation criteria, success states, or acceptance indicators during Round 1, capture them silently for later integration. Do not probe for validation detail in this Round. Validation gathering occurs in Rounds 2 and 3 per §3.1 Validation Criteria Gathering.
 
 ### 3.3 Question Round 2: Technical Requirements
 
@@ -497,7 +497,7 @@ After each User response, assess:
 
 ### 3.5 Procedure Checkpoint
 
-After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to `{SKILL_PATH:work-breakdown/SKILL.md}`.
+After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to `{SKILL_PATH:work-breakdown}`.
 
 Perform the following actions:
 
@@ -510,7 +510,7 @@ Perform the following actions:
 
    **Your options:**
    - **Modifications needed** → Describe any misunderstandings, missing requirements or constraints and I will update.
-   - **All looks good** → I will proceed to the Work Breakdown Procedure (see `{SKILL_PATH:work-breakdown/SKILL.md}`).
+   - **All looks good** → I will proceed to the Work Breakdown Procedure per `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
    ```
 3. Handle User response:
    - If User requests modifications → Identify which Question Round's focus area the modification relates to → Use that Round's questioning approach for targeted follow-ups → Update relevant summary sections → Return to step 1 with updated summary → Output the updated checkpoint from step 2
@@ -518,14 +518,14 @@ Perform the following actions:
 
 ### 3.6 Procedure Completion
 
-Output the procedure completion. This is a **Progression Gate** - do NOT proceed to `{SKILL_PATH:work-breakdown/SKILL.md}` until this output is presented:
+Output the procedure completion. This is a **Progression Gate** - do NOT proceed to `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure until this output is presented:
 ```
 **Context Gathering Procedure complete.** All Question Rounds completed. Project context gathered and validated.
 
-Next: `{SKILL_PATH:work-breakdown/SKILL.md}` §3 Work Breakdown Procedure
+Next: `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure
 ```
 
-**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to `{SKILL_PATH:work-breakdown/SKILL.md}` §3 Work Breakdown Procedure.
+**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
 ### 3.7 Delegation Handling
 
@@ -533,7 +533,7 @@ Invoked when research delegation is appropriate per §2.8 Research Delegation St
 
 **Delegation Request Output:**
 
-When delegation is appropriate, output the following Delegation Request text block:
+When delegation is appropriate, output the following:
 ```
 I'd like to delegate some research on <Brief Topic> to help inform the Coordination Artifacts.
 
@@ -549,7 +549,7 @@ Would you like to approve the delegation, or would you prefer I note this as a r
 Perform the following actions:
 
 1. Check if `.apm/Memory/Stage_00_Planning/` exists. If not, create it (first delegation only). This directory stores delegation logs during the Planning Phase.
-2. Read the Research Delegation skill: {SKILL_PATH:delegate-research/SKILL.md}
+2. Read the Research Delegation skill: {SKILL_PATH:delegate-research}
 3. Provide the User the Delegation Prompt following the skill. User then opens Delegate Agent Session and provides delegated research task.
 4. Delegate Agent logs findings to `.apm/Memory/Stage_00_Planning/Delegation_Log_00_<SequentialNum>_Research_<Slug>.md`
 5. Delegate Agent returns Delegation Report to User.
@@ -583,7 +583,7 @@ This section defines the output format for the Understanding Summary.
 
 ### 4.1 Understanding Summary Format
 
-Output during Procedure Checkpoint (§3.5) for User review:
+Output during Procedure Checkpoint (§3.5 Procedure Checkpoint) for User review:
 ```
 ## Understanding Summary:
 

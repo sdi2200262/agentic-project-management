@@ -1,6 +1,6 @@
 ---
 priority: 5
-command_name: Handoff-manager
+command_name: handoff-manager
 description: Initiates and guides the Manager Agent through the Handoff Procedure to transfer coordination context to a Continuing Manager Agent instance.
 ---
 
@@ -75,18 +75,18 @@ Perform the following actions:
 
 Perform the following actions:
 
-1. Determine your Manager Agent number:
-   - If you are the First Manager → You are **Manager Agent 1**
-   - If you are a Continuing Manager → Your Manager Agent number is stated in the Handoff Prompt you received at initiation
-2. Calculate Continuing Manager number: `<Your-Manager-Agent-Number> + 1`
+1. Determine your Manager Agent session number:
+   - If you are Manager Agent Session 1 (first Manager) → Your session number is **1**
+   - If you are a Continuing Manager → Your session number is stated in the Handoff Prompt you received at initiation
+2. Calculate Continuing Manager session number: `<Your-Session-Number> + 1`
 3. Create Handoff Memory Log following §4 Handoff Memory Log Structure, including:
-   - Your Manager Agent number as `outgoing_manager`
-   - Handoff number equals your Manager Agent number (first handoff = Manager_Handoff_Log_1.md)
+   - Your session number as `outgoing_manager`
+   - Handoff number equals your session number (first handoff = Manager_Handoff_Log_1.md)
    - Tracked Worker Handoffs (most critical) — which Workers performed Handoffs, from which Stage
    - User preferences, communication patterns observed during this session
    - Coordination insights or decisions not captured in Coordination Artifacts or Memory Logs
    - Any working notes that would otherwise be lost
-4. Save to `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Manager Agent Number>.md`
+4. Save to `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Session Number>.md`
 
 ### 3.3 Handoff Prompt Creation
 
@@ -94,9 +94,9 @@ Perform the following actions:
 
 1. Create Handoff Prompt following §5 Handoff Prompt Structure
 2. Include:
-   - Explicit statement: "You are taking over from Manager Agent <Your Manager Agent Number> as Continuing Manager Agent <Continuing Manager Number>"
+   - Explicit statement: "You are taking over from Manager Agent Session <Your Session Number> as Manager Agent Session <Continuing Session Number>"
    - Instructions for Continuing Manager to read Coordination Artifacts and skills
-   - Path to Handoff Memory Log: `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Manager Agent Number>.md`
+   - Path to Handoff Memory Log: `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Session Number>.md`
    - Instructions to read ALL current Stage Memory Logs (all Agents)
    - Note about reading previous Stage Task Memory Logs when Context Dependencies require
    - Current session state summary (current Stage, next Task, any blockers)
@@ -135,8 +135,8 @@ The Handoff Memory Log contains working context NOT captured in Coordination Art
 
 ```yaml
 ---
-outgoing_manager: Manager_<N>
-continuing_manager: Manager_<N+1>
+outgoing_manager: Manager_Session_<N>
+continuing_manager: Manager_Session_<N+1>
 handoff_number: <N>
 current_stage: <Stage number and name>
 timestamp: <Date/time of Handoff>
@@ -185,16 +185,16 @@ timestamp: <Date/time of Handoff>
 
 The Handoff Prompt instructs the Continuing Manager to reconstruct context procedurally from Coordination Artifacts, skills, and Memory Logs. The Handoff Memory Log provides supplementary context only. The Handoff Prompt is presented as a **markdown code block** in the chat:
 ````markdown
-# APM Manager Agent <N> Handoff
+# APM Manager Agent Session <N+1> Handoff
 
-You are taking over from **Manager Agent <N>** as **Continuing Manager Agent <N+1>**.
+You are taking over from **Manager Agent Session <N>** as **Manager Agent Session <N+1>**.
 
 ## Context Reconstruction Protocol
 
 Follow this sequence to reconstruct coordination context:
 
 ### Read Handoff Memory Log
-- `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md` (where <N> is the outgoing Manager Agent number from the prompt above)
+- `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md` (where <N> is the outgoing Manager Agent session number from the prompt above)
 - **Critical:** Note all Tracked Worker Handoffs—these affect Context Dependency classification
 
 ### Read Current Stage Memory Logs

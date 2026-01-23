@@ -15,14 +15,14 @@ This skill defines how the Manager Agent maintains the Memory System during proj
 
 **Execute the Procedure.** The Procedure section contains the actions to perform for Memory System maintenance. Follow subsections based on the current maintenance need. See §3 Memory Maintenance Procedure.
 
-**Use Problem Standards for reasoning and decisions.** When interpreting Task Memory Log content, assessing investigation scope, determining Coordination Decision outcomes, or detecting Worker Handoffs, consult the relevant standards subsection. See §2 Problem Standards.
+**Use Operational Standards for reasoning and decisions.** When interpreting Task Memory Log content, assessing investigation scope, determining Coordination Decision outcomes, or detecting Worker Handoffs, consult the relevant standards subsection. See §2 Operational Standards.
 
 ### 1.2 Objectives
 
 - Initialize and maintain the Memory System structure throughout project execution
 - Review Task Reports and Task Memory Logs to assess completion and make Coordination Decisions
 - Detect Worker Agent Handoffs and adjust Context Dependency treatment accordingly
-- Identify when findings warrant artifact modifications (handoff to `{SKILL_PATH:artifact-maintenance/SKILL.md}`)
+- Identify when findings warrant artifact modifications (handoff to `{SKILL_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure)
 - Create Stage Summaries to preserve high-level progress context
 - Maintain the Memory System to enable seamless Handoff and onboarding through structured Memory artifacts
 
@@ -39,11 +39,11 @@ This skill defines how the Manager Agent maintains the Memory System during proj
 - **Stage Directories:** `Stage_<StageNum>_<Slug>/` - contain Task Memory Logs and Delegation Memory Logs
 - **Handoff Storage:** `.apm/Handoffs/` - contain Agent Handoff Files
 
-See §4.1 Directory Structure for full layout.
+See §4.1 Directory Structure.
 
 ---
 
-## 2. Problem Standards
+## 2. Operational Standards
 
 This section establishes reasoning approaches and decision rules for Memory System maintenance. It guides how to interpret Task Memory Logs, assess Coordination Decision scope, detect Handoffs, and write Stage Summaries.
 
@@ -59,7 +59,7 @@ The goal is to extract information needed for the next Coordination Decision and
 **Status Interpretation:**
 - `status: Success` — Task objective achieved, all validation passed
 - `status: Partial` — More than 50% of Task Execution and corresponding Validation were successful, but less than 50% either failed Validation or could not be executed/validated. An intermediate state between Success and Fail.
-- `status: Fail` — Most or all parts of Task Execution failed Validation or could not be executed
+- `status: Failed` — Most or all parts of Task Execution failed Validation or could not be executed
 - `status: Blocked` — Similar to Fail, but with serious blockers that the Worker Agent has limited context scope or authority to address. Requires Manager's coordination-level resolution.
 
 **Flag Interpretation:**
@@ -67,9 +67,9 @@ The goal is to extract information needed for the next Coordination Decision and
 Workers set flags based on their scoped observations. The Manager interprets these flags with full project awareness to assess actual coordination impact.
 - `important_findings: true` — Worker observed something that appeared to have implications beyond their Task scope. Manager assesses whether this affects Coordination Artifacts or other Tasks, otherwise just a false-positive.
 - `compatibility_issues: true` — Worker observed conflicts with existing systems they encountered. Manager assesses whether this indicates Implementation Plan, Specification or Standards issues, otherwise just a false-positive.
-- `Delegation: true` — Worker delegated part of the Task. Task Memory Log contains summary and Delegation Memory Log contains full findings. See `{SKILL_PATH:memory-logging/SKILL.md}` §4.2 for structure.
+- `delegation: true` — Worker delegated part of the Task. Task Memory Log contains summary and Delegation Memory Log contains full findings. See `{SKILL_PATH:memory-logging}` §4.2 Delegation Memory Log Format.
 
-**Content Review:** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened. See §3.4 for the review procedure and §4.4 Task Memory Log Structure for the full format.
+**Content Review:** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened. See §3.4 Task Memory Log Review and §4.4 Task Memory Log Structure.
 
 ### 2.2 Coordination Decision Standards
 
@@ -98,7 +98,7 @@ When investigation is needed, assess the scope to determine the approach:
 - Impacts multiple Tasks or Stages
 - Requires deep technical investigation
 
-**Default:** When scope is unclear, prefer Delegation over extensive self-investigation to preserve Manager context. See §3.5 for the investigation procedure based on scope assessment.
+**Default:** When scope is unclear, prefer Delegation over extensive self-investigation to preserve Manager context. See §3.5 Coordination Decision.
 
 **Assessment 3 — Post-Investigation Outcome:**
 
@@ -106,11 +106,11 @@ After investigation (whether self or delegated), assess the outcome:
 
 1. **No issues** — Investigation revealed no issues requiring action. Findings may have been false positives due to Worker's limited context scope. Proceed to next Task.
 2. **FollowUp needed** — Investigation revealed issues that require the same Worker to retry or refine work. Manager creates a FollowUp Task Assignment Prompt with informed instructions based on investigation findings.
-3. **Coordination Artifact modification needed** — Investigation revealed that Coordination Artifacts (Implementation Plan, Specifications, or Standards) need updates. **Follows methodology in `{SKILL_PATH:artifact-maintenance/SKILL.md}`** for assessment and execution.
+3. **Coordination Artifact modification needed** — Investigation revealed that Coordination Artifacts (Implementation Plan, Specifications, or Standards) need updates. Follow `{SKILL_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure.
 
 The scope determines *how* to investigate, not *what* outcomes are possible—all three outcomes can result from either scope.
 
-**Artifact Modification Handoff:** When artifact modification is needed, note the triggering context (log, findings, flags), identify affected artifact(s), then follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` methodology.
+**Artifact Modification Handoff:** When artifact modification is needed, note the triggering context (log, findings, flags), identify affected artifact(s), then follow `{SKILL_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure.
 
 **Coordination Artifact Modification Indicators:**
 
@@ -129,7 +129,7 @@ A Continuing Worker Agent (Replacement Agent after Handoff) includes in its Task
 - List of current Stage Memory Logs it has read
 - Note that previous Stage Memory Logs were not loaded for efficiency
 
-**Verification:** Upon detecting a Handoff indication, verify the Handoff File exists and integrate the Handoff in Manager's working context. See §3.3 for the verification procedure.
+**Verification:** Upon detecting a Handoff indication, verify the Handoff File exists and integrate the Handoff in Manager's working context. See §3.3 Task Report Review.
 
 **Context Dependency Treatment:**
 
@@ -253,12 +253,12 @@ Perform the following actions:
 
        Would you like to approve the Delegation, or would you prefer a different approach?
        ```
-     - If User approves: Read the appropriate Delegation skill (`{SKILL_PATH:delegate-debug/SKILL.md}` or `{SKILL_PATH:delegate-research/SKILL.md}`), create Delegation Prompt, User facilitates Delegate session
+     - If User approves: Read the appropriate Delegation skill (`{SKILL_PATH:delegate-debug}` or `{SKILL_PATH:delegate-research}`), create Delegation Prompt, User facilitates Delegate session
      - When User returns with Delegation Report, read the Delegation Memory Log and integrate findings, then proceed to step 4
 4. Assess post-investigation outcome using §2.2 Coordination Decision Standards Assessment 3:
    - **No issues** → Proceed to next Task Assignment (return to Task Cycle in initiation command)
-   - **FollowUp needed** → Create FollowUp Task Assignment Prompt per `{SKILL_PATH:task-assignment/SKILL.md}` §3.5, output for User
-   - **Coordination Artifact modification needed** → Handoff to `{SKILL_PATH:artifact-maintenance/SKILL.md}` for assessment and execution
+   - **FollowUp needed** → Create FollowUp Task Assignment Prompt per `{SKILL_PATH:task-assignment}` §3.5 FollowUp Task Assignment Prompt Creation, output for User
+   - **Coordination Artifact modification needed** → Handoff to `{SKILL_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure
 5. If proceeding to next Task and all Tasks in current Stage are complete, proceed to §3.6 Stage Summary Creation **before you create the next Task's Task Assignment Prompt.**
 
 ### 3.6 Stage Summary Creation

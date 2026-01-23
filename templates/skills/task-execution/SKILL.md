@@ -15,7 +15,7 @@ This skill defines how Worker Agents execute Tasks assigned by the Manager Agent
 
 **Execute the Procedure.** The Procedure section contains the actions for each Task Assignment received. Follow subsections sequentially from Task Assignment Receipt through Task Completion. See §3 Task Execution Procedure.
 
-**Use Problem Standards for reasoning and decisions.** When reasoning about iteration, pauses, failures, or complexity—and when encountering decision points (continue vs stop, pause vs continue, status classification)—consult the relevant standards subsection. See §2 Problem Standards.
+**Use Operational Standards for reasoning and decisions.** When reasoning about iteration, pauses, failures, or complexity—and when encountering decision points (continue vs stop, pause vs continue, status classification)—consult the relevant standards subsection. See §2 Operational Standards.
 
 ### 1.2 Objectives
 
@@ -30,13 +30,13 @@ This skill defines how Worker Agents execute Tasks assigned by the Manager Agent
 
 **Completed Task Deliverables:** Files, artifacts, or outputs as specified in Expected Output.
 
-**Task Memory Log:** Structured log per `{SKILL_PATH:memory-logging/SKILL.md}`.
+**Task Memory Log:** Structured log per `{SKILL_PATH:memory-logging}` §4.1 Task Memory Log Format.
 
-**Task Report:** Concise summary for User to return to Manager Agent, per `{SKILL_PATH:memory-logging/SKILL.md}`.
+**Task Report:** Concise summary for User to return to Manager Agent, per `{SKILL_PATH:memory-logging}` §4.3 Task Report Format.
 
 ---
 
-## 2. Problem Standards
+## 2. Operational Standards
 
 This section establishes reasoning approaches and decision rules for Task Execution. It guides how to think about and decide on context integration, validation, iteration, pauses, failures, and user collaboration.
 
@@ -68,7 +68,7 @@ Validation confirms that Task Execution achieved the intended outcome. Understan
 * *Artifact:* Output existence and structural verification—files exist with required sections, configs are valid, outputs match patterns. The Worker verifies these autonomously.
 * *User:* Human judgment required—design approval, content quality, architectural decisions. The Worker must pause for User review.
 
-**Ordering Principle:** When a Task has multiple validation types including User, the User validation is always performed LAST. Programmatic and Artifact validations complete first—this prevents wasting User reviews on execution that would fail automated checks. See §3.4 for the validation procedure.
+**Ordering Principle:** When a Task has multiple validation types including User, the User validation is always performed LAST. Programmatic and Artifact validations complete first—this prevents wasting User reviews on execution that would fail automated checks. See §3.4 Task Validation.
 
 **Default:** Fail-fast on autonomous validations to avoid wasted User reviews.
 
@@ -90,7 +90,7 @@ When Task Validation fails, the Worker enters an iteration cycle—correct, re-e
 
 Pauses interrupt execution flow. Understanding pause categories guides when to pause and when to continue autonomously.
 
-**Obligatory Pauses (always pause):** Delegation steps, explicit User actions in instructions, and User Validation Type all require pausing. See §3.5 and §3.6 for pause handling procedures.
+**Obligatory Pauses (always pause):** Delegation steps, explicit User actions in instructions, and User Validation Type all require pausing. See §3.5 Pause Handling and §3.6 Delegation Handling.
 
 **Autonomous Pauses (Worker judgment):** Workers may choose to pause at natural breakpoints during complex Tasks. This is appropriate when:
 - Task scope is large with distinct parts and natural breakpoints between work clusters
@@ -133,7 +133,7 @@ Users facilitate communication between Agents and provide guidance at decision p
 
 **Autonomous Decisions:** Workers decide autonomously on: executing Programmatic/Artifact validation, continuing iteration when cause is clear and fix is within scope, and standard instruction execution.
 
-**Default:** When stopping without Success, present situation with options rather than unilateral decisions. See §3.5 for the pause communication structure.
+**Default:** When stopping without Success, present situation with options rather than unilateral decisions. See §3.5 Pause Handling.
 
 ---
 
@@ -149,19 +149,19 @@ This section defines the actions for executing a Task Assignment.
 5. Iteration Cycle (if validation fails)
 6. Task Completion
 
-Pause Handling (§3.5) and Delegation Handling (§3.6) are invoked from within the main flow when conditions are met.
+Pause Handling (§3.5 Pause Handling) and Delegation Handling (§3.6 Delegation Handling) are invoked from within the main flow when conditions are met.
 
 ### 3.1 Task Assignment Receipt
 
 Perform the following actions:
 
-1. Verify `agent_id` in YAML frontmatter matches your registered instance. If mismatch, decline per `{COMMAND_PATH:worker-agent-initiation.md}` §5.1.
+1. Verify `agent_id` in YAML frontmatter matches your registered instance. If mismatch, decline per `{COMMAND_PATH:worker-agent-initiation.md}` §5.1 Instance Boundaries.
 2. Parse Task Assignment structure—YAML frontmatter fields and body sections.
 3. Identify execution parameters:
    - `has_dependencies: true` → Context Integration required
    - `has_delegation_steps: true` → Delegation step(s) in instructions
    - Note validation types in Validation Criteria section
-4. Proceed to §3.2 Context Integration (or §3.3 if no dependencies).
+4. Proceed to §3.2 Context Integration (or §3.3 Task Execution if no dependencies).
 
 ### 3.2 Context Integration
 
@@ -196,7 +196,7 @@ Perform the following actions:
 1. Order validations: Programmatic first, then Artifact, then User—adapt based on which are required. User validation is always performed LAST.
 2. Execute Programmatic validations. If any fail → do NOT proceed to User validation—proceed to §3.7 Iteration Cycle. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
 3. Execute Artifact validations. If any fail → do NOT proceed to User validation—proceed to §3.7 Iteration Cycle.
-4. If User validation present: pause and present work for review. Communicate what was accomplished, what needs review per the criteria, and where deliverables are located. Await response. If approved → proceed to §3.8 with Success. If feedback provided → proceed to §3.7 Iteration Cycle with feedback integrated.
+4. If User validation present: pause and present work for review. Communicate what was accomplished, what needs review per the criteria, and where deliverables are located. Await response. If approved → proceed to §3.8 Task Completion with Success. If feedback provided → proceed to §3.7 Iteration Cycle with feedback integrated.
 5. If all validation passed → proceed to §3.8 Task Completion with Success.
 
 ### 3.5 Pause Handling
@@ -238,9 +238,9 @@ Perform the following actions:
 
 1. Assess the failure—what specifically failed, what is the likely cause, is it correctable?
 2. Apply decision rules from §2.3 Iteration Standards to determine action.
-3. If continuing: correct the issue, re-execute affected portions, return to §3.4.
+3. If continuing: correct the issue, re-execute affected portions, return to §3.4 Task Validation.
 4. If stopping: present situation to User explaining what validation failed, what corrections were attempted and their outcomes, why iteration is stopping, current state of the work, and options for proceeding. Include your assessment if you have one. Await guidance.
-5. Upon User guidance: if new direction given, integrate and return to appropriate procedure step; if stopping confirmed, apply §2.5 Failure Status Standards and proceed to §3.8.
+5. Upon User guidance: if new direction given, integrate and return to appropriate procedure step; if stopping confirmed, apply §2.5 Failure Status Standards and proceed to §3.8 Task Completion.
 
 ### 3.8 Task Completion
 
@@ -248,8 +248,8 @@ Perform the following actions:
 
 1. Determine final status per §2.5 Failure Status Standards (Success if all validation passed).
 2. Determine `failure_point`: `null` for Success; `Execution` or `Validation` or `<description>` based on where stopped.
-3. Create Task Memory Log per `{SKILL_PATH:memory-logging/SKILL.md}` at `memory_log_path`.
-4. Output Task Report per `{SKILL_PATH:memory-logging/SKILL.md}`. Include Continuing Worker indication if this is your first Task after Handoff.
+3. Create Task Memory Log per `{SKILL_PATH:memory-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
+4. Output Task Report per `{SKILL_PATH:memory-logging}` §4.3 Task Report Format. Include Continuing Worker indication if this is your first Task after Handoff.
 5. Await next Task Assignment or Handoff initiation.
 
 ---
@@ -258,9 +258,9 @@ Perform the following actions:
 
 ### 4.1 Output Format References
 
-**Task Memory Log:** Per `{SKILL_PATH:memory-logging/SKILL.md}` §4.1, at `memory_log_path` from Task Assignment.
+**Task Memory Log:** Per `{SKILL_PATH:memory-logging}` §4.1 Task Memory Log Format, at `memory_log_path` from Task Assignment.
 
-**Task Report:** Per `{SKILL_PATH:memory-logging/SKILL.md}`.
+**Task Report:** Per `{SKILL_PATH:memory-logging}` §4.3 Task Report Format.
 
 **Delegation Prompt:** Per relevant delegation skill methodology.
 

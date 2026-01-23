@@ -15,7 +15,7 @@ This skill defines how the Manager Agent constructs Task Assignment Prompts for 
 
 **Execute the Procedure.** The Procedure section contains the actions for constructing Task Assignment Prompts. See §3 Task Assignment Procedure.
 
-**Use Problem Standards for reasoning and decisions.** When determining Context Dependency scope, extracting Specification content, reasoning about FollowUp Assignments, or handling Delegation steps, consult the relevant standards subsection. See §2 Problem Standards.
+**Use Operational Standards for reasoning and decisions.** When determining Context Dependency scope, extracting Specification content, reasoning about FollowUp Assignments, or handling Delegation steps, consult the relevant standards subsection. See §2 Operational Standards.
 
 **Follow Structural Specifications.** Task Assignment Prompts follow the format guidance defined in Structural Specifications. See §4 Structural Specifications.
 
@@ -31,7 +31,7 @@ This skill defines how the Manager Agent constructs Task Assignment Prompts for 
 
 **Task Assignment Prompt:** Markdown code block containing all context a Worker Agent needs to execute a Task. Delivered to User for copy-paste to Worker Agent session.
 
-**FollowUp Task Assignment Prompt:** Task Assignment Prompt with DIFFERENT content than the previous failed attempt, issued when Coordination Decision (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §3.5) determines "FollowUp needed." Content (Objective, Instructions, Output, Validation) is refined based on what went wrong and what correction is needed, guided by a FollowUp Context section explaining the issue.
+**FollowUp Task Assignment Prompt:** Task Assignment Prompt with DIFFERENT content than the previous failed attempt, issued when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed." Content (Objective, Instructions, Output, Validation) is refined based on what went wrong and what correction is needed, guided by a FollowUp Context section explaining the issue.
 
 ### 1.4 Context Scoping Principle
 
@@ -48,7 +48,7 @@ Workers do NOT have access to:
 
 ---
 
-## 2. Problem Standards
+## 2. Operational Standards
 
 This section establishes reasoning approaches and decision rules for Task Assignment creation. It guides how to analyze Context Dependencies, determine Context Scope, extract relevant information from Coordination Artifacts, and handle Delegation steps.
 
@@ -69,7 +69,7 @@ Tasks may depend on outputs from previous Tasks. Context Dependencies affect how
 - Explicit file reading instructions before main work
 - Complete output summaries with integration guidance
 
-*Handoff Context Dependency:* When the Manager has detected that the target Worker performed a Handoff (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §2.3 Handoff Detection Standards), the Continuing Worker Agent only has current Stage Memory Logs loaded. This affects classification:
+*Handoff Context Dependency:* When the Manager has detected that the target Worker performed a Handoff (per `{SKILL_PATH:memory-maintenance}` §2.3 Handoff Detection Standards), the Continuing Worker Agent only has current Stage Memory Logs loaded. This affects classification:
 - Same-Agent Context Dependencies from the **current Stage** → Treat as Same-Agent (Continuing Worker has received working context)
 - Same-Agent Context Dependencies from **previous Stages** → Treat as Cross-Agent (Continuing Worker lacks working context)
 
@@ -124,7 +124,7 @@ When reviewing Specifications for a Task, consider:
 
 ### 2.3 FollowUp Assignment Standards
 
-FollowUp Task Assignments occur when Coordination Decision (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §3.5) determines "FollowUp needed" after investigation.
+FollowUp Task Assignments occur when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed" after investigation.
 
 **Entry Point:**
 
@@ -134,7 +134,7 @@ The Manager arrives at FollowUp Assignment with:
 - Understanding of what went wrong and what refinement is needed
 - Potentially, Coordination Artifact modifications that were made
 
-**FollowUp Content Principle:** The FollowUp Task Assignment is a NEW Task Assignment with DIFFERENT content than the previous attempt. Objective, Instructions, Output, and Validation must be refined based on what went wrong. See §3.5 for the FollowUp Task Assignment Prompt Creation procedure.
+**FollowUp Content Principle:** The FollowUp Task Assignment is a NEW Task Assignment with DIFFERENT content than the previous attempt. Objective, Instructions, Output, and Validation must be refined based on what went wrong. See §3.5 FollowUp Task Assignment Prompt Creation.
 
 **Log Path Continuity:**
 
@@ -149,11 +149,11 @@ Tasks may contain Delegation steps that require Worker to delegate part of the w
 - Implementation Plan may include skill references for Delegation type
 
 **Delegation Skill References:**
-- Debug: `{SKILL_PATH:delegate-debug/SKILL.md}`
-- Research: `{SKILL_PATH:delegate-research/SKILL.md}`
+- Debug: `{SKILL_PATH:delegate-debug}`
+- Research: `{SKILL_PATH:delegate-research}`
 - Other: Note Delegation purpose; reference skill if available
 
-See §3.4 for inclusion requirements when constructing Task Assignment Prompts with Delegation steps.
+See §3.4 Task Assignment Prompt Creation.
 
 ---
 
@@ -176,7 +176,7 @@ Analyze the Task's Context Dependencies to determine what context the Worker nee
 Perform the following actions:
 
 1. Read the Task's Dependencies field from the Implementation Plan:
-   - If "None": Skip to §3.2 with `has_dependencies: false`
+   - If "None": Skip to §3.2 Specification Context Extraction with `has_dependencies: false`
    - If dependencies listed: Continue to step 2
 2. Check tracked Handoff state for the target Worker (has this Worker performed a Handoff? From which Stage?)
 3. Classify each dependency as Same-Agent, Cross-Agent, or Handoff per §2.1
@@ -250,7 +250,7 @@ Perform the following actions:
 
 ### 3.5 FollowUp Task Assignment Prompt Creation
 
-Execute when Coordination Decision (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §3.5) determines "FollowUp needed."
+Execute when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed."
 
 FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt—refine all content sections based on what went wrong.
 
@@ -262,8 +262,8 @@ Perform the following actions:
    - What specific refinement or correction is needed?
    - Were any Coordination Artifacts modified that affect this Task?
 2. Extract and integrate relevant content from modified Coordination Artifacts (if any):
-   - If Specifications.md was modified: Extract relevant Specification content per §3.2
-   - If Implementation_Plan.md was modified: Extract relevant Task content per §3.3
+   - If Specifications.md was modified: Extract relevant Specification content per §3.2 Specification Context Extraction
+   - If Implementation_Plan.md was modified: Extract relevant Task content per §3.3 Implementation Plan Context Extraction
    - Contextually integrate extracted content into the Task Assignment to inform Worker decisions (Workers only receive Task Assignments; artifact changes are brought into the task context when relevant)
 3. Refine Task Assignment content using Manager's coordination-level resolution:
    - Refine Objective based on what went wrong and what correction is needed
@@ -271,7 +271,7 @@ Perform the following actions:
    - Refine Expected Output if deliverables need adjustment
    - Refine Validation Criteria based on failure patterns or new requirements or constraints
    - Include a FollowUp Context section explaining what issue the previous attempt encountered, what specific refinement or correction is needed, and any additional guidance based on Manager's investigation
-4. Construct FollowUp prompt using the same format as §3.4, with modifications:
+4. Construct FollowUp prompt using the same format as §3.4 Task Assignment Prompt Creation, with modifications:
    - Use title "APM FollowUp Task Assignment: <Task Title>" instead of "APM Task Assignment"
    - Same `memory_log_path` as original Task Assignment (Worker overwrites previous log)
    - Add FollowUp Context section after Task Reference explaining the issue and required refinement
@@ -338,7 +338,7 @@ has_delegation_steps: true | false
 
 ## Memory Logging
 Upon completion, log your work to: `<memory_log_path>`
-Follow `{SKILL_PATH:memory-logging/SKILL.md}` for Task Memory Log creation.
+Follow `{SKILL_PATH:memory-logging}` §3.1 Task Memory Log Procedure.
 
 ## Task Report
 After logging, output a **Task Report** for User to return to Manager Agent.
@@ -347,7 +347,7 @@ After logging, output a **Task Report** for User to return to Manager Agent.
 [Include only if has_delegation_steps: true]
 This Task includes Delegation step(s). When you reach a Delegation step:
 - **Type:** <Debug|Research|Other>
-- **Skill Reference:** `{SKILL_PATH:delegate-<type>/SKILL.md}`
+- **Skill Reference:** `{SKILL_PATH:delegate-<type>}`
 - Create Delegation Prompt per the skill and coordinate with User
 - Integrate findings and log Delegation in your Task Memory Log
 ```
@@ -402,11 +402,11 @@ This work also builds on Task <X.Y> by <Agent>:
 - Always comprehensive but don't duplicate existing content
 - Include explicit file paths and what to look for
 - Document all relevant interfaces and contracts
-- Include upstream dependencies when relevant per §2.1
+- Include upstream dependencies when relevant per §2.1 Context Dependency Standards
 
 ### 4.2 FollowUp Assignment Format
 
-FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content than the previous failed attempt. They use the same structure as §4.1, with these modifications:
+FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content than the previous failed attempt. They use the same structure as §4.1 Task Assignment Prompt Format, with these modifications:
 
 **Title:** `APM FollowUp Task Assignment: <Task Title>`
 
