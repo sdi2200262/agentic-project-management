@@ -68,52 +68,60 @@ Execute this procedure when User initiates Handoff and eligibility is confirmed.
 
 ### 3.1 Eligibility Check
 
-* **Action 1:** Assess current state against §2 Handoff Eligibility criteria
-* **Action 2:** If not eligible → Deny with specific reason per §2.3, complete current Task, then re-confirm with User
-* **Action 3:** If eligible → Proceed to §3.2 Handoff Memory Log Creation
+Perform the following actions:
+
+1. Assess current state against §2 Handoff Eligibility criteria
+2. If not eligible → Deny with specific reason per §2.3, complete current Task, then re-confirm with User
+3. If eligible → Proceed to §3.2 Handoff Memory Log Creation
 
 ### 3.2 Handoff Memory Log Creation
 
-* **Action 1:** Determine your Worker instance number:
-  - If you are the First Worker (registered via Task Assignment) → You are **[AgentID] Worker 1**
-  - If you are a Continuing Worker (registered via Handoff Prompt) → Your instance number is stated in the Handoff Prompt you received at initiation
-* **Action 2:** Calculate Continuing Worker number: `<Your-Instance-Number> + 1`
-* **Action 3:** Create Handoff Memory Log following §4 Handoff Memory Log Structure, including:
-  - Your instance number as `outgoing_worker`
-  - Working context and patterns observed during this session
-  - Any notes or insights not captured in Task Memory Logs
-  - Continuation guidance for the next Worker
-* **Action 4:** Save to `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<Your-Instance-Number>.md`
-  - Create the directory if it doesn't exist
+Perform the following actions:
+
+1. Determine your Worker instance number:
+   - If you are the First Worker (registered via Task Assignment) → You are **[AgentID] Worker 1**
+   - If you are a Continuing Worker (registered via Handoff Prompt) → Your instance number is stated in the Handoff Prompt you received at initiation
+2. Calculate Continuing Worker number: `<Your-Instance-Number> + 1`
+3. Create Handoff Memory Log following §4 Handoff Memory Log Structure, including:
+   - Your instance number as `outgoing_worker`
+   - Working context and patterns observed during this session
+   - Any notes or insights not captured in Task Memory Logs
+   - Continuation guidance for the next Worker
+4. Save to `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<Your-Instance-Number>.md`
+   - Create the directory if it doesn't exist
 
 ### 3.3 Handoff Prompt Creation
 
-* **Action 1:** Create Handoff Prompt following §5 Handoff Prompt Structure
-* **Action 2:** Include:
-  - Explicit statement: "You are taking over from [AgentID] Worker <N> as Continuing [AgentID] Worker <N+1>"
-  - Path to Handoff Memory Log
-  - Instructions to read current Stage Task Memory Logs (only this Worker's logs)
-  - Reminder to indicate Continuing Worker status in first Task Report
-  - Current session state summary
-* **Action 3:** Output as markdown code block for User copy-paste
+Perform the following actions:
+
+1. Create Handoff Prompt following §5 Handoff Prompt Structure
+2. Include:
+   - Explicit statement: "You are taking over from [AgentID] Worker <N> as Continuing [AgentID] Worker <N+1>"
+   - Path to Handoff Memory Log
+   - Instructions to read current Stage Task Memory Logs (only this Worker's logs)
+   - Reminder to indicate Continuing Worker status in first Task Report
+   - Current session state summary
+3. Output as markdown code block for User copy-paste
 
 ### 3.4 User Review and Finalization
 
-* **Action 1:** Present both artifacts to User:
-  - Handoff Memory Log (created as file)
-  - Handoff Prompt (output as markdown code block)
-* **Action 2:** Request User review:
-  ```
-  Handoff artifacts created:
+Perform the following actions:
 
-  **Handoff Memory Log:** `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<N>.md`
+1. Present both artifacts to User:
+   - Handoff Memory Log (created as file)
+   - Handoff Prompt (output as markdown code block)
+2. Request User review:
+   ```
+   Handoff artifacts created:
 
-  **Handoff Prompt:** Ready for copy-paste below.
+   **Handoff Memory Log:** `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<N>.md`
 
-  Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new Worker Agent session to initialize the Continuing Worker.
-  ```
-* **Action 3:** If User requests modifications → Update artifacts accordingly
-* **Action 4:** User copies Handoff Prompt to new session; this session ends
+   **Handoff Prompt:** Ready for copy-paste below.
+
+   Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new Worker Agent session to initialize the Continuing Worker.
+   ```
+3. If User requests modifications → Update artifacts accordingly
+4. User copies Handoff Prompt to new session; this session ends
 
 ---
 
