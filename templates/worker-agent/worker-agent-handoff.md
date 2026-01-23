@@ -71,23 +71,23 @@ Execute this procedure when User initiates Handoff and eligibility is confirmed.
 Perform the following actions:
 
 1. Assess current state against §2 Handoff Eligibility criteria
-2. If not eligible → Deny with specific reason per §2.3, complete current Task, then re-confirm with User
+2. If not eligible → Deny with specific reason per §2.3 Handoff Denial, complete current Task, then re-confirm with User
 3. If eligible → Proceed to §3.2 Handoff Memory Log Creation
 
 ### 3.2 Handoff Memory Log Creation
 
 Perform the following actions:
 
-1. Determine your Worker instance number:
-   - If you are the First Worker (registered via Task Assignment) → You are **[AgentID] Worker 1**
-   - If you are a Continuing Worker (registered via Handoff Prompt) → Your instance number is stated in the Handoff Prompt you received at initiation
-2. Calculate Continuing Worker number: `<Your-Instance-Number> + 1`
+1. Determine your Worker session number:
+   - If you are the First Worker (registered via Task Assignment) → You are **[AgentID] Session 1**
+   - If you are a Continuing Worker (registered via Handoff Prompt) → Your session number is stated in the Handoff Prompt you received at initiation
+2. Calculate Continuing Worker session number: `<Your-Session-Number> + 1`
 3. Create Handoff Memory Log following §4 Handoff Memory Log Structure, including:
-   - Your instance number as `outgoing_worker`
+   - Your session number as `outgoing_worker`
    - Working context and patterns observed during this session
    - Any notes or insights not captured in Task Memory Logs
    - Continuation guidance for the next Worker
-4. Save to `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<Your-Instance-Number>.md`
+4. Save to `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<Your-Session-Number>.md`
    - Create the directory if it doesn't exist
 
 ### 3.3 Handoff Prompt Creation
@@ -96,7 +96,7 @@ Perform the following actions:
 
 1. Create Handoff Prompt following §5 Handoff Prompt Structure
 2. Include:
-   - Explicit statement: "You are taking over from [AgentID] Worker <N> as Continuing [AgentID] Worker <N+1>"
+   - Explicit statement: "You are taking over from [AgentID] Session <N> as [AgentID] Session <N+1>"
    - Path to Handoff Memory Log
    - Instructions to read current Stage Task Memory Logs (only this Worker's logs)
    - Reminder to indicate Continuing Worker status in first Task Report
@@ -136,8 +136,8 @@ The Handoff Memory Log contains working context from this session that supports 
 ```yaml
 ---
 agent_id: <AgentID>
-outgoing_worker: <AgentID>_Worker_<N>
-continuing_worker: <AgentID>_Worker_<N+1>
+outgoing_worker: <AgentID>_Session_<N>
+continuing_worker: <AgentID>_Session_<N+1>
 handoff_number: <N>
 current_stage: <Stage number and name>
 timestamp: <Date/time of Handoff>
@@ -186,7 +186,7 @@ The Handoff Prompt instructs the Continuing Worker to reconstruct context from t
 ```markdown
 # APM Worker Agent Handoff — <AgentID>
 
-You are taking over from **<AgentID> Worker <N>** as **Continuing <AgentID> Worker <N+1>**.
+You are taking over from **<AgentID> Session <N>** as **<AgentID> Session <N+1>**.
 
 ## Context Reconstruction Protocol
 
@@ -216,12 +216,12 @@ After completing context reconstruction, confirm to User:
 ## Continuing Worker Indication
 
 **Important:** In your first Task Report after completing a Task, you must indicate that you are a Continuing Worker. Include in your Task Report:
-"**Continuing Worker:** This is <AgentID> Worker <N+1>, continuing from Worker <N>. **Current Stage Logs Loaded:** [List the Task Memory Logs you read]"
+"**Continuing Worker:** This is <AgentID> Session <N+1>, continuing from Session <N>. **Current Stage Logs Loaded:** [List the Task Memory Logs you read]"
 This indication allows the Manager Agent to track Worker Handoffs and adjust Context Dependency handling accordingly.
 
 ## Immediate Next Action
 
-Await the next Task Assignment Prompt from User. When received, proceed with Task Execution per `{SKILL_PATH:task-execution/SKILL.md}`.
+Await the next Task Assignment Prompt from User. When received, proceed with Task Execution per `{SKILL_PATH:task-execution}`.
 ```
 
 ---

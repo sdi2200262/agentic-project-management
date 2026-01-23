@@ -17,9 +17,9 @@ This skill defines how Worker Agents and Delegate Agents log their work to the M
 - Worker Agents: §3.1 Task Memory Log Procedure
 - Delegate Agents: §3.2 Delegation Memory Log Procedure
 
-**Use Problem Standards for reasoning and decisions.** Consult §2.2 Outcome Standards for status selection. Worker Agents also consult §2.1 Flag Assessment Standards. All agents consult §2.3 Detail Level Standards for content depth decisions. See §2 Problem Standards.
+**Use Operational Standards for reasoning and decisions.** Consult §2.2 Outcome Standards for status selection. Worker Agents also consult §2.1 Flag Assessment Standards. All agents consult §2.3 Detail Level Standards for content depth decisions. See §2 Operational Standards.
 
-**Follow output formats.** Populate Memory Logs using the formats in §4 Structural Specifications. Worker Agents use §4.1; Delegate Agents use §4.2. Keep post-completion communication minimal.
+**Follow output formats.** Populate Memory Logs using the formats in §4 Structural Specifications. Worker Agents use §4.1 Task Memory Log Format; Delegate Agents use §4.2 Delegation Memory Log Format. Keep post-completion communication minimal.
 
 ### 1.2 Objectives
 
@@ -40,7 +40,7 @@ Some sections apply to only one agent type. These sections are marked with **(Wo
 
 ---
 
-## 2. Problem Standards
+## 2. Operational Standards
 
 This section establishes reasoning approaches and decision rules for Memory Log creation. It guides how to assess flag values, select status, and determine appropriate detail levels.
 
@@ -154,9 +154,9 @@ Delegation Memory Logs serve the calling agent's needs. Calibrate detail to the 
 
 ## 3. Memory Logging Procedure
 
-This section defines the sequential actions for creating Memory Logs. Worker Agents follow §3.1; Delegate Agents follow §3.2.
+This section defines the sequential actions for creating Memory Logs. Worker Agents follow §3.1 Task Memory Log Procedure; Delegate Agents follow §3.2 Delegation Memory Log Procedure.
 
-**Output Formats:** Memory Logs use the Task Memory Log Format or Delegation Memory Log Format per §4 Structural Specifications. Status and flag decisions draw from §2 Problem Standards.
+**Output Formats:** Memory Logs use the Task Memory Log Format or Delegation Memory Log Format per §4 Structural Specifications. Status and flag decisions draw from §2 Operational Standards.
 
 **Procedure Flow:**
 1. Task Memory Log Procedure (Worker Agents) OR
@@ -192,7 +192,7 @@ Perform the following actions:
 
 After completing delegated work, create and populate the Delegation Memory Log.
 
-**Planning Phase Note:** For delegations initiated by Planner Agent (during `{SKILL_PATH:context-gathering/SKILL.md}` or `{SKILL_PATH:work-breakdown/SKILL.md}`), use stage `00` and directory `Stage_00_Planning/`. Example: `Delegation_Log_00_01_Research_Tech_Stack.md`
+**Planning Phase Note:** For delegations initiated by Planner Agent (during `{SKILL_PATH:context-gathering}` or `{SKILL_PATH:work-breakdown}`), use stage `00` and directory `Stage_00_Planning/`. Example: `Delegation_Log_00_01_Research_Tech_Stack.md`
 
 Perform the following actions:
 

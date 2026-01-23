@@ -40,11 +40,11 @@ Debug delegations are bounded investigations. The Delegate Agent should:
 
 ---
 
-## 2. Methodology
+## 2. Operational Standards
 
-This section guides creating effective Debug Delegation Prompts.
+This section establishes reasoning approaches and decision rules for Debug Delegation. It guides how to construct effective delegation prompts and integrate findings.
 
-### 2.1 Essential Context
+### 2.1 Context Standards
 
 A Debug Delegation Prompt must provide enough context for the Delegate to work autonomously:
 
@@ -58,7 +58,7 @@ A Debug Delegation Prompt must provide enough context for the Delegate to work a
 
 **Prior Attempts:** What the calling Agent already tried and what happened. This prevents the Delegate from repeating failed approaches and provides diagnostic clues.
 
-### 2.2 Framing the Delegation
+### 2.2 Delegation Framing Standards
 
 **Goal Clarity:** The primary goal is a working fix, not research about the problem. Frame the delegation around resolution.
 
@@ -68,16 +68,16 @@ A Debug Delegation Prompt must provide enough context for the Delegate to work a
 
 **Outcome Expectations:** Either a working solution the calling Agent can apply, or documented findings explaining what was discovered and why resolution wasn't achieved.
 
-### 2.3 Creating the Delegation Prompt
+### 2.3 Prompt Creation Standards
 
 Perform the following actions:
 
-1. Gather the essential context per §2.1.
+1. Gather the essential context per §2.1 Context Standards.
 2. Structure the prompt following §3.1 Debug Delegation Prompt Format.
 3. Output as a markdown code block with guidance for User to copy to a new Delegate Agent session.
 4. Await the Delegation Report from User.
 
-### 2.4 Integrating Findings
+### 2.4 Findings Integration Standards
 
 When User returns with the Delegation Report:
 
@@ -133,7 +133,7 @@ Resolve this bug to enable Task continuation. Provide a working fix or, if unres
 - Focus on resolution; if unresolvable after reasonable effort, document findings clearly
 
 ## Logging
-Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging/SKILL.md}` §3.2, then output a Delegation Report for User to return to the calling Agent.
+Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the calling Agent.
 ```
 
 ### 3.2 Prompt Delivery
@@ -141,6 +141,23 @@ Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging/SKILL.md
 After creating the Delegation Prompt, output it as a markdown code block and guide the User:
 
 "I've created a Debug Delegation Prompt. Please copy this to a new Delegate Agent session (initialize with the delegate initiation command). After the Delegate completes their work and provides a Delegation Report, return here with that report so I can integrate the findings."
+
+---
+
+## 4. Content Guidelines
+
+### 4.1 Prompt Quality
+
+- **Complete reproduction context:** The Delegate should be able to reproduce without guessing
+- **Exact error messages:** Include verbatim errors, not paraphrased descriptions
+- **Prior attempts documented:** Prevent repeating failed approaches
+
+### 4.2 Common Mistakes to Avoid
+
+- **Vague bug descriptions:** "Something's broken" vs "POST /api/users returns 500 with error: TypeError at line 42"
+- **Missing reproduction steps:** Assumptions about environment or state the Delegate cannot verify
+- **Paraphrasing errors:** Stack traces and error messages should be copied exactly
+- **Omitting prior attempts:** The Delegate may waste effort repeating failed fixes
 
 ---
 

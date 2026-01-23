@@ -13,11 +13,11 @@ This skill defines how the Manager Agent assesses and maintains Coordination Art
 
 ### 1.1 How to Use This Skill
 
-**Entry Point:** This skill is entered when the Coordination Decision (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §3.5) determines "Coordination Artifact modification needed."
+**Entry Point:** This skill is entered when the Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "Coordination Artifact modification needed."
 
 **Execute the Procedure.** The Procedure section contains the sequential actions for Artifact Maintenance. Begin at §3.1 Entry Point and follow through to §3.5 Modification Execution. See §3 Artifact Maintenance Procedure.
 
-**Use Problem Standards for reasoning and decisions.** When assessing which Coordination Artifacts need modification, analyzing cascade implications, determining authority scope, or ensuring consistency, consult the relevant standards subsection. See §2 Problem Standards.
+**Use Operational Standards for reasoning and decisions.** When assessing which Coordination Artifacts need modification, analyzing cascade implications, determining authority scope, or ensuring consistency, consult the relevant standards subsection. See §2 Operational Standards.
 
 **Follow Structural References.** When modifying Coordination Artifacts, follow the structural references to maintain format consistency. See §4 Structural Specifications.
 
@@ -49,7 +49,7 @@ The Coordination Artifacts form a hierarchy:
 
 ---
 
-## 2. Problem Standards
+## 2. Operational Standards
 
 This section establishes reasoning approaches and decision rules for Artifact Maintenance. It guides how to identify affected Coordination Artifacts, assess cascade implications, determine modification authority, and maintain consistency.
 
@@ -112,7 +112,7 @@ Not all modifications cascade. Assess whether the modification is isolated or ha
 
 **Decision Rule for Cascade Need:** Distinguish execution adjustments within design intent (no cascade) from design assumptions that proved incorrect (cascade warranted).
 
-**Default:** When uncertain whether cascade is needed, assess the related Coordination Artifact rather than assuming isolation. See §3.3 for the cascade analysis procedure including scope questions.
+**Default:** When uncertain whether cascade is needed, assess the related Coordination Artifact rather than assuming isolation. See §3.3 Cascade Pattern Analysis.
 
 ### 2.3 Modification Authority Standards
 
@@ -146,7 +146,7 @@ Modification authority depends on scope and impact. Consider:
 
 Maintain consistency across Coordination Artifacts after modifications.
 
-**Consistency Principle:** Maintain reference integrity, terminology consistency, and scope alignment across Coordination Artifacts. See §3.5 for the consistency verification procedure during modification execution.
+**Consistency Principle:** Maintain reference integrity, terminology consistency, and scope alignment across Coordination Artifacts. See §3.5 Modification Execution.
 
 ---
 
@@ -163,7 +163,7 @@ This section defines the sequential actions for Artifact Maintenance. Execute th
 
 ### 3.1 Entry Point
 
-Execute when arriving from Coordination Decision (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §3.5).
+Execute when arriving from Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision).
 
 Perform the following actions:
 
@@ -271,7 +271,7 @@ Perform the following actions:
    - Link modifications to triggering Memory Log
    - Keep descriptions concise but traceable
 4. Return to coordination workflow:
-   - Follow the methodology in `{SKILL_PATH:memory-maintenance/SKILL.md}` §3.5 to continue Manager's coordination duties
+   - Follow `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision to continue Manager's coordination duties
    - Apply judgment based on the nature of the modifications and their impact on remaining work
 
 ---
@@ -302,7 +302,7 @@ When modifying Specifications, maintain consistency with the existing document s
 
 ### 4.2 Implementation Plan Structural Reference
 
-When modifying the Implementation Plan, maintain consistency with the formats established during Work Breakdown. Reference `{SKILL_PATH:work-breakdown/SKILL.md}` §4 Structural Specifications:
+When modifying the Implementation Plan, maintain consistency with the formats established during Work Breakdown. Reference `{SKILL_PATH:work-breakdown}` §4 Structural Specifications:
 
 **Stage Format:**
 - Stage header: `## Stage N: [Title]`

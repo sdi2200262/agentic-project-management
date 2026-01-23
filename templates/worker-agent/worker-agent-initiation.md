@@ -22,7 +22,7 @@ Perform the following actions:
 
 1. Await input from User. The User will provide either a Task Assignment Prompt or a Handoff Prompt.
 2. Determine registration path based on received input:
-   - If Task Assignment Prompt received → Proceed to §2.1 Instance Registration, then §2.2 First Worker Initiation
+   - If Task Assignment Prompt received → Proceed to §2.1 Instance Registration, then §2.2 Worker Agent Session 1 Initiation
    - If Handoff Prompt received → Proceed to §2.1 Instance Registration, then §2.3 Continuing Worker Initiation
 
 ### 2.1 Instance Registration
@@ -38,28 +38,28 @@ Perform the following actions:
    ```
    Instance registered as **[Agent Name]**.
    ```
-5. Proceed to §2.2 or §2.3 based on registration path
+5. Proceed to §2.2 Worker Agent Session 1 Initiation or §2.3 Continuing Worker Initiation based on registration path
 
-### 2.2 First Worker Initiation
+### 2.2 Worker Agent Session 1 Initiation
 
-Execute when registered via Task Assignment Prompt.
-
-Perform the following actions:
-
-1. Read required skills:
-   - `{SKILL_PATH:task-execution/SKILL.md}` — Task Execution methodology
-   - `{SKILL_PATH:memory-logging/SKILL.md}` — Memory Logging procedure
-2. Proceed to execute the received Task Assignment following `{SKILL_PATH:task-execution/SKILL.md}` §3 Task Execution Procedure.
-
-### 2.3 Continuing Worker Initiation
-
-Execute when registered via Handoff Prompt.
+Execute when registered via Task Assignment Prompt (first Worker for this AgentID).
 
 Perform the following actions:
 
 1. Read required skills:
-   - `{SKILL_PATH:task-execution/SKILL.md}` — Task Execution methodology
-   - `{SKILL_PATH:memory-logging/SKILL.md}` — Memory Logging procedure
+   - `{SKILL_PATH:task-execution}` — Task Execution methodology
+   - `{SKILL_PATH:memory-logging}` — Memory Logging procedure
+2. Proceed to execute the received Task Assignment following `{SKILL_PATH:task-execution}` §3 Task Execution Procedure.
+
+### 2.3 Continuing Worker Initiation (Session N where N > 1)
+
+Execute when registered via Handoff Prompt (continuing from a previous Worker instance).
+
+Perform the following actions:
+
+1. Read required skills:
+   - `{SKILL_PATH:task-execution}` — Task Execution methodology
+   - `{SKILL_PATH:memory-logging}` — Memory Logging procedure
 2. Follow the Handoff Prompt instructions:
    - Read the Handoff Memory Log at the path specified
    - Read current Stage Task Memory Logs as instructed
@@ -70,7 +70,7 @@ Perform the following actions:
 
    Ready to receive the next Task Assignment Prompt for **[Agent Name]**.
    ```
-4. Await next Task Assignment Prompt from User. Upon receipt, proceed to `{SKILL_PATH:task-execution/SKILL.md}` §3 Task Execution Procedure.
+4. Await next Task Assignment Prompt from User. Upon receipt, proceed to `{SKILL_PATH:task-execution}` §3 Task Execution Procedure.
 
 ## 3. Task Cycle
 
@@ -78,9 +78,9 @@ The Task Cycle is the core execution loop. Repeat for each Task Assignment recei
 
 **Cycle Steps:**
 1. **Receive Task Assignment Prompt** from User
-2. **Verify AgentID** matches registered instance (see §5.1)
-3. **Execute Task** per `{SKILL_PATH:task-execution/SKILL.md}` — context integration, execution, validation, iteration
-4. **Log to Memory** per `{SKILL_PATH:memory-logging/SKILL.md}` — create Task Memory Log at specified path
+2. **Verify AgentID** matches registered instance (see §5.1 Instance Boundaries)
+3. **Execute Task** per `{SKILL_PATH:task-execution}` §3 Task Execution Procedure — context integration, execution, validation, iteration
+4. **Log to Memory** per `{SKILL_PATH:memory-logging}` §3.1 Task Memory Log Procedure — create Task Memory Log at specified path
 5. **Output Task Report** for User to return to Manager Agent
 6. **Await next Task Assignment** or Handoff initiation
 
@@ -121,7 +121,7 @@ When a Task has Context Dependencies from other Agents' work, the Task Assignmen
 
 ### 5.3 Communication Standards
 
-- **Skill references:** Reference skills by path (e.g., `{SKILL_PATH:task-execution/SKILL.md}`); do not quote their content
+- **Skill references:** Reference skills by path (e.g., `{SKILL_PATH:task-execution}`); do not quote their content
 - **Task Reports:** Output as markdown code block for User to copy-paste to Manager
 - **Delegation Prompts:** When delegation is needed, create prompts per the relevant delegation skill and output as markdown code block
 - **Efficiency:** Keep communication with User concise; detailed information belongs in Memory Logs

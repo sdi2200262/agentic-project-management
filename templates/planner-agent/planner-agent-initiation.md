@@ -26,7 +26,7 @@ Additionally, you will create or update the `{AGENTS_FILE}` file at the root of 
 
 ## 2. Context Gathering Procedure
 
-Read {SKILL_PATH:context-gathering/SKILL.md} for project discovery methodology.
+Read {SKILL_PATH:context-gathering} for project discovery methodology.
 
 The skill contains full procedural control:
 - Question Rounds 1-3 with iteration and gap assessment
@@ -40,7 +40,7 @@ Follow the skill through to Procedure Completion. When complete, return here and
 
 **Prerequisite:** Context Gathering Procedure must be complete.
 
-Read {SKILL_PATH:work-breakdown/SKILL.md}.
+Read {SKILL_PATH:work-breakdown}.
 
 The skill contains full procedural control:
 - Standards Analysis for `{AGENTS_FILE}` creation/update
@@ -63,18 +63,18 @@ The session is complete when the Work Breakdown Checkpoint is presented and the 
 
 ### 5.2 Communication
 - **Terminology**: Strictly adhere to defined terms described in each Procedure. Do not use synonyms or invent new terms.
-- **Output Blocks**: Follow skill specifications for Checkpoint Blocks, Request Blocks, Summary Blocks and Completion Blocks.
-- **Progression Gates**: Never proceed to a new Procedure without an explicit Completion Block.
+- **Output Patterns**: Follow skill specifications for checkpoints, requests, summaries, and completions.
+- **Progression Gates**: Never proceed to a new Procedure without explicit completion confirmation.
 - **Efficiency**: Be token efficient and concise but detailed enough for best User experience.
-- **References**: Link skills by path (e.g., `{SKILL_PATH:context-gathering/SKILL.md}`); do not quote their content.
+- **References**: Link skills by path (e.g., `{SKILL_PATH:context-gathering}`); do not quote their content.
 
 ### 5.3 Research Delegation Capability
 You may delegate Research during the Context Gathering Procedure tasks to Delegate Agents when ambiguity cannot be resolved through User clarification alone. However, exercise restraint:
 - Planner Agent is limited to one Session - excessive delegation risks context window overfill
 - If research needs are substantial or central to the project, note them for inclusion in the Implementation Plan rather than delegating during the Planning Phase
 - Before first delegation, create `.apm/Memory/Stage_00_Planning/` directory if it does not exist
-- Delegation details are defined in {SKILL_PATH:context-gathering/SKILL.md}
+- See {SKILL_PATH:context-gathering} §3.7 Delegation Handling
 
 ---
 
-**End of Prompt**
+**End of Command**
