@@ -15,11 +15,9 @@ This skill defines how the Manager Agent constructs Task Assignment Prompts for 
 
 **Execute the Procedure.** The Procedure section contains the actions for constructing Task Assignment Prompts. See §3 Task Assignment Procedure.
 
-**Use Problem Space for reasoning.** When determining Context Dependency scope, extracting Specification content, or reasoning about FollowUp Assignments, consult the relevant reasoning subsection. See §2 Problem Space.
+**Use Problem Standards for reasoning and decisions.** When determining Context Dependency scope, extracting Specification content, reasoning about FollowUp Assignments, or handling Delegation steps, consult the relevant standards subsection. See §2 Problem Standards.
 
-**Use Policies for decisions.** When encountering branch points (Context Dependency depth, Specification relevance, Delegation handling), apply the relevant policy. See §4 Policies.
-
-**Follow Structural Specifications.** Task Assignment Prompts follow the format guidance defined in Structural Specifications. See §5 Structural Specifications.
+**Follow Structural Specifications.** Task Assignment Prompts follow the format guidance defined in Structural Specifications. See §4 Structural Specifications.
 
 ### 1.2 Objectives
 
@@ -50,21 +48,28 @@ Workers do NOT have access to:
 
 ---
 
-## 2. Problem Space
+## 2. Problem Standards
 
-This section establishes the reasoning approach for Task Assignment creation. It guides how to analyze Context Dependencies, determine Context Scope, and extract relevant information from Coordination Artifacts.
+This section establishes reasoning approaches and decision rules for Task Assignment creation. It guides how to analyze Context Dependencies, determine Context Scope, extract relevant information from Coordination Artifacts, and handle Delegation steps.
 
-### 2.1 Context Dependency Reasoning
+### 2.1 Context Dependency Standards
 
 Tasks may depend on outputs from previous Tasks. Context Dependencies affect how the Manager constructs context in the Task Assignment.
 
-**Context Dependency Types:**
+**Context Dependency Types and Depth Rules:**
 
-*Same-Agent Context Dependency:* When the current Worker previously completed the producer Task, they have working familiarity with the outputs. Context references for Same-Agent Context Dependencies can be lighter (e.g. referencing previous work and key artifacts).
+*Same-Agent Context Dependency:* When the current Worker previously completed the producer Task, they have working familiarity with the outputs.
+- **Depth Rule:** Light contextual reference—recall anchors, key artifacts, file paths
+- Reference previous work without repeating detailed instructions
+- Detail level increases with dependency complexity between Tasks
 
-*Cross-Agent Context Dependency:* When a different Worker completed the producer Task, the current Worker has zero familiarity. Context must be comprehensive—include file reading instructions, output summaries, and integration guidance.
+*Cross-Agent Context Dependency:* When a different Worker completed the producer Task, the current Worker has zero familiarity.
+- **Depth Rule:** Comprehensive integration context—file reading instructions, output summaries, integration guidance
+- Assume zero familiarity—explain everything needed
+- Explicit file reading instructions before main work
+- Complete output summaries with integration guidance
 
-*Handoff Context Dependency:* When the Manager has detected that the target Worker performed a Handoff (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §4.1), the Continuing Worker Agent only has current Stage Memory Logs loaded. This affects classification:
+*Handoff Context Dependency:* When the Manager has detected that the target Worker performed a Handoff (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §2.3 Handoff Detection Standards), the Continuing Worker Agent only has current Stage Memory Logs loaded. This affects classification:
 - Same-Agent Context Dependencies from the **current Stage** → Treat as Same-Agent (Continuing Worker has received working context)
 - Same-Agent Context Dependencies from **previous Stages** → Treat as Cross-Agent (Continuing Worker lacks working context)
 
@@ -90,15 +95,9 @@ Task 3.2 (current - Consumer)
 - Did the ancestor establish patterns, schemas, or contracts the current Task must follow?
 - Is the ancestor's context already fully captured in the immediate producer's output?
 
-*Chain Tracing Approach:*
-1. Start with direct dependencies (immediate producers)
-2. For each producer, check if its dependencies are relevant to the current Task
-3. Stop tracing a branch when an upstream node is not relevant
-4. Include all relevant nodes in the Context Dependency context
+**Default:** When uncertain about inclusion, include rather than risk missing critical information.
 
-See §4.1 Context Dependency Policy for decision rules.
-
-### 2.2 Specification Extraction Reasoning
+### 2.2 Specification Extraction Standards
 
 `Specifications.md` contains design decisions and constraints that inform Task Execution or Validation. Workers only receive Task Assignments — the Manager extracts relevant Specification content and contextually integrates it into the Task Assignment to inform Worker decisions.
 
@@ -109,19 +108,21 @@ When reviewing Specifications for a Task, consider:
 - Does the Task's objective reference design decisions documented in Specifications?
 - Would the Worker make incorrect assumptions without this Specification's context?
 
-**Extraction Scope:**
+**Decision Rules for Inclusion:**
 
-Include Specification content that:
+*Include Specification content that:*
 - Defines interfaces, schemas, or contracts the Task must implement or consume
 - Establishes constraints on approach, technology, or patterns for this Task
 - Clarifies design decisions that affect the Task's deliverables
 
-Exclude Specification content that:
+*Exclude Specification content that:*
 - Relates to other domains or Stages
 - Provides background context without actionable requirements or constraints
 - Is already captured in the Task's Guidance field in the Implementation Plan
 
-### 2.3 FollowUp Assignment Reasoning
+**Default:** Never reference `Specifications.md` by path—Workers only receive Task Assignments. Preserve specificity with exact constraints, not summaries.
+
+### 2.3 FollowUp Assignment Standards
 
 FollowUp Task Assignments occur when Coordination Decision (per `{SKILL_PATH:memory-maintenance/SKILL.md}` §3.5) determines "FollowUp needed" after investigation.
 
@@ -133,20 +134,26 @@ The Manager arrives at FollowUp Assignment with:
 - Understanding of what went wrong and what refinement is needed
 - Potentially, Coordination Artifact modifications that were made
 
-**FollowUp Content Refinement:**
-
-The FollowUp Task Assignment is a NEW Task Assignment with DIFFERENT content than the previous attempt. The Manager must:
-- Refine Objective, Instructions, Output, and Validation based on what went wrong
-- Update content to guide the Worker toward successful completion
-- Include a FollowUp Context section explaining:
-  - What issue the previous attempt encountered
-  - What specific refinement or correction is needed
-  - Any additional guidance based on Manager's investigation
-- Contextually integrate any relevant content from modified Coordination Artifacts into the refined content (Workers only receive Task Assignments; artifact changes are brought into the task context when relevant)
+**FollowUp Content Principle:** The FollowUp Task Assignment is a NEW Task Assignment with DIFFERENT content than the previous attempt. Objective, Instructions, Output, and Validation must be refined based on what went wrong. See §3.5 for the FollowUp Task Assignment Prompt Creation procedure.
 
 **Log Path Continuity:**
 
 FollowUp Task Assignments use the same `memory_log_path` as the original Task Assignment. The Worker's new Task Memory Log overwrites the previous one. The Manager captures iteration patterns in Stage Summaries when relevant.
+
+### 2.4 Delegation Step Standards
+
+Tasks may contain Delegation steps that require Worker to delegate part of the work.
+
+**Identification:**
+- Task steps containing "Delegate Agent:" indicate Delegation requirements
+- Implementation Plan may include skill references for Delegation type
+
+**Delegation Skill References:**
+- Debug: `{SKILL_PATH:delegate-debug/SKILL.md}`
+- Research: `{SKILL_PATH:delegate-research/SKILL.md}`
+- Other: Note Delegation purpose; reference skill if available
+
+See §3.4 for inclusion requirements when constructing Task Assignment Prompts with Delegation steps.
 
 ---
 
@@ -164,68 +171,82 @@ For FollowUp Task Assignments, see §3.5 FollowUp Task Assignment Prompt Creatio
 
 ### 3.1 Context Dependency Analysis
 
-Analyze the Task's Context Dependencies to determine what context the Worker needs. For dependency type definitions and reasoning guidance, see §2.1 Context Dependency Reasoning.
+Analyze the Task's Context Dependencies to determine what context the Worker needs. For dependency type definitions and decision rules, see §2.1 Context Dependency Standards.
 
-* **Action 1:** Read the Task's Dependencies field from the Implementation Plan:
-    - If "None": Skip to §3.2 with `has_dependencies: false`
-    - If dependencies listed: Continue to Action 2
-* **Action 2:** Check tracked Handoff state for the target Worker (has this Worker performed a Handoff? From which Stage?)
-* **Action 3:** Classify each dependency as Same-Agent, Cross-Agent, or Handoff per §2.1
-* **Action 4:** For Cross-Agent/Handoff dependencies, trace the chain per §2.1 Chain Reasoning (stop at non-relevant nodes)
-* **Action 5:** For each relevant dependency, read the producer's Task Memory Log and note key outputs, file paths, and integration details
+Perform the following actions:
+
+1. Read the Task's Dependencies field from the Implementation Plan:
+   - If "None": Skip to §3.2 with `has_dependencies: false`
+   - If dependencies listed: Continue to step 2
+2. Check tracked Handoff state for the target Worker (has this Worker performed a Handoff? From which Stage?)
+3. Classify each dependency as Same-Agent, Cross-Agent, or Handoff per §2.1
+4. For Cross-Agent/Handoff dependencies, trace the chain upstream:
+   - Start with direct dependencies (immediate producers)
+   - For each producer, check if its dependencies are relevant to the current Task
+   - Stop tracing a branch when an upstream node is not relevant
+   - Include all relevant nodes in the Context Dependency context
+5. For each relevant dependency, read the producer's Task Memory Log and note key outputs, file paths, and integration details
 
 ### 3.2 Specification Context Extraction
 
 Extract context from Specifications that the Worker needs but cannot access.
 
-* **Action:** Review `Specifications.md` for content relevant to this Task:
-    - Apply §2.2 Specification Extraction Reasoning to determine relevance
-    - Note relevant Specification content for inclusion in prompt
+Perform the following actions:
+
+1. Review `Specifications.md` for content relevant to this Task:
+   - Apply §2.2 Specification Extraction Standards to determine relevance
+2. Contextually integrate relevant content into the Task Assignment—do not reference Specifications.md by path
+3. Preserve specificity with exact constraints, not summaries
+4. Note relevant Specification content for inclusion in prompt
 
 ### 3.3 Implementation Plan Context Extraction
 
 Extract content from the Implementation Plan Task definition that the Worker needs for execution. Optionally enhance extracted content with Manager's coordination-level resolution context where relevant.
 
-* **Action 1:** Extract Task Objective:
-    - Read the Task's Objective field from the Implementation Plan
-    - Note the single-sentence task goal for inclusion in prompt
-* **Action 2:** Extract Task Steps and Guidance:
-    - Read the Task's numbered steps from the Implementation Plan
-    - Read the Task's Guidance field (if present)
-    - Transform steps into actionable Detailed Instructions, incorporating Guidance or Specification context where relevant
-    - Note any Delegation steps (format: "Delegate Agent: <purpose>"); identify Delegation type (Debug, Research, etc.) and prepare skill reference
-* **Action 3:** Extract Task Output and Validation:
-    - Read the Task's Output field for deliverables
-    - Read the Task's Validation field for validation criteria and types
-    - Note these for Expected Output and Validation sections construction
+Perform the following actions:
+
+1. Extract Task Objective:
+   - Read the Task's Objective field from the Implementation Plan
+   - Note the single-sentence task goal for inclusion in prompt
+2. Extract Task Steps and Guidance:
+   - Read the Task's numbered steps from the Implementation Plan
+   - Read the Task's Guidance field (if present)
+   - Transform steps into actionable Detailed Instructions, incorporating Guidance or Specification context where relevant
+   - Note any Delegation steps (format: "Delegate Agent: <purpose>"); identify Delegation type (Debug, Research, etc.) and prepare skill reference
+3. Extract Task Output and Validation:
+   - Read the Task's Output field for deliverables
+   - Read the Task's Validation field for validation criteria and types
+   - Note these for Expected Output and Validation sections construction
 
 ### 3.4 Task Assignment Prompt Creation
 
 Assemble the Task Assignment Prompt using extracted context from the Implementation Plan and the Specifications.
 
-* **Action 1:** Construct YAML frontmatter:
-    - `stage`: Stage number
-    - `task`: Task number within Stage
-    - `agent_id`: Worker Agent identifier (lowercase, hyphenated)
-    - `memory_log_path`: Full path following convention `.apm/Memory/Stage_<N>_<Slug>/Task_Log_<N>_<M>_<Slug>.md`
-    - `has_dependencies`: Boolean indicating Context Dependency context present
-    - `has_delegation_steps`: Boolean indicating Delegation steps present
-* **Action 2:** Construct prompt body following §5.1 Task Assignment Prompt Format:
-    - Task Reference section with Task ID and Agent
-    - Context from Dependencies section (if `has_dependencies: true`) using appropriate format based on Context Dependency type
-    - Objective from Implementation Plan (optionally enhanced with coordination-level resolution context)
-    - Detailed Instructions integrating Implementation Plan steps, Guidance content, and relevant Specification content contextually where they inform decisions (optionally enhanced with coordination-level resolution context)
-    - Expected Output from Implementation Plan Output field (optionally enhanced with coordination-level resolution context)
-    - Validation Criteria from Implementation Plan Validation field (optionally enhanced with coordination-level resolution context)
-    - Memory Logging instructions with path
-    - Reporting Protocol reference
-    - Delegation section (if `has_delegation_steps: true`)
-* **Action 3:** Output the complete prompt **as a markdown code block** for User copy-paste.
-    - **Critical:** Ensure the prompt content contains NO embedded ``` code blocks, as this would break the outer code block boundaries and fragment the prompt. Use indented code blocks (4 spaces) or inline code formatting for code examples instead.
-* **Action 4:** Immediately after outputting the Task Assignment Prompt code block, provide User guidance:
-    ```
-    Copy this Task Assignment Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
-    ```
+Perform the following actions:
+
+1. Construct YAML frontmatter:
+   - `stage`: Stage number
+   - `task`: Task number within Stage
+   - `agent_id`: Worker Agent identifier (lowercase, hyphenated)
+   - `memory_log_path`: Full path following convention `.apm/Memory/Stage_<N>_<Slug>/Task_Log_<N>_<M>_<Slug>.md`
+   - `has_dependencies`: Boolean indicating Context Dependency context present
+   - `has_delegation_steps`: Boolean indicating Delegation steps present (set to `true` if Task contains Delegation steps)
+2. Construct prompt body following §4.1 Task Assignment Prompt Format:
+   - Task Reference section with Task ID and Agent
+   - Context from Dependencies section (if `has_dependencies: true`) using appropriate format based on Context Dependency type
+   - Objective from Implementation Plan (optionally enhanced with coordination-level resolution context)
+   - Detailed Instructions integrating Implementation Plan steps, Guidance content, and relevant Specification content contextually where they inform decisions (optionally enhanced with coordination-level resolution context)
+   - Expected Output from Implementation Plan Output field (optionally enhanced with coordination-level resolution context)
+   - Validation Criteria from Implementation Plan Validation field (optionally enhanced with coordination-level resolution context)
+   - Memory Logging instructions with path
+   - Reporting Protocol reference
+   - Delegation section (if `has_delegation_steps: true`): Include Delegation section in prompt body; Worker creates Delegation Prompt per referenced skill when reaching Delegation step; User facilitates Delegate Agent session; Worker integrates findings and logs Delegation in Task Memory Log
+3. Output the complete prompt **as a markdown code block** for User copy-paste.
+   - **Critical:** Ensure the prompt content contains NO embedded ``` code blocks, as this would break the outer code block boundaries and fragment the prompt. Use indented code blocks (4 spaces) or inline code formatting for code examples instead.
+4. Immediately after outputting the Task Assignment Prompt code block, provide User guidance:
+   ```
+   Copy this Task Assignment Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
+   ```
 
 ### 3.5 FollowUp Task Assignment Prompt Creation
 
@@ -233,87 +254,43 @@ Execute when Coordination Decision (per `{SKILL_PATH:memory-maintenance/SKILL.md
 
 FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt—refine all content sections based on what went wrong.
 
-* **Action 1:** Capture the FollowUp context from Coordination Decision:
-    - What issue did the previous attempt encounter?
-    - What did investigation (self or delegated) reveal?
-    - What specific refinement or correction is needed?
-    - Were any Coordination Artifacts modified that affect this Task?
-* **Action 2:** Extract and integrate relevant content from modified Coordination Artifacts (if any):
-    - If Specifications.md was modified: Extract relevant Specification content per §3.2
-    - If Implementation_Plan.md was modified: Extract relevant Task content per §3.3
-    - Contextually integrate extracted content into the Task Assignment to inform Worker decisions (Workers only receive Task Assignments; artifact changes are brought into the task context when relevant)
-* **Action 3:** Refine Task Assignment content using Manager's coordination-level resolution:
-    - Refine Objective based on what went wrong and what correction is needed
-    - Refine Detailed Instructions to guide Worker toward successful completion
-    - Refine Expected Output if deliverables need adjustment
-    - Refine Validation Criteria based on failure patterns or new requirements or constraints
-* **Action 4:** Construct FollowUp prompt using the same format as §3.4, with modifications:
-    - Use title "APM FollowUp Task Assignment: <Task Title>" instead of "APM Task Assignment"
-    - Same `memory_log_path` as original Task Assignment (Worker overwrites previous log)
-    - Add FollowUp Context section after Task Reference explaining the issue and required refinement
-    - Include refined Objective, Instructions, Output, and Validation (not the original content)
-    - Contextually integrate extracted content from modified Coordination Artifacts in appropriate sections
-* **Action 5:** Output **as a markdown code block** for User copy-paste.
-    - **Critical:** Ensure the prompt content contains NO embedded ``` code blocks, as this would break the outer code block boundaries and fragment the prompt. Use indented code blocks (4 spaces) or inline code formatting for code examples instead.
-* **Action 6:** Immediately after outputting the FollowUp Task Assignment Prompt code block, provide User guidance:
-    ```
-    Copy this FollowUp Task Assignment Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
-    ```
+Perform the following actions:
+
+1. Capture the FollowUp context from Coordination Decision:
+   - What issue did the previous attempt encounter?
+   - What did investigation (self or delegated) reveal?
+   - What specific refinement or correction is needed?
+   - Were any Coordination Artifacts modified that affect this Task?
+2. Extract and integrate relevant content from modified Coordination Artifacts (if any):
+   - If Specifications.md was modified: Extract relevant Specification content per §3.2
+   - If Implementation_Plan.md was modified: Extract relevant Task content per §3.3
+   - Contextually integrate extracted content into the Task Assignment to inform Worker decisions (Workers only receive Task Assignments; artifact changes are brought into the task context when relevant)
+3. Refine Task Assignment content using Manager's coordination-level resolution:
+   - Refine Objective based on what went wrong and what correction is needed
+   - Refine Detailed Instructions to guide Worker toward successful completion
+   - Refine Expected Output if deliverables need adjustment
+   - Refine Validation Criteria based on failure patterns or new requirements or constraints
+   - Include a FollowUp Context section explaining what issue the previous attempt encountered, what specific refinement or correction is needed, and any additional guidance based on Manager's investigation
+4. Construct FollowUp prompt using the same format as §3.4, with modifications:
+   - Use title "APM FollowUp Task Assignment: <Task Title>" instead of "APM Task Assignment"
+   - Same `memory_log_path` as original Task Assignment (Worker overwrites previous log)
+   - Add FollowUp Context section after Task Reference explaining the issue and required refinement
+   - Include refined Objective, Instructions, Output, and Validation (not the original content)
+   - Contextually integrate extracted content from modified Coordination Artifacts in appropriate sections
+5. Output **as a markdown code block** for User copy-paste.
+   - **Critical:** Ensure the prompt content contains NO embedded ``` code blocks, as this would break the outer code block boundaries and fragment the prompt. Use indented code blocks (4 spaces) or inline code formatting for code examples instead.
+6. Immediately after outputting the FollowUp Task Assignment Prompt code block, provide User guidance:
+   ```
+   Copy this FollowUp Task Assignment Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
+   ```
 
 ---
 
-## 4. Policies
-
-This section defines the decision rules that govern choices during Task Assignment construction.
-
-### 4.1 Context Dependency Policy
-
-**Decision Domain:** What Context Dependencies to include and how to classify them.
-
-**Decision Rule:** Classify dependencies using §2.1 Context Dependency Reasoning. Always include all direct dependencies.
-
-**Context Depth by Type:**
-- **Same-Agent** → Light contextual reference
-- **Cross-Agent / Handoff** → Comprehensive integration context
-
-**Chain Tracing:** Trace upstream per §2.1. Stop at non-relevant nodes. Include all relevant nodes in context.
-
-**Default:** When uncertain, include rather than risk missing critical information.
-
-### 4.2 Specification Inclusion Policy
-
-**Decision Domain:** What Specification content to include in Task Assignment.
-
-**Decision Rule:** Assess relevance using §2.2 Specification Extraction Reasoning. Include content that directly constrains implementation, defines interfaces/contracts, or prevents incorrect assumptions. Exclude content relating to other domains, already in Guidance field, or providing only background.
-
-**Extraction Approach:** Contextually integrate relevant content into the Task Assignment. Never reference `Specifications.md` by path—Workers only receive Task Assignments. Preserve specificity with exact constraints, not summaries.
-
-### 4.3 Delegation Step Policy
-
-**Decision Domain:** How to handle Tasks containing Delegation steps.
-
-**Identification:**
-- Task steps containing "Delegate Agent:" indicate Delegation requirements
-- Implementation Plan may include skill references for Delegation type
-
-**Inclusion Requirements:**
-- Set `has_delegation_steps: true` in YAML frontmatter
-- Include Delegation section in prompt body
-- Reference appropriate Delegation skill:
-  - Debug: `{SKILL_PATH:delegate-debug/SKILL.md}`
-  - Research: `{SKILL_PATH:delegate-research/SKILL.md}`
-  - Other: Note Delegation purpose; reference skill if available
-
-**Worker Responsibility:**
-Worker creates Delegation Prompt per referenced skill when reaching Delegation step. User facilitates Delegate Agent session. Worker integrates findings and logs Delegation in Task Memory Log.
-
----
-
-## 5. Structural Specifications
+## 4. Structural Specifications
 
 This section defines the format guidance for Task Assignment Prompts.
 
-### 5.1 Task Assignment Prompt Format
+### 4.1 Task Assignment Prompt Format
 
 Task Assignment Prompts are markdown files that follow this general structure. Adapt based on Task needs - not all sections are required for every Task.
 
@@ -425,11 +402,11 @@ This work also builds on Task <X.Y> by <Agent>:
 - Always comprehensive but don't duplicate existing content
 - Include explicit file paths and what to look for
 - Document all relevant interfaces and contracts
-- Include upstream dependencies when relevant per §4.1
+- Include upstream dependencies when relevant per §2.1
 
-### 5.2 FollowUp Assignment Format
+### 4.2 FollowUp Assignment Format
 
-FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content than the previous failed attempt. They use the same structure as §5.1, with these modifications:
+FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content than the previous failed attempt. They use the same structure as §4.1, with these modifications:
 
 **Title:** `APM FollowUp Task Assignment: <Task Title>`
 
@@ -446,16 +423,16 @@ FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content
 
 ---
 
-## 6. Content Guidelines
+## 5. Content Guidelines
 
-### 6.1 Prompt Quality
+### 5.1 Prompt Quality
 
 - **Self-contained:** Worker should never need to ask "where do I find X?"
 - **Specific:** Avoid vague instructions; specify files, patterns, constraints
 - **Actionable:** Every instruction should be directly executable
 - **Scoped:** Include only what's relevant to this Task; avoid information overload
 
-### 6.2 Context Quality
+### 5.2 Context Quality
 
 **Same-Agent Context:**
 - Reference previous work concisely
@@ -467,7 +444,7 @@ FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content
 - Explicit file reading instructions before main work
 - Complete output summaries with integration guidance
 
-### 6.3 Common Mistakes to Avoid
+### 5.3 Common Mistakes to Avoid
 
 - **Referencing inaccessible Coordination Artifacts:** Never tell Worker to "see Specifications.md" or "check Implementation Plan"—they can't access these
 - **Under-scoped Cross-Agent context:** Cross-Agent Context Dependencies require comprehensive context regardless of perceived simplicity

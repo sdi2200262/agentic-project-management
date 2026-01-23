@@ -15,9 +15,7 @@ This skill defines how the Manager Agent maintains the Memory System during proj
 
 **Execute the Procedure.** The Procedure section contains the actions to perform for Memory System maintenance. Follow subsections based on the current maintenance need. See §3 Memory Maintenance Procedure.
 
-**Use Problem Space for reasoning.** When interpreting Task Memory Log content, assessing investigation scope, or reasoning about Coordination Decision outcomes, consult the relevant reasoning subsection. See §2 Problem Space.
-
-**Use Policies for decisions.** When detecting Worker Handoffs or determining Coordination Decision outcomes, apply the relevant policy. See §4 Policies.
+**Use Problem Standards for reasoning and decisions.** When interpreting Task Memory Log content, assessing investigation scope, determining Coordination Decision outcomes, or detecting Worker Handoffs, consult the relevant standards subsection. See §2 Problem Standards.
 
 ### 1.2 Objectives
 
@@ -41,17 +39,17 @@ This skill defines how the Manager Agent maintains the Memory System during proj
 - **Stage Directories:** `Stage_<StageNum>_<Slug>/` - contain Task Memory Logs and Delegation Memory Logs
 - **Handoff Storage:** `.apm/Handoffs/` - contain Agent Handoff Files
 
-See §5.1 Directory Structure for full layout.
+See §4.1 Directory Structure for full layout.
 
 ---
 
-## 2. Problem Space
+## 2. Problem Standards
 
-This section establishes the reasoning approach for Memory System maintenance. It guides how to interpret Task Memory Logs, assess Coordination Decision scope, and write Stage Summaries.
+This section establishes reasoning approaches and decision rules for Memory System maintenance. It guides how to interpret Task Memory Logs, assess Coordination Decision scope, detect Handoffs, and write Stage Summaries.
 
-### 2.1 Task Memory Log Review Reasoning
+### 2.1 Task Memory Log Review Standards
 
-The goal is to extract information needed for the next Coordination Decision and evaluate Worker Agent performance. This section guides interpretation; decision rules are in §4.2 Coordination Decision Policy.
+The goal is to extract information needed for the next Coordination Decision and evaluate Worker Agent performance.
 
 **Review Focus:**
 - What was the outcome? (status and failure_point)
@@ -69,30 +67,21 @@ The goal is to extract information needed for the next Coordination Decision and
 Workers set flags based on their scoped observations. The Manager interprets these flags with full project awareness to assess actual coordination impact.
 - `important_findings: true` — Worker observed something that appeared to have implications beyond their Task scope. Manager assesses whether this affects Coordination Artifacts or other Tasks, otherwise just a false-positive.
 - `compatibility_issues: true` — Worker observed conflicts with existing systems they encountered. Manager assesses whether this indicates Implementation Plan, Specification or Standards issues, otherwise just a false-positive.
-- `Delegation: true` — Worker delegated part of the Task. Task Memory Log contains summary and Delegation Memory Log contains full findings. See `{SKILL_PATH:memory-logging/SKILL.md}` §5.2 for structure.
+- `Delegation: true` — Worker delegated part of the Task. Task Memory Log contains summary and Delegation Memory Log contains full findings. See `{SKILL_PATH:memory-logging/SKILL.md}` §4.2 for structure.
 
-**Content Review:**
+**Content Review:** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened. See §3.4 for the review procedure and §4.4 Task Memory Log Structure for the full format.
 
-Beyond flags and status, review the log body sections for:
-- Summary: Quick understanding of what happened
-- Details: Work performed, decisions made
-- Output: File paths, deliverables created
-- Validation: What was validated and results
-- Issues: Blockers or errors encountered
+### 2.2 Coordination Decision Standards
 
-See §5.4 Task Memory Log Structure for the full format.
+After reviewing a Task Memory Log, the Manager must make a Coordination Decision. This section guides both reasoning and decision rules through three sequential assessments.
 
-### 2.2 Coordination Decision Reasoning
-
-After reviewing a Task Memory Log, the Manager must make a Coordination Decision. This section guides the reasoning approach; decision rules are in §4.2 Coordination Decision Policy.
-
-**Decision Entry Points:**
+**Assessment 1 — Investigation Need:**
 
 The Coordination Decision has two primary branches based on initial review:
-1. **Proceed** — Status is Success with no flags raised, and log contents support this claim
-2. **Investigation needed** — Flags are raised OR status is non-Success (Partial, Fail, Blocked)
+- **Proceed** — Status is Success with no flags raised, and log contents support this claim → proceed to next Task
+- **Investigation needed** — Flags are raised OR status is non-Success (Partial, Fail, Blocked) → continue to Assessment 2
 
-**Investigation Scope Assessment:**
+**Assessment 2 — Investigation Scope:**
 
 When investigation is needed, assess the scope to determine the approach:
 
@@ -109,17 +98,21 @@ When investigation is needed, assess the scope to determine the approach:
 - Impacts multiple Tasks or Stages
 - Requires deep technical investigation
 
-**Post-Investigation Outcome Assessment:**
+**Default:** When scope is unclear, prefer Delegation over extensive self-investigation to preserve Manager context. See §3.5 for the investigation procedure based on scope assessment.
+
+**Assessment 3 — Post-Investigation Outcome:**
 
 After investigation (whether self or delegated), assess the outcome:
 
 1. **No issues** — Investigation revealed no issues requiring action. Findings may have been false positives due to Worker's limited context scope. Proceed to next Task.
 2. **FollowUp needed** — Investigation revealed issues that require the same Worker to retry or refine work. Manager creates a FollowUp Task Assignment Prompt with informed instructions based on investigation findings.
-3. **Coordination Artifact modification needed** — Investigation revealed that Coordination Coordination Artifacts (Implementation Plan, Specifications, or Standards) need updates. **Follows methodology in `{SKILL_PATH:artifact-maintenance/SKILL.md}`** for assessment and execution.
+3. **Coordination Artifact modification needed** — Investigation revealed that Coordination Artifacts (Implementation Plan, Specifications, or Standards) need updates. **Follows methodology in `{SKILL_PATH:artifact-maintenance/SKILL.md}`** for assessment and execution.
 
 The scope determines *how* to investigate, not *what* outcomes are possible—all three outcomes can result from either scope.
 
-**Coordination Artifact Modification Needs Indicators:**
+**Artifact Modification Handoff:** When artifact modification is needed, note the triggering context (log, findings, flags), identify affected artifact(s), then follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` methodology.
+
+**Coordination Artifact Modification Indicators:**
 
 When assessing whether Coordination Artifact modification is needed, consider:
 
@@ -127,7 +120,26 @@ When assessing whether Coordination Artifact modification is needed, consider:
 - **Specifications** — Documented design decisions or constraints need revision, new specifications emerged from execution, assumptions invalidated
 - **Standards ({AGENTS_FILE})** — Universal conventions need adjustment, new project-wide standards identified, existing standards conflict with execution needs
 
-### 2.3 Stage Summary Reasoning
+### 2.3 Handoff Detection Standards
+
+**Detection Criteria:**
+
+A Continuing Worker Agent (Replacement Agent after Handoff) includes in its Task Report:
+- Clear statement that it is a new instance after a Handoff
+- List of current Stage Memory Logs it has read
+- Note that previous Stage Memory Logs were not loaded for efficiency
+
+**Verification:** Upon detecting a Handoff indication, verify the Handoff File exists and integrate the Handoff in Manager's working context. See §3.3 for the verification procedure.
+
+**Context Dependency Treatment:**
+
+**From this point forward, any Same-Agent Context Dependencies from previous Stages for this Continuing Worker Agent must be treated as Cross-Agent Context Dependencies.**
+
+**Rationale:**
+
+The Handoff Procedure loads only current Stage Memory Logs for efficiency. This means a Continuing Worker Agent has no working context from previous Stages, even for Tasks that were completed by the previous instance of the same Worker. The Manager must account for this when constructing future Task Assignment Prompts for that Worker.
+
+### 2.4 Stage Summary Standards
 
 Stage Summaries compress Stage execution details. They serve future Continuing Manager Agent instances (after Handoff) and project retrospectives.
 
@@ -142,7 +154,7 @@ Stage Summaries compress Stage execution details. They serve future Continuing M
 - Reference: Individual Memory Log files for Task-specific detail
 - Exclude: Implementation details, code specifics, routine operations
 
-See §5.3 Stage Summary Format.
+See §4.3 Stage Summary Format.
 
 ---
 
@@ -161,12 +173,15 @@ This section defines the sequential actions for Memory System maintenance. Execu
 ### 3.1 Memory Root Initialization
 
 Execute once at the start of the First Manager Agent session, before issuing the first Task Assignment.
-* **Action 1:** Read `.apm/Memory/Memory_Root.md`
-* **Action 2:** Update header fields:
-    - Replace `<Project Name>` with actual project name from Implementation Plan
-    - Replace `[To be filled by Manager Agent before first stage execution]` in Project Overview with concise project summary from Implementation Plan
-    - Confirm Manager Handoffs is set to `0`
-* **Action 3:** Save the updated file
+
+Perform the following actions:
+
+1. Read `.apm/Memory/Memory_Root.md`
+2. Update header fields:
+   - Replace `<Project Name>` with actual project name from Implementation Plan
+   - Replace `[To be filled by Manager Agent before first stage execution]` in Project Overview with concise project summary from Implementation Plan
+   - Confirm Manager Handoffs is set to `0`
+3. Save the updated file
 
 ### 3.2 Stage Directory Creation
 
@@ -177,127 +192,96 @@ Execute when entering a new Stage, before issuing any Task Assignments for that 
 ### 3.3 Task Report Review
 
 Execute when User returns with a Task Report from a Worker Agent.
-* **Action 1:** Receive the Task Report from User. The Task Report is a concise markdown code block that references the Task Memory Log path.
-* **Action 2:** Check for Handoff indication in the Task Report:
-    - If the Task Report indicates the Worker is a Continuing Worker Agent (new instance after Handoff), apply §4.1 Handoff Detection Policy before proceeding
-    - If no Handoff indication, proceed to §3.4
-* **Action 3:** Note the Task Memory Log path referenced in the Task Report for §3.4 Task Memory Log Review.
+
+Perform the following actions:
+
+1. Receive the Task Report from User. The Task Report is a concise markdown code block that references the Task Memory Log path.
+2. Check for Handoff indication in the Task Report:
+   - If the Task Report indicates the Worker is a Continuing Worker Agent (new instance after Handoff), perform Handoff verification:
+     1. Verify the Handoff File exists by listing the directory `.apm/Memory/Handoffs/<AgentID>_Handoffs/` (list only, do not read the file to preserve context)
+     2. Integrate the Handoff in Manager's working context: which Worker Agent performed the Handoff, which Stage it occurred in, which Memory Logs the Continuing Worker has loaded (current Stage only)
+     3. Update Context Dependency treatment for this Worker
+   - If no Handoff indication, proceed to §3.4
+3. Note the Task Memory Log path referenced in the Task Report for §3.4 Task Memory Log Review.
 
 ### 3.4 Task Memory Log Review
 
 Execute after Task Report Review to read and interpret the Task Memory Log.
-* **Action 1:** Read the Task Memory Log at the path referenced in the Task Report
-* **Action 2:** Interpret log content using §2.1 Task Memory Log Review Reasoning:
-    - Note the status and failure_point
-    - Check all flags (important_findings, compatibility_issues, Delegation)
-    - Review body sections for context; check if body contents support status and flags
-* **Action 3:** Proceed to §3.5 Coordination Decision with interpreted findings
+
+Perform the following actions:
+
+1. Read the Task Memory Log at the path referenced in the Task Report
+2. Interpret log content using §2.1 Task Memory Log Review Standards:
+   - Note the status and failure_point
+   - Check all flags (important_findings, compatibility_issues, Delegation)
+   - Review body sections for context:
+     - Summary: Quick understanding of what happened
+     - Details: Work performed, decisions made
+     - Output: File paths, deliverables created
+     - Validation: What was validated and results
+     - Issues: Blockers or errors encountered
+   - Check if body contents support status and flags
+3. Proceed to §3.5 Coordination Decision with interpreted findings
 
 ### 3.5 Coordination Decision
 
 Execute after Task Memory Log Review to determine and execute the next coordination action.
-* **Action 1:** Apply §4.2 Coordination Decision Policy to determine the decision branch:
-    - If status is Success with no flags raised and log contents support this → **Proceed to next Task**
-    - If flags are raised OR status is non-Success → **Investigation needed**, continue to Action 2
-* **Action 2:** Assess investigation scope using §2.2 Coordination Decision Reasoning:
-    - Small scope → Self-investigate (Action 3a)
-    - Large scope → Request Delegation (Action 3b)
-* **Action 3a (Self-Investigation):**
-    - Identify specific files, artifacts, Delegation Memory Logs (if any)  or areas to examine
-    - Use available tools to review referenced files, verify deliverables, and gather context
-    - Keep investigation focused to avoid excessive context consumption
-    - After investigation, proceed to Action 4
-* **Action 3b (Request Delegation):**
-    - Determine Delegation type (Debug or Research or other) based on issue nature
-    - Request a Delegation from the User using the following output:
-    ```
-    I’d like to delegate part of this work: <Debug|Research|Other> on <Brief Topic>.
 
-    Here’s what’s going on: <Describe the specific issue that needs investigation>.
+Perform the following actions:
 
-    I’m requesting Delegation because a dedicated investigation will address this issue, and trying to handle it as Manager would use too much context or be inefficient.
+1. Apply §2.2 Coordination Decision Standards Assessment 1 to determine the decision branch:
+   - If status is Success with no flags raised and log contents support this → **Proceed to next Task**
+   - If flags are raised OR status is non-Success → **Investigation needed**, continue to step 2
+2. Assess investigation scope using §2.2 Coordination Decision Standards Assessment 2:
+   - Small scope → Self-investigate (step 3a)
+   - Large scope → Request Delegation (step 3b)
+3. Investigate based on scope:
+   - **3a (Self-Investigation):**
+     - Identify specific files, artifacts, Delegation Memory Logs (if any) or areas to examine
+     - Use available tools to review referenced files, verify deliverables, and gather context
+     - Keep investigation focused to avoid excessive context consumption
+     - After investigation, proceed to step 4
+   - **3b (Request Delegation):**
+     - Determine Delegation type (Debug or Research or other) based on issue nature
+     - Request a Delegation from the User using the following output:
+       ```
+       I'd like to delegate part of this work: <Debug|Research|Other> on <Brief Topic>.
 
-    Would you like to approve the Delegation, or would you prefer a different approach?
-    ```
-    - If User approves: Read the appropriate Delegation skill (`{SKILL_PATH:delegate-debug/SKILL.md}` or `{SKILL_PATH:delegate-research/SKILL.md}`), create Delegation Prompt, User facilitates Delegate session
-    - When User returns with Delegation Report, read the Delegation Memory Log and integrate findings, then proceed to Action 4
-* **Action 4:** Assess post-investigation outcome using §2.2 Coordination Decision Reasoning:
-    - **No issues** → Proceed to next Task Assignment (return to Task Cycle in initiation command)
-    - **FollowUp needed** → Create FollowUp Task Assignment Prompt per `{SKILL_PATH:task-assignment/SKILL.md}` §3.4, output for User
-    - **Coordination Artifact modification needed** → Handoff to `{SKILL_PATH:artifact-maintenance/SKILL.md}` for assessment and execution
-* **Action 5:** If proceeding to next Task and all Tasks in current Stage are complete, proceed to §3.6 Stage Summary Creation **before you create the next Task's Task Assignment Prompt.**
+       Here's what's going on: <Describe the specific issue that needs investigation>.
+
+       I'm requesting Delegation because a dedicated investigation will address this issue, and trying to handle it as Manager would use too much context or be inefficient.
+
+       Would you like to approve the Delegation, or would you prefer a different approach?
+       ```
+     - If User approves: Read the appropriate Delegation skill (`{SKILL_PATH:delegate-debug/SKILL.md}` or `{SKILL_PATH:delegate-research/SKILL.md}`), create Delegation Prompt, User facilitates Delegate session
+     - When User returns with Delegation Report, read the Delegation Memory Log and integrate findings, then proceed to step 4
+4. Assess post-investigation outcome using §2.2 Coordination Decision Standards Assessment 3:
+   - **No issues** → Proceed to next Task Assignment (return to Task Cycle in initiation command)
+   - **FollowUp needed** → Create FollowUp Task Assignment Prompt per `{SKILL_PATH:task-assignment/SKILL.md}` §3.5, output for User
+   - **Coordination Artifact modification needed** → Handoff to `{SKILL_PATH:artifact-maintenance/SKILL.md}` for assessment and execution
+5. If proceeding to next Task and all Tasks in current Stage are complete, proceed to §3.6 Stage Summary Creation **before you create the next Task's Task Assignment Prompt.**
 
 ### 3.6 Stage Summary Creation
 
 Execute when all Tasks in a Stage are completed.
-* **Action 1:** Review all Task Memory Logs for the completed Stage
-* **Action 2:** Synthesize Stage-level observations:
-    - Overall outcome and deliverables
-    - Agents involved and their contributions
-    - Notable findings, patterns, or compatibility concerns
-    - Undocumented context or working insights
-* **Action 3:** Append Stage Summary to Memory Root following §5.3 Stage Summary Format. Keep summary ≤30 lines and reference log files rather than duplicating content.
+
+Perform the following actions:
+
+1. Review all Task Memory Logs for the completed Stage
+2. Synthesize Stage-level observations:
+   - Overall outcome and deliverables
+   - Agents involved and their contributions
+   - Notable findings, patterns, or compatibility concerns
+   - Undocumented context or working insights
+3. Append Stage Summary to Memory Root following §4.3 Stage Summary Format. Keep summary ≤30 lines and reference log files rather than duplicating content.
 
 ---
 
-## 4. Policies
-
-This section defines the decision rules that govern choices during Memory System maintenance.
-
-### 4.1 Handoff Detection Policy
-
-**Decision Domain:** How to handle Task Reports that indicate a Worker Agent has performed a Handoff.
-
-**Detection:**
-
-A Continuing Worker Agent (Replacement Agent after Handoff) includes in its Task Report:
-- Clear statement that it is a new instance after a Handoff
-- List of current Stage Memory Logs it has read
-- Note that previous Stage Memory Logs were not loaded for efficiency
-
-**Verification:**
-
-Upon detecting a Handoff indication:
-* **Action 1:** Verify the Handoff File exists by listing the directory `.apm/Memory/Handoffs/<AgentID>_Handoffs/` (list only, do not read the file to preserve context)
-* **Action 2:** Integrate the Handoff in Manager's working context:
-    - Which Worker Agent performed the Handoff
-    - Which Stage the Handoff occurred in
-    - Which Memory Logs the Continuing Worker has loaded (current Stage only)
-* **Action 3:** Update Context Dependency treatment for this Worker:
-    - **From this point forward, any Same-Agent Context Dependencies from previous Stages for this Continuing Worker Agent must be treated as Cross-Agent Context Dependencies.**
-
-**Rationale:**
-
-The Handoff Procedure loads only current Stage Memory Logs for efficiency. This means a Continuing Worker Agent has no working context from previous Stages, even for Tasks that were completed by the previous instance of the same Worker. The Manager must account for this when constructing future Task Assignment Prompts for that Worker.
-
-### 4.2 Coordination Decision Policy
-
-**Decision Domain:** What coordination action to take after reviewing a Task Memory Log.
-
-**Decision Rule:** Assess the Task Memory Log using §2.2 Coordination Decision Reasoning. The decision follows three sequential assessments:
-
-1. **Investigation Need:** If status is Success with no flags and log contents support this, proceed to next Task. Otherwise, investigation is needed.
-
-2. **Investigation Scope:** When investigation is needed, assess scope using §2.2 indicators:
-   - **Small scope → Self-investigate:** Manager uses available tools to read files referenced in the Task Memory Log, verify deliverables, or examine related areas
-   - **Large scope → Request Delegation:** Manager requests Delegation from User; Delegate Agent performs context-intensive investigation and logs findings; Manager reviews Delegation Memory Log to absorb findings without consuming own context window
-
-3. **Post-Investigation Outcome:** After investigation, assess outcome per §2.2:
-   - **No issues** → Proceed to next Task (findings may have been false positives due to Worker's limited context)
-   - **FollowUp needed** → Create FollowUp per `{SKILL_PATH:task-assignment/SKILL.md}` §3.4 with informed instructions based on investigation
-   - **Artifact modification needed** → Follow methodology in `{SKILL_PATH:artifact-maintenance/SKILL.md}`
-
-**Default:** When scope is unclear, prefer Delegation over extensive self-investigation to preserve Manager context.
-
-**Artifact Modification Handoff:** When artifact modification is needed, note the triggering context (log, findings, flags), identify affected artifact(s), then follow `{SKILL_PATH:artifact-maintenance/SKILL.md}` methodology.
-
----
-
-## 5. Structural Specifications
+## 4. Structural Specifications
 
 This section defines the formats and structures for Memory System artifacts.
 
-### 5.1 Directory Structure
+### 4.1 Directory Structure
 
 The Memory System organizes project history in a hierarchical directory structure under `.apm/Memory/`:
 
@@ -319,7 +303,7 @@ The Memory System organizes project history in a hierarchical directory structur
         └── <AgentID>_Handoff_Memory_Log_<N>.md
 ```
 
-### 5.2 Memory Root Format
+### 4.2 Memory Root Format
 
 **Location:** `.apm/Memory/Memory_Root.md`
 
@@ -328,9 +312,9 @@ The Memory System organizes project history in a hierarchical directory structur
 - **Project Overview:** Concise project summary from Implementation Plan
 - **Manager Handoffs:** Count of Manager Agent Handoffs (increment on each Handoff)
 
-**Body:** Stage Summaries appended after each Stage completion. See §5.3 Stage Summary Format.
+**Body:** Stage Summaries appended after each Stage completion. See §4.3 Stage Summary Format.
 
-### 5.3 Stage Summary Format
+### 4.3 Stage Summary Format
 
 Append this format to Memory Root after each Stage completion:
 ```markdown
@@ -355,7 +339,7 @@ Append this format to Memory Root after each Stage completion:
 - Reference Task Memory Logs rather than duplicating content
 - Include Notes only when there are observations not captured in individual logs or if requested by the User
 
-### 5.4 Task Memory Log Structure
+### 4.4 Task Memory Log Structure
 
 Task Memory Logs are written by Worker Agents. Manager Agents review them to track evaluate Task Execution and Validation and make Coordination Decisions.
 
@@ -385,16 +369,16 @@ Task Memory Logs are written by Worker Agents. Manager Agents review them to tra
 
 ---
 
-## 6. Content Guidelines
+## 5. Content Guidelines
 
-### 6.1 Communication Tone
+### 5.1 Communication Tone
 
 - **Managerial perspective:** Focus on coordination, progress, and decisions; leave implementation details to Worker Agents
 - **Concise updates:** When reporting to User, summarize log findings briefly; User can read full logs if needed or ask for details otherwise
 - **Delegation requests:** When requesting Delegation, use the specified format (§3.5 Action 3b) and clearly explain why delegation is needed versus self-investigation, including scope assessment rationale
 - **Investigation outcomes:** When reporting investigation findings, clearly state the outcome (no issues, FollowUp needed, or artifact modification needed) and provide structured rationale; acknowledge false positives when Worker flags don't indicate real coordination issues
 
-### 6.2 Common Mistakes to Avoid
+### 5.2 Common Mistakes to Avoid
 
 - **Duplicating log content:** Stage Summaries should reference logs, not reproduce them
 - **Ignoring flags:** The `important_findings` and `compatibility_issues` flags exist to force deeper review; skipping this breaks the coordination loop

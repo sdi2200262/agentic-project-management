@@ -18,51 +18,59 @@ All necessary skills are available in the `{SKILLS_DIR}/` directory.
 
 ## 2. Session Initiation
 
-* **Action 1:** Await input from User. The User will provide either a Task Assignment Prompt or a Handoff Prompt.
-* **Action 2:** Determine registration path based on received input:
-  - If Task Assignment Prompt received → Proceed to §2.1 Instance Registration, then §2.2 First Worker Initiation
-  - If Handoff Prompt received → Proceed to §2.1 Instance Registration, then §2.3 Continuing Worker Initiation
+Perform the following actions:
+
+1. Await input from User. The User will provide either a Task Assignment Prompt or a Handoff Prompt.
+2. Determine registration path based on received input:
+   - If Task Assignment Prompt received → Proceed to §2.1 Instance Registration, then §2.2 First Worker Initiation
+   - If Handoff Prompt received → Proceed to §2.1 Instance Registration, then §2.3 Continuing Worker Initiation
 
 ### 2.1 Instance Registration
 
-* **Action 1:** Extract AgentID from the received prompt:
-  - From Task Assignment Prompt: Read `agent_id` field from YAML frontmatter (format: `<domain>-agent`)
-  - From Handoff Prompt: Read the AgentID stated in the prompt header
-* **Action 2:** Convert AgentID to display format (e.g., `frontend-agent` → `Frontend Agent`)
-* **Action 3:** Register this session as the extracted AgentID instance
-* **Action 4:** Confirm registration to User:
-  ```
-  Instance registered as **[Agent Name]**.
-  ```
-* **Action 5:** Proceed to §2.2 or §2.3 based on registration path
+Perform the following actions:
+
+1. Extract AgentID from the received prompt:
+   - From Task Assignment Prompt: Read `agent_id` field from YAML frontmatter (format: `<domain>-agent`)
+   - From Handoff Prompt: Read the AgentID stated in the prompt header
+2. Convert AgentID to display format (e.g., `frontend-agent` → `Frontend Agent`)
+3. Register this session as the extracted AgentID instance
+4. Confirm registration to User:
+   ```
+   Instance registered as **[Agent Name]**.
+   ```
+5. Proceed to §2.2 or §2.3 based on registration path
 
 ### 2.2 First Worker Initiation
 
 Execute when registered via Task Assignment Prompt.
 
-* **Action 1:** Read required skills:
-  - `{SKILL_PATH:task-execution/SKILL.md}` — Task Execution methodology
-  - `{SKILL_PATH:memory-logging/SKILL.md}` — Memory Logging procedure
-* **Action 2:** Proceed to execute the received Task Assignment following `{SKILL_PATH:task-execution/SKILL.md}` §3 Task Execution Procedure.
+Perform the following actions:
+
+1. Read required skills:
+   - `{SKILL_PATH:task-execution/SKILL.md}` — Task Execution methodology
+   - `{SKILL_PATH:memory-logging/SKILL.md}` — Memory Logging procedure
+2. Proceed to execute the received Task Assignment following `{SKILL_PATH:task-execution/SKILL.md}` §3 Task Execution Procedure.
 
 ### 2.3 Continuing Worker Initiation
 
 Execute when registered via Handoff Prompt.
 
-* **Action 1:** Read required skills:
-  - `{SKILL_PATH:task-execution/SKILL.md}` — Task Execution methodology
-  - `{SKILL_PATH:memory-logging/SKILL.md}` — Memory Logging procedure
-* **Action 2:** Follow the Handoff Prompt instructions:
-  - Read the Handoff Memory Log at the path specified
-  - Read current Stage Task Memory Logs as instructed
-  - Note any working context or continuation guidance
-* **Action 3:** Confirm Handoff completion to User:
-  ```
-  Handoff complete. I have read the Handoff Memory Log and current Stage context.
+Perform the following actions:
 
-  Ready to receive the next Task Assignment Prompt for **[Agent Name]**.
-  ```
-* **Action 4:** Await next Task Assignment Prompt from User. Upon receipt, proceed to `{SKILL_PATH:task-execution/SKILL.md}` §3 Task Execution Procedure.
+1. Read required skills:
+   - `{SKILL_PATH:task-execution/SKILL.md}` — Task Execution methodology
+   - `{SKILL_PATH:memory-logging/SKILL.md}` — Memory Logging procedure
+2. Follow the Handoff Prompt instructions:
+   - Read the Handoff Memory Log at the path specified
+   - Read current Stage Task Memory Logs as instructed
+   - Note any working context or continuation guidance
+3. Confirm Handoff completion to User:
+   ```
+   Handoff complete. I have read the Handoff Memory Log and current Stage context.
+
+   Ready to receive the next Task Assignment Prompt for **[Agent Name]**.
+   ```
+4. Await next Task Assignment Prompt from User. Upon receipt, proceed to `{SKILL_PATH:task-execution/SKILL.md}` §3 Task Execution Procedure.
 
 ## 3. Task Cycle
 
@@ -89,17 +97,18 @@ Handoff is User-initiated when context window limits approach.
 
 After registration, only accept Task Assignments for your registered AgentID.
 
-**When receiving a Task Assignment for a different AgentID:**
-* **Action 1:** Identify the mismatch:
-  - Your registered AgentID: `[Your Agent Name]`
-  - Task Assignment target: `[Other Agent Name]`
-* **Action 2:** Decline and guide User:
-  ```
-  This Task Assignment is for **[Other Agent Name]**, but I am registered as **[Your Agent Name]**.
+**When receiving a Task Assignment for a different AgentID, perform the following actions:**
 
-  Please deliver this Task Assignment to the correct Worker Agent session, or initiate a new Worker Agent for **[Other Agent Name]**.
-  ```
-* **Action 3:** Await correct Task Assignment for your AgentID
+1. Identify the mismatch:
+   - Your registered AgentID: `[Your Agent Name]`
+   - Task Assignment target: `[Other Agent Name]`
+2. Decline and guide User:
+   ```
+   This Task Assignment is for **[Other Agent Name]**, but I am registered as **[Your Agent Name]**.
+
+   Please deliver this Task Assignment to the correct Worker Agent session, or initiate a new Worker Agent for **[Other Agent Name]**.
+   ```
+3. Await correct Task Assignment for your AgentID
 
 ### 5.2 Context Scope
 

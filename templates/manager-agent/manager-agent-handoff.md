@@ -65,55 +65,63 @@ Execute this procedure when User initiates Handoff and eligibility is confirmed.
 
 ### 3.1 Eligibility Check
 
-* **Action 1:** Assess current coordination state against §2 Handoff Eligibility criteria
-* **Action 2:** If not eligible → Deny with specific reason, complete current step, then re-confirm with User
-* **Action 3:** If eligible → Proceed to §3.2 Handoff Memory Log Creation
+Perform the following actions:
+
+1. Assess current coordination state against §2 Handoff Eligibility criteria
+2. If not eligible → Deny with specific reason, complete current step, then re-confirm with User
+3. If eligible → Proceed to §3.2 Handoff Memory Log Creation
 
 ### 3.2 Handoff Memory Log Creation
 
-* **Action 1:** Determine your Manager Agent number:
-  - If you are the First Manager → You are **Manager Agent 1**
-  - If you are a Continuing Manager → Your Manager Agent number is stated in the Handoff Prompt you received at initiation
-* **Action 2:** Calculate Continuing Manager number: `<Your-Manager-Agent-Number> + 1`
-* **Action 3:** Create Handoff Memory Log following §4 Handoff Memory Log Structure, including:
-  - Your Manager Agent number as `outgoing_manager`
-  - Handoff number equals your Manager Agent number (first handoff = Manager_Handoff_Log_1.md)
-  - Tracked Worker Handoffs (most critical) — which Workers performed Handoffs, from which Stage
-  - User preferences, communication patterns observed during this session
-  - Coordination insights or decisions not captured in Coordination Artifacts or Memory Logs
-  - Any working notes that would otherwise be lost
-* **Action 4:** Save to `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Manager Agent Number>.md`
+Perform the following actions:
+
+1. Determine your Manager Agent number:
+   - If you are the First Manager → You are **Manager Agent 1**
+   - If you are a Continuing Manager → Your Manager Agent number is stated in the Handoff Prompt you received at initiation
+2. Calculate Continuing Manager number: `<Your-Manager-Agent-Number> + 1`
+3. Create Handoff Memory Log following §4 Handoff Memory Log Structure, including:
+   - Your Manager Agent number as `outgoing_manager`
+   - Handoff number equals your Manager Agent number (first handoff = Manager_Handoff_Log_1.md)
+   - Tracked Worker Handoffs (most critical) — which Workers performed Handoffs, from which Stage
+   - User preferences, communication patterns observed during this session
+   - Coordination insights or decisions not captured in Coordination Artifacts or Memory Logs
+   - Any working notes that would otherwise be lost
+4. Save to `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Manager Agent Number>.md`
 
 ### 3.3 Handoff Prompt Creation
 
-* **Action 1:** Create Handoff Prompt following §5 Handoff Prompt Structure
-* **Action 2:** Include:
-    - Explicit statement: "You are taking over from Manager Agent <Your Manager Agent Number> as Continuing Manager Agent <Continuing Manager Number>"
-    - Instructions for Continuing Manager to read Coordination Artifacts and skills
-    - Path to Handoff Memory Log: `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Manager Agent Number>.md` 
-    - Instructions to read ALL current Stage Memory Logs (all Agents)
-    - Note about reading previous Stage Task Memory Logs when Context Dependencies require
-    - Current session state summary (current Stage, next Task, any blockers)
-    - Immediate next action
-* **Action 3:** Output as markdown code block for User copy-paste
+Perform the following actions:
+
+1. Create Handoff Prompt following §5 Handoff Prompt Structure
+2. Include:
+   - Explicit statement: "You are taking over from Manager Agent <Your Manager Agent Number> as Continuing Manager Agent <Continuing Manager Number>"
+   - Instructions for Continuing Manager to read Coordination Artifacts and skills
+   - Path to Handoff Memory Log: `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Manager Agent Number>.md`
+   - Instructions to read ALL current Stage Memory Logs (all Agents)
+   - Note about reading previous Stage Task Memory Logs when Context Dependencies require
+   - Current session state summary (current Stage, next Task, any blockers)
+   - Immediate next action
+3. Output as markdown code block for User copy-paste
 
 ### 3.4 User Review and Finalization
 
-* **Action 1:** Present both artifacts to User:
-    - Handoff Memory Log (created as file)
-    - Handoff Prompt (output as markdown code block)
-* **Action 2:** Request User review:
-    ```
-    Handoff artifacts created:
-    
-    **Handoff Memory Log:** `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md`
-    
-    **Handoff Prompt:** Ready for copy-paste below.
-    
-    Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new chat session to initialize the Continuing Manager.
-    ```
-* **Action 3:** If User requests modifications → Update artifacts accordingly
-* **Action 4:** User copies Handoff Prompt to new session; this session ends
+Perform the following actions:
+
+1. Present both artifacts to User:
+   - Handoff Memory Log (created as file)
+   - Handoff Prompt (output as markdown code block)
+2. Request User review:
+   ```
+   Handoff artifacts created:
+
+   **Handoff Memory Log:** `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md`
+
+   **Handoff Prompt:** Ready for copy-paste below.
+
+   Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new chat session to initialize the Continuing Manager.
+   ```
+3. If User requests modifications → Update artifacts accordingly
+4. User copies Handoff Prompt to new session; this session ends
 
 ---
 
