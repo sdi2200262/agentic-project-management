@@ -102,13 +102,13 @@ Sequential actions follow this format:
 
 ```
 Perform the following actions:
-
 1. First action with specific details.
 2. Second action with specific details.
 3. Third action with specific details.
 ```
 
 Rules:
+- No blank line between introductory sentence and list.
 - Numbered lists are used for sequential actions.
 - Each action is a complete, actionable instruction.
 - Specific details (file paths, field names, conditions) are included.
@@ -219,7 +219,7 @@ Next: [what to do or what will happen].
 
 ## 5. Reference Standards
 
-References use "See" or "per" exclusively. Nearby sentences are adapted so references fit naturally.
+References use "See" or "per" exclusively. Nearby sentences are adapted so references fit naturally. References appear inline within prose or as standalone sentences; references are not list items.
 
 **Same-Skill:** "See §N.M Section Title" or "per §N.M Section Title" where N.M is the section number and Section Title is the exact heading text. Examples: "See §2.1 Context Dependency Standards." or "Integrate dependent context per §3.2 Context Integration."
 
@@ -243,15 +243,21 @@ Document-level structure (heading levels, section numbering, horizontal rules) i
 
 ### 7.1 Spacing
 
-**Bold sub-topics:** Bold title appears on same line with content, lists directly under with no blank line:
+**Sentence before list:** No blank line between any sentence and the list it introduces:
+```
+Introductory sentence:
+- List item one
+- List item two
+```
 
+**Bold sub-topics:** Bold title appears on same line with content, lists directly under with no blank line:
 ```
 **Title:** Content begins here on same line.
 - List item one
 - List item two
 ```
 
-**Between paragraphs:** One blank line.
+**Between paragraphs:** One blank line. Related short paragraphs may be merged to reduce line count when clarity is preserved.
 
 **Between bold and italic hierarchy:** One blank line.
 
