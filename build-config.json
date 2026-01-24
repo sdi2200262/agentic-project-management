@@ -104,6 +104,16 @@
         "commands": ".roo/commands",
         "guides": ".apm/guides"
       }
+    },
+    {
+      "id": "antigravity",
+      "name": "Google Antigravity",
+      "bundleName": "apm-antigravity.zip",
+      "format": "markdown",
+      "directories": {
+        "commands": ".agent/workflows",
+        "guides": ".apm/guides"
+      }
     }
   ]
 }

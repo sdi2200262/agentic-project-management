@@ -1,6 +1,6 @@
 # Agentic Project Management (APM)
 
-[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.3-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.3) [![Website](https://img.shields.io/badge/website-agentic--project--management.dev-blue)](https://agentic-project-management.dev)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.4-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.4) [![Website](https://img.shields.io/badge/website-agentic--project--management.dev-blue)](https://agentic-project-management.dev)
 
 *Manage complex projects with a team of AI assistants, smoothly and efficiently.*
 
@@ -47,6 +47,7 @@ APM supports the following AI assistants and IDEs:
 | opencode            | CLI                     | Markdown | `.opencode/command`    |
 | Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
 | Auggie CLI          | CLI                     | Markdown | `.augment/commands`    |
+| Google Antigravity  | IDE                     | Markdown | `.agent/workflows`     |
 
 When you run `apm init`, simply select your AI assistant from the list, and APM will automatically configure the appropriate command structure for your environment.
 
