@@ -1,6 +1,6 @@
 # APM Structure Standards
 
-This document defines the organizational structure for APM Skills and Commands—required sections, ordering, and document-level formatting. Content presentation and writing conventions follow [`WRITING.md`](./WRITING.md). All terms are defined in [`TERMINOLOGY.md`](./TERMINOLOGY.md).
+This document defines the organizational structure for APM Skills and Commands-required sections, ordering, and document-level formatting. Content presentation and writing conventions follow [`WRITING.md`](./WRITING.md). All terms are defined in [`TERMINOLOGY.md`](./TERMINOLOGY.md).
 
 ---
 
@@ -173,7 +173,7 @@ Commands follow a variable structure based on purpose, with required opening and
 |-------------|-------------|
 | Variable structure | Number and names of sections vary by command purpose. |
 | Action format | Follows the "Perform the following actions:" pattern. |
-| Skill references | References skills for detailed Procedures using format: "per {SKILL_PATH:skill-name} §N.M Section Title." |
+| Skill references | References skills for detailed Procedures using format: "per `{SKILL_PATH:skill-name}` §N.M Section Title." |
 | Conditional paths | Includes branching for different scenarios (e.g., first Session vs Incoming Agent after Handoff). |
 
 **§N Operating Rules Requirements:**
@@ -219,10 +219,10 @@ Commands follow a variable structure based on purpose, with required opening and
 | H1 | `#` | Document title only. One per file. |
 | H2 | `##` | Major sections (§1, §2, §3, etc.). |
 | H3 | `###` | Subsections (§1.1, §2.3, etc.). |
-| Bold | `**text**` | Sub-topics within subsections. |
-| Italic | `*text*` | Items within sub-topics. |
+| Bold | `**text**` | Introduces sub-topics with inline content. |
+| Italic | `*text*` | Labels items within lists. |
 
-Deeper hierarchy within subsections uses **bold** for sub-topics and *italic* for items within sub-topics.
+Deeper hierarchy within subsections uses **bold** to introduce sub-topics and *italic* to label items within lists. See `WRITING.md` §7.1 for formatting patterns.
 
 ### 3.2 Section Numbering
 
@@ -332,7 +332,7 @@ Each format definition includes:
 
 | Placeholder | Purpose |
 |-------------|---------|
-| `{SKILL_PATH:skill-name}` | Path to skill directory. |
+| ``{SKILL_PATH:skill-name}`` | Path to skill directory. |
 | `{COMMAND_PATH:command-name}` | Path to command file. |
 | `{SKILLS_DIR}` | Skills directory path. |
 | `{AGENTS_FILE}` | Platform-specific agents file (CLAUDE.md or AGENTS.md). |

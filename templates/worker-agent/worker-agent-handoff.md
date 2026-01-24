@@ -4,7 +4,7 @@ command_name: handoff-worker
 description: Initiates and guides a Worker Agent through the Handoff Procedure to transfer execution context to an Incoming Worker Agent instance.
 ---
 
-# APM {VERSION} — Worker Agent Handoff Command
+# APM {VERSION} - Worker Agent Handoff Command
 
 ## 1. Overview
 
@@ -12,7 +12,7 @@ This command initiates the Handoff Procedure for a Worker Agent approaching cont
 - **Handoff Memory Log:** A markdown file stored in `.apm/Memory/Handoffs/<AgentID>_Handoffs/` containing working context from the current session
 - **Handoff Prompt:** A markdown code block for User to copy-paste to a new Worker Agent session, instructing the Incoming Worker to reconstruct context
 
-The Incoming Worker reconstructs context by reading the Handoff Memory Log and current Stage Task Memory Logs—not from the Handoff Memory Log alone.
+The Incoming Worker reconstructs context by reading the Handoff Memory Log and current Stage Task Memory Logs-not from the Handoff Memory Log alone.
 
 **Important:** The Incoming Worker must indicate their Handoff status in their first Task Report. This triggers the Manager Agent's Handoff Detection, which affects how Context Dependencies are classified for future Task Assignments.
 
@@ -114,7 +114,7 @@ Perform the following actions:
 
 ## 4. Handoff Memory Log Structure
 
-The Handoff Memory Log contains working context from this session that supports the Incoming Worker's execution. Task Memory Logs contain task-specific details—this file provides session-level context.
+The Handoff Memory Log contains working context from this session that supports the Incoming Worker's execution. Task Memory Logs contain task-specific details-this file provides session-level context.
 
 **Location:** `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<N>.md`
 
@@ -138,7 +138,7 @@ timestamp: <Date/time of Handoff>
 ## Session Summary
 
 **Tasks Completed This Session:** [Count and brief list]
-**Current Stage:** Stage <N> — <Name>
+**Current Stage:** Stage <N> - <Name>
 **Stage Progress:** [X/Y Tasks complete for this Worker in current Stage]
 
 ## Working Context
@@ -170,7 +170,7 @@ timestamp: <Date/time of Handoff>
 The Handoff Prompt instructs the Incoming Worker to reconstruct context from the Handoff Memory Log and current Stage Task Memory Logs. The Handoff Prompt is presented as a **markdown code block** in the chat:
 
 ```markdown
-# APM Worker Agent Handoff — <AgentID>
+# APM Worker Agent Handoff - <AgentID>
 
 You are taking over from **<AgentID> Session <N>** as **<AgentID> Session <N+1>**.
 
@@ -195,7 +195,7 @@ After completing context reconstruction, confirm to User:
 
 ## Current Session State
 
-- **Current Stage:** Stage <N> — <Stage Name>
+- **Current Stage:** Stage <N> - <Stage Name>
 - **Tasks Completed (this Worker):** [List of Task IDs completed this session]
 - **Notes:** [Any specific notes about current state]
 

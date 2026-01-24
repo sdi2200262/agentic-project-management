@@ -13,11 +13,11 @@ This skill defines the methodology for the Work Breakdown procedure, which trans
 
 ### 1.1 How to Use This Skill
 
-**Execute the Procedure.** The Procedure section contains the actions to perform. Follow each subsection sequentially. See §3 Work Breakdown Procedure.
+**Execute the Procedure:** The Procedure section contains the actions to perform. Follow each subsection sequentially. See §3 Work Breakdown Procedure.
 
-**Use Operational Standards for reasoning and decisions.** When making work breakdown decisions, consult the relevant standards subsection (Domain, Stage, Task, or Step Standards) to guide your thinking and apply decision rules. See §2 Operational Standards.
+**Use Operational Standards for reasoning and decisions:** When making work breakdown decisions, consult the relevant standards subsection (Domain, Stage, Task, or Step Standards) to guide your thinking and apply decision rules. See §2 Operational Standards.
 
-**Present reasoning in chat.** All analysis must be presented in chat before file output. Use the natural language output formats shown in §3 Work Breakdown Procedure to make reasoning visible to the User.
+**Present reasoning in chat:** All analysis must be presented in chat before file output. Use the natural language output formats shown in §3 Work Breakdown Procedure to make reasoning visible to the User.
 
 ### 1.2 Objectives
 
@@ -28,11 +28,11 @@ This skill defines the methodology for the Work Breakdown procedure, which trans
 
 ### 1.3 Outputs
 
-**`{AGENTS_FILE}`:** Universal project standards that apply to all Agents. Leverages the always-apply rule pattern in AI Assistants.
+**`{AGENTS_FILE}`** → Universal project standards that apply to all Agents. Leverages the always-apply rule pattern in AI Assistants.
 
-**`Specifications.md`:** Coordination-level specifications translated from gathered context. Formalizes design decisions and constraints that inform the Implementation Plan. Free-form structure determined by project needs.
+**`Specifications.md`** → Coordination-level specifications translated from gathered context. Formalizes design decisions and constraints that inform the Implementation Plan. Free-form structure determined by project needs.
 
-**`Implementation_Plan.md`:** Detailed task breakdown organized by stages, with Agent assignments, validation criteria, and dependency chains for Manager Agent consumption. Implements the specifications.
+**`Implementation_Plan.md`** → Detailed task breakdown organized by stages, with Agent assignments, validation criteria, and dependency chains for Manager Agent consumption. Implements the specifications.
 
 ### 1.4 Scope Adaptation
 
@@ -64,7 +64,7 @@ Work Breakdown uses Forced Chain-of-Thought (CoT), requiring explicit reasoning 
 
 ### 2.2 Context Integration
 
-Work Breakdown requires context from `{SKILL_PATH:context-gathering}` across these categories:
+Work Breakdown requires context from ``{SKILL_PATH:context-gathering}`` across these categories:
 
 **Project Definition:**
 - Project vision, goals, and success criteria
@@ -87,9 +87,9 @@ Work Breakdown requires context from `{SKILL_PATH:context-gathering}` across the
 - Separation directives (domains that must remain distinct)
 
 **Standards Preferences:**
-Standards define *how work is performed* across the project — conventions and process rules that apply universally regardless of what is being built. Each project defines what standards are relevant.
+Standards define *how work is performed* across the project - conventions and process rules that apply universally regardless of what is being built. Each project defines what standards are relevant.
 - Project-wide standards gathered during Context Gathering
-- Existing `{AGENTS_FILE}` contents (if found during workspace scan)
+- Existing ``{AGENTS_FILE}`` contents (if found during workspace scan)
 
 **Specification Indicators:**
 Specifications define *what is being built* - design decisions, requirements, constraints, and rationale that shape the deliverable itself. Each project defines what specifications are relevant.
@@ -101,10 +101,7 @@ Specifications define *what is being built* - design decisions, requirements, co
 - Artifact validation patterns (deliverables, file outputs)
 - User validation triggers (what requires explicit approval)
 
-**Input-to-Output Mapping:**
-
-Each input category translates to specific artifacts:
-
+**Input-to-Output Mapping** → Each input category translates to specific artifacts:
 - **Project Definition → Implementation Plan Structure:** Vision and goals → Project Overview header field; Success criteria and deliverables → Stage and Task objectives; Scope boundaries → Explicit distinction between Agent and User work
 - **Technical Requirements → Task Definitions:** Technology stack → Task guidance and constraints; External dependencies → Dependency markers, User coordination steps; Complexity indicators → Task granularity decisions; Environment requirements → Setup and configuration tasks
 - **Process Requirements → Task Specifications:** Quality standards → Validation criteria fields; Workflow preferences → Task guidance sections; Coordination requirements → Dependency markers, User validation needs
@@ -117,36 +114,31 @@ Each input category translates to specific artifacts:
 
 Validation criteria gathered during context discovery fall into three types. Most tasks combine multiple types.
 
-**Programmatic:**
-Automated verification that can be executed without human judgment.
+**Programmatic** → Automated verification that can be executed without human judgment:
 - Tests pass, builds succeed, CI checks pass
 - Scripts execute correctly, linting passes, type checking succeeds
 - Endpoints return expected responses, data validates against schemas
 
-**Artifact:**
-File or output existence and structural verification.
+**Artifact** → File or output existence and structural verification:
 - Documentation exists with required sections
 - Config files present and valid
 - Deliverables have correct format and structure
 - Generated outputs match expected patterns
 
-**User:**
-Human judgment required for subjective or strategic decisions.
+**User** → Human judgment required for subjective or strategic decisions:
 - Design approval, content review
 - Architectural decisions, approach validation
 - Subjective quality assessment
 
-**Execution behavior by type:**
-- Programmatic and Artifact validation allow autonomous iteration — Agent can retry on failure
-- User validation requires pause after execution — Agent waits for user review before proceeding or logging
+**Execution behavior by type:** 
+- Programmatic and Artifact validation allow autonomous iteration - Agent can retry on failure
+- User validation requires pause after execution - Agent waits for user review before proceeding or logging
 
 ### 2.4 Domain Standards
 
 This subsection guides reasoning and decisions about work domains.
 
-**Identification Patterns:**
-
-Identify logical work domains from Context Gathering findings. Each domain represents a distinct area requiring a specific mental model or skill set.
+**Identification Patterns** → Identify logical work domains from Context Gathering findings. Each domain represents a distinct area requiring a specific mental model or skill set:
 
 *Skill Area Separation:*
 - Different expertise areas → Separate domains requiring distinct knowledge bases
@@ -158,9 +150,7 @@ Identify logical work domains from Context Gathering findings. Each domain repre
 - Creative vs analytical work streams → Content-oriented vs data-oriented boundaries
 - Configuration vs development activities → Setup-focused vs feature-focused domains
 
-**Granularity Standards:**
-
-Domain granularity requires balancing two failure modes: **over-separation** (too many small domains creating coordination overhead) and **over-consolidation** (merged domains requiring mental model switching).
+**Granularity Standards** → Domain granularity requires balancing two failure modes: **over-separation** (too many small domains creating coordination overhead) and **over-consolidation** (merged domains requiring mental model switching):
 
 *Over-consolidation signals (split into separate Agents):*
 - Work requires fundamentally different mental models or skill sets
@@ -188,9 +178,7 @@ Domain granularity requires balancing two failure modes: **over-separation** (to
 
 This subsection guides reasoning and decisions about project stages.
 
-**Identification Patterns:**
-
-Identify logical project stages from Context Gathering workflow patterns. Each stage represents a milestone grouping of related work.
+**Identification Patterns** → Identify logical project stages from Context Gathering workflow patterns. Each stage represents a milestone grouping of related work:
 
 *Complexity Pattern Analysis:*
 - Layered complexity → Hierarchical stages with progressive dependencies
@@ -204,9 +192,7 @@ Identify logical project stages from Context Gathering workflow patterns. Each s
 - Natural progression without forced dependencies
 - Parallel, no-dependency stages: order by practical preference
 
-**Granularity Standards:**
-
-Stage granularity requires balancing two failure modes: **over-fragmentation** (too many small stages creating unnecessary checkpoints) and **over-consolidation** (merged stages obscuring natural milestones).
+**Granularity Standards** → Stage granularity requires balancing two failure modes: **over-fragmentation** (too many small stages creating unnecessary checkpoints) and **over-consolidation** (merged stages obscuring natural milestones):
 
 *Over-consolidation signals (split into separate stages):*
 - Stage contains unrelated work streams with no natural connection
@@ -233,9 +219,7 @@ Stage granularity requires balancing two failure modes: **over-fragmentation** (
 
 This subsection guides reasoning and decisions about tasks within stages.
 
-**Identification Patterns:**
-
-Derive tasks from stage objectives by identifying distinct work units that advance the stage toward completion.
+**Identification Patterns** → Derive tasks from stage objectives by identifying distinct work units that advance the stage toward completion:
 
 *Identification process:*
 1. Review stage objective and required deliverables
@@ -244,14 +228,12 @@ Derive tasks from stage objectives by identifying distinct work units that advan
 4. Assess each potential task against granularity considerations
 
 *Work unit characteristics:*
-- **Meaningful deliverable:** Produces something concrete — functional code, configured system, documentation artifact, validated integration, research findings — not just "progress" or partial work
+- **Meaningful deliverable:** Produces something concrete - functional code, configured system, documentation artifact, validated integration, research findings - not just "progress" or partial work
 - **Domain coherence:** Belongs to a single Agent's domain; requires one consistent skill set or mental model throughout
 - **Clear boundaries:** Has identifiable start conditions (dependencies satisfied, inputs available) and end conditions (validation criteria met)
 - **Validation coverage:** Can be validated through defined criteria that meaningfully confirm the deliverable is complete and correct
 
-**Granularity Standards:**
-
-Task granularity requires balancing two failure modes: **task packing** (too much in one task) and **over-decomposition** (too many tiny tasks). Neither extreme serves project execution well.
+**Granularity Standards** → Task granularity requires balancing two failure modes: **task packing** (too much in one task) and **over-decomposition** (too many tiny tasks). Neither extreme serves project execution well:
 
 *Validation and iteration:* The validation criteria enable Worker Agents to iterate on failures. Programmatic and Artifact validation allow autonomous correction cycles. User validation provides natural checkpoints where human judgment guides iteration. Task scope should align with the validation approach, matching the iteration pattern to the work's requirements.
 
@@ -282,11 +264,9 @@ Task granularity requires balancing two failure modes: **task packing** (too muc
 
 ### 2.7 Step Standards
 
-This subsection guides reasoning and decisions about steps within tasks. Steps organize work within a task and support failure tracing—they are not mini-tasks with independent validation.
+This subsection guides reasoning and decisions about steps within tasks. Steps organize work within a task and support failure tracing-they are not mini-tasks with independent validation.
 
-**Identification Patterns:**
-
-Derive steps from task objectives by identifying the ordered sub-units of work needed to produce the task's deliverable.
+**Identification Patterns** → Derive steps from task objectives by identifying the ordered sub-units of work needed to produce the task's deliverable:
 
 *Identification process:*
 1. Review task objective and required outputs
@@ -300,9 +280,7 @@ Derive steps from task objectives by identifying the ordered sub-units of work n
 - **Referenced:** Numbering allows specific step references in communication and failure tracing
 - **Shared validation:** Steps contribute to the task's validation criteria, not their own independent validation
 
-**Granularity Standards:**
-
-Step granularity requires balancing two failure modes: **over-abstraction** (steps too vague to aid execution) and **micro-decomposition** (trivial actions that add noise without value).
+**Granularity Standards** → Step granularity requires balancing two failure modes: **over-abstraction** (steps too vague to aid execution) and **micro-decomposition** (trivial actions that add noise without value):
 
 *Validation role:* Steps support the Agent's ability to trace validation failures to specific work. When validation fails, concrete steps help identify which part of the task needs correction. Design steps with this traceability in mind.
 
@@ -324,13 +302,11 @@ Step granularity requires balancing two failure modes: **over-abstraction** (ste
 - Would combining adjacent steps lose useful organizational clarity?
 - Would splitting this step improve the Agent's ability to execute or debug?
 
-**Step vs Sub-Task Check:** If a step requires its own validation before subsequent steps can proceed, it indicates task packing—the "step" is actually a separate task. See §2.6 Task Standards.
+**Step vs Sub-Task Check:** If a step requires its own validation before subsequent steps can proceed, it indicates task packing-the "step" is actually a separate task. See §2.6 Task Standards.
 
 **Default:** When signals are balanced, prefer concrete steps that aid failure tracing over vague or trivial ones.
 
-**Delegate Agent Steps:**
-
-When investigation, exploration, research or generally context-heavy and isolated work is needed within a task, include a delegation step using format: "Delegate Agent: <purpose>". See §4.5 Step Format.
+**Delegate Agent Steps:** When investigation, exploration, research or generally context-heavy and isolated work is needed within a task, include a delegation step using format: "Delegate Agent: <purpose>". See §4.5 Step Format.
 
 ### 2.8 Workload Distribution
 
@@ -341,9 +317,7 @@ During plan finalization, assess workload distribution across Agents to ensure n
 - Tasks span multiple sub-domains within the Agent's scope
 - Clear boundaries exist between task clusters
 
-**Subdivision Reasoning:**
-
-When considering Agent subdivision:
+**Subdivision Reasoning** → When considering Agent subdivision:
 - Identify natural sub-domain boundaries within the overloaded Agent's work
 - Ensure each sub-Agent has coherent, related tasks
 - Use descriptive names reflecting the sub-domain scope
@@ -369,16 +343,16 @@ Handle work that falls at the boundary between Agent scope and User scope.
 
 ## 3. Work Breakdown Procedure
 
-This section defines the sequential actions that accomplish Work Breakdown. The procedure transforms gathered context into the Implementation Plan and `{AGENTS_FILE}`.
+This section defines the sequential actions that accomplish Work Breakdown. The procedure transforms gathered context into the Implementation Plan and ``{AGENTS_FILE}``.
 
 **Progression Gates:** Each action must complete before proceeding to the next. No skipping or batching unless explicitly instructed by User.
 
 **Deliberation Scaling:** Reasoning depth matches decision complexity. All decisions trace to Context Gathering inputs and Operational Standards guidance. Use "User specified/requested during Context Gathering" attribution where applicable.
 
-**Forced Chain-of-Thought Output:** All analysis must be presented in chat before file output—think in chat, commit to file. Use reasoning triggers like "This task depends on X because [reason]" or "Assigning to Agent because [justification]" per §2.1 Forced Chain-of-Thought Methodology. Reasoning draws from the relevant Operational Standards subsection (§2.4-2.9). Each procedure step shows the expected output format.
+**Forced Chain-of-Thought Output:** All analysis must be presented in chat before file output-think in chat, commit to file. Use reasoning triggers like "This task depends on X because [reason]" or "Assigning to Agent because [justification]" per §2.1 Forced Chain-of-Thought Methodology. Reasoning draws from the relevant Operational Standards subsection (§2.4-2.9). Each procedure step shows the expected output format.
 
 **Procedure:**
-1. Standards Analysis → Write to `{AGENTS_FILE}`
+1. Standards Analysis → Write to ``{AGENTS_FILE}``
 2. Specifications Analysis → Create `Specifications.md`
 3. Implementation Plan Header → Update Implementation Plan header
 4. Domain Analysis → Update Implementation Plan header (Agents field)
@@ -395,12 +369,12 @@ Perform the following actions:
 1. Analyze standards from Context Gathering and present reasoning in chat:
    ```
    **Standards Analysis:**
-   - Existing `{AGENTS_FILE}`: [Yes - contents to preserve outside APM_STANDARDS block / No - new file will be created]
+   - Existing ``{AGENTS_FILE}``: [Yes - contents to preserve outside APM_STANDARDS block / No - new file will be created]
    - [Category]: [standards] → APM_STANDARDS because User specified [requirement] during Context Gathering / [applies universally]
    - [Category]: [standards] → Task guidance because User requested [specific approach] for [certain work]
    - ...
    ```
-2. Write APM_STANDARDS block to `{AGENTS_FILE}`:
+2. Write APM_STANDARDS block to ``{AGENTS_FILE}``:
    - If file exists: Preserve existing content outside block, append APM_STANDARDS block
    - If creating new: Create file with APM_STANDARDS block only
    - Use markdown headings for categories, determine relevant sections based on gathered context
@@ -471,9 +445,7 @@ Perform the following actions:
 
 ### 3.5 Stage Analysis
 
-Apply the Stage Standards and Task Standards guidance when executing these actions. See §2.5 Stage Standards and §2.6 Task Standards.
-
-Identify all stages and their tasks upfront. Detailed task breakdown occurs later. See §3.6 Stage Cycle Protocol.
+Apply the Stage Standards and Task Standards guidance when executing these actions. See §2.5 Stage Standards and §2.6 Task Standards. Identify all stages and their tasks upfront. Detailed task breakdown occurs later. See §3.6 Stage Cycle Protocol.
 
 Perform the following actions:
 1. Present stage structure with task identification in chat. For each stage:
@@ -494,11 +466,7 @@ Perform the following actions:
 
 ### 3.6 Stage Cycle Protocol
 
-This protocol governs how stage documentation cycles flow. For each stage defined earlier, complete detailed task breakdown. See §3.5 Stage Analysis for the stage list. Execute this cycle in stage order, completing all tasks for the current stage before proceeding to the next.
-
-Apply the Task Standards and Step Standards guidance when executing these actions. See §2.6 Task Standards and §2.7 Step Standards.
-
-**Output Protocol:** Reasoning happens in chat; file output contains structured definitions only. File writes interrupt continuous reasoning, providing fresh perspective for subsequent analysis.
+This protocol governs how stage documentation cycles flow. For each stage defined earlier, complete detailed task breakdown. See §3.5 Stage Analysis for the stage list. Execute this cycle in stage order, completing all tasks for the current stage before proceeding to the next. Apply the Task Standards and Step Standards guidance when executing these actions. See §2.6 Task Standards and §2.7 Step Standards.
 
 Perform the following actions:
 1. State context integration for current stage:
@@ -596,12 +564,12 @@ Perform the following actions:
 After Plan Review, present artifacts for User approval and complete the procedure.
 
 Perform the following actions:
-1. Pause for User review. Direct User to review `{AGENTS_FILE}` for universal standards, `Specifications.md` for design decisions and constraints, `Implementation_Plan.md` for task breakdown, and chat history for reasoning trace. Output the finalization checkpoint:
+1. Pause for User review. Direct User to review ``{AGENTS_FILE}`` for universal standards, `Specifications.md` for design decisions and constraints, `Implementation_Plan.md` for task breakdown, and chat history for reasoning trace. Output the finalization checkpoint:
    ```
    Work Breakdown complete. Artifacts created [updated if after modifications].
 
    Please review the following artifacts:
-   - **`{AGENTS_FILE}`** for project standards accuracy and completeness
+   - **``{AGENTS_FILE}``** for project standards accuracy and completeness
    - **`Specifications.md`** for design decisions and constraints accuracy
    - **Implementation Plan** (.apm/Implementation_Plan.md) with [N] stages and [M] tasks
 
@@ -627,7 +595,7 @@ This section defines the output formats for artifacts produced during Work Break
 
 ### 4.1 APM_STANDARDS Block
 
-The namespace block structure for `{AGENTS_FILE}`:
+The namespace block structure for ``{AGENTS_FILE}``:
 ```
 APM_STANDARDS {
 
@@ -660,8 +628,8 @@ The structure for `.apm/Specifications.md`:
 - **Structure:** Use markdown headings (`##`) for major categories, determine relevant sections based on gathered context
 - **Specificity:** Each specification must be concrete and actionable
 - **Consistency:** Use consistent terminology and formatting across all specifications
-- **Scope:** Project-specific design decisions and constraints that inform the Implementation Plan. Content categories vary by project—include what is relevant to this project's coordination needs.
-  - **Exclude:** Universal standards (`{AGENTS_FILE}` scope), task-specific guidance (Implementation Plan scope)
+- **Scope:** Project-specific design decisions and constraints that inform the Implementation Plan. Content categories vary by project-include what is relevant to this project's coordination needs.
+  - **Exclude:** Universal standards (``{AGENTS_FILE}`` scope), task-specific guidance (Implementation Plan scope)
 - **References:** When User has existing specification documents, reference them rather than duplicating content
 
 ### 4.3 Stage Format
@@ -680,8 +648,8 @@ Each task in the Implementation Plan follows this format:
 * **Task Header:** `### Task <N.M>: <Title> - <Domain> Agent`
 * **Task Contents:**
 ```
-* **Objective:** Single-sentence task goal — what this task accomplishes.
-* **Output:** Concrete deliverables — files, components, artifacts functionality produced.
+* **Objective:** Single-sentence task goal - what this task accomplishes.
+* **Output:** Concrete deliverables - files, components, artifacts functionality produced.
 * **Validation:** Binary pass/fail criteria. Specify type(s): Programmatic, Artifact, and/or User per §2.3 Validation Types.
 * **Guidance:** Technical constraints, approach specifications, references to existing patterns.
 * **Dependencies:** Prior task knowledge, outputs or deliverables required.
@@ -710,8 +678,8 @@ When investigation, exploration, research or generally context-heavy and isolate
 
 * **Format:** "Delegate Agent: <purpose>"
 * **Delegation Usage Patterns and Skill References:**
-  - **Debug delegation:** For complex bugs that require isolated debugging focus. Include skill reference: {SKILL_PATH:delegate-debug}
-  - **Research delegation:** For knowledge gaps that require research to inform later steps. Include skill reference: {SKILL_PATH:delegate-research}
+  - **Debug delegation:** For complex bugs that require isolated debugging focus. Include skill reference: `{SKILL_PATH:delegate-debug}`
+  - **Research delegation:** For knowledge gaps that require research to inform later steps. Include skill reference: `{SKILL_PATH:delegate-research}`
   - **Refactor delegation:** For code restructuring or clean-up requiring an isolated refactoring scope. Include skill reference if a relevant skill exists.
   - **Other delegation:** For any other context-heavy or investigation step not covered above, clearly describe the specific purpose and scope of the delegation step in the task.
 * **Skill Reference Requirement:** Always include the relevant delegation skill reference for debug and research steps as shown. For other and refactor, add skill references if available and be explicit about the purpose.
@@ -728,7 +696,7 @@ When investigation, exploration, research or generally context-heavy and isolate
 - All fields populated, no placeholders
 - Consistent naming and terminology
 
-**`{AGENTS_FILE}`:**
+**``{AGENTS_FILE}``:**
 - Only genuinely universal standards
 - Concrete and actionable (not "write good code")
 - No duplication of existing project standards in the file; reference instead
