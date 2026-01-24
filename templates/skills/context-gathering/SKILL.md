@@ -1,6 +1,6 @@
 ---
 name: context-gathering
-description: Project discovery through structured elicitation of requirements, constraints, and context. Defines the Context Gathering procedure for the Planner Agent.
+description: Project discovery through structured elicitation of requirements, constraints, and context. Defines the Context Gathering Procedure for the Planner Agent.
 ---
 
 # APM {VERSION} - Context Gathering Skill
@@ -35,7 +35,7 @@ Gather sufficient context across four categories:
 - **Leverage existing material:** Before beginning Question Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{AGENTS_FILE}`). If any are found, prompt the User to confirm which materials are relevant to the project, then read those files and use the findings to avoid asking redundant questions.
 - **Adapt to context:** Adapt language and depth to project size, type and user expertise
 - **Iterate within Question Rounds:** Use iterative follow-up questions based on User responses to fill gaps in current Question Round - not later
-- **Research when blocked:** When user clarification is insufficient, apply the research delegation standards. See §2.8 Research Delegation Standards.
+- **Research when blocked:** When user clarification is insufficient, apply research delegation standards per §2.8 Research Delegation Standards.
 
 ---
 
@@ -151,7 +151,7 @@ Ready to proceed to Question Round [N+1].
 
 After completing Rounds 1 and 2 and displaying the Round Completion text block, immediately begin the next Question Round's Initial Questions.
 
-After completing Round 3 and displaying the Round Completion text block, immediately proceed to Procedure Checkpoint. See §3.5 Procedure Checkpoint.
+After completing Round 3 and displaying the Round Completion text block, immediately proceed to §3.5 Final Validation.
 
 ### 2.4 Context Categorization
 
@@ -257,7 +257,6 @@ Adapt questioning depth based on project characteristics and User signals.
 ### 2.6 Planning Perspective
 
 While maintaining natural conversation, internally consider how gathered information translates to Implementation Plan elements:
-
 - **Task Granularity:** How to break work into focused tasks that Worker Agents can execute independently
 - **Agent Specialization:** What domain boundaries make sense for assigning different Worker Agents
 - **Domain Organization:** Whether related domains benefit from unified handling (tighter coordination) or separation (parallel progress)
@@ -270,7 +269,6 @@ While maintaining natural conversation, internally consider how gathered informa
 ### 2.7 Validation Criteria Types
 
 Context Gathering gathers validation criteria that will be categorized into three types for the Implementation Plan:
-
 - **Programmatic**: Automated verification - tests pass, builds succeed, CI checks pass, scripts execute correctly, linting passes, type checking succeeds
 - **Artifact**: File/output existence and structure - documentation exists, config files present, deliverables have required format and sections, schemas validate
 - **User**: Human judgment required - design approval, content review, architectural decisions, subjective quality assessment
@@ -299,7 +297,7 @@ Choose approach based on scope:
 - **Delegation:** Bounded scope, specific question, needs dedicated focus (e.g., research best practices for a specific technology or existing codebase too large to explore quickly)
 - **Note for Plan:** Large scope, multiple questions, or research is central to project (leave as research task in Implementation Plan)
 
-**Delegation Request:** When delegation is appropriate, output a Delegation Request text block. See §3.7 Delegation Handling.
+**Delegation Request:** When delegation is appropriate, output a Delegation Request text block. See §3.6 Delegation Handling.
 
 ---
 
@@ -307,7 +305,7 @@ Choose approach based on scope:
 
 This section defines the sequential actions that accomplish Context Gathering. The procedure transforms User responses into structured context for the Implementation Plan.
 
-**Progression Gates:** Each action must complete before proceeding to the next. No skipping or batching unless explicitly instructed by User.
+**Progression gates:** Each action must complete before proceeding to the next. No skipping or batching unless explicitly instructed by User.
 
 **Output in Chat:** Present round completions (§2.3 Gap Identification and Round Advancement Standards), understanding summaries (§4.1 Understanding Summary Format), and delegation requests (§2.8 Research Delegation Standards) using the output formats. Reasoning draws from §2 Operational Standards for interpretation guidance and decision rules.
 
@@ -316,9 +314,8 @@ This section defines the sequential actions that accomplish Context Gathering. T
 2. Question Round 1 → Existing Materials and Vision
 3. Question Round 2 → Technical Requirements
 4. Question Round 3 → Implementation Approach and Quality
-5. Procedure Checkpoint → Understanding Summary presentation and modification handling
-6. Procedure Completion → Progression Gate to `{SKILL_PATH:work-breakdown}`
-7. Delegation Handling → Research delegation procedure when invoked from Question Rounds
+5. Final Validation → Understanding Summary presentation, modification handling, and procedure completion
+6. Delegation Handling → Research delegation procedure when invoked from Question Rounds
 
 ### 3.1 Question Round Protocol
 
@@ -351,7 +348,7 @@ When gathering validation criteria, consider which validation type(s) will apply
 - If success means a file or artifact exists with correct and expected structure and data → Artifact
 - If success requires human judgment or approval → User
 
-Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Procedure Checkpoint. See §3.5 Procedure Checkpoint.
+Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Final Validation per §3.5 Final Validation.
 
 Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
 
@@ -493,15 +490,14 @@ After each User response, assess:
 
 **Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §2.8 Research Delegation Standards.
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Procedure Checkpoint, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §2.3 Gap Identification and Round Advancement Standards.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Final Validation, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §2.3 Gap Identification and Round Advancement Standards.**
 
-### 3.5 Procedure Checkpoint
+### 3.5 Final Validation
 
 After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to `{SKILL_PATH:work-breakdown}`.
 
 Perform the following actions:
-
-1. Present the Understanding Summary consolidating all gathered context. See §4.1 Understanding Summary Format.
+1. Present the Understanding Summary consolidating all gathered context per §4.1 Understanding Summary Format.
 2. Immediately after the summary, output the following checkpoint:
    ```
    **Question Rounds 1-3 complete.** Understanding presented [updated if after modifications].
@@ -514,20 +510,17 @@ Perform the following actions:
    ```
 3. Handle User response:
    - If User requests modifications → Identify which Question Round's focus area the modification relates to → Use that Round's questioning approach for targeted follow-ups → Update relevant summary sections → Return to step 1 with updated summary → Output the updated checkpoint from step 2
-   - If User approves (or indicates no modifications needed) → Proceed to §3.6 Procedure Completion
+   - If User approves → Output the procedure completion and proceed to step 4
+4. Output the procedure completion. This is a **progression gate**—do not proceed until this output is presented:
+   ```
+   **Context Gathering Procedure complete.** All Question Rounds completed. Project context gathered and validated.
 
-### 3.6 Procedure Completion
-
-Output the procedure completion. This is a **Progression Gate** - do NOT proceed to `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure until this output is presented:
-```
-**Context Gathering Procedure complete.** All Question Rounds completed. Project context gathered and validated.
-
-Next: `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure
-```
+   Next: `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure
+   ```
 
 **Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
-### 3.7 Delegation Handling
+### 3.6 Delegation Handling
 
 Invoked when research delegation is appropriate per §2.8 Research Delegation Standards.
 
@@ -544,10 +537,7 @@ Here's what I need to understand: <Specific question>. This information will hel
 Would you like to approve the delegation, or would you prefer I note this as a research task in the Implementation Plan instead? If the scope is small, I could also explore this myself using file tools.
 ```
 
-**If User approves delegation:**
-
-Perform the following actions:
-
+**If User approves delegation** → Perform the following actions:
 1. Check if `.apm/Memory/Stage_00_Planning/` exists. If not, create it (first delegation only). This directory stores delegation logs during the Planning Phase.
 2. Read the Research Delegation skill: {SKILL_PATH:delegate-research}
 3. Provide the User the Delegation Prompt following the skill. User then opens Delegate Agent Session and provides delegated research task.
@@ -557,19 +547,11 @@ Perform the following actions:
 7. Read the Delegation Memory Log at provided path.
 8. Integrate findings into current Question Round.
 
-**If User declines:**
-
-Perform the following actions:
-
+**If User declines** → Perform the following actions:
 1. Note the research question as Implementation Plan requirement.
 2. Continue with current Question Round using available information.
 
-**If User selects self-research:**
-
-Only appropriate when scope is small and can be completed quickly. Prioritize context preservation; if research requires reading many files or extensive exploration, recommend delegation or note as Implementation Plan requirement.
-
-Perform the following actions:
-
+**If User selects self-research** → Only appropriate when scope is small and can be completed quickly. Prioritize context preservation; if research requires reading many files or extensive exploration, recommend delegation or note as Implementation Plan requirement. Perform the following actions:
 1. Identify the specific question to answer.
 2. Use available tools to explore codebase, read documentation.
 3. Stop if scope expands beyond initial estimate; recommend delegation.
@@ -583,7 +565,7 @@ This section defines the output format for the Understanding Summary.
 
 ### 4.1 Understanding Summary Format
 
-Output during Procedure Checkpoint (§3.5 Procedure Checkpoint) for User review:
+Output during Final Validation (§3.5) for User review:
 ```
 ## Understanding Summary:
 

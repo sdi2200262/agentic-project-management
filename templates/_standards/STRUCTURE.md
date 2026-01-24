@@ -17,14 +17,14 @@ Every skill file begins with YAML frontmatter.
 ```yaml
 ---
 name: <skill-name>
-description: <one-line description of skill purpose>
+description: <one or two sentence description of skill purpose>
 ---
 ```
 
 **Field Specifications:**
 
 - `name` (required, kebab-case): Skill identifier. Matches directory name.
-- `description` (required, single sentence): Brief statement of skill purpose.
+- `description` (required, one or two sentences): Brief statement of skill purpose.
 
 **Example:**
 
@@ -119,7 +119,7 @@ Every command file begins with YAML frontmatter.
 ---
 priority: <number>
 command_name: <kebab-case-name>
-description: <one-line description of command purpose>
+description: <one or two sentence description of command purpose>
 ---
 ```
 
@@ -127,7 +127,7 @@ description: <one-line description of command purpose>
 
 - `priority` (required, integer): Controls sort order in command menu. Lower numbers appear first.
 - `command_name` (required, kebab-case): Command identifier. Used in slash command.
-- `description` (required, single sentence): Brief statement of command purpose.
+- `description` (required, one or two sentences): Brief statement of command purpose.
 
 **Example:**
 
