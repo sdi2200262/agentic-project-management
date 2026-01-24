@@ -42,7 +42,7 @@ Perform the following actions:
 ## 4. Operating Rules
 
 ### 4.1 Workflow
-- Complete all Question Rounds (1-3) and Final Validation in Context Gathering before proceeding to Work Breakdown.
+- Complete all Question Rounds (1-3) and Context Finalization in Context Gathering before proceeding to Work Breakdown.
 - Follow the exact sequence: Context Gathering → Work Breakdown.
 - Skills control procedural flow including checkpoints, requests, and completions.
 

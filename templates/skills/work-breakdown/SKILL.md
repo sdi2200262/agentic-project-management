@@ -117,18 +117,21 @@ Each input category translates to specific artifacts:
 
 Validation criteria gathered during context discovery fall into three types. Most tasks combine multiple types.
 
-**Programmatic:** Automated verification that can be executed without human judgment.
+**Programmatic:**
+Automated verification that can be executed without human judgment.
 - Tests pass, builds succeed, CI checks pass
 - Scripts execute correctly, linting passes, type checking succeeds
 - Endpoints return expected responses, data validates against schemas
 
-**Artifact:** File or output existence and structural verification.
+**Artifact:**
+File or output existence and structural verification.
 - Documentation exists with required sections
 - Config files present and valid
 - Deliverables have correct format and structure
 - Generated outputs match expected patterns
 
-**User:** Human judgment required for subjective or strategic decisions.
+**User:**
+Human judgment required for subjective or strategic decisions.
 - Design approval, content review
 - Architectural decisions, approach validation
 - Subjective quality assessment
@@ -381,16 +384,14 @@ This section defines the sequential actions that accomplish Work Breakdown. The 
 4. Domain Analysis → Update Implementation Plan header (Agents field)
 5. Stage Analysis → Identify ALL stages with objectives AND tasks, update header (Stages field)
 6. Stage Cycles → Per stage: detailed task breakdown, append to Implementation Plan body
-7. Plan Finalization → Workload review, dependency review
-8. User Approval → Direct to review
-9. Procedure Checkpoint → Present artifacts, handle modifications or complete session
+7. Plan Review → Workload distribution, cross-Agent dependency review
+8. Artifact Finalization → User approval, procedure completion
 
 ### 3.1 Standards Analysis
 
 Apply the APM_STANDARDS Block format when executing these actions. See §4.1 APM_STANDARDS Block.
 
 Perform the following actions:
-
 1. Analyze standards from Context Gathering and present reasoning in chat:
    ```
    **Standards Analysis:**
@@ -411,7 +412,6 @@ Perform the following actions:
 Apply the Specifications Format when executing these actions. See §4.2 Specifications Format.
 
 Perform the following actions:
-
 1. Analyze specifications from Context Gathering and present reasoning in chat:
    ```
    **Specifications Analysis:**
@@ -432,7 +432,6 @@ Perform the following actions:
 ### 3.3 Implementation Plan Header
 
 Perform the following actions:
-
 1. Determine project name from Context Gathering:
    - If User specified a project name during Context Gathering: Use that name exactly as provided
    - If no name specified: Generate a concise, descriptive name based on project type, deliverable, and primary purpose from Context Gathering findings
@@ -451,7 +450,6 @@ Perform the following actions:
 Apply the Domain Standards guidance when executing these actions. See §2.4 Domain Standards.
 
 Perform the following actions:
-
 1. Present domain decisions in chat:
    ```
    **Domain Analysis:**
@@ -478,7 +476,6 @@ Apply the Stage Standards and Task Standards guidance when executing these actio
 Identify all stages and their tasks upfront. Detailed task breakdown occurs later. See §3.6 Stage Cycle Protocol.
 
 Perform the following actions:
-
 1. Present stage structure with task identification in chat. For each stage:
    ```
    **Stage Analysis:**
@@ -504,7 +501,6 @@ Apply the Task Standards and Step Standards guidance when executing these action
 **Output Protocol:** Reasoning happens in chat; file output contains structured definitions only. File writes interrupt continuous reasoning, providing fresh perspective for subsequent analysis.
 
 Perform the following actions:
-
 1. State context integration for current stage:
    ```
    **Stage Context:**
@@ -547,11 +543,12 @@ Perform the following actions:
 
 **Proceed to next stage. See §3.5 Stage Analysis for the stage list. Repeat steps 1-3 until all stages documented.**
 
-### 3.7 Plan Finalization
+### 3.7 Plan Review
+
+After completing all Stage Cycles, review the plan for workload distribution and cross-Agent dependencies.
 
 Perform the following actions:
-
-1. **Workload Assessment:** Count tasks per Agent. Flag Agents with 8+ tasks for subdivision review. See §2.8 Workload Distribution.
+1. **Workload Assessment:** Count tasks per Agent. Flag Agents with 8+ tasks for subdivision review per §2.8 Workload Distribution.
 2. **Agent Subdivision (if needed):**
    - Analyze overloaded Agent's tasks for sub-domain boundaries
    - Create coherent sub-Agents using descriptive names following `[Name] Agent` convention
@@ -594,24 +591,12 @@ Perform the following actions:
    * **Cross-Agent Dependencies:** [count]
    ```
 
-### 3.8 User Approval
+### 3.8 Artifact Finalization
+
+After Plan Review, present artifacts for User approval and complete the procedure.
 
 Perform the following actions:
-
-1. Direct User to review:
-   - `{AGENTS_FILE}` for universal standards
-   - `Specifications.md` for design decisions and constraints
-   - Implementation Plan for task breakdown
-   - Chat history for reasoning trace
-2. Proceed to §3.9 Procedure Checkpoint.
-
-### 3.9 Procedure Checkpoint & Completion
-
-After completing `{AGENTS_FILE}`, `Specifications.md`, and the Implementation Plan, output the checkpoint. This Procedure Checkpoint also serves as the Completion for the Procedure, the Session and Planning Phase.
-
-Perform the following actions:
-
-1. Present the work breakdown results to the User using the following output block:
+1. Pause for User review. Direct User to review `{AGENTS_FILE}` for universal standards, `Specifications.md` for design decisions and constraints, `Implementation_Plan.md` for task breakdown, and chat history for reasoning trace. Output the finalization checkpoint:
    ```
    Work Breakdown complete. Artifacts created [updated if after modifications].
 
@@ -626,9 +611,13 @@ Perform the following actions:
 
    **If no modifications** → Planning Phase is complete. Proceed to initialize the Manager Agent using the `/apm-2-initiate-manager` command.
    ```
-2. Handle User response:
    - If User requests modifications → Update artifacts → Return to step 1 with updated state
-   - If User proceeds to Manager Agent (or indicates no modifications) → Session is complete, no further output needed
+   - If User proceeds to Manager Agent (or indicates no modifications) → Output procedure completion and end session:
+     ```
+     **Work Breakdown Procedure complete.** All Coordination Artifacts created and validated.
+
+     Next: Initialize Manager Agent using `/apm-2-initiate-manager` command.
+     ```
 
 ---
 
