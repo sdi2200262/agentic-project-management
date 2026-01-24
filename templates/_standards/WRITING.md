@@ -250,7 +250,21 @@ Introductory sentence:
 - List item two
 ```
 
-**Bold sub-topics:** Bold title appears on same line with content, lists directly under with no blank line:
+**Bold sub-topics:** When bold indicates a subsection marker within a ### heading, it appears on its own line followed by content:
+```
+**Subsection Title:**
+
+Content paragraph or list follows after blank line.
+```
+
+**Bold conditionals:** When bold indicates conditional logic (If X, When Y), use arrow notation without colon after bold:
+```
+**If condition** → Perform the following actions:
+1. Action one.
+2. Action two.
+```
+
+**Bold with inline content:** When bold introduces content on the same line, lists follow directly with no blank line:
 ```
 **Title:** Content begins here on same line.
 - List item one
