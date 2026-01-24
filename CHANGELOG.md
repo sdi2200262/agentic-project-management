@@ -7,6 +7,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [0.5.4] - 2026-01-24
+
+### Added
+
+* **Google Antigravity Support:** Added support for Google Antigravity IDE with Markdown format commands in `.agent/workflows` directory. CLI now supports 11 AI assistants.
+
+### Changed
+
+* **Bootstrap Prompt Deprecation:** Removed the Bootstrap Prompt artifact from Setup Phase. Manager Agent now detects session type (first session vs handover) by reading `Memory_Root.md` and checking if the Project Overview field contains placeholder text or actual content.
+* **Streamlined Setup Phase Completion:** Setup Agent now presents 3 options after Implementation Plan presentation (plan looks good / modifications needed / systematic review requested) instead of requiring separate approval step.
+* **Manager Agent Initialization:** Manager Agent now reads Memory Root to determine session type and follows appropriate initialization path (first session vs handover) automatically.
+* **Handover Process:** Simplified Manager Agent Handover Prompt template with explicit Memory Logs reading instructions.
+
+### Removed
+
+* **Bootstrap Prompt:** Removed the copy-paste Bootstrap Prompt artifact between Setup Agent and Manager Agent. Context transfer now handled via Memory Root detection.
+
+---
+
 ## [0.5.3] - 2025-12-05
 
 ### Fixed
@@ -44,7 +63,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * **`apm init` Command:** Automates project setup, including AI assistant selection, asset download from GitHub Releases, and creation of the `.apm` directory structure (`.apm/guides`, `.apm/Memory`, `.apm/Implementation_Plan.md`, `.apm/metadata.json`). By default, automatically finds and installs the latest template version compatible with the current CLI version. Supports `--tag <tag>` option for installing specific template versions (e.g., `apm init --tag v0.5.0+templates.1`).
 * **`apm update` Command:** Allows users to update their local APM installation to the latest compatible template version. Includes intelligent version compatibility checking that compares installed templates against available releases, only updating if a newer compatible build exists. Informs users when newer templates require a CLI update via `npm update -g agentic-pm`. Includes backup and restore functionality for safe updates.
 * **Version Compatibility System:** Dynamic CLI version reading from `package.json` with automatic template version matching. The CLI automatically finds templates compatible with the running CLI version and compares build numbers for update decisions.
-* **Support for 10 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Gemini CLI, Qwen Code, opencode, Windsurf, Kilo Code, Auggie CLI, and Roo Code.
+* **Support for 11 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Gemini CLI, Qwen Code, opencode, Windsurf, Kilo Code, Auggie CLI, Roo Code, and Google Antigravity.
 * **Build Process (`npm run build`):** New script (`scripts/build.js`) processes source templates (`templates/`) into distributable bundles (`dist/`) for each assistant, handling formatting (Markdown/TOML) and placeholders.
 * **Metadata File (`.apm/metadata.json`):** Tracks the installed APM version (template tag) and selected AI assistant within the project.
 * **`Troubleshooting_Guide.md`:** Added a dedicated guide based on the v0.4 User Guide's troubleshooting section.
