@@ -32,7 +32,7 @@ This skill defines how Worker Agents and Delegate Agents log their work to the M
 
 **Task Memory Log:** Structured log written by Worker Agents after task execution. Captures outcome, validation results, deliverables, and flags for Manager attention. Location: `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
 
-**Delegation Memory Log:** Structured log written by Delegate Agents after completing delegated work. Captures findings, resolution, and integration notes for the calling agent. Location: `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
+**Delegation Memory Log:** Structured log written by Delegate Agents after completing delegated work. Captures findings, resolution, and integration notes for the Delegating Agent. Location: `.apm/Memory/Stage_<StageNum>_<Slug>/Delegation_Log_<StageNum>_<SequentialNum>_<Type>_<Slug>.md`
 
 ### 1.4 Reading This Skill
 
@@ -48,18 +48,14 @@ This section establishes reasoning approaches and decision rules for Memory Log 
 
 Boolean flags in YAML frontmatter signal conditions requiring Manager attention. Set flags based on what you observed during execution relative to your Task Assignment and working context.
 
-**Important Findings Assessment:**
-
-Flag findings that appear to have implications beyond your current task scope:
+**Important Findings Assessment** → Flag findings that appear to have implications beyond your current task scope:
 - Did execution reveal information not mentioned in your Task Assignment that seems relevant to the broader project?
 - Did you discover dependencies, risks, or constraints that your assignment didn't account for?
 - Did you encounter something that suggests other tasks or agents might be affected?
 
 You cannot know the full project context-flag anything that *seems* significant from your scoped view. The Manager has full artifact awareness and will assess actual impact.
 
-**Compatibility Issues Assessment:**
-
-Flag conflicts with existing systems you encountered during execution:
+**Compatibility Issues Assessment** → Flag conflicts with existing systems you encountered during execution:
 - Does your output conflict with existing code, patterns, or conventions you touched?
 - Did you discover integration concerns that might affect other parts of the system?
 - Are there breaking changes or migration requirements resulting from your work?
@@ -70,23 +66,21 @@ Flag conflicts with existing systems you encountered during execution:
 
 Status reflects outcome-whether the objective was achieved. Select status based on the end state, not effort expended.
 
-#### 2.2.1 Task Outcome Standards (Worker Agent)
+**Task Outcome Standards (Worker Agent)** → Consider what happened during task execution to select the appropriate status:
 
-Consider what happened during task execution to select the appropriate status.
-
-**Status Values:**
+*Status Values:*
 - **Success** - Objective achieved, all validation passed
 - **Failed** - Validation failed after iteration attempts
 - **Partial** - Intermediate state requiring Manager decision
 - **Blocked** - External factors prevent progress
 
-**Failure Point Values:** Indicates where/why the task didn't succeed:
+*Failure Point Values* → Indicates where/why the task didn't succeed:
 - `null` - No failure (Success only)
 - `Execution` - Failed during task work before validation
 - `Validation` - Work completed but validation criteria not met
 - `<description>` - Specific reason for Partial/Blocked status
 
-**Valid Combinations:**
+*Valid Combinations:*
 - Success + `null` → Objective achieved, all validation passed
 - Failed + `Execution` → Could not complete work properly
 - Failed + `Validation` → Work done, validation failed after iteration
@@ -97,40 +91,30 @@ Consider what happened during task execution to select the appropriate status.
 
 *Invalid:* Success with any failure_point other than `null`. Failed with `null` failure_point.
 
-**Partial Status Reasoning:**
-
-Partial represents an intermediate state where the Worker pauses to seek guidance rather than continuing iteration.
-
-**When to pause (use Partial):**
+*Partial Status Reasoning* → Partial represents an intermediate state where the Worker pauses to seek guidance rather than continuing iteration. Use Partial when:
 - Validation is ambiguous-some criteria passed, some failed, unclear if iteration will help
 - Important findings emerged that could affect other tasks or project direction
 - Iteration stalled-same failures recurring despite fix attempts
 - Approach uncertainty-multiple valid paths forward, choice depends on factors outside Worker's scope
 
-**When to continue iterating (don't log yet):**
+**Continue iterating (don't log yet) when:**
 - Validation failed but the cause is clear and fixable
 - No findings require Manager awareness
 - Progress is being made toward resolution
 
-#### 2.2.2 Delegation Outcome Standards (Delegate Agent)
+**Delegation Outcome Standards (Delegate Agent)** → Consider the delegation outcome:
 
-Consider the delegation outcome:
+*Status Values:*
+- **Resolved** - Issue solved, findings ready for integration by Delegating Agent
+- **Unresolved** - Issue not fully solved, partial findings available for Delegating Agent to assess
 
-**Status Values:**
-- **Resolved:** Issue solved, findings ready for integration by calling agent
-- **Unresolved:** Issue not fully solved, partial findings available for calling agent to assess
-
-**Unresolved Status Reasoning:**
-
-Use Unresolved when the delegated work did not fully solve the issue but produced partial findings. Document what was discovered, what remains unclear, and any observations that might help the calling agent or Manager determine next steps. The calling agent receives the findings and decides how to proceed-either incorporating partial results, requesting further investigation, or surfacing the issue to the Manager for coordination.
+*Unresolved Status Reasoning:* Use Unresolved when the delegated work did not fully solve the issue but produced partial findings. Document what was discovered, what remains unclear, and any observations that might help the Delegating Agent or Manager determine next steps. The Delegating Agent receives the findings and decides how to proceed-either incorporating partial results, requesting further investigation, or surfacing the issue to the Manager for coordination.
 
 ### 2.3 Detail Level Standards
 
 Calibrate detail to the log's purpose and audience.
 
-**Task Detail Level (Worker Agent):**
-
-Task Memory Logs serve the Manager Agent's coordination needs, not archival documentation. Calibrate detail to support coordination decisions.
+**Task Detail Level (Worker Agent):** Task Memory Logs serve the Manager Agent's coordination needs, not archival documentation. Calibrate detail to support coordination decisions.
 
 *Assessment Questions:*
 - Does this detail help the Manager understand what was accomplished?
@@ -141,14 +125,14 @@ Task Memory Logs serve the Manager Agent's coordination needs, not archival docu
 
 **Delegation Detail Level (Delegate Agent):**
 
-Delegation Memory Logs serve the calling agent's needs. Calibrate detail to the delegation request-if the calling agent requested comprehensive research findings, include them in full.
+Delegation Memory Logs serve the Delegating Agent's needs. Calibrate detail to the delegation request-if the Delegating Agent requested comprehensive research findings, include them in full.
 
 *Assessment Questions:*
-- What level of detail did the calling agent request?
-- Does the calling agent need this information to complete their task?
+- What level of detail did the Delegating Agent request?
+- Does the Delegating Agent need this information to complete their task?
 - Is this finding essential for the Integration Notes to make sense?
 
-*Default:* When uncertain, prefer including findings that support integration over brevity. The calling agent can skim if needed, but cannot recover omitted details.
+*Default:* When uncertain, prefer including findings that support integration over brevity. The Delegating Agent can skim if needed, but cannot recover omitted details.
 
 ---
 
@@ -158,21 +142,20 @@ This section defines the sequential actions for creating Memory Logs. Worker Age
 
 **Output Formats:** Memory Logs use the Task Memory Log Format or Delegation Memory Log Format per §4 Structural Specifications. Status and flag decisions draw from §2 Operational Standards.
 
-**Procedure Flow:**
-1. Task Memory Log Procedure (Worker Agents) OR
-2. Delegation Memory Log Procedure (Delegate Agents)
+**Procedure:**
+- Task Memory Log Procedure (Worker Agents)
+- Delegation Memory Log Procedure (Delegate Agents)
 
 ### 3.1 Task Memory Log Procedure (Worker Agent)
 
 After task execution, populate the Task Memory Log at the path provided in the Task Assignment (`memory_log_path`).
 
 Perform the following actions:
-
 1. Complete YAML frontmatter fields:
    - Set `agent` to your agent identifier
    - Set `task_id` to the task reference from the assignment
-   - Set `status` based on task outcome. See §2.2.1 Task Outcome Standards.
-   - Set `failure_point` based on where failure occurred (null if Success). See §2.2.1 Task Outcome Standards.
+   - Set `status` based on task outcome per §2.2 Outcome Standards.
+   - Set `failure_point` based on where failure occurred (null if Success) per §2.2 Outcome Standards.
    - Set boolean flags:
      - Set `delegation` to true if Delegate Agent delegation occurred
      - Set `important_findings` to true if discoveries appear to have implications beyond current task scope
@@ -195,7 +178,6 @@ After completing delegated work, create and populate the Delegation Memory Log.
 **Planning Phase Note:** For delegations initiated by Planner Agent (during `{SKILL_PATH:context-gathering}` or `{SKILL_PATH:work-breakdown}`), use stage `00` and directory `Stage_00_Planning/`. Example: `Delegation_Log_00_01_Research_Tech_Stack.md`
 
 Perform the following actions:
-
 1. Determine delegation log path:
    - Get stage number from Delegation Prompt context
    - Get next sequential delegation number: List existing `Delegation_Log_*` files in the stage directory and use the next sequential number (01 if none exist)
@@ -304,9 +286,9 @@ status: Resolved | Unresolved
 
 **Field Descriptions:**
 - `delegation_type`: Type of delegation performed
-- `delegating_agent`: Agent that initiated the delegation (e.g., `Backend Agent`, `Manager`)
+- `delegating_agent`: Delegating Agent that initiated the delegation (e.g., `Backend Agent`, `Manager`)
 - `stage`: Stage number where delegation was initiated
-- `status`: Delegation outcome per §2.2.2 Delegation Outcome Standards
+- `status`: Delegation outcome per §2.2 Outcome Standards
 
 **Markdown Body Template:**
 ```markdown
@@ -316,7 +298,7 @@ status: Resolved | Unresolved
 [1-2 sentences describing delegation outcome]
 
 ## Delegation Context
-[Why was this delegated? What was the calling agent trying to accomplish?]
+[Why was this delegated? What was the Delegating Agent trying to accomplish?]
 
 ## Findings
 [Key discoveries, solutions, or information gathered]
@@ -325,7 +307,7 @@ status: Resolved | Unresolved
 [How the issue was resolved, or why it remains unresolved]
 
 ## Integration Notes
-[Specific guidance for how the calling agent should integrate these findings]
+[Specific guidance for how the Delegating Agent should integrate these findings]
 ```
 
 ---
@@ -352,7 +334,7 @@ status: Resolved | Unresolved
 **Delegation Memory Log (Delegate Agent):**
 - **Findings:** ✗ "Found some issues with the code" → ✓ "Auth middleware fails on expired tokens due to missing refresh logic in `auth.js:45`"
 - **Resolution:** ✗ "Fixed it" → ✓ "Added token refresh check before validation. Tested with expired tokens-now returns 401 with refresh prompt."
-- **Integration Notes:** ✗ "Should work now" → ✓ "Calling agent should update error handling to catch new `TOKEN_REFRESH_NEEDED` error code."
+- **Integration Notes:** ✗ "Should work now" → ✓ "Delegating Agent should update error handling to catch new `TOKEN_REFRESH_NEEDED` error code."
 
 **Key Difference:** Good logging is specific, references artifacts by path, and states outcomes clearly. Poor logging is vague.
 
@@ -369,7 +351,7 @@ status: Resolved | Unresolved
 - **Missing artifact references:** When deliverables are produced, list file paths in the Output section.
 
 **Delegation Memory Log (Delegate Agent):**
-- **Vague Integration Notes:** The calling agent needs specific guidance on how to use your findings-not just "should work now."
+- **Vague Integration Notes:** The Delegating Agent needs specific guidance on how to use your findings-not just "should work now."
 - **Not explaining Unresolved status:** When Unresolved, clearly state what was discovered, what remains unclear, and what might help.
 
 ---

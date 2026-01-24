@@ -21,7 +21,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | **Manager Agent** | Agent Type responsible for coordination and orchestration. Single Agent, multiple Sessions. |
 | **Worker Agent** | Agent Type responsible for Task execution. Multiple Agents defined in Implementation Plan, multiple Sessions each. |
 | **Delegate Agent** | Agent Type responsible for isolated, focused work. Multiple Agents created on-demand, single Session each. |
-| **Calling Agent** | The Agent that initiates a Delegation. Can be Planner, Worker, or Manager. |
+| **Delegating Agent** | The Agent that initiates a Delegation. Can be Planner, Worker, or Manager. |
 | **Reading Agent** | The Agent Type(s) that use a particular Skill. Declared in Skill Overview. |
 
 **Agent Type Characteristics:**
@@ -100,7 +100,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | **Handoff Prompt** | Prompt instructing Incoming Agent how to reconstruct context. |
 | **Report** | Structured markdown message passed BACK to an agent after work completion. Two types exist: Task, Delegation. |
 | **Task Report** | Concise summary output by Worker for User to return to Manager. |
-| **Delegation Report** | Summary output by Delegate for User to return to Calling Agent. |
+| **Delegation Report** | Summary output by Delegate for User to return to Delegating Agent. |
 
 ---
 
@@ -111,7 +111,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | **Stage** | Milestone grouping of related Tasks representing a coherent project progression. |
 | **Task** | Discrete work unit with objective, deliverables, validation criteria, and dependencies. |
 | **Step** | Ordered sub-unit within a Task. Supports failure tracing but has no independent validation. |
-| **Delegation** | Isolated work unit assigned to a Delegate Agent by a Calling Agent. |
+| **Delegation** | Isolated work unit assigned to a Delegate Agent by a Delegating Agent. |
 | **Delegation Type** | Category of delegated work. Two primary types exist: Debug, Research. Custom types use Delegation Prompt description. |
 | **Debug Delegation** | Delegation for isolating and resolving complex bugs. Uses delegate-debug skill. |
 | **Research Delegation** | Delegation for investigating knowledge gaps using current sources. Uses delegate-research skill. |
@@ -339,7 +339,7 @@ Planner Agent can initiate Delegations during Planning Phase. See §1.4 Work Uni
 
 ### 3.3 Delegation Layer (Delegate Agent)
 
-Delegation applies to both Planning Phase (Planner as Calling Agent) and Implementation Phase (Manager or Worker as Calling Agent). See §1.4 Work Units for Delegation terminology.
+Delegation applies to both Planning Phase (Planner as Delegating Agent) and Implementation Phase (Manager or Worker as Delegating Agent). See §1.4 Work Units for Delegation terminology.
 
 **Procedures:**
 
@@ -360,7 +360,7 @@ Delegation applies to both Planning Phase (Planner as Calling Agent) and Impleme
 | Activity | Description |
 |----------|-------------|
 | Memory Logging | Create Delegation Memory Log with findings and integration notes. |
-| Delegation Reporting | Output Delegation Report for User to return to Calling Agent. |
+| Delegation Reporting | Output Delegation Report for User to return to Delegating Agent. |
 
 **Terms:**
 

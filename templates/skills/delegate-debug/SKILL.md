@@ -1,22 +1,22 @@
 ---
 name: delegate-debug
-description: Debug delegation methodology for isolating and resolving complex bugs. Defines how calling Agents create Debug Delegation Prompts.
+description: Debug delegation methodology for isolating and resolving complex bugs. Defines how Delegating Agents create Debug Delegation Prompts.
 ---
 
 # APM {VERSION} - Debug Delegation Skill
 
 ## 1. Overview
 
-**Reading Agent:** Worker Agent, Manager Agent (calling agents)
+**Reading Agent:** Worker Agent, Manager Agent (Delegating Agents)
 
-This skill defines how to delegate complex debugging work to a Delegate Agent. The calling Agent creates a Debug Delegation Prompt following this methodology; the Delegate Agent receives and executes it.
+This skill defines how to delegate complex debugging work to a Delegate Agent. The Delegating Agent creates a Debug Delegation Prompt following this methodology; the Delegate Agent receives and executes it.
 
 ### 1.1 When to Use Debug Delegation
 
 Delegate debugging when:
 - Bug resists initial fix attempts (2-3 failed corrections)
 - Issue appears systemic or spans multiple components
-- Debugging would consume significant calling Agent context
+- Debugging would consume significant Delegating Agent context
 - Isolated focus would benefit the investigation
 
 Do NOT delegate when:
@@ -28,7 +28,7 @@ Do NOT delegate when:
 
 - Provide Delegate Agent with complete context to reproduce and investigate the bug
 - Enable autonomous debugging without requiring constant User coordination
-- Produce actionable findings (working fix or clear diagnosis) for calling Agent integration
+- Produce actionable findings (working fix or clear diagnosis) for Delegating Agent integration
 
 ### 1.3 Delegation Scope
 
@@ -56,7 +56,7 @@ A Debug Delegation Prompt must provide enough context for the Delegate to work a
 
 **Code Context:** Relevant file paths, code snippets, configuration. Point the Delegate to where the bug manifests and related components.
 
-**Prior Attempts:** What the calling Agent already tried and what happened. This prevents the Delegate from repeating failed approaches and provides diagnostic clues.
+**Prior Attempts:** What the Delegating Agent already tried and what happened. This prevents the Delegate from repeating failed approaches and provides diagnostic clues.
 
 ### 2.2 Delegation Framing Standards
 
@@ -66,7 +66,7 @@ A Debug Delegation Prompt must provide enough context for the Delegate to work a
 
 **Autonomy Boundaries:** The Delegate works autonomously but may collaborate with User when reproduction requires environment access or information outside their reach.
 
-**Outcome Expectations:** Either a working solution the calling Agent can apply, or documented findings explaining what was discovered and why resolution wasn't achieved.
+**Outcome Expectations:** Either a working solution the Delegating Agent can apply, or documented findings explaining what was discovered and why resolution wasn't achieved.
 
 ### 2.3 Prompt Creation Standards
 
@@ -125,7 +125,7 @@ Resolve this bug to enable Task continuation. Provide a working fix or, if unres
 <File paths, code snippets, configuration involved in the bug>
 
 ## Prior Debugging Attempts
-<What calling Agent tried and outcomes-prevents repeating failed approaches>
+<What Delegating Agent tried and outcomes-prevents repeating failed approaches>
 
 ## Execution Guidance
 - Use terminal and file system access to reproduce and debug actively
@@ -133,7 +133,7 @@ Resolve this bug to enable Task continuation. Provide a working fix or, if unres
 - Focus on resolution; if unresolvable after reasonable effort, document findings clearly
 
 ## Logging
-Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the calling Agent.
+Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the Delegating Agent.
 ```
 
 ### 3.2 Prompt Delivery
