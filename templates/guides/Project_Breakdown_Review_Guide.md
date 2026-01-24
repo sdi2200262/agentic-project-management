@@ -312,24 +312,12 @@ Based on the Implementation Plan I just created, I recommend systematic review f
 - List any task splits with before/after identification
 - Confirm readiness for next phase
 
-### 6.2. Final Approval Process
-**User review and approval:**
+### 6.2. Review Completion
+**Present the refined plan and complete Setup Phase:**
 
-1. **Present updated Implementation Plan** with all changes
-2. **Highlight major modifications** for user attention
-3. **Request explicit approval** to complete the Setup Phase
-4. **Address any user concerns** or additional changes
-5. **Confirm completion** when user approves
-
----
-
-## 7. Finalization
-**Prepare for Setup Phase Completion:**
-- Ensure the `Implementation_Plan.md` is in its final, clean state.
-- Confirm all task headers, agent assignments, and dependency tags are formatted correctly.
-
-**Setup Phase Completion:**
-- Output the **Setup Phase Completion Block** as defined in {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md} §3.2.
+1. **Present updated Implementation Plan** with all changes highlighted
+2. **State Setup Phase is complete** - direct User to initialize Manager Agent using `/apm-2-initiate-manager`
+3. If User requests additional changes, apply them and re-present
 
 ---
 

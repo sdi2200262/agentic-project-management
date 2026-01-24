@@ -65,26 +65,21 @@ Your role is to conduct project discovery and populate the Implementation Plan f
 - Agent assignment errors
 - Classification mistakes
 
-The systematic review will also highlight areas where your input is needed for optimization decisions. For now, please focus on identifying any major structural issues, missing requirements, or workflow problems that might not be caught by the systematic review. After your manual review, please state if you want to proceed with the systematic review or complete the Setup Phase. If you request modifications to the plan now, I will state the same prompt after applying them."
+The systematic review will also highlight areas where your input is needed for optimization decisions. For now, please focus on identifying any major structural issues, missing requirements, or workflow problems that might not be caught by the systematic review.
+
+**Your options:**
+- **Plan looks good** → Setup Phase is complete. Proceed to initialize Manager Agent using `/apm-2-initiate-manager`.
+- **Modifications needed** → Let me know what changes you'd like and I'll apply them.
+- **Systematic Review requested** → I'll perform the deep AI-driven review to catch task packing, classification errors, and other issues."
 
 **User Decision Point:**
-1. **Handle Immediate Issues:** If User identifies issues, iterate with User to address them until explicit confirmation that all issues are resolved
-2. **ALWAYS Present Systematic Review Choice:** After any manual modifications are complete (or if no issues were identified), ask User to choose:
-   - **Skip Systematic Review** and complete the Setup Phase to save tokens, or
-   - **Proceed to Systematic Review** by reading {GUIDE_PATH:Project_Breakdown_Review_Guide.md} and initiating the procedure following the guidelines
-3. **Proceed Based on Choice:** Continue to chosen next step
-4. Before proceeding, explicitly announce the chosen next step (e.g., "Next step: Project Breakdown Review & Refinement") or output the Setup Phase Completion Block (§2.1)
-
-### 2.1 Setup Phase Completion (Skip Review Path)
-If User chooses to skip systematic review, output the following **Completion Block**. This is the **Setup Phase Terminal State**:
-
-"**COMPLETE**: Setup Phase
-Summary: Project Breakdown finished. Implementation Plan created at `.apm/Implementation_Plan.md` with [N] phases and [M] tasks.
-Next: Initialize Manager Agent using the `/apm-2-initiate-manager` command."
+1. **Plan Approved (No Review):** If User indicates the plan looks good or proceeds to Manager Agent, the Setup Phase is complete. No additional output needed.
+2. **Modifications Requested:** Iterate with User to address issues until they indicate the plan is ready, then re-present the options above.
+3. **Systematic Review Requested:** Proceed to §3.
 
 ---
 
-## 3 Project Breakdown Review & Refinement Step (If User Chose Systematic Review)
+## 3 Project Breakdown Review & Refinement Step (If User Requested Systematic Review)
 
 ### 3.1 Systematic Review Execution
 1. Read {GUIDE_PATH:Project_Breakdown_Review_Guide.md}.
@@ -92,14 +87,12 @@ Next: Initialize Manager Agent using the `/apm-2-initiate-manager` command."
   - Apply immediate fixes for obvious errors
   - Collaborate with User for optimization decisions
 
-**User Approval Checkpoint:** After systematic review completion, present the refined Implementation Plan and **wait for explicit User approval**. Then proceed to §3.2 Setup Phase Completion.
+### 3.2 Review Completion
+After systematic review completion, present the refined Implementation Plan and state:
 
-### 3.2 Setup Phase Completion
-Output the following **Completion Block**. This is the **Setup Phase Terminal State**:
+"Systematic review complete. Implementation Plan refined at `.apm/Implementation_Plan.md` with [N] phases and [M] tasks.
 
-"**COMPLETE**: Setup Phase
-Summary: Project Breakdown Review finished. Implementation Plan refined at `.apm/Implementation_Plan.md` with [N] phases and [M] tasks.
-Next: Initialize Manager Agent using the `/apm-2-initiate-manager` command."
+**Setup Phase is complete.** Proceed to initialize Manager Agent using `/apm-2-initiate-manager`."
 
 ---
 
