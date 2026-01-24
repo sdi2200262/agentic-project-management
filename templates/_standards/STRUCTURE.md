@@ -195,7 +195,7 @@ Commands follow a variable structure based on purpose, with required opening and
 | Section Pattern | Content |
 |-----------------|---------|
 | §1 Overview | Role declaration, responsibilities. |
-| §2 Session Initiation | First Session vs Incoming Agent logic, artifact reading. |
+| §2 Session Initiation | First Session vs Incoming Agent logic, artifact reading. Worker Agent includes Worker Registration. |
 | §3+ [Core Procedures] | Main Procedures for this agent type. |
 | §N Operating Rules | Boundaries, communication, delegation capability. |
 
