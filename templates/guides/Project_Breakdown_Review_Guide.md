@@ -312,25 +312,12 @@ Based on the Implementation Plan I just created, I recommend systematic review f
 - List any task splits with before/after identification
 - Confirm readiness for next phase
 
-### 6.2. Final Approval Process
-**User review and approval:**
+### 6.2. Review Completion
+**Present the refined plan and complete Setup Phase:**
 
-1. **Present updated Implementation Plan** with all changes
-2. **Highlight major modifications** for user attention
-3. **Request explicit approval** to proceed to Manager Bootstrap Prompt Creation
-4. **Address any user concerns** or additional changes
-5. **Confirm completion** when user approves
-
----
-
-## 7. Finalization
-**Prepare for Bootstrap Prompt Creation:**
-- Ensure the `Implementation_Plan.md` is in its final, clean state.
-- Confirm all task headers, agent assignments, and dependency tags are formatted correctly.
-
-**Bootstrap Prompt Generation:**
-- Pass control back to the {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md} logic.
-- **Context Recovery:** When generating the Bootstrap Prompt, you must use the **EXACT TEMPLATE** from {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md}. If the template is degraded or missing from your context window, **READ {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md}** to retrieve it before generating the final artifact.
+1. **Present updated Implementation Plan** with all changes highlighted
+2. **State Setup Phase is complete** - direct User to initialize Manager Agent using `/apm-2-initiate-manager`
+3. If User requests additional changes, apply them and re-present
 
 ---
 

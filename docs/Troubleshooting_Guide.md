@@ -72,7 +72,7 @@ Troubleshooting during the Task Loop often requires context-aware solutions, as 
     * **If original Setup Agent session has context space:** Continue in that session.
     * **If original session is near full:** Start a **new Setup Agent session**. Repeat **Context Synthesis**, providing the original context, a summary of progress (including completed tasks from the Memory System), and the required changes.
     * **For both cases:** Instruct the Setup Agent to perform **Project Breakdown only on the sections needing revision**.
-    * Copy the **new Bootstrap Prompt** and provide it to the Manager Agent, explaining the major revisions.
+    * Once the Setup Agent confirms the plan is ready, initialize a new Manager Agent session and explain the major revisions to the plan.
 
 ---
 

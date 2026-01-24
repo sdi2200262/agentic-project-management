@@ -5,31 +5,33 @@ description: Initiates and guides a Manager Agent through the handover procedure
 ---
 
 # APM {VERSION} - Manager Agent Handover Prompt
+
 This prompt defines how Manager Agents execute handover procedures to transfer project coordination context to incoming Manager Agent instances when approaching context window limits.
 
 ---
 
-## 1 Handover Protocol Overview
-Manager Agent Handover Protocol enables seamless context transfer using a two-artifact system while Manager Agent Context Scope includes full project coordination awareness.
-- **Handover File:** active memory context not in formal logs or other artifacts
-- **Handover Prompt:** template with embedded instructions for incoming Manager Agent. 
+## 1  Handover Protocol Overview
 
+Manager Agent Handover Protocol enables seamless context transfer using a two-artifact system:
+- **Handover File:** Physical markdown file containing active memory context not in formal logs or other artifacts
+- **Handover Prompt:** In-chat markdown code block for copy-paste to the new Manager Agent session
 
 ---
 
-## 2 Handover Eligibility and Timing
+## 2  Handover Eligibility and Timing
+
 Handover procedures are only eligible when the current **complete task execution cycle** is finished. Manager Agent **MUST** have completed:
 
 ### Task Loop Cycle Completion Requirements
 - **Task Assignment issued** AND **Implementation Agent execution completed**
 - **Memory Log received back from User** with completed task results
-- **Memory Log thoroughly reviewed** for task completion status, issues, and outputs  
+- **Memory Log thoroughly reviewed** for task completion status, issues, and outputs
 - **Next action decision made** (continue with next task, follow-up prompt, ad-hoc delegation, or Implementation Plan update)
 
-### Handover Blocking Scenarios  
+### Handover Blocking Scenarios
 **Handover requests MUST be denied when Manager Agent is:**
 - **Waiting for task completion**: Task Assignment issued but Implementation Agent hasn't completed work yet
-- **Waiting for Memory Log**: Implementation Agent completed task but User hasn't returned with Memory Log yet  
+- **Waiting for Memory Log**: Implementation Agent completed task but User hasn't returned with Memory Log yet
 - **Mid-review process**: Memory Log received but review and next action decision incomplete
 - **Any other incomplete task coordination step**
 
@@ -39,27 +41,34 @@ When User requests Handover during non-eligible timing: **finish current critica
 
 ---
 
-## 3 Handover Execution Process
+## 3  Handover Execution Process
 
 ### Step 1: Handover Request Validation
-Assess current coordination state using section §2 criteria. If not eligible → deny request with completion requirements. If eligible → proceed to context gathering.
+Assess current coordination state using §2 criteria. If not eligible → deny request with completion requirements. If eligible → proceed to context gathering.
 
-### Step 2: Context Synthesis and Validation
-Synthesize current project state by reviewing Implementation Plan for phase status, Memory Root for coordination history, recent Memory Logs for agent outputs and dependencies.
+### Step 2: Context Synthesis
+Synthesize current project state by reviewing:
+- Implementation Plan for phase status
+- Memory Root for coordination history
+- Recent Memory Logs for agent outputs and dependencies
 
 ### Step 3: Artifact Creation
-Create Manager Handover File and Handover Prompt using templates in section §4. Follow file organization in section §5.
+Create Manager Handover File and Handover Prompt using templates in §4. Follow file organization in §5.
 
 ### Step 4: User Review and Finalization
 Present artifacts to User for review, accept modifications, confirm completeness before User executes handover procedure.
 
 #### Handover Procedure Overview
-After confirming completeness, User will open a new chat session, initialize a new Manager Agent instance and paste the Handover Prompt. This chat session will replace you as the Manager Agent for this APM session.
+After confirming completeness, User will:
+1. Open a new chat session
+2. Initialize a new Manager Agent instance using `/apm-2-initiate-manager`
+3. Paste the Handover Prompt when the incoming Manager Agent requests it
+
+This new session will replace you as the Manager Agent for this APM session.
 
 ---
 
-## 4 Manager Agent Handover Artifacts
-Create Generate Handover Artifacts following these templates:
+## 4  Manager Agent Handover Artifacts
 
 ### Handover Artifact Overview
 **Two distinct artifacts are created during handover:**
@@ -67,58 +76,47 @@ Create Generate Handover Artifacts following these templates:
 - **Handover File**: Created as **physical markdown file** in dedicated directory structure
 
 ### Manager Handover Prompt Template
+
 ```markdown
 # APM Manager Agent Handover - [Project Name]
-You are taking over as Manager Agent X+1 from [Outgoing Manager Agent X].
 
-## APM Context Integration Protocol
-Follow this sequence exactly. Steps 1-8 in one response. Step 9 after explicit User confirmation:
+You are taking over as Manager Agent [N+1] from Manager Agent [N].
 
-  **Plan Responsibilities & Project Understanding**
-  1. Read the entire `.apm/Implementation_Plan.md` file to understand project status and task assignments
-  2. Confirm your understanding of the project scope, phases, and task structure & your plan management responsibilities
+## Handover File
+Read the Handover File for active coordination context:
+`.apm/Memory/Handovers/Manager_Agent_Handovers/Manager_Agent_Handover_File_[N].md`
 
-  **Memory System Responsibilities**  
-  3. Read {GUIDE_PATH:Memory_System_Guide.md}
-  4. Read {GUIDE_PATH:Memory_Log_Guide.md}
-  5. Confirm your understanding of memory management responsibilities
-
-  **Task Coordination Preparation**
-  6. Read {GUIDE_PATH:Task_Assignment_Guide.md}  
-  7. Confirm your understanding of task assignment prompt creation and coordination duties
-
-  **Handover Context Integration**
-  8. Read Handover File ([path/Manager_Agent_Handover_File_X.md]) for active memory context of the outgoing agent not captured in formal logs
-  9. **State your understanding of the Project's state and your responsibilities** based on the guides and handover file, then **await for User confirmation** to proceed to the next step.
-
-## Cross-Reference Validation
-Compare Handover File active memory against Implementation Plan current state and Memory Log outcomes. Note contradictions for User clarification.
+## Memory Logs to Read
+Read the following recent Memory Logs from the current phase:
+- `.apm/Memory/Phase_XX_<slug>/[Task_Log_XX_YY_<slug>.md]`
+- `.apm/Memory/Phase_XX_<slug>/[Task_Log_XX_YY_<slug>.md]`
+[List recent logs relevant to understanding current state - typically last 2-3 completed tasks]
 
 ## Current Session State
 - **Phase:** [Name/Number] - [X/Y tasks complete]
 - **Active Agents:** [Agent_Name with current assignments]
 - **Next Priority:** [Task ID - Agent assignment] | [Phase summary] | [Plan update]
-- **Recent Directives:** [Unlogged user instructions]
+- **Recent Directives:** [Unlogged user instructions affecting coordination]
 - **Blockers:** [Coordination issues requiring attention]
 
-## User Verification Protocol
-After context synthesis: ask 1-2 assurance questions about project state accuracy, if contradictions found ask specific clarification questions, await explicit User confirmation before proceeding.
-
-**Immediate Next Action:** [Specific coordination task]
-
-Acknowledge receipt and begin APM context integration protocol immediately.
+## Immediate Next Action
+[Specific coordination task to resume with]
 ```
 
-### Manager Handover File Format
+### Manager Handover File Template
+
+**YAML Frontmatter:**
 ```yaml
 ---
 agent_type: Manager
-agent_id: Manager_[X]
-handover_number: [X]
+agent_id: Manager_[N]
+handover_number: [N]
 current_phase: [Phase <n>: <Name>]
 active_agents: [List of active Implementation Agents]
 ---
 ```
+
+**Markdown Body:**
 ```markdown
 # Manager Agent Handover File - [Project Name]
 
@@ -127,8 +125,9 @@ active_agents: [List of active Implementation Agents]
 **Decisions:** [Coordination choices, assignment rationale, observed User patterns]
 
 ## Coordination Status
-**Producer-Consumer Dependencies (unordered list):**
-- [Task X.Y output] → [Available for Task A.B assignment to Agent_Name] or [Task M.N] → [Blocked waiting for Task P.Q completion]
+**Producer-Consumer Dependencies:**
+- [Task X.Y output] → [Available for Task A.B assignment to Agent_Name]
+- [Task M.N] → [Blocked waiting for Task P.Q completion]
 
 **Coordination Insights:** [Agent performance patterns, effective assignment strategies, communication preferences]
 
@@ -140,10 +139,15 @@ active_agents: [List of active Implementation Agents]
 ## Working Notes
 **File Patterns:** [Key locations and user preferences]
 **Coordination Strategies:** [Effective task assignment and communication approaches]
-**User Preferences:** [Communication style, task breakdown patterns, quality expectations, explanation preferences for complex areas]
+**User Preferences:** [Communication style, task breakdown patterns, quality expectations]
 ```
 
 ---
 
-## 5 File Organization and Naming
-Store Manager Agent Handover Files in `.apm/Memory/Handovers/Manager_Agent_Handovers/`. Use naming: `Manager_Agent_Handover_File_[Number].md`. **Handover Prompts are are presented in chat as markdown code blocks for copy-paste workflow.**
+## 5  File Organization and Naming
+
+Store Manager Agent Handover Files in `.apm/Memory/Handovers/Manager_Agent_Handovers/`.
+
+Use naming convention: `Manager_Agent_Handover_File_[Number].md`
+
+**Handover Prompts are presented in chat as markdown code blocks for copy-paste workflow.**

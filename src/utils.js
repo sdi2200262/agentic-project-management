@@ -16,7 +16,8 @@ const ASSISTANT_DIRECTORIES = {
   'Windsurf': '.windsurf/workflows',
   'Kilo Code': '.kilocode/workflows',
   'Auggie CLI': '.augment/commands',
-  'Roo Code': '.roo/commands'
+  'Roo Code': '.roo/commands',
+  'Google Antigravity': '.agent/workflows'
 };
 
 /**

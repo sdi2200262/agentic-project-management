@@ -25,10 +25,10 @@ graph LR
     C --> D[Project<br/>Breakdown]
     D --> E{User Chooses<br/>Review?}
     E -->|Yes| F[Systematic<br/>Review]
-    E -->|No| H[Bootstrap<br/>Creation]
+    E -->|No| H[Setup Phase<br/>Complete]
     F --> H
-    H --> I[Manager Agent<br/>Handoff]
-    
+    H --> I[User Initializes<br/>Manager Agent]
+
     classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
@@ -63,9 +63,9 @@ This is not a generic re-read. The Setup Agent applies an analytical testing fra
 
 > **Crucial:** This AI review focuses on structural and logical integrity. It does not replace your manual review for requirements or domain constraints.
 
-### 4. Manager Bootstrap
+### 4. Setup Phase Completion
 
-Finaly, the Agent generates a **Bootstrap Prompt**. This prompt acts as the "seed" for the Manager Agent, containing the user intent, project context, and initialization instructions.
+After presenting the Implementation Plan, the Setup Agent offers options: approve the plan, request modifications, or request a systematic review. If the plan is satisfactory, the user proceeds directly to initialize the Manager Agent using `/apm-2-initiate-manager`. The Manager Agent automatically detects it's the first session by reading the `Memory_Root.md` file.
 
 ---
 
@@ -92,8 +92,10 @@ graph LR
 ```
 
 ### 1. Manager Initialization
-The Manager parses a specialized prompt (either a **Bootstrap Prompt** from the Setup Phase or a **Handover Prompt** from a previous session) to understand the current project state. It then reads the required guides and the `Implementation_Plan.md` to build its mental model.
-  
+The Manager Agent determines its session type by reading the `Memory_Root.md` file. If the Project Overview field contains placeholder text, it's **Manager Agent 1** (first session). If populated, it's an **incoming Manager** taking over via handover.
+
+For the first session, the Manager reads the required guides and `Implementation_Plan.md` to build its mental model. For handover sessions, it also reads the Handover File and recent Memory Logs.
+
 After completing these steps, the Manager summarizes its understanding and requests user authorization to proceed. To continue, the User reviews the Agent's summary and explicitly **authorizes** the Manager to proceed before any tasks are assigned. This is to make clarifications or corrections if the Manager's understanding seems incorrect, before proceeding to project execution.
 
 ### 2. Task Assignment Prompt Creation
