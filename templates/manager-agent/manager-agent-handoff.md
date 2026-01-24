@@ -1,7 +1,7 @@
 ---
 priority: 5
 command_name: handoff-manager
-description: Initiates and guides the Manager Agent through the Handoff Procedure to transfer coordination context to a Continuing Manager Agent instance.
+description: Initiates and guides the Manager Agent through the Handoff Procedure to transfer coordination context to an Incoming Manager Agent instance.
 ---
 
 # APM {VERSION} — Manager Agent Handoff Command
@@ -9,11 +9,10 @@ description: Initiates and guides the Manager Agent through the Handoff Procedur
 ## 1. Overview
 
 This command initiates the Handoff Procedure for a Manager Agent approaching context window limits. The Outgoing Manager creates two artifacts:
+- **Handoff Memory Log:** A markdown file stored in `.apm/Memory/Handoffs/Manager_Handoffs/` containing working context not captured in Coordination Artifacts or Memory Logs
+- **Handoff Prompt:** A markdown code block for User to copy-paste to a new chat session, instructing the Incoming Manager to reconstruct context procedurally
 
-- **Handoff Memory Log:** A markdown file stored in `.apm/Memory/Handoffs/Manager_Handoffs/` containing working context NOT captured in Coordination Artifacts or Memory Logs
-- **Handoff Prompt:** A markdown code block for User to copy-paste to a new chat session, instructing the Continuing Manager to reconstruct context procedurally
-
-The Continuing Manager reconstructs context by reading Coordination Artifacts, Skills, Memory Logs, and the Handoff Memory Log — not from the Handoff Memory Log alone.
+The Incoming Manager reconstructs context by reading Coordination Artifacts, Skills, Memory Logs, and the Handoff Memory Log—not from the Handoff Memory Log alone.
 
 ---
 
@@ -37,20 +36,16 @@ Handoff requests **MUST be denied** when Manager is:
 - Mid-investigation (investigating flags or non-Success status)
 - Mid-artifact modification (Coordination Artifact modification in progress)
 
-**Handoff Denial Output:**
-
-When Handoff is not eligible, deny the request using this template:
+**If not eligible** → Deny using this template:
 ```
 I cannot proceed with the Handoff because I'm currently [blocking scenario: waiting for Task Report / reviewing Task Report / investigating issues / modifying Coordination Artifact]. [Brief description of what's in progress]
 
-Handoff requires a complete Task Cycle. The Continuing Manager needs [what's missing] to continue coordination effectively.
+Handoff requires a complete Task Cycle. The Incoming Manager needs [what's missing] to continue coordination effectively.
 
 Once [condition for completion] is done, Handoff will be eligible. Would you like me to proceed with Handoff after I complete this step?
 ```
 
-**After Denial — Complete Current Task Cycle:**
-
-After denying Handoff, you MUST complete the current Task Cycle step that was in progress. Once that step is complete, explicitly confirm completion and re-offer Handoff:
+**After denial** → Complete the current Task Cycle step. Once complete, re-offer Handoff:
 ```
 Handoff was not eligible when requested — I was [specific Task Cycle action in progress].
 
@@ -65,48 +60,41 @@ Execute this procedure when User initiates Handoff and eligibility is confirmed.
 
 ### 3.1 Eligibility Check
 
-Perform the following actions:
-
-1. Assess current coordination state against §2 Handoff Eligibility criteria
-2. If not eligible → Deny with specific reason, complete current step, then re-confirm with User
-3. If eligible → Proceed to §3.2 Handoff Memory Log Creation
+Assess current coordination state against §2 Handoff Eligibility criteria.
+- **If not eligible** → Deny with specific reason, complete current step, then re-confirm with User.
+- **If eligible** → Proceed to §3.2 Handoff Memory Log Creation.
 
 ### 3.2 Handoff Memory Log Creation
 
 Perform the following actions:
-
 1. Determine your Manager Agent session number:
-   - If you are Manager Agent Session 1 (first Manager) → Your session number is **1**
-   - If you are a Continuing Manager → Your session number is stated in the Handoff Prompt you received at initiation
-2. Calculate Continuing Manager session number: `<Your-Session-Number> + 1`
-3. Create Handoff Memory Log following §4 Handoff Memory Log Structure, including:
+   - If you are Manager Agent Session 1 (first Manager Agent) → Your session number is **1**
+   - If you are an Incoming Manager → Your session number is stated in the Handoff Prompt you received at initiation
+2. Calculate Incoming Manager session number: `<Your-Session-Number> + 1`
+3. Create Handoff Memory Log per §4 Handoff Memory Log Structure, including:
    - Your session number as `outgoing_manager`
    - Handoff number equals your session number (first handoff = Manager_Handoff_Log_1.md)
    - Tracked Worker Handoffs (most critical) — which Workers performed Handoffs, from which Stage
    - User preferences, communication patterns observed during this session
    - Coordination insights or decisions not captured in Coordination Artifacts or Memory Logs
    - Any working notes that would otherwise be lost
-4. Save to `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Session Number>.md`
 
 ### 3.3 Handoff Prompt Creation
 
 Perform the following actions:
-
-1. Create Handoff Prompt following §5 Handoff Prompt Structure
+1. Create Handoff Prompt per §5 Handoff Prompt Structure.
 2. Include:
-   - Explicit statement: "You are taking over from Manager Agent Session <Your Session Number> as Manager Agent Session <Continuing Session Number>"
-   - Instructions for Continuing Manager to read Coordination Artifacts and skills
+   - Explicit statement: "You are taking over from Manager Agent Session <Your Session Number> as Manager Agent Session <Incoming Session Number>"
+   - Instructions for Incoming Manager to read Coordination Artifacts and Skills
    - Path to Handoff Memory Log: `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<Your Session Number>.md`
    - Instructions to read ALL current Stage Memory Logs (all Agents)
    - Note about reading previous Stage Task Memory Logs when Context Dependencies require
    - Current session state summary (current Stage, next Task, any blockers)
    - Immediate next action
-3. Output as markdown code block for User copy-paste
 
 ### 3.4 User Review and Finalization
 
 Perform the following actions:
-
 1. Present both artifacts to User:
    - Handoff Memory Log (created as file)
    - Handoff Prompt (output as markdown code block)
@@ -118,7 +106,7 @@ Perform the following actions:
 
    **Handoff Prompt:** Ready for copy-paste below.
 
-   Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new chat session to initialize the Continuing Manager.
+   Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new chat session to initialize the Incoming Manager.
    ```
 3. If User requests modifications → Update artifacts accordingly
 4. User copies Handoff Prompt to new session; this session ends
@@ -127,16 +115,15 @@ Perform the following actions:
 
 ## 4. Handoff Memory Log Structure
 
-The Handoff Memory Log contains working context NOT captured in Coordination Artifacts or Memory Logs. The Continuing Manager reconstructs primary context from artifacts and logs—this file provides supplementary context only.
+The Handoff Memory Log contains working context not captured in Coordination Artifacts or Memory Logs. The Incoming Manager reconstructs primary context from artifacts and logs—this file provides supplementary context only.
 
 **Location:** `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md`
 
 **YAML Frontmatter Structure:**
-
 ```yaml
 ---
 outgoing_manager: Manager_Session_<N>
-continuing_manager: Manager_Session_<N+1>
+incoming_manager: Manager_Session_<N+1>
 handoff_number: <N>
 current_stage: <Stage number and name>
 timestamp: <Date/time of Handoff>
@@ -155,7 +142,7 @@ timestamp: <Date/time of Handoff>
 |--------------|---------------|---------------------------|-------|
 | <Agent ID> | Stage <N> | [List of logs] | [Any relevant context] |
 
-**Context Dependency Implication:** For these Continuing Worker Agents, any Same-Agent Context Dependencies from Stages before their Handoff must be treated as Cross-Agent Context Dependencies.
+**Context Dependency Implication:** For these Incoming Worker Agents, any Same-Agent Context Dependencies from Stages before their Handoff must be treated as Cross-Agent Context Dependencies.
 
 ## User Preferences
 
@@ -183,7 +170,7 @@ timestamp: <Date/time of Handoff>
 
 ## 5. Handoff Prompt Structure
 
-The Handoff Prompt instructs the Continuing Manager to reconstruct context procedurally from Coordination Artifacts, skills, and Memory Logs. The Handoff Memory Log provides supplementary context only. The Handoff Prompt is presented as a **markdown code block** in the chat:
+The Handoff Prompt instructs the Incoming Manager to reconstruct context procedurally from Coordination Artifacts, Skills, and Memory Logs. The Handoff Memory Log provides supplementary context only. The Handoff Prompt is presented as a **markdown code block** in the chat:
 ````markdown
 # APM Manager Agent Session <N+1> Handoff
 
