@@ -1,15 +1,15 @@
 ---
 name: delegate-research
-description: Research delegation methodology for investigating knowledge gaps. Defines how calling Agents create Research Delegation Prompts.
+description: Research delegation methodology for investigating knowledge gaps. Defines how Delegating Agents create Research Delegation Prompts.
 ---
 
 # APM {VERSION} - Research Delegation Skill
 
 ## 1. Overview
 
-**Reading Agent:** Worker Agent, Manager Agent, Planner Agent (calling agents)
+**Reading Agent:** Worker Agent, Manager Agent, Planner Agent (Delegating Agents)
 
-This skill defines how to delegate research work to a Delegate Agent. The calling Agent creates a Research Delegation Prompt following this methodology; the Delegate Agent receives and executes it.
+This skill defines how to delegate research work to a Delegate Agent. The Delegating Agent creates a Research Delegation Prompt following this methodology; the Delegate Agent receives and executes it.
 
 ### 1.1 When to Use Research Delegation
 
@@ -29,7 +29,7 @@ Do NOT delegate when:
 
 - Provide Delegate Agent with clear research questions and expected sources
 - Enable autonomous investigation using web search and official documentation
-- Produce current, actionable findings the calling Agent can apply
+- Produce current, actionable findings the Delegating Agent can apply
 
 ### 1.3 Delegation Scope
 
@@ -51,7 +51,7 @@ A Research Delegation Prompt must provide enough context for the Delegate to res
 
 **Research Purpose:** Why this information is needed and how it will be used. This helps the Delegate prioritize and frame findings appropriately.
 
-**Current Knowledge State:** What the calling Agent currently knows or assumes versus what is uncertain. This prevents the Delegate from researching already-known information.
+**Current Knowledge State:** What the Delegating Agent currently knows or assumes versus what is uncertain. This prevents the Delegate from researching already-known information.
 
 **Specific Questions:** Targeted questions that need answers. Vague requests produce vague results; specific questions enable focused research.
 
@@ -67,7 +67,7 @@ A Research Delegation Prompt must provide enough context for the Delegate to res
 
 **Verification Standard:** Findings should be cross-referenced across multiple authoritative sources when possible. Single-source information should be noted as such.
 
-**Actionability:** Findings should directly answer the research questions in a form the calling Agent can apply. Summaries of documentation are more useful than links alone.
+**Actionability:** Findings should directly answer the research questions in a form the Delegating Agent can apply. Summaries of documentation are more useful than links alone.
 
 ### 2.3 Prompt Creation Standards
 
@@ -109,7 +109,7 @@ Gather current, authoritative information to answer the research questions below
 <Why this information is needed and how it will be applied>
 
 ## Current Knowledge
-<What calling Agent knows/assumes vs what is uncertain or potentially outdated>
+<What Delegating Agent knows/assumes vs what is uncertain or potentially outdated>
 
 ## Research Questions
 1. <Specific question>
@@ -132,7 +132,7 @@ Gather current, authoritative information to answer the research questions below
 - Provide actionable findings that directly answer the questions
 
 ## Logging
-Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the calling Agent.
+Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the Delegating Agent.
 ```
 
 ### 3.2 Prompt Delivery
