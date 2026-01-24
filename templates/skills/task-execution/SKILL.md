@@ -15,7 +15,7 @@ This skill defines how Worker Agents execute Tasks assigned by the Manager Agent
 
 **Execute the Procedure.** The Procedure section contains the actions for each Task Assignment received. Follow subsections sequentially from Task Assignment Receipt through Task Completion. See §3 Task Execution Procedure.
 
-**Use Operational Standards for reasoning and decisions.** When reasoning about iteration, pauses, failures, or complexity—and when encountering decision points (continue vs stop, pause vs continue, status classification)—consult the relevant standards subsection. See §2 Operational Standards.
+**Use Operational Standards for reasoning and decisions.** When reasoning about iteration, pauses, failures, or complexity-and when encountering decision points (continue vs stop, pause vs continue, status classification)-consult the relevant standards subsection. See §2 Operational Standards.
 
 ### 1.2 Objectives
 
@@ -42,17 +42,17 @@ This section establishes reasoning approaches and decision rules for Task Execut
 
 ### 2.1 Context Integration Standards
 
-Context integration establishes the foundation for Task Execution. Workers operate with narrow context—only their Task Assignment and accumulated working context from prior Tasks in this session. When a Task depends on another Agent's work or on prior work from a previous context window (after Handoff), the Worker lacks the foundation needed to execute correctly.
+Context integration establishes the foundation for Task Execution. Workers operate with narrow context-only their Task Assignment and accumulated working context from prior Tasks in this session. When a Task depends on another Agent's work or on prior work from a previous context window (after Handoff), the Worker lacks the foundation needed to execute correctly.
 
-**Why Integration Must Be First:** Context integration ensures required files, artifacts, and interfaces are understood before execution begins. Skipping or rushing integration means building on an unstable foundation—errors compound and the Worker lacks the context to diagnose them.
+**Why Integration Must Be First:** Context integration ensures required files, artifacts, and interfaces are understood before execution begins. Skipping or rushing integration means building on an unstable foundation-errors compound and the Worker lacks the context to diagnose them.
 
 **Cross-Agent vs Same-Agent Context:** The Task Assignment's Context from Dependencies section reflects the dependency type:
 
 *Cross-Agent Dependencies:* The Worker has zero familiarity with the producer Task as it was executed by a different Worker Agent. The Task Assignment provides detailed integration instructions-specific files to read, artifacts to review, interfaces to understand. These instructions must be followed completely.
 
-*Same-Agent Dependencies:* The Worker completed the producer Task in this session and has working familiarity. The Task Assignment provides lighter guidance—recall anchors and file references. These serve as additional guidance rather than required integration steps.
+*Same-Agent Dependencies:* The Worker completed the producer Task in this session and has working familiarity. The Task Assignment provides lighter guidance-recall anchors and file references. These serve as additional guidance rather than required integration steps.
 
-**Integration Issues:** If integration reveals problems—missing files, broken references, conflicts with expectations—the Worker cannot proceed safely. These require User guidance before execution.
+**Integration Issues:** If integration reveals problems-missing files, broken references, conflicts with expectations-the Worker cannot proceed safely. These require User guidance before execution.
 
 **Decision Rules for Integration Issues:**
 - Cross-Agent: missing files, unclear interfaces, or incomplete integration → pause for User guidance before proceeding
@@ -64,23 +64,23 @@ Context integration establishes the foundation for Task Execution. Workers opera
 Validation confirms that Task Execution achieved the intended outcome. Understanding validation types and their characteristics guides correct execution. Some Tasks have multiple validation types.
 
 **Validation Types:**
-* *Programmatic:* Automated verification—tests pass, builds succeed, scripts execute correctly. The Worker executes these checks and assesses results autonomously.
-* *Artifact:* Output existence and structural verification—files exist with required sections, configs are valid, outputs match patterns. The Worker verifies these autonomously.
-* *User:* Human judgment required—design approval, content quality, architectural decisions. The Worker must pause for User review.
+* *Programmatic:* Automated verification-tests pass, builds succeed, scripts execute correctly. The Worker executes these checks and assesses results autonomously.
+* *Artifact:* Output existence and structural verification-files exist with required sections, configs are valid, outputs match patterns. The Worker verifies these autonomously.
+* *User:* Human judgment required-design approval, content quality, architectural decisions. The Worker must pause for User review.
 
-**Ordering Principle:** When a Task has multiple validation types including User, the User validation is always performed LAST. Programmatic and Artifact validations complete first—this prevents wasting User reviews on execution that would fail automated checks. See §3.4 Task Validation.
+**Ordering Principle:** When a Task has multiple validation types including User, the User validation is always performed LAST. Programmatic and Artifact validations complete first-this prevents wasting User reviews on execution that would fail automated checks. See §3.4 Task Validation.
 
 **Default:** Fail-fast on autonomous validations to avoid wasted User reviews.
 
 ### 2.3 Iteration Standards
 
-When Task Validation fails, the Worker enters an iteration cycle—correct, re-execute, re-validate. **The key judgment is when to continue versus when to stop.**
+When Task Validation fails, the Worker enters an iteration cycle-correct, re-execute, re-validate. **The key judgment is when to continue versus when to stop.**
 
 **Decision Rules:**
 - **Continue when:** cause identified, fix within scope, measurable progress toward resolution
 - **Stop when:** same error 3+ times, fixes causing new issues, requires external resolution
 
-**Pattern Recognition:** A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve—perhaps a misunderstanding of requirements, a dependency issue, or a systemic problem. Recognizing this pattern early prevents wasted effort and tokens.
+**Pattern Recognition:** A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve-perhaps a misunderstanding of requirements, a dependency issue, or a systemic problem. Recognizing this pattern early prevents wasted effort and tokens.
 
 **Uncertainty Handling:** When uncertain whether to continue or stop, pausing for User guidance is better than either persisting unproductively or stopping prematurely. The Worker presents the situation with options and lets the User guide the decision.
 
@@ -117,13 +117,13 @@ Not all Tasks succeed. Understanding failure types guides appropriate status cla
 
 **Status Taxonomy with `failure_point` Values:**
 - **Success:** Objective achieved, all validation passed. `failure_point: null`
-- **Partial:** Intermediate state—progress made but incomplete; needs guidance on path forward. `failure_point: Execution`, `Validation`, or `<description>`
+- **Partial:** Intermediate state-progress made but incomplete; needs guidance on path forward. `failure_point: Execution`, `Validation`, or `<description>`
 - **Failed:** Worker attempted but couldn't succeed; issue is within Task scope but beyond Worker's resolution. `failure_point: Execution` or `Validation`
 - **Blocked:** External factors prevent progress; requires coordination-level resolution. `failure_point: <description>`
 
 **Distinguishing Statuses:** The distinction lies in where the barrier is: Partial means "I need guidance to continue"; Failed means "I tried everything within my scope"; Blocked means "factors outside my control prevent progress."
 
-**Default:** When classification unclear, prefer Partial with clear description—invites guidance rather than closing options.
+**Default:** When classification unclear, prefer Partial with clear description-invites guidance rather than closing options.
 
 ### 2.6 User Collaboration Standards
 
@@ -156,7 +156,7 @@ Pause Handling (§3.5 Pause Handling) and Delegation Handling (§3.6 Delegation 
 Perform the following actions:
 
 1. Verify `agent_id` in YAML frontmatter matches your registered instance. If mismatch, decline per `{COMMAND_PATH:worker-agent-initiation.md}` §5.1 Instance Boundaries.
-2. Parse Task Assignment structure—YAML frontmatter fields and body sections.
+2. Parse Task Assignment structure-YAML frontmatter fields and body sections.
 3. Identify execution parameters:
    - `has_dependencies: true` → Context Integration required
    - `has_delegation_steps: true` → Delegation step(s) in instructions
@@ -171,9 +171,9 @@ Perform the following actions:
 
 1. Read the `Context from Dependencies` section.
 2. Execute integration based on dependency type:
-   - **Cross-Agent:** Follow Integration Steps completely—read files, review artifacts, understand interfaces. Do not proceed until complete.
+   - **Cross-Agent:** Follow Integration Steps completely-read files, review artifacts, understand interfaces. Do not proceed until complete.
    - **Same-Agent:** Use guidance to recall and build upon prior work; review referenced paths to refresh context if needed.
-3. Verify integration is complete—required context understood, referenced files accessible, foundation clear.
+3. Verify integration is complete-required context understood, referenced files accessible, foundation clear.
 4. If integration issues discovered, apply decision rules from §2.1 Context Integration Standards.
 5. Proceed to §3.3 Task Execution.
 
@@ -193,9 +193,9 @@ Perform the following actions:
 
 Perform the following actions:
 
-1. Order validations: Programmatic first, then Artifact, then User—adapt based on which are required. User validation is always performed LAST.
-2. Execute Programmatic validations. If any fail → do NOT proceed to User validation—proceed to §3.7 Iteration Cycle. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
-3. Execute Artifact validations. If any fail → do NOT proceed to User validation—proceed to §3.7 Iteration Cycle.
+1. Order validations: Programmatic first, then Artifact, then User-adapt based on which are required. User validation is always performed LAST.
+2. Execute Programmatic validations. If any fail → do NOT proceed to User validation-proceed to §3.7 Iteration Cycle. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
+3. Execute Artifact validations. If any fail → do NOT proceed to User validation-proceed to §3.7 Iteration Cycle.
 4. If User validation present: pause and present work for review. Communicate what was accomplished, what needs review per the criteria, and where deliverables are located. Await response. If approved → proceed to §3.8 Task Completion with Success. If feedback provided → proceed to §3.7 Iteration Cycle with feedback integrated.
 5. If all validation passed → proceed to §3.8 Task Completion with Success.
 
@@ -236,7 +236,7 @@ Invoked when validation fails.
 
 Perform the following actions:
 
-1. Assess the failure—what specifically failed, what is the likely cause, is it correctable?
+1. Assess the failure-what specifically failed, what is the likely cause, is it correctable?
 2. Apply decision rules from §2.3 Iteration Standards to determine action.
 3. If continuing: correct the issue, re-execute affected portions, return to §3.4 Task Validation.
 4. If stopping: present situation to User explaining what validation failed, what corrections were attempted and their outcomes, why iteration is stopping, current state of the work, and options for proceeding. Include your assessment if you have one. Await guidance.
@@ -280,7 +280,7 @@ Perform the following actions:
 - Clear status when pausing or stopping
 - Specific issue descriptions (not vague)
 - Actionable options with trade-offs when requesting guidance
-- Concise Task Reports—detail belongs in Memory Log
+- Concise Task Reports-detail belongs in Memory Log
 
 ### 5.3 Common Mistakes to Avoid
 

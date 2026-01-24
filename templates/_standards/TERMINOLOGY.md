@@ -392,7 +392,7 @@ Handoff transfers context between Sessions of the same Agent when context window
 | **Handoff** | Context transfer between Sessions of the same Agent. |
 | **Handoff Eligibility** | Requirements that must be met before Handoff can proceed. Varies by Agent Type. |
 | **Outgoing Agent** | The Agent performing Handoff when context window limits approach. Creates Handoff artifacts. |
-| **Incoming Agent** | The replacement Agent that receives Handoff. Reconstructs context from artifacts. |
+| **Incoming Agent** | The replacement Agent that receives Handoff. Reconstructs context from artifacts. Applied as "Incoming Worker Agent" or "Incoming Manager Agent" depending on Agent Type. |
 | **Context Reconstruction** | Process by which Incoming Agent rebuilds working context. |
 
 ---

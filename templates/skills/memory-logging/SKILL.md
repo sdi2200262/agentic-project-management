@@ -55,7 +55,7 @@ Flag findings that appear to have implications beyond your current task scope:
 - Did you discover dependencies, risks, or constraints that your assignment didn't account for?
 - Did you encounter something that suggests other tasks or agents might be affected?
 
-You cannot know the full project context—flag anything that *seems* significant from your scoped view. The Manager has full artifact awareness and will assess actual impact.
+You cannot know the full project context-flag anything that *seems* significant from your scoped view. The Manager has full artifact awareness and will assess actual impact.
 
 **Compatibility Issues Assessment:**
 
@@ -68,30 +68,30 @@ Flag conflicts with existing systems you encountered during execution:
 
 ### 2.2 Outcome Standards
 
-Status reflects outcome—whether the objective was achieved. Select status based on the end state, not effort expended.
+Status reflects outcome-whether the objective was achieved. Select status based on the end state, not effort expended.
 
 #### 2.2.1 Task Outcome Standards (Worker Agent)
 
 Consider what happened during task execution to select the appropriate status.
 
 **Status Values:**
-- **Success** — Objective achieved, all validation passed
-- **Failed** — Validation failed after iteration attempts
-- **Partial** — Intermediate state requiring Manager decision
-- **Blocked** — External factors prevent progress
+- **Success** - Objective achieved, all validation passed
+- **Failed** - Validation failed after iteration attempts
+- **Partial** - Intermediate state requiring Manager decision
+- **Blocked** - External factors prevent progress
 
 **Failure Point Values:** Indicates where/why the task didn't succeed:
-- `null` — No failure (Success only)
-- `Execution` — Failed during task work before validation
-- `Validation` — Work completed but validation criteria not met
-- `<description>` — Specific reason for Partial/Blocked status
+- `null` - No failure (Success only)
+- `Execution` - Failed during task work before validation
+- `Validation` - Work completed but validation criteria not met
+- `<description>` - Specific reason for Partial/Blocked status
 
 **Valid Combinations:**
 - Success + `null` → Objective achieved, all validation passed
 - Failed + `Execution` → Could not complete work properly
 - Failed + `Validation` → Work done, validation failed after iteration
 - Partial + `Execution` → Work incomplete, cannot proceed independently
-- Partial + `Validation` → Some validation passed, some failed—needs guidance
+- Partial + `Validation` → Some validation passed, some failed-needs guidance
 - Partial + `<description>` → Pausing due to findings or ambiguous state
 - Blocked + `<description>` → External factors prevent progress
 
@@ -102,10 +102,10 @@ Consider what happened during task execution to select the appropriate status.
 Partial represents an intermediate state where the Worker pauses to seek guidance rather than continuing iteration.
 
 **When to pause (use Partial):**
-- Validation is ambiguous—some criteria passed, some failed, unclear if iteration will help
+- Validation is ambiguous-some criteria passed, some failed, unclear if iteration will help
 - Important findings emerged that could affect other tasks or project direction
-- Iteration stalled—same failures recurring despite fix attempts
-- Approach uncertainty—multiple valid paths forward, choice depends on factors outside Worker's scope
+- Iteration stalled-same failures recurring despite fix attempts
+- Approach uncertainty-multiple valid paths forward, choice depends on factors outside Worker's scope
 
 **When to continue iterating (don't log yet):**
 - Validation failed but the cause is clear and fixable
@@ -122,7 +122,7 @@ Consider the delegation outcome:
 
 **Unresolved Status Reasoning:**
 
-Use Unresolved when the delegated work did not fully solve the issue but produced partial findings. Document what was discovered, what remains unclear, and any observations that might help the calling agent or Manager determine next steps. The calling agent receives the findings and decides how to proceed—either incorporating partial results, requesting further investigation, or surfacing the issue to the Manager for coordination.
+Use Unresolved when the delegated work did not fully solve the issue but produced partial findings. Document what was discovered, what remains unclear, and any observations that might help the calling agent or Manager determine next steps. The calling agent receives the findings and decides how to proceed-either incorporating partial results, requesting further investigation, or surfacing the issue to the Manager for coordination.
 
 ### 2.3 Detail Level Standards
 
@@ -141,7 +141,7 @@ Task Memory Logs serve the Manager Agent's coordination needs, not archival docu
 
 **Delegation Detail Level (Delegate Agent):**
 
-Delegation Memory Logs serve the calling agent's needs. Calibrate detail to the delegation request—if the calling agent requested comprehensive research findings, include them in full.
+Delegation Memory Logs serve the calling agent's needs. Calibrate detail to the delegation request-if the calling agent requested comprehensive research findings, include them in full.
 
 *Assessment Questions:*
 - What level of detail did the calling agent request?
@@ -186,7 +186,7 @@ Perform the following actions:
      - **Summarize:** Implementation approach, steps taken, rationale for choices
      - **Reference (don't reproduce):** Code blocks over 20 lines, full file contents, verbose outputs
      - **Exclude:** Routine operations, trivial details, information recoverable from artifacts
-3. Output Task Report to User. Keep post-amble minimal—User and Manager can read the log directly.
+3. Output Task Report to User. Keep post-amble minimal-User and Manager can read the log directly.
 
 ### 3.2 Delegation Memory Log Procedure (Delegate Agent)
 
@@ -351,7 +351,7 @@ status: Resolved | Unresolved
 
 **Delegation Memory Log (Delegate Agent):**
 - **Findings:** ✗ "Found some issues with the code" → ✓ "Auth middleware fails on expired tokens due to missing refresh logic in `auth.js:45`"
-- **Resolution:** ✗ "Fixed it" → ✓ "Added token refresh check before validation. Tested with expired tokens—now returns 401 with refresh prompt."
+- **Resolution:** ✗ "Fixed it" → ✓ "Added token refresh check before validation. Tested with expired tokens-now returns 401 with refresh prompt."
 - **Integration Notes:** ✗ "Should work now" → ✓ "Calling agent should update error handling to catch new `TOKEN_REFRESH_NEEDED` error code."
 
 **Key Difference:** Good logging is specific, references artifacts by path, and states outcomes clearly. Poor logging is vague.
@@ -369,7 +369,7 @@ status: Resolved | Unresolved
 - **Missing artifact references:** When deliverables are produced, list file paths in the Output section.
 
 **Delegation Memory Log (Delegate Agent):**
-- **Vague Integration Notes:** The calling agent needs specific guidance on how to use your findings—not just "should work now."
+- **Vague Integration Notes:** The calling agent needs specific guidance on how to use your findings-not just "should work now."
 - **Not explaining Unresolved status:** When Unresolved, clearly state what was discovered, what remains unclear, and what might help.
 
 ---

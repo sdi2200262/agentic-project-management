@@ -4,7 +4,7 @@ command_name: handoff-manager
 description: Initiates and guides the Manager Agent through the Handoff Procedure to transfer coordination context to an Incoming Manager Agent instance.
 ---
 
-# APM {VERSION} — Manager Agent Handoff Command
+# APM {VERSION} - Manager Agent Handoff Command
 
 ## 1. Overview
 
@@ -12,7 +12,7 @@ This command initiates the Handoff Procedure for a Manager Agent approaching con
 - **Handoff Memory Log:** A markdown file stored in `.apm/Memory/Handoffs/Manager_Handoffs/` containing working context not captured in Coordination Artifacts or Memory Logs
 - **Handoff Prompt:** A markdown code block for User to copy-paste to a new chat session, instructing the Incoming Manager to reconstruct context procedurally
 
-The Incoming Manager reconstructs context by reading Coordination Artifacts, Skills, Memory Logs, and the Handoff Memory Log—not from the Handoff Memory Log alone.
+The Incoming Manager reconstructs context by reading Coordination Artifacts, Skills, Memory Logs, and the Handoff Memory Log-not from the Handoff Memory Log alone.
 
 ---
 
@@ -47,7 +47,7 @@ Once [condition for completion] is done, Handoff will be eligible. Would you lik
 
 **After denial** → Complete the current Task Cycle step. Once complete, re-offer Handoff:
 ```
-Handoff was not eligible when requested — I was [specific Task Cycle action in progress].
+Handoff was not eligible when requested - I was [specific Task Cycle action in progress].
 
 That Task Cycle step is now complete. Would you still like to proceed with Handoff?
 ```
@@ -74,7 +74,7 @@ Perform the following actions:
 3. Create Handoff Memory Log per §4 Handoff Memory Log Structure, including:
    - Your session number as `outgoing_manager`
    - Handoff number equals your session number (first handoff = Manager_Handoff_Log_1.md)
-   - Tracked Worker Handoffs (most critical) — which Workers performed Handoffs, from which Stage
+   - Tracked Worker Handoffs (most critical) - which Workers performed Handoffs, from which Stage
    - User preferences, communication patterns observed during this session
    - Coordination insights or decisions not captured in Coordination Artifacts or Memory Logs
    - Any working notes that would otherwise be lost
@@ -115,7 +115,7 @@ Perform the following actions:
 
 ## 4. Handoff Memory Log Structure
 
-The Handoff Memory Log contains working context not captured in Coordination Artifacts or Memory Logs. The Incoming Manager reconstructs primary context from artifacts and logs—this file provides supplementary context only.
+The Handoff Memory Log contains working context not captured in Coordination Artifacts or Memory Logs. The Incoming Manager reconstructs primary context from artifacts and logs-this file provides supplementary context only.
 
 **Location:** `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md`
 
@@ -182,11 +182,11 @@ Follow this sequence to reconstruct coordination context:
 
 ### Read Handoff Memory Log
 - `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md` (where <N> is the outgoing Manager Agent session number from the prompt above)
-- **Critical:** Note all Tracked Worker Handoffs—these affect Context Dependency classification
+- **Critical:** Note all Tracked Worker Handoffs-these affect Context Dependency classification
 
 ### Read Current Stage Memory Logs
 Read ALL Memory Logs from the current Stage (Stage <N>):
-- `.apm/Memory/Stage_<N>_<Slug>/` — All Task Memory Logs from all Agents
+- `.apm/Memory/Stage_<N>_<Slug>/` - All Task Memory Logs from all Agents
 
 ### Previous Stage Context Dependencies
 When you encounter Context Dependencies referencing Tasks from previous Stages that you have no context of:
@@ -195,9 +195,9 @@ When you encounter Context Dependencies referencing Tasks from previous Stages t
 
 ## Current Session State
 
-- **Current Stage:** Stage <N> — <Stage Name>
+- **Current Stage:** Stage <N> - <Stage Name>
 - **Stage Progress:** <X>/<Y> Tasks complete
-- **Next Task:** Task <N.M> — <Title> assigned to <Agent>
+- **Next Task:** Task <N.M> - <Title> assigned to <Agent>
 - **Blockers:** [Any coordination issues requiring attention, or "None"]
 - **Notes:** [Any working notes from current session important for coordination]
 

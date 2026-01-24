@@ -13,11 +13,11 @@ This skill defines the discovery methodology for the Context Gathering procedure
 
 ### 1.1 How to Use This Skill
 
-**Execute the Procedure.** The Procedure section contains the actions to perform. Follow each subsection sequentially through all Question Rounds. See §3 Context Gathering Procedure.
+**Execute the Procedure:** The Procedure section contains the actions to perform. Follow each subsection sequentially through all Question Rounds. See §3 Context Gathering Procedure.
 
-**Use Operational Standards for reasoning and decisions.** When interpreting responses, identifying gaps, adapting questioning depth, handling ambiguous responses, or deciding on research delegation, consult the relevant standards subsection. See §2 Operational Standards.
+**Use Operational Standards for reasoning and decisions:** When interpreting responses, identifying gaps, adapting questioning depth, handling ambiguous responses, or deciding on research delegation, consult the relevant standards subsection. See §2 Operational Standards.
 
-**Present outputs in chat.** Present round completions, understanding summaries, and delegation requests using natural language output formats shown inline in §3 Context Gathering Procedure and §2.8 Research Delegation Standards. Do not expose internal deliberation beyond these outputs.
+**Present outputs in chat:** Present round completions, understanding summaries, and delegation requests using natural language output formats shown inline in §3 Context Gathering Procedure and §2.8 Research Delegation Standards. Do not expose internal deliberation beyond these outputs.
 
 ### 1.2 Objectives
 
@@ -95,17 +95,17 @@ When processing User responses, reason through:
 
 A gap exists when information required for the Implementation Plan is missing or ambiguous.
 
-**Coverage Gaps:** Required information not yet gathered
+**Coverage Gaps** → Required information not yet gathered:
 - Essential features mentioned but not elaborated
 - Dependencies referenced but not detailed
 - Success criteria stated vaguely
 
-**Clarity Gaps:** Information provided but unclear
+**Clarity Gaps** → Information provided but unclear:
 - Ambiguous terms that could mean multiple things
 - Conflicting statements across responses
 - Scope boundaries not defined
 
-**Validation Gaps:** Requirements without success criteria
+**Validation Gaps** → Requirements without success criteria:
 - Features described without acceptance criteria
 - Deliverables without completion indicators
 - Quality expectations not quantified
@@ -127,9 +127,7 @@ A gap exists when information required for the Implementation Plan is missing or
 - User responses contain ambiguities requiring clarification
 - Critical requirements lack validation criteria
 
-**Round Completion Requirements:**
-
-Before advancing to the next Round (Rounds 1-3 only), present a round summary using the following output block:
+**Round Completion Requirements** → Before advancing to the next Round (Rounds 1-3 only), present a round summary using the following output block:
 ```
 ## Question Round [N] Complete:
 
@@ -185,15 +183,13 @@ As you receive User input, internally categorize and retain planning implication
 - User describes tool preferences or technical requirements → Note for execution guidance
 - User indicates tracking or progress validation requirements → Note as task or stage requirements
 
-**Standards Awareness** (informs `{AGENTS_FILE}` creation):
-Watch for any project-wide standards or conventions that should apply universally. Each project defines what standards are relevant. Signals include:
+**Standards Awareness** → Watch for any project-wide standards or conventions that should apply universally. Each project defines what standards are relevant. Signals include:
 - User mentions conventions, style guides, or formatting preferences
 - User describes quality requirements or validation expectations
 - User specifies documentation or output format standards
 - User mentions workflow conventions or process requirements
 
-**Specification Awareness** (informs `Specifications.md` creation):
-Watch for design decisions and constraints that need formal documentation - anything that would inform how the Implementation Plan should be structured or how tasks should be approached. Each project defines what specifications are relevant. Signals include:
+**Specification Awareness** → Watch for design decisions and constraints that need formal documentation - anything that would inform how the Implementation Plan should be structured or how tasks should be approached. Each project defines what specifications are relevant. Signals include:
 - User makes design decisions or describes how things should work
 - User mentions existing specification documents (reference rather than duplicate)
 - User describes constraints, requirements, or boundaries that affect implementation
@@ -290,9 +286,7 @@ When User clarification is insufficient to resolve gaps, consider research deleg
 - Scope is too broad (would require multiple delegations)
 - Research IS the project deliverable (belongs in Implementation Plan, not Planning Phase)
 
-**Research Approach Decision:**
-
-Choose approach based on scope:
+**Research Approach Decision** → Choose approach based on scope:
 - **Self-Research:** Small scope, can be completed quickly using available tools (e.g., explore existing codebase documentation or architecture)
 - **Delegation:** Bounded scope, specific question, needs dedicated focus (e.g., research best practices for a specific technology or existing codebase too large to explore quickly)
 - **Note for Plan:** Large scope, multiple questions, or research is central to project (leave as research task in Implementation Plan)
@@ -321,9 +315,7 @@ This section defines the sequential actions that accomplish Context Gathering. T
 
 This protocol governs how Question Rounds flow. It defines the iteration pattern and validation gathering approach that applies across all rounds.
 
-**Iteration Cycle:**
-
-For each Question Round (1-3), use this iteration cycle:
+**Iteration Cycle** → For each Question Round (1-3), use this iteration cycle:
 1. Ask the initial questions defined for the current Round
 2. After each User response, assess gaps: What specific gaps remain? What ambiguities need clarification? What follow-ups would gather missing information?
 3. Strategic decision: Apply §2.3 Gap Identification and Round Advancement Standards to determine whether to follow up or advance.
@@ -333,31 +325,25 @@ For each Question Round (1-3), use this iteration cycle:
 
 **Efficiency Guidance:** When asking initial questions, combine related items naturally in conversation. Adapt depth based on project complexity - smaller projects need lighter discovery than large multi-domain efforts. See §2.5 Questioning Depth Standards.
 
-**Validation Criteria Gathering:**
-
-You must capture and suggest clear success states and criteria for each User requirement to inform Implementation Plan task Validation fields. If the User does not specify how a requirement will be validated, proactively propose concrete success measures and ask if these suggestions align with their expectations.
+**Validation Criteria Gathering:** You must capture and suggest clear success states and criteria for each User requirement to inform Implementation Plan task Validation fields. If the User does not specify how a requirement will be validated, proactively propose concrete success measures and ask if these suggestions align with their expectations.
 
 **Gathering Approach:**
 - Use targeted follow-ups based on what the User has described: "You mentioned [feature X]. Would success mean [suggested success state]?", "Would it be complete when [proposed criteria]?"
 - If the requirement is subjective (relies on User review or personal judgment), ask how they would determine success, or gently propose acceptance indicators
 - Adapt questions to the specific requirement - do not use a fixed question list
 
-**Type Awareness:**
-When gathering validation criteria, consider which validation type(s) will apply:
+**Type Awareness** → When gathering validation criteria, consider which validation type(s) will apply:
 - If success can be checked automatically (tests, builds, CI, linting) → Programmatic
 - If success means a file or artifact exists with correct and expected structure and data → Artifact
 - If success requires human judgment or approval → User
 
-Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Context Finalization per §3.5 Context Finalization.
-
-Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
+Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Context Finalization per §3.5 Context Finalization. Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
 
 ### 3.2 Question Round 1: Existing Materials and Vision
 
 **Focus Areas:** Project type and deliverables; problem and purpose; essential features and scope; required skills and expertise areas; existing documentation and materials; current plan or vision; previous work and codebase context.
 
-**Initial Questions:**
-
+**Initial Questions** → Select and adapt questions that remain unanswered from these areas:
 1. What type of deliverable(s) are you creating? (document, analysis, codebase, dataset, presentation, etc.)
 2. What problem does the project solve? What defines success and completion?
 3. What are the essential features, sections, or deliverables?
@@ -370,9 +356,7 @@ Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retai
 
 **Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see §1.3 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during the Work Breakdown Procedure?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
-**Gap Assessment Criteria:**
-
-After each User response, assess:
+**Gap Assessment Criteria** → After each User response, assess:
 - **Project Foundation:** Is the project type and deliverable format clear?
 - **Problem and Purpose:** Do you understand the problem being solved and success criteria?
 - **Essential Scope:** Are the essential features, sections, or deliverables identified?
@@ -391,43 +375,39 @@ After each User response, assess:
 
 **Focus Areas:** Work structure and dependencies; technical and resource requirements; complexity and risk assessment; validation criteria; timeline constraints.
 
-**Initial Questions:**
+**Initial Questions** → Select and adapt questions that remain unanswered from these areas:
 
-Select and adapt questions that remain unanswered from these areas:
-
-**Work Structure and Dependencies:**
+*Work Structure and Dependencies:*
 - Which parts can be done independently vs. need sequential order?
 - What are the most challenging or time-consuming aspects?
 - Any dependencies between different parts of the work?
 - What intermediate deliverables would help track progress?
 
-**Technical and Resource Requirements:**
+*Technical and Resource Requirements:*
 - Does this work involve different technical environments or platforms?
 - What is the deployment/delivery environment?
 - External resources needed? (data sources, APIs, libraries, references)
 - What actions require access outside the development environment?
 - Which deliverables can be prepared/built within development tools vs require external platform interaction?
 
-**Complexity and Risk Assessment:**
+*Complexity and Risk Assessment:*
 - What is the target timeline or deadline?
 - What are the anticipated challenging areas or known risks?
 - Any parts requiring external input or review before proceeding?
 
-**Existing Assets (if building on previous work):**
+*Existing Assets (if building on previous work):*
 - What is the current structure and key components?
 - What existing functionality or content should be preserved or modified?
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Standards Gathering:** As technical requirements and constraints emerge, note standards that should apply universally (these inform `{AGENTS_FILE}` content).
+**Standards Gathering:** As technical requirements and constraints emerge, note standards that should apply universally (these inform ``{AGENTS_FILE}`` content).
 
 **Specifications Gathering:** As design decisions and constraints emerge, note specifications that should be formally documented (these inform `Specifications.md` creation).
 
 **Validation Criteria Gathering:** As requirements emerge, gather validation criteria. See §3.1 Validation Criteria Gathering.
 
-**Gap Assessment Criteria:**
-
-After each User response, assess:
+**Gap Assessment Criteria** → After each User response, assess:
 - **Work Structure:** Do you understand dependencies, challenging aspects, and intermediate deliverables?
 - **Technical and Resource Requirements:** Are environment needs, external resources, and platform requirements clear?
 - **Complexity Assessment:** Are challenging areas, timeline constraints, and known risks understood?
@@ -443,26 +423,24 @@ After each User response, assess:
 
 **Focus Areas:** Technical constraints and preferences; workflow preferences and methodologies; quality standards and validation approaches; coordination and approval requirements; domain organization preferences; consistency and documentation standards.
 
-**Initial Questions:**
+**Initial Questions** → Select and adapt questions that remain unanswered from these areas:
 
-Select and adapt questions that remain unanswered from these areas:
-
-**Technical Constraints and Preferences:**
+*Technical Constraints and Preferences:*
 - Required or prohibited tools, languages, frameworks, or platforms?
 - Performance, security, compatibility, or formatting requirements?
 - Are there setup, configuration, or deployment steps requiring specific account access?
 - What parts involve User-specific accounts, credentials, or manual coordination steps?
 - If existing build systems, tools, or processes were mentioned in Round 2, what are they and how should they be used?
 
-**Workflow Preferences and Methodologies:**
+*Workflow Preferences and Methodologies:*
 - Are there specific workflow patterns, quality standards, or validation approaches you prefer?
 - Are there coordination requirements, review processes, or approval gates that should be built into the work structure?
 
-**Consistency and Documentation Standards:**
+*Consistency and Documentation Standards:*
 - Any consistency standards, documentation requirements, or delivery formats I should incorporate?
 - Do you have examples, templates, or reference materials that illustrate your preferred approach?
 
-**Domain Organization (if distinct but related domains were identified in earlier Rounds):**
+*Domain Organization (if distinct but related domains were identified in earlier Rounds):*
 - "I notice [domain A] and [domain B] are related. Would you prefer these handled together for tighter coordination, or separately for parallel progress?"
 - "Are [domain A] and [domain B] areas that could be typically handled together, or separate specializations in your view?"
 - Are there natural handoff points where one type of work ends and another begins?
@@ -470,21 +448,19 @@ Select and adapt questions that remain unanswered from these areas:
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Standards Gathering:** As process preferences and constraints emerge, note standards that should apply universally (these inform `{AGENTS_FILE}` content).
+**Standards Gathering:** As process preferences and constraints emerge, note standards that should apply universally (these inform ``{AGENTS_FILE}`` content).
 
 **Specifications Gathering:** As design decisions and constraints emerge, note specifications that should be formally documented (these inform `Specifications.md` creation).
 
 **Validation Criteria Gathering:** Continue gathering validation criteria. See §3.1 Validation Criteria Gathering.
 
-**Gap Assessment Criteria:**
-
-After each User response, assess:
+**Gap Assessment Criteria** → After each User response, assess:
 - **Technical Constraints:** Are required/prohibited tools, frameworks, platforms, and performance requirements clear?
 - **Access and Coordination:** Do you understand account access needs, credential requirements, and manual coordination steps?
 - **Workflow Preferences:** Are workflow patterns, quality standards, and coordination approaches clear?
 - **Approval Requirements:** Are review processes, approval gates, and collaboration requirements clear?
 - **Domain Organization:** If distinct but related domains exist, do you understand User's preference for unified vs separated handling?
-- **Standards:** Are coding conventions, documentation requirements, and workflow conventions understood for `{AGENTS_FILE}`?
+- **Standards:** Are coding conventions, documentation requirements, and workflow conventions understood for ``{AGENTS_FILE}``?
 - **Specifications:** Are design decisions, constraints, and implementation-relevant choices documented for `Specifications.md`?
 - **Validation Coverage:** Have validation criteria and success states been gathered for process and quality requirements?
 
@@ -510,7 +486,7 @@ Perform the following actions:
    ```
    - If User requests modifications → Identify which Question Round's focus area the modification relates to → Use that Round's questioning approach for targeted follow-ups → Update relevant summary sections → Return to step 1 with updated summary
    - If User approves → Output procedure completion and proceed to step 3
-3. Output the procedure completion. This is a **progression gate**—do not proceed until this output is presented:
+3. Output the procedure completion. This is a **progression gate**-do not proceed until this output is presented:
    ```
    **Context Gathering Procedure complete.** All Question Rounds completed. Project context gathered and validated.
 
@@ -523,13 +499,11 @@ Perform the following actions:
 
 Invoked when research delegation is appropriate per §2.8 Research Delegation Standards.
 
-**Delegation Request Output:**
-
-When delegation is appropriate, output the following:
+**Delegation Request Output** → When delegation is appropriate, output the following:
 ```
 I'd like to delegate some research on <Brief Topic> to help inform the Coordination Artifacts.
 
-Here's what I need to understand: <Specific question>. This information will help me <how this information will inform the Coordination Artifacts (Implementation Plan, Specifications, or {AGENTS_FILE})>. I'm requesting delegation because <why this needs research, not more questions>.
+Here's what I need to understand: <Specific question>. This information will help me <how this information will inform the Coordination Artifacts (Implementation Plan, Specifications, or `{AGENTS_FILE}`)>. I'm requesting delegation because <why this needs research, not more questions>.
 
 **One important note:** The Planner Agent operates in a single session without handoff capability, so delegation will consume context window capacity. I'm only requesting this because I believe this information is essential for creating accurate Coordination Artifacts.
 
@@ -538,7 +512,7 @@ Would you like to approve the delegation, or would you prefer I note this as a r
 
 **If User approves delegation** → Perform the following actions:
 1. Check if `.apm/Memory/Stage_00_Planning/` exists. If not, create it (first delegation only). This directory stores delegation logs during the Planning Phase.
-2. Read the Research Delegation skill: {SKILL_PATH:delegate-research}
+2. Read the Research Delegation skill: `{SKILL_PATH:delegate-research}`
 3. Provide the User the Delegation Prompt following the skill. User then opens Delegate Agent Session and provides delegated research task.
 4. Delegate Agent logs findings to `.apm/Memory/Stage_00_Planning/Delegation_Log_00_<SequentialNum>_Research_<Slug>.md`
 5. Delegate Agent returns Delegation Report to User.
@@ -602,12 +576,12 @@ Output during Context Finalization (§3.5) for User review:
 - Coupling directives: [Which domains are tightly coupled and should share an agent]
 - Separation directives: [Which domains must remain separate]
 
-**Project Standard Indicators** (for `{AGENTS_FILE}`):
+**Project Standard Indicators** (for ``{AGENTS_FILE}``):
 - Existing file: [Yes/No - if yes, summary of existing standards to preserve]
 - [List standards gathered during discovery - categories vary by project type. Only include what emerged from this project's context.]
 
 **Specification Indicators** (for `Specifications.md`):
-[List design decisions and constraints gathered during discovery that should be formally documented. Categories vary by project—only include what emerged from this project's context and is relevant to informing the Implementation Plan.]
+[List design decisions and constraints gathered during discovery that should be formally documented. Categories vary by project-only include what emerged from this project's context and is relevant to informing the Implementation Plan.]
 ```
 
 ---

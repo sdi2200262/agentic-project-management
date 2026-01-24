@@ -59,13 +59,13 @@ Tasks may depend on outputs from previous Tasks. Context Dependencies affect how
 **Context Dependency Types and Depth Rules:**
 
 *Same-Agent Context Dependency:* When the current Worker previously completed the producer Task, they have working familiarity with the outputs.
-- **Depth Rule:** Light contextual reference—recall anchors, key artifacts, file paths
+- **Depth Rule:** Light contextual reference-recall anchors, key artifacts, file paths
 - Reference previous work without repeating detailed instructions
 - Detail level increases with dependency complexity between Tasks
 
 *Cross-Agent Context Dependency:* When a different Worker completed the producer Task, the current Worker has zero familiarity.
-- **Depth Rule:** Comprehensive integration context—file reading instructions, output summaries, integration guidance
-- Assume zero familiarity—explain everything needed
+- **Depth Rule:** Comprehensive integration context-file reading instructions, output summaries, integration guidance
+- Assume zero familiarity-explain everything needed
 - Explicit file reading instructions before main work
 - Complete output summaries with integration guidance
 
@@ -99,7 +99,7 @@ Task 3.2 (current - Consumer)
 
 ### 2.2 Specification Extraction Standards
 
-`Specifications.md` contains design decisions and constraints that inform Task Execution or Validation. Workers only receive Task Assignments — the Manager extracts relevant Specification content and contextually integrates it into the Task Assignment to inform Worker decisions.
+`Specifications.md` contains design decisions and constraints that inform Task Execution or Validation. Workers only receive Task Assignments - the Manager extracts relevant Specification content and contextually integrates it into the Task Assignment to inform Worker decisions.
 
 **Relevance Assessment:**
 
@@ -120,7 +120,7 @@ When reviewing Specifications for a Task, consider:
 - Provides background context without actionable requirements or constraints
 - Is already captured in the Task's Guidance field in the Implementation Plan
 
-**Default:** Never reference `Specifications.md` by path—Workers only receive Task Assignments. Preserve specificity with exact constraints, not summaries.
+**Default:** Never reference `Specifications.md` by path-Workers only receive Task Assignments. Preserve specificity with exact constraints, not summaries.
 
 ### 2.3 FollowUp Assignment Standards
 
@@ -195,7 +195,7 @@ Perform the following actions:
 
 1. Review `Specifications.md` for content relevant to this Task:
    - Apply §2.2 Specification Extraction Standards to determine relevance
-2. Contextually integrate relevant content into the Task Assignment—do not reference Specifications.md by path
+2. Contextually integrate relevant content into the Task Assignment-do not reference Specifications.md by path
 3. Preserve specificity with exact constraints, not summaries
 4. Note relevant Specification content for inclusion in prompt
 
@@ -252,7 +252,7 @@ Perform the following actions:
 
 Execute when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed."
 
-FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt—refine all content sections based on what went wrong.
+FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt-refine all content sections based on what went wrong.
 
 Perform the following actions:
 
@@ -334,7 +334,7 @@ has_delegation_steps: true | false
 ## Validation Criteria
 [From Implementation Plan Validation field, optionally enhanced with coordination-level resolution context]
 [Indicate Validation Type: Programmatic, Artifact, or User]
-[Provide actionable instructions to validate task execution and outputs — directly executable criteria enabling Worker to verify work meets requirements]
+[Provide actionable instructions to validate task execution and outputs - directly executable criteria enabling Worker to verify work meets requirements]
 
 ## Memory Logging
 Upon completion, log your work to: `<memory_log_path>`
@@ -398,7 +398,7 @@ This Task depends on work completed by <Producer Agent>:
 This work also builds on Task <X.Y> by <Agent>:
 - [Key outputs and relevance to current Task]
 ```
-— Assume Worker has zero familiarity
+- Assume Worker has zero familiarity
 - Always comprehensive but don't duplicate existing content
 - Include explicit file paths and what to look for
 - Document all relevant interfaces and contracts
@@ -440,19 +440,19 @@ FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content
 - Include file paths for concrete reference
 
 **Cross-Agent Context (including Handoff):**
-- Assume zero familiarity—explain everything needed
+- Assume zero familiarity-explain everything needed
 - Explicit file reading instructions before main work
 - Complete output summaries with integration guidance
 
 ### 5.3 Common Mistakes to Avoid
 
-- **Referencing inaccessible Coordination Artifacts:** Never tell Worker to "see Specifications.md" or "check Implementation Plan"—they can't access these
+- **Referencing inaccessible Coordination Artifacts:** Never tell Worker to "see Specifications.md" or "check Implementation Plan"-they can't access these
 - **Under-scoped Cross-Agent context:** Cross-Agent Context Dependencies require comprehensive context regardless of perceived simplicity
 - **Ignoring Worker Handoff state:** For Continuing Worker Agents, previous Stage dependencies must be treated as Cross-Agent even if same Worker domain
 - **Missing Context Dependency chain:** Failing to trace upstream when ancestors are relevant
 - **Vague instructions:** "Implement the feature properly" vs "Implement POST /api/users with email validation using express-validator, returning 201 on success"
 - **Forgetting Delegation references:** Tasks with Delegation steps need skill references for Worker to create proper Delegation Prompts
-- **Wrong memory_log_path on FollowUp:** FollowUp Task Assignments must use the same path as the original—Worker overwrites, not creates new
+- **Wrong memory_log_path on FollowUp:** FollowUp Task Assignments must use the same path as the original-Worker overwrites, not creates new
 - **Embedded code blocks:** Including ``` code blocks inside Task Assignment Prompts breaks the outer code block boundaries, fragmenting the prompt and breaking User copy-paste workflow. Use indented code blocks (4 spaces) or inline code formatting instead.
 
 ---
