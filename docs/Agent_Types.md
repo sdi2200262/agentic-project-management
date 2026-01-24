@@ -38,10 +38,10 @@ APM achieves specialization through **Context Scoping**. Instead of relying on p
 The Setup Agent is a temporary instance that exists solely to translate user requirements into a structured Implementation Plan. It operates through mandatory progression gates to ensure no step is skipped and no detail is overlooked.
 
 ### Core Responsibilities
-1.  **Context Synthesis:** systematically interviews the user to gather technical, functional, and process requirements.
+1.  **Context Synthesis:** Systematically interviews the user to gather technical, functional, and process requirements.
 2.  **Project Breakdown:** Analyzes the requirements to create a domain-driven task list (Frontend, Backend, DevOps).
 3.  **Plan Generation:** Transforms the raw task list into the detailed **APM Implementation Plan artifact**.
-4.  **Bootstrap Creation:** Generates the **Bootstrap Prompt** to pass project context to the Manager Agent.
+4.  **Phase Completion:** Presents options for approval, modifications, or review. Once approved, directs user to initialize the Manager Agent.
 
 ---
 
