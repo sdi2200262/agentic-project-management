@@ -26,7 +26,7 @@ Skills and commands are written for token efficiency while maintaining comprehen
 - Compact list formats are used when listing related items.
 - Redundant phrasing and unnecessary elaboration are eliminated.
 - Related concepts are combined in flowing paragraphs rather than isolated bullets.
-- Bold and italic are used for hierarchy instead of additional heading levels.
+- Bold and italic introduce hierarchy inline instead of using additional heading levels.
 
 Token efficiency does not mean sacrificing clarity or completeness. Every necessary detail must remain. The goal is removing waste, not removing substance.
 
@@ -94,7 +94,8 @@ Instructions begin with action verbs.
 | Determine | Make a decision based on criteria. |
 | Assess | Evaluate against standards. |
 | Apply | Use a standard or rule. |
-| Proceed | Move to next section, procedure, activity etc. |
+| Continue | Flow within current context to next step or action. |
+| Proceed | Jump to a different section, procedure, or activity. |
 
 ### 3.2 Action Block Format
 
@@ -223,9 +224,9 @@ References use "See" or "per" exclusively. Nearby sentences are adapted so refer
 
 **Same-Skill:** "See §N.M Section Title" or "per §N.M Section Title" where N.M is the section number and Section Title is the exact heading text. Examples: "See §2.1 Context Dependency Standards." or "Integrate dependent context per §3.2 Context Integration."
 
-**Cross-Skill:** "See {SKILL_PATH:skill-name} §N.M Section Title" or "per {SKILL_PATH:skill-name} §N.M Section Title" where skill-name is the skill directory name. Example: "Create the Task Memory Log per {SKILL_PATH:memory-logging} §3.1 Task Memory Log Procedure."
+**Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title" or "per `{SKILL_PATH:skill-name}` §N.M Section Title" where skill-name is the skill directory name. Example: "Create the Task Memory Log per `{SKILL_PATH:memory-logging}` §3.1 Task Memory Log Procedure."
 
-**Command:** "See {COMMAND_PATH:command-name}" where command-name is the command file name without extension.
+**Command:** "See `{COMMAND_PATH:command-name}`" where command-name is the command file name without extension.
 
 **Cross-Document:** The file name or placeholder format with specific section is stated. Content is referenced, not duplicated.
 
@@ -241,50 +242,69 @@ Terms are used exactly as defined in `TERMINOLOGY.md`. Synonyms are not used. Te
 
 Document-level structure (heading levels, section numbering, horizontal rules) is defined in `STRUCTURE.md`. This section covers content presentation within sections.
 
-### 7.1 Spacing
+### 7.1 Inline Hierarchy
 
-**Sentence before list:** No blank line between any sentence and the list it introduces:
+Bold and italic create hierarchy within subsections. Punctuation determines content flow.
+
+**Bold Sub-topics** → Bold introduces sub-topics within subsections. Punctuation after bold determines content structure:
+
+*Colon (`**Topic:**`)* - Content follows directly:
 ```
-Introductory sentence:
+**Topic:**
+- List item one
+- List item two
+```
+```
+**Topic:** Inline content that completes the thought.
+```
+
+*Arrow (`**Topic** →`)* - Explanatory prose bridges to a list. Prose ends with colon:
+```
+**Topic** → Explanatory prose that introduces the concept:
 - List item one
 - List item two
 ```
 
-**Bold subsection → prose:** When bold indicates a subsection marker followed by a prose paragraph, blank line separates them:
-```
-**Subsection Title:**
+**Italic Sub-sub-topics** → Italic creates the level below bold. Two usage patterns:
 
-Content paragraph follows after blank line.
+*As sub-heading:* Introduces a list below a bold topic. Colon after italic, list follows directly:
 ```
+**Topic** → Introductory prose for this section:
 
-**Bold label → list:** When bold labels a list, no blank line (follows sentence-before-list rule):
-```
-**Category Label:**
+*Subtopic A:*
+- List item one
+- List item two
+
+*Subtopic B:*
 - List item one
 - List item two
 ```
 
-**Bold conditionals:** When bold indicates conditional logic (If X, When Y), use arrow notation without colon after bold:
+*As list item label:* Labels items within a list. Colon after label, arrow for outcomes:
 ```
-**If condition** → Perform the following actions:
-1. Action one.
-2. Action two.
-```
-
-**Bold with inline content:** When bold introduces content on the same line, lists follow directly with no blank line:
-```
-**Title:** Content begins here on same line.
-- List item one
-- List item two
+- *Option A:* Description of this option → Action to take.
+- *Option B:* Description of this option → Action to take.
 ```
 
-**Between paragraphs:** One blank line. Related short paragraphs may be merged to reduce line count when clarity is preserved.
+**Hyphen definitions** → Connects term to definition or separates label components:
+```
+- **Term** - Definition or explanation follows.
+- `value` - What this value means.
+```
+```
+**Assessment 1 - Investigation Need** → Two branches based on review:
+```
 
-**Between bold and italic hierarchy:** One blank line.
+### 7.2 Spacing
 
-**After code blocks:** One blank line.
+**General spacing:**
+- No blank line between introductory prose and its list.
+- No blank line between bold/italic label and its list.
+- One blank line between paragraphs.
+- One blank line between distinct sub-sub-topics (italic sections).
+- One blank line after code blocks.
 
-### 7.2 Lists
+### 7.3 Lists
 
 **Numbered lists:** Used for sequential actions. Each item begins with capital letter and ends with period.
 
@@ -292,11 +312,13 @@ Content paragraph follows after blank line.
 
 **Nested lists:** Nesting beyond one level is avoided. Content is restructured if deeper nesting seems necessary.
 
-### 7.3 Dashes
+### 7.4 Dashes
 
-When dash is used for sentence separation, no space appears between words: "sentence ends here-next sentence begins here". This applies to inline definitions and compact descriptions.
+Only hyphens (`-`) are used. Em-dashes (`-`) and en-dashes (`–`) are not permitted.
 
-### 7.4 Code Blocks
+When hyphen is used for inline separation, no space appears between words: "sentence ends here-next sentence begins here". This applies to inline definitions and compact descriptions.
+
+### 7.5 Code Blocks
 
 Triple backticks are used for output templates, file structure examples, YAML schemas, and multi-line code. Inline backticks are used for file paths, field names, values, and section references.
 

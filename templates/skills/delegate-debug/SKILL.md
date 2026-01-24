@@ -48,7 +48,7 @@ This section establishes reasoning approaches and decision rules for Debug Deleg
 
 A Debug Delegation Prompt must provide enough context for the Delegate to work autonomously:
 
-**Bug Description:** What is happening versus what should happen. Include exact error messages, stack traces, or failure symptoms—not paraphrased descriptions.
+**Bug Description:** What is happening versus what should happen. Include exact error messages, stack traces, or failure symptoms-not paraphrased descriptions.
 
 **Reproduction Path:** Step-by-step instructions to trigger the bug. Include specific inputs, conditions, files, and commands. The Delegate should be able to reproduce without guessing.
 
@@ -108,7 +108,7 @@ Resolve this bug to enable Task continuation. Provide a working fix or, if unres
 <What the code/system should do, where the bug occurs, what Task is blocked>
 
 ## Current Behavior
-<Exact error messages, stack traces, failure symptoms—verbatim, not paraphrased>
+<Exact error messages, stack traces, failure symptoms-verbatim, not paraphrased>
 
 ## Expected Behavior
 <What should happen for Task to continue>
@@ -125,7 +125,7 @@ Resolve this bug to enable Task continuation. Provide a working fix or, if unres
 <File paths, code snippets, configuration involved in the bug>
 
 ## Prior Debugging Attempts
-<What calling Agent tried and outcomes—prevents repeating failed approaches>
+<What calling Agent tried and outcomes-prevents repeating failed approaches>
 
 ## Execution Guidance
 - Use terminal and file system access to reproduce and debug actively

@@ -3,7 +3,7 @@ name: artifact-maintenance
 description: Assessment and maintenance of Coordination Artifacts (Specifications, Implementation Plan, Standards) based on implementation findings. Defines the Artifact Maintenance Procedure for the Manager Agent.
 ---
 
-# APM {VERSION} — Artifact Maintenance Skill
+# APM {VERSION} - Artifact Maintenance Skill
 
 ## 1. Overview
 
@@ -13,7 +13,7 @@ This skill defines how the Manager Agent assesses and maintains Coordination Art
 
 ### 1.1 How to Use This Skill
 
-**Entry Point:** This skill is entered when the Coordination Decision (per {SKILL_PATH:memory-maintenance} §3.5 Coordination Decision) determines "Coordination Artifact modification needed."
+**Entry Point:** This skill is entered when the Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "Coordination Artifact modification needed."
 
 **Execute the Procedure.** The Procedure section contains the sequential actions for Artifact Maintenance. Begin at §3.1 Entry Point and follow through to §3.5 Modification Execution. See §3 Artifact Maintenance Procedure.
 
@@ -31,7 +31,7 @@ This skill defines how the Manager Agent assesses and maintains Coordination Art
 
 ### 1.3 Outputs
 
-**Modified Coordination Artifacts:** Updated `Specifications.md`, `Implementation_Plan.md`, or `{AGENTS_FILE}` reflecting execution findings.
+**Modified Coordination Artifacts:** Updated `Specifications.md`, `Implementation_Plan.md`, or ``{AGENTS_FILE}`` reflecting execution findings.
 
 **Modification Documentation:** Last Modification field updates in affected Coordination Artifacts, linking modifications to their triggering context.
 
@@ -39,9 +39,9 @@ This skill defines how the Manager Agent assesses and maintains Coordination Art
 
 The Coordination Artifacts form a hierarchy:
 
-- **Specifications** (`Specifications.md`) — Coordination Level, Architectural: Project-specific design decisions and constraints that inform the Implementation Plan. Content structure is determined by project needs.
-- **Implementation Plan** (`Implementation_Plan.md`) — Coordination Level, Implementation: Stage and Task breakdown that implements the Specifications. Translates design decisions into executable work units.
-- **Standards** (`{AGENTS_FILE}`) — Execution Level: Universal standards for code quality, documentation, workflow preferences, language tone. Applied during Task Execution, not coordination.
+- **Specifications** (`Specifications.md`) - Coordination Level, Architectural: Project-specific design decisions and constraints that inform the Implementation Plan. Content structure is determined by project needs.
+- **Implementation Plan** (`Implementation_Plan.md`) - Coordination Level, Implementation: Stage and Task breakdown that implements the Specifications. Translates design decisions into executable work units.
+- **Standards** (`{AGENTS_FILE}`) - Execution Level: Universal standards for code quality, documentation, workflow preferences, language tone. Applied during Task Execution, not coordination.
 
 **Cascade Patterns:**
 - Specifications ↔ Implementation Plan: Bidirectional. Specification modifications often require Implementation Plan adjustments. Implementation Plan modifications during execution may reveal that Specifications need revision.
@@ -88,24 +88,18 @@ A Task Memory Log review may reveal findings that indicate Coordination Artifact
 
 When modifications are needed, consider the hierarchy to determine the appropriate starting point and cascade direction.
 
-**Bidirectional Coordination Assessment:**
-
-Specifications and Implementation Plan are both coordination-level Coordination Artifacts with bidirectional influence:
+**Bidirectional Coordination Assessment** → Specifications and Implementation Plan are both coordination-level Coordination Artifacts with bidirectional influence:
 - Specification modifications often require Implementation Plan adjustments (Tasks implement the design)
 - Implementation Plan modifications during execution may reveal that Specifications need revision (implementation informs design)
 
 When findings suggest issues at either level, assess both. An Implementation Plan modification that ignores an underlying Specification issue creates inconsistency. A Specification update that ignores Implementation Plan impact leaves Tasks misaligned.
 
-**Standards Isolation:**
-
-`{AGENTS_FILE}` contains execution-level Standards and is generally isolated from coordination-level Coordination Artifacts:
+**Standards Isolation** → `{AGENTS_FILE}` contains execution-level Standards and is generally isolated from coordination-level Coordination Artifacts:
 - Upward cascade from Standards to Implementation Plan or Specifications is very unlikely; Standards govern execution quality, not coordination decisions
 - Downward cascade from Implementation Plan or Specifications to Standards sometimes occurs when coordination modifications require execution-level standard adjustments
 - If a Standards modification seems to require coordination-level Coordination Artifact updates, reconsider whether it's truly a universal standard or a project-specific decision that belongs in Specifications or the Implementation Plan
 
-**Independence Assessment:**
-
-Not all modifications cascade. Assess whether the modification is isolated or has implications:
+**Independence Assessment** → Not all modifications cascade. Assess whether the modification is isolated or has implications:
 - A Task clarification that doesn't affect the design intent requires no Specification update
 - A Specification refinement that doesn't change Task scope requires no Implementation Plan update
 - A Standards adjustment that doesn't affect coordination approach requires no other updates
@@ -118,9 +112,7 @@ Not all modifications cascade. Assess whether the modification is isolated or ha
 
 Assess whether modifications are within Manager authority or require User collaboration.
 
-**Authority Scope Assessment:**
-
-Modification authority depends on scope and impact. Consider:
+**Authority Scope Assessment** → Modification authority depends on scope and impact. Consider:
 - How many Tasks or Stages are affected?
 - Does the modification preserve original intent or change direction?
 - Does it require human judgment on trade-offs?
@@ -163,7 +155,7 @@ This section defines the sequential actions for Artifact Maintenance. Execute th
 
 ### 3.1 Entry Point
 
-Execute when arriving from Coordination Decision (per {SKILL_PATH:memory-maintenance} §3.5 Coordination Decision).
+Execute when arriving from Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision).
 
 Perform the following actions:
 1. Capture the triggering context:
@@ -266,7 +258,7 @@ Perform the following actions:
    - Link modifications to triggering Memory Log
    - Keep descriptions concise but traceable
 4. Return to coordination workflow:
-   - Follow {SKILL_PATH:memory-maintenance} §3.5 Coordination Decision to continue Manager's coordination duties
+   - Follow `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision to continue Manager's coordination duties
    - Apply judgment based on the nature of the modifications and their impact on remaining work
 
 ---
@@ -291,13 +283,13 @@ When modifying Specifications, maintain consistency with the existing document s
 
 **Content Patterns:**
 - Use markdown headings (`##`) for major categories
-- Maintain specificity—each specification should be concrete and actionable
+- Maintain specificity-each specification should be concrete and actionable
 - Reference existing documents rather than duplicating content
 - Preserve existing section organization when adding content
 
 ### 4.2 Implementation Plan Structural Reference
 
-When modifying the Implementation Plan, maintain consistency with the formats established during Work Breakdown. Reference {SKILL_PATH:work-breakdown} §4 Structural Specifications:
+When modifying the Implementation Plan, maintain consistency with the formats established during Work Breakdown. Reference `{SKILL_PATH:work-breakdown}` §4 Structural Specifications:
 
 **Stage Format:**
 - Stage header: `## Stage N: [Title]`

@@ -61,7 +61,7 @@ A Research Delegation Prompt must provide enough context for the Delegate to res
 
 ### 2.2 Delegation Framing Standards
 
-**Current Information Focus:** The goal is current, authoritative information—not theoretical knowledge or general guidance. Frame the delegation around accessing official sources.
+**Current Information Focus:** The goal is current, authoritative information-not theoretical knowledge or general guidance. Frame the delegation around accessing official sources.
 
 **Tool Expectations:** Delegates must use web search and fetch tools to access current documentation. Training data may be outdated; official sources are required.
 
@@ -127,7 +127,7 @@ Gather current, authoritative information to answer the research questions below
 
 ## Execution Guidance
 - Use web search and fetch tools to access current official documentation
-- Do not rely solely on training data—verify against current sources
+- Do not rely solely on training data-verify against current sources
 - Cross-reference multiple sources when possible
 - Provide actionable findings that directly answer the questions
 

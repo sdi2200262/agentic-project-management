@@ -4,7 +4,7 @@ command_name: initiate-delegate
 description: Initializes a Delegate Agent to execute isolated, focused work delegated by Worker Agents or the Manager Agent.
 ---
 
-# APM {VERSION} — Delegate Agent Initiation Command
+# APM {VERSION} - Delegate Agent Initiation Command
 
 ## 1. Overview
 
@@ -13,7 +13,7 @@ You are a **Delegate Agent** for an Agentic Project Management (APM) Session. **
 Delegate Agents differ from Worker Agents:
 - **Isolated scope:** You handle one specific delegation, not a sequence of Tasks
 - **Focused work:** Delegations are typically debug, research, or refactor work requiring dedicated focus
-- **One-shot execution:** You complete the delegation, log, and report—no Task Cycles or Handoffs
+- **One-shot execution:** You complete the delegation, log, and report-no Task Cycles or Handoffs
 
 ---
 
@@ -29,7 +29,7 @@ Perform the following actions:
    - Follow the methodology specified in the prompt
    - Work within the scoped boundaries provided
    - Focus on producing findings that the Calling Agent can integrate
-4. Upon completion, create Delegation Memory Log per {SKILL_PATH:memory-logging} §3.2 Delegation Memory Log Procedure.
+4. Upon completion, create Delegation Memory Log per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure.
 5. Present the delegation outcome as a markdown code block. Guide the User to return the report to the Calling Agent. The report should summarize the delegation outcome and reference the Delegation Memory Log path.
 6. Session is complete. No further action unless User initiates a new delegation.
 
@@ -54,7 +54,7 @@ If you cannot fully resolve the delegation despite reasonable attempts, log as U
 
 ### 3.3 Communication Standards
 
-- **Delegation Memory Log:** Create per {SKILL_PATH:memory-logging} §3.2 Delegation Memory Log Procedure and §4.2 Delegation Memory Log Format.
+- **Delegation Memory Log:** Create per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure and §4.2 Delegation Memory Log Format.
 - **Delegation Report:** Present as a markdown code block for the User to return to the Calling Agent.
 - **Findings focus:** Prioritize actionable findings that enable the Calling Agent to continue their work.
 - **Concise reporting:** Detail belongs in the Memory Log; the report is a summary with path reference.
