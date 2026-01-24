@@ -156,7 +156,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | Question Round 1 | Existing materials and vision discovery. |
 | Question Round 2 | Technical requirements discovery. |
 | Question Round 3 | Implementation approach and quality discovery. |
-| Final Validation | Understanding Summary presentation and approval. |
+| Context Finalization | Understanding Summary presentation and approval. |
 
 **Work Breakdown Activities:**
 
@@ -167,7 +167,8 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | Domain Analysis | Identify domains and assign Worker Agents. |
 | Stage Analysis | Define Stages with objectives and Task identification. |
 | Stage Cycle | Detailed Task breakdown per Stage. |
-| Plan Finalization | Workload distribution and dependency review. |
+| Plan Review | Workload distribution and cross-Agent dependency review. |
+| Artifact Finalization | User approval and procedure completion. |
 
 **Terms:**
 

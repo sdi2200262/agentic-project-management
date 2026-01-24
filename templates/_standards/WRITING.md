@@ -250,11 +250,18 @@ Introductory sentence:
 - List item two
 ```
 
-**Bold sub-topics:** When bold indicates a subsection marker within a ### heading, it appears on its own line followed by content:
+**Bold subsection → prose:** When bold indicates a subsection marker followed by a prose paragraph, blank line separates them:
 ```
 **Subsection Title:**
 
-Content paragraph or list follows after blank line.
+Content paragraph follows after blank line.
+```
+
+**Bold label → list:** When bold labels a list, no blank line (follows sentence-before-list rule):
+```
+**Category Label:**
+- List item one
+- List item two
 ```
 
 **Bold conditionals:** When bold indicates conditional logic (If X, When Y), use arrow notation without colon after bold:
