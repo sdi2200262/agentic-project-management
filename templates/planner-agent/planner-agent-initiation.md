@@ -59,7 +59,7 @@ You may delegate Research during Context Gathering to Delegate Agents when ambig
 - If research needs are substantial or central to the project, note them for inclusion in the Implementation Plan rather than delegating during Planning Phase.
 - Before first delegation, create `.apm/Memory/Stage_00_Planning/` directory if it does not exist.
 
-If Delegation is needed, follow methodology per {SKILL_PATH:context-gathering} §3.7 Delegation Handling.
+If Delegation is needed, follow methodology per {SKILL_PATH:context-gathering} §3.6 Delegation Handling.
 
 ---
 
