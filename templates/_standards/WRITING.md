@@ -244,65 +244,58 @@ Document-level structure (heading levels, section numbering, horizontal rules) i
 
 ### 7.1 Inline Hierarchy
 
-Bold and italic create hierarchy within subsections. Punctuation determines content flow.
+Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctuation after labels determines content structure.
 
-**Bold Sub-topics** → Bold introduces sub-topics within subsections. Punctuation after bold determines content structure:
+**Label punctuation:**
+- *Colon (`Label:`)* - Content follows directly (list or inline prose)
+- *Arrow (`Label →`)* - Prose bridges to a list; prose ends with colon
+- *Hyphen (`Label -`)* - Definition or explanation follows
 
-*Colon (`**Topic:**`)* - Content follows directly:
-```
-**Topic:**
-- List item one
-- List item two
-```
-```
-**Topic:** Inline content that completes the thought.
-```
+**Colon rule:** Avoid two colons on one line. When prose after a label ends with colon, the label uses arrow.
 
-*Arrow (`**Topic** →`)* - Explanatory prose bridges to a list. Prose ends with colon:
+**Examples:**
 ```
-**Topic** → Explanatory prose that introduces the concept:
-- List item one
-- List item two
-```
+**Topic:**                              # Direct list follows
+- Item one
+- Item two
 
-**Italic Sub-sub-topics** → Italic creates the level below bold. Two usage patterns:
+**Topic:** Inline content here.         # Inline prose follows
 
-*As sub-heading:* Introduces a list below a bold topic. Colon after italic, list follows directly:
-```
-**Topic** → Introductory prose for this section:
+**Topic** → Prose introducing list:     # Prose-to-list bridge
+- Item one
+- Item two
 
-*Subtopic A:*
-- List item one
-- List item two
+*Subtopic:*                             # Italic direct list
+- Item one
 
-*Subtopic B:*
-- List item one
-- List item two
-```
+*Subtopic* → Prose introducing list:    # Italic prose-to-list bridge
+- Item one
 
-*As list item label:* Labels items within a list. Colon after label, arrow for outcomes:
-```
-- *Option A:* Description of this option → Action to take.
-- *Option B:* Description of this option → Action to take.
-```
+- *Option:* Description → Action.       # Italic list item label
 
-**Hyphen definitions** → Connects term to definition or separates label components:
-```
-- **Term** - Definition or explanation follows.
-- `value` - What this value means.
-```
-```
-**Assessment 1 - Investigation Need** → Two branches based on review:
+**Term** - Definition follows.          # Hyphen definition
+
+**Label - Component** → Prose:          # Compound label with arrow
+- Item one
 ```
 
 ### 7.2 Spacing
 
-**General spacing:**
-- No blank line between introductory prose and its list.
-- No blank line between bold/italic label and its list.
-- One blank line between paragraphs.
-- One blank line between distinct sub-sub-topics (italic sections).
+- No blank line between label and its content (list or prose).
+- No blank line between introductory sentence and its list.
+- One blank line between paragraphs and between distinct sub-topics.
 - One blank line after code blocks.
+
+**Grouping headers:** When a bold label groups multiple italic sub-topics (not direct content), one blank line separates the bold header from the first italic sub-topic:
+```
+**Grouping Header:**
+
+*Subtopic A:*
+- Item one
+
+*Subtopic B:*
+- Item one
+```
 
 ### 7.3 Lists
 
@@ -310,7 +303,7 @@ Bold and italic create hierarchy within subsections. Punctuation determines cont
 
 **Bulleted lists:** Used for non-sequential items or options. Each item begins with capital letter and ends with period.
 
-**Nested lists:** Nesting beyond one level is avoided. Content is restructured if deeper nesting seems necessary.
+**Nested lists:** Maximum two levels of nesting (three total depth). Content is restructured if deeper nesting seems necessary.
 
 ### 7.4 Dashes
 
