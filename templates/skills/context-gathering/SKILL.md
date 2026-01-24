@@ -151,7 +151,7 @@ Ready to proceed to Question Round [N+1].
 
 After completing Rounds 1 and 2 and displaying the Round Completion text block, immediately begin the next Question Round's Initial Questions.
 
-After completing Round 3 and displaying the Round Completion text block, immediately proceed to §3.5 Final Validation.
+After completing Round 3 and displaying the Round Completion text block, immediately proceed to §3.5 Context Finalization.
 
 ### 2.4 Context Categorization
 
@@ -314,7 +314,7 @@ This section defines the sequential actions that accomplish Context Gathering. T
 2. Question Round 1 → Existing Materials and Vision
 3. Question Round 2 → Technical Requirements
 4. Question Round 3 → Implementation Approach and Quality
-5. Final Validation → Understanding Summary presentation, modification handling, and procedure completion
+5. Context Finalization → Understanding Summary presentation, modification handling, and procedure completion
 6. Delegation Handling → Research delegation procedure when invoked from Question Rounds
 
 ### 3.1 Question Round Protocol
@@ -348,7 +348,7 @@ When gathering validation criteria, consider which validation type(s) will apply
 - If success means a file or artifact exists with correct and expected structure and data → Artifact
 - If success requires human judgment or approval → User
 
-Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Final Validation per §3.5 Final Validation.
+Many requirements need multiple types. Capture all applicable criteria; type categorization happens during Context Finalization per §3.5 Context Finalization.
 
 Integrate validation gathering into your follow-ups within Rounds 2 and 3. Retain agreed-upon success states and criteria for the Implementation Plan task Validation fields.
 
@@ -490,15 +490,15 @@ After each User response, assess:
 
 **Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §2.8 Research Delegation Standards.
 
-**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Final Validation, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §2.3 Gap Identification and Round Advancement Standards.**
+**Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Context Finalization, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §2.3 Gap Identification and Round Advancement Standards.**
 
-### 3.5 Final Validation
+### 3.5 Context Finalization
 
 After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to `{SKILL_PATH:work-breakdown}`.
 
 Perform the following actions:
 1. Present the Understanding Summary consolidating all gathered context per §4.1 Understanding Summary Format.
-2. Immediately after the summary, output the following checkpoint:
+2. Pause for User review. Output the following checkpoint immediately after the summary:
    ```
    **Question Rounds 1-3 complete.** Understanding presented [updated if after modifications].
 
@@ -508,10 +508,9 @@ Perform the following actions:
    - **Modifications needed** → Describe any misunderstandings, missing requirements or constraints and I will update.
    - **All looks good** → I will proceed to the Work Breakdown Procedure per `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
    ```
-3. Handle User response:
-   - If User requests modifications → Identify which Question Round's focus area the modification relates to → Use that Round's questioning approach for targeted follow-ups → Update relevant summary sections → Return to step 1 with updated summary → Output the updated checkpoint from step 2
-   - If User approves → Output the procedure completion and proceed to step 4
-4. Output the procedure completion. This is a **progression gate**—do not proceed until this output is presented:
+   - If User requests modifications → Identify which Question Round's focus area the modification relates to → Use that Round's questioning approach for targeted follow-ups → Update relevant summary sections → Return to step 1 with updated summary
+   - If User approves → Output procedure completion and proceed to step 3
+3. Output the procedure completion. This is a **progression gate**—do not proceed until this output is presented:
    ```
    **Context Gathering Procedure complete.** All Question Rounds completed. Project context gathered and validated.
 
@@ -565,7 +564,7 @@ This section defines the output format for the Understanding Summary.
 
 ### 4.1 Understanding Summary Format
 
-Output during Final Validation (§3.5) for User review:
+Output during Context Finalization (§3.5) for User review:
 ```
 ## Understanding Summary:
 
