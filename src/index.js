@@ -173,6 +173,11 @@ template version compatible with your current CLI version.
             name: 'Roo Code',
             value: 'Roo Code',
             description: 'Optimized for Roo Code IDE'
+          },
+          {
+            name: 'Google Antigravity',
+            value: 'Google Antigravity',
+            description: 'Optimized for Google Antigravity'
           }
         ]
       });

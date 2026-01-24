@@ -139,12 +139,11 @@ To initialize the Setup Agent, simply enter the command:
 ---
 
 ## Step 3: Work Through Setup Phase
-The Setup Agent will greet you and outline its 4-step workflow:
+The Setup Agent will greet you and outline its 3-step workflow:
 
 1.  Context Synthesis
 2.  Project Breakdown & Plan Creation
 3.  Implementation Plan Review & Refinement (Optional)
-4.  Manager Bootstrap Prompt Creation
 
 The Setup Agent will guide you through each step systematically, always asking for your confirmation before moving on so you can review, clarify, or request changes. **Be thorough during this phase** - time invested here prevents roadblocks later.
 
@@ -175,15 +174,18 @@ The Setup Agent will systematically break down your project through key stages:
 The Setup Agent will offer systematic review of the Implementation Plan:
 
   * **Recommended**: For complex projects or first-time APM users.
-  * **Optional**: If you're satisfied with the plan quality, you can skip this step and proceed directly to Bootstrap Creation.
+  * **Optional**: If you're satisfied with the plan quality, you can skip this step and complete the Setup Phase.
 
 > **Tip for Implementation Plan AI-driven Review:** This AI-driven review focuses on AI-specific planning issues (task packing, classification errors). **You must still conduct your own manual review** for requirement gaps or constraints.
 
-### 3.4 Manager Bootstrap Creation
+### 3.4 Setup Phase Completion
 
-The Setup Agent will create a **Bootstrap Prompt** summarizing project context, key requirements, and next steps for the Manager Agent. 
+After presenting the Implementation Plan, the Setup Agent will give you three options:
+- **Plan looks good** → Setup Phase is complete. Proceed to initialize Manager Agent.
+- **Modifications needed** → Request changes and the Agent will apply them.
+- **Systematic Review requested** → The Agent will perform the deep AI-driven review.
 
-**Save or copy this prompt** — you'll need it to initialize the Manager Agent session.
+If you're satisfied with the plan, simply proceed to initialize the Manager Agent - no additional confirmation needed.
 
 ---
 
@@ -203,30 +205,17 @@ Enter the Manager Agent initialization command:
 /apm-2-initiate-manager
 ```
 
-### 4.3 Deliver Bootstrap Prompt
+### 4.3 Manager Agent Initialization
 
-The Manager Agent requires the Bootstrap Prompt to receive initial project context.
+The Manager Agent will automatically detect that this is the first session by reading the `Memory_Root.md` file. It will then read the Implementation Plan and required guides, and summarize its understanding before requesting authorization to begin tasks.
 
-**Paste the Bootstrap Prompt** created by your Setup Agent.
-
-The Manager Agent will review project materials and the required guides and then summarize understanding before requesting authorization to begin tasks. **Authorize the Manager Agent** once you confirm their understanding is accurate. For example:
+**Authorize the Manager Agent** once you confirm their understanding is accurate. For example:
 
 `"Your understanding of your responsibilities is complete. Please proceed to phase 1 execution."`
 
-The Manager Agent will **initialize the Memory System** and create a **Task Assignment Prompt** for the first task in your Implementation Plan. The prompt will be presented **in a markdown code block** for easy copy-paste.
+The Manager Agent will **initialize the Memory System** (filling in the `Memory_Root.md` header) and create a **Task Assignment Prompt** for the first task in your Implementation Plan. The prompt will be presented **in a markdown code block** for easy copy-paste.
 
-<div align="center">
-  <video 
-    controls 
-    autoplay 
-    loop 
-    muted 
-    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
-  >
-    <source src={require('@site/static/docs-video/cursor-apm-manager-agent-budget-model.mp4').default} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
+{/* Video pending update for new workflow */}
 
 ---
 
@@ -305,9 +294,9 @@ When Agents approach the context window limit, perform a **Handover Procedure** 
 
 1.  **Detect the Limit:** Watch for context window usage (if your IDE provides a visualization) or signs like repeated questions or generic responses.
 2.  **Request a Handover:** Ask the Agent to begin a Handover Procedure using the appropriate command.
-      * The Agent will produce a **Handover File** (active, undocumented context) and a **Handover Prompt** (onboarding instructions).
-3.  **Open a New Agent Session:** Start a new chat for the same Agent role (e.g., "Agent_Backend_2") and initialize it.
-4.  **Initialize the New Agent:** Paste the **Handover Prompt** (and provide the Handover File as context if needed) as the first message.
+      * The Agent will produce a **Handover File** (physical markdown file with active context) and a **Handover Prompt** (session state and instructions).
+3.  **Open a New Agent Session:** Start a new chat for the same Agent role (e.g., "Agent_Backend_2") and initialize it using the appropriate command (e.g., `/apm-2-initiate-manager`).
+4.  **Deliver the Handover Prompt:** The new Agent will detect it's a handover session and request the Handover Prompt. Paste the prompt from the previous Agent.
 5.  **Verify and Resume:** **Verify the new Agent's understanding** of the project state. Once verified, authorize the Agent to continue work.
 
 <div align="center">

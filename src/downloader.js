@@ -26,7 +26,8 @@ export const ASSET_MAP = {
   'Windsurf': 'apm-windsurf.zip',
   'Kilo Code': 'apm-kilocode.zip',
   'Auggie CLI': 'apm-auggie.zip',
-  'Roo Code': 'apm-roo.zip'
+  'Roo Code': 'apm-roo.zip',
+  'Google Antigravity': 'apm-antigravity.zip'
 };
 
 /**
