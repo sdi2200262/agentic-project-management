@@ -3,7 +3,7 @@ name: artifact-maintenance
 description: Assessment and maintenance of Coordination Artifacts (Specifications, Implementation Plan, Standards) based on implementation findings. Defines the Artifact Maintenance Procedure for the Manager Agent.
 ---
 
-# APM {VERSION} - Artifact Maintenance Skill
+# APM {VERSION} — Artifact Maintenance Skill
 
 ## 1. Overview
 
@@ -13,7 +13,7 @@ This skill defines how the Manager Agent assesses and maintains Coordination Art
 
 ### 1.1 How to Use This Skill
 
-**Entry Point:** This skill is entered when the Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "Coordination Artifact modification needed."
+**Entry Point:** This skill is entered when the Coordination Decision (per {SKILL_PATH:memory-maintenance} §3.5 Coordination Decision) determines "Coordination Artifact modification needed."
 
 **Execute the Procedure.** The Procedure section contains the sequential actions for Artifact Maintenance. Begin at §3.1 Entry Point and follow through to §3.5 Modification Execution. See §3 Artifact Maintenance Procedure.
 
@@ -163,10 +163,9 @@ This section defines the sequential actions for Artifact Maintenance. Execute th
 
 ### 3.1 Entry Point
 
-Execute when arriving from Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision).
+Execute when arriving from Coordination Decision (per {SKILL_PATH:memory-maintenance} §3.5 Coordination Decision).
 
 Perform the following actions:
-
 1. Capture the triggering context:
    - Which Task Memory Log or Delegation Memory Log revealed the findings?
    - What specific findings indicate Coordination Artifact modification is needed?
@@ -184,7 +183,6 @@ Perform the following actions:
 Assess which Coordination Artifact(s) need modification and what modifications are needed.
 
 Perform the following actions:
-
 1. Apply §2.1 Modification Assessment Standards to confirm affected Coordination Artifacts:
    - Do findings indicate Specification issues?
    - Do findings indicate Implementation Plan issues?
@@ -201,7 +199,6 @@ Perform the following actions:
 Assess whether modifications in the primary Coordination Artifact affect other Coordination Artifacts.
 
 Perform the following actions:
-
 1. Apply §2.2 Cascade Pattern Standards to determine if cascade is needed:
    - If Specification modification: Assess Implementation Plan impact; consider whether Standards need adjustment
    - If Implementation Plan modification: Assess whether Specifications should be updated accordingly; consider whether Standards need adjustment
@@ -218,7 +215,6 @@ Perform the following actions:
 Determine whether modifications are within Manager authority or require User collaboration.
 
 Perform the following actions:
-
 1. Apply §2.3 Modification Authority Standards to each identified modification:
    - Check the modification against the authority thresholds
    - Assess overall scope considering all modifications together (including cascades)
@@ -257,7 +253,6 @@ Perform the following actions:
 Execute Coordination Artifact modifications and document them.
 
 Perform the following actions:
-
 1. For each affected Coordination Artifact, make the modifications:
    - For Specifications: Follow existing patterns in the document. See §4.1 Specifications Structural Reference
    - For Implementation Plan: Follow the structural formats already defined. See §4.2 Implementation Plan Structural Reference
@@ -271,7 +266,7 @@ Perform the following actions:
    - Link modifications to triggering Memory Log
    - Keep descriptions concise but traceable
 4. Return to coordination workflow:
-   - Follow `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision to continue Manager's coordination duties
+   - Follow {SKILL_PATH:memory-maintenance} §3.5 Coordination Decision to continue Manager's coordination duties
    - Apply judgment based on the nature of the modifications and their impact on remaining work
 
 ---
@@ -302,7 +297,7 @@ When modifying Specifications, maintain consistency with the existing document s
 
 ### 4.2 Implementation Plan Structural Reference
 
-When modifying the Implementation Plan, maintain consistency with the formats established during Work Breakdown. Reference `{SKILL_PATH:work-breakdown}` §4 Structural Specifications:
+When modifying the Implementation Plan, maintain consistency with the formats established during Work Breakdown. Reference {SKILL_PATH:work-breakdown} §4 Structural Specifications:
 
 **Stage Format:**
 - Stage header: `## Stage N: [Title]`
