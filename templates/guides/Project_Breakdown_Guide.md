@@ -325,9 +325,7 @@ Present **in chat** high-level plan statistics:
 
 #### Next Step Routing:
 Once the plan is approved:
-1. **If User requests Systematic Review:** Proceed to read {GUIDE_PATH:Project_Breakdown_Review_Guide.md}`.
-2. **If User skips Review:** Proceed directly to **Manager Bootstrap Creation**.
-  - **CRITICAL:** You must generate the Bootstrap Prompt using the **EXACT TEMPLATE** defined in your initiation prompt {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md}.
-  - **Context Recovery:** If you cannot retrieve the template word-for-word from your context, you must **READ** the {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md} file to refresh your memory before generating the prompt. Do not approximate the template.
+1. **If User requests Systematic Review:** Proceed to read {GUIDE_PATH:Project_Breakdown_Review_Guide.md}.
+2. **If User skips Review:** Output the **Setup Phase Completion Block** as defined in {COMMAND_PATH:Setup_Agent_Initiation_Prompt.md} §2.1.
 
 **End of Guide**
