@@ -9,11 +9,7 @@
     "start:website": "cd website && npm run start",
     "test": "vitest run --reporter=basic",
     "test:watch": "vitest",
-    "deploy:website": "cd website && npm run deploy",
-    "deps:dag": "npm run deps:dag:mermaid && npm run deps:dag:json",
-    "deps:dag:mermaid": "depcruise src scripts/build.js --config --output-type mermaid > api-docs/dependency-graph.mmd",
-    "deps:dag:json": "depcruise src scripts/build.js --config --output-type json > api-docs/dependency-graph.json",
-    "deps:validate": "depcruise src scripts/build.js --config --output-type err"
+    "deploy:website": "cd website && npm run deploy"
   },
   "repository": {
     "type": "git",
@@ -54,7 +50,6 @@
   },
   "devDependencies": {
     "archiver": "^7.0.1",
-    "dependency-cruiser": "^17.3.6",
     "vitest": "^2.1.3"
   }
 }

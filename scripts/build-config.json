@@ -2,7 +2,8 @@
   "build": {
     "sourceDir": "templates",
     "outputDir": "dist",
-    "cleanOutput": true
+    "cleanOutput": true,
+    "scaffoldsDir": "_scaffolds"
   },
   "targets": [
     {
