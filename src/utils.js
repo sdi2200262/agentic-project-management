@@ -11,6 +11,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync, statSy
 import { join, dirname, basename } from 'path';
 import AdmZip from 'adm-zip';
 import logger from './logger.js';
+import { MANIFEST_VERSION } from './manifest-schema.js';
 
 /**
  * Assistant directory mapping for detection and installation
@@ -486,10 +487,9 @@ export function createAndZipBackup(projectPath, assistants, templateTag) {
 
 /**
  * Generates a minimal ASCII banner for APM CLI
- * @param {string} version - APM version
  * @returns {string[]} Array of colored banner lines
  */
-export function generateBanner(version = '0.5.0') {
+export function generateBanner() {
   const chalk = logger.chalk;
   
   const colorA = chalk.white;
@@ -514,10 +514,135 @@ export function generateBanner(version = '0.5.0') {
 
 /**
  * Displays the APM banner
- * @param {string} version - APM version (unused in minimal banner)
- * @param {boolean} useColors - Whether to use colors (default: true)
  */
-export function displayBanner(version = '0.5.0', useColors = true) {
-  const lines = generateBanner(version);
+export function displayBanner() {
+  const lines = generateBanner();
   lines.forEach(line => console.log(line));
+}
+
+/**
+ * Installs scaffold files from a bundle to the project
+ * Only installs files that don't already exist (protects user's work)
+ * @param {string} bundleDir - Directory containing extracted bundle
+ * @param {string} projectRoot - Project root directory
+ * @param {Object} bundleManifest - Bundle manifest with scaffold mappings
+ * @returns {{ installed: string[], skipped: string[] }} Installation results
+ */
+export function installScaffolds(bundleDir, projectRoot, bundleManifest) {
+  const installed = [];
+  const skipped = [];
+
+  if (!bundleManifest?.scaffold) {
+    return { installed, skipped };
+  }
+
+  const scaffoldsDir = join(bundleDir, 'scaffolds');
+
+  if (!existsSync(scaffoldsDir)) {
+    logger.dim(`  No scaffolds directory in bundle`);
+    return { installed, skipped };
+  }
+
+  for (const [sourceFile, targetPath] of Object.entries(bundleManifest.scaffold)) {
+    const sourcePath = join(scaffoldsDir, sourceFile);
+    const destPath = join(projectRoot, targetPath);
+
+    if (existsSync(destPath)) {
+      skipped.push(targetPath);
+      continue;
+    }
+
+    if (!existsSync(sourcePath)) {
+      logger.warn(`  Scaffold source not found: ${sourceFile}`);
+      continue;
+    }
+
+    // Ensure parent directory exists
+    const parentDir = dirname(destPath);
+    if (!existsSync(parentDir)) {
+      mkdirSync(parentDir, { recursive: true });
+    }
+
+    copyFileSync(sourcePath, destPath);
+    installed.push(targetPath);
+    logger.dim(`  Created ${targetPath}`);
+  }
+
+  return { installed, skipped };
+}
+
+/**
+ * Creates metadata object for new APM installations
+ * @param {{ templateRepository: string, templateVersion: string, manifestVersion: string, assistants: string[] }} config - Metadata configuration
+ * @returns {Object} Metadata object
+ */
+export function createMetadata({ templateRepository, templateVersion, manifestVersion, assistants }) {
+  const now = new Date().toISOString();
+
+  return {
+    templateRepository: templateRepository || 'sdi2200262/agentic-project-management',
+    templateVersion,
+    manifestVersion: manifestVersion || MANIFEST_VERSION,
+    assistants: assistants || [],
+    installedAt: now,
+    lastUpdated: now
+  };
+}
+
+/**
+ * Migrates legacy metadata to new schema
+ * @param {Object} legacy - Legacy metadata object
+ * @param {string} projectPath - Project path for assistant detection
+ * @returns {Object} Migrated metadata object
+ */
+export function migrateLegacyMetadata(legacy, projectPath) {
+  if (!legacy) {
+    return null;
+  }
+
+  // Check if already new format
+  if (legacy.templateRepository && legacy.manifestVersion) {
+    return legacy;
+  }
+
+  // Detect old single-assistant schema
+  const isOldSchema = 'version' in legacy && 'assistant' in legacy;
+
+  if (isOldSchema) {
+    const oldAssistant = legacy.assistant ? [legacy.assistant] : [];
+    const detected = projectPath ? detectInstalledAssistants(projectPath) : [];
+    const assistants = Array.from(new Set([...oldAssistant, ...detected]));
+
+    return {
+      templateRepository: 'sdi2200262/agentic-project-management',
+      templateVersion: legacy.version,
+      manifestVersion: MANIFEST_VERSION,
+      assistants,
+      installedAt: legacy.installedAt || new Date().toISOString(),
+      lastUpdated: new Date().toISOString()
+    };
+  }
+
+  // Handle intermediate schema (has assistants array but no repo)
+  if (legacy.assistants && !legacy.templateRepository) {
+    return {
+      templateRepository: 'sdi2200262/agentic-project-management',
+      templateVersion: legacy.templateVersion || legacy.version,
+      manifestVersion: MANIFEST_VERSION,
+      assistants: legacy.assistants,
+      installedAt: legacy.installedAt || new Date().toISOString(),
+      lastUpdated: new Date().toISOString()
+    };
+  }
+
+  return legacy;
+}
+
+/**
+ * Gets assistant directory path from bundle manifest
+ * @param {Object} bundleManifest - Bundle manifest object
+ * @returns {string|null} Commands directory path or null
+ */
+export function getAssistantDirectoryFromManifest(bundleManifest) {
+  return bundleManifest?.directories?.commands || null;
 }
