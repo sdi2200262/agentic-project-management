@@ -201,7 +201,7 @@ After completing context reconstruction, confirm to User:
 
 ## Incoming Worker Indication
 
-**Important:** In your first Task Report after completing a Task, you must indicate that you are an Incoming Worker. Include in your Task Report:
+**Important** → In your first Task Report after completing a Task, you must indicate that you are an Incoming Worker. Include in your Task Report:
 "**Incoming Worker:** This is <AgentID> Session <N+1>, continuing from Session <N>. **Current Stage Logs Loaded:** [List the Task Memory Logs you read]"
 This indication allows the Manager Agent to track Worker Handoffs and adjust Context Dependency handling accordingly.
 

@@ -493,14 +493,14 @@ Perform the following actions:
    * **Task [X.Y]:** [Name] (identified in §3.5 Stage Analysis)
    - ...
    ```
-   **Task Packing Correction:** If task packing is detected (per §2.6 Task Standards), correct by:
+   **Task Packing Correction** → If task packing is detected (per §2.6 Task Standards), correct by:
    1. Identify the natural boundaries within the packed task
    2. Create separate tasks for each distinct deliverable
    3. Establish dependencies between the new tasks
    4. Distribute validation criteria to appropriate tasks
    5. Update Agent assignments if split tasks span domains
 
-   **User Coordination:** When User coordination is required (per §2.9 Scope Boundary Standards):
+   **User Coordination** → When User coordination is required (per §2.9 Scope Boundary Standards):
    - Include explicit coordination step in task: "User: [specific action required]"
    - Mark as User validation type if User must verify the outcome
    - Note the dependency clearly so Manager Agent can coordinate timing
@@ -550,7 +550,7 @@ Perform the following actions:
        - ...
      ```
 5. **Update Cross-Agent Dependencies (if any identified):** Only after completing the reasoning step in step 4, update the Implementation Plan by bolding the existing "Task N.M by [Name] Agent" notation in the Dependencies field for all identified cross-Agent dependencies to make them visually distinct from same-Agent dependencies.
-6. **Plan Summary:** Present in chat:
+6. **Plan Summary** → Present in chat:
    ```
    **Implementation Plan Summary:**
    * **Agents:** [count] ([list names])
@@ -608,7 +608,7 @@ APM_STANDARDS {
 - **Structure:** Use markdown headings (`##`) for major categories and unordered lists (`-`) for individual standards
 - **Specificity:** Each standard must be concrete and actionable (avoid vague terms like "write good code")
 - **Consistency:** Use consistent terminology and formatting across all standards
-- **Scope:** Only universal standards that apply to all Agents and tasks:
+- **Scope** → Only universal standards that apply to all Agents and tasks:
   - **Include:** Coding conventions, testing requirements, documentation standards, version control practices, universal constraints (security, accessibility, performance)
   - **Exclude:** Architecture decisions (Manager scope), task-specific guidance (Implementation Plan scope), progress tracking (Memory System scope)
 

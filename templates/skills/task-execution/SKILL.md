@@ -46,7 +46,7 @@ Context integration establishes the foundation for Task Execution. Workers opera
 
 **Why Integration Must Be First:** Context integration ensures required files, artifacts, and interfaces are understood before execution begins. Skipping or rushing integration means building on an unstable foundation-errors compound and the Worker lacks the context to diagnose them.
 
-**Cross-Agent vs Same-Agent Context** - The Task Assignment's Context from Dependencies section reflects the dependency type:
+**Cross-Agent vs Same-Agent Context** → The Task Assignment's Context from Dependencies section reflects the dependency type:
 
 *Cross-Agent Dependencies:* The Worker has zero familiarity with the producer Task as it was executed by a different Worker Agent. The Task Assignment provides detailed integration instructions-specific files to read, artifacts to review, interfaces to understand. These instructions must be followed completely.
 
@@ -92,7 +92,7 @@ Pauses interrupt execution flow. Understanding pause categories guides when to p
 
 **Obligatory Pauses (always pause):** Delegation steps, explicit User actions in instructions, and User Validation Type all require pausing. See §3.5 Pause Handling and §3.6 Delegation Handling.
 
-**Autonomous Pauses (Worker judgment)** - Workers may choose to pause at natural breakpoints during complex Tasks. This is appropriate when:
+**Autonomous Pauses (Worker judgment)** → Workers may choose to pause at natural breakpoints during complex Tasks. This is appropriate when:
 - Task scope is large with distinct parts and natural breakpoints between work clusters
 - Risk of wasted effort and tokens is high if direction is wrong
 - Unexpected complexity emerges
@@ -105,12 +105,12 @@ Pauses interrupt execution flow. Understanding pause categories guides when to p
 
 Not all Tasks succeed. Understanding failure types guides appropriate status classification and communication.
 
-**Execution Failures** - The Worker cannot complete the instructed work before reaching validation:
+**Execution Failures** → The Worker cannot complete the instructed work before reaching validation:
 - Serious blockers: external dependencies unavailable, permissions denied
 - Persistent bugs: issues that resist multiple fix attempts
 - Missing prerequisites: required context or setup not available
 
-**Validation Failures** - The Worker completes execution but validation criteria cannot be met:
+**Validation Failures** → The Worker completes execution but validation criteria cannot be met:
 - Execution gaps: work missed requirements in validation criteria
 - Criteria issues: validation instructions unclear or cannot execute
 - Revealed issues: validation exposes problems not apparent during execution

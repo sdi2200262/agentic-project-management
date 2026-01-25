@@ -102,9 +102,9 @@ After reviewing a Task Memory Log, the Manager must make a Coordination Decision
 The scope determines *how* to investigate, not *what* outcomes are possible-all three outcomes can result from either scope. When artifact modification is needed, note the triggering context (log, findings, flags) and identify affected artifact(s).
 
 **Coordination Artifact Modification Indicators** → When assessing whether Coordination Artifact modification is needed, consider:
-- **Implementation Plan** - Task definitions or instructions incorrect, missing dependencies revealed, scope changes needed, Task validation issues, new Tasks needed
-- **Specifications** - Documented design decisions or constraints need revision, new specifications emerged from execution, assumptions invalidated
-- **Standards (`{AGENTS_FILE}`)** - Universal conventions need adjustment, new project-wide standards identified, existing standards conflict with execution needs
+- **Implementation Plan:** Task definitions or instructions incorrect, missing dependencies revealed, scope changes needed, Task validation issues, new Tasks needed
+- **Specifications:**  Documented design decisions or constraints need revision, new specifications emerged from execution, assumptions invalidated
+- **Standards (`{AGENTS_FILE}`):** Universal conventions need adjustment, new project-wide standards identified, existing standards conflict with execution needs
 
 ### 2.3 Handoff Detection Standards
 

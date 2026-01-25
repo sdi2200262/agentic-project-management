@@ -248,8 +248,7 @@ Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctu
 
 **Label punctuation:**
 - *Colon (`Label:`)* - Content follows directly (list or inline prose)
-- *Arrow (`Label →`)* - Prose bridges to a list; prose ends with colon
-- *Hyphen (`Label -`)* - Definition or explanation follows
+- *Arrow (`Label →`)* - Prose follows; use when prose ends with colon to avoid two colons on one line
 
 **Colon rule:** Avoid two colons on one line. When prose after a label ends with colon, the label uses arrow.
 
@@ -261,7 +260,7 @@ Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctu
 
 **Topic:** Inline content here.         # Inline prose follows
 
-**Topic** → Prose introducing list:     # Prose-to-list bridge
+**Topic** → Prose introducing list:     # Prose-to-list bridge (avoids two colons)
 - Item one
 - Item two
 
@@ -272,11 +271,6 @@ Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctu
 - Item one
 
 - *Option:* Description → Action.       # Italic list item label
-
-**Term** - Definition follows.          # Hyphen definition
-
-**Label - Component** → Prose:          # Compound label with arrow
-- Item one
 ```
 
 ### 7.2 Spacing
