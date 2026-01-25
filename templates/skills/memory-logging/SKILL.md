@@ -69,10 +69,10 @@ Status reflects outcome-whether the objective was achieved. Select status based 
 **Task Outcome Standards (Worker Agent)** → Consider what happened during task execution to select the appropriate status:
 
 *Status Values:*
-- **Success** - Objective achieved, all validation passed
-- **Failed** - Validation failed after iteration attempts
-- **Partial** - Intermediate state requiring Manager decision
-- **Blocked** - External factors prevent progress
+- **Success:** Objective achieved, all validation passed
+- **Failed:** Validation failed after iteration attempts
+- **Partial:** Intermediate state requiring Manager decision
+- **Blocked:** External factors prevent progress
 
 *Failure Point Values* → Indicates where/why the task didn't succeed:
 - `null` - No failure (Success only)
@@ -105,8 +105,8 @@ Status reflects outcome-whether the objective was achieved. Select status based 
 **Delegation Outcome Standards (Delegate Agent)** → Consider the delegation outcome:
 
 *Status Values:*
-- **Resolved** - Issue solved, findings ready for integration by Delegating Agent
-- **Unresolved** - Issue not fully solved, partial findings available for Delegating Agent to assess
+- **Resolved:** Issue solved, findings ready for integration by Delegating Agent
+- **Unresolved:** Issue not fully solved, partial findings available for Delegating Agent to assess
 
 *Unresolved Status Reasoning:* Use Unresolved when the delegated work did not fully solve the issue but produced partial findings. Document what was discovered, what remains unclear, and any observations that might help the Delegating Agent or Manager determine next steps. The Delegating Agent receives the findings and decides how to proceed-either incorporating partial results, requesting further investigation, or surfacing the issue to the Manager for coordination.
 

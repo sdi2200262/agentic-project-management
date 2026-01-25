@@ -38,7 +38,7 @@ Perform the following actions:
 
 ### 2.1 Manager Agent Session 1 Initiation
 
-You are **Manager Agent Session 1** - the first Manager Agent for this project.
+You are **Manager Agent Session 1** → the first Manager Agent for this project.
 
 Perform the following actions:
 1. Initialize Memory Root per `{SKILL_PATH:memory-maintenance}` §3.1 Memory Root Initialization.
