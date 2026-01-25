@@ -46,7 +46,7 @@ Context integration establishes the foundation for Task Execution. Workers opera
 
 **Why Integration Must Be First:** Context integration ensures required files, artifacts, and interfaces are understood before execution begins. Skipping or rushing integration means building on an unstable foundation-errors compound and the Worker lacks the context to diagnose them.
 
-**Cross-Agent vs Same-Agent Context:** The Task Assignment's Context from Dependencies section reflects the dependency type:
+**Cross-Agent vs Same-Agent Context** - The Task Assignment's Context from Dependencies section reflects the dependency type:
 
 *Cross-Agent Dependencies:* The Worker has zero familiarity with the producer Task as it was executed by a different Worker Agent. The Task Assignment provides detailed integration instructions-specific files to read, artifacts to review, interfaces to understand. These instructions must be followed completely.
 
@@ -64,9 +64,9 @@ Context integration establishes the foundation for Task Execution. Workers opera
 Validation confirms that Task Execution achieved the intended outcome. Understanding validation types and their characteristics guides correct execution. Some Tasks have multiple validation types.
 
 **Validation Types:**
-* *Programmatic:* Automated verification-tests pass, builds succeed, scripts execute correctly. The Worker executes these checks and assesses results autonomously.
-* *Artifact:* Output existence and structural verification-files exist with required sections, configs are valid, outputs match patterns. The Worker verifies these autonomously.
-* *User:* Human judgment required-design approval, content quality, architectural decisions. The Worker must pause for User review.
+- *Programmatic:* Automated verification-tests pass, builds succeed, scripts execute correctly. The Worker executes these checks and assesses results autonomously.
+- *Artifact:* Output existence and structural verification-files exist with required sections, configs are valid, outputs match patterns. The Worker verifies these autonomously.
+- *User:* Human judgment required-design approval, content quality, architectural decisions. The Worker must pause for User review.
 
 **Ordering Principle:** When a Task has multiple validation types including User, the User validation is always performed LAST. Programmatic and Artifact validations complete first-this prevents wasting User reviews on execution that would fail automated checks. See §3.4 Task Validation.
 
@@ -92,7 +92,7 @@ Pauses interrupt execution flow. Understanding pause categories guides when to p
 
 **Obligatory Pauses (always pause):** Delegation steps, explicit User actions in instructions, and User Validation Type all require pausing. See §3.5 Pause Handling and §3.6 Delegation Handling.
 
-**Autonomous Pauses (Worker judgment):** Workers may choose to pause at natural breakpoints during complex Tasks. This is appropriate when:
+**Autonomous Pauses (Worker judgment)** - Workers may choose to pause at natural breakpoints during complex Tasks. This is appropriate when:
 - Task scope is large with distinct parts and natural breakpoints between work clusters
 - Risk of wasted effort and tokens is high if direction is wrong
 - Unexpected complexity emerges
@@ -105,12 +105,12 @@ Pauses interrupt execution flow. Understanding pause categories guides when to p
 
 Not all Tasks succeed. Understanding failure types guides appropriate status classification and communication.
 
-**Execution Failures:** The Worker cannot complete the instructed work before reaching validation:
+**Execution Failures** - The Worker cannot complete the instructed work before reaching validation:
 - Serious blockers: external dependencies unavailable, permissions denied
 - Persistent bugs: issues that resist multiple fix attempts
 - Missing prerequisites: required context or setup not available
 
-**Validation Failures:** The Worker completes execution but validation criteria cannot be met:
+**Validation Failures** - The Worker completes execution but validation criteria cannot be met:
 - Execution gaps: work missed requirements in validation criteria
 - Criteria issues: validation instructions unclear or cannot execute
 - Revealed issues: validation exposes problems not apparent during execution
@@ -154,7 +154,6 @@ Pause Handling (§3.5 Pause Handling) and Delegation Handling (§3.6 Delegation 
 ### 3.1 Task Assignment Receipt
 
 Perform the following actions:
-
 1. Verify `agent_id` in YAML frontmatter matches your registered instance. If mismatch, decline per `{COMMAND_PATH:worker-agent-initiation.md}` §5.1 Instance Boundaries.
 2. Parse Task Assignment structure-YAML frontmatter fields and body sections.
 3. Identify execution parameters:
@@ -168,7 +167,6 @@ Perform the following actions:
 Execute when `has_dependencies: true`. MUST complete before Task Execution begins.
 
 Perform the following actions:
-
 1. Read the `Context from Dependencies` section.
 2. Execute integration based on dependency type:
    - **Cross-Agent:** Follow Integration Steps completely-read files, review artifacts, understand interfaces. Do not proceed until complete.
@@ -180,7 +178,6 @@ Perform the following actions:
 ### 3.3 Task Execution
 
 Perform the following actions:
-
 1. Execute Detailed Instructions sequentially, applying Guidance and relevant Standards from `{AGENTS_FILE}`, working toward the Objective.
 2. For each instruction step:
    - Standard instruction → execute and continue
@@ -192,7 +189,6 @@ Perform the following actions:
 ### 3.4 Task Validation
 
 Perform the following actions:
-
 1. Order validations: Programmatic first, then Artifact, then User-adapt based on which are required. User validation is always performed LAST.
 2. Execute Programmatic validations. If any fail → do NOT proceed to User validation-proceed to §3.7 Iteration Cycle. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
 3. Execute Artifact validations. If any fail → do NOT proceed to User validation-proceed to §3.7 Iteration Cycle.
@@ -204,7 +200,6 @@ Perform the following actions:
 Invoked when a pause point is reached. See §2.4 Pause Standards.
 
 Perform the following actions:
-
 1. Determine pause type:
    - Obligatory: Delegation (requires creating Delegation Prompt and awaiting findings), explicit User action (requires waiting for User completion), User Validation Type (requires presenting work and awaiting approval)
    - Autonomous: complexity-driven at natural breakpoint
@@ -221,7 +216,6 @@ Perform the following actions:
 Invoked when a Delegation step is encountered.
 
 Perform the following actions:
-
 1. Identify Delegation type from the instruction and Delegation section (Debug, Research, or other as specified).
 2. Read the relevant Delegation skill.
 3. Create Delegation Prompt following the skill's methodology.
@@ -235,7 +229,6 @@ Perform the following actions:
 Invoked when validation fails.
 
 Perform the following actions:
-
 1. Assess the failure-what specifically failed, what is the likely cause, is it correctable?
 2. Apply decision rules from §2.3 Iteration Standards to determine action.
 3. If continuing: correct the issue, re-execute affected portions, return to §3.4 Task Validation.
@@ -245,7 +238,6 @@ Perform the following actions:
 ### 3.8 Task Completion
 
 Perform the following actions:
-
 1. Determine final status per §2.5 Failure Status Standards (Success if all validation passed).
 2. Determine `failure_point`: `null` for Success; `Execution` or `Validation` or `<description>` based on where stopped.
 3. Create Task Memory Log per `{SKILL_PATH:memory-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
