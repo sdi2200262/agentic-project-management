@@ -29,17 +29,70 @@ const LOG = {
 };
 
 /**
+ * Manifest version for bundle and release manifests
+ * @constant {string}
+ */
+const MANIFEST_VERSION = '1.0';
+
+/**
+ * Generates a bundle manifest for a specific target
+ * @param {Object} target - Target configuration object
+ * @returns {Object} Bundle manifest object
+ */
+function generateBundleManifest(target) {
+  return {
+    manifestVersion: MANIFEST_VERSION,
+    assistant: {
+      name: target.name,
+      id: target.id
+    },
+    directories: {
+      commands: target.directories.commands,
+      skills: target.directories.skills
+    },
+    scaffold: {
+      'Memory_Root.md': '.apm/Memory/Memory_Root.md',
+      'Implementation_Plan.md': '.apm/Implementation_Plan.md',
+      'Specifications.md': '.apm/Specifications.md'
+    }
+  };
+}
+
+/**
+ * Generates a release manifest for all targets
+ * @param {Object} config - Build configuration
+ * @param {string} version - Template version string
+ * @returns {Object} Release manifest object
+ */
+function generateReleaseManifest(config, version) {
+  const assistants = config.targets.map(target => ({
+    name: target.name,
+    id: target.id,
+    bundle: target.bundleName,
+    description: `Optimized for ${target.name}`
+  }));
+
+  return {
+    manifestVersion: MANIFEST_VERSION,
+    templateVersion: version,
+    assistants
+  };
+}
+
+/**
  * Loads and parses build-config.json
  * @returns {Promise<Object>} Configuration with build settings and target assistants
  * @throws {Error} If config file not found or invalid JSON
  */
 async function loadConfig() {
-  const configPath = 'build-config.json';
-  
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  const configPath = path.join(__dirname, 'build-config.json');
+
   if (!await fs.pathExists(configPath)) {
-    throw new Error('build-config.json not found');
+    throw new Error('build-config.json not found in scripts/ directory');
   }
-  
+
   const configContent = await fs.readFile(configPath, 'utf8');
   return JSON.parse(configContent);
 }
@@ -294,7 +347,7 @@ async function renameCopilotCommands(commandsDir) {
  */
 async function build(config, version) {
   const { build: buildConfig, targets } = config;
-  const { outputDir, cleanOutput } = buildConfig;
+  const { outputDir, cleanOutput, scaffoldsDir } = buildConfig;
 
   if (cleanOutput) {
     await fs.emptyDir(outputDir);
@@ -308,11 +361,13 @@ async function build(config, version) {
     const targetBuildDir = path.join(outputDir, `${target.id}-build`);
     const commandsDir = path.join(targetBuildDir, 'commands');
     const skillsDir = path.join(targetBuildDir, 'skills');
+    const scaffoldsBuildDir = path.join(targetBuildDir, 'scaffolds');
 
     LOG.info(`\nProcessing target: ${target.name} (${target.id})`);
 
     await fs.ensureDir(commandsDir);
     await fs.ensureDir(skillsDir);
+    await fs.ensureDir(scaffoldsBuildDir);
 
     const templateFiles = await findMdFiles(buildConfig.sourceDir);
     LOG.info(`Found ${templateFiles.length} template files`);
@@ -330,16 +385,31 @@ async function build(config, version) {
       await renameCopilotCommands(commandsDir);
     }
 
+    // Copy scaffolds into bundle
+    if (scaffoldsDir) {
+      const scaffoldsSourceDir = path.join(buildConfig.sourceDir, scaffoldsDir);
+      if (await fs.pathExists(scaffoldsSourceDir)) {
+        await fs.copy(scaffoldsSourceDir, scaffoldsBuildDir);
+        LOG.info(`Copied scaffolds to bundle`);
+      }
+    }
+
+    // Write bundle manifest
+    const bundleManifest = generateBundleManifest(target);
+    const bundleManifestPath = path.join(targetBuildDir, 'apm-bundle-manifest.json');
+    await fs.writeFile(bundleManifestPath, JSON.stringify(bundleManifest, null, 2));
+    LOG.info(`Generated apm-bundle-manifest.json`);
+
     LOG.success(`Completed target: ${target.name}`);
 
     // Create ZIP archive
     const zipPath = path.join(outputDir, target.bundleName);
     LOG.info(`Creating archive: ${target.bundleName}...`);
-    
+
     try {
       await createZipArchive(targetBuildDir, zipPath);
       LOG.success(`Archive created: ${target.bundleName}`);
-      
+
       await fs.remove(targetBuildDir);
       LOG.info(`Cleaned up: ${path.basename(targetBuildDir)}`);
     } catch (err) {
@@ -347,6 +417,12 @@ async function build(config, version) {
       throw err;
     }
   }
+
+  // Write release manifest
+  const releaseManifest = generateReleaseManifest(config, version);
+  const releaseManifestPath = path.join(outputDir, 'apm-release-manifest.json');
+  await fs.writeFile(releaseManifestPath, JSON.stringify(releaseManifest, null, 2));
+  LOG.success(`Generated apm-release-manifest.json`);
 
   LOG.success('\nBuild completed successfully!');
 }
