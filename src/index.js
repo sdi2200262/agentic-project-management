@@ -124,7 +124,6 @@ function createInitialFiles(apmDir) {
   const memoryRootPath = join(memoryDir, 'Memory_Root.md');
   if (!existsSync(memoryRootPath)) {
     const memoryRootContent = `# <Project Name> – APM Memory Root
-**Project Overview:** [To be filled by Manager Agent before first stage execution]
 **Manager Handoffs:** 0
 
 ---
