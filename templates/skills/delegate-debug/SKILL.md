@@ -71,7 +71,6 @@ A Debug Delegation Prompt must provide enough context for the Delegate to work a
 ### 2.3 Prompt Creation Standards
 
 Perform the following actions:
-
 1. Gather the essential context per §2.1 Context Standards.
 2. Structure the prompt following §3.1 Debug Delegation Prompt Format.
 3. Output as a markdown code block with guidance for User to copy to a new Delegate Agent session.
