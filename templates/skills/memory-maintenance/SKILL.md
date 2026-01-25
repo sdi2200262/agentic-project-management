@@ -28,14 +28,14 @@ This skill defines how the Manager Agent maintains the Memory System during proj
 
 ### 1.3 Outputs
 
-**Memory Root:** Central project state document updated throughout execution. Contains project overview, Handoff count, and Stage Summaries. Location: `.apm/Memory/Memory_Root.md`
+**Memory Root:** Central project state document updated throughout execution. Contains Handoff count, Stage Summaries and working notes. Location: `.apm/Memory/Memory_Root.md`
 
 **Stage Summaries:** Appended to Memory Root after each Stage completion. Compress Stage execution into coordination-ready format with outcome, notes, and log references.
 
 ### 1.4 Memory System Architecture
 
 - **Storage Location:** `.apm/Memory/`
-- **Root Document:** `Memory_Root.md` - high-level project state, Stage Summaries, and working notes
+- **Root Document:** `Memory_Root.md` - Handoff count, Stage Summaries, and working notes
 - **Stage Directories:** `Stage_<StageNum>_<Slug>/` - contain Task Memory Logs and Delegation Memory Logs
 - **Handoff Storage:** `.apm/Memory/Handoffs/` - contain Agent Handoff Files
 
@@ -149,7 +149,6 @@ Perform the following actions:
 1. Read `.apm/Memory/Memory_Root.md`
 2. Update header fields:
    - Replace `<Project Name>` with actual project name from Implementation Plan
-   - Replace `[To be filled by Manager Agent before first stage execution]` in Project Overview with concise project summary from Implementation Plan
    - Confirm Manager Handoffs is set to `0`
 3. Save the updated file
 
@@ -276,7 +275,6 @@ The Memory System organizes project history in a hierarchical directory structur
 
 **Header Fields:**
 - **Project Name:** Actual project name (replace `<Project Name>` placeholder)
-- **Project Overview:** Concise project summary from Implementation Plan
 - **Manager Handoffs:** Count of Manager Agent Handoffs (increment on each Handoff)
 
 **Body:** Stage Summaries appended after each Stage completion. See §4.3 Stage Summary Format.
