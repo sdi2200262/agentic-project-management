@@ -73,16 +73,12 @@ Tasks may depend on outputs from previous Tasks. Context Dependencies affect how
 - Same-Agent Context Dependencies from the **current Stage** → Treat as Same-Agent (Continuing Worker has received working context)
 - Same-Agent Context Dependencies from **previous Stages** → Treat as Cross-Agent (Continuing Worker lacks working context)
 
-**Context Dependency Identification:**
-
-Check the Task's Dependencies field in the Implementation Plan:
+**Context Dependency Identification** → Check the Task's Dependencies field in the Implementation Plan:
 - Format: `Task N.M by <Domain> Agent`
 - Cross-Agent Context Dependencies are with **bold font** in the Implementation Plan
 - "None" indicates no dependencies
 
-**Context Dependency Chain Reasoning:**
-
-Tasks may have dependencies that themselves have dependencies. Not all ancestors are relevant to the current Task. An intermediate node may fully abstract what came before it. Trace the chain upstream; for example:
+**Context Dependency Chain Reasoning** → Tasks may have dependencies that themselves have dependencies. Not all ancestors are relevant to the current Task. An intermediate node may fully abstract what came before it. Trace the chain upstream; for example:
 ```
 Task 3.2 (current - Consumer)
   └─ depends on Task 2.4 (Producer A)
@@ -101,9 +97,7 @@ Task 3.2 (current - Consumer)
 
 `Specifications.md` contains design decisions and constraints that inform Task Execution or Validation. Workers only receive Task Assignments - the Manager extracts relevant Specification content and contextually integrates it into the Task Assignment to inform Worker decisions.
 
-**Relevance Assessment:**
-
-When reviewing Specifications for a Task, consider:
+**Relevance Assessment** → When reviewing Specifications for a Task, consider:
 - Does this Specification directly constrain how the Task should be implemented?
 - Does the Task's objective reference design decisions documented in Specifications?
 - Would the Worker make incorrect assumptions without this Specification's context?
@@ -126,9 +120,7 @@ When reviewing Specifications for a Task, consider:
 
 FollowUp Task Assignments occur when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed" after investigation.
 
-**Entry Point:**
-
-The Manager arrives at FollowUp Assignment with:
+**Entry Point** → The Manager arrives at FollowUp Assignment with:
 - The original Task Memory Log findings
 - Investigation results (from self-investigation or Delegation)
 - Understanding of what went wrong and what refinement is needed
@@ -136,9 +128,7 @@ The Manager arrives at FollowUp Assignment with:
 
 **FollowUp Content Principle:** The FollowUp Task Assignment is a NEW Task Assignment with DIFFERENT content than the previous attempt. Objective, Instructions, Output, and Validation must be refined based on what went wrong. See §3.5 FollowUp Task Assignment Prompt Creation.
 
-**Log Path Continuity:**
-
-FollowUp Task Assignments use the same `memory_log_path` as the original Task Assignment. The Worker's new Task Memory Log overwrites the previous one. The Manager captures iteration patterns in Stage Summaries when relevant.
+**Log Path Continuity:** FollowUp Task Assignments use the same `memory_log_path` as the original Task Assignment. The Worker's new Task Memory Log overwrites the previous one. The Manager captures iteration patterns in Stage Summaries when relevant.
 
 ### 2.4 Delegation Step Standards
 
@@ -174,7 +164,6 @@ For FollowUp Task Assignments, see §3.5 FollowUp Task Assignment Prompt Creatio
 Analyze the Task's Context Dependencies to determine what context the Worker needs. For dependency type definitions and decision rules, see §2.1 Context Dependency Standards.
 
 Perform the following actions:
-
 1. Read the Task's Dependencies field from the Implementation Plan:
    - If "None": Skip to §3.2 Specification Context Extraction with `has_dependencies: false`
    - If dependencies listed: Continue to step 2
@@ -192,7 +181,6 @@ Perform the following actions:
 Extract context from Specifications that the Worker needs but cannot access.
 
 Perform the following actions:
-
 1. Review `Specifications.md` for content relevant to this Task:
    - Apply §2.2 Specification Extraction Standards to determine relevance
 2. Contextually integrate relevant content into the Task Assignment-do not reference Specifications.md by path
@@ -204,7 +192,6 @@ Perform the following actions:
 Extract content from the Implementation Plan Task definition that the Worker needs for execution. Optionally enhance extracted content with Manager's coordination-level resolution context where relevant.
 
 Perform the following actions:
-
 1. Extract Task Objective:
    - Read the Task's Objective field from the Implementation Plan
    - Note the single-sentence task goal for inclusion in prompt
@@ -223,7 +210,6 @@ Perform the following actions:
 Assemble the Task Assignment Prompt using extracted context from the Implementation Plan and the Specifications.
 
 Perform the following actions:
-
 1. Construct YAML frontmatter:
    - `stage`: Stage number
    - `task`: Task number within Stage
@@ -241,8 +227,7 @@ Perform the following actions:
    - Memory Logging instructions with path
    - Reporting Protocol reference
    - Delegation section (if `has_delegation_steps: true`): Include Delegation section in prompt body; Worker creates Delegation Prompt per referenced skill when reaching Delegation step; User facilitates Delegate Agent session; Worker integrates findings and logs Delegation in Task Memory Log
-3. Output the complete prompt **as a markdown code block** for User copy-paste.
-   - **Critical:** Ensure the prompt content contains NO embedded ``` code blocks, as this would break the outer code block boundaries and fragment the prompt. Use indented code blocks (4 spaces) or inline code formatting for code examples instead.
+3. Output the complete prompt **as a markdown code block** for User copy-paste per §4.1 Critical Format Constraint.
 4. Immediately after outputting the Task Assignment Prompt code block, provide User guidance:
    ```
    Copy this Task Assignment Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
@@ -250,12 +235,9 @@ Perform the following actions:
 
 ### 3.5 FollowUp Task Assignment Prompt Creation
 
-Execute when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed."
-
-FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt-refine all content sections based on what went wrong.
+Execute when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed." FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt-refine all content sections based on what went wrong.
 
 Perform the following actions:
-
 1. Capture the FollowUp context from Coordination Decision:
    - What issue did the previous attempt encounter?
    - What did investigation (self or delegated) reveal?
@@ -277,8 +259,7 @@ Perform the following actions:
    - Add FollowUp Context section after Task Reference explaining the issue and required refinement
    - Include refined Objective, Instructions, Output, and Validation (not the original content)
    - Contextually integrate extracted content from modified Coordination Artifacts in appropriate sections
-5. Output **as a markdown code block** for User copy-paste.
-   - **Critical:** Ensure the prompt content contains NO embedded ``` code blocks, as this would break the outer code block boundaries and fragment the prompt. Use indented code blocks (4 spaces) or inline code formatting for code examples instead.
+5. Output **as a markdown code block** for User copy-paste per §4.1 Critical Format Constraint.
 6. Immediately after outputting the FollowUp Task Assignment Prompt code block, provide User guidance:
    ```
    Copy this FollowUp Task Assignment Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
@@ -294,7 +275,7 @@ This section defines the format guidance for Task Assignment Prompts.
 
 Task Assignment Prompts are markdown files that follow this general structure. Adapt based on Task needs - not all sections are required for every Task.
 
-**Critical Format Constraint:** Task Assignment Prompts are delivered as markdown code blocks for User copy-paste. **MUST NOT contain embedded ``` code blocks** inside the prompt content, as this would break the outer code block boundaries and fragment the prompt. When code examples, file paths, or formatted content are needed, use indented code blocks (4 spaces) or inline code formatting instead.
+**Critical Format Constraint:** Task Assignment Prompts are delivered as markdown code blocks for User copy-paste. **MUST NOT contain embedded ``` code blocks** inside the prompt content, as this would break the outer code block boundaries and fragment the prompt. When code examples, file paths, or formatted content are needed, **use indented code blocks (4 spaces) or inline code formatting instead.**
 
 **YAML Frontmatter Structure:**
 ```yaml
@@ -410,7 +391,7 @@ FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content
 
 **Title:** `APM FollowUp Task Assignment: <Task Title>`
 
-**FollowUp Context Section:** Add after Task Reference:
+**FollowUp Context Section** → Add after Task Reference:
 ```markdown
 ## FollowUp Context
 **Previous Issue:** [What issue the previous attempt encountered]
@@ -453,7 +434,7 @@ FollowUp Task Assignment Prompts are NEW Task Assignments with DIFFERENT content
 - **Vague instructions:** "Implement the feature properly" vs "Implement POST /api/users with email validation using express-validator, returning 201 on success"
 - **Forgetting Delegation references:** Tasks with Delegation steps need skill references for Worker to create proper Delegation Prompts
 - **Wrong memory_log_path on FollowUp:** FollowUp Task Assignments must use the same path as the original-Worker overwrites, not creates new
-- **Embedded code blocks:** Including ``` code blocks inside Task Assignment Prompts breaks the outer code block boundaries, fragmenting the prompt and breaking User copy-paste workflow. Use indented code blocks (4 spaces) or inline code formatting instead.
+- **Embedded code blocks:** See §4.1 Critical Format Constraint. Use indented code blocks (4 spaces) or inline code formatting instead of triple backticks.
 
 ---
 
