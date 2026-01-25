@@ -24,7 +24,7 @@ All necessary skills are available in the `{SKILLS_DIR}/` directory.
 
 Perform the following actions:
 1. Read the following Coordination Artifacts:
-   - `.apm/Memory/Memory_Root.md` - Check if Project Overview field is populated
+   - `.apm/Memory/Memory_Root.md` - Check Manager Handoffs count
    - `.apm/Implementation_Plan.md` - Project structure, Stages, Tasks, Agents
    - `.apm/Specifications.md` - Design decisions and constraints
    - `{AGENTS_FILE}` - Universal project Standards
@@ -33,8 +33,8 @@ Perform the following actions:
    - ``{SKILL_PATH:memory-maintenance}`` - Memory System management, Task Memory Log review, Coordination Decisions
    - ``{SKILL_PATH:artifact-maintenance}`` - Coordination Artifact modifications
 3. Determine your role:
-   - If Memory Root Project Overview is empty → You are **Manager Agent Session 1** (the first Manager Agent for this project). Proceed to §2.1 Manager Agent Session 1 Initiation.
-   - If Memory Root Project Overview is populated → You are an **Incoming Manager** (Session N, where N > 1). Proceed to §2.2 Incoming Manager Initiation.
+   - If Manager Handoffs is 0 → You are **Manager Agent Session 1** (the first Manager Agent for this project). Proceed to §2.1 Manager Agent Session 1 Initiation.
+   - If Manager Handoffs > 0 → You are an **Incoming Manager** (Session N, where N = Manager Handoffs + 1). Proceed to §2.2 Incoming Manager Initiation.
 
 ### 2.1 Manager Agent Session 1 Initiation
 
@@ -42,7 +42,7 @@ You are **Manager Agent Session 1** → the first Manager Agent for this project
 
 Perform the following actions:
 1. Initialize Memory Root per `{SKILL_PATH:memory-maintenance}` §3.1 Memory Root Initialization.
-2. Present a concise understanding summary covering:
+2. Present a concise understanding summary covering (drawing from Implementation Plan and Specifications):
    - Project scope and objectives (from Implementation Plan)
    - Key Specifications and constraints (from Specifications)
    - Notable Standards (from `{AGENTS_FILE}`)

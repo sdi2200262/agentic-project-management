@@ -35,7 +35,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 
 ---
 
-### 1.2 Project Artifacts
+### 1.2 Coordination Artifacts
 
 **Coordination Artifacts:**
 
@@ -44,8 +44,8 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | **Coordination Artifact** | Document that guides project coordination. Three types exist: Specifications, Implementation Plan, Standards. | `.apm/` directory and workspace root |
 | **Specifications** | Project-specific design decisions and constraints that inform the Implementation Plan. | `.apm/Specifications.md` |
 | **Implementation Plan** | Stage and Task breakdown with Agent assignments, guides implementation. | `.apm/Implementation_Plan.md` |
-| **Standards** | Universal project standards applied during Task execution. | `{AGENTS_FILE}` at workspace root |
-| **APM_STANDARDS Block** | Namespace block within Standards file containing APM-managed content. | Within `{AGENTS_FILE}` |
+| **Standards** | Universal project standards applied during Task Execution. | `AGENTS.md` (or `CLAUDE.md`) at workspace root |
+| **APM_STANDARDS Block** | Namespace block within Standards file containing APM-managed content. | Within `AGENTS.md` (or `CLAUDE.md` or equivalent) |
 | **Last Modification** | Header field documenting most recent artifact change with attribution. | Specifications, Implementation Plan |
 
 **Coordination Artifact Hierarchy:**
@@ -56,12 +56,12 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | Coordination | Implementation Plan | Define how work is organized |
 | Execution | Standards | Define how work is performed |
 
-**Memory Artifacts:**
+### 1.3 Memory System
 
 | Term | Definition | Location |
 |------|------------|----------|
 | **Memory System** | Hierarchical storage for project history enabling progress tracking and Handoff continuity. | `.apm/Memory/` |
-| **Memory Root** | Central project state document containing overview, Handoff count, and Stage Summaries. | `.apm/Memory/Memory_Root.md` |
+| **Memory Root** | Central project state document containing Handoff count, Stage Summaries and working notes. | `.apm/Memory/Memory_Root.md` |
 | **Stage Summary** | Compressed Stage-level outcome appended to Memory Root after Stage completion. | Within Memory Root |
 | **Stage Directory** | Directory containing all Memory Logs for a Stage. | `.apm/Memory/Stage_<N>_<Slug>/` |
 | **Memory Log** | Structured markdown file capturing execution context. Three types exist: Task Memory Log, Delegation Memory Log, Handoff Memory Log. Contains flags for `important_findings` (discoveries beyond Task scope), `compatibility_issues` (task execution conflicts), and `delegation` (Delegate involvement). | `.apm/Memory/` |
@@ -89,22 +89,23 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 
 ---
 
-### 1.3 Project Communications
+### 1.4 Communications
 
 | Term | Definition |
 |------|------------|
-| **Prompt** | Structured markdown message passed TO an agent to initiate or continue work. Four types exist: Task Assignment, FollowUp Task Assignment, Delegation, Handoff. |
+| **Communication** | Structured markdown message transferred by the User between Agents. Two types exist: Prompt, Report. |
+| **Prompt** | Communication passed TO an Agent to initiate or continue work. Four types exist: Task Assignment, FollowUp Task Assignment, Delegation, Handoff. |
 | **Task Assignment Prompt** | Self-contained prompt providing Worker with everything needed to execute a Task. Flags: `has_dependencies` (includes Context Dependencies), `has_delegation_steps` (includes Delegation). |
 | **FollowUp Task Assignment Prompt** | Refined Task Assignment issued after Coordination Decision determines retry needed. |
 | **Delegation Prompt** | Prompt providing Delegate with context and instructions for isolated work. |
 | **Handoff Prompt** | Prompt instructing Incoming Agent how to reconstruct context. |
-| **Report** | Structured markdown message passed BACK to an agent after work completion. Two types exist: Task, Delegation. |
+| **Report** | Communication passed BACK to an Agent after work completion. Two types exist: Task, Delegation. |
 | **Task Report** | Concise summary output by Worker for User to return to Manager. |
 | **Delegation Report** | Summary output by Delegate for User to return to Delegating Agent. |
 
 ---
 
-### 1.4 Work Units
+### 1.5 Work Units
 
 | Term | Definition |
 |------|------------|
@@ -118,7 +119,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 
 ---
 
-### 1.5 Document Structure
+### 1.6 Document Structure
 
 | Term | Definition |
 |------|------------|
@@ -162,7 +163,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 
 | Activity | Description |
 |----------|-------------|
-| Standards Analysis | Extract universal standards for `{AGENTS_FILE}`. |
+| Standards Analysis | Extract universal standards for `AGENTS.md`. |
 | Specifications Analysis | Extract design decisions for `Specifications.md`. |
 | Domain Analysis | Identify domains and assign Worker Agents. |
 | Stage Analysis | Define Stages with objectives and Task identification. |

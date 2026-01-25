@@ -71,7 +71,8 @@ Perform the following actions:
    - If you are Manager Agent Session 1 (first Manager Agent) → Your session number is **1**
    - If you are an Incoming Manager → Your session number is stated in the Handoff Prompt you received at initiation
 2. Calculate Incoming Manager session number: `<Your-Session-Number> + 1`
-3. Create Handoff Memory Log per §4 Handoff Memory Log Structure, including:
+3. Increment the Manager Handoffs counter in Memory Root (`.apm/Memory/Memory_Root.md`)
+4. Create Handoff Memory Log per §4 Handoff Memory Log Structure, including:
    - Your session number as `outgoing_manager`
    - Handoff number equals your session number (first handoff = Manager_Handoff_Log_1.md)
    - Tracked Worker Handoffs (most critical) - which Workers performed Handoffs, from which Stage
