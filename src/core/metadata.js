@@ -85,14 +85,16 @@ export async function getInstalledAssistants(cwd = process.cwd()) {
  * @param {string} options.repository - Repository in owner/repo format.
  * @param {string} options.releaseVersion - Release tag.
  * @param {string[]} options.assistants - Array of assistant IDs.
+ * @param {string} options.cliVersion - CLI version that performed the installation.
  * @returns {Object} Metadata object.
  */
-export function createMetadata({ source, repository, releaseVersion, assistants }) {
+export function createMetadata({ source, repository, releaseVersion, assistants, cliVersion }) {
   const now = new Date().toISOString();
   return {
     source,
     repository,
     releaseVersion,
+    cliVersion,
     assistants,
     installedAt: now,
     lastUpdated: now

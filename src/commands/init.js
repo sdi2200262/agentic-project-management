@@ -6,7 +6,7 @@
  * @module src/commands/init
  */
 
-import { OFFICIAL_REPO } from '../core/constants.js';
+import { OFFICIAL_REPO, CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, isInitialized } from '../core/metadata.js';
 import { fetchOfficialReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
@@ -98,6 +98,7 @@ export async function initCommand(options = {}) {
     source: 'official',
     repository: `${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`,
     releaseVersion: release.tag_name,
+    cliVersion: CLI_VERSION,
     assistants: [assistantId]
   });
   await writeMetadata(metadata);
