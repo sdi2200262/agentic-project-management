@@ -7,6 +7,128 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## [1.0.0] - Unreleased
+
+### Breaking Changes
+
+* **Agent Terminology Overhaul:**
+  * Setup Agent → **Planner Agent**
+  * Implementation Agent → **Worker Agent**
+  * Ad-Hoc Agent → **Delegate Agent**
+  * Manager Agent (unchanged)
+
+* **Command Renaming:** All 6 commands have been renamed to reflect new terminology:
+  * `apm-1-initiate-planner` (was `apm-1-initiate-setup`)
+  * `apm-2-initiate-manager`
+  * `apm-3-initiate-worker` (was `apm-3-initiate-implementation`)
+  * `apm-4-initiate-delegate` (was `apm-4-initiate-ad-hoc`)
+  * `apm-5-handoff-manager` (was `apm-5-handover-manager`)
+  * `apm-6-handoff-worker` (was `apm-6-handover-implementation`)
+
+* **Guides Restructured into Skills:** The `templates/guides/` directory has been reorganized into a modular Agent Skills system at `templates/skills/`.
+
+* **Decoupled Versioning:** CLI and templates now version independently but share the same major version number. Template releases now use standard SemVer (e.g., `v1.0.0`, `v1.1.0`) instead of build metadata format (`v0.5.0+templates.N`). See [VERSIONING.md](VERSIONING.md) for details.
+
+* **Modular Architecture and Build System Changes:** The CLI source files and build pipeline have been reorganized into a fully modular architecture. Source files now follow a dedicated module structure (see new directories in `src/` and `build/`). The build system entry point has moved from `scripts/build.js` to `build/index.js`, and the build command is now `npm run build:release` (replacing `npm run build:cli`).
+
+* **Metadata Schema Updated:** New fields added (`source`, `repository`, `cliVersion`) for tracking installation provenance.
+
+### Added
+
+* **Custom Repository Support:** New `apm custom` command enables using custom template repositories with security disclaimers.
+  * Support for saved custom repositories in global `~apm/` user config
+  * `--repo <owner/repo>` flag to specify repository directly
+  * Security disclaimer prompt for untrusted sources
+
+* **Manifest-Driven Architecture:** Build system now generates `apm-release.json` manifest with release metadata for template validation.
+
+* **Security Documentation:** New `SECURITY.md` covering custom repository risks and mitigation strategies.
+
+* **Modular CLI Architecture:** Completely restructured CLI into dedicated modules:
+  * `src/commands/` - Separate command modules (`init.js`, `custom.js`, `update.js`)
+  * `src/core/` - Core modules (`config.js`, `constants.js`, `errors.js`, `metadata.js`)
+  * `src/services/` - Service modules (`extractor.js`, `github.js`, `releases.js`)
+  * `src/ui/` - User interface modules (`logger.js`, `prompts.js`)
+  * `src/schemas/` - Schema validation (`release.js`)
+
+* **Modular Build System:** Restructured build system from `scripts/` to `build/`:
+  * `build/core/` - Build configuration and error handling
+  * `build/generators/` - Archive and manifest generation
+  * `build/processors/` - Template, frontmatter, and placeholder processing
+  * `build/utils/` - File utilities and logging
+
+* **Skills System:** New `templates/skills/` directory with 9 modular skill files:
+  * `artifact-maintenance.md` - Artifact management procedures
+  * `context-gathering.md` - Context synthesis procedures
+  * `delegate-debug.md` - Debug delegation procedures
+  * `delegate-research.md` - Research delegation procedures
+  * `memory-logging.md` - Memory logging procedures
+  * `memory-maintenance.md` - Memory system maintenance
+  * `task-assignment.md` - Task assignment procedures
+  * `task-execution.md` - Task execution procedures
+  * `work-breakdown.md` - Work breakdown procedures
+
+* **Template Standards System:** New `templates/_standards/` directory:
+  * `TERMINOLOGY.md` - Standardized terminology reference
+  * `STRUCTURE.md` - Template structure guidelines
+  * `WRITING.md` - Writing style guidelines
+
+* **Build Standards Documentation:** `build/_standards/BUILD.md`
+
+* **CLI Standards Documentation:** `src/_standards/CLI.md`
+
+* **New APM Artifacts:**
+  * `Specifications.md` - New coordination artifact for project specifications
+  * Updated `Implementation_Plan.md` template
+  * Updated `Memory/Memory_Root.md` template
+
+### Changed
+
+* **VERSIONING.md Overhaul:** Completely rewritten to document new decoupled versioning strategy with independent CLI and template releases.
+
+* **Release Workflow:** `.github/workflows/release-templates.yml` updated with auto-increment patch version from latest stable release and pre-release detection.
+
+* **Terminology Standardization:** Consistent terminology across all templates.
+
+### Removed
+
+* **Old Template Structure:**
+  * `templates/Implementation_Agent/` directory
+  * `templates/Manager_Agent/` directory
+  * `templates/Setup_Agent/` directory
+  * `templates/ad-hoc/` directory
+  * `templates/guides/` directory
+  * `templates/README.md`
+
+* **Legacy Source Files:**
+  * `src/downloader.js` - Replaced by `src/services/` modules
+  * `src/utils.js` - Functionality distributed to new modules
+
+* **Old Build System:**
+  * `scripts/build.js` - Replaced by modular `build/` system
+  * `scripts/tests/build.test.js` - Build test file
+
+### Security
+
+* **Custom Repository Security Model:**
+  * Security disclaimer required before first install from untrusted sources
+  * Option to skip disclaimer for trusted repositories
+  * Clear documentation of what custom repositories can and cannot do during installation
+
+---
+
+## [0.5.4] - 2026-01-24
+
+### Added
+
+* **Google Antigravity Support:** Added support for Google Antigravity as the 11th AI assistant.
+
+### Deprecated
+
+* **Bootstrap Prompt:** The Bootstrap Prompt has been deprecated and will be removed in v1.0.0.
+
+---
+
 ## [0.5.3] - 2025-12-05
 
 ### Fixed
@@ -166,7 +288,4 @@ See the complete [documentation suite](docs/) for detailed setup instructions, c
 - Added initial GitHub issue template for bug reports.
 
 
-## [Unreleased]
-### Added
-- Placeholder for future changes.
 
