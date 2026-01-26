@@ -6,6 +6,7 @@
  * @module src/commands/custom
  */
 
+import { CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, isInitialized } from '../core/metadata.js';
 import { getCustomRepos, addCustomRepo, getRepoSettings, updateRepoSettings } from '../core/config.js';
@@ -133,6 +134,7 @@ export async function customCommand(options = {}) {
     source: 'custom',
     repository: repoString,
     releaseVersion: release.tag_name,
+    cliVersion: CLI_VERSION,
     assistants: [assistantId]
   });
   await writeMetadata(metadata);

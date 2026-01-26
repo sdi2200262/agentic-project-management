@@ -43,7 +43,7 @@ jobs:
             LATEST_TAG=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
 
             if [[ -z "$LATEST_TAG" ]]; then
-              echo "No previous v1.x.x release found. Please provide a version override for the first release."
+              echo "No previous stable release found. Please provide a version override for the first release."
               exit 1
             fi
 
@@ -112,7 +112,7 @@ jobs:
           if [[ -n "${{ github.event.inputs.release_notes }}" ]]; then
             NOTES="${{ github.event.inputs.release_notes }}"
           else
-            NOTES="APM Templates $TAG"
+            NOTES="APM Release $TAG"
           fi
 
           PRERELEASE_FLAG=""
@@ -128,7 +128,7 @@ jobs:
             gh release create "$TAG" \
               dist/*.zip \
               dist/apm-release.json \
-              --title "APM Templates $TAG" \
+              --title "APM Release $TAG" \
               --notes "$NOTES" \
               --target "$GITHUB_SHA" \
               $PRERELEASE_FLAG
