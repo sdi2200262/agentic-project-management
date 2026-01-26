@@ -27,6 +27,8 @@ import logger from '../ui/logger.js';
 export async function customCommand(options = {}) {
   const { repo: repoArg, tag, assistant: assistantArg, force = false } = options;
 
+  logger.banner();
+
   // --tag requires --repo
   if (tag && !repoArg) {
     logger.error('--tag requires --repo to be specified');
