@@ -21,6 +21,8 @@ import logger from '../ui/logger.js';
  * @returns {Promise<void>}
  */
 export async function updateCommand(options = {}) {
+  logger.banner();
+
   // Read existing metadata
   const metadata = await readMetadata();
 
