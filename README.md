@@ -119,8 +119,8 @@ APM is an open-source project, and your contributions are welcome! Whether it's 
 **Areas particularly seeking contributions:**
 
 - **Assistant Support:** Help expand APM support for additional AI assistants beyond the ones currently supported.
-- **Ad-Hoc Delegation Guides:** The framework includes Debug and Research delegation guides, but there's opportunity to create specialized guides for other context-intensive tasks such as testing automation, security analysis, data extraction and more.
-- **Workflow Optimizations:** Share improvements to agent protocols or memory system enhancements.
+- **Delegation Skills:** The framework includes Debug and Research Delegation Skills, but there's opportunity to create specialized Delegation Skills for other context-intensive tasks such as testing automation, security analysis, data extraction and more.
+- **Workflow Optimizations:** Share improvements to agent procedures or memory system enhancements.
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and contribution process.
 
