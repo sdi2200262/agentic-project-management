@@ -6,7 +6,7 @@
  * @module src/commands/update
  */
 
-import { OFFICIAL_REPO } from '../core/constants.js';
+import { OFFICIAL_REPO, CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, updateMetadataFields } from '../core/metadata.js';
 import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
@@ -125,7 +125,8 @@ export async function updateCommand(options = {}) {
   const updatedMetadata = updateMetadataFields(metadata, {
     source: repoString === `${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}` ? 'official' : 'custom',
     repository: repoString,
-    releaseVersion: release.tag_name
+    releaseVersion: release.tag_name,
+    cliVersion: CLI_VERSION
   });
   await writeMetadata(updatedMetadata);
 

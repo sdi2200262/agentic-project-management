@@ -8,6 +8,21 @@
 
 import path from 'path';
 import os from 'os';
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
+// Read CLI version from package.json
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const packageJson = JSON.parse(readFileSync(join(__dirname, '..', '..', 'package.json'), 'utf8'));
+
+/**
+ * CLI version from package.json.
+ *
+ * @type {string}
+ */
+export const CLI_VERSION = packageJson.version;
 
 /**
  * Official APM repository.
@@ -19,10 +34,11 @@ export const OFFICIAL_REPO = {
 
 /**
  * CLI major version used to filter compatible releases.
+ * Derived dynamically from package.json version.
  *
  * @type {number}
  */
-export const CLI_MAJOR_VERSION = 1;
+export const CLI_MAJOR_VERSION = parseInt(CLI_VERSION.split('.')[0], 10);
 
 /**
  * Global config directory path (~/.apm/).

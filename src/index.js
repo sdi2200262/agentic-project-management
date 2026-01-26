@@ -10,20 +10,12 @@
  */
 
 import { Command } from 'commander';
-import { readFileSync } from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
 import { initCommand } from './commands/init.js';
 import { customCommand } from './commands/custom.js';
 import { updateCommand } from './commands/update.js';
+import { CLI_VERSION } from './core/constants.js';
 import { CLIError } from './core/errors.js';
 import logger from './ui/logger.js';
-
-// Read CLI version from package.json
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const packageJson = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf8'));
-const CLI_VERSION = packageJson.version;
 
 /**
  * Displays custom formatted help output.
@@ -42,7 +34,7 @@ function displayHelp() {
   console.log(`  ${chalk.bold('update')}            Update installed assistant templates`);
   console.log('');
   console.log(chalk.cyan.bold('Options:'));
-  console.log(`  ${chalk.bold('-V, --version')}        Show version number`);
+  console.log(`  ${chalk.bold('-v, -V, --version')}    Show version number`);
   console.log(`  ${chalk.bold('-h, --help')}           Show help`);
   console.log(`  ${chalk.bold('-r, --repo <repo>')}    Repository in owner/repo format (custom only)`);
   console.log(`  ${chalk.bold('-t, --tag <tag>')}      Install specific release version`);
@@ -67,7 +59,7 @@ const program = new Command();
 program
   .name('apm')
   .description('Agentic Project Management CLI')
-  .version(CLI_VERSION)
+  .version(CLI_VERSION, '-v, -V, --version')
   .configureHelp({
     formatHelp: () => {
       displayHelp();
