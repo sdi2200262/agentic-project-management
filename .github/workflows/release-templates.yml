@@ -2,14 +2,14 @@
 name: Release Templates
 
 on:
-  workflow_dispatch: # Manual trigger only
+  workflow_dispatch:
     inputs:
-      cli_version:
-        description: 'CLI version to use for template release (e.g., 0.6.0). Leave empty to use current package.json version.'
+      version:
+        description: 'Version override (e.g., 1.1.0, 1.0.0-test-1). Leave empty to auto-increment patch.'
         required: false
         default: ''
       release_notes:
-        description: 'Release notes/body text for the GitHub release. Leave empty for default message.'
+        description: 'Release notes for the GitHub release.'
         required: false
         default: ''
 
@@ -20,9 +20,8 @@ jobs:
   release_templates:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout latest branch
+      - name: Checkout
         uses: actions/checkout@v4
-        # Fetch all tags to accurately determine the next build number
         with:
           ref: ${{ github.ref_name || 'main' }}
           fetch-depth: 0
@@ -32,96 +31,105 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Get CLI Version
-        id: get_version
+      - name: Determine Version
+        id: version
         run: |
-          if [[ -n "${{ github.event.inputs.cli_version }}" ]]; then
-            VERSION="${{ github.event.inputs.cli_version }}"
-            echo "Using provided CLI version: $VERSION"
+          if [[ -n "${{ github.event.inputs.version }}" ]]; then
+            # Use provided version override
+            VERSION="${{ github.event.inputs.version }}"
+            echo "Using version override: $VERSION"
           else
-            VERSION=$(node -p "require('./package.json').version")
-            echo "Using CLI version from package.json: $VERSION"
-          fi
-          echo "cli_version=$VERSION" >> $GITHUB_OUTPUT
+            # Find latest stable release tag (vX.Y.Z without pre-release suffix)
+            LATEST_TAG=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
 
-      - name: Determine Next Build Number
-        id: build_number
-        env:
-          CLI_VERSION: ${{ steps.get_version.outputs.cli_version }}
-        run: |
-          # Fetch all tags matching vX.Y.Z+templates.*
-          # Sort version strings correctly and get the last one
-          LATEST_BUILD_TAG=$(git tag --list "v${CLI_VERSION}+templates.*" | sort -V | tail -n 1)
-
-          NEXT_BUILD=1 # Default to 1 if no previous build found
-          if [[ -n "$LATEST_BUILD_TAG" ]]; then
-            echo "Latest template build tag found: $LATEST_BUILD_TAG"
-            # Extract build number after '+templates.'
-            CURRENT_BUILD=$(echo "$LATEST_BUILD_TAG" | sed 's/.*+templates\.//')
-            # Check if CURRENT_BUILD is a valid number
-            if [[ "$CURRENT_BUILD" =~ ^[0-9]+$ ]]; then
-               NEXT_BUILD=$((CURRENT_BUILD + 1))
-            else
-               echo "Warning: Could not parse build number from tag '$LATEST_BUILD_TAG'. Resetting to 1."
-               NEXT_BUILD=1
+            if [[ -z "$LATEST_TAG" ]]; then
+              echo "No previous v1.x.x release found. Please provide a version override for the first release."
+              exit 1
             fi
-            echo "Current build: $CURRENT_BUILD. Next build: $NEXT_BUILD."
-          else
-            echo "No previous template build found for v${CLI_VERSION}. Starting with build 1."
+
+            echo "Latest stable tag: $LATEST_TAG"
+
+            # Parse version and increment patch
+            if [[ "$LATEST_TAG" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+              MAJOR="${BASH_REMATCH[1]}"
+              MINOR="${BASH_REMATCH[2]}"
+              PATCH="${BASH_REMATCH[3]}"
+              NEW_PATCH=$((PATCH + 1))
+              VERSION="${MAJOR}.${MINOR}.${NEW_PATCH}"
+              echo "Auto-incremented patch: $LATEST_TAG -> v$VERSION"
+            else
+              echo "Failed to parse version from $LATEST_TAG"
+              exit 1
+            fi
           fi
 
-          NEW_TAG="v${CLI_VERSION}+templates.${NEXT_BUILD}"
-          echo "next_build=$NEXT_BUILD" >> $GITHUB_OUTPUT
-          echo "new_tag=$NEW_TAG" >> $GITHUB_OUTPUT
+          # Determine if this is a pre-release
+          if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-.+$ ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+          else
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+          fi
 
-      - name: Create and Push New Tag
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check Tag Exists
+        id: check_tag
         env:
-          NEW_TAG: ${{ steps.build_number.outputs.new_tag }}
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
-          # Check if tag already exists locally (e.g., from checkout) or remotely
-          if git rev-parse "$NEW_TAG" >/dev/null 2>&1 || git ls-remote --tags origin "refs/tags/${NEW_TAG}" | grep -q "$NEW_TAG"; then
-             echo "Tag ${NEW_TAG} already exists. Skipping tag creation and push."
-             # Potentially exit here if you don't want to re-release? Or let the release step handle it.
-             # exit 0
+          if git rev-parse "$TAG" >/dev/null 2>&1 || git ls-remote --tags origin "refs/tags/${TAG}" | grep -q "$TAG"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
           else
-             git config user.name "github-actions[bot]"
-             git config user.email "github-actions[bot]@users.noreply.github.com"
-             echo "Creating tag ${NEW_TAG}"
-             # Create tag pointing to the current commit HEAD
-             git tag "${NEW_TAG}" HEAD
-             echo "Pushing tag ${NEW_TAG}"
-             git push origin "${NEW_TAG}"
+            echo "exists=false" >> $GITHUB_OUTPUT
           fi
+
+      - name: Create and Push Tag
+        if: steps.check_tag.outputs.exists == 'false'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "$TAG" HEAD
+          git push origin "$TAG"
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run build script
-        run: npm run build:cli
+      - name: Build templates
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: npm run build:release
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NEW_TAG: ${{ steps.build_number.outputs.new_tag }}
-          CLI_VERSION: ${{ steps.get_version.outputs.cli_version }}
-          NEXT_BUILD: ${{ steps.build_number.outputs.next_build }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+          PRERELEASE: ${{ steps.version.outputs.prerelease }}
         run: |
-          # Check if release for this tag already exists
-          if gh release view "$NEW_TAG" > /dev/null 2>&1; then
-             echo "Release for tag ${NEW_TAG} already exists. Attempting to upload assets."
-             # 'gh release upload' will overwrite existing assets with the same name by default
-             gh release upload "$NEW_TAG" dist/*.zip --clobber
+          if [[ -n "${{ github.event.inputs.release_notes }}" ]]; then
+            NOTES="${{ github.event.inputs.release_notes }}"
           else
-             echo "Creating new release for tag ${NEW_TAG}"
-             # Use custom release notes if provided, otherwise use default
-             if [[ -n "${{ github.event.inputs.release_notes }}" ]]; then
-               RELEASE_NOTES="${{ github.event.inputs.release_notes }}"
-             else
-               RELEASE_NOTES="Template update - Build ${NEXT_BUILD} for APM CLI v${CLI_VERSION}."
-             fi
-             gh release create "$NEW_TAG" \
-               dist/*.zip \
-               --title "APM Templates v${CLI_VERSION} Build ${NEXT_BUILD}" \
-               --notes "$RELEASE_NOTES" \
-               --target "$GITHUB_SHA" # Explicitly target the commit SHA
+            NOTES="APM Templates $TAG"
+          fi
+
+          PRERELEASE_FLAG=""
+          if [[ "$PRERELEASE" == "true" ]]; then
+            PRERELEASE_FLAG="--prerelease"
+          fi
+
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release $TAG exists. Updating assets."
+            gh release upload "$TAG" dist/*.zip dist/apm-release.json --clobber
+          else
+            echo "Creating release $TAG"
+            gh release create "$TAG" \
+              dist/*.zip \
+              dist/apm-release.json \
+              --title "APM Templates $TAG" \
+              --notes "$NOTES" \
+              --target "$GITHUB_SHA" \
+              $PRERELEASE_FLAG
           fi
