@@ -31,7 +31,7 @@ const CLI_VERSION = packageJson.version;
 function displayHelp() {
   const chalk = logger.chalk;
 
-  console.log(chalk.cyan.bold('Agentic Project Management CLI'));
+  console.log(chalk.cyan.bold('Agentic Project Management'));
   console.log('');
   console.log(chalk.gray('Usage:') + ' ' + chalk.white('apm [command] [options]'));
   console.log('');
@@ -50,12 +50,14 @@ function displayHelp() {
   console.log(`  ${chalk.bold('-f, --force')}          Skip confirmation prompts`);
   console.log('');
   console.log(chalk.cyan.bold('Versioning:'));
-  console.log(`  ${chalk.bold('CLI')} (${CLI_VERSION}):`);
+  console.log(`  ${chalk.bold('agentic-pm CLI')} (v${CLI_VERSION}):`);
   console.log(`            - Follows SemVer: ${chalk.blue.underline('https://semver.org/')}`);
   console.log(`            - Update with: ${chalk.yellow('npm update -g agentic-pm')}`);
   console.log('');
-  console.log(`  ${chalk.bold('Templates')} (v${CLI_VERSION}.x):`);
-  console.log(`            - Updated via: ${chalk.yellow('apm update')}`);
+  console.log(`  ${chalk.bold('APM Releases')} (v1.x.x):`);
+  console.log(`            - Follows SemVer: ${chalk.blue.underline('https://semver.org/')}`);
+  console.log(`            - Compatible with v1.x.x agentic-pm CLI`);
+  console.log(`            - Update via: ${chalk.yellow('apm update')}`);
   console.log('');
   console.log(chalk.gray('Learn more:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management'));
 }
