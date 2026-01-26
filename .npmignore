@@ -1,8 +1,10 @@
 # Build and test (exclude from NPM package)
+build/
 scripts/
 *.test.js
-dist
-dist/**
+dist/
+tmp/
+_standards/
 
 # Development
 .git
