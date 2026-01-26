@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Agentic Project Management CLI",
   "scripts": {
-    "build": "npm run build:cli && npm run build:website",
-    "build:cli": "node build/index.js",
+    "build": "npm run build:release && npm run build:website",
+    "build:release": "node build/index.js",
     "build:website": "cd website && npm run build",
     "start:website": "cd website && npm run start",
     "test": "vitest run --reporter=basic",

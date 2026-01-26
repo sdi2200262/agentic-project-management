@@ -1,53 +1,45 @@
 # APM Versioning Strategy
 
-Agentic Project Management (APM) employs a dual versioning system to clearly distinguish between updates to the core CLI tool and updates to the agent prompt & guide templates. This ensures users can reliably manage both the delivery mechanism (CLI) and the agent content (templates).
+APM uses a decoupled versioning system with two independent release tracks: the **CLI tool** (distributed via NPM) and **APM template releases** (distributed via GitHub Releases). Both tracks follow Semantic Versioning and share the same major version to ensure compatibility.
 
-## Core Components and Versioning Tracks
+## Versioning Tracks
 
-1.  **APM CLI (`agentic-pm` on NPM):**
-    * **Scope:** The command-line tool itself, located in the `src/` directory. This includes the `apm init` and `apm update` commands and associated logic.
-    * **Versioning:** Follows **Semantic Versioning (SemVer)** (e.g., `0.5.0`, `0.5.1`, `0.6.0`).
-    * **Trigger:** A new version is released **only** when changes are made to the code within the `src/` directory.
-    * **Release Mechanism:** Published to the NPM registry. A corresponding Git tag (e.g., `v0.5.1`) is created in the repository.
+### 1. APM CLI (`agentic-pm` on NPM)
 
-2.  **APM Templates (Prompts & Guides):**
-    * **Scope:** The agent prompts and workflow guides located in the `templates/` directory and distributed as `.zip` bundles. These define the context and behavior of the agents in the APM workflow.
-    * **Versioning:** Uses the **current CLI version** plus **SemVer build metadata** (e.g., `v0.5.0+templates.1`, `v0.5.0+templates.2`).
-    * **Trigger:** A new build is released **only** when changes are made to files within the `templates/` directory.
-    * **Release Mechanism:** Built assets (`.zip` bundles for each supported AI assistant) are published as **GitHub Releases**. A corresponding Git tag (e.g., `v0.5.0+templates.2`) is created in the repository, pointing to the commit containing the template changes.
+The CLI source code lives in `src/`. Changes to this directory trigger new NPM releases. The CLI handles template installation and updates via the `apm init`, `apm custom`, and `apm update` commands.
 
-3.  **Build System & Configuration:**
-    * **Scope:** Files related to the build process (`scripts/`, `build-config.json`), testing, and CI/CD workflows (`.github/workflows/`).
-    * **Versioning:** Changes to these files **do not trigger new version numbers, tags, or releases.** They are tracked via standard Git commit history.
+Pre-release versions use the `-test-N` suffix (e.g., `1.0.0-test-1`). NPM's `latest` tag always points to the most recent stable release, so `npm install agentic-pm` installs stable versions only. Pre-releases require explicit installation: `npm install agentic-pm@0.5.0-test-1`.
 
-## CLI Behavior for Users
+### 2. APM Template Releases (GitHub Releases)
 
-The CLI manages template versions based on compatibility with the running CLI version:
+Templates live in `templates/` and are processed by the build system in `build/`. Running `npm run build:release` generates ZIP bundles for each supported AI assistant plus an `apm-release.json` manifest. These artifacts are published as GitHub Releases.
 
-* **`apm init` (default behavior):**
-    * Automatically finds and installs the latest template tag compatible with the *currently running CLI version*.
-    * For example, if you're running CLI `0.5.0`, it will find the latest `v0.5.0+templates.N` tag available.
-    * This ensures that templates are always compatible with your CLI installation.
+Template releases are fully decoupled from CLI versioning. The release workflow auto-increments patch versions (1.0.0 → 1.0.1) based on the latest stable release tag. For minor/major bumps, provide a version override when triggering the workflow.
 
-* **`apm init --tag <tag>` (specific version):**
-    * Allows installing a *specific* template tag by explicitly providing it (e.g., `apm init --tag v0.5.0+templates.1`).
-    * This can bypass the default compatibility check and install any specified template version.
-    * The CLI may issue a warning if the base version of the specified tag doesn't match your current CLI version, as this could lead to incompatibilities.
+Pre-release versions (e.g., `v1.0.0-test-1`, `v1.1.0-beta-1`) are supported for testing. Pre-releases sort before their stable counterpart (`v1.0.0-test-1 < v1.0.0`) and are excluded when the CLI fetches the "latest" release.
 
-* **`apm update`:**
-    * Finds the latest template tag compatible with the *currently running CLI version*.
-    * Compares it to the installed template version (stored in `.apm/metadata.json`) using the build number (`+templates.N`).
-    * Only updates if a newer compatible build exists (higher build number with matching base version).
-    * If newer templates exist but require a different CLI version (e.g., templates for `v0.6.0` when you're running `0.5.1`), the CLI will inform you that a CLI update is available via `npm update -g agentic-pm` to access those newer templates.
+### 3. Build System
 
-## User Impact
+The `build/` directory, CI/CD workflows, and configuration files are not versioned. Changes are tracked via git history only.
 
-### Workflow Implications
+## Version Compatibility
 
-The dual versioning system provides a clear separation of concerns and practical benefits:
+The CLI and template releases are decoupled but tied by **major version**. CLI v1.x will only fetch v1.x.x releases from the official repository, ensuring template compatibility. Minor and patch versions can differ between CLI and templates.
 
-* **CLI Updates:** Users update the CLI independently via NPM (e.g., `npm update -g agentic-pm`). CLI updates bring new features, bug fixes, and improvements to the tool itself. Since the CLI version determines which templates are compatible, updating the CLI may "unlock" access to newer template versions.
+## `agentic-pm` CLI Behavior
 
-* **Template Updates:** Template updates are delivered independently via GitHub Releases and managed through `apm update`. Users can receive improved prompts and guides without needing to update the CLI package, as long as the templates match their current CLI version. This allows for rapid iteration on agent behavior without disrupting the CLI tool's stability.
+### Official Repository (`apm init`)
 
-This dual system ensures that CLI stability is maintained with standard SemVer, while allowing for more frequent iteration and delivery of the agent templates via GitHub Releases and the `apm update` command.
+By default, `apm init` fetches the latest stable release matching the CLI's major version. Pre-release versions are excluded from "latest" but can be installed explicitly with `--tag` (e.g., `apm init --tag v1.0.0-test-1`).
+
+### Custom Repositories (`apm custom`)
+
+**Custom repositories have no version filtering.** Users can select any available release regardless of CLI version. This enables access to experimental versions, community-maintained templates, or unreleased changes. See [SECURITY.md](SECURITY.md) for security considerations.
+
+### Updating Templates (`apm update`)
+
+For official installs, `apm update` fetches the latest compatible release. For custom installs, users can choose to stay with their custom repository or switch to official.
+
+## Metadata Tracking
+
+Installed template information is stored in `.apm/metadata.json`, including the source (official or custom), repository, release version, installed assistants, and timestamps. This allows `apm update` to determine the current state and available updates.
