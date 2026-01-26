@@ -10,18 +10,74 @@
  */
 
 import { Command } from 'commander';
+import { readFileSync } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { initCommand } from './commands/init.js';
 import { customCommand } from './commands/custom.js';
 import { updateCommand } from './commands/update.js';
 import { CLIError } from './core/errors.js';
 import logger from './ui/logger.js';
 
+// Read CLI version from package.json
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const packageJson = JSON.parse(readFileSync(join(__dirname, '..', 'package.json'), 'utf8'));
+const CLI_VERSION = packageJson.version;
+
+/**
+ * Displays custom formatted help output.
+ */
+function displayHelp() {
+  const chalk = logger.chalk;
+
+  console.log(chalk.cyan.bold('Agentic Project Management CLI'));
+  console.log('');
+  console.log(chalk.gray('Usage:') + ' ' + chalk.white('apm [command] [options]'));
+  console.log('');
+  console.log(chalk.cyan.bold('Commands:'));
+  console.log(`  ${chalk.bold('init')}              Initialize APM with official templates`);
+  console.log(`  ${chalk.bold('init --tag <tag>')}  Install specific template version`);
+  console.log(`  ${chalk.bold('custom')}            Install from a custom repository`);
+  console.log(`  ${chalk.bold('update')}            Update installed assistant templates`);
+  console.log('');
+  console.log(chalk.cyan.bold('Options:'));
+  console.log(`  ${chalk.bold('-V, --version')}        Show version number`);
+  console.log(`  ${chalk.bold('-h, --help')}           Show help`);
+  console.log(`  ${chalk.bold('-r, --repo <repo>')}    Repository in owner/repo format (custom only)`);
+  console.log(`  ${chalk.bold('-t, --tag <tag>')}      Install specific release version`);
+  console.log(`  ${chalk.bold('-a, --assistant <id>')} Assistant to install (e.g., claude, copilot)`);
+  console.log(`  ${chalk.bold('-f, --force')}          Skip confirmation prompts`);
+  console.log('');
+  console.log(chalk.cyan.bold('Versioning:'));
+  console.log(`  ${chalk.bold('CLI')} (${CLI_VERSION}):`);
+  console.log(`            - Follows SemVer: ${chalk.blue.underline('https://semver.org/')}`);
+  console.log(`            - Update with: ${chalk.yellow('npm update -g agentic-pm')}`);
+  console.log('');
+  console.log(`  ${chalk.bold('Templates')} (v${CLI_VERSION}.x):`);
+  console.log(`            - Updated via: ${chalk.yellow('apm update')}`);
+  console.log('');
+  console.log(chalk.gray('Learn more:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management'));
+}
+
 const program = new Command();
 
 program
   .name('apm')
   .description('Agentic Project Management CLI')
-  .version('1.0.0');
+  .version(CLI_VERSION)
+  .configureHelp({
+    formatHelp: () => {
+      displayHelp();
+      return '';
+    }
+  });
+
+// Default action (no command)
+program.action(() => {
+  logger.banner();
+  logger.dim('\nUse --help to see available commands.\n');
+});
 
 program
   .command('init')
