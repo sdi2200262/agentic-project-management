@@ -1,6 +1,6 @@
 # Agentic Project Management (APM)
 
-[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Version](https://img.shields.io/badge/version-v0.5.3-blue)](https://github.com/sdi2200262/agentic-project-management/releases/tag/v0.5.3) [![Website](https://img.shields.io/badge/website-agentic--project--management.dev-blue)](https://agentic-project-management.dev)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![agentic-pm CLI version](https://img.shields.io/badge/agentic--pm_CLI-v1.0.0-blue)](https://www.npmjs.com/package/agentic-pm) [![APM Releases](https://img.shields.io/badge/APM_Releases-v1.0.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases) [![Website](https://img.shields.io/badge/website-agentic--project--management.dev-blue)](https://agentic-project-management.dev)
 
 *Manage complex projects with a team of AI assistants, smoothly and efficiently.*
 
@@ -8,9 +8,9 @@
 
 **Agentic Project Management (APM)** is a AI workflow framework that brings real-world project management principles into your AI-assisted workflows. It addresses a fundamental challenge of LLMs: **context window limitations**. 
 
-APM uses various context retention techniques, coordinating a team of specialized AI agents in a structured way so that you can maintain productive AI-assisted work for longer periods before facing model hallucinations and needing to start over. When context window does fill up, APM ensures a smooth transition to a "fresh" chat session without important context loss.
+APM uses various prompt and context engineering techniques, coordinating a team of specialized AI agents in a structured way so that you can maintain productive AI-assisted work for longer periods before facing model hallucinations and needing to start over. When context window does fill up, APM ensures a smooth transition to a "fresh" chat session without important context loss.
 
-Think of it like having a project manager, developers, ad-hoc specialists, and a setup/configuration expert all powered by AI and working together under your guidance.
+Think of it like having a project planner, manager, developers, and ad-hoc specialists all powered by AI and working together under your guidance.
 
 <p align="center">
   <img src="assets/apm-banner.png" alt="apm-banner" style="border-radius: 16px; display: block; margin-left: auto; margin-right: auto;" />
@@ -47,6 +47,7 @@ APM supports the following AI assistants and IDEs:
 | opencode            | CLI                     | Markdown | `.opencode/command`    |
 | Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
 | Auggie CLI          | CLI                     | Markdown | `.augment/commands`    |
+| Google Antigravity  | IDE                     | Markdown | `.antigravity/prompts` |
 
 When you run `apm init`, simply select your AI assistant from the list, and APM will automatically configure the appropriate command structure for your environment.
 
@@ -77,34 +78,32 @@ Follow these simple steps to start using APM in your project:
 
 5. **Open your AI assistant chat** and enter the slash command:
    ```
-   /apm-1-initiate-setup
+   /apm-1-initiate-planner
    ```
 
 6. **Follow the established APM workflow:** <br/>
-Setup Phase (Project Discovery & Planning) → Task Loop Phase (Plan Execution)
+Planning Phase (Project Discovery & Planning) → Implementation Phase (Plan Execution)
 
 For step-by-step guidance with video coverage, see the **[Getting Started Guide](https://agentic-project-management.dev/docs/getting-started)**. For detailed CLI behavior and policies, see the **[CLI Guide](https://agentic-project-management.dev/docs/cli)**.
 
+## Customization
+
+APM supports two customization approaches:
+- **Local edits:** Modify files in `.apm/` after running `apm init`
+- **Custom repositories:** Use `apm custom` to install templates from your own or third-party custom repositories
+
+See [Modifying APM](https://agentic-project-management.dev/docs/modifying-apm) for detailed customization guidance.
+
 ## Documentation
 
-Full documentation is available at [agentic-project-management.dev](https://agentic-project-management.dev)
+Full documentation is available at [agentic-project-management.dev](https://agentic-project-management.dev).
 
-APM v0.5 includes comprehensive documentation covering all aspects of the framework:
+**Essential reading:**
+- **[Getting Started](https://agentic-project-management.dev/docs/getting-started)** - Step-by-step setup and first session guide
+- **[Workflow Overview](https://agentic-project-management.dev/docs/workflow-overview)** - Complete workflow walkthrough with process diagrams
+- **[CLI Guide](https://agentic-project-management.dev/docs/cli)** - Detailed CLI usage and commands
 
-| Document | Description |
-|----------|-------------|
-| **[Introduction](https://agentic-project-management.dev/docs/introduction)** | Overview of APM concepts, goals, and core framework |
-| **[Getting Started](https://agentic-project-management.dev/docs/getting-started)** | Step-by-step setup and first session guide |
-| **[Agent Types](https://agentic-project-management.dev/docs/agent-types)** | Different agent roles and specializations |
-| **[Workflow Overview](https://agentic-project-management.dev/docs/workflow-overview)** | Complete workflow walkthrough with process diagrams |
-| **[Token Consumption Tips](https://agentic-project-management.dev/docs/token-consumption-tips)** | Cost optimization strategies and model recommendations |
-| **[Modifying APM](https://agentic-project-management.dev/docs/modifying-apm)** | Customization of APM assets and advanced features |
-| **[Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide)** | Troubleshooting for common issues |
-| **[Context & Memory Management](https://agentic-project-management.dev/docs/context-and-memory-management)** (advanced) | How APM handles context and manages memory across agent instances  |
-| **[Context & Prompt Engineering](https://agentic-project-management.dev/docs/context-and-prompt-engineering)** (advanced) | Prompt and context engineering techniques used throughout the framework |
-| **[CLI Guide](https://agentic-project-management.dev/docs/cli)** | Detailed CLI usage, behaviors, policies |
-
-For a complete documentation index with recommended reading order, visit the **[Documentation Hub](https://agentic-project-management.dev/docs)**.
+For a complete documentation index, visit the **[Documentation Hub](https://agentic-project-management.dev/docs)**.
 
 ## Contributing
 
@@ -125,11 +124,13 @@ APM is an open-source project, and your contributions are welcome! Whether it's 
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and contribution process.
 
-## Versioning Strategy
+## Versioning
 
-APM uses a dual versioning system to separate updates to the core CLI tool from updates to the agent prompts and guides (templates). The CLI follows Semantic Versioning on NPM, while template updates are released via GitHub Releases using build metadata. This allows for frequent template improvements without unnecessary CLI version bumps.
+APM uses a decoupled versioning system where the CLI and templates version independently but share the same major version number. The CLI follows Semantic Versioning on NPM, while templates are released via GitHub Releases. See [VERSIONING.md](VERSIONING.md) for details.
 
-For a detailed explanation of the versioning, tagging, and release process, please see the [VERSIONING.md](VERSIONING.md) file.
+## Security
+
+When using custom template repositories with `apm custom`, security warnings are displayed to inform users about potential risks. APM validates template manifests (`apm-release.json`) before installation. See [SECURITY.md](SECURITY.md) for our security policy.
 
 ## License
 
