@@ -7,6 +7,7 @@
  */
 
 import { select, input, confirm } from '@inquirer/prompts';
+import chalk from 'chalk';
 
 /**
  * Prompts user to select an assistant from a list.
@@ -123,10 +124,12 @@ export async function selectUpdateSource() {
  * @returns {Promise<boolean>} Whether user accepted the disclaimer.
  */
 export async function confirmSecurityDisclaimer() {
-  console.log('\n--- Security Disclaimer ---');
-  console.log('Custom repositories are not verified by APM.');
-  console.log('Only install from sources you trust.');
-  console.log('----------------------------\n');
+  console.log('');
+  console.log(chalk.yellow.bold('--- Security Disclaimer ---'));
+  console.log('');
+  console.log(chalk.white('Custom repositories are ') + chalk.red.bold('not verified') + chalk.white(' by APM.'));
+  console.log(chalk.white('Only install from sources you ') + chalk.green.bold('trust') + chalk.white('.'));
+  console.log('');
 
   return confirm({
     message: 'Do you understand and accept the risks?',
