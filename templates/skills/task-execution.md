@@ -154,7 +154,7 @@ Pause Handling (§3.5 Pause Handling) and Delegation Handling (§3.6 Delegation 
 ### 3.1 Task Assignment Receipt
 
 Perform the following actions:
-1. Verify `agent_id` in YAML frontmatter matches your registered instance. If mismatch, decline per `{COMMAND_PATH:worker-agent-initiation.md}` §5.1 Instance Boundaries.
+1. Verify `agent_id` in YAML frontmatter matches your registered instance. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries.
 2. Parse Task Assignment structure-YAML frontmatter fields and body sections.
 3. Identify execution parameters:
    - `has_dependencies: true` → Context Integration required

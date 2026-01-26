@@ -1,10 +1,10 @@
 {
   "name": "agentic-pm",
-  "version": "0.5.3",
+  "version": "1.0.0",
   "description": "Agentic Project Management CLI",
   "scripts": {
     "build": "npm run build:cli && npm run build:website",
-    "build:cli": "node scripts/build.js",
+    "build:cli": "node build/index.js",
     "build:website": "cd website && npm run build",
     "start:website": "cd website && npm run start",
     "test": "vitest run --reporter=basic",

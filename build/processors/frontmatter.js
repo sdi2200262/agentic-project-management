@@ -7,7 +7,7 @@
  */
 
 import yaml from 'js-yaml';
-import logger from '../../src/logger.js';
+import logger from '../utils/logger.js';
 
 /**
  * Parses YAML frontmatter from markdown content.

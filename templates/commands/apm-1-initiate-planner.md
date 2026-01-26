@@ -1,7 +1,6 @@
 ---
-priority: 1
 command_name: initiate-planner
-description: Initializes a Planner Agent Session and starts the Planning Phase.
+description: Initializes a Planner Agent Session and starts the Planning Phase of an APM project.
 ---
 
 # APM {VERSION} - Planner Agent Initiation Command
