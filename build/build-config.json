@@ -114,6 +114,17 @@
         "commands": ".roo/commands",
         "skills": ".roo/skills"
       }
+    },
+    {
+      "id": "antigravity",
+      "name": "Google Antigravity",
+      "bundleName": "antigravity.zip",
+      "format": "markdown",
+      "configDir": ".agent",
+      "directories": {
+        "commands": ".agent/workflows",
+        "skills": ".agent/skills"
+      }
     }
   ]
 }
