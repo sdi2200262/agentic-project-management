@@ -96,11 +96,31 @@ export async function getRepoSettings(repo) {
   return config.customRepos.find(r => r.repo === repo) || null;
 }
 
+/**
+ * Removes a custom repository from the saved list.
+ *
+ * @param {string} repo - Repository in owner/repo format.
+ * @returns {Promise<boolean>} True if removed, false if not found.
+ */
+export async function removeCustomRepo(repo) {
+  const config = await readConfig();
+  const index = config.customRepos.findIndex(r => r.repo === repo);
+
+  if (index !== -1) {
+    config.customRepos.splice(index, 1);
+    await writeConfig(config);
+    return true;
+  }
+
+  return false;
+}
+
 export default {
   readConfig,
   writeConfig,
   getCustomRepos,
   addCustomRepo,
   updateRepoSettings,
-  getRepoSettings
+  getRepoSettings,
+  removeCustomRepo
 };

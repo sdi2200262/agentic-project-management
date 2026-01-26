@@ -6,12 +6,13 @@
  * @module src/commands/update
  */
 
-import { OFFICIAL_REPO, CLI_VERSION } from '../core/constants.js';
+import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, updateMetadataFields } from '../core/metadata.js';
+import { getRepoSettings } from '../core/config.js';
 import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { selectUpdateSource, selectRelease, confirmAction } from '../ui/prompts.js';
+import { selectUpdateSource, selectRelease, confirmAction, confirmSecurityDisclaimer } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -21,7 +22,7 @@ import logger from '../ui/logger.js';
  * @returns {Promise<void>}
  */
 export async function updateCommand(options = {}) {
-  logger.banner();
+  logger.clearAndBanner();
 
   // Read existing metadata
   const metadata = await readMetadata();
@@ -35,6 +36,7 @@ export async function updateCommand(options = {}) {
 
   let release;
   let repoString;
+  let newSource = metadata.source; // Preserve source type by default
 
   if (metadata.source === 'official') {
     // Official installation: fetch latest v1.x
@@ -49,6 +51,14 @@ export async function updateCommand(options = {}) {
     release = getLatestRelease(releases);
     repoString = `${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`;
 
+    if (!release) {
+      logger.error(`No stable releases found for CLI v${CLI_MAJOR_VERSION}.x`);
+      const availableTags = releases.map(r => r.tag_name).slice(0, 5);
+      logger.info(`Available pre-release versions: ${availableTags.join(', ')}`);
+      logger.info('Use "apm init --tag <tag>" to install a specific pre-release.');
+      return;
+    }
+
     if (release.tag_name === metadata.releaseVersion) {
       logger.success('Already on the latest version!');
       return;
@@ -61,6 +71,7 @@ export async function updateCommand(options = {}) {
 
     if (source === 'official') {
       // Switch to official
+      newSource = 'official';
       logger.info('Fetching releases from official repository...');
 
       const releases = await fetchOfficialReleases();
@@ -71,8 +82,30 @@ export async function updateCommand(options = {}) {
 
       release = getLatestRelease(releases);
       repoString = `${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`;
+
+      if (!release) {
+        logger.error(`No stable releases found for CLI v${CLI_MAJOR_VERSION}.x`);
+        const availableTags = releases.map(r => r.tag_name).slice(0, 5);
+        logger.info(`Available pre-release versions: ${availableTags.join(', ')}`);
+        logger.info('Use "apm init --tag <tag>" to install a specific pre-release.');
+        return;
+      }
     } else {
-      // Update from custom repo
+      // Update from custom repo - keep source as 'custom'
+      newSource = 'custom';
+
+      // Check security disclaimer for custom repo
+      const repoSettings = await getRepoSettings(metadata.repository);
+
+      if (!repoSettings?.skipDisclaimer) {
+        const accepted = await confirmSecurityDisclaimer();
+
+        if (!accepted) {
+          logger.info('Aborted.');
+          return;
+        }
+      }
+
       logger.info(`Fetching releases from ${metadata.repository}...`);
 
       const releases = await fetchCustomReleases(metadata.repository);
@@ -123,7 +156,7 @@ export async function updateCommand(options = {}) {
 
   // Update metadata
   const updatedMetadata = updateMetadataFields(metadata, {
-    source: repoString === `${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}` ? 'official' : 'custom',
+    source: newSource,
     repository: repoString,
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION

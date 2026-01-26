@@ -8,6 +8,7 @@
 
 import { select, input, confirm } from '@inquirer/prompts';
 import chalk from 'chalk';
+import logger from './logger.js';
 
 /**
  * Prompts user to select an assistant from a list.
@@ -19,6 +20,7 @@ import chalk from 'chalk';
  * @returns {Promise<string>} Selected assistant ID.
  */
 export async function selectAssistant(assistants) {
+  logger.clearAndBanner();
   const choices = assistants.map(a => ({
     name: `${a.name} - ${a.description}`,
     value: a.id
@@ -26,7 +28,8 @@ export async function selectAssistant(assistants) {
 
   return select({
     message: 'Select an assistant:',
-    choices
+    choices,
+    clearPromptOnDone: true
   });
 }
 
@@ -39,6 +42,7 @@ export async function selectAssistant(assistants) {
  * @returns {Promise<string>} Selected release tag name.
  */
 export async function selectRelease(releases) {
+  logger.clearAndBanner();
   const choices = releases.map(r => ({
     name: r.name || r.tag_name,
     value: r.tag_name
@@ -46,7 +50,8 @@ export async function selectRelease(releases) {
 
   return select({
     message: 'Select a release:',
-    choices
+    choices,
+    clearPromptOnDone: true
   });
 }
 
@@ -58,6 +63,7 @@ export async function selectRelease(releases) {
  * @returns {Promise<string|null>} Selected repo or null for new repo entry.
  */
 export async function selectCustomRepo(savedRepos) {
+  logger.clearAndBanner();
   const choices = [
     { name: 'Enter a new repository', value: null },
     ...savedRepos.map(r => ({
@@ -68,7 +74,8 @@ export async function selectCustomRepo(savedRepos) {
 
   return select({
     message: 'Select a repository:',
-    choices
+    choices,
+    clearPromptOnDone: true
   });
 }
 
@@ -109,12 +116,14 @@ export async function confirmAction(message, defaultValue = false) {
  * @returns {Promise<string>} Selected source ('official' or 'custom').
  */
 export async function selectUpdateSource() {
+  logger.clearAndBanner();
   return select({
     message: 'Update from:',
     choices: [
       { name: 'Official APM releases', value: 'official' },
       { name: 'Current custom repository', value: 'custom' }
-    ]
+    ],
+    clearPromptOnDone: true
   });
 }
 
@@ -124,7 +133,7 @@ export async function selectUpdateSource() {
  * @returns {Promise<boolean>} Whether user accepted the disclaimer.
  */
 export async function confirmSecurityDisclaimer() {
-  console.log('');
+  logger.clearAndBanner();
   console.log(chalk.yellow.bold('--- Security Disclaimer ---'));
   console.log('');
   console.log(chalk.white('Custom repositories are ') + chalk.red.bold('not verified') + chalk.white(' by APM.'));
