@@ -124,7 +124,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | Term | Definition |
 |------|------------|
 | **Skill** | Agent-facing document containing procedural instructions and operational standards. Located in `skills/<skill-name>/SKILL.md`. |
-| **Command** | User-facing prompt that initiates workflow actions. Located in `<agent-type>-agent/<agent-type>-agent-<action>.md`. |
+| **Command** | User-facing prompt that initiates workflow actions. Located in `commands/apm-<N>-<action>.md`. |
 | **Procedure** | Structured sequence of actions within a Skill or Command. Uses "Perform the following actions:" format with numbered steps. |
 | **Activity** | Named unit of work within a Procedure. Activities are either sequential, executed in order or distinct, independent operations that together comprise the Procedure. |
 

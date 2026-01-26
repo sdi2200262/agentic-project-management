@@ -22,7 +22,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export function validateConfig(config) {
   const errors = [];
 
-  // Validate build section
   if (!config.build) {
     errors.push('Missing "build" section');
   } else {
@@ -34,7 +33,6 @@ export function validateConfig(config) {
     }
   }
 
-  // Validate targets array
   if (!config.targets) {
     errors.push('Missing "targets" array');
   } else if (!Array.isArray(config.targets)) {
@@ -85,12 +83,18 @@ export async function loadConfig() {
 }
 
 /**
- * Reads the version from package.json.
+ * Gets the version for the release manifest.
+ * Uses VERSION env var if set (for CI), otherwise reads from package.json.
  *
- * @returns {Promise<string>} Package version string.
- * @throws {Error} If package.json not found or invalid.
+ * @returns {Promise<string>} Version string.
  */
 export async function getVersion() {
+  // CI passes version via environment variable
+  if (process.env.VERSION) {
+    return process.env.VERSION.replace(/^v/, ''); // Strip leading 'v' if present
+  }
+
+  // Fallback to package.json for local development
   const packagePath = path.join(__dirname, '..', '..', 'package.json');
   const packageContent = await fs.readFile(packagePath, 'utf8');
   const { version } = JSON.parse(packageContent);

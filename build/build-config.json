@@ -2,15 +2,15 @@
   "build": {
     "sourceDir": "templates",
     "outputDir": "dist",
-    "cleanOutput": true,
-    "scaffoldsDir": "_scaffolds"
+    "cleanOutput": true
   },
   "targets": [
     {
       "id": "copilot",
       "name": "GitHub Copilot",
-      "bundleName": "apm-copilot.zip",
+      "bundleName": "copilot.zip",
       "format": "markdown",
+      "configDir": ".github",
       "directories": {
         "commands": ".github/prompts",
         "skills": ".github/skills"
@@ -19,8 +19,9 @@
     {
       "id": "claude",
       "name": "Claude Code",
-      "bundleName": "apm-claude.zip",
+      "bundleName": "claude.zip",
       "format": "markdown",
+      "configDir": ".claude",
       "directories": {
         "commands": ".claude/commands",
         "skills": ".claude/skills"
@@ -29,8 +30,9 @@
     {
       "id": "gemini",
       "name": "Gemini CLI",
-      "bundleName": "apm-gemini.zip",
+      "bundleName": "gemini.zip",
       "format": "toml",
+      "configDir": ".gemini",
       "directories": {
         "commands": ".gemini/commands",
         "skills": ".gemini/skills"
@@ -39,8 +41,9 @@
     {
       "id": "cursor",
       "name": "Cursor",
-      "bundleName": "apm-cursor.zip",
+      "bundleName": "cursor.zip",
       "format": "markdown",
+      "configDir": ".cursor",
       "directories": {
         "commands": ".cursor/commands",
         "skills": ".cursor/skills"
@@ -49,8 +52,9 @@
     {
       "id": "qwen",
       "name": "Qwen Code",
-      "bundleName": "apm-qwen.zip",
+      "bundleName": "qwen.zip",
       "format": "toml",
+      "configDir": ".qwen",
       "directories": {
         "commands": ".qwen/commands",
         "skills": ".qwen/skills"
@@ -59,8 +63,9 @@
     {
       "id": "opencode",
       "name": "opencode",
-      "bundleName": "apm-opencode.zip",
+      "bundleName": "opencode.zip",
       "format": "markdown",
+      "configDir": ".opencode",
       "directories": {
         "commands": ".opencode/command",
         "skills": ".opencode/skills"
@@ -69,8 +74,9 @@
     {
       "id": "windsurf",
       "name": "Windsurf",
-      "bundleName": "apm-windsurf.zip",
+      "bundleName": "windsurf.zip",
       "format": "markdown",
+      "configDir": ".windsurf",
       "directories": {
         "commands": ".windsurf/workflows",
         "skills": ".windsurf/skills"
@@ -79,8 +85,9 @@
     {
       "id": "kilocode",
       "name": "Kilo Code",
-      "bundleName": "apm-kilocode.zip",
+      "bundleName": "kilocode.zip",
       "format": "markdown",
+      "configDir": ".kilocode",
       "directories": {
         "commands": ".kilocode/workflows",
         "skills": ".kilocode/skills"
@@ -89,8 +96,9 @@
     {
       "id": "auggie",
       "name": "Auggie CLI",
-      "bundleName": "apm-auggie.zip",
+      "bundleName": "auggie.zip",
       "format": "markdown",
+      "configDir": ".augment",
       "directories": {
         "commands": ".augment/commands",
         "skills": ".augment/skills"
@@ -99,8 +107,9 @@
     {
       "id": "roo",
       "name": "Roo Code",
-      "bundleName": "apm-roo.zip",
+      "bundleName": "roo.zip",
       "format": "markdown",
+      "configDir": ".roo",
       "directories": {
         "commands": ".roo/commands",
         "skills": ".roo/skills"

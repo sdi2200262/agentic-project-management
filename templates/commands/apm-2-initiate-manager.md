@@ -1,5 +1,4 @@
 ---
-priority: 2
 command_name: initiate-manager
 description: Initializes a Manager Agent to coordinate project execution through Task Assignment, Memory review, and Coordination Artifact maintenance.
 ---

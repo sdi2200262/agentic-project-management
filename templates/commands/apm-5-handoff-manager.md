@@ -1,5 +1,4 @@
 ---
-priority: 5
 command_name: handoff-manager
 description: Initiates and guides the Manager Agent through the Handoff Procedure to transfer coordination context to an Incoming Manager Agent instance.
 ---
