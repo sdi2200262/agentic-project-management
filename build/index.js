@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 import { resolve } from 'path';
 import { loadConfig } from './core/config.js';
 import { buildAll } from './processors/templates.js';
-import logger from '../src/logger.js';
+import logger from './utils/logger.js';
 
 /**
  * Main entry point for the build system.

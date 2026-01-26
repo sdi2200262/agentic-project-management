@@ -117,7 +117,6 @@ Every command file begins with YAML frontmatter.
 
 ```yaml
 ---
-priority: <number>
 command_name: <kebab-case-name>
 description: <one or two sentence description of command purpose>
 ---
@@ -125,15 +124,13 @@ description: <one or two sentence description of command purpose>
 
 **Field Specifications:**
 
-- `priority` (required, integer): Controls sort order in command menu. Lower numbers appear first.
-- `command_name` (required, kebab-case): Command identifier. Used in slash command.
+- `command_name` (required, kebab-case): Command identifier.
 - `description` (required, one or two sentences): Brief statement of command purpose.
 
 **Example:**
 
 ```yaml
 ---
-priority: 2
 command_name: initiate-manager
 description: Initializes a Manager Agent to coordinate project execution.
 ---
@@ -368,14 +365,16 @@ Each format definition includes:
 
 | Component | Convention |
 |-----------|------------|
-| Directory | `<agent-type>-agent/` |
-| File | `<agent-type>-agent-<action>.md` |
+| Directory | `commands/` |
+| File | `apm-<N>-<action>.md` |
+| Prefix | `apm-<N>-` where N is sort order |
 | Names | kebab-case throughout |
 
 **Examples:**
-- `manager-agent/manager-agent-initiation.md`
-- `manager-agent/manager-agent-handoff.md`
-- `worker-agent/worker-agent-initiation.md`
+- `commands/apm-1-initiate-planner.md`
+- `commands/apm-2-initiate-manager.md`
+- `commands/apm-3-initiate-worker.md`
+- `commands/apm-5-handoff-manager.md`
 
 ---
 

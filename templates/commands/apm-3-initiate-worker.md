@@ -1,5 +1,4 @@
 ---
-priority: 3
 command_name: initiate-worker
 description: Initializes a Worker Agent to execute Tasks assigned by the Manager Agent through Task Assignment Prompts.
 ---

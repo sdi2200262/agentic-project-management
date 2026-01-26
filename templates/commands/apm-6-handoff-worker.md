@@ -1,5 +1,4 @@
 ---
-priority: 6
 command_name: handoff-worker
 description: Initiates and guides a Worker Agent through the Handoff Procedure to transfer execution context to an Incoming Worker Agent instance.
 ---

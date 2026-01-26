@@ -14,8 +14,8 @@ import path from 'path';
  * Supported placeholders:
  * - {VERSION}: Package version
  * - {TIMESTAMP}: ISO timestamp
- * - {SKILL_PATH:path}: Path to skill file
- * - {COMMAND_PATH:filename}: Path to command file
+ * - {SKILL_PATH:name}: Full path to skill file (<name>/SKILL.md)
+ * - {COMMAND_PATH:name}: Full path to command file (resolves extension per target)
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
  * - {AGENTS_FILE}: Platform-specific agents file name
  * - {SKILLS_DIR}: Platform-specific skills directory
@@ -24,7 +24,6 @@ import path from 'path';
  * @param {Object} context - Replacement context.
  * @param {string} context.version - Version string.
  * @param {Object} context.target - Target configuration object.
- * @param {Object} context.commandFileMap - Map of command filenames.
  * @param {Date} [context.now] - Timestamp for replacement.
  * @returns {string} Content with placeholders replaced.
  */
@@ -32,7 +31,6 @@ export function replacePlaceholders(content, context) {
   const {
     version,
     target,
-    commandFileMap = {},
     now = new Date()
   } = context;
 
@@ -42,16 +40,16 @@ export function replacePlaceholders(content, context) {
     .replace(/{VERSION}/g, version)
     .replace(/{TIMESTAMP}/g, now.toISOString());
 
-  // Replace SKILL_PATH placeholder
-  replaced = replaced.replace(/{SKILL_PATH:([^}]+)}/g, (_match, skillPath) => {
-    return path.join(directories.skills, skillPath);
+  // Replace SKILL_PATH placeholder (skills are in <name>/SKILL.md structure)
+  replaced = replaced.replace(/{SKILL_PATH:([^}]+)}/g, (_match, skillName) => {
+    return path.join(directories.skills, skillName, 'SKILL.md');
   });
 
-  // Replace COMMAND_PATH placeholder
-  replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, filename) => {
-    const base = path.basename(filename, path.extname(filename));
-    const resolved = commandFileMap[base] || commandFileMap[filename] || filename;
-    return path.join(directories.commands, resolved);
+  // Replace COMMAND_PATH placeholder (resolves to full path with target-specific extension)
+  const commandExt = getOutputExtension(target);
+  replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, commandName) => {
+    const base = path.basename(commandName, path.extname(commandName));
+    return path.join(directories.commands, `${base}${commandExt}`);
   });
 
   // Replace ARGS placeholder based on format

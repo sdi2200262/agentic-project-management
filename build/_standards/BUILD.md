@@ -1,328 +1,240 @@
 # Build System Standards
 
-This document defines the architecture, patterns, and conventions for the APM build system.
+Coding standards and patterns for the APM build pipeline.
 
----
+## Module Structure
 
-## 1. Architecture Overview
+### Pure Functions
 
-```
-build/
-├── index.js                    # Entry point
-├── build-config.json           # Build configuration
-├── _standards/
-│   └── BUILD.md               # This document
-│
-├── core/
-│   ├── config.js              # Config loading + validation
-│   ├── errors.js              # BuildError class hierarchy
-│   └── constants.js           # MANIFEST_VERSION, SCAFFOLD_MAPPINGS
-│
-├── processors/
-│   ├── frontmatter.js         # YAML frontmatter parsing
-│   ├── placeholders.js        # Placeholder replacement
-│   └── templates.js           # Template orchestration
-│
-├── generators/
-│   ├── manifest.js            # Bundle/release manifest generation
-│   └── archive.js             # ZIP creation
-│
-└── utils/
-    └── files.js               # File discovery utilities
-```
+Prefer pure functions with explicit dependencies:
 
----
-
-## 2. Module Specifications
-
-### 2.1 Entry Point (`index.js`)
-
-Minimal entry point that:
-- Loads configuration via `loadConfig()`
-- Delegates to `buildAll()` for processing
-- Handles top-level errors with proper exit codes
-
-### 2.2 Core Modules
-
-#### `core/config.js`
-
-| Export | Description |
-|--------|-------------|
-| `loadConfig()` | Load and validate build-config.json |
-| `validateConfig(config)` | Schema validation returning error array |
-| `getVersion()` | Read version from package.json |
-
-#### `core/errors.js`
-
-| Export | Description |
-|--------|-------------|
-| `BuildErrorCode` | Enum of error codes |
-| `BuildError` | Base error class with static factory methods |
-
-Factory methods:
-- `configNotFound(path)` - Config file missing
-- `configInvalid(errors)` - Config validation failed
-- `configMissingField(field)` - Required field missing
-- `templateParseFailed(file, reason)` - YAML parse error
-- `templateMissingField(file, field)` - Required frontmatter missing
-- `duplicateCommand(name, files)` - Duplicate command_name detected
-- `archiveFailed(target, reason)` - ZIP creation failed
-
-#### `core/constants.js`
-
-| Export | Description |
-|--------|-------------|
-| `MANIFEST_VERSION` | Current manifest version string |
-| `SCAFFOLD_MAPPINGS` | Map of scaffold files to destination paths |
-
-### 2.3 Processor Modules
-
-#### `processors/frontmatter.js`
-
-| Export | Description |
-|--------|-------------|
-| `parseFrontmatter(content)` | Extract YAML frontmatter, returns `{frontmatter, content}` |
-| `validateFrontmatter(frontmatter, filePath)` | Validate required fields |
-
-#### `processors/placeholders.js`
-
-| Export | Description |
-|--------|-------------|
-| `replacePlaceholders(content, context)` | Replace all placeholders |
-| `getOutputExtension(target)` | Determine output file extension |
-
-Context object:
 ```javascript
-{
-  version: string,
-  target: Object,
-  commandFileMap: Object,
-  now?: Date
+// Good: Pure function with explicit inputs
+export function generateReleaseManifest(config, version) {
+  return {
+    version,
+    assistants: config.targets.map(t => ({ ... }))
+  };
+}
+
+// Avoid: Side effects or implicit dependencies
+export function generateManifest() {
+  const config = loadConfig(); // Implicit dependency
+  writeFile(...);              // Side effect
 }
 ```
 
-#### `processors/templates.js`
+### Single Responsibility
 
-| Export | Description |
-|--------|-------------|
-| `buildAll(config)` | Main orchestration function |
+Each module handles one concern:
 
-Internal functions:
-- `buildTarget(target, config, version)` - Build single target
-- `processTemplate(templatePath, options)` - Process single template
-- `buildCommandFileMap(templateFiles, target)` - Pre-compute command filenames
-- `sanitizeCommandName(name)` - Sanitize command name for filenames
+- `build/core/config.js` - Configuration loading and validation
+- `build/core/errors.js` - Error classes and codes
+- `build/generators/manifest.js` - Manifest generation
+- `build/generators/archive.js` - ZIP creation
+- `build/processors/templates.js` - Template orchestration
+- `build/processors/frontmatter.js` - YAML parsing
+- `build/processors/placeholders.js` - Placeholder replacement
+- `build/utils/files.js` - File discovery utilities
+- `build/utils/logger.js` - Build logging
 
-### 2.4 Generator Modules
+### Export Patterns
 
-#### `generators/manifest.js`
-
-| Export | Description |
-|--------|-------------|
-| `generateBundleManifest(target)` | Generate per-bundle manifest |
-| `generateReleaseManifest(config, version)` | Generate release manifest |
-
-#### `generators/archive.js`
-
-| Export | Description |
-|--------|-------------|
-| `createZipArchive(sourceDir, outputPath)` | Create ZIP archive |
-
-### 2.5 Utility Modules
-
-#### `utils/files.js`
-
-| Export | Description |
-|--------|-------------|
-| `findMdFiles(sourceDir)` | Recursively find markdown templates |
-| `copyScaffolds(source, dest)` | Copy scaffold files |
-
----
-
-## 3. Coding Standards
-
-### 3.1 JSDoc
-
-All exported functions must have JSDoc comments:
+Named exports for functions, with optional default export aggregating all exports:
 
 ```javascript
-/**
- * Brief description of the function.
- *
- * @param {Type} paramName - Parameter description.
- * @returns {ReturnType} Return value description.
- * @throws {ErrorType} When this error occurs.
- */
+// Named exports for module functions
+export function parseFrontmatter(content) { ... }
+export function validateFrontmatter(frontmatter) { ... }
+
+// Optional default export for convenience
+export default { parseFrontmatter, validateFrontmatter };
 ```
 
-### 3.2 Error Handling
+## Error Handling
 
-- Use `BuildError` class with appropriate error codes
-- Use static factory methods for common error types
-- Include context object with relevant data
-- Let errors propagate to entry point for logging
+### BuildError Class
 
-### 3.3 Logging
-
-Use the shared logger from `src/logger.js`:
+Use the `BuildError` class with error codes:
 
 ```javascript
-import logger from '../src/logger.js';
+import { BuildError } from '../core/errors.js';
 
-logger.info('Informational message');
-logger.success('Success message');
-logger.warn('Warning message');
-logger.error('Error message');
-logger.debug('Debug message');  // Only shown when DEBUG=true
+// Factory methods for consistent errors
+throw BuildError.configNotFound(path);
+throw BuildError.templateParseFailed(file, reason);
+throw BuildError.archiveFailed(target, reason);
 ```
 
-### 3.4 Naming Conventions
+### Error Codes
 
-- **Files**: `kebab-case.js`
-- **Functions**: `camelCase`
-- **Constants**: `SCREAMING_SNAKE_CASE`
-- **Classes**: `PascalCase`
-- **Error codes**: `SCREAMING_SNAKE_CASE`
+Use semantic error codes from `BuildErrorCode`:
 
+- `CONFIG_NOT_FOUND` - Missing configuration file
+- `CONFIG_INVALID` - Malformed configuration
+- `CONFIG_MISSING_FIELD` - Missing required config field
+- `TEMPLATE_PARSE_FAILED` - Template parsing error
+- `TEMPLATE_MISSING_FIELD` - Missing required frontmatter field
+- `TEMPLATE_READ_FAILED` - Template file read error
+- `DUPLICATE_COMMAND` - Duplicate command_name detected
+- `ARCHIVE_FAILED` - ZIP creation failure
+- `WRITE_FAILED` - File write error
+
+### Fail Fast
+
+Validate inputs early, fail with clear messages:
+
+```javascript
+async function buildTarget(target, config) {
+  if (!target.directories) {
+    throw BuildError.configMissingField('directories');
+  }
+  // Continue with build...
+}
+```
+
+## Template Processing
+
+### Directory Structure
+
+Source templates in `templates/` (no dot prefixes):
+
+```
+templates/
+  apm/              # Copied to .apm/ in bundles
+  commands/         # Processed per target
+  skills/           # Processed per target
+  _standards/       # Not copied (build-time only)
+```
+
+### Output Structure
+
+Each bundle contains (with dot prefixes):
+
+```
+{id}.zip/
+  .apm/
+    Implementation_Plan.md
+    Specifications.md
+    Memory/
+      Memory_Root.md
+  {configDir}/
+    commands/
+      apm-1-initiate-planner.md
+      ...
+    skills/
+      task-execution/
+        SKILL.md
+      memory-logging/
+        SKILL.md
+      ...
+```
+
+Skills output as `<skill-name>/SKILL.md` directories, not flat files.
+
+### Command Naming
+
+Commands are named directly in source files:
+
+```
+templates/commands/
+  apm-1-initiate-planner.md
+  apm-2-initiate-manager.md
+  apm-3-initiate-worker.md
+  ...
+```
+
+Output filename matches source (extension changes for TOML targets).
+
+### Frontmatter
+
+Commands keep minimal frontmatter for TOML description:
+
+```yaml
 ---
+command_name: initiate-manager
+description: Initializes a Manager Agent...
+---
+```
 
-## 4. Configuration Schema
+- `command_name` - Used for logging/reference
+- `description` - Used in TOML output format
 
-### `build-config.json`
+### Placeholder Replacement
+
+Supported placeholders:
+
+- `{VERSION}` - Package version
+- `{TIMESTAMP}` - ISO timestamp
+- `{SKILL_PATH:path}` - Full skill path
+- `{COMMAND_PATH:filename}` - Full command path
+- `{ARGS}` - Platform-specific args syntax
+- `{AGENTS_FILE}` - Platform-specific filename
+- `{SKILLS_DIR}` - Platform-specific skills directory
+
+## Archive Generation
+
+### ZIP Structure
+
+Archives are created directly from the build directory:
+
+```javascript
+await createZipArchive(targetBuildDir, zipPath);
+```
+
+### Release Manifest
+
+`apm-release.json` schema:
 
 ```json
 {
-  "build": {
-    "sourceDir": "templates",      // Required: Source templates directory
-    "outputDir": "dist",           // Required: Output directory
-    "cleanOutput": true,           // Optional: Clean output before build
-    "scaffoldsDir": "_scaffolds"   // Optional: Scaffolds subdirectory
-  },
-  "targets": [
+  "version": "1.0.0",
+  "assistants": [
     {
-      "id": "claude",              // Required: Unique target identifier
-      "name": "Claude Code",       // Required: Display name
-      "bundleName": "apm-claude.zip", // Required: Output bundle filename
-      "format": "markdown",        // Required: "markdown" or "toml"
-      "directories": {
-        "commands": ".claude/commands", // Required: Commands directory
-        "skills": ".claude/skills"      // Required: Skills directory
-      }
+      "id": "claude",
+      "name": "Claude Code",
+      "bundle": "claude.zip",
+      "description": "Optimized for Claude Code",
+      "configDir": ".claude"
     }
   ]
 }
 ```
 
----
+## Logging
 
-## 5. Build Pipeline
+Use the build logger module (not CLI logger):
 
-### Step 1: Configuration
+```javascript
+import logger from '../utils/logger.js';
 
-1. Load `build-config.json`
-2. Validate against schema
-3. Read version from `package.json`
-
-### Step 2: Setup
-
-1. Clean or create output directory
-2. Find all markdown templates in source directory
-
-### Step 3: Per-Target Processing
-
-For each target:
-
-1. Create target build directory structure
-2. Build command filename map (detects duplicates)
-3. Process each template:
-   - Parse frontmatter
-   - Replace placeholders
-   - Determine output path and extension
-   - Write processed content
-4. Copy scaffolds
-5. Generate bundle manifest
-6. Create ZIP archive
-7. Clean up build directory
-
-### Step 4: Finalization
-
-1. Generate release manifest
-2. Log completion status
-
----
-
-## 6. Placeholder Reference
-
-| Placeholder | Description | Example Output |
-|------------|-------------|----------------|
-| `{VERSION}` | Package version | `0.5.3` |
-| `{TIMESTAMP}` | ISO timestamp | `2024-01-15T10:30:00.000Z` |
-| `{SKILL_PATH:file}` | Path to skill file | `.claude/skills/file` |
-| `{COMMAND_PATH:file}` | Path to command file | `.claude/commands/apm-default-file.md` |
-| `{ARGS}` | Arguments placeholder | `$ARGUMENTS` (md) or `{{args}}` (toml) |
-| `{AGENTS_FILE}` | Agents file name | `CLAUDE.md` or `AGENTS.md` |
-| `{SKILLS_DIR}` | Skills directory | `.claude/skills` |
-
----
-
-## 7. Template Frontmatter
-
-### Command Templates
-
-```yaml
----
-command_name: my-command
-description: Command description
-priority: default
----
+logger.info('Processing target...');
+logger.success('Build completed');
+logger.warn('Missing optional field');
+logger.error('Build failed');
 ```
 
-- `command_name`: Required for commands, determines output filename
-- `description`: Used in TOML format output
-- `priority`: Prefix for filename (default: `default`)
+## Configuration
 
-### Skill Templates
+### build-config.json
 
-Skill templates have no required frontmatter fields. They are identified by the absence of `command_name`.
+Required fields per target:
 
----
-
-## 8. Output Formats
-
-### Markdown (Claude, Copilot, Cursor, etc.)
-
-Commands retain frontmatter with placeholders replaced.
-
-### TOML (Gemini, Qwen)
-
-Commands are converted to TOML format:
-
-```toml
-description = "Command description"
-
-prompt = """
-[body content with placeholders replaced]
-"""
+```json
+{
+  "id": "claude",
+  "name": "Claude Code",
+  "bundleName": "claude.zip",
+  "format": "markdown",
+  "configDir": ".claude",
+  "directories": {
+    "commands": ".claude/commands",
+    "skills": ".claude/skills"
+  }
+}
 ```
 
-### Copilot Extension
+### Format Types
 
-Copilot commands use `.prompt.md` extension instead of `.md`.
-
----
-
-## 9. Testing
-
-### Manual Verification
-
-1. Run build: `node build/index.js`
-2. Check output: Verify `dist/` contains all ZIP bundles
-3. Validate bundles: Extract and verify manifest + file structure
-4. Test placeholders: Verify all placeholders are replaced correctly
-5. Test error handling:
-   - Remove config file → should show clear error
-   - Add duplicate command_name → should detect and report
-
-### Comparing Outputs
-
-When making changes, compare new build output against previous build to ensure no regressions.
+- `markdown` - Standard markdown output
+- `toml` - TOML format with `description` and `prompt` fields

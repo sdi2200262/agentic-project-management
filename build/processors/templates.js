@@ -8,71 +8,25 @@
 
 import fs from 'fs-extra';
 import path from 'path';
-import logger from '../../src/logger.js';
-import { findMdFiles, copyScaffolds } from '../utils/files.js';
+import logger from '../utils/logger.js';
+import { findMdFiles } from '../utils/files.js';
 import { parseFrontmatter } from './frontmatter.js';
 import { replacePlaceholders, getOutputExtension } from './placeholders.js';
-import { generateBundleManifest, generateReleaseManifest } from '../generators/manifest.js';
+import { generateReleaseManifest } from '../generators/manifest.js';
 import { createZipArchive } from '../generators/archive.js';
 import { getVersion } from '../core/config.js';
 import { BuildError } from '../core/errors.js';
 
 /**
- * Sanitizes a command name for use in filenames.
+ * Determines if a template file is a command based on its source directory.
  *
- * @param {string} name - Command name to sanitize.
- * @returns {string} Sanitized command name.
+ * @param {string} templatePath - Path to template file.
+ * @param {string} sourceDir - Source templates directory.
+ * @returns {boolean} True if file is in commands/ directory.
  */
-function sanitizeCommandName(name) {
-  return String(name || '').replace(/[^a-zA-Z0-9-_]/g, '-');
-}
-
-/**
- * Builds command filename map for COMMAND_PATH placeholder resolution.
- *
- * @param {string[]} templateFiles - Array of template file paths.
- * @param {Object} target - Target configuration.
- * @returns {Promise<Object>} Map of original filename to built filename.
- */
-async function buildCommandFileMap(templateFiles, target) {
-  const commandFileMap = {};
-  const commandNames = new Map(); // Track command_name -> files for duplicate detection
-
-  for (const templatePath of templateFiles) {
-    const content = await fs.readFile(templatePath, 'utf8');
-    const { frontmatter } = parseFrontmatter(content);
-
-    if (frontmatter.command_name === undefined) {
-      continue;
-    }
-
-    const commandName = frontmatter.command_name;
-
-    // Track for duplicate detection
-    if (!commandNames.has(commandName)) {
-      commandNames.set(commandName, []);
-    }
-    commandNames.get(commandName).push(templatePath);
-
-    const originalBase = path.basename(templatePath, '.md');
-    const priority = frontmatter.priority || 'default';
-    const sanitizedCommandName = sanitizeCommandName(commandName);
-    const fullCommandName = `apm-${priority}-${sanitizedCommandName}`;
-    const finalExt = getOutputExtension(target);
-    const finalFilename = `${fullCommandName}${finalExt}`;
-
-    commandFileMap[originalBase] = finalFilename;
-    commandFileMap[`${originalBase}.md`] = finalFilename;
-  }
-
-  // Check for duplicates
-  for (const [name, files] of commandNames) {
-    if (files.length > 1) {
-      throw BuildError.duplicateCommand(name, files);
-    }
-  }
-
-  return commandFileMap;
+function isCommandTemplate(templatePath, sourceDir) {
+  const relativePath = path.relative(sourceDir, templatePath);
+  return relativePath.startsWith('commands' + path.sep);
 }
 
 /**
@@ -80,38 +34,28 @@ async function buildCommandFileMap(templateFiles, target) {
  *
  * @param {string} templatePath - Path to template file.
  * @param {Object} options - Processing options.
- * @param {Object} options.target - Target configuration.
- * @param {string} options.version - Version string.
- * @param {Object} options.commandFileMap - Command filename map.
- * @param {string} options.commandsDir - Output commands directory.
- * @param {string} options.skillsDir - Output skills directory.
- * @param {string} options.targetBuildDir - Target build directory.
  * @returns {Promise<void>}
  */
 async function processTemplate(templatePath, options) {
-  const { target, version, commandFileMap, commandsDir, skillsDir, targetBuildDir } = options;
+  const { target, version, commandsDir, skillsDir, targetBuildDir, sourceDir } = options;
 
   const content = await fs.readFile(templatePath, 'utf8');
   const { frontmatter, content: body } = parseFrontmatter(content);
 
-  const isCommand = frontmatter.command_name !== undefined;
+  const isCommand = isCommandTemplate(templatePath, sourceDir);
   const category = isCommand ? 'command' : 'skill';
 
-  const context = { version, target, commandFileMap };
+  const context = { version, target };
   const processedBody = replacePlaceholders(body, context);
   const processedFull = replacePlaceholders(content, context);
 
-  const originalFilename = path.basename(templatePath, '.md');
+  const basename = path.basename(templatePath, '.md');
+  const ext = getOutputExtension(target);
   let outputFilename;
   let finalContent;
 
-  if (isCommand && frontmatter.command_name) {
-    const priority = frontmatter.priority || 'default';
-    const sanitizedCommandName = sanitizeCommandName(frontmatter.command_name);
-    const fullCommandName = `apm-${priority}-${sanitizedCommandName}`;
-    const ext = getOutputExtension(target);
-
-    outputFilename = `${fullCommandName}${ext}`;
+  if (isCommand) {
+    outputFilename = `${basename}${ext}`;
 
     if (target.format === 'toml') {
       const description = frontmatter.description || 'APM command';
@@ -120,15 +64,39 @@ async function processTemplate(templatePath, options) {
       finalContent = processedFull;
     }
   } else {
-    outputFilename = `${originalFilename}.md`;
+    // Skills output to <skillName>/SKILL.md
     finalContent = processedFull;
   }
 
-  const outputDirPath = isCommand ? commandsDir : skillsDir;
-  const outputPath = path.join(outputDirPath, outputFilename);
+  let outputPath;
+  if (isCommand) {
+    outputPath = path.join(commandsDir, `${basename}${ext}`);
+  } else {
+    // Skills: create subdirectory and write SKILL.md
+    const skillDir = path.join(skillsDir, basename);
+    await fs.ensureDir(skillDir);
+    outputPath = path.join(skillDir, 'SKILL.md');
+  }
 
   await fs.writeFile(outputPath, finalContent);
-  logger.info(`${category}: ${originalFilename}.md → ${path.relative(targetBuildDir, outputPath)}`);
+  logger.info(`${category}: ${basename}.md → ${path.relative(targetBuildDir, outputPath)}`);
+}
+
+/**
+ * Copies apm/ directory to .apm/ in target build directory.
+ *
+ * @param {string} sourceDir - Source templates directory.
+ * @param {string} targetBuildDir - Target build directory.
+ * @returns {Promise<void>}
+ */
+async function copyApmDirectory(sourceDir, targetBuildDir) {
+  const apmSource = path.join(sourceDir, 'apm');
+  const apmDest = path.join(targetBuildDir, '.apm');
+
+  if (await fs.pathExists(apmSource)) {
+    await fs.copy(apmSource, apmDest);
+    logger.info(`Copied apm/ → .apm/`);
+  }
 }
 
 /**
@@ -141,51 +109,35 @@ async function processTemplate(templatePath, options) {
  */
 async function buildTarget(target, config, version) {
   const { build: buildConfig } = config;
-  const { outputDir, scaffoldsDir } = buildConfig;
+  const { outputDir, sourceDir } = buildConfig;
 
   const targetBuildDir = path.join(outputDir, `${target.id}-build`);
-  const commandsDir = path.join(targetBuildDir, 'commands');
-  const skillsDir = path.join(targetBuildDir, 'skills');
-  const scaffoldsBuildDir = path.join(targetBuildDir, 'scaffolds');
+  const commandsDir = path.join(targetBuildDir, target.directories.commands);
+  const skillsDir = path.join(targetBuildDir, target.directories.skills);
 
   logger.info(`\nProcessing target: ${target.name} (${target.id})`);
 
   await fs.ensureDir(commandsDir);
   await fs.ensureDir(skillsDir);
-  await fs.ensureDir(scaffoldsBuildDir);
 
-  const templateFiles = await findMdFiles(buildConfig.sourceDir);
+  // Copy apm/ → .apm/ (common to all targets)
+  await copyApmDirectory(sourceDir, targetBuildDir);
+
+  // Find template files (excludes _standards/ and apm/)
+  const templateFiles = await findMdFiles(sourceDir);
   logger.info(`Found ${templateFiles.length} template files`);
-
-  // Pre-compute command filename mapping (also detects duplicates)
-  const commandFileMap = await buildCommandFileMap(templateFiles, target);
 
   // Process all templates
   for (const templatePath of templateFiles) {
     await processTemplate(templatePath, {
       target,
       version,
-      commandFileMap,
       commandsDir,
       skillsDir,
-      targetBuildDir
+      targetBuildDir,
+      sourceDir
     });
   }
-
-  // Copy scaffolds into bundle
-  if (scaffoldsDir) {
-    const scaffoldsSourceDir = path.join(buildConfig.sourceDir, scaffoldsDir);
-    await copyScaffolds(scaffoldsSourceDir, scaffoldsBuildDir);
-    if (await fs.pathExists(scaffoldsSourceDir)) {
-      logger.info(`Copied scaffolds to bundle`);
-    }
-  }
-
-  // Write bundle manifest
-  const bundleManifest = generateBundleManifest(target);
-  const bundleManifestPath = path.join(targetBuildDir, 'apm-bundle-manifest.json');
-  await fs.writeFile(bundleManifestPath, JSON.stringify(bundleManifest, null, 2));
-  logger.info(`Generated apm-bundle-manifest.json`);
 
   logger.success(`Completed target: ${target.name}`);
 
@@ -229,9 +181,9 @@ export async function buildAll(config) {
 
   // Write release manifest
   const releaseManifest = generateReleaseManifest(config, version);
-  const releaseManifestPath = path.join(outputDir, 'apm-release-manifest.json');
+  const releaseManifestPath = path.join(outputDir, 'apm-release.json');
   await fs.writeFile(releaseManifestPath, JSON.stringify(releaseManifest, null, 2));
-  logger.success(`Generated apm-release-manifest.json`);
+  logger.success(`Generated apm-release.json`);
 
   logger.success('\nBuild completed successfully!');
 }

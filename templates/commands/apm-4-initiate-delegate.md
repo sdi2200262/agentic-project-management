@@ -1,7 +1,6 @@
 ---
-priority: 4
 command_name: initiate-delegate
-description: Initializes a Delegate Agent to execute isolated, focused work delegated by Worker Agents or the Manager Agent.
+description: Initializes a Delegate Agent to execute isolated, focused work delegated by Worker Agents or the Manager Agent through Delegation Prompts.
 ---
 
 # APM {VERSION} - Delegate Agent Initiation Command
