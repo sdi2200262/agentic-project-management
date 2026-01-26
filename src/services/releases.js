@@ -13,19 +13,32 @@ import { validateReleaseManifest } from '../schemas/release.js';
 
 /**
  * Parses semantic version from tag string.
+ * Supports pre-release suffixes (e.g., 'v1.0.0-test-1').
  *
- * @param {string} tag - Version tag (e.g., 'v1.2.3').
- * @returns {Object|null} Parsed version { major, minor, patch } or null.
+ * @param {string} tag - Version tag (e.g., 'v1.2.3' or 'v1.2.3-beta-1').
+ * @returns {Object|null} Parsed version { major, minor, patch, prerelease } or null.
  */
 function parseVersion(tag) {
-  const match = tag.match(/^v?(\d+)\.(\d+)\.(\d+)/);
+  const match = tag.match(/^v?(\d+)\.(\d+)\.(\d+)(?:-(.+))?$/);
   if (!match) return null;
 
   return {
     major: parseInt(match[1], 10),
     minor: parseInt(match[2], 10),
-    patch: parseInt(match[3], 10)
+    patch: parseInt(match[3], 10),
+    prerelease: match[4] || null
   };
+}
+
+/**
+ * Checks if a release is stable (no pre-release suffix).
+ *
+ * @param {Object} release - Release object from GitHub API.
+ * @returns {boolean} True if stable release.
+ */
+function isStableRelease(release) {
+  const version = parseVersion(release.tag_name);
+  return version && !version.prerelease;
 }
 
 /**
@@ -54,15 +67,17 @@ export function filterByMajorVersion(releases, major) {
 }
 
 /**
- * Gets the latest release from an array.
+ * Gets the latest stable release from an array.
+ * Pre-release versions (e.g., v1.0.0-test-1) are excluded.
  *
  * @param {Object[]} releases - Array of release objects.
- * @returns {Object|null} Latest release or null if empty.
+ * @returns {Object|null} Latest stable release or null if none.
  */
 export function getLatestRelease(releases) {
-  if (!releases.length) return null;
+  const stableReleases = releases.filter(isStableRelease);
+  if (!stableReleases.length) return null;
 
-  return releases.reduce((latest, release) => {
+  return stableReleases.reduce((latest, release) => {
     const latestVersion = parseVersion(latest.tag_name);
     const currentVersion = parseVersion(release.tag_name);
 
