@@ -112,6 +112,30 @@ export function blank() {
 }
 
 /**
+ * Displays the APM ASCII banner.
+ */
+export function banner() {
+  const colorA = chalk.white;
+  const colorP = chalk.cyan;
+  const colorM = chalk.cyan;
+
+  const lines = [
+    '',
+    '                         ' + colorA('█████╗') + ' ' + colorP('██████╗') + ' ' + colorM('███╗   ███╗'),
+    '                        ' + colorA('██╔══██╗') + colorP('██╔══██╗') + colorM('████╗ ████║'),
+    '                     ' + colorP('█████████████████╔╝') + colorM('██╔████╔██║'),
+    '                     ' + colorP('╚══') + colorA('██') + colorP('═══') + colorA('██') + colorP('═██╔═══╝ ') + colorM('██║╚██╔╝██║'),
+    '                        ' + colorA('██║  ██║') + colorP('██║     ') + colorM('██║ ╚═╝ ██║'),
+    '                        ' + colorA('╚═╝  ╚═╝') + colorP('╚═╝     ') + colorM('╚═╝     ╚═╝'),
+    '',
+    chalk.gray('Manage complex projects with a team of AI assistants, smoothly and efficiently.'),
+    ''
+  ];
+
+  lines.forEach(line => console.log(line));
+}
+
+/**
  * Logs a horizontal line separator.
  *
  * @param {number} [length=50] - Length of the line.
@@ -129,5 +153,6 @@ export default {
   dim,
   blank,
   line,
+  banner,
   chalk
 };

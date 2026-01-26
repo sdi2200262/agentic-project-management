@@ -26,6 +26,8 @@ import logger from '../ui/logger.js';
 export async function initCommand(options = {}) {
   const { tag, assistant: assistantArg, force = false } = options;
 
+  logger.banner();
+
   // Check if already initialized
   if (!force && await isInitialized()) {
     logger.warn('APM is already initialized in this directory.');
