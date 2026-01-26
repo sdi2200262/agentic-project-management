@@ -6,9 +6,9 @@
  * @module src/commands/init
  */
 
-import { OFFICIAL_REPO, CLI_VERSION } from '../core/constants.js';
+import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
-import { createMetadata, writeMetadata, isInitialized } from '../core/metadata.js';
+import { createMetadata, writeMetadata, isInitialized, readMetadata } from '../core/metadata.js';
 import { fetchOfficialReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { selectAssistant, confirmAction } from '../ui/prompts.js';
@@ -26,7 +26,7 @@ import logger from '../ui/logger.js';
 export async function initCommand(options = {}) {
   const { tag, assistant: assistantArg, force = false } = options;
 
-  logger.banner();
+  logger.clearAndBanner();
 
   // Check if already initialized
   if (!force && await isInitialized()) {
@@ -57,6 +57,13 @@ export async function initCommand(options = {}) {
     logger.info(`Using release: ${release.tag_name}`);
   } else {
     release = getLatestRelease(releases);
+    if (!release) {
+      logger.error(`No stable releases found for CLI v${CLI_MAJOR_VERSION}.x`);
+      const availableTags = releases.map(r => r.tag_name).slice(0, 5);
+      logger.info(`Available pre-release versions: ${availableTags.join(', ')}`);
+      logger.info('To install a pre-release, use: apm init --tag <tag>');
+      return;
+    }
     logger.info(`Latest release: ${release.tag_name}`);
   }
 
@@ -67,6 +74,7 @@ export async function initCommand(options = {}) {
 
   // Select assistant
   let assistantId;
+  let hadInteractivePrompt = false;
   if (assistantArg) {
     const found = manifest.assistants.find(a => a.id === assistantArg);
     if (!found) {
@@ -76,34 +84,69 @@ export async function initCommand(options = {}) {
     assistantId = assistantArg;
     logger.info(`Using assistant: ${found.name}`);
   } else {
+    hadInteractivePrompt = true;
     assistantId = await selectAssistant(manifest.assistants);
   }
   const assistant = manifest.assistants.find(a => a.id === assistantId);
 
-  // Find bundle asset
+  // Find bundle asset for new assistant
   const bundleAsset = findBundleAsset(release, assistant.bundle);
 
   if (!bundleAsset) {
     throw CLIError.bundleNotFound(assistant.bundle, release.tag_name);
   }
 
-  // Download and extract (skip .apm/ if it already exists)
-  logger.info(`Downloading ${assistant.bundle}...`);
-  const apmExists = await isInitialized();
-  await downloadAndExtract(bundleAsset.browser_download_url, process.cwd(), { skipApm: apmExists });
-  logger.success(`Extracted to current directory`);
+  // Check for existing installation to update existing assistants
+  const existingMetadata = await readMetadata();
+  const existingAssistants = existingMetadata?.assistants || [];
 
-  // Write metadata
+  // Combine assistants (new + existing, avoiding duplicates)
+  const allAssistantIds = [...new Set([assistantId, ...existingAssistants])];
+
+  // Clear and show final progress (only if we had interactive prompts)
+  if (hadInteractivePrompt) {
+    logger.clearAndBanner();
+    logger.info(`Release: ${release.tag_name}`);
+    logger.info(`Assistant: ${assistant.name}`);
+    if (existingAssistants.length > 0 && !existingAssistants.includes(assistantId)) {
+      logger.info(`Updating existing: ${existingAssistants.join(', ')}`);
+    }
+    logger.blank();
+  }
+
+  // Download and update all assistants to the same release version
+  let apmExtracted = await isInitialized();
+  for (const aid of allAssistantIds) {
+    const assistantInfo = manifest.assistants.find(a => a.id === aid);
+    if (!assistantInfo) {
+      logger.warn(`Assistant '${aid}' not found in release, skipping`);
+      continue;
+    }
+
+    const asset = findBundleAsset(release, assistantInfo.bundle);
+    if (!asset) {
+      logger.warn(`Bundle '${assistantInfo.bundle}' not found in release, skipping`);
+      continue;
+    }
+
+    const isNew = aid === assistantId;
+    logger.info(`${isNew ? 'Downloading' : 'Updating'} ${assistantInfo.bundle}...`);
+    await downloadAndExtract(asset.browser_download_url, process.cwd(), { skipApm: apmExtracted });
+    apmExtracted = true; // After first extraction, skip .apm/ for subsequent ones
+    logger.success(`${isNew ? 'Installed' : 'Updated'} ${assistantInfo.name}`);
+  }
+
+  // Write metadata with all assistants
   const metadata = createMetadata({
     source: 'official',
     repository: `${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`,
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION,
-    assistants: [assistantId]
+    assistants: allAssistantIds
   });
   await writeMetadata(metadata);
 
-  logger.success(`APM initialized with ${assistant.name}!`);
+  logger.success(`APM initialized with ${allAssistantIds.length} assistant(s)!`);
   logger.info('Run "apm update" to check for updates.');
 }
 

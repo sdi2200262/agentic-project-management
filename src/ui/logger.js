@@ -16,6 +16,8 @@ const LOG_LEVELS = {
   DEBUG: chalk.magenta
 };
 
+// Pad all prefixes to match [SUCCESS] (longest at 9 chars)
+const PREFIX_WIDTH = 9;
 const INDENT = '  ';
 
 /**
@@ -26,7 +28,7 @@ const INDENT = '  ';
  * @param {boolean} [options.indent] - Whether to indent the message.
  */
 export function info(message, options = {}) {
-  const prefix = LOG_LEVELS.INFO('[INFO]');
+  const prefix = LOG_LEVELS.INFO('[INFO]'.padEnd(PREFIX_WIDTH));
   const formatted = options.indent ? `${INDENT}${message}` : message;
   console.log(`${prefix} ${formatted}`);
 }
@@ -39,7 +41,7 @@ export function info(message, options = {}) {
  * @param {boolean} [options.indent] - Whether to indent the message.
  */
 export function warn(message, options = {}) {
-  const prefix = LOG_LEVELS.WARN('[WARN]');
+  const prefix = LOG_LEVELS.WARN('[WARN]'.padEnd(PREFIX_WIDTH));
   const formatted = options.indent ? `${INDENT}${message}` : message;
   console.log(`${prefix} ${formatted}`);
 }
@@ -53,7 +55,7 @@ export function warn(message, options = {}) {
  * @param {Error} [options.error] - Optional error object for stack trace.
  */
 export function error(message, options = {}) {
-  const prefix = LOG_LEVELS.ERROR('[ERROR]');
+  const prefix = LOG_LEVELS.ERROR('[ERROR]'.padEnd(PREFIX_WIDTH));
   const formatted = options.indent ? `${INDENT}${message}` : message;
   console.error(`${prefix} ${formatted}`);
 
@@ -70,7 +72,7 @@ export function error(message, options = {}) {
  * @param {boolean} [options.indent] - Whether to indent the message.
  */
 export function success(message, options = {}) {
-  const prefix = LOG_LEVELS.SUCCESS('[SUCCESS]');
+  const prefix = LOG_LEVELS.SUCCESS('[SUCCESS]'.padEnd(PREFIX_WIDTH));
   const formatted = options.indent ? `${INDENT}${message}` : message;
   console.log(`${prefix} ${formatted}`);
 }
@@ -87,7 +89,7 @@ export function debug(message, options = {}) {
   const isDebug = process.env.DEBUG === 'true' || options.force;
   if (!isDebug) return;
 
-  const prefix = LOG_LEVELS.DEBUG('[DEBUG]');
+  const prefix = LOG_LEVELS.DEBUG('[DEBUG]'.padEnd(PREFIX_WIDTH));
   const formatted = options.indent ? `${INDENT}${message}` : message;
   console.log(`${prefix} ${formatted}`);
 }
@@ -112,7 +114,7 @@ export function blank() {
 }
 
 /**
- * Displays the APM ASCII banner.
+ * Displays the APM ASCII banner with separator line.
  */
 export function banner() {
   const colorA = chalk.white;
@@ -120,6 +122,8 @@ export function banner() {
   const colorM = chalk.cyan;
 
   const lines = [
+    '',
+    '',
     '',
     '                         ' + colorA('█████╗') + ' ' + colorP('██████╗') + ' ' + colorM('███╗   ███╗'),
     '                        ' + colorA('██╔══██╗') + colorP('██╔══██╗') + colorM('████╗ ████║'),
@@ -129,10 +133,21 @@ export function banner() {
     '                        ' + colorA('╚═╝  ╚═╝') + colorP('╚═╝     ') + colorM('╚═╝     ╚═╝'),
     '',
     chalk.gray('Manage complex projects with a team of AI assistants, smoothly and efficiently.'),
+    '',
+    chalk.gray('─'.repeat(80)),
     ''
   ];
 
   lines.forEach(line => console.log(line));
+}
+
+/**
+ * Clears the terminal and re-renders the banner.
+ * Used to refresh content area below the banner.
+ */
+export function clearAndBanner() {
+  console.clear();
+  banner();
 }
 
 /**
@@ -154,5 +169,6 @@ export default {
   blank,
   line,
   banner,
+  clearAndBanner,
   chalk
 };
