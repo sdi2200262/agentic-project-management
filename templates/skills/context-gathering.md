@@ -15,9 +15,9 @@ This skill defines the discovery methodology for the Context Gathering procedure
 
 **Execute the Procedure:** The Procedure section contains the actions to perform. Follow each subsection sequentially through all Question Rounds. See §3 Context Gathering Procedure.
 
-**Use Operational Standards for reasoning and decisions:** When interpreting responses, identifying gaps, adapting questioning depth, handling ambiguous responses, or deciding on research delegation, consult the relevant standards subsection. See §2 Operational Standards.
+**Use Operational Standards for reasoning and decisions:** When interpreting responses, identifying gaps, adapting questioning depth, handling ambiguous responses, or deciding on research Delegation, consult the relevant standards subsection. See §2 Operational Standards.
 
-**Present outputs in chat:** Present round completions, understanding summaries, and delegation requests using natural language output formats shown inline in §3 Context Gathering Procedure and §2.8 Research Delegation Standards. Do not expose internal deliberation beyond these outputs.
+**Present outputs in chat:** Present round completions, understanding summaries, and Delegation requests using natural language output formats shown inline in §3 Context Gathering Procedure and §2.8 Exploration and Research Standards. Do not expose internal deliberation beyond these outputs.
 
 ### 1.2 Objectives
 
@@ -33,9 +33,10 @@ Gather sufficient context across four categories:
 
 - **Clarity over exhaustion:** Aim for sufficient contextual understanding, not exhaustive interrogation
 - **Leverage existing material:** Before beginning Question Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{AGENTS_FILE}`). If any are found, prompt the User to confirm which materials are relevant to the project, then read those files and use the findings to avoid asking redundant questions.
+- **Explore on signal:** When User responses reference codebase elements, existing documentation, or suggest relevant context exists, proactively explore to gather concrete information before continuing questions. See §2.8 Exploration and Research Standards.
 - **Adapt to context:** Adapt language and depth to project size, type and user expertise
 - **Iterate within Question Rounds:** Use iterative follow-up questions based on User responses to fill gaps in current Question Round - not later
-- **Research when blocked:** When user clarification is insufficient, apply research delegation standards per §2.8 Research Delegation Standards.
+- **Research when blocked:** When user clarification is insufficient, apply exploration and research standards per §2.8 Exploration and Research Standards.
 
 ---
 
@@ -87,7 +88,7 @@ When processing User responses, reason through:
 - Do not resolve contradictions by assumption
 
 *When User Says "I Don't Know":*
-- Distinguish between "haven't decided" (probe for preferences) and "genuinely unknown" (consider research delegation)
+- Distinguish between "haven't decided" (probe for preferences) and "genuinely unknown" (consider research Delegation)
 - For undecided items, propose options and ask for preference
 - For unknown items, assess if research would help or if it should be deferred to Implementation Plan
 
@@ -271,27 +272,75 @@ Context Gathering gathers validation criteria that will be categorized into thre
 
 Most requirements combine multiple types (e.g., code changes need Programmatic tests + User review). During discovery, gather the validation criteria and success states depending on the project's requirements.
 
-### 2.8 Research Delegation Standards
+### 2.8 Exploration and Research Standards
 
-When User clarification is insufficient to resolve gaps, consider research delegation.
+When User clarification alone is insufficient to resolve gaps, or when User responses signal that relevant context exists in the codebase, consider exploration or research. Do not wait for explicit permission to explore when these signals appear. Read referenced files to inform your questions and avoid asking for information that already exists.
 
-**Research IS appropriate when:**
-- User cannot answer (genuinely doesn't know, not just hasn't considered)
-- Further clarification questions won't resolve the gap
-- The gap is specific and bounded
-- The answer enables better planning
+**Proactive Exploration Triggers** → Explore proactively when User responses contain signals such as:
+- References to existing files, modules, or components
+- Mentions of existing patterns or conventions
+- Indications of relevant documentation
+- Descriptions of current architecture or structure
 
-**Research is NOT appropriate when:**
-- User should decide (preferences, requirements, acceptance criteria)
-- Scope is too broad (would require multiple delegations)
-- Research IS the project deliverable (belongs in Implementation Plan, not Planning Phase)
+**Scope Assessment** → Assess scope before deciding on exploration/research approach:
 
-**Research Approach Decision** → Choose approach based on scope:
-- **Self-Research:** Small scope, can be completed quickly using available tools (e.g., explore existing codebase documentation or architecture)
-- **Delegation:** Bounded scope, specific question, needs dedicated focus (e.g., research best practices for a specific technology or existing codebase too large to explore quickly)
-- **Note for Plan:** Large scope, multiple questions, or research is central to project (leave as research task in Implementation Plan)
+*Small Scope:*
+- Few files to read (roughly 1-5)
+- Single focused question or verification
+- Answer likely exists in codebase or referenced documentation
+- Can be completed quickly without significant context consumption
 
-**Delegation Request:** When delegation is appropriate, output a Delegation Request text block. See §3.6 Delegation Handling.
+*Medium Scope:*
+- Multiple files or cross-codebase investigation
+- Bounded question but requires dedicated focus
+- May require external documentation or source verification
+- Requires more thorough investigation but has clear stopping point
+
+*Large Scope:*
+- Research IS the project deliverable or a major project component
+- Unbounded scope with no clear stopping point
+- Multiple independent questions that should be separate tasks
+- Would compromise Planner's primary function if attempted during Planning Phase
+
+**Approach Decision:**
+
+*Small Scope* → Self-exploration. Read the relevant files and directories directly. Integrate findings into current Question Round.
+
+*Medium Scope* → Depends on platform capabilities:
+- If your platform supports subagents (explore agents, background tasks, parallel sessions) → Use them directly to investigate, just as you would self-explore for small scope. Integrate findings into current Question Round.
+- If your platform does not support subagents → Request Delegation from the User using the following output format:
+```
+I'd like to request a Delegation for research on <Brief Topic> to help inform my understanding.
+
+**What I need to understand:** <Specific question>
+
+**Why this helps:** <How findings will inform Context Gathering Procedure and the current Question Round>
+
+**Why Delegation:** The Planner Agent operates in a single Session, so Delegation preserves context for the remaining Planning Phase.
+
+**Your options:**
+- **Approve Delegation** → I'll provide a Delegation Prompt for a separate Delegate Agent session.
+- **Decline** → Please indicate your preferred alternative:
+  - Self-exploration (if you believe scope is manageable within my context limits)
+  - Limit scope and self-explore (noting the remainder for the Implementation Plan)
+  - Note entirely for Implementation Plan
+```
+**If User approves Delegation** → Perform the following actions:
+1. Check if `.apm/Memory/Stage_00_Planning/` exists. If not, create it.
+2. Read `{SKILL_PATH:delegate-research}` and follow the methodology to create the Delegation Prompt.
+3. User opens Delegate Agent Session and provides the Delegation Prompt.
+4. Delegate Agent logs findings and returns Delegation Report to User.
+5. User returns to Planner Agent with report.
+6. Read the Delegation Memory Log at the provided path.
+7. Integrate findings into current Question Round.
+
+**If User declines Delegation** → Proceed with the User's selected alternative: self-explore directly, explore reduced scope while noting remainder for Implementation Plan, or note the research need entirely for Implementation Plan. Continue with current Question Round.
+
+*Large Scope* → Note for Implementation Plan. Do not attempt during Planning Phase.
+
+*Uncertain Scope* → Pause and ask the User. Present your assessment of the research need and ask whether to proceed with self-exploration, request Delegation, or note for Implementation Plan. Do not decide unilaterally.
+
+**Context Window Awareness** → The Planner Agent operates in a single Session. Every exploration consumes context window capacity. Self-exploration of small scope is efficient and recommended. For medium scope, platform subagents or APM Delegation preserve your context. Excessive exploration risks context window exhaustion before Work Breakdown completes.
 
 ---
 
@@ -301,7 +350,7 @@ This section defines the sequential actions that accomplish Context Gathering. T
 
 **Progression gates:** Each action must complete before proceeding to the next. No skipping or batching unless explicitly instructed by User.
 
-**Output in Chat:** Present round completions (§2.3 Gap Identification and Round Advancement Standards), understanding summaries (§4.1 Understanding Summary Format), and delegation requests (§2.8 Research Delegation Standards) using the output formats. Reasoning draws from §2 Operational Standards for interpretation guidance and decision rules.
+**Output in Chat:** Present round completions (§2.3 Gap Identification and Round Advancement Standards), understanding summaries (§4.1 Understanding Summary Format), and exploration/research requests (§2.8 Exploration and Research Standards) using the output formats. Reasoning draws from §2 Operational Standards for interpretation guidance and decision rules.
 
 **Procedure:**
 1. Question Round Protocol → Governs iteration within each round
@@ -309,7 +358,6 @@ This section defines the sequential actions that accomplish Context Gathering. T
 3. Question Round 2 → Technical Requirements
 4. Question Round 3 → Implementation Approach and Quality
 5. Context Finalization → Understanding Summary presentation, modification handling, and procedure completion
-6. Delegation Handling → Research delegation procedure when invoked from Question Rounds
 
 ### 3.1 Question Round Protocol
 
@@ -321,7 +369,7 @@ This protocol governs how Question Rounds flow. It defines the iteration pattern
 3. Strategic decision: Apply §2.3 Gap Identification and Round Advancement Standards to determine whether to follow up or advance.
 4. Repeat steps 2-3 until current Round understanding is complete
 
-**Anti-Repetition Guidance:** Track what has been answered across the conversation. Ask only for missing specifics, not topics already covered. Fill gaps in current Round; do not defer to later Rounds. If gaps cannot be resolved through User clarification during iteration, apply §2.8 Research Delegation Standards.
+**Anti-Repetition Guidance:** Track what has been answered across the conversation. Ask only for missing specifics, not topics already covered. Fill gaps in current Round; do not defer to later Rounds. If gaps cannot be resolved through User clarification during iteration, apply §2.8 Exploration and Research Standards.
 
 **Efficiency Guidance:** When asking initial questions, combine related items naturally in conversation. Adapt depth based on project complexity - smaller projects need lighter discovery than large multi-domain efforts. See §2.5 Questioning Depth Standards.
 
@@ -365,7 +413,7 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 - **Vision Clarity:** Are there aspects of their vision that need more detail or clarification?
 - **Material Understanding:** If existing materials mentioned, do you understand their structure and relevance?
 
-**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §2.8 Research Delegation Standards.
+**Exploration and Research:** If gaps cannot be resolved through User clarification during iteration, or if User responses signal relevant context exists, apply §2.8 Exploration and Research Standards.
 
 **Continue with targeted follow-ups addressing specific gaps until Question Round 1 understanding is complete. Before proceeding to Round 2, you must understand: project type and deliverable format, problem being solved and success criteria, essential features and scope, required skill/expertise areas, what exists vs. what needs to be created, user's vision and primary goals, relevant existing materials and their role. See §2.3 Gap Identification and Round Advancement Standards.**
 
@@ -415,7 +463,7 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 - **Specifications:** Are any design decisions or constraints emerging that should be formally documented?
 - **Validation Criteria Coverage:** Have validation criteria and success states been captured for core requirements?
 
-**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §2.8 Research Delegation Standards.
+**Exploration and Research:** If gaps cannot be resolved through User clarification during iteration, or if User responses signal relevant context exists, apply §2.8 Exploration and Research Standards.
 
 **Continue with targeted follow-ups addressing specific gaps until Question Round 2 understanding is complete. Before proceeding to Round 3, you must understand: work breakdown structure and dependencies, technical and resource requirements, complexity and risk factors, emerging standards and specifications, validation criteria for core requirements. See §2.3 Gap Identification and Round Advancement Standards.**
 
@@ -464,7 +512,7 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 - **Specifications:** Are design decisions, constraints, and implementation-relevant choices documented for `Specifications.md`?
 - **Validation Coverage:** Have validation criteria and success states been gathered for process and quality requirements?
 
-**Research Delegation:** If gaps cannot be resolved through User clarification during iteration, consider delegating bounded research. See §2.8 Research Delegation Standards.
+**Exploration and Research:** If gaps cannot be resolved through User clarification during iteration, or if User responses signal relevant context exists, apply §2.8 Exploration and Research Standards.
 
 **Continue with targeted follow-ups addressing specific gaps until Question Round 3 understanding is complete. Before proceeding to Context Finalization, you must understand: technical constraints and preferences, access and coordination requirements, workflow and process preferences, quality and validation standards, coordination and approval requirements, domain organization preferences, documentation and delivery expectations. See §2.3 Gap Identification and Round Advancement Standards.**
 
@@ -494,41 +542,6 @@ Perform the following actions:
    ```
 
 **Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
-
-### 3.6 Delegation Handling
-
-Invoked when research delegation is appropriate per §2.8 Research Delegation Standards.
-
-**Delegation Request Output** → When delegation is appropriate, output the following:
-```
-I'd like to delegate some research on <Brief Topic> to help inform the Coordination Artifacts.
-
-Here's what I need to understand: <Specific question>. This information will help me <how this information will inform the Coordination Artifacts (Implementation Plan, Specifications, or `{AGENTS_FILE}`)>. I'm requesting delegation because <why this needs research, not more questions>.
-
-**One important note:** The Planner Agent operates in a single session without handoff capability, so delegation will consume context window capacity. I'm only requesting this because I believe this information is essential for creating accurate Coordination Artifacts.
-
-Would you like to approve the delegation, or would you prefer I note this as a research task in the Implementation Plan instead? If the scope is small, I could also explore this myself using file tools.
-```
-
-**If User approves delegation** → Perform the following actions:
-1. Check if `.apm/Memory/Stage_00_Planning/` exists. If not, create it (first delegation only). This directory stores delegation logs during the Planning Phase.
-2. Read the Research Delegation skill: `{SKILL_PATH:delegate-research}`
-3. Provide the User the Delegation Prompt following the skill. User then opens Delegate Agent Session and provides delegated research task.
-4. Delegate Agent logs findings to `.apm/Memory/Stage_00_Planning/Delegation_Log_00_<SequentialNum>_Research_<Slug>.md`
-5. Delegate Agent returns Delegation Report to User.
-6. User returns to Planner Agent with report.
-7. Read the Delegation Memory Log at provided path.
-8. Integrate findings into current Question Round.
-
-**If User declines** → Perform the following actions:
-1. Note the research question as Implementation Plan requirement.
-2. Continue with current Question Round using available information.
-
-**If User selects self-research** → Only appropriate when scope is small and can be completed quickly. Prioritize context preservation; if research requires reading many files or extensive exploration, recommend delegation or note as Implementation Plan requirement. Perform the following actions:
-1. Identify the specific question to answer.
-2. Use available tools to explore codebase, read documentation.
-3. Stop if scope expands beyond initial estimate; recommend delegation.
-4. Integrate findings into current Question Round.
 
 ---
 

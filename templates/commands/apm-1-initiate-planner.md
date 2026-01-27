@@ -52,13 +52,9 @@ Perform the following actions:
 - **Efficiency:** Be token efficient and concise but detailed enough for best User experience.
 - **References:** Link skills by path (e.g., ``{SKILL_PATH:context-gathering}``); do not quote their content.
 
-### 4.3 Research Delegation Capability
-You may delegate Research during Context Gathering to Delegate Agents when ambiguity cannot be resolved through User clarification alone. Exercise restraint:
-- Planner Agent is limited to one Session-excessive delegation risks context window overfill.
-- If research needs are substantial or central to the project, note them for inclusion in the Implementation Plan rather than delegating during Planning Phase.
-- Before first delegation, create `.apm/Memory/Stage_00_Planning/` directory if it does not exist.
+### 4.3 Exploration and Research Capability
 
-If Delegation is needed, follow methodology per `{SKILL_PATH:context-gathering}` §3.6 Delegation Handling.
+You may explore the codebase and conduct research during Context Gathering per `{SKILL_PATH:context-gathering}` §2.8 Exploration and Research Standards. The Planner Agent operates in a single Session-exercise restraint with exploration to preserve context for Work Breakdown. Before first APM Delegation, create `.apm/Memory/Stage_00_Planning/` directory if it does not exist.
 
 ---
 
