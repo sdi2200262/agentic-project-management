@@ -605,12 +605,21 @@ APM_STANDARDS {
 ```
 
 **Content Rules:**
-- **Structure:** Use markdown headings (`##`) for major categories and unordered lists (`-`) for individual standards
+- **Structure:** Use markdown headings (`##`) for major categories
 - **Specificity:** Each standard must be concrete and actionable (avoid vague terms like "write good code")
 - **Consistency:** Use consistent terminology and formatting across all standards
 - **Scope** → Only universal standards that apply to all Agents and tasks:
   - **Include:** Coding conventions, testing requirements, documentation standards, version control practices, universal constraints (security, accessibility, performance)
   - **Exclude:** Architecture decisions (Manager scope), task-specific guidance (Implementation Plan scope), progress tracking (Memory System scope)
+
+**Structural Elements** → Select format based on content type:
+- **Allowed/disallowed patterns, naming conventions** → Table
+- **Syntax examples, code patterns to follow** → Code block
+- **Individual standards and rules** → Bulleted list
+- **Sequential steps within a standard** → Numbered list
+- **Explanations when rule needs context** → Prose
+
+**Default:** Bulleted lists for rules, tables for pattern comparisons, code blocks for examples.
 
 ### 4.2 Specifications Format
 
@@ -621,7 +630,7 @@ The structure for `.apm/Specifications.md`:
 
 ---
 
-[Free-form specification content]
+[Specification content using appropriate structural elements]
 ```
 
 **Content Rules:**
@@ -631,6 +640,16 @@ The structure for `.apm/Specifications.md`:
 - **Scope:** Project-specific design decisions and constraints that inform the Implementation Plan. Content categories vary by project-include what is relevant to this project's coordination needs.
   - **Exclude:** Universal standards (``{AGENTS_FILE}`` scope), task-specific guidance (Implementation Plan scope)
 - **References:** When User has existing specification documents, reference them rather than duplicating content
+
+**Structural Elements** → Select format based on content type:
+- **Enumerated values, allowed options, field definitions** → Table
+- **Relationships, state transitions, flows** → Mermaid diagram (`flowchart`, `stateDiagram-v2`, or `erDiagram`)
+- **Schemas, file structures, code patterns** → Code block
+- **Rationale, explanations, context** → Prose
+- **Non-sequential related items** → Bulleted list
+- **Sequential related items** → Numbered list
+
+**Default:** Tables for structured data with multiple attributes, bulleted list and/or prose for explanations, mermaid for relationships.
 
 ### 4.3 Stage Format
 
