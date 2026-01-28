@@ -14,6 +14,12 @@
       "directories": {
         "commands": ".github/prompts",
         "skills": ".github/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "#runSubagent with exploration focus",
+        "explorerName": "exploration subagent",
+        "configNote": null
       }
     },
     {
@@ -25,6 +31,12 @@
       "directories": {
         "commands": ".claude/commands",
         "skills": ".claude/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "Task(subagent_type=\"Explore\", prompt=\"...\")",
+        "explorerName": "Explore",
+        "configNote": null
       }
     },
     {
@@ -36,6 +48,12 @@
       "directories": {
         "commands": ".gemini/commands",
         "skills": ".gemini/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "delegate_to_agent(agent_name=\"codebase_investigator\", objective=\"...\")",
+        "explorerName": "codebase_investigator",
+        "configNote": "Requires `enableAgents: true` in ~/.gemini/settings.json"
       }
     },
     {
@@ -47,6 +65,12 @@
       "directories": {
         "commands": ".cursor/commands",
         "skills": ".cursor/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
+        "explorerName": "explore",
+        "configNote": null
       }
     },
     {
@@ -58,6 +82,12 @@
       "directories": {
         "commands": ".qwen/commands",
         "skills": ".qwen/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "task(subagent_type=\"general-purpose\", prompt=\"...\")",
+        "explorerName": "general-purpose",
+        "configNote": null
       }
     },
     {
@@ -69,6 +99,12 @@
       "directories": {
         "commands": ".opencode/command",
         "skills": ".opencode/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "Task(subagent_type=\"Explore\", prompt=\"...\")",
+        "explorerName": "Explore",
+        "configNote": null
       }
     },
     {
@@ -80,6 +116,12 @@
       "directories": {
         "commands": ".windsurf/workflows",
         "skills": ".windsurf/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": false,
+        "toolSyntax": null,
+        "explorerName": null,
+        "configNote": null
       }
     },
     {
@@ -91,6 +133,12 @@
       "directories": {
         "commands": ".kilocode/workflows",
         "skills": ".kilocode/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": false,
+        "toolSyntax": null,
+        "explorerName": null,
+        "configNote": null
       }
     },
     {
@@ -102,6 +150,12 @@
       "directories": {
         "commands": ".augment/commands",
         "skills": ".augment/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": false,
+        "toolSyntax": null,
+        "explorerName": null,
+        "configNote": null
       }
     },
     {
@@ -113,6 +167,12 @@
       "directories": {
         "commands": ".roo/commands",
         "skills": ".roo/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": false,
+        "toolSyntax": null,
+        "explorerName": null,
+        "configNote": null
       }
     },
     {
@@ -124,6 +184,12 @@
       "directories": {
         "commands": ".agent/workflows",
         "skills": ".agent/skills"
+      },
+      "subagentGuidance": {
+        "hasSubagents": false,
+        "toolSyntax": null,
+        "explorerName": null,
+        "configNote": null
       }
     }
   ]
