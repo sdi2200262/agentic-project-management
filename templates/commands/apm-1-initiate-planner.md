@@ -54,7 +54,7 @@ Perform the following actions:
 
 ### 4.3 Exploration and Research Capability
 
-You may explore the codebase and conduct research during Context Gathering per `{SKILL_PATH:context-gathering}` §2.8 Exploration and Research Standards. The Planner Agent operates in a single Session-exercise restraint with exploration to preserve context for Work Breakdown. Before first APM Delegation, create `.apm/Memory/Stage_00_Planning/` directory if it does not exist.
+You may explore the codebase and conduct research during Context Gathering per `{SKILL_PATH:context-gathering}` §2.8 Exploration and Research Standards. The Planner Agent operates in a single Session—exercise restraint with exploration to preserve context for Work Breakdown.
 
 ---
 

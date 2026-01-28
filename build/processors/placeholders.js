@@ -19,6 +19,7 @@ import path from 'path';
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
  * - {AGENTS_FILE}: Platform-specific agents file name
  * - {SKILLS_DIR}: Platform-specific skills directory
+ * - {SUBAGENT_GUIDANCE}: Platform-specific subagent exploration guidance
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
@@ -62,6 +63,23 @@ export function replacePlaceholders(content, context) {
 
   // Replace SKILLS_DIR placeholder
   replaced = replaced.replace(/{SKILLS_DIR}/g, directories.skills);
+
+  // Replace SUBAGENT_GUIDANCE placeholder
+  // Delegation workflow is in the template; this placeholder adds subagent preference for supported platforms
+  const subagentGuidance = target.subagentGuidance;
+
+  if (subagentGuidance?.hasSubagents) {
+    const configNote = subagentGuidance.configNote
+      ? ` ${subagentGuidance.configNote}.`
+      : '';
+    const guidanceText = `**Preferred: Use subagent.** Invoke the ${subagentGuidance.explorerName} subagent with: \`${subagentGuidance.toolSyntax}\`. Integrate findings into the current Question Round.${configNote}
+
+**Alternative: Request Delegation** if subagent exploration is insufficient or User prefers the Delegation workflow.`;
+    replaced = replaced.replace(/{SUBAGENT_GUIDANCE}/g, guidanceText);
+  } else {
+    // Non-subagent platforms: Delegation is the primary option (workflow follows in template)
+    replaced = replaced.replace(/{SUBAGENT_GUIDANCE}/g, 'Request Delegation from the User.');
+  }
 
   return replaced;
 }
