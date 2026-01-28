@@ -15,9 +15,9 @@ This skill defines the discovery methodology for the Context Gathering procedure
 
 **Execute the Procedure:** The Procedure section contains the actions to perform. Follow each subsection sequentially through all Question Rounds. See §3 Context Gathering Procedure.
 
-**Use Operational Standards for reasoning and decisions:** When interpreting responses, identifying gaps, adapting questioning depth, handling ambiguous responses, or deciding on research Delegation, consult the relevant standards subsection. See §2 Operational Standards.
+**Use Operational Standards for reasoning and decisions:** When interpreting responses, identifying gaps, adapting questioning depth, handling ambiguous responses, or deciding on research approach, consult the relevant standards subsection. See §2 Operational Standards.
 
-**Present outputs in chat:** Present round completions, understanding summaries, and Delegation requests using natural language output formats shown inline in §3 Context Gathering Procedure and §2.8 Exploration and Research Standards. Do not expose internal deliberation beyond these outputs.
+**Present outputs in chat:** Present round completions, understanding summaries, and research requests using natural language output formats shown inline in §3 Context Gathering Procedure and §2.8 Exploration and Research Standards. Do not expose internal deliberation beyond these outputs.
 
 ### 1.2 Objectives
 
@@ -88,7 +88,7 @@ When processing User responses, reason through:
 - Do not resolve contradictions by assumption
 
 *When User Says "I Don't Know":*
-- Distinguish between "haven't decided" (probe for preferences) and "genuinely unknown" (consider research Delegation)
+- Distinguish between "haven't decided" (probe for preferences) and "genuinely unknown" (consider research assistance per §2.8)
 - For undecided items, propose options and ask for preference
 - For unknown items, assess if research would help or if it should be deferred to Implementation Plan
 
@@ -276,6 +276,11 @@ Most requirements combine multiple types (e.g., code changes need Programmatic t
 
 When User clarification alone is insufficient to resolve gaps, or when User responses signal that relevant context exists in the codebase, consider exploration or research. Do not wait for explicit permission to explore when these signals appear. Read referenced files to inform your questions and avoid asking for information that already exists.
 
+**Anti-Deferral Principle:** Do NOT note research for the Implementation Plan if the information can be gathered now through exploration or platform subagents. Deferring research that could inform planning decisions leads to less accurate Implementation Plans. Only defer when:
+- Research scope is genuinely too large for the Planning Phase
+- The research is a project deliverable
+- User explicitly requests deferral
+
 **Proactive Exploration Triggers** → Explore proactively when User responses contain signals such as:
 - References to existing files, modules, or components
 - Mentions of existing patterns or conventions
@@ -306,9 +311,9 @@ When User clarification alone is insufficient to resolve gaps, or when User resp
 
 *Small Scope* → Self-exploration. Read the relevant files and directories directly. Integrate findings into current Question Round.
 
-*Medium Scope* → Depends on platform capabilities:
-- If your platform supports subagents (explore agents, background tasks, parallel sessions) → Use them directly to investigate, just as you would self-explore for small scope. Integrate findings into current Question Round.
-- If your platform does not support subagents → Request Delegation from the User using the following output format:
+*Medium Scope* → {SUBAGENT_GUIDANCE}
+
+**If requesting Delegation** → Present the request using the following output format:
 ```
 I'd like to request a Delegation for research on <Brief Topic> to help inform my understanding.
 
@@ -338,9 +343,7 @@ I'd like to request a Delegation for research on <Brief Topic> to help inform my
 
 *Large Scope* → Note for Implementation Plan. Do not attempt during Planning Phase.
 
-*Uncertain Scope* → Pause and ask the User. Present your assessment of the research need and ask whether to proceed with self-exploration, request Delegation, or note for Implementation Plan. Do not decide unilaterally.
-
-**Context Window Awareness** → The Planner Agent operates in a single Session. Every exploration consumes context window capacity. Self-exploration of small scope is efficient and recommended. For medium scope, platform subagents or APM Delegation preserve your context. Excessive exploration risks context window exhaustion before Work Breakdown completes.
+*Uncertain Scope* → Pause and ask the User. Present your assessment of the research need and ask whether to proceed with self-exploration, use available tools or an APM Delegation, or note for Implementation Plan. Do not decide unilaterally.
 
 ---
 
