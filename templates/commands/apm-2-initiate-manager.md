@@ -156,6 +156,11 @@ Worker Agents are defined in the Implementation Plan Agents field. Each Worker:
 - Has `{AGENTS_FILE}` as universal always-apply Standards
 - Cannot access Implementation Plan, Specifications, or Memory Root directly
 
+**Initialization State Tracking:** Track which Worker Agents have been initialized (received their first Task Assignment). When issuing a Task Assignment to a Worker that has not yet been initialized, include the following guidance for the User after the Task Assignment code block:
+```
+Initiate a new Worker Agent session using the `/apm-3-initiate-worker` command and name it "[Agent's Name]".
+```
+
 **Handoff State Tracking:** Track which Worker Agents have performed Handoffs and from which Stage. This affects Context Dependency classification; for Incoming Worker Agents, previous Stage dependencies must be treated as Cross-Agent Context Dependencies. See `{SKILL_PATH:memory-maintenance}` §2.3 Handoff Detection Standards.
 
 Address Workers by their domain identifier (e.g., "Frontend Agent", "Backend Agent") as specified in Task Assignments.

@@ -19,7 +19,9 @@ import path from 'path';
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
  * - {AGENTS_FILE}: Platform-specific agents file name
  * - {SKILLS_DIR}: Platform-specific skills directory
- * - {SUBAGENT_GUIDANCE}: Platform-specific subagent exploration guidance
+ * - {PLANNER_SUBAGENT_GUIDANCE}: Platform-specific subagent exploration guidance for Planner
+ * - {MANAGER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Manager investigation
+ * - {WORKER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Worker context integration
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
@@ -64,21 +66,45 @@ export function replacePlaceholders(content, context) {
   // Replace SKILLS_DIR placeholder
   replaced = replaced.replace(/{SKILLS_DIR}/g, directories.skills);
 
-  // Replace SUBAGENT_GUIDANCE placeholder
-  // Delegation workflow is in the template; this placeholder adds subagent preference for supported platforms
+  // Replace PLANNER_SUBAGENT_GUIDANCE placeholder
+  // For subagent platforms: prefer subagents, delegation as fallback
+  // For non-subagent platforms: use APM delegation workflow
   const subagentGuidance = target.subagentGuidance;
 
   if (subagentGuidance?.hasSubagents) {
     const configNote = subagentGuidance.configNote
       ? ` ${subagentGuidance.configNote}.`
       : '';
-    const guidanceText = `**Preferred: Use subagent.** Invoke the ${subagentGuidance.explorerName} subagent with: \`${subagentGuidance.toolSyntax}\`. Integrate findings into the current Question Round.${configNote}
+    const plannerGuidanceText = `**Preferred: Use subagent.** Invoke the ${subagentGuidance.explorerName} subagent with: \`${subagentGuidance.toolSyntax}\`. Integrate findings into the current Question Round.${configNote}
 
-**Alternative: Request Delegation** if subagent exploration is insufficient or User prefers the Delegation workflow.`;
-    replaced = replaced.replace(/{SUBAGENT_GUIDANCE}/g, guidanceText);
+**Alternative: Request Delegation** if subagent exploration is insufficient or User prefers the APM Delegation workflow. See "If requesting Delegation" below.`;
+    replaced = replaced.replace(/{PLANNER_SUBAGENT_GUIDANCE}/g, plannerGuidanceText);
   } else {
-    // Non-subagent platforms: Delegation is the primary option (workflow follows in template)
-    replaced = replaced.replace(/{SUBAGENT_GUIDANCE}/g, 'Request Delegation from the User.');
+    // Non-subagent platforms: APM Delegation is the primary option
+    const plannerDelegationText = `**Use APM Delegation.** Request Delegation from the User to preserve Planner context. See "If requesting Delegation" below for the workflow.`;
+    replaced = replaced.replace(/{PLANNER_SUBAGENT_GUIDANCE}/g, plannerDelegationText);
+  }
+
+  // Replace MANAGER_SUBAGENT_GUIDANCE placeholder
+  // For subagent platforms: Manager can use subagents for efficient investigation
+  // For non-subagent platforms: no additional guidance (manual investigation or delegation)
+  if (subagentGuidance?.hasSubagents) {
+    const managerGuidanceText = `**Efficient Investigation:** Use the ${subagentGuidance.explorerName} subagent to efficiently explore files, verify deliverables, and gather context: \`${subagentGuidance.toolSyntax}\`. This preserves Manager context for coordination decisions.`;
+    replaced = replaced.replace(/{MANAGER_SUBAGENT_GUIDANCE}/g, managerGuidanceText);
+  } else {
+    // Non-subagent platforms: remove placeholder (manual investigation is the default)
+    replaced = replaced.replace(/{MANAGER_SUBAGENT_GUIDANCE}/g, '');
+  }
+
+  // Replace WORKER_SUBAGENT_GUIDANCE placeholder
+  // For subagent platforms: Workers can use subagents to efficiently integrate cross-agent context
+  // For non-subagent platforms: no additional guidance (manual file reading as currently specified)
+  if (subagentGuidance?.hasSubagents) {
+    const workerGuidanceText = `**Efficient Integration:** For complex Cross-Agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to efficiently explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`. This can help quickly grasp interfaces, patterns, and integration points before proceeding with execution.`;
+    replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
+  } else {
+    // Non-subagent platforms: remove placeholder (manual approach is the default)
+    replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, '');
   }
 
   return replaced;

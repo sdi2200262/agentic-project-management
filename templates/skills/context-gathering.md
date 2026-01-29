@@ -9,7 +9,7 @@ description: Project discovery through structured elicitation of requirements, c
 
 **Reading Agent:** Planner Agent
 
-This skill defines the discovery methodology for the Context Gathering procedure. The goal is gathering sufficient context to create an accurate Implementation Plan that can be executed by other Agents.
+This skill defines the discovery methodology for the Context Gathering procedure. The goal is gathering sufficient context to create accurate Coordination Artifacts-Specifications, Implementation Plan, and Standards-that enable structured project execution.
 
 ### 1.1 How to Use This Skill
 
@@ -27,7 +27,7 @@ Gather sufficient context across four categories:
 - **Process:** Workflow preferences, quality standards, coordination requirements
 - **Validation:** Success states and criteria, acceptance tests, completion indicators
 
-**Goal:** Sufficient context to create an Implementation Plan that enables a Manager Agent to coordinate effectively and Worker Agents to execute focused tasks.
+**Goal:** Sufficient context to create Coordination Artifacts that define what is being built (Specifications), how work is organized (Implementation Plan), and how work is performed (Standards).
 
 ### 1.3 Methodology Principles
 
@@ -47,54 +47,33 @@ This section establishes reasoning approaches and decision rules for executing C
 ### 2.1 Planner Agent Role Context
 
 **Maintain natural conversation while operating with internal strategic awareness. YOU ARE THE PLANNER, NOT THE EXECUTOR:**
-- **Your Role:** Break down user requirements into a detailed Implementation Plan with actionable tasks that other Agents will execute
+- **Your Role:** Transform user requirements into Coordination Artifacts-Specifications defining what to build, Implementation Plan organizing work into tasks, and Standards governing execution
 - **Manager Agent Role:** Will coordinate project execution using your Implementation Plan and assign tasks to Worker Agents
 - **Worker Agent Role:** Will execute individual tasks you (Planner Agent) specify in the plan and the Manager Agent assigns to them
 
-All questions gather context for the Implementation Plan, not how you (Planner Agent) should perform work.
+All questions gather context for Coordination Artifacts, not how you (Planner Agent) should perform work.
 
 ### 2.2 Response Interpretation Standards
 
-When processing User responses, reason through:
-
-**Explicit vs Implicit Information:**
-- What did the User directly state? (explicit - high confidence)
-- What can be inferred from their response? (implicit - verify if critical)
-- What assumptions am I making? (flag for clarification)
+When processing User responses, assess: What was explicitly stated (high confidence)? What can be inferred (verify if critical)? What assumptions am I making (flag for clarification)?
 
 **Signal Recognition:**
-- Hesitation or uncertainty in response → Potential knowledge gap or undecided requirement
+- Hesitation/uncertainty → Knowledge gap or undecided requirement
 - Detailed, confident answers → Firm requirements, less follow-up needed
-- References to existing materials → Read before asking redundant questions
-- "I'm not sure" or "maybe" → Probe for preferences vs. genuine uncertainty
+- References to materials → Read before asking redundant questions
+- "I'm not sure" → Distinguish preferences (probe) from genuine unknowns (research per §2.8)
 
-**Response Completeness:**
-- Did the response address the question asked?
-- Did it reveal adjacent information worth noting?
-- Did it raise new questions or dependencies?
+**Response Completeness:** Did the response address the question? Reveal adjacent information? Raise new dependencies?
 
-**Handling Ambiguous Responses:**
-
-*When Response is Vague:*
-- Rephrase and ask for specifics: "When you say [X], do you mean [interpretation A] or [interpretation B]?"
-- Propose concrete examples: "For instance, would that include [specific example]?"
-
-*When Response is Incomplete:*
-- Acknowledge what was provided, ask for remainder: "I understand [covered part]. Could you also clarify [missing part]?"
-- Do not assume; flag uncertainty if critical
-
-*When Response Contains Contradiction:*
-- Surface the contradiction neutrally: "Earlier you mentioned [X], but just now [Y]. Could you help me understand which applies?"
-- Do not resolve contradictions by assumption
-
-*When User Says "I Don't Know":*
-- Distinguish between "haven't decided" (probe for preferences) and "genuinely unknown" (consider research assistance per §2.8)
-- For undecided items, propose options and ask for preference
-- For unknown items, assess if research would help or if it should be deferred to Implementation Plan
+**Ambiguous Response Handling:**
+- *Vague:* Rephrase with interpretations or propose concrete examples
+- *Incomplete:* Acknowledge covered part, ask for remainder; do not assume
+- *Contradictory:* Surface neutrally; do not resolve by assumption
+- *"I don't know":* For undecided items, propose options; for unknowns, assess if research helps or defer
 
 ### 2.3 Gap Identification and Round Advancement Standards
 
-A gap exists when information required for the Implementation Plan is missing or ambiguous.
+A gap exists when information required for Coordination Artifacts is missing or ambiguous.
 
 **Coverage Gaps** → Required information not yet gathered:
 - Essential features mentioned but not elaborated
@@ -184,17 +163,53 @@ As you receive User input, internally categorize and retain planning implication
 - User describes tool preferences or technical requirements → Note for execution guidance
 - User indicates tracking or progress validation requirements → Note as task or stage requirements
 
-**Standards Awareness** → Watch for any project-wide standards or conventions that should apply universally. Each project defines what standards are relevant. Signals include:
-- User mentions conventions, style guides, or formatting preferences
-- User describes quality requirements or validation expectations
-- User specifies documentation or output format standards
-- User mentions workflow conventions or process requirements
+**Specification Awareness** → Watch for design decisions and constraints that define WHAT is being built. Specifications inform Implementation Plan structure and task approaches. Categories vary by project-gather what emerges:
 
-**Specification Awareness** → Watch for design decisions and constraints that need formal documentation - anything that would inform how the Implementation Plan should be structured or how tasks should be approached. Each project defines what specifications are relevant. Signals include:
-- User makes design decisions or describes how things should work
-- User mentions existing specification documents (reference rather than duplicate)
-- User describes constraints, requirements, or boundaries that affect implementation
-- User discusses rationale for choices that affect implementation approach
+*Scope Boundaries:*
+- User defines what's included vs excluded → Capture explicit boundaries
+- User describes feature limits or out-of-scope items → Note as scope constraints
+
+*Core Entities:*
+- User describes key components, models, or objects → Identify primary entities
+- User names the main things the project creates or manages → Retain entity definitions
+
+*Behavioral Rules:*
+- User explains how entities should behave or interact → Capture behavioral specifications
+- User describes business logic or validation rules → Note as behavioral constraints
+
+*Relationships:*
+- User describes how components connect or depend on each other → Map relationships
+- User explains data flows or communication patterns → Capture as relationship specifications
+
+*Constraints:*
+- User mentions technical, business, or regulatory limitations → Flag as constraints
+- User describes performance, security, or compatibility requirements → Note constraint details
+
+*External Interfaces:*
+- User describes APIs, integrations, or external system connections → Capture interface specifications
+- User mentions input/output formats or protocols → Note as interface definitions
+
+**Standards Awareness** → Watch for execution-level patterns that should apply universally across all tasks. Standards define HOW work is performed. Categories vary by project-gather what emerges:
+
+*Code Conventions:*
+- User mentions naming conventions, formatting rules, or code organization → Capture for universal application
+- User describes file structure patterns or module organization → Note as structural standards
+
+*Quality Requirements:*
+- User specifies testing expectations or coverage requirements → Note as quality gates
+- User describes review processes or approval thresholds → Capture as quality standards
+
+*Process Standards:*
+- User mentions workflow patterns that must always be followed → Retain as process rules
+- User describes documentation requirements for deliverables → Note as output standards
+
+*Prohibited Patterns:*
+- User explicitly forbids certain approaches or technologies → Flag as constraints
+- User mentions anti-patterns or practices to avoid → Capture as prohibitions
+
+*Tool/Technology Standards:*
+- User specifies required tools, versions, or configurations → Note as environment standards
+- User describes build, deploy, or integration requirements → Retain as tooling standards
 
 **Validation Awareness:**
 - User mentions automated checks (tests, CI, linting) → Note as Programmatic validation
@@ -212,56 +227,43 @@ As you receive User input, internally categorize and retain planning implication
 
 Adapt questioning depth based on project characteristics and User signals.
 
-**Go Deeper When:**
-- Project is large or multi-domain (more coordination complexity)
-- User responses reveal dependencies or risks
-- Requirements have validation implications
-- Domain boundaries are unclear
-- User indicates complexity or uncertainty
+**Depth Decision:**
+- *Go deeper:* Large/multi-domain projects, dependencies/risks revealed, unclear domain boundaries, complexity/uncertainty indicated
+- *Stay light:* Small/single-domain projects, clear complete responses, straightforward requirements, expertise demonstrated, time constraints mentioned
 
-**Stay Light When:**
-- Project is small or single-domain
-- User provides clear, complete responses
-- Requirements are straightforward with obvious validation
-- User demonstrates expertise and confidence
-- Time constraints are mentioned
+**Calibration Signals:** 
+- Brief answers → verify completeness
+- Extensive elaboration → follow the thread
+- Redirection ("let's move on") → note state, proceed
+- Clarifying questions back → engage for mutual understanding.
 
-**Depth Calibration Signals:**
-- User says "that's all" or similar or gives brief answers → Respect, but verify completeness
-- User elaborates extensively → Follow the thread, capture details
-- User redirects ("let's move on") → Note current state, proceed
-- User asks clarifying questions back → Engage, mutual understanding matters
+**Materials Handling:** When User references existing documentation, read before continuing questions, acknowledge learnings, skip redundant questions, clarify only gaps.
 
-**Requesting Additional Materials:**
+### 2.6 Coordination Artifact Perspectives
 
-*Request Materials When:*
-- User references existing documentation (PRD, specs, architecture docs)
-- Project involves existing codebase with documentation
-- User mentions templates, examples, or reference materials
-- Standards or conventions are described as "documented somewhere"
+While maintaining natural conversation, internally consider how gathered information translates to each Coordination Artifact.
 
-*Request Format:*
-- Be specific: "Could you point me to the [specific document type]?"
-- Offer to read and summarize: "If you share that file, I can review it and incorporate the relevant details"
-- Confirm relevance: "Is [mentioned document] current and relevant to this project?"
+**Specifications Perspective** → How gathered context defines what is being built:
+- **Scope Clarity:** Are boundaries between included and excluded functionality clear?
+- **Entity Definition:** Are the core entities, components, or objects the project creates well-defined?
+- **Behavioral Completeness:** Are the rules governing how entities behave captured?
+- **Relationship Mapping:** Are connections and dependencies between entities understood?
+- **Constraint Documentation:** Are technical, business, and regulatory constraints identified?
 
-*After Receiving Materials:*
-- Read the provided files before continuing questions
-- Acknowledge what was learned: "From [document], I see [key points]"
-- Skip questions already answered by the materials
-- Ask clarifying questions only for gaps or ambiguities in the materials
-
-### 2.6 Planning Perspective
-
-While maintaining natural conversation, internally consider how gathered information translates to Implementation Plan elements:
+**Implementation Plan Perspective** → How gathered context organizes work:
 - **Task Granularity:** How to break work into focused tasks that Worker Agents can execute independently
 - **Agent Specialization:** What domain boundaries make sense for assigning different Worker Agents
-- **Domain Organization:** Whether related domains benefit from unified handling (tighter coordination) or separation (parallel progress)
-- **Coordination Points:** Where Worker Agents will need Manager Agent coordination or cross-agent collaboration
-- **User Involvement Points:** What actions require User input, approval, guidance or external platform/tool access
+- **Domain Organization:** Whether related domains benefit from unified handling or separation
+- **Coordination Points:** Where Worker Agents will need Manager Agent coordination
+- **User Involvement Points:** What actions require User input, approval, or external access
 - **Task Dependencies:** What must be completed before other work can begin
-- **Quality Integration:** How to embed user preferences as explicit task requirements
-- **Validation Strategy:** How to validate success of each requirement and what criteria apply
+- **Validation Strategy:** How to validate success of each requirement
+
+**Standards Perspective** → How gathered context defines universal execution patterns:
+- **Convention Identification:** What coding, formatting, or structural patterns must all tasks follow?
+- **Quality Gate Definition:** What quality checks apply universally across all work?
+- **Process Consistency:** What workflow patterns must be consistently applied?
+- **Prohibition Clarity:** What approaches or patterns are explicitly forbidden?
 
 ### 2.7 Validation Criteria Types
 
@@ -274,44 +276,17 @@ Most requirements combine multiple types (e.g., code changes need Programmatic t
 
 ### 2.8 Exploration and Research Standards
 
-When User clarification alone is insufficient to resolve gaps, or when User responses signal that relevant context exists in the codebase, consider exploration or research. Do not wait for explicit permission to explore when these signals appear. Read referenced files to inform your questions and avoid asking for information that already exists.
+**Informing Current Question Round:** When User responses reference codebase elements, existing materials, or signal relevant context exists, exploration informs your discovery strategy for the current Round. Use findings to refine follow-up questions, validate assumptions, and avoid redundant inquiry.
 
-**Anti-Deferral Principle:** Do NOT note research for the Implementation Plan if the information can be gathered now through exploration or platform subagents. Deferring research that could inform planning decisions leads to less accurate Implementation Plans. Only defer when:
-- Research scope is genuinely too large for the Planning Phase
-- The research is a project deliverable
-- User explicitly requests deferral
+**When to Explore:** User clarification alone is insufficient to resolve gaps, or responses signal context exists (references to files, patterns, documentation, architecture). Do not wait for permission when signals appear.
 
-**Proactive Exploration Triggers** → Explore proactively when User responses contain signals such as:
-- References to existing files, modules, or components
-- Mentions of existing patterns or conventions
-- Indications of relevant documentation
-- Descriptions of current architecture or structure
+**Anti-Deferral Principle:** Do NOT defer research that could inform current Round understanding or Coordination Artifacts. Gather now through exploration or platform subagents. Only defer when: scope is genuinely too large, research is a project deliverable, or User explicitly requests deferral.
 
-**Scope Assessment** → Assess scope before deciding on exploration/research approach:
-
-*Small Scope:*
-- Few files to read (roughly 1-5)
-- Single focused question or verification
-- Answer likely exists in codebase or referenced documentation
-- Can be completed quickly without significant context consumption
-
-*Medium Scope:*
-- Multiple files or cross-codebase investigation
-- Bounded question but requires dedicated focus
-- May require external documentation or source verification
-- Requires more thorough investigation but has clear stopping point
-
-*Large Scope:*
-- Research IS the project deliverable or a major project component
-- Unbounded scope with no clear stopping point
-- Multiple independent questions that should be separate tasks
-- Would compromise Planner's primary function if attempted during Planning Phase
-
-**Approach Decision:**
-
-*Small Scope* → Self-exploration. Read the relevant files and directories directly. Integrate findings into current Question Round.
-
-*Medium Scope* → {SUBAGENT_GUIDANCE}
+**Scope Assessment and Approach:**
+- *Small (1-5 files, focused question):* Self-explore directly, integrate findings into current Round's gap resolution
+- *Medium (cross-codebase, bounded but dedicated focus):* {PLANNER_SUBAGENT_GUIDANCE}
+- *Large (unbounded, project deliverable, multiple independent questions):* Note for Implementation Plan
+- *Uncertain:* Pause and ask User for approach preference before proceeding
 
 **If requesting Delegation** → Present the request using the following output format:
 ```
@@ -340,10 +315,6 @@ I'd like to request a Delegation for research on <Brief Topic> to help inform my
 7. Integrate findings into current Question Round.
 
 **If User declines Delegation** → Proceed with the User's selected alternative: self-explore directly, explore reduced scope while noting remainder for Implementation Plan, or note the research need entirely for Implementation Plan. Continue with current Question Round.
-
-*Large Scope* → Note for Implementation Plan. Do not attempt during Planning Phase.
-
-*Uncertain Scope* → Pause and ask the User. Present your assessment of the research need and ask whether to proceed with self-exploration, use available tools or an APM Delegation, or note for Implementation Plan. Do not decide unilaterally.
 
 ---
 
@@ -424,7 +395,7 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 
 ### 3.3 Question Round 2: Technical Requirements
 
-**Focus Areas:** Work structure and dependencies; technical and resource requirements; complexity and risk assessment; validation criteria; timeline constraints.
+**Focus Areas:** Work structure and dependencies; technical and resource requirements; complexity and risk assessment; validation criteria; timeline constraints; emerging specifications and standards.
 
 **Initial Questions** → Select and adapt questions that remain unanswered from these areas:
 
@@ -452,9 +423,9 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Standards Gathering:** As technical requirements and constraints emerge, note standards that should apply universally (these inform ``{AGENTS_FILE}`` content).
+**Standards Gathering:** As technical requirements emerge, identify execution-level patterns for ``{AGENTS_FILE}``. Watch for: code conventions, quality requirements, process standards, prohibited patterns, tool/technology standards. See §2.4 Standards Awareness.
 
-**Specifications Gathering:** As design decisions and constraints emerge, note specifications that should be formally documented (these inform `Specifications.md` creation).
+**Specifications Gathering:** As design decisions emerge, identify what defines the project for `Specifications.md`. Watch for: scope boundaries, core entities, behavioral rules, relationships, constraints, external interfaces. See §2.4 Specification Awareness.
 
 **Validation Criteria Gathering:** As requirements emerge, gather validation criteria. See §3.1 Validation Criteria Gathering.
 
@@ -472,7 +443,7 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 
 ### 3.4 Question Round 3: Implementation Approach and Quality
 
-**Focus Areas:** Technical constraints and preferences; workflow preferences and methodologies; quality standards and validation approaches; coordination and approval requirements; domain organization preferences; consistency and documentation standards.
+**Focus Areas:** Technical constraints and preferences; workflow preferences and methodologies; quality standards and validation approaches; coordination and approval requirements; domain organization preferences; consistency and documentation standards; finalizing specifications and standards.
 
 **Initial Questions** → Select and adapt questions that remain unanswered from these areas:
 
@@ -499,9 +470,9 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Standards Gathering:** As process preferences and constraints emerge, note standards that should apply universally (these inform ``{AGENTS_FILE}`` content).
+**Standards Gathering:** Finalize execution-level patterns for ``{AGENTS_FILE}``. Confirm: code conventions, quality requirements, process standards, prohibited patterns, tool/technology standards. See §2.4 Standards Awareness.
 
-**Specifications Gathering:** As design decisions and constraints emerge, note specifications that should be formally documented (these inform `Specifications.md` creation).
+**Specifications Gathering:** Finalize project definition for `Specifications.md`. Confirm: scope boundaries, core entities, behavioral rules, relationships, constraints, external interfaces. See §2.4 Specification Awareness.
 
 **Validation Criteria Gathering:** Continue gathering validation criteria. See §3.1 Validation Criteria Gathering.
 
@@ -554,50 +525,49 @@ This section defines the output format for the Understanding Summary.
 
 ### 4.1 Understanding Summary Format
 
-Output during Context Finalization (§3.5) for User review:
+Output during Context Finalization (§3.5) for User review. Use `##` for title, `###` for main categories. Consider using tables for structured data (validation criteria, domain mappings) where it improves clarity.
 ```
-## Understanding Summary:
+## Understanding Summary
 
-**Requirements and Deliverables:**
+### Requirements and Deliverables
 [Summarize essential features, scope, timeline, and skill areas]
 
-**Work Domains and Complexity:**
-[Summarize the major work areas and their difficulty level]
+### Work Structure
+**Domains and Complexity:** [Major work areas and difficulty levels]
+**Dependencies and Sequencing:** [What must happen before what]
+**Domain Organization:** [Identified domains, coupling/separation directives]
 
-**Dependencies and Sequencing:**
-[Outline what must happen before what]
+### Technical Context
+**Environment and Resources:** [Platforms, external resources, access needs]
+**Constraints and Preferences:** [Tools, frameworks, performance requirements]
 
-**Technical and Resource Requirements:**
-[Detail environment, platforms, external resources, and access needs]
+### Process and Quality
+**Workflow Standards:** [Workflow preferences, coordination needs, documentation requirements]
+**Complex/Risky Areas:** [Challenging aspects requiring careful breakdown]
+**External Coordination:** [Handoffs, approval checkpoints, user-guided actions]
 
-**Technical Constraints and Standards:**
-[Detail tools, frameworks, performance requirements, and technical preferences]
+### Validation Approach
+- **Programmatic:** [Automated checks - tests, CI, linting, builds]
+- **Artifact:** [Required documentation, deliverables, file outputs]
+- **User:** [Explicit user approval or review requirements]
 
-**Workflow and Quality Standards:**
-[Detail workflow preferences, quality standards, coordination needs, and documentation requirements]
+### Specifications Context (for `Specifications.md`)
+Document design decisions defining WHAT is being built. Categories vary by project-include what emerged:
+- **Scope Boundaries:** [What's included vs excluded]
+- **Core Entities:** [Key components, models, or objects]
+- **Behavioral Rules:** [How entities behave or interact]
+- **Relationships:** [How components connect]
+- **Constraints:** [Technical, business, regulatory limitations]
+- **External Interfaces:** [APIs, integrations, protocols]
 
-**Complex/Risky Aspects Requiring Careful Breakdown:**
-[Highlight challenging areas that need extra attention]
-
-**External Coordination Requirements:**
-[Note any handoffs, approval checkpoints, or user-guided actions needed]
-
-**Validation Approach:**
-- Programmatic: [Summary of automated checks - tests, CI, linting, builds]
-- Artifact: [Summary of required documentation, deliverables, file outputs]
-- User: [Summary of what requires explicit user approval or review]
-
-**Domain Organization:**
-- Identified domains: [List of work domains identified]
-- Coupling directives: [Which domains are tightly coupled and should share an agent]
-- Separation directives: [Which domains must remain separate]
-
-**Project Standard Indicators** (for ``{AGENTS_FILE}``):
-- Existing file: [Yes/No - if yes, summary of existing standards to preserve]
-- [List standards gathered during discovery - categories vary by project type. Only include what emerged from this project's context.]
-
-**Specification Indicators** (for `Specifications.md`):
-[List design decisions and constraints gathered during discovery that should be formally documented. Categories vary by project-only include what emerged from this project's context and is relevant to informing the Implementation Plan.]
+### Standards Context (for ``{AGENTS_FILE}``)
+Document execution-level patterns defining HOW work is performed. Categories vary by project-include what emerged:
+- **Existing file:** [Yes/No - if yes, standards to preserve]
+- **Code Conventions:** [Naming, formatting, organization]
+- **Quality Requirements:** [Testing, review standards]
+- **Process Standards:** [Workflow patterns to follow]
+- **Prohibited Patterns:** [Approaches to avoid]
+- **Tool/Technology Standards:** [Required tools, versions, configs]
 ```
 
 ---

@@ -204,7 +204,7 @@ Perform the following actions:
 3. Investigate based on scope:
    - **3a (Self-Investigation):**
      - Identify specific files, artifacts, Delegation Memory Logs (if any) or areas to examine
-     - Use available tools to review referenced files, verify deliverables, and gather context
+     - Use available tools to review referenced files, verify deliverables, and gather context. {MANAGER_SUBAGENT_GUIDANCE}
      - Keep investigation focused to avoid excessive context consumption
      - After investigation, proceed to step 4
    - **3b (Request Delegation):**

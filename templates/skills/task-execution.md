@@ -169,7 +169,7 @@ Execute when `has_dependencies: true`. MUST complete before Task Execution begin
 Perform the following actions:
 1. Read the `Context from Dependencies` section.
 2. Execute integration based on dependency type:
-   - **Cross-Agent:** Follow Integration Steps completely-read files, review artifacts, understand interfaces. Do not proceed until complete.
+   - **Cross-Agent:** Follow Integration Steps completely-read files, review artifacts, understand interfaces. Do not proceed until complete. {WORKER_SUBAGENT_GUIDANCE}
    - **Same-Agent:** Use guidance to recall and build upon prior work; review referenced paths to refresh context if needed.
 3. Verify integration is complete-required context understood, referenced files accessible, foundation clear.
 4. If integration issues discovered, apply decision rules from §2.1 Context Integration Standards.
