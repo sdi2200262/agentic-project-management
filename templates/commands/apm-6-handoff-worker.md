@@ -206,7 +206,7 @@ This indication allows the Manager Agent to track Worker Handoffs and adjust Con
 
 ## Immediate Next Action
 
-Await the next Task Assignment Prompt from User. When received, proceed with Task Execution per `{SKILL_PATH:task-execution}`.
+Await the next Task Assignment Prompt from User. When received, proceed with Task Execution per `{GUIDE_PATH:task-execution}`.
 ```
 
 ---
