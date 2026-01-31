@@ -1,9 +1,4 @@
----
-name: task-assignment
-description: Construction and delivery of Task Assignment Prompts to Worker Agents. Defines the Task Assignment Procedure for the Manager Agent.
----
-
-# APM {VERSION} - Task Assignment Skill
+# APM {VERSION} - Task Assignment Guide
 
 ## 1. Overview
 
@@ -31,7 +26,7 @@ This skill defines how the Manager Agent constructs Task Assignment Prompts for 
 
 **Task Assignment Prompt:** Markdown code block containing all context a Worker Agent needs to execute a Task. Delivered to User for copy-paste to Worker Agent session.
 
-**FollowUp Task Assignment Prompt:** Task Assignment Prompt with DIFFERENT content than the previous failed attempt, issued when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed." Content (Objective, Instructions, Output, Validation) is refined based on what went wrong and what correction is needed, guided by a FollowUp Context section explaining the issue.
+**FollowUp Task Assignment Prompt:** Task Assignment Prompt with DIFFERENT content than the previous failed attempt, issued when Coordination Decision (per `{GUIDE_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed." Content (Objective, Instructions, Output, Validation) is refined based on what went wrong and what correction is needed, guided by a FollowUp Context section explaining the issue.
 
 ### 1.4 Context Scoping Principle
 
@@ -69,7 +64,7 @@ Tasks may depend on outputs from previous Tasks. Context Dependencies affect how
 - Explicit file reading instructions before main work
 - Complete output summaries with integration guidance
 
-*Handoff Context Dependency:* When the Manager has detected that the target Worker performed a Handoff (per `{SKILL_PATH:memory-maintenance}` §2.3 Handoff Detection Standards), the Continuing Worker Agent only has current Stage Memory Logs loaded. This affects classification:
+*Handoff Context Dependency:* When the Manager has detected that the target Worker performed a Handoff (per `{GUIDE_PATH:memory-maintenance}` §2.3 Handoff Detection Standards), the Continuing Worker Agent only has current Stage Memory Logs loaded. This affects classification:
 - Same-Agent Context Dependencies from the **current Stage** → Treat as Same-Agent (Continuing Worker has received working context)
 - Same-Agent Context Dependencies from **previous Stages** → Treat as Cross-Agent (Continuing Worker lacks working context)
 
@@ -118,7 +113,7 @@ Task 3.2 (current - Consumer)
 
 ### 2.3 FollowUp Assignment Standards
 
-FollowUp Task Assignments occur when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed" after investigation.
+FollowUp Task Assignments occur when Coordination Decision (per `{GUIDE_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed" after investigation.
 
 **Entry Point** → The Manager arrives at FollowUp Assignment with:
 - The original Task Memory Log findings
@@ -235,7 +230,7 @@ Perform the following actions:
 
 ### 3.5 FollowUp Task Assignment Prompt Creation
 
-Execute when Coordination Decision (per `{SKILL_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed." FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt-refine all content sections based on what went wrong.
+Execute when Coordination Decision (per `{GUIDE_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed." FollowUp Task Assignments are NEW Task Assignments with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt-refine all content sections based on what went wrong.
 
 Perform the following actions:
 1. Capture the FollowUp context from Coordination Decision:
@@ -319,7 +314,7 @@ has_delegation_steps: true | false
 
 ## Memory Logging
 Upon completion, log your work to: `<memory_log_path>`
-Follow `{SKILL_PATH:memory-logging}` §3.1 Task Memory Log Procedure.
+Follow `{GUIDE_PATH:memory-logging}` §3.1 Task Memory Log Procedure.
 
 ## Task Report
 After logging, output a **Task Report** for User to return to Manager Agent.

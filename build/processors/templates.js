@@ -30,6 +30,18 @@ function isCommandTemplate(templatePath, sourceDir) {
 }
 
 /**
+ * Determines if a template file is a guide based on its source directory.
+ *
+ * @param {string} templatePath - Path to template file.
+ * @param {string} sourceDir - Source templates directory.
+ * @returns {boolean} True if file is in guides/ directory.
+ */
+function isGuideTemplate(templatePath, sourceDir) {
+  const relativePath = path.relative(sourceDir, templatePath);
+  return relativePath.startsWith('guides' + path.sep);
+}
+
+/**
  * Processes a single template file.
  *
  * @param {string} templatePath - Path to template file.
@@ -37,45 +49,45 @@ function isCommandTemplate(templatePath, sourceDir) {
  * @returns {Promise<void>}
  */
 async function processTemplate(templatePath, options) {
-  const { target, version, commandsDir, skillsDir, targetBuildDir, sourceDir } = options;
+  const { target, version, commandsDir, skillsDir, guidesDir, targetBuildDir, sourceDir } = options;
 
   const content = await fs.readFile(templatePath, 'utf8');
-  const { frontmatter, content: body } = parseFrontmatter(content);
 
   const isCommand = isCommandTemplate(templatePath, sourceDir);
-  const category = isCommand ? 'command' : 'skill';
+  const isGuide = isGuideTemplate(templatePath, sourceDir);
+  const category = isCommand ? 'command' : (isGuide ? 'guide' : 'skill');
 
   const context = { version, target };
-  const processedBody = replacePlaceholders(body, context);
-  const processedFull = replacePlaceholders(content, context);
-
   const basename = path.basename(templatePath, '.md');
   const ext = getOutputExtension(target);
-  let outputFilename;
   let finalContent;
-
-  if (isCommand) {
-    outputFilename = `${basename}${ext}`;
-
-    if (target.format === 'toml') {
-      const description = frontmatter.description || 'APM command';
-      finalContent = `description = "${description}"\n\nprompt = """\n${processedBody}\n"""\n`;
-    } else {
-      finalContent = processedFull;
-    }
-  } else {
-    // Skills output to <skillName>/SKILL.md
-    finalContent = processedFull;
-  }
-
   let outputPath;
-  if (isCommand) {
-    outputPath = path.join(commandsDir, `${basename}${ext}`);
+
+  if (isGuide) {
+    // Guides: plain markdown, no frontmatter, flat files
+    finalContent = replacePlaceholders(content, context);
+    outputPath = path.join(guidesDir, `${basename}.md`);
   } else {
-    // Skills: create subdirectory and write SKILL.md
-    const skillDir = path.join(skillsDir, basename);
-    await fs.ensureDir(skillDir);
-    outputPath = path.join(skillDir, 'SKILL.md');
+    // Commands and Skills: parse frontmatter
+    const { frontmatter, content: body } = parseFrontmatter(content);
+    const processedBody = replacePlaceholders(body, context);
+    const processedFull = replacePlaceholders(content, context);
+
+    if (isCommand) {
+      if (target.format === 'toml') {
+        const description = frontmatter.description || 'APM command';
+        finalContent = `description = "${description}"\n\nprompt = """\n${processedBody}\n"""\n`;
+      } else {
+        finalContent = processedFull;
+      }
+      outputPath = path.join(commandsDir, `${basename}${ext}`);
+    } else {
+      // Skills: create subdirectory and write SKILL.md
+      finalContent = processedFull;
+      const skillDir = path.join(skillsDir, basename);
+      await fs.ensureDir(skillDir);
+      outputPath = path.join(skillDir, 'SKILL.md');
+    }
   }
 
   await fs.writeFile(outputPath, finalContent);
@@ -114,11 +126,13 @@ async function buildTarget(target, config, version) {
   const targetBuildDir = path.join(outputDir, `${target.id}-build`);
   const commandsDir = path.join(targetBuildDir, target.directories.commands);
   const skillsDir = path.join(targetBuildDir, target.directories.skills);
+  const guidesDir = path.join(targetBuildDir, target.directories.guides);
 
   logger.info(`\nProcessing target: ${target.name} (${target.id})`);
 
   await fs.ensureDir(commandsDir);
   await fs.ensureDir(skillsDir);
+  await fs.ensureDir(guidesDir);
 
   // Copy apm/ → .apm/ (common to all targets)
   await copyApmDirectory(sourceDir, targetBuildDir);
@@ -134,6 +148,7 @@ async function buildTarget(target, config, version) {
       version,
       commandsDir,
       skillsDir,
+      guidesDir,
       targetBuildDir,
       sourceDir
     });

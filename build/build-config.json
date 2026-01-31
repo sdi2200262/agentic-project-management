@@ -13,7 +13,8 @@
       "configDir": ".github",
       "directories": {
         "commands": ".github/prompts",
-        "skills": ".github/skills"
+        "skills": ".github/skills",
+        "guides": ".github/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -30,7 +31,8 @@
       "configDir": ".claude",
       "directories": {
         "commands": ".claude/commands",
-        "skills": ".claude/skills"
+        "skills": ".claude/skills",
+        "guides": ".claude/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -47,7 +49,8 @@
       "configDir": ".gemini",
       "directories": {
         "commands": ".gemini/commands",
-        "skills": ".gemini/skills"
+        "skills": ".gemini/skills",
+        "guides": ".gemini/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -64,7 +67,8 @@
       "configDir": ".cursor",
       "directories": {
         "commands": ".cursor/commands",
-        "skills": ".cursor/skills"
+        "skills": ".cursor/skills",
+        "guides": ".cursor/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -81,7 +85,8 @@
       "configDir": ".qwen",
       "directories": {
         "commands": ".qwen/commands",
-        "skills": ".qwen/skills"
+        "skills": ".qwen/skills",
+        "guides": ".qwen/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -98,7 +103,8 @@
       "configDir": ".opencode",
       "directories": {
         "commands": ".opencode/command",
-        "skills": ".opencode/skills"
+        "skills": ".opencode/skills",
+        "guides": ".opencode/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -115,7 +121,8 @@
       "configDir": ".windsurf",
       "directories": {
         "commands": ".windsurf/workflows",
-        "skills": ".windsurf/skills"
+        "skills": ".windsurf/skills",
+        "guides": ".windsurf/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": false,
@@ -132,7 +139,8 @@
       "configDir": ".kilocode",
       "directories": {
         "commands": ".kilocode/workflows",
-        "skills": ".kilocode/skills"
+        "skills": ".kilocode/skills",
+        "guides": ".kilocode/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": false,
@@ -149,7 +157,8 @@
       "configDir": ".augment",
       "directories": {
         "commands": ".augment/commands",
-        "skills": ".augment/skills"
+        "skills": ".augment/skills",
+        "guides": ".augment/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": false,
@@ -166,7 +175,8 @@
       "configDir": ".roo",
       "directories": {
         "commands": ".roo/commands",
-        "skills": ".roo/skills"
+        "skills": ".roo/skills",
+        "guides": ".roo/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": false,
@@ -183,7 +193,8 @@
       "configDir": ".agent",
       "directories": {
         "commands": ".agent/workflows",
-        "skills": ".agent/skills"
+        "skills": ".agent/skills",
+        "guides": ".agent/apm-guides"
       },
       "subagentGuidance": {
         "hasSubagents": false,

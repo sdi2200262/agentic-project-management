@@ -1,9 +1,4 @@
----
-name: task-execution
-description: Task execution methodology including context integration, execution, validation, iteration cycles, and delegation handling. Defines the Task Execution procedure for Worker Agents.
----
-
-# APM {VERSION} - Task Execution Skill
+# APM {VERSION} - Task Execution Guide
 
 ## 1. Overview
 
@@ -30,9 +25,9 @@ This skill defines how Worker Agents execute Tasks assigned by the Manager Agent
 
 **Completed Task Deliverables:** Files, artifacts, or outputs as specified in Expected Output.
 
-**Task Memory Log:** Structured log per `{SKILL_PATH:memory-logging}` §4.1 Task Memory Log Format.
+**Task Memory Log:** Structured log per `{GUIDE_PATH:memory-logging}` §4.1 Task Memory Log Format.
 
-**Task Report:** Concise summary for User to return to Manager Agent, per `{SKILL_PATH:memory-logging}` §4.3 Task Report Format.
+**Task Report:** Concise summary for User to return to Manager Agent, per `{GUIDE_PATH:memory-logging}` §4.3 Task Report Format.
 
 ---
 
@@ -240,8 +235,8 @@ Perform the following actions:
 Perform the following actions:
 1. Determine final status per §2.5 Failure Status Standards (Success if all validation passed).
 2. Determine `failure_point`: `null` for Success; `Execution` or `Validation` or `<description>` based on where stopped.
-3. Create Task Memory Log per `{SKILL_PATH:memory-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
-4. Output Task Report per `{SKILL_PATH:memory-logging}` §4.3 Task Report Format. Include Continuing Worker indication if this is your first Task after Handoff.
+3. Create Task Memory Log per `{GUIDE_PATH:memory-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
+4. Output Task Report per `{GUIDE_PATH:memory-logging}` §4.3 Task Report Format. Include Continuing Worker indication if this is your first Task after Handoff.
 5. Await next Task Assignment or Handoff initiation.
 
 ---
@@ -250,9 +245,9 @@ Perform the following actions:
 
 ### 4.1 Output Format References
 
-**Task Memory Log:** Per `{SKILL_PATH:memory-logging}` §4.1 Task Memory Log Format, at `memory_log_path` from Task Assignment.
+**Task Memory Log:** Per `{GUIDE_PATH:memory-logging}` §4.1 Task Memory Log Format, at `memory_log_path` from Task Assignment.
 
-**Task Report:** Per `{SKILL_PATH:memory-logging}` §4.3 Task Report Format.
+**Task Report:** Per `{GUIDE_PATH:memory-logging}` §4.3 Task Report Format.
 
 **Delegation Prompt:** Per relevant delegation skill methodology.
 

@@ -21,7 +21,7 @@ You will also create or update `{AGENTS_FILE}` at workspace root with project st
 ## 2. Context Gathering Procedure
 
 Perform the following actions:
-1. Read `{SKILL_PATH:context-gathering}` for project discovery methodology.
+1. Read `{GUIDE_PATH:context-gathering}` for project discovery methodology.
 2. Execute the skill through completion. The skill controls Question Rounds 1-3, Gap Assessment, Understanding Summary, and the procedure checkpoint.
 3. When complete, return here and proceed to §3. Work Breakdown Procedure.
 
@@ -32,7 +32,7 @@ Perform the following actions:
 **Prerequisite:** Context Gathering Procedure must be complete.
 
 Perform the following actions:
-1. Read `{SKILL_PATH:work-breakdown}`.
+1. Read `{GUIDE_PATH:work-breakdown}`.
 2. Execute the skill through completion. The skill controls Standards Analysis, Specifications Analysis, Domain Analysis, Stage Analysis, and the procedure checkpoint.
 3. Session is complete when the checkpoint is presented and User requests no modifications. User then initiates Implementation Phase using `/apm-2-initiate-manager`.
 
@@ -50,11 +50,11 @@ Perform the following actions:
 - **Output Patterns:** Follow skill specifications for checkpoints, requests, summaries, and completions.
 - **Completion Confirmation:** Never proceed to a new Procedure without explicit completion confirmation.
 - **Efficiency:** Be token efficient and concise but detailed enough for best User experience.
-- **References:** Link skills by path (e.g., ``{SKILL_PATH:context-gathering}``); do not quote their content.
+- **References:** Link skills by path (e.g., ``{GUIDE_PATH:context-gathering}``); do not quote their content.
 
 ### 4.3 Exploration and Research Capability
 
-You may explore the codebase and conduct research during Context Gathering per `{SKILL_PATH:context-gathering}` §2.8 Exploration and Research Standards. The Planner Agent operates in a single Session—exercise restraint with exploration to preserve context for Work Breakdown.
+You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.8 Exploration and Research Standards. The Planner Agent operates in a single Session—exercise restraint with exploration to preserve context for Work Breakdown.
 
 ---
 

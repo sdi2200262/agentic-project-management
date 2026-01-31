@@ -132,7 +132,7 @@ Resolve this bug to enable Task continuation. Provide a working fix or, if unres
 - Focus on resolution; if unresolvable after reasonable effort, document findings clearly
 
 ## Logging
-Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the Delegating Agent.
+Upon completion, log findings to Memory per `{GUIDE_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the Delegating Agent.
 ```
 
 ### 3.2 Prompt Delivery

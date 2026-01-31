@@ -1,9 +1,4 @@
----
-name: memory-logging
-description: Creation and population of Memory Logs following defined formats. Defines the Memory Logging procedure for Worker Agents and Delegate Agents.
----
-
-# APM {VERSION} - Memory Logging Skill
+# APM {VERSION} - Memory Logging Guide
 
 ## 1. Overview
 
@@ -175,7 +170,7 @@ Perform the following actions:
 
 After completing delegated work, create and populate the Delegation Memory Log.
 
-**Planning Phase Note:** For delegations initiated by Planner Agent (during `{SKILL_PATH:context-gathering}` or `{SKILL_PATH:work-breakdown}`), use stage `00` and directory `Stage_00_Planning/`. Example: `Delegation_Log_00_01_Research_Tech_Stack.md`
+**Planning Phase Note:** For delegations initiated by Planner Agent (during `{GUIDE_PATH:context-gathering}` or `{GUIDE_PATH:work-breakdown}`), use stage `00` and directory `Stage_00_Planning/`. Example: `Delegation_Log_00_01_Research_Tech_Stack.md`
 
 Perform the following actions:
 1. Determine delegation log path:
