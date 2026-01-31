@@ -131,7 +131,7 @@ Gather current, authoritative information to answer the research questions below
 - Provide actionable findings that directly answer the questions
 
 ## Logging
-Upon completion, log findings to Memory per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the Delegating Agent.
+Upon completion, log findings to Memory per `{GUIDE_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the Delegating Agent.
 ```
 
 ### 3.2 Prompt Delivery

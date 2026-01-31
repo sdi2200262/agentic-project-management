@@ -28,7 +28,7 @@ Perform the following actions:
    - Follow the methodology specified in the prompt
    - Work within the scoped boundaries provided
    - Focus on producing findings that the Delegating Agent can integrate
-4. Upon completion, create Delegation Memory Log per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure.
+4. Upon completion, create Delegation Memory Log per `{GUIDE_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure.
 5. Present the delegation outcome as a markdown code block. Guide the User to return the report to the Delegating Agent. The report should summarize the delegation outcome and reference the Delegation Memory Log path.
 6. Session is complete. No further action unless User initiates a new delegation.
 
@@ -53,7 +53,7 @@ If you cannot fully resolve the delegation despite reasonable attempts, log as U
 
 ### 3.3 Communication Standards
 
-- **Delegation Memory Log:** Create per `{SKILL_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure and §4.2 Delegation Memory Log Format.
+- **Delegation Memory Log:** Create per `{GUIDE_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure and §4.2 Delegation Memory Log Format.
 - **Delegation Report:** Present as a markdown code block for the User to return to the Delegating Agent.
 - **Findings focus:** Prioritize actionable findings that enable the Delegating Agent to continue their work.
 - **Concise reporting:** Detail belongs in the Memory Log; the report is a summary with path reference.

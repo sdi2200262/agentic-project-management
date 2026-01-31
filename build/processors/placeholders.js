@@ -15,6 +15,7 @@ import path from 'path';
  * - {VERSION}: Package version
  * - {TIMESTAMP}: ISO timestamp
  * - {SKILL_PATH:name}: Full path to skill file (<name>/SKILL.md)
+ * - {GUIDE_PATH:name}: Full path to guide file (<name>.md) - flat structure, no frontmatter
  * - {COMMAND_PATH:name}: Full path to command file (resolves extension per target)
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
  * - {AGENTS_FILE}: Platform-specific agents file name
@@ -46,6 +47,11 @@ export function replacePlaceholders(content, context) {
   // Replace SKILL_PATH placeholder (skills are in <name>/SKILL.md structure)
   replaced = replaced.replace(/{SKILL_PATH:([^}]+)}/g, (_match, skillName) => {
     return path.join(directories.skills, skillName, 'SKILL.md');
+  });
+
+  // Replace GUIDE_PATH placeholder (guides are flat files, no frontmatter)
+  replaced = replaced.replace(/{GUIDE_PATH:([^}]+)}/g, (_match, guideName) => {
+    return path.join(directories.guides, `${guideName}.md`);
   });
 
   // Replace COMMAND_PATH placeholder (resolves to full path with target-specific extension)
