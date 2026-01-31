@@ -1,9 +1,4 @@
----
-name: memory-maintenance
-description: Memory System management including initialization, directory structure, Task Memory Log review, Coordination Decisions, and Stage Summaries. Defines Memory maintenance procedures for the Manager Agent.
----
-
-# APM {VERSION} - Memory Maintenance Skill
+# APM {VERSION} - Memory Maintenance Guide
 
 ## 1. Overview
 
@@ -65,7 +60,7 @@ The goal is to extract information needed for the next Coordination Decision and
 **Flag Interpretation** → Workers set flags based on their scoped observations. The Manager interprets these flags with full project awareness to assess actual coordination impact:
 - `important_findings: true` - Worker observed something that appeared to have implications beyond their Task scope. Manager assesses whether this affects Coordination Artifacts or other Tasks, otherwise just a false-positive.
 - `compatibility_issues: true` - Worker observed conflicts with existing systems they encountered. Manager assesses whether this indicates Implementation Plan, Specification or Standards issues, otherwise just a false-positive.
-- `delegation: true` - Worker delegated part of the Task. Task Memory Log contains summary and Delegation Memory Log contains full findings. See `{SKILL_PATH:memory-logging}` §4.2 Delegation Memory Log Format.
+- `delegation: true` - Worker delegated part of the Task. Task Memory Log contains summary and Delegation Memory Log contains full findings. See `{GUIDE_PATH:memory-logging}` §4.2 Delegation Memory Log Format.
 
 **Content Review:** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened. See §3.4 Task Memory Log Review and §4.4 Task Memory Log Structure.
 
@@ -97,7 +92,7 @@ After reviewing a Task Memory Log, the Manager must make a Coordination Decision
 **Assessment 3 - Post-Investigation Outcome** → After investigation (self or delegated), assess the outcome:
 - *No issues:* Investigation revealed nothing requiring action (may have been false positives) → Proceed to next Task.
 - *FollowUp needed:* Issues require same Worker to retry or refine work → Create FollowUp Task Assignment Prompt with informed instructions.
-- *Artifact modification needed:* Coordination Artifacts need updates → Follow `{SKILL_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure.
+- *Artifact modification needed:* Coordination Artifacts need updates → Follow `{GUIDE_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure.
 
 The scope determines *how* to investigate, not *what* outcomes are possible-all three outcomes can result from either scope. When artifact modification is needed, note the triggering context (log, findings, flags) and identify affected artifact(s).
 
@@ -223,8 +218,8 @@ Perform the following actions:
      - When User returns with Delegation Report, read the Delegation Memory Log and integrate findings, then proceed to step 4
 4. Assess post-investigation outcome using §2.2 Coordination Decision Standards Assessment 3:
    - **No issues** → Proceed to next Task Assignment (return to Task Cycle in initiation command)
-   - **FollowUp needed** → Create FollowUp Task Assignment Prompt per `{SKILL_PATH:task-assignment}` §3.5 FollowUp Task Assignment Prompt Creation, output for User
-   - **Coordination Artifact modification needed** → Handoff to `{SKILL_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure
+   - **FollowUp needed** → Create FollowUp Task Assignment Prompt per `{GUIDE_PATH:task-assignment}` §3.5 FollowUp Task Assignment Prompt Creation, output for User
+   - **Coordination Artifact modification needed** → Handoff to `{GUIDE_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure
 
 **If proceeding to next Task** and all Tasks in current Stage are complete → Proceed to §3.6 Stage Summary Creation before creating next Task's Task Assignment Prompt.
 

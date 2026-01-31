@@ -1,9 +1,4 @@
----
-name: context-gathering
-description: Project discovery through structured elicitation of requirements, constraints, and context. Defines the Context Gathering Procedure for the Planner Agent.
----
-
-# APM {VERSION} - Context Gathering Skill
+# APM {VERSION} - Context Gathering Guide
 
 ## 1. Overview
 
@@ -376,7 +371,7 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 
 **Question Delivery:** Combine related questions naturally in conversation rather than asking sequentially. Adapt language to project context and user expertise level. Skip questions already answered by existing materials or previous responses.
 
-**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see §1.3 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during the Work Breakdown Procedure?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
+**Agent Configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (see §1.3 Methodology Principles), include in your initial questions: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during the Work Breakdown Procedure?" If User provides a file, read it and note existing contents for integration. If no existing file, note that it will be created during `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
 **Gap Assessment Criteria** → After each User response, assess:
 - **Project Foundation:** Is the project type and deliverable format clear?
@@ -492,7 +487,7 @@ Many requirements need multiple types. Capture all applicable criteria; type cat
 
 ### 3.5 Context Finalization
 
-After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to `{SKILL_PATH:work-breakdown}`.
+After completing the three Question Rounds, present the gathered context for User review and handle any modification requests before proceeding to `{GUIDE_PATH:work-breakdown}`.
 
 Perform the following actions:
 1. Present the Understanding Summary consolidating all gathered context per §4.1 Understanding Summary Format.
@@ -504,7 +499,7 @@ Perform the following actions:
 
    **Your options:**
    - **Modifications needed** → Describe any misunderstandings, missing requirements or constraints and I will update.
-   - **All looks good** → I will proceed to the Work Breakdown Procedure per `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
+   - **All looks good** → I will proceed to the Work Breakdown Procedure per `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure.
    ```
    - If User requests modifications → Identify which Question Round's focus area the modification relates to → Use that Round's questioning approach for targeted follow-ups → Update relevant summary sections → Return to step 1 with updated summary
    - If User approves → Output procedure completion and proceed to step 3
@@ -512,10 +507,10 @@ Perform the following actions:
    ```
    **Context Gathering Procedure complete.** All Question Rounds completed. Project context gathered and validated.
 
-   Next: `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure
+   Next: `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure
    ```
 
-**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to `{SKILL_PATH:work-breakdown}` §3 Work Breakdown Procedure.
+**Procedure Control Returns:** Control returns to the Planner Agent Initiation Prompt. Proceed to `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
 ---
 

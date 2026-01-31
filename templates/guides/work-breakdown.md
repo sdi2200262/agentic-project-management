@@ -1,9 +1,4 @@
----
-name: work-breakdown
-description: Decomposition of gathered context into the Implementation Plan with domain analysis, stage definition, and task breakdown. Defines the Work Breakdown procedure for the Planner Agent.
----
-
-# APM {VERSION} - Work Breakdown Skill
+# APM {VERSION} - Work Breakdown Guide
 
 ## 1. Overview
 
@@ -40,7 +35,7 @@ The breakdown guidance in this skill provides criteria for making decomposition 
 
 Stage, task and step definitions should always be adjusted based on the actual size and complexity of the project. Break down the work to provide the right level of detail for the project's needs, applying more granularity when justified by complexity and less when simplicity allows. Let the real scope and requirements guide how work units are identified and organized.
 
-Adapt the methodology to the project based on `{SKILL_PATH:context-gathering}` findings about scale, complexity, and requirements. The guidance in this skill supports your reasoning; the project's actual scope determines appropriate granularity.
+Adapt the methodology to the project based on `{GUIDE_PATH:context-gathering}` findings about scale, complexity, and requirements. The guidance in this skill supports your reasoning; the project's actual scope determines appropriate granularity.
 
 ---
 
@@ -64,7 +59,7 @@ Work Breakdown uses Forced Chain-of-Thought (CoT), requiring explicit reasoning 
 
 ### 2.2 Context Integration
 
-Work Breakdown requires context from ``{SKILL_PATH:context-gathering}`` across these categories:
+Work Breakdown requires context from ``{GUIDE_PATH:context-gathering}`` across these categories:
 
 **Project Definition:**
 - Project vision, goals, and success criteria
