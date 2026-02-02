@@ -55,8 +55,6 @@ For assistants without this capability, the existing APM delegation workflow (us
 
 **Key Insight:** APM workflows are strictly sequential—Manager sends one task, waits for one report, then sends the next. This means only ONE message is ever "in flight" in each direction, making a simple file-based buffer sufficient.
 
----
-
 ### Tier Classification
 
 Based on subagent capability research, APM will support two tiers:
@@ -75,8 +73,6 @@ Based on subagent capability research, APM will support two tiers:
 - No autonomous subagent capability, OR
 - Subagent support is experimental/unreliable, OR
 - Subagents lack full context isolation
-
----
 
 ### Message Bus Protocol
 
@@ -140,8 +136,6 @@ Based on subagent capability research, APM will support two tiers:
 7. Repeat
 ```
 
----
-
 ### Message Format Specification
 
 All bus files use consistent format:
@@ -174,8 +168,6 @@ previous_type: <type of consumed message>
 Message delivered and consumed. Awaiting next communication.
 ```
 
----
-
 ### Protocol Rules
 
 #### Sending Protocol
@@ -194,8 +186,6 @@ Message delivered and consumed. Awaiting next communication.
 - Prevents stale reads if User accidentally re-references
 - Makes "pending vs. consumed" state visible
 - Previous message already processed, overwriting is safe
-
----
 
 ### Handoff Edge Case Handling
 
@@ -232,8 +222,6 @@ Message delivered and consumed. Awaiting next communication.
 2. Check for `## Incomplete Task Context` section
 3. If present: Resume incomplete task before awaiting new assignments
 4. If absent: Normal handoff, await next Task Assignment
-
----
 
 ### Template Architecture (Hybrid Approach)
 
@@ -286,8 +274,6 @@ templates/
 3. Include/exclude files per tier config
 4. Output to `dist/{assistant_name}/`
 
----
-
 ### Build Configuration Schema
 
 ```yaml
@@ -339,8 +325,6 @@ assistants:
     description: "Fallback for unknown assistants"
 ```
 
----
-
 ### Key Behavioral Differences by Tier
 
 | Behavior | Tier 1 (Optimized) | Tier 2 (Standard) |
@@ -351,8 +335,6 @@ assistants:
 | Manager report reading | "Read from `from_{agent_id}.md`" | "Read from `apm_report.md`" |
 | User conversation switches | Manager ↔ Workers only | Manager ↔ Workers ↔ Delegates |
 | Parallel workflow potential | Yes (future) | No |
-
----
 
 ### Implementation Phases
 
@@ -375,8 +357,6 @@ assistants:
 - Create assistant-specific outputs
 - Document build process
 
----
-
 ### Open Questions
 
 1. **Bus initialization:** Should Planner create `.apm/bus/` directory, or Manager on first use?
@@ -384,8 +364,6 @@ assistants:
 3. **Multi-project:** If User has multiple APM projects, how to avoid bus collision? (Probably fine—each project has its own `.apm/`)
 4. **Validation:** Should receiving agent validate message `to:` field matches their identity?
 5. **Error recovery:** What if User references wrong bus file? Agent should detect and inform.
-
----
 
 ### Next Steps
 
@@ -395,5 +373,111 @@ assistants:
 - [ ] Create `guides/message-bus.md` for Tier 2
 - [ ] Design subagent-delegation skill for Tier 1
 - [ ] Build config schema implementation
+
+---
+
+## Session Continuation Workflow (February 2026)
+
+**Context:** Designing a mechanism to close the agentic loop when an APM session completes. Users need to archive completed sessions and start fresh while optionally leveraging previous session context.
+
+**Problem Statement:** When an APM session completes (all stages done, deliverables working), there's no formal continuation mechanism. The Manager can add tasks but lacks the Planner's discovery capabilities. Existing artifacts reflect completed work, not new scope. Users need to start fresh while optionally preserving access to previous session context.
+
+**Key Constraint:** Archived context is a snapshot; the codebase is mutable. Automatic session linking creates fragile dependency chains—Session B may invalidate Session A's context without explicit relationship. Programmatic linking creates false confidence.
+
+### Design Principles
+
+1. **No programmatic linking** - Archives are storage, not dependency sources
+2. **User decides relevance** - Planner asks, doesn't assume
+3. **Verify before asking** - Context retrieval + codebase verification THEN questions
+4. **Snapshot acknowledgment** - Summaries explicitly state point-in-time nature
+
+### Components
+
+| Component | Purpose | Actor |
+|-----------|---------|-------|
+| `apm continue` | Archive current session, create fresh templates | CLI (programmatic) |
+| `/apm-summarize-session` | Create high-level summary artifact (optional) | Native agent (no APM layers) |
+| Context Detection | Detect archives, ask user about relevance | Planner Agent |
+| Context Retrieval | Explore archive + verify against codebase | Subagent (Tier 1) or Planner (Tier 2) |
+
+### `apm continue` Command
+
+**Behavior:**
+```
+$ apm continue [-n|--name <name>]
+
+1. Prompt for archive name (or use flag/default)
+2. Move .apm/* to .apm/archives/<name>/
+3. Create fresh template artifacts
+4. Output completion message
+```
+
+**Archive Structure:**
+```
+.apm/archives/<name>/
+├── Implementation_Plan.md
+├── Specifications.md
+├── APM_Session_Summary.md    # If summarize was run
+└── Memory/
+```
+
+No metadata files. No linking. Just storage.
+
+### `/apm-summarize-session` Command
+
+Creates `.apm/APM_Session_Summary.md` capturing:
+- Session intent (what user wanted to achieve)
+- What was built (outcomes, deliverables)
+- Artifact relationships (how Specs informed Plan, etc.)
+- Key technical decisions with file/directory references
+- Known limitations / deferred work
+- Continuation notes
+
+**Key characteristic:** Explicitly acknowledges snapshot nature. Designed to help Planner (or subagent) navigate archive efficiently.
+
+### Planner Context Detection (Addition to Context Gathering)
+
+**§0.1 Previous Session Detection:**
+1. Check for `.apm/archives/`
+2. If archives exist, list to User with basic info (name, date)
+3. Ask: "Are any relevant? Which ones and any caveats?"
+4. User decides: none (fresh start) or specific session(s) with guidance
+
+**§0.2 Context Retrieval (if user indicates relevance):**
+
+| Tier | Exploration | Verification |
+|------|-------------|--------------|
+| **Tier 1** | Subagent 1: Explore archive | Subagent 2: Verify against codebase |
+| **Tier 2** | Planner direct (if small) or delegate | Planner targeted checks or deferred |
+
+**Post-retrieval:** Question Rounds become delta-focused—what's new, what changed, what's the new intent. Don't re-ask what's known and verified.
+
+### Tier-Specific Behavior
+
+**Tier 1 (Subagent-capable):**
+1. Spawn Subagent 1: Archive Exploration → Returns Archive Context Report
+2. Spawn Subagent 2: Codebase Verification (with user caveats) → Returns Verification Report
+3. Planner integrates both, proceeds with delta-focused questions
+
+**Tier 2 (No subagents):**
+1. Assess feasibility: Summary exists? Session size?
+2. Path A (small/summary exists): Planner reads directly, targeted verification
+3. Path B (large/complex): Recommend delegation or user-provided context
+4. Questions may be hybrid (delta + discovery for gaps)
+
+### Open Questions
+
+1. **Default archive naming:** Incremental (`session-1`, `session-2`) vs timestamp-based?
+2. **Summary command naming:** `/apm-summarize-session` vs `/apm-session-summary`?
+3. **Stale archive cleanup:** Should there be an `apm archives --prune` command?
+4. **Multi-archive selection:** Can user select multiple archives? How does Planner handle conflicts?
+
+### Next Steps
+
+- [ ] Define `apm continue` CLI specification
+- [ ] Define `/apm-summarize-session` command procedure
+- [ ] Add §0.1 and §0.2 to Context Gathering guide
+- [ ] Create tier-specific context retrieval protocols
+- [ ] Define APM_Session_Summary.md template structure
 
 ---
