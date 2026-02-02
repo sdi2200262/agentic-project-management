@@ -55,8 +55,6 @@ For assistants without this capability, the existing APM delegation workflow (us
 
 **Key Insight:** APM workflows are strictly sequential—Manager sends one task, waits for one report, then sends the next. This means only ONE message is ever "in flight" in each direction, making a simple file-based buffer sufficient.
 
----
-
 ### Tier Classification
 
 Based on subagent capability research, APM will support two tiers:
@@ -75,8 +73,6 @@ Based on subagent capability research, APM will support two tiers:
 - No autonomous subagent capability, OR
 - Subagent support is experimental/unreliable, OR
 - Subagents lack full context isolation
-
----
 
 ### Message Bus Protocol
 
@@ -140,8 +136,6 @@ Based on subagent capability research, APM will support two tiers:
 7. Repeat
 ```
 
----
-
 ### Message Format Specification
 
 All bus files use consistent format:
@@ -174,8 +168,6 @@ previous_type: <type of consumed message>
 Message delivered and consumed. Awaiting next communication.
 ```
 
----
-
 ### Protocol Rules
 
 #### Sending Protocol
@@ -194,8 +186,6 @@ Message delivered and consumed. Awaiting next communication.
 - Prevents stale reads if User accidentally re-references
 - Makes "pending vs. consumed" state visible
 - Previous message already processed, overwriting is safe
-
----
 
 ### Handoff Edge Case Handling
 
@@ -232,8 +222,6 @@ Message delivered and consumed. Awaiting next communication.
 2. Check for `## Incomplete Task Context` section
 3. If present: Resume incomplete task before awaiting new assignments
 4. If absent: Normal handoff, await next Task Assignment
-
----
 
 ### Template Architecture (Hybrid Approach)
 
@@ -286,8 +274,6 @@ templates/
 3. Include/exclude files per tier config
 4. Output to `dist/{assistant_name}/`
 
----
-
 ### Build Configuration Schema
 
 ```yaml
@@ -339,8 +325,6 @@ assistants:
     description: "Fallback for unknown assistants"
 ```
 
----
-
 ### Key Behavioral Differences by Tier
 
 | Behavior | Tier 1 (Optimized) | Tier 2 (Standard) |
@@ -351,8 +335,6 @@ assistants:
 | Manager report reading | "Read from `from_{agent_id}.md`" | "Read from `apm_report.md`" |
 | User conversation switches | Manager ↔ Workers only | Manager ↔ Workers ↔ Delegates |
 | Parallel workflow potential | Yes (future) | No |
-
----
 
 ### Implementation Phases
 
@@ -375,8 +357,6 @@ assistants:
 - Create assistant-specific outputs
 - Document build process
 
----
-
 ### Open Questions
 
 1. **Bus initialization:** Should Planner create `.apm/bus/` directory, or Manager on first use?
@@ -384,8 +364,6 @@ assistants:
 3. **Multi-project:** If User has multiple APM projects, how to avoid bus collision? (Probably fine—each project has its own `.apm/`)
 4. **Validation:** Should receiving agent validate message `to:` field matches their identity?
 5. **Error recovery:** What if User references wrong bus file? Agent should detect and inform.
-
----
 
 ### Next Steps
 
