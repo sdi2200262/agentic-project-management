@@ -4,7 +4,7 @@
 
 **Reading Agent:** Worker Agent
 
-This skill defines how Worker Agents execute Tasks assigned by the Manager Agent via Task Assignment Prompts. Task Execution transforms Task Assignments into completed deliverables through context integration, execution, validation, and iteration.
+This skill defines how Worker Agents execute Tasks assigned by the Manager Agent via Task Prompts. Task Execution transforms Task Prompts into completed deliverables through context integration, execution, validation, and iteration.
 
 ### 1.1 How to Use This Skill
 
@@ -85,7 +85,7 @@ When Task Validation fails, the Worker enters an iteration cycle-correct, re-exe
 
 Pauses interrupt execution flow. Understanding pause categories guides when to pause and when to continue autonomously.
 
-**Obligatory Pauses (always pause):** Delegation steps, explicit User actions in instructions, and User Validation Type all require pausing. See §3.5 Pause Handling and §3.6 Delegation Handling.
+**Obligatory Pauses (always pause):** Explicit User actions in instructions and User Validation Type require pausing. See §3.5 Pause Handling.
 
 **Autonomous Pauses (Worker judgment)** → Workers may choose to pause at natural breakpoints during complex Tasks. This is appropriate when:
 - Task scope is large with distinct parts and natural breakpoints between work clusters
@@ -124,7 +124,7 @@ Not all Tasks succeed. Understanding failure types guides appropriate status cla
 
 Users facilitate communication between Agents and provide guidance at decision points.
 
-**Required Collaboration:** Some situations require User involvement: User validation (Worker cannot self-approve subjective quality), Delegations (User transfers between sessions), explicit User actions (Worker cannot act outside development environment), and iteration pauses (Worker needs guidance on how to proceed).
+**Required Collaboration:** Some situations require User involvement: User validation (Worker cannot self-approve subjective quality), explicit User actions (Worker cannot act outside development environment), and iteration pauses (Worker needs guidance on how to proceed).
 
 **Autonomous Decisions:** Workers decide autonomously on: executing Programmatic/Artifact validation, continuing iteration when cause is clear and fix is within scope, and standard instruction execution.
 
@@ -196,9 +196,9 @@ Invoked when a pause point is reached. See §2.4 Pause Standards.
 
 Perform the following actions:
 1. Determine pause type:
-   - Obligatory: Delegation (requires creating Delegation Prompt and awaiting findings), explicit User action (requires waiting for User completion), User Validation Type (requires presenting work and awaiting approval)
+   - Obligatory: Explicit User action (requires waiting for User completion), User Validation Type (requires presenting work and awaiting approval)
    - Autonomous: complexity-driven at natural breakpoint
-2. Communicate the pause to User. For Delegation, follow to §3.6 Delegation Handling. For other pauses, concisely present:
+2. Communicate the pause to User. Concisely present:
    - What has been accomplished
    - What issue or decision point was reached (why pausing)
    - What options exist
@@ -208,16 +208,19 @@ Perform the following actions:
 
 ### 3.6 Delegation Handling
 
-Invoked when a Delegation step is encountered.
+Invoked when a Delegation step is encountered. Delegates are spawned as subagents to perform isolated, focused work.
 
 Perform the following actions:
 1. Identify Delegation type from the instruction and Delegation section (Debug, Research, or other as specified).
-2. Read the relevant Delegation skill.
-3. Create Delegation Prompt following the skill's methodology.
-4. Output the Delegation Prompt as a markdown code block. Explain that you've reached a delegation step, state the delegation type and purpose, and guide User to copy the prompt to a new Delegate Agent session and return with the Delegation Report.
-5. Await Delegation Report from User.
-6. Read the Delegation Memory Log at the referenced path. Note status (Resolved/Unresolved).
-7. If Resolved → integrate findings, resume execution with next step. If Unresolved → apply §2.5 Failure Status Standards; present the situation to User explaining what was being investigated, what partial findings exist, what remains unclear, and options for proceeding (continue with partial findings, attempt different approach, or escalate). Await guidance.
+2. Read the relevant Delegation skill from `{SKILLS_DIR}` to understand the task input structure and spawn syntax.
+3. Spawn the delegate subagent per the skill's §3.2, passing the task input structured per §3.1:
+   - **Research delegation:** `research-delegate` subagent
+   - **Debug delegation:** `debug-delegate` subagent
+4. The delegate executes autonomously and returns findings.
+5. Integrate the delegate's findings:
+   - **If Resolved:** Apply findings to current Task context, resume execution with next step.
+   - **If Unresolved:** Apply §2.5 Failure Status Standards; assess whether to continue with partial findings, attempt a different approach, or pause for User guidance.
+6. If the delegate could not complete the work and User guidance is needed, present the situation explaining what was being investigated, what partial findings exist, what remains unclear, and options for proceeding.
 
 ### 3.7 Iteration Cycle
 

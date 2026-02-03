@@ -14,7 +14,8 @@
       "directories": {
         "commands": ".github/prompts",
         "skills": ".github/skills",
-        "guides": ".github/apm-guides"
+        "guides": ".github/apm-guides",
+        "agents": ".github/agents"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -32,7 +33,8 @@
       "directories": {
         "commands": ".claude/commands",
         "skills": ".claude/skills",
-        "guides": ".claude/apm-guides"
+        "guides": ".claude/apm-guides",
+        "agents": ".claude/agents"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -50,11 +52,12 @@
       "directories": {
         "commands": ".gemini/commands",
         "skills": ".gemini/skills",
-        "guides": ".gemini/apm-guides"
+        "guides": ".gemini/apm-guides",
+        "agents": ".gemini/agents"
       },
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "delegate_to_agent(agent_name=\"codebase_investigator\", objective=\"...\")",
+        "toolSyntax": "codebase_investigator(query=\"...\")",
         "explorerName": "codebase_investigator",
         "configNote": "Requires `enableAgents: true` in ~/.gemini/settings.json"
       }
@@ -68,7 +71,8 @@
       "directories": {
         "commands": ".cursor/commands",
         "skills": ".cursor/skills",
-        "guides": ".cursor/apm-guides"
+        "guides": ".cursor/apm-guides",
+        "agents": ".cursor/agents"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -86,7 +90,8 @@
       "directories": {
         "commands": ".qwen/commands",
         "skills": ".qwen/skills",
-        "guides": ".qwen/apm-guides"
+        "guides": ".qwen/apm-guides",
+        "agents": ".qwen/agents"
       },
       "subagentGuidance": {
         "hasSubagents": true,
@@ -104,102 +109,13 @@
       "directories": {
         "commands": ".opencode/command",
         "skills": ".opencode/skills",
-        "guides": ".opencode/apm-guides"
+        "guides": ".opencode/apm-guides",
+        "agents": ".opencode/agents"
       },
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "Task(subagent_type=\"Explore\", prompt=\"...\")",
-        "explorerName": "Explore",
-        "configNote": null
-      }
-    },
-    {
-      "id": "windsurf",
-      "name": "Windsurf",
-      "bundleName": "windsurf.zip",
-      "format": "markdown",
-      "configDir": ".windsurf",
-      "directories": {
-        "commands": ".windsurf/workflows",
-        "skills": ".windsurf/skills",
-        "guides": ".windsurf/apm-guides"
-      },
-      "subagentGuidance": {
-        "hasSubagents": false,
-        "toolSyntax": null,
-        "explorerName": null,
-        "configNote": null
-      }
-    },
-    {
-      "id": "kilocode",
-      "name": "Kilo Code",
-      "bundleName": "kilocode.zip",
-      "format": "markdown",
-      "configDir": ".kilocode",
-      "directories": {
-        "commands": ".kilocode/workflows",
-        "skills": ".kilocode/skills",
-        "guides": ".kilocode/apm-guides"
-      },
-      "subagentGuidance": {
-        "hasSubagents": false,
-        "toolSyntax": null,
-        "explorerName": null,
-        "configNote": null
-      }
-    },
-    {
-      "id": "auggie",
-      "name": "Auggie CLI",
-      "bundleName": "auggie.zip",
-      "format": "markdown",
-      "configDir": ".augment",
-      "directories": {
-        "commands": ".augment/commands",
-        "skills": ".augment/skills",
-        "guides": ".augment/apm-guides"
-      },
-      "subagentGuidance": {
-        "hasSubagents": false,
-        "toolSyntax": null,
-        "explorerName": null,
-        "configNote": null
-      }
-    },
-    {
-      "id": "roo",
-      "name": "Roo Code",
-      "bundleName": "roo.zip",
-      "format": "markdown",
-      "configDir": ".roo",
-      "directories": {
-        "commands": ".roo/commands",
-        "skills": ".roo/skills",
-        "guides": ".roo/apm-guides"
-      },
-      "subagentGuidance": {
-        "hasSubagents": false,
-        "toolSyntax": null,
-        "explorerName": null,
-        "configNote": null
-      }
-    },
-    {
-      "id": "antigravity",
-      "name": "Google Antigravity",
-      "bundleName": "antigravity.zip",
-      "format": "markdown",
-      "configDir": ".agent",
-      "directories": {
-        "commands": ".agent/workflows",
-        "skills": ".agent/skills",
-        "guides": ".agent/apm-guides"
-      },
-      "subagentGuidance": {
-        "hasSubagents": false,
-        "toolSyntax": null,
-        "explorerName": null,
+        "toolSyntax": "task(subagent_type=\"explore\", prompt=\"...\")",
+        "explorerName": "explore",
         "configNote": null
       }
     }

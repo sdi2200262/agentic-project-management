@@ -34,7 +34,7 @@ The Worker MUST have completed the current Task Cycle:
 Handoff requests **MUST be denied** when Worker is:
 - Mid-execution (Task steps in progress)
 - Mid-validation (validation not yet complete)
-- Mid-delegation (Delegation Prompt issued but Delegation Report not yet received)
+- Mid-delegation (delegate subagent spawned in background and still in progress)
 - Awaiting User action required by the Task (User validation pending, User coordination step pending)
 - Has received a Task Assignment but not yet started execution
 
@@ -190,7 +190,7 @@ Read your Task Memory Logs from the current Stage:
 
 After completing context reconstruction, confirm to User:
 
-"Handoff complete. I have read the Handoff Memory Log and [N] Task Memory Logs from Stage <N>. Ready to receive the next Task Assignment Prompt for **<AgentID>**."
+"Handoff complete. I have read the Handoff Memory Log and [N] Task Memory Logs from Stage <N>. Ready to receive the next Task Prompt for **<AgentID>**."
 
 ## Current Session State
 
@@ -206,7 +206,7 @@ This indication allows the Manager Agent to track Worker Handoffs and adjust Con
 
 ## Immediate Next Action
 
-Await the next Task Assignment Prompt from User. When received, proceed with Task Execution per `{GUIDE_PATH:task-execution}`.
+Await the next Task Prompt from User. When received, proceed with Task Execution per `{GUIDE_PATH:task-execution}`.
 ```
 
 ---

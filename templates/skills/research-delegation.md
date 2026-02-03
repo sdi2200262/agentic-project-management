@@ -1,6 +1,6 @@
 ---
-name: delegate-research
-description: Research delegation methodology for investigating knowledge gaps. Defines how Delegating Agents create Research Delegation Prompts.
+name: research-delegation
+description: Defines research delegation methodology and research-delegate subagent spawning. Use when knowledge is outdated or uncertain, official documentation needs verification, or a bounded technical question requires dedicated investigation.
 ---
 
 # APM {VERSION} - Research Delegation Skill
@@ -9,21 +9,14 @@ description: Research delegation methodology for investigating knowledge gaps. D
 
 **Reading Agent:** Worker Agent, Manager Agent, Planner Agent (Delegating Agents)
 
-This skill defines how to delegate research work to a Delegate Agent. The Delegating Agent creates a Research Delegation Prompt following this methodology; the Delegate Agent receives and executes it.
+This skill defines how to delegate research work to a `research-delegate` subagent. It covers structuring the task input and spawning the delegate.
 
-### 1.1 When to Use Research Delegation
+### 1.1 Typical Use Cases
 
-Delegate research when:
 - Current knowledge is outdated or uncertain for the task at hand
 - Official documentation, API specs, or technical details need verification
 - Knowledge gap cannot be resolved through User clarification
 - Research scope is bounded and specific
-
-Do NOT delegate when:
-- Information is readily available in existing project context
-- User can directly provide the answer
-- Research scope is too broad (note for Implementation Plan instead)
-- The research IS the project deliverable
 
 ### 1.2 Objectives
 
@@ -69,17 +62,16 @@ A Research Delegation Prompt must provide enough context for the Delegate to res
 
 **Actionability:** Findings should directly answer the research questions in a form the Delegating Agent can apply. Summaries of documentation are more useful than links alone.
 
-### 2.3 Prompt Creation Standards
+### 2.3 Delegation Standards
 
 Perform the following actions:
 1. Gather the essential context per §2.1 Context Standards.
-2. Structure the prompt following §3.1 Research Delegation Prompt Format.
-3. Output as a markdown code block with guidance for User to copy to a new Delegate Agent session.
-4. Await the Delegation Report from User.
+2. Spawn a `research-delegate` subagent per §3.2, structuring the task input per §3.1.
+3. Await the delegate's findings.
 
 ### 2.4 Findings Integration Standards
 
-When User returns with the Delegation Report:
+When the delegate subagent returns findings:
 
 **If Resolved:**
 - Read the Delegation Memory Log for full findings
@@ -96,49 +88,44 @@ When User returns with the Delegation Report:
 
 ## 3. Structural Specifications
 
-### 3.1 Research Delegation Prompt Format
+### 3.1 Task Input Structure
 
-```markdown
-# Research Delegation: <Brief Research Topic>
+The following structure defines what to include in the `prompt` parameter when spawning the delegate. Pass this content directly to the spawn tool - do not output it as a separate document.
 
-## Goal
-Gather current, authoritative information to answer the research questions below. Findings should be actionable for Task continuation.
+```
+Research Delegation: <Brief Research Topic>
 
-## Research Purpose
-<Why this information is needed and how it will be applied>
+Goal: Gather current, authoritative information to answer the research questions below. Findings should be actionable for Task continuation.
 
-## Current Knowledge
-<What Delegating Agent knows/assumes vs what is uncertain or potentially outdated>
+Research Purpose: <Why this information is needed and how it will be applied>
 
-## Research Questions
+Current Knowledge: <What Delegating Agent knows/assumes vs what is uncertain or potentially outdated>
+
+Research Questions:
 1. <Specific question>
 2. <Specific question>
 3. <Continue as needed>
 
-## Expected Sources
+Expected Sources:
 - <Official documentation site>
 - <GitHub repository>
 - <API documentation>
 - <Other authoritative sources>
 
-## Integration Context
-<How findings will be used in Task execution>
+Integration Context: <How findings will be used in Task execution>
 
-## Execution Guidance
+Execution Guidance:
 - Use web search and fetch tools to access current official documentation
 - Do not rely solely on training data-verify against current sources
 - Cross-reference multiple sources when possible
 - Provide actionable findings that directly answer the questions
-
-## Logging
-Upon completion, log findings to Memory per `{GUIDE_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the Delegating Agent.
 ```
 
-### 3.2 Prompt Delivery
+### 3.2 Spawning
 
-After creating the Delegation Prompt, output it as a markdown code block and guide the User:
+{DELEGATE_SPAWN_INSTRUCTION:research-delegate}
 
-"I've created a Research Delegation Prompt. Please copy this to a new Delegate Agent session (initialize with the delegate initiation command). After the Delegate completes their work and provides a Delegation Report, return here with that report so I can integrate the findings."
+Pass the task input (structured per §3.1) as the prompt parameter. The delegate executes autonomously and returns findings directly.
 
 ---
 

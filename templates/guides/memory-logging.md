@@ -186,7 +186,7 @@ Perform the following actions:
 3. Complete Markdown body sections:
    - Always include: Summary, Delegation Context, Findings, Resolution, Integration Notes
    - Apply detail level guidance. See §2.3 Detail Level Standards.
-4. Output Delegation Report to User. Keep post-amble minimal.
+4. Return findings directly to Delegating Agent. Keep post-amble minimal.
 
 ---
 

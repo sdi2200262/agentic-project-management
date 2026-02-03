@@ -11,17 +11,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Breaking Changes
 
+* **Platform Support Reduced:** APM v1.0.0 officially supports only the following assistants: Cursor, Claude Code, GitHub Copilot, Gemini CLI, Qwen Code, and OpenCode. Support for Windsurf, Kilo Code, Roo Code, Auggie CLI, and Google Antigravity has been removed. Community-maintained extensions may be available separately.
+
+* **Delegate Command Removed:** The `apm-4-initiate-delegate` command has been removed. Delegates are now spawned as subagents by the Planner, Managers and Workers using the platform's native subagent tool. Custom subagent definitions (`delegate-research`, `delegate-debug`) are shipped with APM and installed to each platform's agents directory.
+
 * **Agent Terminology Overhaul:**
   * Setup Agent → **Planner Agent**
   * Implementation Agent → **Worker Agent**
-  * Ad-Hoc Agent → **Delegate Agent**
+  * Ad-Hoc Agent → **Delegate Agent** (now spawned as subagent, not separate session)
   * Manager Agent (unchanged)
 
-* **Command Renaming:** All 6 commands have been renamed to reflect new terminology:
+* **Command Renaming:** Commands have been renamed to reflect new terminology (5 commands, down from 6):
   * `apm-1-initiate-planner` (was `apm-1-initiate-setup`)
   * `apm-2-initiate-manager`
   * `apm-3-initiate-worker` (was `apm-3-initiate-implementation`)
-  * `apm-4-initiate-delegate` (was `apm-4-initiate-ad-hoc`)
   * `apm-5-handoff-manager` (was `apm-5-handover-manager`)
   * `apm-6-handoff-worker` (was `apm-6-handover-implementation`)
 
