@@ -167,7 +167,6 @@ function getDelegateSpawnSyntax(targetId, delegateName) {
     cursor: (name) => `\`Task(subagent_type="${name}", prompt="<task description>")\``,
     copilot: (name) => `\`#runSubagent\` with the \`${name}\` agent, providing the task description as prompt`,
     gemini: (name) => `\`${name}(objective="<task description>")\``,
-    qwen: (name) => `\`task(subagent_type="${name}", prompt="<task description>")\``,
     opencode: (name) => `\`task(subagent_type="${name}", prompt="<task description>")\``
   };
 
@@ -201,11 +200,6 @@ function getDelegateConfig(targetId) {
     gemini: {
       toolsRead: 'read_file, grep_search, glob, google_web_search, web_fetch',
       toolsFull: 'read_file, grep_search, glob, write_file, replace, run_shell_command, google_web_search, web_fetch',
-      model: 'inherit'
-    },
-    qwen: {
-      toolsRead: 'read_file, read_many_files, grep_search, glob, web_search',
-      toolsFull: 'read_file, read_many_files, write_file, edit, run_shell_command, grep_search, glob, web_search',
       model: 'inherit'
     },
     opencode: {

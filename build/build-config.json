@@ -82,27 +82,8 @@
       }
     },
     {
-      "id": "qwen",
-      "name": "Qwen Code",
-      "bundleName": "qwen.zip",
-      "format": "toml",
-      "configDir": ".qwen",
-      "directories": {
-        "commands": ".qwen/commands",
-        "skills": ".qwen/skills",
-        "guides": ".qwen/apm-guides",
-        "agents": ".qwen/agents"
-      },
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "task(subagent_type=\"general-purpose\", prompt=\"...\")",
-        "explorerName": "general-purpose",
-        "configNote": null
-      }
-    },
-    {
       "id": "opencode",
-      "name": "opencode",
+      "name": "OpenCode",
       "bundleName": "opencode.zip",
       "format": "markdown",
       "configDir": ".opencode",
