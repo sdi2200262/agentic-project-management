@@ -4,81 +4,102 @@ This document contains development notes, research findings, and implementation 
 
 ---
 
-## Subagent Capability Research (January 2026)
+## Supported Assistants (February 2026)
 
-**Context:** Determining which supported AI assistants have TRUE agent-mediated autonomous subagent delegation (agent can call a tool to spawn a subagent) vs. user-initiated mode switching (user must manually trigger mode changes).
+**Context:** APM officially supports AI assistants with autonomous subagent capabilities. This enables the core APM workflow where Workers and Managers can spawn delegate subagents for research, debugging, and specialized work without requiring manual User intervention.
 
-### Confirmed: Agent-Mediated Autonomous Delegation
+### Officially Supported Platforms
 
-| Assistant | Tool Name | Notes |
-|-----------|-----------|-------|
-| **Cursor** | `Task` tool, `subagent_type` param | Built-in: `explore`, `generalPurpose`, `bash`, `browser` |
-| **Claude Code** | `Task` tool, `subagent_type` param | Built-in: `Explore`, `Plan`, `general-purpose` |
-| **GitHub Copilot** | `#runSubagent` tool | Enable in tools menu; agent can invoke autonomously |
-| **opencode** | `Task` tool | Built-in: `General`, `Explore` |
-| **Qwen Code** | `task()` tool | Architecturally supported; model may underutilize |
+| Assistant | Subagent Tool | Config Location | Notes |
+|-----------|---------------|-----------------|-------|
+| **Cursor** | `Task(subagent_type=...)` | `.cursor/agents/` | Built-in: `explore`, `generalPurpose`, `bash` |
+| **Claude Code** | `Task(subagent_type=...)` | `.claude/agents/` | Built-in: `Explore`, `Plan`, `general-purpose`; native skill injection |
+| **GitHub Copilot** | `#runSubagent` | `.github/agents/` | Enable in tools menu; agent can invoke autonomously |
+| **Gemini CLI** | `delegate_to_agent(...)` | `.gemini/agents/` | Requires `enableAgents: true` in settings |
+| **Qwen Code** | `task(...)` | `.qwen/agents/` | Variable templating supported |
+| **opencode** | `Task(subagent_type=...)` | `.opencode/agents/` | JSON config also supported |
 
-### Conditional/Partial Support
+### Platforms Without Official Support
 
-| Assistant | Tool Name | Notes |
-|-----------|-----------|-------|
-| **Gemini CLI** | `delegate_to_agent` | Defaults to `ask_user`; requires `--yolo` flag or policy override for autonomous |
-| **Roo Code** | `new_task` tool | Agent-callable per docs; needs practical verification |
-| **Kilo Code** | `new_task` tool | Fork of Roo Code pattern; needs practical verification |
+The following assistants do not have autonomous subagent capabilities and are not officially supported in APM v1.0.0:
 
-### Confirmed: NO Autonomous Delegation
+- **Windsurf** - Fast Context auto-triggers only; no custom subagent support
+- **Google Antigravity** - Browser subagent only; no custom subagent support
+- **Auggie CLI** - User-initiated only; single-process design
+- **Roo Code** - Subagent support experimental/unverified
+- **Kilo Code** - Subagent support experimental/unverified
 
-| Assistant | Limitation |
-|-----------|------------|
-| **Windsurf** | Fast Context auto-triggers only; no user-spawnable subagents |
-| **Google Antigravity** | Browser subagent only; no custom subagent support yet |
-| **Auggie CLI** | User-initiated only; single-process design; no tool-call mechanism |
-
-### Implications for APM
-
-For assistants with autonomous delegation support, we can inject platform-specific guidance encouraging the Planner Agent to use subagents for exploration during Context Gathering rather than deferring research to the Implementation Plan.
-
-For assistants without this capability, the existing APM delegation workflow (user-mediated) remains the appropriate fallback.
-
-**Next Steps:**
-- Finalize verification of uncertain assistants
-- Design placeholder system for build pipeline (`{SUBAGENT_GUIDANCE}` or similar)
-- Create per-assistant injection text in build config
+Community members may develop and maintain unofficial extensions for these platforms. See CONTRIBUTING.md for details on community extensions.
 
 ---
 
-## Tiered APM Architecture & File-Based Message Bus Specification (January 2026)
+## Custom Subagent Definitions (Implemented)
 
-**Context:** Designing a file-based message bus to replace manual copy-paste of Agent Communication code blocks. The bus leverages APM's sequential workflow while accommodating platform differences in subagent support.
+**Context:** APM ships custom subagent definitions that enable Workers and Managers to spawn specialized delegate agents for research and debugging tasks.
 
-**Problem Statement:** Current APM workflow requires Users to manually copy-paste markdown code blocks (Task Assignment Prompts, Task Reports, Delegation Prompts, etc.) between agent sessions. This creates friction. A file-based system where agents write to files and Users reference them with `@` notation reduces this friction significantly.
+### Architecture
 
-**Key Insight:** APM workflows are strictly sequential—Manager sends one task, waits for one report, then sends the next. This means only ONE message is ever "in flight" in each direction, making a simple file-based buffer sufficient.
+APM defines delegate subagents in `templates/agents/`:
 
-### Tier Classification
+```
+templates/agents/
+├── research-delegate.md    # Research-focused delegate
+└── debug-delegate.md       # Debug-focused delegate
+```
 
-Based on subagent capability research, APM will support two tiers:
+These are processed during build and output to platform-specific agent directories:
+- Claude Code: `.claude/agents/`
+- Cursor: `.cursor/agents/`
+- GitHub Copilot: `.github/agents/` (with `.agent.md` extension)
+- Gemini CLI: `.gemini/agents/`
+- Qwen Code: `.qwen/agents/`
+- opencode: `.opencode/agents/`
 
-| Tier | Name | Subagent Support | Delegation Model | Target Assistants |
-|------|------|------------------|------------------|-------------------|
-| **1** | APM Optimized | Full autonomous | Delegates as subagents | Cursor, Claude Code, GitHub Copilot, OpenCode, Roo Code |
-| **2** | APM Standard | None/Limited | Delegates as main actors | Windsurf, Cline, Aider, Kilo Code, others |
+### Delegation Model
 
-**Tier 1 Criteria:**
-- Assistant has tool-callable subagent spawning (Task, new_task, #runSubagent, etc.)
-- Subagents run in isolated context windows
-- No User intervention required for delegation
+**Key distinction:** Delegation skills teach **Delegating Agents** (Workers, Managers, Planners) HOW to create effective delegation prompts. Delegates RECEIVE those prompts and execute them - they don't need to know how prompts are created.
 
-**Tier 2 Criteria:**
-- No autonomous subagent capability, OR
-- Subagent support is experimental/unreliable, OR
-- Subagents lack full context isolation
+**What delegates need:**
+- The task prompt (provided by the spawning agent)
+- Memory-logging capability (to log their findings)
 
-### Message Bus Protocol
+**What delegates DON'T need:**
+- Delegation methodology (that's for the Delegating Agent)
+- Knowledge of how to construct delegation prompts
 
-#### Tier 1: Per-Worker-ID Bus (Optimized)
+This eliminates content duplication between `skills/` and `agents/` directories.
 
-**Directory Structure:**
+### Platform-Specific Handling
+
+**Claude Code** has native skill injection via the `skills:` frontmatter field. Delegate definitions reference `memory-logging` skill by name, and Claude Code automatically injects the skill content at subagent startup.
+
+**Other platforms** do not have native skill injection. Delegates are instructed to read the memory-logging guide directly from the guides directory.
+
+### Workflow
+
+1. Worker encounters a delegation step in Task instructions
+2. Worker reads the relevant delegation skill (`research-delegation` or `debug-delegation`) to understand the methodology
+3. Worker constructs a task prompt following the skill's format and standards
+4. Worker spawns a delegate subagent with the task prompt
+5. Delegate executes autonomously, logs findings to Memory, and returns a summary
+6. Worker integrates findings and continues Task execution
+
+This eliminates the manual copy-paste workflow previously required for delegation.
+
+---
+
+## APM Message Bus Specification (Future)
+
+**Context:** Designing a file-based message bus to reduce friction in Agent-to-Agent communication. Currently, APM requires Users to manually copy-paste markdown code blocks (Task Prompts, Task Reports) between agent sessions. A file-based system where agents write to files and Users reference them with `@` notation would reduce this friction significantly.
+
+**Status:** Future work. Not implemented in current release.
+
+### Design Principles
+
+APM workflows are strictly sequential-Manager sends one task, waits for one report, then sends the next. This means only ONE message is ever "in flight" in each direction, making a simple file-based buffer sufficient.
+
+### Proposed Directory Structure
+
 ```
 .apm/bus/
 ├── to_{agent_id}.md        # Manager → Worker (Task Assignments)
@@ -89,52 +110,8 @@ Based on subagent capability research, APM will support two tiers:
 **Agent ID Derivation:** Slugified from Implementation Plan agent names.
 - `Frontend Agent` → `frontend_agent`
 - `Backend Agent` → `backend_agent`
-- `API Integration Agent` → `api_integration_agent`
 
-**Bus Creation:** Manager creates `to_{agent_id}.md` and `from_{agent_id}.md` on first Task Assignment to that agent.
-
-**Delegation Handling:** Workers spawn Delegate subagents internally using platform's subagent tool. No delegation buses needed—delegation happens within Worker's session context.
-
-**Message Flow:**
-```
-1. Manager writes Task Assignment     → to_{agent_id}.md
-2. User references file to Worker     → @.apm/bus/to_{agent_id}.md
-3. Worker reads, clears file, executes task
-   └── If delegation needed: Worker spawns subagent internally
-4. Worker writes Task Report          → from_{agent_id}.md
-5. User references file to Manager    → @.apm/bus/from_{agent_id}.md
-6. Manager reads, clears file, makes coordination decision
-7. Repeat
-```
-
-#### Tier 2: Simple 2-File Bus (Standard)
-
-**Directory Structure:**
-```
-.apm/bus/
-├── apm_send.md      # Downward: Assignments, Delegation Prompts, Handoffs
-└── apm_report.md    # Upward: Task Reports, Delegation Reports
-```
-
-**Delegation Handling:** Delegates remain main conversation actors. Worker writes Delegation Prompt to `apm_send.md`, User delivers to Delegate session, Delegate writes report to `apm_report.md`, User returns to Worker.
-
-**Message Flow:**
-```
-1. Manager writes Task Assignment     → apm_send.md
-2. User references to Worker          → @.apm/bus/apm_send.md
-3. Worker reads, clears, executes
-   └── If delegation needed:
-       a. Worker writes Delegation Prompt → apm_send.md
-       b. User references to Delegate     → @.apm/bus/apm_send.md
-       c. Delegate reads, clears, executes
-       d. Delegate writes report          → apm_report.md
-       e. User references to Worker       → @.apm/bus/apm_report.md
-       f. Worker reads, clears, continues
-4. Worker writes Task Report          → apm_report.md
-5. User references to Manager         → @.apm/bus/apm_report.md
-6. Manager reads, clears, coordinates
-7. Repeat
-```
+**Bus Creation:** Manager creates files on first Task Assignment to that agent.
 
 ### Message Format Specification
 
@@ -146,7 +123,7 @@ message_id: <sequential or timestamp>
 timestamp: <ISO 8601>
 from: <agent_id or role>
 to: <agent_id or role>
-type: <task_assignment | task_report | delegation_prompt | delegation_report | handoff_prompt>
+type: <task_assignment | task_report | handoff_prompt>
 task_ref: <Task ID if applicable>
 ---
 
@@ -170,209 +147,30 @@ Message delivered and consumed. Awaiting next communication.
 
 ### Protocol Rules
 
-#### Sending Protocol
+**Sending Protocol:**
 1. Sender writes message with full frontmatter
 2. Sender informs User: "Message ready in `{file_path}`"
 3. Sender awaits response in their receive channel
 
-#### Receiving Protocol
+**Receiving Protocol:**
 1. Receiver reads file when User references it
 2. Receiver validates message is not `status: consumed` (stale read protection)
 3. Receiver processes message content
 4. Receiver IMMEDIATELY clears file (writes consumed state)
 5. Receiver proceeds with task
 
-#### Clear-After-Consume Rationale
-- Prevents stale reads if User accidentally re-references
-- Makes "pending vs. consumed" state visible
-- Previous message already processed, overwriting is safe
-
-### Handoff Edge Case Handling
-
-**Problem:** If User forces mid-task handoff, `apm_send.md` (Tier 2) or `to_{agent_id}.md` (Tier 1) may contain incomplete task assignment that gets overwritten by Handoff Prompt.
-
-**Solution:** Handoff procedure MUST capture incomplete task state:
-
-```markdown
-# In Handoff Memory Log, add section if mid-task:
-
-## Incomplete Task Context
-
-**Task ID:** Task 2.3
-**Original Assignment:**
-[Full content of task assignment that was in progress]
-
-**Progress at Interruption:**
-- [Completed step 1]
-- [Completed step 2]
-- [In progress: step 3]
-
-**Remaining Work:**
-- [Step 3 continuation]
-- [Step 4]
-- [Step 5]
-
-**Files Modified (uncommitted):**
-- path/to/file1.ts
-- path/to/file2.ts
-```
-
-**Incoming Worker Protocol:**
-1. Read Handoff Memory Log
-2. Check for `## Incomplete Task Context` section
-3. If present: Resume incomplete task before awaiting new assignments
-4. If absent: Normal handoff, await next Task Assignment
-
-### Template Architecture (Hybrid Approach)
-
-**Rationale:** Shared core with tier-specific extensions minimizes duplication while keeping tier differences clear.
-
-```
-templates/
-├── core/                           # Shared across all tiers
-│   ├── commands/
-│   │   ├── apm-1-planner.md
-│   │   ├── apm-2-manager.md
-│   │   └── apm-3-worker.md
-│   ├── guides/
-│   │   ├── task-assignment.md      # {MESSAGE_BUS_SEND} placeholder
-│   │   ├── task-execution.md       # {DELEGATION_PROTOCOL} placeholder
-│   │   └── memory-maintenance.md   # {MESSAGE_BUS_RECEIVE} placeholder
-│   └── skills/
-│       └── ...
-│
-├── extensions/
-│   ├── tier1/
-│   │   ├── guides/
-│   │   │   └── message-bus.md      # Per-worker-ID protocol
-│   │   ├── skills/
-│   │   │   └── subagent-delegation.md
-│   │   └── injections/
-│   │       ├── message-bus-send.md
-│   │       ├── message-bus-receive.md
-│   │       └── delegation-protocol.md
-│   │
-│   └── tier2/
-│       ├── commands/
-│       │   └── apm-4-delegate.md   # Only Tier 2 needs this
-│       ├── guides/
-│       │   └── message-bus.md      # Simple 2-file protocol
-│       ├── skills/
-│       │   ├── delegate-research.md
-│       │   └── delegate-debug.md
-│       └── injections/
-│           ├── message-bus-send.md
-│           ├── message-bus-receive.md
-│           └── delegation-protocol.md
-│
-└── _standards/                     # Shared standards
-```
-
-**Build Process:**
-1. Merge `core/` with `extensions/tier{N}/`
-2. Replace placeholders with tier-specific injections
-3. Include/exclude files per tier config
-4. Output to `dist/{assistant_name}/`
-
-### Build Configuration Schema
-
-```yaml
-# build/config.yaml
-
-tiers:
-  tier1:
-    description: "APM Optimized - Full subagent support"
-    exclude_files:
-      - commands/apm-4-delegate.md
-    injections:
-      MESSAGE_BUS_SEND: tier1/injections/message-bus-send.md
-      MESSAGE_BUS_RECEIVE: tier1/injections/message-bus-receive.md
-      DELEGATION_PROTOCOL: tier1/injections/delegation-protocol.md
-
-  tier2:
-    description: "APM Standard - User-mediated delegation"
-    include_files:
-      - commands/apm-4-delegate.md
-    injections:
-      MESSAGE_BUS_SEND: tier2/injections/message-bus-send.md
-      MESSAGE_BUS_RECEIVE: tier2/injections/message-bus-receive.md
-      DELEGATION_PROTOCOL: tier2/injections/delegation-protocol.md
-
-assistants:
-  cursor:
-    tier: tier1
-    subagent_tool: "Task tool"
-    custom_injections:
-      SUBAGENT_TOOL_NAME: "Task"
-
-  claude_code:
-    tier: tier1
-    subagent_tool: "Task tool"
-    custom_injections:
-      SUBAGENT_TOOL_NAME: "Task"
-
-  github_copilot:
-    tier: tier1
-    subagent_tool: "#runSubagent"
-    custom_injections:
-      SUBAGENT_TOOL_NAME: "#runSubagent"
-
-  windsurf:
-    tier: tier2
-
-  generic:
-    tier: tier2
-    description: "Fallback for unknown assistants"
-```
-
-### Key Behavioral Differences by Tier
-
-| Behavior | Tier 1 (Optimized) | Tier 2 (Standard) |
-|----------|-------------------|-------------------|
-| Delegate command file | Not included | Included |
-| Worker delegation | "Spawn subagent using {TOOL}" | "Write prompt to apm_send.md, await User" |
-| Manager task assignment | "Write to `to_{agent_id}.md`" | "Write to `apm_send.md`" |
-| Manager report reading | "Read from `from_{agent_id}.md`" | "Read from `apm_report.md`" |
-| User conversation switches | Manager ↔ Workers only | Manager ↔ Workers ↔ Delegates |
-| Parallel workflow potential | Yes (future) | No |
-
-### Implementation Phases
-
-**Phase 1: Tier 2 Implementation (Foundation)**
-- Implement simple 2-file bus in existing templates
-- Add message format specification
-- Add clear-after-consume protocol
-- Update handoff procedure for mid-task edge case
-- Test with current sequential workflow
-
-**Phase 2: Tier 1 Implementation**
-- Create tier1 extension with per-worker-ID bus
-- Create subagent-delegation skill
-- Update build config for tier separation
-- Test with Cursor/Claude Code
-
-**Phase 3: Build Pipeline**
-- Implement template merging logic
-- Implement placeholder injection
-- Create assistant-specific outputs
-- Document build process
-
 ### Open Questions
 
 1. **Bus initialization:** Should Planner create `.apm/bus/` directory, or Manager on first use?
-2. **Handoff buses:** Separate `handoff_{agent_id}.md` files, or reuse main bus with type flag?
-3. **Multi-project:** If User has multiple APM projects, how to avoid bus collision? (Probably fine—each project has its own `.apm/`)
-4. **Validation:** Should receiving agent validate message `to:` field matches their identity?
-5. **Error recovery:** What if User references wrong bus file? Agent should detect and inform.
+2. **Validation:** Should receiving agent validate message `to:` field matches their identity?
+3. **Error recovery:** What if User references wrong bus file? Agent should detect and inform.
 
 ### Next Steps
 
-- [ ] Implement Phase 1 (Tier 2 simple bus) as proof of concept
+- [ ] Implement message bus protocol in guides
 - [ ] Test clear-after-consume protocol in practice
-- [ ] Update handoff commands for incomplete task capture
-- [ ] Create `guides/message-bus.md` for Tier 2
-- [ ] Design subagent-delegation skill for Tier 1
-- [ ] Build config schema implementation
+- [ ] Update handoff commands for bus integration
+- [ ] Create `guides/message-bus.md`
 
 ---
 
@@ -382,7 +180,7 @@ assistants:
 
 **Problem Statement:** When an APM session completes (all stages done, deliverables working), there's no formal continuation mechanism. The Manager can add tasks but lacks the Planner's discovery capabilities. Existing artifacts reflect completed work, not new scope. Users need to start fresh while optionally preserving access to previous session context.
 
-**Key Constraint:** Archived context is a snapshot; the codebase is mutable. Automatic session linking creates fragile dependency chains—Session B may invalidate Session A's context without explicit relationship. Programmatic linking creates false confidence.
+**Key Constraint:** Archived context is a snapshot; the codebase is mutable. Automatic session linking creates fragile dependency chains-Session B may invalidate Session A's context without explicit relationship.
 
 ### Design Principles
 
@@ -398,7 +196,7 @@ assistants:
 | `apm continue` | Archive current session, create fresh templates | CLI (programmatic) |
 | `/apm-summarize-session` | Create high-level summary artifact (optional) | Native agent (no APM layers) |
 | Context Detection | Detect archives, ask user about relevance | Planner Agent |
-| Context Retrieval | Explore archive + verify against codebase | Subagent (Tier 1) or Planner (Tier 2) |
+| Context Retrieval | Explore archive + verify against codebase | Subagent |
 
 ### `apm continue` Command
 
@@ -421,20 +219,6 @@ $ apm continue [-n|--name <name>]
 └── Memory/
 ```
 
-No metadata files. No linking. Just storage.
-
-### `/apm-summarize-session` Command
-
-Creates `.apm/APM_Session_Summary.md` capturing:
-- Session intent (what user wanted to achieve)
-- What was built (outcomes, deliverables)
-- Artifact relationships (how Specs informed Plan, etc.)
-- Key technical decisions with file/directory references
-- Known limitations / deferred work
-- Continuation notes
-
-**Key characteristic:** Explicitly acknowledges snapshot nature. Designed to help Planner (or subagent) navigate archive efficiently.
-
 ### Planner Context Detection (Addition to Context Gathering)
 
 **§0.1 Previous Session Detection:**
@@ -444,26 +228,9 @@ Creates `.apm/APM_Session_Summary.md` capturing:
 4. User decides: none (fresh start) or specific session(s) with guidance
 
 **§0.2 Context Retrieval (if user indicates relevance):**
-
-| Tier | Exploration | Verification |
-|------|-------------|--------------|
-| **Tier 1** | Subagent 1: Explore archive | Subagent 2: Verify against codebase |
-| **Tier 2** | Planner direct (if small) or delegate | Planner targeted checks or deferred |
-
-**Post-retrieval:** Question Rounds become delta-focused—what's new, what changed, what's the new intent. Don't re-ask what's known and verified.
-
-### Tier-Specific Behavior
-
-**Tier 1 (Subagent-capable):**
-1. Spawn Subagent 1: Archive Exploration → Returns Archive Context Report
-2. Spawn Subagent 2: Codebase Verification (with user caveats) → Returns Verification Report
-3. Planner integrates both, proceeds with delta-focused questions
-
-**Tier 2 (No subagents):**
-1. Assess feasibility: Summary exists? Session size?
-2. Path A (small/summary exists): Planner reads directly, targeted verification
-3. Path B (large/complex): Recommend delegation or user-provided context
-4. Questions may be hybrid (delta + discovery for gaps)
+1. Spawn exploration subagent to examine archive
+2. Spawn verification subagent to check against current codebase
+3. Integrate findings into Question Rounds as delta-focused questions
 
 ### Open Questions
 
@@ -477,7 +244,29 @@ Creates `.apm/APM_Session_Summary.md` capturing:
 - [ ] Define `apm continue` CLI specification
 - [ ] Define `/apm-summarize-session` command procedure
 - [ ] Add §0.1 and §0.2 to Context Gathering guide
-- [ ] Create tier-specific context retrieval protocols
 - [ ] Define APM_Session_Summary.md template structure
+
+---
+
+## Platform Subagent Capabilities Reference
+
+Research findings on custom subagent support across AI coding assistants.
+
+| Platform | Config Location | Custom Subagents | Skill Injection | Task Tool Syntax |
+|----------|----------------|------------------|-----------------|------------------|
+| **Claude Code** | `.claude/agents/*.md` | Yes | **Native** (`skills:` field) | `Task(subagent_type="name", prompt="...")` |
+| **Cursor** | `.cursor/agents/*.md` | Yes | Embedded in body | `Task(subagent_type="name", prompt="...")` |
+| **GitHub Copilot** | `.github/agents/*.agent.md` | Yes | Embedded in body | `#runSubagent` |
+| **Gemini CLI** | `.gemini/agents/*.md` | Yes | Experimental | `delegate_to_agent(agent_name="name", objective="...")` |
+| **Qwen Code** | `.qwen/agents/*.md` | Yes | Embedded in body | `task(subagent_type="name", prompt="...")` |
+| **opencode** | `.opencode/agents/*.md` | Yes | Embedded in body | `Task(subagent_type="name", prompt="...")` |
+
+### Key Findings
+
+**Claude Code** is the only platform with native skill injection-the `skills:` frontmatter field automatically loads skill content into the subagent's context at startup. This is ideal for APM's delegation workflow.
+
+**Other platforms** require skill content to be embedded directly in the subagent definition body. The APM build system handles this automatically during template processing.
+
+**All supported platforms** can define custom subagent types beyond built-in options, enabling APM to ship `research-delegate` and `debug-delegate` subagents that Workers can spawn as needed.
 
 ---

@@ -91,7 +91,7 @@ After reviewing a Task Memory Log, the Manager must make a Coordination Decision
 
 **Assessment 3 - Post-Investigation Outcome** → After investigation (self or delegated), assess the outcome:
 - *No issues:* Investigation revealed nothing requiring action (may have been false positives) → Proceed to next Task.
-- *FollowUp needed:* Issues require same Worker to retry or refine work → Create FollowUp Task Assignment Prompt with informed instructions.
+- *FollowUp needed:* Issues require same Worker to retry or refine work → Create FollowUp Task Prompt with informed instructions.
 - *Artifact modification needed:* Coordination Artifacts need updates → Follow `{GUIDE_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure.
 
 The scope determines *how* to investigate, not *what* outcomes are possible-all three outcomes can result from either scope. When artifact modification is needed, note the triggering context (log, findings, flags) and identify affected artifact(s).
@@ -105,7 +105,7 @@ The scope determines *how* to investigate, not *what* outcomes are possible-all 
 
 **Detection Criteria** → An Incoming Worker Agent (Replacement Agent after Handoff) includes in its Task Report: (1) clear statement it is a new instance after Handoff, (2) list of current Stage Memory Logs read, (3) note that previous Stage logs were not loaded for efficiency. Upon detection, verify the Handoff File exists and integrate in Manager's working context per §3.3 Task Report Review.
 
-**Context Dependency Treatment** → From this point forward, any Same-Agent Context Dependencies from previous Stages for this Incoming Worker Agent must be treated as Cross-Agent Context Dependencies. The Handoff Procedure loads only current Stage Memory Logs for efficiency, meaning the Incoming Worker has no working context from previous Stages even for Tasks completed by its previous instance. Account for this when constructing future Task Assignment Prompts.
+**Context Dependency Treatment** → From this point forward, any Same-Agent Context Dependencies from previous Stages for this Incoming Worker Agent must be treated as Cross-Agent Context Dependencies. The Handoff Procedure loads only current Stage Memory Logs for efficiency, meaning the Incoming Worker has no working context from previous Stages even for Tasks completed by its previous instance. Account for this when constructing future Task Prompts.
 
 ### 2.4 Stage Summary Standards
 
@@ -138,7 +138,7 @@ This section defines the sequential actions for Memory System maintenance. Execu
 
 ### 3.1 Memory Root Initialization
 
-Execute once at the start of the First Manager Agent session, before issuing the first Task Assignment.
+Execute once at the start of the First Manager Agent session, before issuing the first Task Prompt.
 
 Perform the following actions:
 1. Read `.apm/Memory/Memory_Root.md`
@@ -149,7 +149,7 @@ Perform the following actions:
 
 ### 3.2 Stage Directory Creation
 
-Execute when entering a new Stage, before issuing any Task Assignments for that Stage, create the **empty** Stage directory: `.apm/Memory/Stage_<StageNum>_<Slug>/`
+Execute when entering a new Stage, before issuing any Task Prompts for that Stage, create the **empty** Stage directory: `.apm/Memory/Stage_<StageNum>_<Slug>/`
 
 **Naming Convention:** Derive Stage slug from Implementation Plan Stage title. Example: `Stage 2 - API Integration` → `Stage_02_API_Integration/`
 
@@ -195,33 +195,23 @@ Perform the following actions:
    - If flags are raised OR status is non-Success → **Investigation needed**, continue to step 2
 2. Assess investigation scope using §2.2 Coordination Decision Standards Assessment 2:
    - Small scope → Self-investigate (step 3a)
-   - Large scope → Request Delegation (step 3b)
+   - Large scope → Delegate investigation (step 3b)
 3. Investigate based on scope:
    - **3a (Self-Investigation):**
      - Identify specific files, artifacts, Delegation Memory Logs (if any) or areas to examine
      - Use available tools to review referenced files, verify deliverables, and gather context. {MANAGER_SUBAGENT_GUIDANCE}
      - Keep investigation focused to avoid excessive context consumption
      - After investigation, proceed to step 4
-   - **3b (Request Delegation):**
+   - **3b (Delegate Investigation):**
      - Determine Delegation type (Debug or Research or other) based on issue nature
-     - Request a Delegation from the User using the following output:
-       ```
-       I'd like to delegate part of this work: <Debug|Research|Other> on <Brief Topic>.
-
-       Here's what's going on: <Describe the specific issue that needs investigation>.
-
-       I'm requesting Delegation because a dedicated investigation will address this issue, and trying to handle it as Manager would use too much context or be inefficient.
-
-       Would you like to approve the Delegation, or would you prefer a different approach?
-       ```
-     - If User approves: Read the appropriate Delegation skill (`{SKILL_PATH:delegate-debug}` or `{SKILL_PATH:delegate-research}`), create Delegation Prompt, User facilitates Delegate session
-     - When User returns with Delegation Report, read the Delegation Memory Log and integrate findings, then proceed to step 4
+     - Read the appropriate Delegation skill (`{SKILL_PATH:debug-delegation}` or `{SKILL_PATH:research-delegation}`) and spawn the delegate subagent per the skill's §3.2, structuring the task input per §3.1
+     - When the delegate returns findings, read the Delegation Memory Log and integrate findings, then proceed to step 4
 4. Assess post-investigation outcome using §2.2 Coordination Decision Standards Assessment 3:
    - **No issues** → Proceed to next Task Assignment (return to Task Cycle in initiation command)
-   - **FollowUp needed** → Create FollowUp Task Assignment Prompt per `{GUIDE_PATH:task-assignment}` §3.5 FollowUp Task Assignment Prompt Creation, output for User
+   - **FollowUp needed** → Create FollowUp Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 FollowUp Task Prompt Creation, output for User
    - **Coordination Artifact modification needed** → Handoff to `{GUIDE_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure
 
-**If proceeding to next Task** and all Tasks in current Stage are complete → Proceed to §3.6 Stage Summary Creation before creating next Task's Task Assignment Prompt.
+**If proceeding to next Task** and all Tasks in current Stage are complete → Proceed to §3.6 Stage Summary Creation before creating next Task's Task Prompt.
 
 ### 3.6 Stage Summary Creation
 
@@ -333,7 +323,7 @@ Task Memory Logs are written by Worker Agents. Manager Agents review them to eva
 
 - **Managerial perspective:** Focus on coordination, progress, and decisions; leave implementation details to Worker Agents
 - **Concise updates:** When reporting to User, summarize log findings briefly; User can read full logs if needed or ask for details otherwise
-- **Delegation requests:** When requesting Delegation, use the specified format (§3.5 Action 3b) and clearly explain why delegation is needed versus self-investigation, including scope assessment rationale
+- **Delegation:** Spawn delegate subagents proactively when investigation scope is large; no User approval needed for workflow-driven delegation
 - **Investigation outcomes:** When reporting investigation findings, clearly state the outcome (no issues, FollowUp needed, or artifact modification needed) and provide structured rationale; acknowledge false positives when Worker flags don't indicate real coordination issues
 
 ### 5.2 Common Mistakes to Avoid

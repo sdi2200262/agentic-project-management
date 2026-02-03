@@ -50,9 +50,33 @@ APM includes comprehensive documentation, and contributions to improve it are al
 ### Community Contributions
 
 - Share adaptations: Domain-specific customizations (web dev, data science, content creation)
-- IDE integrations: Platform-specific rules, configurations, or workflows  
+- IDE integrations: Platform-specific rules, configurations, or workflows
 - Best practices: Cost optimization strategies, effective agent coordination patterns
 - Case studies: Real project examples using APM
+
+### Community Extensions
+
+APM officially supports AI assistants with autonomous subagent capabilities. For other assistants that lack subagent support as of February 2026 (e.g. Windsurf, Kilo Code, Roo Code etc), community members may develop and maintain unofficial extensions.
+
+**Developing Community Extensions**
+
+Community extensions allow APM to work with assistants that don't have native subagent capabilities. These extensions are:
+
+- **Not officially supported** - maintained by community members, not APM maintainers
+- **May lag behind official releases** - updates depend on community contributor availability
+- **Use at your own discretion** - test thoroughly before use in production workflows
+
+**Extension Development (Details TBD)**
+
+We welcome community interest in maintaining extensions for unsupported platforms. If you're interested in developing or maintaining an extension, please open an issue to discuss:
+
+- Extension point documentation
+- Testing requirements
+- Submission and distribution process
+- Maintenance expectations
+- Credit and attribution
+
+We'll formalize the extension system based on community interest and feedback.
 
 ## Contribution Process
 

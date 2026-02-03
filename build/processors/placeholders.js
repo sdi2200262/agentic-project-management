@@ -23,6 +23,12 @@ import path from 'path';
  * - {PLANNER_SUBAGENT_GUIDANCE}: Platform-specific subagent exploration guidance for Planner
  * - {MANAGER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Manager investigation
  * - {WORKER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Worker context integration
+ * - {DELEGATE_TOOLS_READ}: Platform-specific read-only tools for delegate agents
+ * - {DELEGATE_TOOLS_FULL}: Platform-specific full tools for delegate agents
+ * - {DELEGATE_MODEL}: Platform-specific model for delegate agents
+ * - {CLAUDE_SKILLS_FIELD:name}: Claude's native skills: field (empty for other platforms)
+ * - {DELEGATE_MEMORY_LOGGING_INSTRUCTION}: Platform-specific memory logging instruction for delegates
+ * - {DELEGATE_SPAWN_INSTRUCTION:name}: Platform-specific spawn syntax for delegate subagents
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
@@ -39,6 +45,7 @@ export function replacePlaceholders(content, context) {
   } = context;
 
   const { directories, format, id } = target;
+  const subagentGuidance = target.subagentGuidance;
 
   let replaced = content
     .replace(/{VERSION}/g, version)
@@ -73,47 +80,142 @@ export function replacePlaceholders(content, context) {
   replaced = replaced.replace(/{SKILLS_DIR}/g, directories.skills);
 
   // Replace PLANNER_SUBAGENT_GUIDANCE placeholder
-  // For subagent platforms: prefer subagents, delegation as fallback
-  // For non-subagent platforms: use APM delegation workflow
-  const subagentGuidance = target.subagentGuidance;
-
-  if (subagentGuidance?.hasSubagents) {
-    const configNote = subagentGuidance.configNote
-      ? ` ${subagentGuidance.configNote}.`
-      : '';
-    const plannerGuidanceText = `**Preferred: Use subagent.** Invoke the ${subagentGuidance.explorerName} subagent with: \`${subagentGuidance.toolSyntax}\`. Integrate findings into the current Question Round.${configNote}
-
-**Alternative: Request Delegation** if subagent exploration is insufficient or User prefers the APM Delegation workflow. See "If requesting Delegation" below.`;
-    replaced = replaced.replace(/{PLANNER_SUBAGENT_GUIDANCE}/g, plannerGuidanceText);
-  } else {
-    // Non-subagent platforms: APM Delegation is the primary option
-    const plannerDelegationText = `**Use APM Delegation.** Request Delegation from the User to preserve Planner context. See "If requesting Delegation" below for the workflow.`;
-    replaced = replaced.replace(/{PLANNER_SUBAGENT_GUIDANCE}/g, plannerDelegationText);
-  }
+  // All supported platforms have subagents - use subagent with delegation as fallback
+  const configNote = subagentGuidance.configNote
+    ? ` ${subagentGuidance.configNote}.`
+    : '';
+  const plannerGuidanceText = `Use the ${subagentGuidance.explorerName} subagent: \`${subagentGuidance.toolSyntax}\`. Integrate findings into the current Question Round.${configNote}`;
+  replaced = replaced.replace(/{PLANNER_SUBAGENT_GUIDANCE}/g, plannerGuidanceText);
 
   // Replace MANAGER_SUBAGENT_GUIDANCE placeholder
-  // For subagent platforms: Manager can use subagents for efficient investigation
-  // For non-subagent platforms: no additional guidance (manual investigation or delegation)
-  if (subagentGuidance?.hasSubagents) {
-    const managerGuidanceText = `**Efficient Investigation:** Use the ${subagentGuidance.explorerName} subagent to efficiently explore files, verify deliverables, and gather context: \`${subagentGuidance.toolSyntax}\`. This preserves Manager context for coordination decisions.`;
-    replaced = replaced.replace(/{MANAGER_SUBAGENT_GUIDANCE}/g, managerGuidanceText);
-  } else {
-    // Non-subagent platforms: remove placeholder (manual investigation is the default)
-    replaced = replaced.replace(/{MANAGER_SUBAGENT_GUIDANCE}/g, '');
-  }
+  const managerGuidanceText = `Use the ${subagentGuidance.explorerName} subagent to explore files, verify deliverables, and gather context: \`${subagentGuidance.toolSyntax}\`.`;
+  replaced = replaced.replace(/{MANAGER_SUBAGENT_GUIDANCE}/g, managerGuidanceText);
 
   // Replace WORKER_SUBAGENT_GUIDANCE placeholder
-  // For subagent platforms: Workers can use subagents to efficiently integrate cross-agent context
-  // For non-subagent platforms: no additional guidance (manual file reading as currently specified)
-  if (subagentGuidance?.hasSubagents) {
-    const workerGuidanceText = `**Efficient Integration:** For complex Cross-Agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to efficiently explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`. This can help quickly grasp interfaces, patterns, and integration points before proceeding with execution.`;
-    replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
+  const workerGuidanceText = `For complex Cross-Agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`.`;
+  replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
+
+  // Replace delegate agent placeholders
+  replaced = replaceDelegatePlaceholders(replaced, target);
+
+  return replaced;
+}
+
+/**
+ * Replaces delegate agent-specific placeholders.
+ *
+ * @param {string} content - Content with placeholders.
+ * @param {Object} target - Target configuration object.
+ * @returns {string} Content with delegate placeholders replaced.
+ */
+function replaceDelegatePlaceholders(content, target) {
+  const { id } = target;
+
+  // Define platform-specific delegate configurations
+  const delegateConfig = getDelegateConfig(id);
+
+  let replaced = content
+    .replace(/{DELEGATE_TOOLS_READ}/g, delegateConfig.toolsRead)
+    .replace(/{DELEGATE_TOOLS_FULL}/g, delegateConfig.toolsFull)
+    .replace(/{DELEGATE_MODEL}/g, delegateConfig.model);
+
+  // Replace CLAUDE_SKILLS_FIELD placeholder
+  // For Claude: outputs "skills:\n  - <skillname>"
+  // For others: outputs empty string (skill content embedded instead)
+  replaced = replaced.replace(/{CLAUDE_SKILLS_FIELD:([^}]+)}/g, (_match, skillName) => {
+    if (id === 'claude') {
+      return `skills:\n  - ${skillName}`;
+    }
+    return '';
+  });
+
+  // Replace DELEGATE_SPAWN_INSTRUCTION placeholder
+  // Outputs platform-specific syntax for spawning a delegate subagent by name
+  replaced = replaced.replace(/{DELEGATE_SPAWN_INSTRUCTION:([^}]+)}/g, (_match, delegateName) => {
+    return getDelegateSpawnSyntax(id, delegateName);
+  });
+
+  // Replace DELEGATE_MEMORY_LOGGING_INSTRUCTION placeholder
+  // For Claude: skill is injected via frontmatter, reference it
+  // For others: instruct delegate to read the guide
+  const { directories } = target;
+  if (id === 'claude') {
+    replaced = replaced.replace(
+      /{DELEGATE_MEMORY_LOGGING_INSTRUCTION}/g,
+      'Upon completion, log findings to Memory per the memory-logging skill (preloaded), §3.2 Delegation Memory Log Procedure. Then provide a brief summary of findings for the Delegating Agent.'
+    );
   } else {
-    // Non-subagent platforms: remove placeholder (manual approach is the default)
-    replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, '');
+    replaced = replaced.replace(
+      /{DELEGATE_MEMORY_LOGGING_INSTRUCTION}/g,
+      `Upon initiatiton, read \`${directories.guides}/memory-logging.md\`. Upon completion, log findings to Memory per §3.2 Delegation Memory Log Procedure. Then provide a brief summary of findings for the Delegating Agent.`
+    );
   }
 
   return replaced;
+}
+
+/**
+ * Gets platform-specific spawn syntax for a delegate subagent.
+ *
+ * @param {string} targetId - Target platform identifier.
+ * @param {string} delegateName - Delegate subagent name (e.g., 'research-delegate').
+ * @returns {string} Spawn instruction text with platform-specific syntax.
+ */
+function getDelegateSpawnSyntax(targetId, delegateName) {
+  const syntaxMap = {
+    claude: (name) => `\`Task(subagent_type="${name}", prompt="<task description>")\``,
+    cursor: (name) => `\`Task(subagent_type="${name}", prompt="<task description>")\``,
+    copilot: (name) => `\`#runSubagent\` with the \`${name}\` agent, providing the task description as prompt`,
+    gemini: (name) => `\`${name}(objective="<task description>")\``,
+    qwen: (name) => `\`task(subagent_type="${name}", prompt="<task description>")\``,
+    opencode: (name) => `\`task(subagent_type="${name}", prompt="<task description>")\``
+  };
+
+  const syntaxFn = syntaxMap[targetId] || syntaxMap.cursor;
+  return `Spawn using: ${syntaxFn(delegateName)}`;
+}
+
+/**
+ * Gets delegate configuration for a specific platform.
+ *
+ * @param {string} targetId - Target platform identifier.
+ * @returns {Object} Delegate configuration with tools and model.
+ */
+function getDelegateConfig(targetId) {
+  const configs = {
+    claude: {
+      toolsRead: 'Read, Grep, Glob, WebFetch, WebSearch',
+      toolsFull: 'Read, Grep, Glob, Bash, Edit, Write, WebFetch, WebSearch',
+      model: 'sonnet'
+    },
+    cursor: {
+      toolsRead: 'read_file, list_dir, codebase_search, grep_search, file_search, web_search',
+      toolsFull: 'read_file, list_dir, codebase_search, grep_search, file_search, edit_file, run_terminal_cmd, web_search',
+      model: 'inherit'
+    },
+    copilot: {
+      toolsRead: 'read, search, web',
+      toolsFull: 'read, search, web, edit, execute',
+      model: 'inherit'
+    },
+    gemini: {
+      toolsRead: 'read_file, grep_search, glob, google_web_search, web_fetch',
+      toolsFull: 'read_file, grep_search, glob, write_file, replace, run_shell_command, google_web_search, web_fetch',
+      model: 'inherit'
+    },
+    qwen: {
+      toolsRead: 'read_file, read_many_files, grep_search, glob, web_search',
+      toolsFull: 'read_file, read_many_files, write_file, edit, run_shell_command, grep_search, glob, web_search',
+      model: 'inherit'
+    },
+    opencode: {
+      toolsRead: 'read, glob, grep, webfetch, websearch',
+      toolsFull: 'read, glob, grep, edit, write, bash, webfetch, websearch',
+      model: 'inherit'
+    }
+  };
+
+  return configs[targetId] || configs.cursor; // Default to cursor config
 }
 
 /**
@@ -128,6 +230,19 @@ export function getOutputExtension(target) {
   }
   if (target.id === 'copilot') {
     return '.prompt.md';
+  }
+  return '.md';
+}
+
+/**
+ * Gets the output extension for agent files.
+ *
+ * @param {Object} target - Target configuration object.
+ * @returns {string} File extension for agent files.
+ */
+export function getAgentExtension(target) {
+  if (target.id === 'copilot') {
+    return '.agent.md';
   }
   return '.md';
 }
