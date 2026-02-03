@@ -56,7 +56,7 @@ APM includes comprehensive documentation, and contributions to improve it are al
 
 ### Community Extensions
 
-APM officially supports AI assistants with autonomous subagent capabilities. For other assistants that lack subagent support as of February 2026 (e.g. Windsurf, Kilo Code, Roo Code etc), community members may develop and maintain unofficial extensions.
+APM officially supports AI assistants with autonomous subagent capabilities. For other assistants that lack compatible subagent support as of February 2026 (e.g. Windsurf, Kilo Code, Roo Code, Qwen Code etc), community members may develop and maintain unofficial extensions.
 
 **Developing Community Extensions**
 

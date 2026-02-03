@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Breaking Changes
 
-* **Platform Support Reduced:** APM v1.0.0 officially supports only the following assistants: Cursor, Claude Code, GitHub Copilot, Gemini CLI, Qwen Code, and OpenCode. Support for Windsurf, Kilo Code, Roo Code, Auggie CLI, and Google Antigravity has been removed. Community-maintained extensions may be available separately.
+* **Platform Support Reduced:** APM v1.0.0 officially supports only the following assistants: Cursor, Claude Code, GitHub Copilot, Gemini CLI, and OpenCode. Support for Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity, and Qwen Code has been removed. Community-maintained extensions may be available separately.
 
 * **Delegate Command Removed:** The `apm-4-initiate-delegate` command has been removed. Delegates are now spawned as subagents by the Planner, Managers and Workers using the platform's native subagent tool. Custom subagent definitions (`delegate-research`, `delegate-debug`) are shipped with APM and installed to each platform's agents directory.
 
@@ -169,7 +169,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * **`apm init` Command:** Automates project setup, including AI assistant selection, asset download from GitHub Releases, and creation of the `.apm` directory structure (`.apm/guides`, `.apm/Memory`, `.apm/Implementation_Plan.md`, `.apm/metadata.json`). By default, automatically finds and installs the latest template version compatible with the current CLI version. Supports `--tag <tag>` option for installing specific template versions (e.g., `apm init --tag v0.5.0+templates.1`).
 * **`apm update` Command:** Allows users to update their local APM installation to the latest compatible template version. Includes intelligent version compatibility checking that compares installed templates against available releases, only updating if a newer compatible build exists. Informs users when newer templates require a CLI update via `npm update -g agentic-pm`. Includes backup and restore functionality for safe updates.
 * **Version Compatibility System:** Dynamic CLI version reading from `package.json` with automatic template version matching. The CLI automatically finds templates compatible with the running CLI version and compares build numbers for update decisions.
-* **Support for 10 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Gemini CLI, Qwen Code, opencode, Windsurf, Kilo Code, Auggie CLI, and Roo Code.
+* **Support for 10 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Gemini CLI, Qwen Code, OpenCode, Windsurf, Kilo Code, Auggie CLI, and Roo Code.
 * **Build Process (`npm run build`):** New script (`scripts/build.js`) processes source templates (`templates/`) into distributable bundles (`dist/`) for each assistant, handling formatting (Markdown/TOML) and placeholders.
 * **Metadata File (`.apm/metadata.json`):** Tracks the installed APM version (template tag) and selected AI assistant within the project.
 * **`Troubleshooting_Guide.md`:** Added a dedicated guide based on the v0.4 User Guide's troubleshooting section.
