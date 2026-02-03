@@ -760,8 +760,8 @@ When investigation, exploration, research or generally context-heavy and isolate
 
 * **Format:** "Delegate Agent: <purpose>"
 * **Delegation Usage Patterns and Skill References:**
-  - **Debug delegation:** For complex bugs that require isolated debugging focus. Include skill reference: `{SKILL_PATH:delegate-debug}`
-  - **Research delegation:** For knowledge gaps that require research to inform later steps. Include skill reference: `{SKILL_PATH:delegate-research}`
+  - **Debug delegation:** For complex bugs that require isolated debugging focus. Include skill reference: `{SKILL_PATH:debug-delegation}`
+  - **Research delegation:** For knowledge gaps that require research to inform later steps. Include skill reference: `{SKILL_PATH:research-delegation}`
   - **Refactor delegation:** For code restructuring or clean-up requiring an isolated refactoring scope. Include skill reference if a relevant skill exists.
   - **Other delegation:** For any other context-heavy or investigation step not covered above, clearly describe the specific purpose and scope of the delegation step in the task.
 * **Skill Reference Requirement:** Always include the relevant delegation skill reference for debug and research steps as shown. For other and refactor, add skill references if available and be explicit about the purpose.

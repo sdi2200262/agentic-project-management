@@ -283,33 +283,12 @@ Most requirements combine multiple types (e.g., code changes need Programmatic t
 - *Large (unbounded, project deliverable, multiple independent questions):* Note for Implementation Plan
 - *Uncertain:* Pause and ask User for approach preference before proceeding
 
-**If requesting Delegation** → Present the request using the following output format:
-```
-I'd like to request a Delegation for research on <Brief Topic> to help inform my understanding.
-
-**What I need to understand:** <Specific question>
-
-**Why this helps:** <How findings will inform Context Gathering Procedure and the current Question Round>
-
-**Why Delegation:** The Planner Agent operates in a single Session, so Delegation preserves context for the remaining Planning Phase.
-
-**Your options:**
-- **Approve Delegation** → I'll provide a Delegation Prompt for a separate Delegate Agent session.
-- **Decline** → Please indicate your preferred alternative:
-  - Self-exploration (if you believe scope is manageable within my context limits)
-  - Limit scope and self-explore (noting the remainder for the Implementation Plan)
-  - Note entirely for Implementation Plan
-```
-**If User approves Delegation** → Perform the following actions:
+**When delegating research** → Perform the following actions:
 1. Check if `.apm/Memory/Stage_00_Planning/` exists. If not, create it.
-2. Read `{SKILL_PATH:delegate-research}` and follow the methodology to create the Delegation Prompt.
-3. User opens Delegate Agent Session and provides the Delegation Prompt.
-4. Delegate Agent logs findings and returns Delegation Report to User.
-5. User returns to Planner Agent with report.
-6. Read the Delegation Memory Log at the provided path.
-7. Integrate findings into current Question Round.
-
-**If User declines Delegation** → Proceed with the User's selected alternative: self-explore directly, explore reduced scope while noting remainder for Implementation Plan, or note the research need entirely for Implementation Plan. Continue with current Question Round.
+2. Read `{SKILL_PATH:research-delegation}` and spawn a `research-delegate` subagent per §3.2, structuring the task input per §3.1.
+3. The delegate executes autonomously and returns findings.
+4. Read the Delegation Memory Log at the path indicated by the delegate.
+5. Integrate findings into current Question Round.
 
 ---
 

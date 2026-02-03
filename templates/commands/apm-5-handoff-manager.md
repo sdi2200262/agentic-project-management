@@ -22,7 +22,7 @@ Handoff is only eligible when the current Task Cycle is complete.
 **Eligibility Requirements:**
 
 The Manager MUST have completed:
-- Task Assignment Prompt issued to Worker Agent
+- Task Prompt issued to Worker Agent
 - Task Report received from User
 - Task Memory Log reviewed
 - Coordination Decision made (proceed to next Task, FollowUp, or Coordination Artifact modification)
@@ -191,7 +191,7 @@ Read ALL Memory Logs from the current Stage (Stage <N>):
 ### Previous Stage Context Dependencies
 When you encounter Context Dependencies referencing Tasks from previous Stages that you have no context of:
 - Read the specific Task Memory Log when you encounter the dependency
-- If the Task Memory Log does not provide sufficient context, read referenced files to reconstruct context needed for accurate Task Assignment Prompt creation
+- If the Task Memory Log does not provide sufficient context, read referenced files to reconstruct context needed for accurate Task Prompt creation
 
 ## Current Session State
 

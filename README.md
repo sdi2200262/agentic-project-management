@@ -40,16 +40,13 @@ APM supports the following AI assistants and IDEs:
 | Cursor              | IDE & CLI               | Markdown | `.cursor/commands`     |
 | Claude Code         | IDE & CLI               | Markdown | `.claude/commands`     |
 | GitHub Copilot      | IDE                     | Markdown | `.github/prompts`      |
-| Windsurf            | IDE                     | Markdown | `.windsurf/workflows`  |
-| Roo Code            | IDE                     | Markdown | `.roo/commands`        |
-| Kilo Code           | IDE                     | Markdown | `.kilocode/workflows`  |
+| Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
 | Qwen Code           | CLI                     | TOML     | `.qwen/commands`       |
 | opencode            | CLI                     | Markdown | `.opencode/command`    |
-| Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
-| Auggie CLI          | CLI                     | Markdown | `.augment/commands`    |
-| Google Antigravity  | IDE                     | Markdown | `.antigravity/prompts` |
 
 When you run `apm init`, simply select your AI assistant from the list, and APM will automatically configure the appropriate command structure for your environment.
+
+> **Note:** Unofficial community-maintained extensions may be available for other assistants. See [CONTRIBUTING.md](CONTRIBUTING.md#community-extensions) for details.
 
 </details>
 

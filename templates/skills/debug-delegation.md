@@ -1,6 +1,6 @@
 ---
-name: delegate-debug
-description: Debug delegation methodology for isolating and resolving complex bugs. Defines how Delegating Agents create Debug Delegation Prompts.
+name: debug-delegation
+description: Defines debug delegation methodology and debug-delegate subagent spawning. Use when a bug resists initial fix attempts, spans multiple components, or would consume significant context to debug in the main conversation.
 ---
 
 # APM {VERSION} - Debug Delegation Skill
@@ -9,20 +9,14 @@ description: Debug delegation methodology for isolating and resolving complex bu
 
 **Reading Agent:** Worker Agent, Manager Agent (Delegating Agents)
 
-This skill defines how to delegate complex debugging work to a Delegate Agent. The Delegating Agent creates a Debug Delegation Prompt following this methodology; the Delegate Agent receives and executes it.
+This skill defines how to delegate complex debugging work to a `debug-delegate` subagent. It covers structuring the task input and spawning the delegate.
 
-### 1.1 When to Use Debug Delegation
+### 1.1 Typical Use Cases
 
-Delegate debugging when:
 - Bug resists initial fix attempts (2-3 failed corrections)
 - Issue appears systemic or spans multiple components
 - Debugging would consume significant Delegating Agent context
 - Isolated focus would benefit the investigation
-
-Do NOT delegate when:
-- Bug has obvious cause with clear fix
-- Quick iteration would likely resolve it
-- Issue is within normal Task execution scope
 
 ### 1.2 Objectives
 
@@ -68,17 +62,16 @@ A Debug Delegation Prompt must provide enough context for the Delegate to work a
 
 **Outcome Expectations:** Either a working solution the Delegating Agent can apply, or documented findings explaining what was discovered and why resolution wasn't achieved.
 
-### 2.3 Prompt Creation Standards
+### 2.3 Delegation Standards
 
 Perform the following actions:
 1. Gather the essential context per §2.1 Context Standards.
-2. Structure the prompt following §3.1 Debug Delegation Prompt Format.
-3. Output as a markdown code block with guidance for User to copy to a new Delegate Agent session.
-4. Await the Delegation Report from User.
+2. Spawn a `debug-delegate` subagent per §3.2, structuring the task input per §3.1.
+3. Await the delegate's findings.
 
 ### 2.4 Findings Integration Standards
 
-When User returns with the Delegation Report:
+When the delegate subagent returns findings:
 
 **If Resolved:**
 - Read the Delegation Memory Log for full context
@@ -95,51 +88,43 @@ When User returns with the Delegation Report:
 
 ## 3. Structural Specifications
 
-### 3.1 Debug Delegation Prompt Format
+### 3.1 Task Input Structure
 
-```markdown
-# Debug Delegation: <Brief Bug Description>
+The following structure defines what to include in the `prompt` parameter when spawning the delegate. Pass this content directly to the spawn tool - do not output it as a separate document.
 
-## Goal
-Resolve this bug to enable Task continuation. Provide a working fix or, if unresolvable, document findings for escalation.
+```
+Debug Delegation: <Brief Bug Description>
 
-## Bug Context
-<What the code/system should do, where the bug occurs, what Task is blocked>
+Goal: Resolve this bug to enable Task continuation. Provide a working fix or, if unresolvable, document findings for escalation.
 
-## Current Behavior
-<Exact error messages, stack traces, failure symptoms-verbatim, not paraphrased>
+Bug Context: <What the code/system should do, where the bug occurs, what Task is blocked>
 
-## Expected Behavior
-<What should happen for Task to continue>
+Current Behavior: <Exact error messages, stack traces, failure symptoms-verbatim, not paraphrased>
 
-## Reproduction Steps
+Expected Behavior: <What should happen for Task to continue>
+
+Reproduction Steps:
 1. <Step with specific commands, inputs, files>
 2. <Continue with precise instructions>
 3. <Include any setup or preconditions>
 
-## Environment
-<Language, framework versions, OS, dependencies, recent changes>
+Environment: <Language, framework versions, OS, dependencies, recent changes>
 
-## Relevant Code/Files
-<File paths, code snippets, configuration involved in the bug>
+Relevant Code/Files: <File paths, code snippets, configuration involved in the bug>
 
-## Prior Debugging Attempts
-<What Delegating Agent tried and outcomes-prevents repeating failed approaches>
+Prior Debugging Attempts: <What Delegating Agent tried and outcomes-prevents repeating failed approaches>
 
-## Execution Guidance
+Execution Guidance:
 - Use terminal and file system access to reproduce and debug actively
 - Collaborate with User when environment access or specific information is needed
 - Focus on resolution; if unresolvable after reasonable effort, document findings clearly
-
-## Logging
-Upon completion, log findings to Memory per `{GUIDE_PATH:memory-logging}` §3.2 Delegation Memory Log Procedure, then output a Delegation Report for User to return to the Delegating Agent.
 ```
 
-### 3.2 Prompt Delivery
+### 3.2 Spawning
 
-After creating the Delegation Prompt, output it as a markdown code block and guide the User:
+{DELEGATE_SPAWN_INSTRUCTION:debug-delegate}
 
-"I've created a Debug Delegation Prompt. Please copy this to a new Delegate Agent session (initialize with the delegate initiation command). After the Delegate completes their work and provides a Delegation Report, return here with that report so I can integrate the findings."
+Pass the task input (structured per §3.1) as the prompt parameter. The delegate executes autonomously and returns findings directly.
 
 ---
 

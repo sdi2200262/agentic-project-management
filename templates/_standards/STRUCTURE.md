@@ -31,7 +31,7 @@ description: <one or two sentence description of skill purpose>
 ```yaml
 ---
 name: task-assignment
-description: Construction and delivery of Task Assignment Prompts to Worker Agents.
+description: Construction and delivery of Task Prompts to Worker Agents.
 ---
 ```
 

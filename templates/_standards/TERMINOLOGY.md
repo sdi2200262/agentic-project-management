@@ -20,18 +20,18 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | **Planner Agent** | Agent Type responsible for Context Gathering and Work Breakdown. Single Agent, single Session per project. |
 | **Manager Agent** | Agent Type responsible for coordination and orchestration. Single Agent, multiple Sessions. |
 | **Worker Agent** | Agent Type responsible for Task execution. Multiple Agents defined in Implementation Plan, multiple Sessions each. |
-| **Delegate Agent** | Agent Type responsible for isolated, focused work. Multiple Agents created on-demand, single Session each. |
-| **Delegating Agent** | The Agent that initiates a Delegation. Can be Planner, Worker, or Manager. |
+| **Delegate Agent** | Agent Type responsible for isolated, focused work. Spawned as subagents, execute autonomously and return findings directly. Can be spawned by Delegating Agent (workflow-driven) or by User request. |
+| **Delegating Agent** | The Agent that initiates a Delegation by reading a delegation skill and spawning a delegate subagent. Can be Planner, Worker, or Manager. |
 | **Reading Agent** | The Agent Type(s) that use a particular Skill. Declared in Skill Overview. |
 
 **Agent Type Characteristics:**
 
-| Agent Type | Agents per Project | Sessions per Agent | Handoff Capable |
-|------------|-------------------|-------------------|-----------------|
-| Planner | 1 | 1 | No |
-| Manager | 1 | Multiple | Yes |
-| Worker | Multiple | Multiple each | Yes |
-| Delegate | Multiple | 1 each | No |
+| Agent Type | Agents per Project | Sessions per Agent | Handoff Capable | Spawning |
+|------------|-------------------|-------------------|-----------------|----------|
+| Planner | 1 | 1 | No | User-initiated |
+| Manager | 1 | Multiple | Yes | User-initiated |
+| Worker | Multiple | Multiple each | Yes | User-initiated |
+| Delegate | Multiple | 1 each | No | Subagent (programmatic) |
 
 ---
 
@@ -91,17 +91,25 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 
 ### 1.4 Communications
 
+**User-Transferred Communications:**
+
 | Term | Definition |
 |------|------------|
-| **Communication** | Structured markdown message transferred by the User between Agents. Two types exist: Prompt, Report. |
-| **Prompt** | Communication passed TO an Agent to initiate or continue work. Four types exist: Task Assignment, FollowUp Task Assignment, Delegation, Handoff. |
-| **Task Assignment Prompt** | Self-contained prompt providing Worker with everything needed to execute a Task. Flags: `has_dependencies` (includes Context Dependencies), `has_delegation_steps` (includes Delegation). |
-| **FollowUp Task Assignment Prompt** | Refined Task Assignment issued after Coordination Decision determines retry needed. |
-| **Delegation Prompt** | Prompt providing Delegate with context and instructions for isolated work. |
+| **Communication** | Structured markdown message transferred by the User between Agent sessions. |
+| **Prompt** | Communication passed TO an Agent to initiate or continue work. Three types exist: Task, FollowUp Task, Handoff. |
+| **Task Prompt** | Self-contained prompt providing Worker with everything needed to execute a Task. Flags: `has_dependencies` (includes Context Dependencies), `has_delegation_steps` (includes Delegation). |
+| **FollowUp Task Prompt** | Refined Task Prompt issued after Coordination Decision determines retry needed. |
 | **Handoff Prompt** | Prompt instructing Incoming Agent how to reconstruct context. |
-| **Report** | Communication passed BACK to an Agent after work completion. Two types exist: Task, Delegation. |
+| **Report** | Communication passed BACK to an Agent after work completion. |
 | **Task Report** | Concise summary output by Worker for User to return to Manager. |
-| **Delegation Report** | Summary output by Delegate for User to return to Delegating Agent. |
+
+**Communication Flow:**
+
+| Communication | From | To | Mechanism |
+|---------------|------|-----|-----------|
+| Task Prompt | Manager | Worker | User copy-paste |
+| Task Report | Worker | Manager | User copy-paste |
+| Handoff Prompt | Outgoing Agent | Incoming Agent | User copy-paste |
 
 ---
 
@@ -114,8 +122,8 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | **Step** | Ordered sub-unit within a Task. Supports failure tracing but has no independent validation. |
 | **Delegation** | Isolated work unit assigned to a Delegate Agent by a Delegating Agent. |
 | **Delegation Type** | Category of delegated work. Two primary types exist: Debug, Research. Custom types use Delegation Prompt description. |
-| **Debug Delegation** | Delegation for isolating and resolving complex bugs. Uses delegate-debug skill. |
-| **Research Delegation** | Delegation for investigating knowledge gaps using current sources. Uses delegate-research skill. |
+| **Debug Delegation** | Delegation for isolating and resolving complex bugs. Uses debug-delegation skill. |
+| **Research Delegation** | Delegation for investigating knowledge gaps using current sources. Uses research-delegation skill. |
 
 ---
 
@@ -201,7 +209,7 @@ Planner Agent can initiate Delegations during Planning Phase. See §1.4 Work Uni
 |-----------|---------------|-------------|
 | **Manager Initiation** | manager-initiation | Initialize Manager session and read Coordination Artifacts. |
 | **Memory Maintenance** | memory-maintenance | Manage Memory System including Memory Root, Stage directories, and log review. |
-| **Task Assignment** | task-assignment | Construct and deliver Task Assignment Prompts to Worker Agents. |
+| **Task Assignment** | task-assignment | Construct and deliver Task Prompts to Worker Agents. |
 | **Artifact Maintenance** | artifact-maintenance | Assess and execute modifications to Coordination Artifacts. |
 | **Manager Handoff** | manager-handoff | Transfer context to Incoming Agent when context window limits approach. |
 
@@ -226,8 +234,8 @@ Planner Agent can initiate Delegations during Planning Phase. See §1.4 Work Uni
 
 | Activity | Description |
 |----------|-------------|
-| Task Assignment | Construct Task Assignment Prompt with dependency context, specifications, execution instructions and validation criteria. |
-| FollowUp Task Assignment | Create refined Task Assignment after investigation reveals issues. |
+| Task Assignment | Construct Task Prompt with dependency context, specifications, execution instructions and validation criteria. |
+| FollowUp Task Assignment | Create refined Task Prompt after investigation reveals issues. |
 
 **Artifact Maintenance Activities:**
 
@@ -283,7 +291,7 @@ Planner Agent can initiate Delegations during Planning Phase. See §1.4 Work Uni
 | Task Validation | Execute validations in order: Programmatic → Artifact → User. |
 | Iteration Cycle | Correct failures, re-execute, re-validate until success or stop condition. |
 | Pause Handling | Communicate pause reason, await input, resume execution. |
-| Delegation Handling | Create Delegation Prompt, await report, integrate findings. |
+| Delegation Handling | Read delegation skill, spawn delegate subagent, integrate returned findings. |
 
 **Memory Logging Activities:**
 
@@ -331,42 +339,49 @@ Planner Agent can initiate Delegations during Planning Phase. See §1.4 Work Uni
 | **User Validation** | Human judgment required. Must pause for review. No autonomous iteration. |
 | **Iteration Cycle** | Correction loop when validation fails: correct → re-execute → re-validate. |
 | **Pause** | Suspension of Task execution for input or review. Two types exist: Obligatory, Autonomous. |
-| **Obligatory Pause** | Required pause for Delegation, explicit User actions, or User Validation. |
+| **Obligatory Pause** | Required pause for explicit User actions or User Validation. |
 | **Autonomous Pause** | Optional pause at natural breakpoints during complex Tasks. Worker judgment. |
 | **Task Status** | Outcome of Task execution. Success (objective achieved), Partial (progress made but incomplete, needs guidance), Failed (attempted but couldn't succeed, issue within Task scope), Blocked (external factors prevent progress, requires coordination-level resolution). |
 | **Handoff Indication** | Statement in first Task Report after Handoff identifying Session number and loaded logs. |
 
 ---
 
-### 3.3 Delegation Layer (Delegate Agent)
+### 3.3 Delegation Layer
 
-Delegation applies to both Planning Phase (Planner as Delegating Agent) and Implementation Phase (Manager or Worker as Delegating Agent). See §1.4 Work Units for Delegation terminology.
+Delegation applies to both Planning Phase (Planner as Delegating Agent) and Implementation Phase (Manager or Worker as Delegating Agent). Delegates are spawned as subagents and execute autonomously. Delegation can be initiated by the Delegating Agent (workflow-driven, e.g., reaching a delegation step) or by explicit User request (e.g., "use a delegate to debug this").
 
-**Procedures:**
+**Delegation Skills (for Delegating Agents):**
 
-| Procedure | Skill/Command | Description |
-|-----------|---------------|-------------|
-| **Delegate Initiation** | delegate-initiation | Initialize Delegate session and execute delegated work. |
-| **Delegation Skill** | delegate-debug, delegate-research | Type-specific methodology for delegated work (Debug or Research). |
-| **Memory Logging** | memory-logging | Create Delegation Memory Log and output Delegation Report. |
+| Skill | Reading Agent | Description |
+|-------|---------------|-------------|
+| **research-delegation** | Worker, Manager, Planner | Defines research delegation methodology and research-delegate subagent spawning. Use when knowledge is outdated or uncertain, official documentation needs verification, or a bounded technical question requires dedicated investigation. |
+| **debug-delegation** | Worker, Manager | Defines debug delegation methodology and debug-delegate subagent spawning. Use when a bug resists initial fix attempts, spans multiple components, or would consume significant context to debug in the main conversation. |
 
-**Delegate Initiation Activities:**
+**Delegate Subagents:**
 
-| Activity | Description |
-|----------|-------------|
-| Delegation Execution | Execute delegated work following Delegation Prompt methodology. |
+| Subagent | Description | Tools |
+|----------|-------------|-------|
+| **research-delegate** | Investigates knowledge gaps using web search and official documentation. | Read-only + web access |
+| **debug-delegate** | Isolates and resolves complex bugs through active debugging. | Full tools including edit/terminal |
 
-**Memory Logging Activities:**
+**Delegation Workflow:**
 
-| Activity | Description |
-|----------|-------------|
-| Memory Logging | Create Delegation Memory Log with findings and integration notes. |
-| Delegation Reporting | Output Delegation Report for User to return to Delegating Agent. |
+| Step | Actor | Action |
+|------|-------|--------|
+| 1. Identify need | Delegating Agent | Recognize delegation step or investigation need |
+| 2. Read skill | Delegating Agent | Read relevant delegation skill (research-delegation or debug-delegation) |
+| 3. Spawn subagent | Delegating Agent | Spawn delegate subagent per skill's §3.2, passing task input structured per §3.1 |
+| 4. Execute | Delegate | Execute delegated work autonomously |
+| 5. Log findings | Delegate | Create Delegation Memory Log per memory-logging skill |
+| 6. Return findings | Delegate | Return summary to Delegating Agent |
+| 7. Integrate | Delegating Agent | Read Delegation Memory Log, integrate findings, continue work |
 
 **Terms:**
 
 | Term | Definition |
 |------|------------|
+| **Delegation Prompt** | Task prompt constructed following delegation skill methodology and passed directly to delegate subagent at spawn. |
+| **Delegation Findings** | Results returned directly by delegate subagent to the spawning agent. Includes summary and path to Delegation Memory Log. |
 | **Resolved** | Delegation status indicating issue addressed, findings ready for integration. |
 | **Unresolved** | Delegation status indicating issue not fully resolved, partial findings available. |
 
