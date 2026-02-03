@@ -16,8 +16,7 @@ This document contains development notes, research findings, and implementation 
 | **Claude Code** | `Task(subagent_type=...)` | `.claude/agents/` | Built-in: `Explore`, `Plan`, `general-purpose`; native skill injection |
 | **GitHub Copilot** | `#runSubagent` | `.github/agents/` | Enable in tools menu; agent can invoke autonomously |
 | **Gemini CLI** | `delegate_to_agent(...)` | `.gemini/agents/` | Requires `enableAgents: true` in settings |
-| **Qwen Code** | `task(...)` | `.qwen/agents/` | Variable templating supported |
-| **opencode** | `Task(subagent_type=...)` | `.opencode/agents/` | JSON config also supported |
+| **OpenCode** | `Task(subagent_type=...)` | `.opencode/agents/` | JSON config also supported |
 
 ### Platforms Without Official Support
 
@@ -25,9 +24,10 @@ The following assistants do not have autonomous subagent capabilities and are no
 
 - **Windsurf** - Fast Context auto-triggers only; no custom subagent support
 - **Google Antigravity** - Browser subagent only; no custom subagent support
-- **Auggie CLI** - User-initiated only; single-process design
-- **Roo Code** - Subagent support experimental/unverified
-- **Kilo Code** - Subagent support experimental/unverified
+- **Auggie CLI** - Subagent support added January 2026; untested with APM
+- **Qwen Code** - Untested with APM; maintenance not sustainable
+- **Roo Code** - Incompatible subagent config format (`.roomodes`); untested with APM
+- **Kilo Code** - Incompatible subagent config format (`.kilocodemodes`); untested with APM
 
 Community members may develop and maintain unofficial extensions for these platforms. See CONTRIBUTING.md for details on community extensions.
 
@@ -52,8 +52,7 @@ These are processed during build and output to platform-specific agent directori
 - Cursor: `.cursor/agents/`
 - GitHub Copilot: `.github/agents/` (with `.agent.md` extension)
 - Gemini CLI: `.gemini/agents/`
-- Qwen Code: `.qwen/agents/`
-- opencode: `.opencode/agents/`
+- OpenCode: `.opencode/agents/`
 
 ### Delegation Model
 
@@ -258,8 +257,7 @@ Research findings on custom subagent support across AI coding assistants.
 | **Cursor** | `.cursor/agents/*.md` | Yes | Embedded in body | `Task(subagent_type="name", prompt="...")` |
 | **GitHub Copilot** | `.github/agents/*.agent.md` | Yes | Embedded in body | `#runSubagent` |
 | **Gemini CLI** | `.gemini/agents/*.md` | Yes | Experimental | `delegate_to_agent(agent_name="name", objective="...")` |
-| **Qwen Code** | `.qwen/agents/*.md` | Yes | Embedded in body | `task(subagent_type="name", prompt="...")` |
-| **opencode** | `.opencode/agents/*.md` | Yes | Embedded in body | `Task(subagent_type="name", prompt="...")` |
+| **OpenCode** | `.opencode/agents/*.md` | Yes | Embedded in body | `Task(subagent_type="name", prompt="...")` |
 
 ### Key Findings
 

@@ -41,8 +41,7 @@ APM supports the following AI assistants and IDEs:
 | Claude Code         | IDE & CLI               | Markdown | `.claude/commands`     |
 | GitHub Copilot      | IDE                     | Markdown | `.github/prompts`      |
 | Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
-| Qwen Code           | CLI                     | TOML     | `.qwen/commands`       |
-| opencode            | CLI                     | Markdown | `.opencode/command`    |
+| OpenCode            | CLI                     | Markdown | `.opencode/command`    |
 
 When you run `apm init`, simply select your AI assistant from the list, and APM will automatically configure the appropriate command structure for your environment.
 

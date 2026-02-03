@@ -2,7 +2,7 @@
  * APM Build System Entry Point
  *
  * Generates AI assistant-specific command bundles from markdown templates.
- * Supports Markdown (Claude, Copilot, etc.) and TOML (Gemini, Qwen) formats.
+ * Supports Markdown (Claude, Copilot, etc.) and TOML (Gemini) formats.
  *
  * Usage: node build/index.js
  *
