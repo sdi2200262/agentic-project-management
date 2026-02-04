@@ -9,7 +9,7 @@ description: Initiates and guides the Manager Agent through the Handoff Procedur
 
 This command initiates the Handoff Procedure for a Manager Agent approaching context window limits. The Outgoing Manager creates two artifacts:
 - **Handoff Memory Log:** A markdown file stored in `.apm/Memory/Handoffs/Manager_Handoffs/` containing working context not captured in Coordination Artifacts or Memory Logs
-- **Handoff Prompt:** A markdown code block for User to copy-paste to a new chat session, instructing the Incoming Manager to reconstruct context procedurally
+- **Handoff Prompt:** Written to the Handoff Bus file, instructing the Incoming Manager to reconstruct context procedurally
 
 The Incoming Manager reconstructs context by reading Coordination Artifacts, Skills, Memory Logs, and the Handoff Memory Log-not from the Handoff Memory Log alone.
 
@@ -97,19 +97,19 @@ Perform the following actions:
 Perform the following actions:
 1. Present both artifacts to User:
    - Handoff Memory Log (created as file)
-   - Handoff Prompt (output as markdown code block)
+   - Handoff Prompt (written to Handoff Bus per `{SKILL_PATH:apm-communication}` §3.6 Handoff Bus Protocol)
 2. Request User review:
    ```
    Handoff artifacts created:
 
    **Handoff Memory Log:** `.apm/Memory/Handoffs/Manager_Handoffs/Manager_Handoff_Log_<N>.md`
 
-   **Handoff Prompt:** Ready for copy-paste below.
+   **Handoff Prompt:** Available at `.apm/bus/manager/apm-handoff-manager.md`
 
-   Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new chat session to initialize the Incoming Manager.
+   Please review both artifacts. Let me know if any modifications are needed, otherwise reference the Handoff Bus file in a new session to initialize the Incoming Manager. {CONTEXT_ATTACH_SYNTAX}
    ```
 3. If User requests modifications → Update artifacts accordingly
-4. User copies Handoff Prompt to new session; this session ends
+4. User references Handoff Bus file in new session; this session ends
 
 ---
 
@@ -170,7 +170,7 @@ timestamp: <Date/time of Handoff>
 
 ## 5. Handoff Prompt Structure
 
-The Handoff Prompt instructs the Incoming Manager to reconstruct context procedurally from Coordination Artifacts, Skills, and Memory Logs. The Handoff Memory Log provides supplementary context only. The Handoff Prompt is presented as a **markdown code block** in the chat:
+The Handoff Prompt instructs the Incoming Manager to reconstruct context procedurally from Coordination Artifacts, Skills, and Memory Logs. The Handoff Memory Log provides supplementary context only. The Handoff Prompt is written to the Handoff Bus file (`.apm/bus/manager/apm-handoff-manager.md`):
 ````markdown
 # APM Manager Agent Session <N+1> Handoff
 

@@ -158,63 +158,7 @@ Decision rules define criteria for choosing between outcomes. Each condition map
 
 ## 4. Output Guidance
 
-Agent outputs to Users use natural language. Internal terminology from skills and commands is not exposed. Three patterns guide output construction, with language adapting to context while including the pattern elements. Pause actions use the pattern matching their purpose: Checkpoint Pattern for review/approval pauses, Request Pattern for input/decision pauses.
-
-**Checkpoint Pattern** (pausing for review/approval):
-
-| Element | Purpose |
-|---------|---------|
-| Status statement | What is complete. |
-| Review content | What needs User attention. |
-| Options | Clear choices with consequences. |
-
-Example structure:
-```
-[Procedure/Phase] complete. [Summary of state].
-
-Please review [specific items].
-
-**If [option A]** → [consequence A].
-**If [option B]** → [consequence B].
-```
-
-**Request Pattern** (asking for input/decision):
-
-| Element | Purpose |
-|---------|---------|
-| Situation | What is happening. |
-| Need | Why input is required. |
-| Options | Available choices with recommendation. |
-
-Example structure:
-```
-I've identified [situation].
-
-[Why this needs User input].
-
-**Options:**
-1. [Option A]: [description and trade-offs]
-2. [Option B]: [description and trade-offs]
-
-**Recommendation:** [preferred option with reasoning]
-
-How would you like to proceed?
-```
-
-**Completion Pattern** (finishing a procedure):
-
-| Element | Purpose |
-|---------|---------|
-| Confirmation | What is done. |
-| Result | What is ready or produced. |
-| Next action | What happens next. |
-
-Example structure:
-```
-[Procedure] complete. [Artifacts/outputs] ready.
-
-Next: [what to do or what will happen].
-```
+Agent outputs to Users use natural language adapted to the situation. Internal terminology from skills and commands is not exposed. Agents use contextually appropriate phrasing - there are no rigid templates. When pausing, communicating status, requesting input, or completing a procedure, adapt the phrasing to what the situation requires while conveying the necessary information (what is done, what needs attention, what options exist, what happens next).
 
 ---
 

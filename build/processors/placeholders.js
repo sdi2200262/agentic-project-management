@@ -29,6 +29,7 @@ import path from 'path';
  * - {CLAUDE_SKILLS_FIELD:name}: Claude's native skills: field (empty for other platforms)
  * - {DELEGATE_MEMORY_LOGGING_INSTRUCTION}: Platform-specific memory logging instruction for delegates
  * - {DELEGATE_SPAWN_INSTRUCTION:name}: Platform-specific spawn syntax for delegate subagents
+ * - {CONTEXT_ATTACH_SYNTAX}: Platform-specific instructions for how Users reference files in chat
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
@@ -94,6 +95,9 @@ export function replacePlaceholders(content, context) {
   // Replace WORKER_SUBAGENT_GUIDANCE placeholder
   const workerGuidanceText = `For complex Cross-Agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`.`;
   replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
+
+  // Replace CONTEXT_ATTACH_SYNTAX placeholder
+  replaced = replaced.replace(/{CONTEXT_ATTACH_SYNTAX}/g, target.contextAttachSyntax || 'Reference the file path in your message.');
 
   // Replace delegate agent placeholders
   replaced = replaceDelegatePlaceholders(replaced, target);

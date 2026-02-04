@@ -158,7 +158,7 @@ Execute when entering a new Stage, before issuing any Task Prompts for that Stag
 Execute when User returns with a Task Report from a Worker Agent.
 
 Perform the following actions:
-1. Receive the Task Report from User. The Task Report is a concise markdown code block that references the Task Memory Log path.
+1. Read the Task Report from the Report Bus file. Clear the Report Bus per `{SKILL_PATH:apm-communication}` §3.5 Clearing Protocol before writing the next Task Prompt to the Send Bus.
 2. Check for Handoff indication in the Task Report:
    - If the Task Report indicates the Worker is an Incoming Worker Agent (new instance after Handoff):
      - Verify the Handoff File exists by listing the directory `.apm/Memory/Handoffs/<AgentID>_Handoffs/` (list only, do not read the file to preserve context)
