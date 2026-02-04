@@ -17,6 +17,7 @@
         "guides": ".github/apm-guides",
         "agents": ".github/agents"
       },
+      "contextAttachSyntax": "Reference the file using `#file` and select the file from the picker.",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "#runSubagent with exploration focus",
@@ -36,6 +37,7 @@
         "guides": ".claude/apm-guides",
         "agents": ".claude/agents"
       },
+      "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "Task(subagent_type=\"Explore\", prompt=\"...\")",
@@ -55,6 +57,7 @@
         "guides": ".gemini/apm-guides",
         "agents": ".gemini/agents"
       },
+      "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "codebase_investigator(query=\"...\")",
@@ -74,6 +77,7 @@
         "guides": ".cursor/apm-guides",
         "agents": ".cursor/agents"
       },
+      "contextAttachSyntax": "Reference the file using `@` and search for the file name.",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
@@ -93,6 +97,7 @@
         "guides": ".opencode/apm-guides",
         "agents": ".opencode/agents"
       },
+      "contextAttachSyntax": "Reference the file using `@` followed by the file name.",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "task(subagent_type=\"explore\", prompt=\"...\")",

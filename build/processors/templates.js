@@ -123,11 +123,16 @@ async function processTemplate(templatePath, options) {
       }
       outputPath = path.join(commandsDir, `${basename}${ext}`);
     } else {
-      // Skills: create subdirectory and write SKILL.md
+      // Skills: directory-based structure (skills/<skill-name>/SKILL.md + optional files)
       finalContent = processedFull;
-      const skillDir = path.join(skillsDir, basename);
+      const relativePath = path.relative(sourceDir, templatePath);
+      const pathParts = relativePath.split(path.sep);
+      // pathParts: ['skills', '<skill-name>', '<file>.md']
+      const skillName = pathParts[1];
+      const fileName = pathParts[pathParts.length - 1];
+      const skillDir = path.join(skillsDir, skillName);
       await fs.ensureDir(skillDir);
-      outputPath = path.join(skillDir, 'SKILL.md');
+      outputPath = path.join(skillDir, fileName);
     }
   }
 

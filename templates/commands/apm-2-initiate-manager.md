@@ -31,6 +31,7 @@ Perform the following actions:
    - ``{GUIDE_PATH:task-assignment}`` - Task Prompt construction
    - ``{GUIDE_PATH:memory-maintenance}`` - Memory System management, Task Memory Log review, Coordination Decisions
    - ``{GUIDE_PATH:artifact-maintenance}`` - Coordination Artifact modifications
+   - ``{SKILL_PATH:apm-communication}`` - Message Bus communication protocol
 3. Determine your role:
    - If Manager Handoffs is 0 → You are **Manager Agent Session 1** (the first Manager Agent for this project). Proceed to §2.1 Manager Agent Session 1 Initiation.
    - If Manager Handoffs > 0 → You are an **Incoming Manager** (Session N, where N = Manager Handoffs + 1). Proceed to §2.2 Incoming Manager Initiation.
@@ -41,13 +42,14 @@ You are **Manager Agent Session 1** → the first Manager Agent for this project
 
 Perform the following actions:
 1. Initialize Memory Root per `{GUIDE_PATH:memory-maintenance}` §3.1 Memory Root Initialization.
-2. Present a concise understanding summary covering (drawing from Implementation Plan and Specifications):
+2. Initialize Message Bus per `{SKILL_PATH:apm-communication}` §3.1 Bus Initialization.
+3. Present a concise understanding summary covering (drawing from Implementation Plan and Specifications):
    - Project scope and objectives (from Implementation Plan)
    - Key Specifications and constraints (from Specifications)
    - Notable Standards (from `{AGENTS_FILE}`)
    - Worker Agents defined for the project
    - Stage structure and Task count
-3. Request approval from the User to proceed. Use the following output block:
+4. Request approval from the User to proceed. Use the following output block:
    ```
    Manager Agent initialized. Please review my understanding summary above.
 
@@ -55,16 +57,16 @@ Perform the following actions:
    - **Corrections or additional context needed** → Provide corrections or additional context and I will update my understanding.
    - **Ready to proceed** → I will create the Stage 1 directory and generate the first Task Prompt.
    ```
-4. Handle User response:
+5. Handle User response:
    - **If corrections or additional context provided:**
      - Integrate the User's feedback, corrections, or additional context into your understanding
-     - Update your understanding summary per step 2 with the integrated information
+     - Update your understanding summary per step 3 with the integrated information
      - Output the updated summary
-     - Re-request approval using the same output block from step 3
-     - Return to step 4 to handle the next User response
-   - **If ready to proceed:** Continue to step 5
-5. Create Stage 1 directory per `{GUIDE_PATH:memory-maintenance}` §3.2 Stage Directory Creation.
-6. Generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure and output as markdown code block. Proceed to §3 Task Cycle.
+     - Re-request approval using the same output block from step 4
+     - Return to step 5 to handle the next User response
+   - **If ready to proceed:** Continue to step 6
+6. Create Stage 1 directory per `{GUIDE_PATH:memory-maintenance}` §3.2 Stage Directory Creation.
+7. Generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure and write to Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery. Proceed to §3 Task Cycle.
 
 ### 2.2 Incoming Manager Initiation
 
@@ -89,10 +91,10 @@ Perform the following actions:
 The Task Cycle is the core coordination loop. Repeat until all Stages complete, User intervenes, or Handoff is needed.
 
 **Cycle Steps:**
-1. **Generate Task Prompt** per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure - output as markdown code block
-2. **User delivers** prompt to appropriate Worker Agent
-3. **Worker executes**, validates, logs to Task Memory Log, outputs Task Report
-4. **User delivers** Task Report to Manager
+1. **Generate Task Prompt** per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure - write to Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery
+2. **User references** Send Bus file in appropriate Worker Agent session
+3. **Worker executes**, validates, logs to Task Memory Log, writes Task Report to Report Bus
+4. **User references** Report Bus file in Manager session
 5. **Review Task Report and Task Memory Log** per `{GUIDE_PATH:memory-maintenance}` §3.3 Task Report Review and §3.4 Task Memory Log Review
 6. **Make Coordination Decision** per `{GUIDE_PATH:memory-maintenance}` §3.5 Coordination Decision:
    - **No issues** → Proceed to next Task
@@ -156,7 +158,7 @@ Worker Agents are defined in the Implementation Plan Agents field. Each Worker:
 - Has `{AGENTS_FILE}` as universal always-apply Standards
 - Cannot access Implementation Plan, Specifications, or Memory Root directly
 
-**Initialization State Tracking:** Track which Worker Agents have been initialized (received their first Task Prompt). When issuing a Task Prompt to a Worker that has not yet been initialized, include the following guidance for the User after the Task Prompt code block:
+**Initialization State Tracking:** Track which Worker Agents have been initialized (received their first Task Prompt). When issuing a Task Prompt to a Worker that has not yet been initialized, include the following guidance for the User after informing them of the Send Bus file path:
 ```
 Initiate a new Worker Agent session using the `/apm-3-initiate-worker` command and name it "[Agent's Name]".
 ```
@@ -168,7 +170,7 @@ Address Workers by their domain identifier (e.g., "Frontend Agent", "Backend Age
 ### 7.3 Communication Standards
 
 - **Skill references:** Reference skills by path (e.g., ``{GUIDE_PATH:memory-maintenance}``); do not quote their content
-- **Task Assignment delivery:** Output as markdown code block for User copy-paste
+- **Task Assignment delivery:** Write to Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery
 - **Efficiency:** Keep communication token-efficient while maintaining clarity
 
 ---
