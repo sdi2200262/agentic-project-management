@@ -149,7 +149,7 @@ Pause Handling (§3.5 Pause Handling) and Delegation Handling (§3.6 Delegation 
 ### 3.1 Task Assignment Receipt
 
 Perform the following actions:
-1. Verify `agent_id` in YAML frontmatter matches your registered instance. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries.
+1. Verify `agent_id` in YAML frontmatter matches your registered instance. If the Task Prompt was received via a Send Bus file, also validate that the Send Bus filename matches the `agent_id` per `{SKILL_PATH:apm-communication}` §2.3 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries.
 2. Parse Task Assignment structure-YAML frontmatter fields and body sections.
 3. Identify execution parameters:
    - `has_dependencies: true` → Context Integration required
@@ -239,7 +239,7 @@ Perform the following actions:
 1. Determine final status per §2.5 Failure Status Standards (Success if all validation passed).
 2. Determine `failure_point`: `null` for Success; `Execution` or `Validation` or `<description>` based on where stopped.
 3. Create Task Memory Log per `{GUIDE_PATH:memory-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
-4. Output Task Report per `{GUIDE_PATH:memory-logging}` §4.3 Task Report Format. Include Continuing Worker indication if this is your first Task after Handoff.
+4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Use the Task Report format per `{GUIDE_PATH:memory-logging}` §4.3 Task Report Format. Include Continuing Worker indication if this is your first Task after Handoff. Inform User to reference the Report Bus file in the Manager session.
 5. Await next Task Assignment or Handoff initiation.
 
 ---

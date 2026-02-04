@@ -9,7 +9,7 @@ description: Initiates and guides a Worker Agent through the Handoff Procedure t
 
 This command initiates the Handoff Procedure for a Worker Agent approaching context window limits. The Outgoing Worker creates two artifacts:
 - **Handoff Memory Log:** A markdown file stored in `.apm/Memory/Handoffs/<AgentID>_Handoffs/` containing working context from the current session
-- **Handoff Prompt:** A markdown code block for User to copy-paste to a new Worker Agent session, instructing the Incoming Worker to reconstruct context
+- **Handoff Prompt:** Written to the Handoff Bus file, instructing the Incoming Worker to reconstruct context
 
 The Incoming Worker reconstructs context by reading the Handoff Memory Log and current Stage Task Memory Logs-not from the Handoff Memory Log alone.
 
@@ -95,19 +95,19 @@ Perform the following actions:
 Perform the following actions:
 1. Present both artifacts to User:
    - Handoff Memory Log (created as file)
-   - Handoff Prompt (output as markdown code block)
+   - Handoff Prompt (written to Handoff Bus per `{SKILL_PATH:apm-communication}` §3.6 Handoff Bus Protocol)
 2. Request User review:
    ```
    Handoff artifacts created:
 
    **Handoff Memory Log:** `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<N>.md`
 
-   **Handoff Prompt:** Ready for copy-paste below.
+   **Handoff Prompt:** Available at `.apm/bus/<agent-slug>/apm-handoff-<agent-slug>.md`
 
-   Please review both artifacts. Let me know if any modifications are needed, otherwise copy the Handoff Prompt to a new Worker Agent session to initialize the Incoming Worker.
+   Please review both artifacts. Let me know if any modifications are needed, otherwise reference the Handoff Bus file in a new Worker Agent session to initialize the Incoming Worker. {CONTEXT_ATTACH_SYNTAX}
    ```
 3. If User requests modifications → Update artifacts accordingly
-4. User copies Handoff Prompt to new session; this session ends
+4. User references Handoff Bus file in new session; this session ends
 
 ---
 
@@ -166,7 +166,7 @@ timestamp: <Date/time of Handoff>
 
 ## 5. Handoff Prompt Structure
 
-The Handoff Prompt instructs the Incoming Worker to reconstruct context from the Handoff Memory Log and current Stage Task Memory Logs. The Handoff Prompt is presented as a **markdown code block** in the chat:
+The Handoff Prompt instructs the Incoming Worker to reconstruct context from the Handoff Memory Log and current Stage Task Memory Logs. The Handoff Prompt is written to the Handoff Bus file (`.apm/bus/<agent-slug>/apm-handoff-<agent-slug>.md`):
 
 ```markdown
 # APM Worker Agent Handoff - <AgentID>
@@ -206,7 +206,7 @@ This indication allows the Manager Agent to track Worker Handoffs and adjust Con
 
 ## Immediate Next Action
 
-Await the next Task Prompt from User. When received, proceed with Task Execution per `{GUIDE_PATH:task-execution}`.
+Await the next Task Prompt from User. The incoming Worker receives Tasks from the same Send Bus file (`.apm/bus/<agent-slug>/apm-send-to-<agent-slug>.md`). When the User references the Send Bus file, proceed with Task Execution per `{GUIDE_PATH:task-execution}`.
 ```
 
 ---

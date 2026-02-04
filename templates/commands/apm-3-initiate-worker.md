@@ -31,13 +31,14 @@ Perform the following actions:
 1. Extract AgentID from the received prompt:
    - From Task Prompt: Read `agent_id` field from YAML frontmatter (format: `<domain>-agent`)
    - From Handoff Prompt: Read the AgentID stated in the prompt header
-2. Convert AgentID to display format (e.g., `frontend-agent` → `Frontend Agent`)
-3. Register as the extracted AgentID.
-4. Confirm registration to User:
+2. Validate Bus identity: If the Task Prompt was received via a Send Bus file, verify the Send Bus filename matches the extracted AgentID (e.g., `apm-send-to-frontend-agent.md` should contain `agent_id: frontend-agent`). If mismatch → Reject and inform User of the identity mismatch.
+3. Convert AgentID to display format (e.g., `frontend-agent` → `Frontend Agent`)
+4. Register as the extracted AgentID.
+5. Confirm registration to User:
    ```
    Registered as **[Agent Name]**.
    ```
-5. Proceed to §2.2 or §2.3 based on registration path.
+6. Proceed to §2.2 or §2.3 based on registration path.
 
 ### 2.2 Worker Agent Session 1 Initiation
 
@@ -47,6 +48,7 @@ Perform the following actions:
 1. Read required skills:
    - `{GUIDE_PATH:task-execution}` - Task Execution methodology
    - `{GUIDE_PATH:memory-logging}` - Memory Logging procedure
+   - `{SKILL_PATH:apm-communication}` - Message Bus communication protocol
 2. Proceed to execute the received Task Prompt following `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure.
 
 ### 2.3 Incoming Worker Initiation (Session N where N > 1)
@@ -57,6 +59,7 @@ Perform the following actions:
 1. Read required skills:
    - `{GUIDE_PATH:task-execution}` - Task Execution methodology
    - `{GUIDE_PATH:memory-logging}` - Memory Logging procedure
+   - `{SKILL_PATH:apm-communication}` - Message Bus communication protocol
 2. Follow the Handoff Prompt instructions:
    - Read the Handoff Memory Log at the path specified
    - Read current Stage Task Memory Logs as instructed
@@ -74,11 +77,11 @@ Perform the following actions:
 The Task Cycle is the core execution loop. Repeat for each Task Assignment received until User ends session or Handoff is needed.
 
 **Cycle Steps:**
-1. **Receive Task Prompt** from User
+1. **Read Task Prompt** from Send Bus file referenced by User
 2. **Verify AgentID** matches registered instance (see §5.1 Instance Boundaries)
 3. **Execute Task** per `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure - context integration, execution, validation, iteration
 4. **Log to Memory** per `{GUIDE_PATH:memory-logging}` §3.1 Task Memory Log Procedure - create Task Memory Log at specified path
-5. **Output Task Report** for User to return to Manager Agent
+5. **Write Task Report** to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery
 6. **Await next Task Assignment** or Handoff initiation
 
 ## 4. Handoff Procedure
@@ -118,7 +121,7 @@ When a Task has Context Dependencies from other Agents' work, the Task Prompt wi
 ### 5.3 Communication Standards
 
 - **Skill references:** Reference skills by path (e.g., `{GUIDE_PATH:task-execution}`); do not quote their content
-- **Task Reports:** Output as markdown code block for User to copy-paste to Manager
+- **Task Reports:** Write to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery
 - **Delegation:** When delegation is needed, read the relevant delegation skill and spawn a delegate subagent per the skill's spawn instructions
 - **Efficiency:** Keep communication with User concise; detailed information belongs in Memory Logs
 

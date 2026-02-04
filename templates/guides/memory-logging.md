@@ -164,7 +164,7 @@ Perform the following actions:
      - **Summarize:** Implementation approach, steps taken, rationale for choices
      - **Reference (don't reproduce):** Code blocks over 20 lines, full file contents, verbose outputs
      - **Exclude:** Routine operations, trivial details, information recoverable from artifacts
-3. Output Task Report to User. Keep post-amble minimal-User and Manager can read the log directly.
+3. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Inform User to reference the Report Bus file in the Manager session. Keep post-amble minimal-User and Manager can read the log directly.
 
 ### 3.2 Delegation Memory Log Procedure (Delegate Agent)
 

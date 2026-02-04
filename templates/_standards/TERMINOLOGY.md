@@ -107,9 +107,9 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 
 | Communication | From | To | Mechanism |
 |---------------|------|-----|-----------|
-| Task Prompt | Manager | Worker | User copy-paste |
-| Task Report | Worker | Manager | User copy-paste |
-| Handoff Prompt | Outgoing Agent | Incoming Agent | User copy-paste |
+| Task Prompt | Manager | Worker | Send Bus. User references via {CONTEXT_ATTACH_SYNTAX}. |
+| Task Report | Worker | Manager | Report Bus. User references via {CONTEXT_ATTACH_SYNTAX}. |
+| Handoff Prompt | Outgoing Agent | Incoming Agent | Handoff Bus. User references via {CONTEXT_ATTACH_SYNTAX}. |
 
 ---
 
@@ -135,6 +135,33 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | **Command** | User-facing prompt that initiates workflow actions. Located in `commands/apm-<N>-<action>.md`. |
 | **Procedure** | Structured sequence of actions within a Skill or Command. Uses "Perform the following actions:" format with numbered steps. |
 | **Activity** | Named unit of work within a Procedure. Activities are either sequential, executed in order or distinct, independent operations that together comprise the Procedure. |
+
+---
+
+### 1.7 Communication System
+
+| Term | Definition |
+|------|------------|
+| **Message Bus** | File-based communication system within `.apm/bus/` enabling structured message exchange between Agent sessions. Initialized by Manager during Session 1. |
+| **Agent Channel** | Per-agent subdirectory within the Message Bus containing that agent's Bus Files. |
+| **Bus File** | Individual file within an Agent Channel used for one direction of communication. Three types exist: Send Bus, Report Bus, Handoff Bus. |
+| **Send Bus** | Bus File for Manager-to-Worker communication (`apm-send-to-<agent>.md`). Contains Task Prompts and FollowUp Task Prompts. |
+| **Report Bus** | Bus File for Worker-to-Manager communication (`apm-report-from-<agent>.md`). Contains Task Reports. |
+| **Handoff Bus** | Bus File for Outgoing-to-Incoming Agent communication (`apm-handoff-<agent>.md`). Contains Handoff Prompts. |
+| **Clear-on-Return** | Protocol where an agent clears its incoming Bus File via terminal truncation before writing to its outgoing Bus File. |
+| **Bus Initialization** | Process where Manager creates all Agent Channels and Bus Files based on Implementation Plan agent assignments. Part of Manager Session 1 Initiation. |
+
+**Message Bus Structure:**
+
+```
+.apm/bus/
+├── <agent-slug>/
+│   ├── apm-send-to-<agent-slug>.md
+│   ├── apm-report-from-<agent-slug>.md
+│   └── apm-handoff-<agent-slug>.md
+└── manager/
+    └── apm-handoff-manager.md
+```
 
 ---
 
@@ -189,7 +216,7 @@ All writing conventions follow `WRITING.md`. All structural patterns follow `STR
 | **Domain** | Logical work area requiring specific mental model or skill set. Maps to Agent assignment. |
 | **Forced Chain-of-Thought** | Methodology requiring explicit reasoning in chat before file output. |
 
-Planner Agent can initiate Delegations during Planning Phase. See §1.4 Work Units for Delegation terminology.
+Planner Agent can initiate Delegations during Planning Phase. See §1.5 Work Units for Delegation terminology.
 
 ---
 

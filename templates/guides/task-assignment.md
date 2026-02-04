@@ -24,7 +24,7 @@ This skill defines how the Manager Agent constructs Task Prompts for Worker Agen
 
 ### 1.3 Outputs
 
-**Task Prompt:** Markdown code block containing all context a Worker Agent needs to execute a Task. Delivered to User for copy-paste to Worker Agent session.
+**Task Prompt:** Content written to Send Bus for Worker Agent to receive via User file reference. Contains all context a Worker Agent needs to execute a Task.
 
 **FollowUp Task Prompt:** Task Prompt with DIFFERENT content than the previous failed attempt, issued when Coordination Decision (per `{GUIDE_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed." Content (Objective, Instructions, Output, Validation) is refined based on what went wrong and what correction is needed, guided by a FollowUp Context section explaining the issue.
 
@@ -223,11 +223,8 @@ Perform the following actions:
    - Memory Logging instructions with path
    - Reporting Protocol reference
    - Delegation section (if `has_delegation_steps: true`): Include Delegation section in prompt body; Worker reads referenced delegation skill and spawns delegate subagent per skill methodology; Worker integrates findings and logs Delegation in Task Memory Log
-3. Output the complete prompt **as a markdown code block** for User copy-paste per §4.1 Critical Format Constraint.
-4. Immediately after outputting the Task Prompt code block, provide User guidance:
-   ```
-   Copy this Task Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
-   ```
+3. Write the complete prompt to the Send Bus file (`apm-send-to-<agent-slug>.md`) per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
+4. After writing the Task Prompt to the Send Bus, direct the User to reference the Send Bus file in the Worker session. {CONTEXT_ATTACH_SYNTAX}
 
 ### 3.5 FollowUp Task Prompt Creation
 
@@ -255,11 +252,8 @@ Perform the following actions:
    - Add FollowUp Context section after Task Reference explaining the issue and required refinement
    - Include refined Objective, Instructions, Output, and Validation (not the original content)
    - Contextually integrate extracted content from modified Coordination Artifacts in appropriate sections
-5. Output **as a markdown code block** for User copy-paste per §4.1 Critical Format Constraint.
-6. Immediately after outputting the FollowUp Task Prompt code block, provide User guidance:
-   ```
-   Copy this FollowUp Task Prompt and paste it to the [Agent's Name] input. After [Agent's Name] logs to Memory, return here with their Task Report.
-   ```
+5. Write the complete prompt to the Send Bus file (`apm-send-to-<agent-slug>.md`) per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
+6. After writing the FollowUp Task Prompt to the Send Bus, direct the User to reference the Send Bus file in the Worker session. {CONTEXT_ATTACH_SYNTAX}
 
 ---
 
@@ -270,8 +264,6 @@ This section defines the format guidance for Task Prompts.
 ### 4.1 Task Prompt Format
 
 Task Prompts are markdown files that follow this general structure. Adapt based on Task needs - not all sections are required for every Task.
-
-**Critical Format Constraint:** Task Prompts are delivered as markdown code blocks for User copy-paste. **MUST NOT contain embedded ``` code blocks** inside the prompt content, as this would break the outer code block boundaries and fragment the prompt. When code examples, file paths, or formatted content are needed, **use indented code blocks (4 spaces) or inline code formatting instead.**
 
 **YAML Frontmatter Structure:**
 ```yaml
@@ -430,7 +422,6 @@ FollowUp Task Prompts are NEW Task Prompts with DIFFERENT content than the previ
 - **Vague instructions:** "Implement the feature properly" vs "Implement POST /api/users with email validation using express-validator, returning 201 on success"
 - **Forgetting Delegation references:** Tasks with Delegation steps need skill references for Worker to create proper Delegation Prompts
 - **Wrong memory_log_path on FollowUp:** FollowUp Task Prompts must use the same path as the original-Worker overwrites, not creates new
-- **Embedded code blocks:** See §4.1 Critical Format Constraint. Use indented code blocks (4 spaces) or inline code formatting instead of triple backticks.
 
 ---
 
