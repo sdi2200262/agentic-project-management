@@ -585,7 +585,10 @@ Perform the following actions:
        - ...
      ```
 5. **Update Cross-Agent Dependencies (if any identified):** Only after completing the reasoning step in step 4, update the Implementation Plan by bolding the existing "Task N.M by [Name] Agent" notation in the Dependencies field for all identified cross-Agent dependencies to make them visually distinct from same-Agent dependencies.
-6. **Plan Summary** → Present in chat:
+6. **Dependency Graph Generation:**
+   - Generate a mermaid graph per §4.6 Dependency Graph Format using finalized tasks, agent assignments, and dependencies
+   - Write to Implementation Plan header under `* **Dependency Graph:**`
+7. **Plan Summary** → Present in chat:
    ```
    **Implementation Plan Summary:**
    * **Agents:** [count] ([list names])
@@ -765,6 +768,43 @@ When investigation, exploration, research or generally context-heavy and isolate
   - **Refactor delegation:** For code restructuring or clean-up requiring an isolated refactoring scope. Include skill reference if a relevant skill exists.
   - **Other delegation:** For any other context-heavy or investigation step not covered above, clearly describe the specific purpose and scope of the delegation step in the task.
 * **Skill Reference Requirement:** Always include the relevant delegation skill reference for debug and research steps as shown. For other and refactor, add skill references if available and be explicit about the purpose.
+
+### 4.6 Dependency Graph Format
+
+The Dependency Graph is a mermaid diagram in the Implementation Plan header that visualizes task dependencies and agent assignments.
+
+**Graph Structure:**
+```
+graph TB
+
+subgraph S1["Stage 1: <Name>"]
+  direction LR
+  T1_1["1.1 <Title><br/><i><Agent></i>"] --> T1_2["1.2 <Title><br/><i><Agent></i>"]
+end
+
+subgraph S2["Stage 2: <Name>"]
+  direction LR
+  T2_1["2.1 <Title><br/><i><Agent></i>"]
+end
+
+T1_2 -.-> T2_1
+
+style T1_1 fill:#a8d5ba
+style T1_2 fill:#a8d5ba
+style T2_1 fill:#f4a261
+```
+
+**Node Format:** `T<Stage>_<Task>["<Task ID> <Title><br/><i><Agent Name></i>"]`
+
+**Edge Rules:**
+- Same-agent dependency: `-->` (solid arrow)
+- Cross-agent dependency: `-.->` (dotted arrow)
+- Only direct dependencies; do not draw transitive closure
+
+**Styling:**
+- Each Agent gets a consistent fill color across all its nodes
+- Apply via `style T<S>_<T> fill:<color>` after all subgraphs
+- Assign colors in order of Agent appearance in the Implementation Plan Agents field
 
 ---
 
