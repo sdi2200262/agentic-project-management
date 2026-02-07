@@ -130,11 +130,10 @@ This section defines the sequential actions for Memory System maintenance. Execu
 
 **Procedure:**
 1. Memory Root Initialization (first session only)
-2. Stage Directory Creation (on Stage entry)
-3. Task Report Review (after receiving Task Report from User)
-4. Task Memory Log Review (read and interpret the log)
-5. Coordination Decision (determine and execute next action)
-6. Stage Summary Creation (on Stage completion)
+2. Task Report Review (after receiving Task Report from User)
+3. Task Memory Log Review (read and interpret the log)
+4. Coordination Decision (determine and execute next action)
+5. Stage Summary Creation (on Stage completion)
 
 ### 3.1 Memory Root Initialization
 
@@ -147,13 +146,7 @@ Perform the following actions:
    - Confirm Manager Handoffs is set to `0`
 3. Save the updated file
 
-### 3.2 Stage Directory Creation
-
-Execute when entering a new Stage, before issuing any Task Prompts for that Stage, create the **empty** Stage directory: `.apm/Memory/Stage_<StageNum>_<Slug>/`
-
-**Naming Convention:** Derive Stage slug from Implementation Plan Stage title. Example: `Stage 2 - API Integration` → `Stage_02_API_Integration/`
-
-### 3.3 Task Report Review
+### 3.2 Task Report Review
 
 Execute when User returns with a Task Report from a Worker Agent.
 
@@ -164,9 +157,9 @@ Perform the following actions:
      - Verify the Handoff File exists by listing the directory `.apm/Memory/Handoffs/<AgentID>_Handoffs/` (list only, do not read the file to preserve context)
      - Integrate the Handoff in Manager's working context: which Worker Agent performed the Handoff, which Stage it occurred in, which Memory Logs the Incoming Worker has loaded (current Stage only)
      - Update Context Dependency treatment for this Worker
-   - If no Handoff indication → Proceed to §3.4 Task Memory Log Review.
+   - If no Handoff indication → Proceed to §3.3 Task Memory Log Review.
 
-### 3.4 Task Memory Log Review
+### 3.3 Task Memory Log Review
 
 Execute after Task Report Review to read and interpret the Task Memory Log.
 
@@ -182,10 +175,9 @@ Perform the following actions:
      - Validation: What was validated and results
      - Issues: Blockers or errors encountered
    - Check if body contents support status and flags
+3. Proceed to §3.4 Coordination Decision with interpreted findings.
 
-Proceed to §3.5 Coordination Decision with interpreted findings.
-
-### 3.5 Coordination Decision
+### 3.4 Coordination Decision
 
 Execute after Task Memory Log Review to determine and execute the next coordination action.
 
@@ -211,9 +203,9 @@ Perform the following actions:
    - **FollowUp needed** → Create FollowUp Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 FollowUp Task Prompt Creation, output for User
    - **Coordination Artifact modification needed** → Handoff to `{GUIDE_PATH:artifact-maintenance}` §3 Artifact Maintenance Procedure
 
-**If proceeding to next Task** and all Tasks in current Stage are complete → Proceed to §3.6 Stage Summary Creation before creating next Task's Task Prompt.
+**If proceeding to next Task** and all Tasks in current Stage are complete → Proceed to §3.5 Stage Summary Creation before creating next Task's Task Prompt.
 
-### 3.6 Stage Summary Creation
+### 3.5 Stage Summary Creation
 
 Execute when all Tasks in a Stage are completed.
 

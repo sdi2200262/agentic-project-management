@@ -146,17 +146,18 @@ This section defines the sequential actions for creating Memory Logs. Worker Age
 After task execution, populate the Task Memory Log at the path provided in the Task Assignment (`memory_log_path`).
 
 Perform the following actions:
-1. Complete YAML frontmatter fields:
+1. Ensure the stage directory exists at the parent of `memory_log_path`. Create it if it doesn't exist.
+2. Complete YAML frontmatter fields:
    - Set `agent` to your agent identifier
    - Set `task_id` to the task reference from the assignment
-   - Set `status` based on task outcome per §2.2 Outcome Standards.
-   - Set `failure_point` based on where failure occurred (null if Success) per §2.2 Outcome Standards.
+   - Set `status` based on task outcome per §2.2 Outcome Standards
+   - Set `failure_point` based on where failure occurred (null if Success) per §2.2 Outcome Standards
    - Set boolean flags:
      - Set `delegation` to true if Delegate Agent delegation occurred
      - Set `important_findings` to true if discoveries appear to have implications beyond current task scope
      - Set `compatibility_issues` to true if output conflicts with existing systems encountered during execution
      - When uncertain whether a finding is "important" or an issue is a "compatibility" concern, set the flag to `true`
-2. Complete Markdown body sections:
+3. Complete Markdown body sections:
    - Always include: Summary, Details, Output, Validation, Issues, Next Steps
    - Include conditional sections only when their corresponding flag is `true`
    - Apply detail level calibration:
@@ -164,7 +165,7 @@ Perform the following actions:
      - **Summarize:** Implementation approach, steps taken, rationale for choices
      - **Reference (don't reproduce):** Code blocks over 20 lines, full file contents, verbose outputs
      - **Exclude:** Routine operations, trivial details, information recoverable from artifacts
-3. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Inform User to reference the Report Bus file in the Manager session. Keep post-amble minimal-User and Manager can read the log directly.
+4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Inform User to reference the Report Bus file in the Manager session. Keep post-amble minimal-User and Manager can read the log directly.
 
 ### 3.2 Delegation Memory Log Procedure (Delegate Agent)
 
