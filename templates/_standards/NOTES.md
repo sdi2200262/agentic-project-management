@@ -20,7 +20,9 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 4. **Fail-fast on batch** - A Blocked or Failed task in a batch stops execution of remaining tasks. The Worker reports partial results. The Manager makes per-task Coordination Decisions on what completed and re-plans the rest.
 5. **Source control and conflict management** - Neither APM nor any known platform provides real file-level locking for concurrent agent edits. When dispatching tasks in parallel, the Manager warns the User about possible file overlaps and overwrites across concurrent Workers. The Manager suggests initializing a git repository if one is not present, or working in branches if already suggested by the Implementation Plan, Specifications, or Standards. The recommended strategy is hierarchical branching: each Worker operates on its own branch off the main branch. If a Worker uses Team Execution (Component 4), each teammate operates on a sub-branch off the Worker's branch. Merges happen hierarchically -- the Worker merges teammate branches before logging and reporting; the Manager merges Worker branches when needed or when requested by the User. Conflicts are resolved by the "merger" at each branching point, as the top instance in that hierarchy has the best context to make resolution decisions. File-partitioned task decomposition (ensuring distinct file ownership per Worker) remains a complementary practice that reduces merge conflicts but does not replace branching.
 
-### Component 1: Batch Task Assignment
+### Component 1: Batch Task Assignment ✓
+
+**Status:** Implemented. Added batch envelope format to apm-communication §4.4; batch execution standards to task-execution §2.7; Batch Report format to memory-logging §4.3; batch report handling to memory-maintenance §2.5 and §3.2.
 
 **What:** The Manager sends multiple sequential tasks to the same Worker in a single Send Bus message. The Worker executes them in order, logs each individually, and returns one consolidated Batch Report. The User only shuttles files at batch boundaries, not between each task.
 
@@ -36,7 +38,9 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 
 **Manager Report Processing** - Addition to the Memory Maintenance guide. On receiving a Batch Report, the Manager reviews each completed task's Memory Log individually and makes independent Coordination Decisions per task. Remaining unstarted tasks from a stopped batch re-enter the assignment pool for the next cycle.
 
-### Component 2: Parallel Dispatch
+### Component 2: Parallel Dispatch ✓
+
+**Status:** Implemented. Added dispatch planning standards to task-assignment §2.5-2.6; dispatch assessment procedure to task-assignment §3.1; parallel coordination standards to memory-maintenance §2.5; branch instructions in Task Prompt format. Workers create branches per task instructions; Manager coordinates merges.
 
 **What:** The Manager writes Task Prompts to multiple Workers' Send Buses before waiting for any Reports. Workers execute concurrently in separate sessions. The User delivers Send Bus files to each Worker session and returns Reports to the Manager as they arrive.
 

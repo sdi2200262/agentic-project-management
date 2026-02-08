@@ -139,29 +139,101 @@ Tasks may contain Delegation steps that require Worker to delegate part of the w
 - Research: `{SKILL_PATH:research-delegation}`
 - Other: Note Delegation purpose; reference skill if available
 
-See §3.4 Task Prompt Creation.
+See §3.5 Task Prompt Creation.
+
+### 2.5 Dispatch Planning Standards
+
+Before constructing individual Task Prompts, the Manager assesses dispatch opportunities across Ready tasks. The Dependency Graph (in the Implementation Plan header) informs these assessments.
+
+**Task Readiness** → A task is Ready when all its dependencies are Complete. The Manager identifies Ready tasks by checking dependency status against completed work.
+
+**Batch Candidacy** → Multiple Ready tasks assigned to the same Worker may be batched if:
+- Each task depends only on the previous task in the chain (or on already-Complete tasks)
+- No tasks assigned to other Workers depend on intermediate tasks in the chain
+- Soft guidance: 3-5 tasks per batch is reasonable; no hard limit
+
+**Parallel Candidacy** → Ready tasks assigned to different Workers may be dispatched in parallel if:
+- No unresolved cross-Worker dependencies exist among them
+- Tasks are independent enough that concurrent execution won't cause conflicts
+
+**Parallel Dispatch Prerequisites** → Before first parallel dispatch in a session, check:
+- Is git initialized? If not, offer to initialize it.
+- Inform User that each parallel task will include branch instructions for isolated work.
+- Recommend relaxing agent permissions to avoid idle time from approval prompts.
+
+If prerequisites aren't met and User declines setup, dispatch sequentially instead.
+
+**Dispatch Tracking** → When dispatching in parallel, keep track of which Workers have active tasks and which Reports are pending. When a Report arrives, reassess what's Ready and what can be dispatched next.
+
+**Wait State** → When no Ready tasks exist but Workers are still active, communicate the wait state to User: what was processed, what's pending, and what to do when the next Report arrives.
+
+### 2.6 Branch Instructions Standards
+
+When dispatching tasks in parallel, each Task Prompt includes branch instructions so Workers isolate their changes.
+
+**Branch Naming** → Derive branch names from task objectives, not Worker identity. Examples:
+- `feat/user-authentication`
+- `feat/api-endpoints`
+- `fix/validation-logic`
+
+**When to Include** → Include branch instructions when:
+- Dispatching multiple tasks in parallel to different Workers
+- Project Standards specify branching workflow
+
+**Content** → Branch instructions tell the Worker to:
+1. Create and switch to the specified branch
+2. Commit work to that branch
+3. Note the branch in their Memory Log output section
+4. Not merge — Manager coordinates merges
 
 ---
 
 ## 3. Task Assignment Procedure
 
-This section defines the sequential actions for constructing Task Prompts. Execute this procedure when issuing a new Task Prompt or a FollowUp Task Prompt.
+This section defines the sequential actions for constructing Task Prompts. The procedure supports single task, batch, and parallel dispatch modes.
 
 **Procedure:**
-1. Context Dependency Analysis
-2. Specification Extraction
-3. Implementation Plan Context Extraction
-4. Task Prompt Creation
+1. Dispatch Assessment — determine what to dispatch (single, batch, parallel)
+2. Per-Task Analysis (for each task in dispatch plan):
+   - Context Dependency Analysis
+   - Specification Extraction
+   - Implementation Plan Context Extraction
+3. Task Prompt Creation — construct and write prompts (single or batched)
 
-For FollowUp Task Prompts, see §3.5 FollowUp Task Prompt Creation.
+For FollowUp Task Prompts, see §3.6 FollowUp Task Prompt Creation.
 
-### 3.1 Context Dependency Analysis
+### 3.1 Dispatch Assessment
 
-Analyze the Task's Context Dependencies to determine what context the Worker needs. For dependency type definitions and decision rules, see §2.1 Context Dependency Standards.
+Assess dispatch opportunities before constructing individual Task Prompts. See §2.5 Dispatch Planning Standards.
+
+Perform the following actions:
+1. Identify Ready tasks — tasks whose dependencies are all Complete
+2. Group Ready tasks by assigned Worker
+3. Assess batch candidacy per §2.5:
+   - Same-Worker chains with internal dependencies only
+   - No external tasks depending on intermediate tasks
+4. Assess parallel candidacy per §2.5:
+   - Multiple Workers have Ready tasks
+   - No cross-Worker dependencies among Ready tasks
+5. If parallel dispatch planned:
+   - Check prerequisites (git initialized, User informed about branching)
+   - If first parallel dispatch this session, communicate setup per §2.5 Parallel Dispatch Prerequisites
+   - Determine branch names for each parallel task per §2.6 Branch Instructions Standards
+6. Formulate dispatch plan:
+   - Which Workers receive dispatches
+   - Single task, batch, or parallel
+   - Branch instructions if applicable
+7. For each task in the dispatch plan, proceed to §3.2-3.4 (Per-Task Analysis), then §3.5 (Task Prompt Creation)
+
+### 3.2 Context Dependency Analysis
+
+*Execute for each task in the dispatch plan.*
+
+Analyze the task's Context Dependencies to determine what context the Worker needs. For dependency type definitions and decision rules, see §2.1 Context Dependency Standards.
 
 Perform the following actions:
 1. Read the Task's Dependencies field from the Implementation Plan:
-   - If "None": Skip to §3.2 Specification Context Extraction with `has_dependencies: false`
+   - If "None": Skip to §3.3 Specification Extraction with `has_dependencies: false`
    - If dependencies listed: Continue to step 2
 2. Check tracked Handoff state for the target Worker (has this Worker performed a Handoff? From which Stage?)
 3. Classify each dependency as Same-Agent, Cross-Agent, or Handoff per §2.1
@@ -172,7 +244,9 @@ Perform the following actions:
    - Include all relevant nodes in the Context Dependency context
 5. For each relevant dependency, read the producer's Task Memory Log and note key outputs, file paths, and integration details
 
-### 3.2 Specification Context Extraction
+### 3.3 Specification Extraction
+
+*Execute for each task in the dispatch plan.*
 
 Extract context from Specifications that the Worker needs but cannot access.
 
@@ -183,7 +257,9 @@ Perform the following actions:
 3. Preserve specificity with exact constraints, not summaries
 4. Note relevant Specification content for inclusion in prompt
 
-### 3.3 Implementation Plan Context Extraction
+### 3.4 Implementation Plan Context Extraction
+
+*Execute for each task in the dispatch plan.*
 
 Extract content from the Implementation Plan Task definition that the Worker needs for execution. Optionally enhance extracted content with Manager's coordination-level resolution context where relevant.
 
@@ -201,7 +277,7 @@ Perform the following actions:
    - Read the Task's Validation field for validation criteria and types
    - Note these for Expected Output and Validation sections construction
 
-### 3.4 Task Prompt Creation
+### 3.5 Task Prompt Creation
 
 Assemble the Task Prompt using extracted context from the Implementation Plan and the Specifications.
 
@@ -213,6 +289,7 @@ Perform the following actions:
    - `memory_log_path`: Full path following convention `.apm/Memory/Stage_<N>_<Slug>/Task_Log_<N>_<M>_<Slug>.md`
    - `has_dependencies`: Boolean indicating Context Dependency context present
    - `has_delegation_steps`: Boolean indicating Delegation steps present (set to `true` if Task contains Delegation steps)
+   - `has_branch_instructions`: Boolean indicating branch instructions present (set to `true` for parallel dispatch)
 2. Construct prompt body following §4.1 Task Prompt Format:
    - Task Reference section with Task ID and Agent
    - Context from Dependencies section (if `has_dependencies: true`) using appropriate format based on Context Dependency type
@@ -223,12 +300,16 @@ Perform the following actions:
    - Memory Logging instructions with path
    - Reporting Protocol reference
    - Delegation section (if `has_delegation_steps: true`): Include Delegation section in prompt body; Worker reads referenced delegation skill and spawns delegate subagent per skill methodology; Worker integrates findings and logs Delegation in Task Memory Log
-3. Write the complete prompt to the Send Bus file (`apm-send-to-<agent-slug>.md`) per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
-4. After writing the Task Prompt to the Send Bus, direct the User to reference the Send Bus file in the Worker session. {CONTEXT_ATTACH_SYNTAX}
+3. If branch instructions apply (per §2.6), include the Branch Instructions section in the prompt body.
+4. Write to Send Bus:
+   - **Single task:** Write the complete prompt to the Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
+   - **Batch:** Write multiple Task Prompts with batch envelope per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery and §4.4 Batch Envelope Format. Each Task Prompt in the batch retains its full structure.
+5. For parallel dispatch, repeat steps 1-4 for each Worker in the dispatch plan, writing to their respective Send Buses.
+6. After writing Task Prompt(s) to Send Bus(es), direct the User to reference the file(s) in the respective Worker session(s). {CONTEXT_ATTACH_SYNTAX}
 
-### 3.5 FollowUp Task Prompt Creation
+### 3.6 FollowUp Task Prompt Creation
 
-Execute when Coordination Decision (per `{GUIDE_PATH:memory-maintenance}` §3.5 Coordination Decision) determines "FollowUp needed." FollowUp Task Prompts are NEW Task Prompts with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt-refine all content sections based on what went wrong.
+Execute when Coordination Decision (per `{GUIDE_PATH:memory-maintenance}` §3.4 Coordination Decision) determines "FollowUp needed." FollowUp Task Prompts are NEW Task Prompts with DIFFERENT content than the previous failed attempt. Do not copy the previous prompt-refine all content sections based on what went wrong.
 
 Perform the following actions:
 1. Capture the FollowUp context from Coordination Decision:
@@ -237,8 +318,8 @@ Perform the following actions:
    - What specific refinement or correction is needed?
    - Were any Coordination Artifacts modified that affect this Task?
 2. Extract and integrate relevant content from modified Coordination Artifacts (if any):
-   - If Specifications.md was modified: Extract relevant Specification content per §3.2 Specification Context Extraction
-   - If Implementation_Plan.md was modified: Extract relevant Task content per §3.3 Implementation Plan Context Extraction
+   - If Specifications.md was modified: Extract relevant Specification content per §3.3 Specification Extraction
+   - If Implementation_Plan.md was modified: Extract relevant Task content per §3.4 Implementation Plan Context Extraction
    - Contextually integrate extracted content into the Task Prompt to inform Worker decisions (Workers only receive Task Prompts; artifact changes are brought into the task context when relevant)
 3. Refine Task Assignment content using Manager's coordination-level resolution:
    - Refine Objective based on what went wrong and what correction is needed
@@ -246,7 +327,7 @@ Perform the following actions:
    - Refine Expected Output if deliverables need adjustment
    - Refine Validation Criteria based on failure patterns or new requirements or constraints
    - Include a FollowUp Context section explaining what issue the previous attempt encountered, what specific refinement or correction is needed, and any additional guidance based on Manager's investigation
-4. Construct FollowUp prompt using the same format as §3.4 Task Prompt Creation, with modifications:
+4. Construct FollowUp prompt using the same format as §3.5 Task Prompt Creation, with modifications:
    - Use title "APM FollowUp Task: <Task Title>" instead of "APM Task"
    - Same `memory_log_path` as original Task Prompt (Worker overwrites previous log)
    - Add FollowUp Context section after Task Reference explaining the issue and required refinement
@@ -274,6 +355,7 @@ agent_id: <domain>-agent
 memory_log_path: ".apm/Memory/Stage_<N>_<Slug>/Task_Log_<N>_<M>_<Slug>.md"
 has_dependencies: true | false
 has_delegation_steps: true | false
+has_branch_instructions: true | false
 ---
 ```
 
@@ -319,6 +401,16 @@ This Task includes Delegation step(s). When you reach a Delegation step:
 - **Skill Reference:** `{SKILL_PATH:delegate-<type>}`
 - Read the skill and spawn delegate subagent per skill's §3.2, structuring task input per §3.1
 - Integrate findings and log Delegation in your Task Memory Log
+
+## Branch Instructions
+[Include only if has_branch_instructions: true]
+Work in an isolated branch for this task:
+
+\`\`\`bash
+git checkout -b <branch-name>
+\`\`\`
+
+Commit your work to this branch. Note the branch name in your Memory Log output section. Do not merge — the Manager will coordinate merges.
 ```
 
 **Context from Dependencies - Same-Agent Format:**

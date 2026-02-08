@@ -122,6 +122,30 @@ Stage Summaries compress Stage execution details. They serve future Incoming Man
 - Reference: Individual Memory Log files for Task-specific detail. See §4.3 Stage Summary Format
 - Exclude: Implementation details, code specifics, routine operations
 
+### 2.5 Parallel Coordination Standards
+
+When multiple Workers are active simultaneously, the Manager coordinates asynchronously.
+
+**Dispatch Tracking** → Keep track of which Workers have active tasks and which Reports are pending - maintain awareness as Reports arrive and tasks complete.
+
+**Async Report Handling** → Reports arrive in any order. Process each as it comes:
+- Complete Coordination Decision for the received Report
+- Reassess what tasks are now Ready (dependencies may be unblocked)
+- Dispatch newly Ready tasks if Workers are available
+
+**Wait State** → When no tasks are Ready but Workers are still active:
+- Communicate to User what was processed, what's pending, and what to do next
+- Example: "Task 2.2 processed. Tasks 2.4 and 2.5 depend on Task 2.1, which is still with Frontend Agent. When they return, reference their Report here."
+
+**Merge Checkpoints** (if using worktrees) → When subsequent tasks depend on work from a parallel branch:
+- Merge the branch before dispatching dependent tasks
+- Resolve conflicts in favor of what serves the project objective and enables downstream tasks
+- At Stage end, ensure all parallel branches are merged before proceeding
+
+**Batch Report Handling** → When receiving a Batch Report:
+- Process each task's outcome individually through the Coordination Decision procedure
+- Unstarted tasks (from a stopped batch) re-enter the dispatch pool for the next cycle
+
 ---
 
 ## 3. Memory Maintenance Procedure
@@ -148,16 +172,22 @@ Perform the following actions:
 
 ### 3.2 Task Report Review
 
-Execute when User returns with a Task Report from a Worker Agent.
+Execute when User returns with a Task Report (or Batch Report) from a Worker Agent.
 
 Perform the following actions:
-1. Read the Task Report from the Report Bus file. Clear the Report Bus per `{SKILL_PATH:apm-communication}` §3.5 Clearing Protocol before writing the next Task Prompt to the Send Bus.
-2. Check for Handoff indication in the Task Report:
+1. Read the Report from the Report Bus file. Clear the Report Bus per `{SKILL_PATH:apm-communication}` §3.5 Clearing Protocol before writing the next Task Prompt to the Send Bus.
+2. Check for batch: If Report contains `batch: true` in frontmatter, this is a Batch Report. Process each task's outcome individually through §3.3 and §3.4. Unstarted tasks (from stopped batch) re-enter the dispatch pool.
+3. Check for Handoff indication in the Task Report:
    - If the Task Report indicates the Worker is an Incoming Worker Agent (new instance after Handoff):
      - Verify the Handoff File exists by listing the directory `.apm/Memory/Handoffs/<AgentID>_Handoffs/` (list only, do not read the file to preserve context)
      - Integrate the Handoff in Manager's working context: which Worker Agent performed the Handoff, which Stage it occurred in, which Memory Logs the Incoming Worker has loaded (current Stage only)
      - Update Context Dependency treatment for this Worker
    - If no Handoff indication → Proceed to §3.3 Task Memory Log Review.
+4. Update dispatch tracking: Mark this Worker as available; note completed task(s) for readiness assessment.
+5. If parallel dispatch is active (other Workers still working):
+   - Reassess what tasks are now Ready per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment
+   - If Ready tasks exist and require work from this completed branch, initiate merge checkpoint per §2.5
+   - If no Ready tasks and Workers still active, communicate wait state to User per §2.5
 
 ### 3.3 Task Memory Log Review
 
