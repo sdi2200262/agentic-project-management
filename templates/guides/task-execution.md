@@ -130,6 +130,18 @@ Users facilitate communication between Agents and provide guidance at decision p
 
 **Default:** When stopping without Success, present situation with options rather than unilateral decisions. See §3.5 Pause Handling.
 
+### 2.7 Batch Execution Standards
+
+When receiving a batch of tasks (multiple Task Prompts in a single Send Bus message), the Worker executes them sequentially and reports consolidated results.
+
+**Sequential Execution:** Execute tasks in the order they appear in the batch. Complete each task fully (including validation and logging) before starting the next.
+
+**Individual Logging:** Each task in the batch gets its own Task Memory Log at its specified `memory_log_path`. Batch execution affects delivery efficiency, not the Memory System structure.
+
+**Fail-Fast:** If any task results in Blocked or Failed status, stop the batch immediately. Do not proceed to remaining tasks. Report partial completion with remaining tasks noted as "Not started (batch stopped)."
+
+**Batch Report:** After completing all tasks (or stopping on failure), write a single Batch Report to the Report Bus consolidating per-task outcomes. See `{GUIDE_PATH:memory-logging}` §4.3 Batch Report Format.
+
 ---
 
 ## 3. Task Execution Procedure
@@ -149,13 +161,16 @@ Pause Handling (§3.5 Pause Handling) and Delegation Handling (§3.6 Delegation 
 ### 3.1 Task Assignment Receipt
 
 Perform the following actions:
-1. Verify `agent_id` in YAML frontmatter matches your registered instance. If the Task Prompt was received via a Send Bus file, also validate that the Send Bus filename matches the `agent_id` per `{SKILL_PATH:apm-communication}` §2.3 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries.
-2. Parse Task Assignment structure-YAML frontmatter fields and body sections.
-3. Identify execution parameters:
+1. Check for batch envelope: If Send Bus contains `batch: true` in frontmatter, this is a batch assignment. Parse the batch envelope per `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format and proceed to execute each task sequentially per §2.7 Batch Execution Standards.
+2. Verify `agent_id` in YAML frontmatter matches your registered instance. If the Task Prompt was received via a Send Bus file, also validate that the Send Bus filename matches the `agent_id` per `{SKILL_PATH:apm-communication}` §2.3 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries.
+3. Parse Task Assignment structure — YAML frontmatter fields and body sections.
+4. Identify execution parameters:
    - `has_dependencies: true` → Context Integration required
    - `has_delegation_steps: true` → Delegation step(s) in instructions
+   - `has_branch_instructions: true` → Branch setup required before execution
    - Note validation types in Validation Criteria section
-4. Proceed to §3.2 Context Integration (or §3.3 Task Execution if no dependencies).
+5. If `has_branch_instructions: true`: Follow the Branch Instructions section in the prompt — create/switch to the specified branch before starting work. Note the branch in your Memory Log output section when complete.
+6. Proceed to §3.2 Context Integration (or §3.3 Task Execution if no dependencies).
 
 ### 3.2 Context Integration
 

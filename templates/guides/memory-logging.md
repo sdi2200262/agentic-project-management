@@ -306,6 +306,49 @@ status: Resolved | Unresolved
 [Specific guidance for how the Delegating Agent should integrate these findings]
 ```
 
+### 4.3 Batch Report Format (Worker Agent)
+
+When executing a batch of tasks, the Worker writes a consolidated Batch Report to the Report Bus after completing all tasks (or stopping on failure).
+
+**YAML Frontmatter Schema:**
+```yaml
+---
+batch: true
+batch_size: <N>
+completed: <M>
+stopped_early: true | false
+tasks:
+- task_ref: "<Stage>.<Task>"
+   status: Success | Partial | Failed | Blocked
+- task_ref: "<Stage>.<Task>"
+   status: Success | Partial | Failed | Blocked | "Not started"
+---
+```
+
+**Markdown Body Template:**
+```markdown
+# Batch Report
+
+## Summary
+[Brief overview: X of Y tasks completed, stopped early if applicable]
+
+## Task Outcomes
+
+### Task <N.M>: <Title>
+**Status:** [Success | Partial | Failed | Blocked]
+**Memory Log:** `<memory_log_path>`
+[1-2 sentence summary of outcome]
+
+### Task <N.M+1>: <Title>
+**Status:** [Status or "Not started (batch stopped)"]
+...
+
+## Batch Notes
+[Any cross-cutting observations, patterns, or issues affecting multiple tasks]
+```
+
+**Fail-Fast Documentation:** If batch stopped early due to Blocked or Failed task, clearly indicate which task caused the stop and list remaining tasks as "Not started (batch stopped)."
+
 ---
 
 ## 5. Content Guidelines

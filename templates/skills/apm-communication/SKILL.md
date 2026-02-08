@@ -68,6 +68,16 @@ Workers validate that the Bus File they receive messages from matches their regi
 * **Empty bus detection:** When an Agent reads a Bus File and finds it empty, the expected message has not been written yet or has already been cleared. Inform the User that no message is present and await further direction.
 * **Wrong file referenced:** When a User references a Bus File intended for a different Agent, the receiving Agent detects the mismatch per §2.3 Bus Identity Standards and rejects it.
 
+### 2.5 Batch Delivery Standards
+
+When dispatching multiple sequential tasks to the same Worker, the Manager sends them as a batch in a single Send Bus message.
+
+**Batch Envelope:** The Send Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters. See §4.4 Batch Envelope Format.
+
+**Task Independence:** Each Task Prompt in a batch retains its full structure as if it were standalone. The batch envelope adds coordination metadata; it does not alter task content.
+
+**Fail-Fast:** If a Worker encounters a Blocked or Failed task during batch execution, they stop the batch and do not proceed to remaining tasks. The Batch Report reflects partial completion.
+
 ---
 
 ## 3. Communication Procedure
@@ -165,6 +175,49 @@ This section defines the directory structure, file naming, and conventions for t
 ### 4.3 Agent Slug Convention
 
 Agent slugs are derived from the Agent names listed in the Implementation Plan Agents field. The Manager converts each name to lowercase and replaces spaces with hyphens. Examples: `Frontend Agent` → `frontend-agent`, `Backend Agent` → `backend-agent`. The Manager's own channel uses the slug `manager`.
+
+### 4.4 Batch Envelope Format
+
+When sending multiple tasks to a Worker in a batch, the Send Bus file uses this structure:
+
+**YAML Frontmatter:**
+```yaml
+---
+batch: true
+batch_size: <N>
+tasks:
+  - task_ref: "<Stage>.<Task>"
+    memory_log_path: "<path>"
+  - task_ref: "<Stage>.<Task>"
+    memory_log_path: "<path>"
+---
+```
+
+**Body:** Individual Task Prompts separated by `---` delimiters. Each Task Prompt retains its full structure (YAML frontmatter and body) as if standalone.
+
+```markdown
+---
+stage: <N>
+task: <M>
+agent_id: <agent-slug>
+...
+---
+# APM Task Assignment: <Title>
+...
+
+---
+
+---
+stage: <N>
+task: <M+1>
+agent_id: <agent-slug>
+...
+---
+# APM Task Assignment: <Title>
+...
+```
+
+**Worker Processing:** Worker parses the batch envelope, executes tasks sequentially, logs each to its `memory_log_path`, and writes a Batch Report upon completion or failure. See `{GUIDE_PATH:task-execution}` for batch execution and `{GUIDE_PATH:memory-logging}` for Batch Report format.
 
 ---
 
