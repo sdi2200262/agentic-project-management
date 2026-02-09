@@ -20,7 +20,7 @@ All terms used in this document are defined in `TERMINOLOGY.md`. All structural 
 
 ### 1.2 Token Efficiency
 
-Skills and commands are written for token efficiency while maintaining comprehensiveness. This means:
+Skills, guides, and commands are written for token efficiency while maintaining comprehensiveness. This means:
 - Prose is preferred over tables when conveying the same information.
 - Excessive spacing and structural padding are avoided.
 - Compact list formats are used when listing related items.
@@ -32,7 +32,7 @@ Token efficiency does not mean sacrificing clarity or completeness. Every necess
 
 ### 1.3 Audience Awareness
 
-Skills and commands serve two audiences:
+Skills, guides, and commands serve two audiences:
 
 | Audience | Needs |
 |----------|-------|
@@ -51,7 +51,7 @@ Skills and commands are written for capable models that reason well from clear, 
 
 **Example economy.** Include examples only when the pattern is genuinely non-obvious — a structural schema, an unfamiliar format, or a counterintuitive convention. One well-chosen example is better than three that illustrate the same point. Omit examples when prose alone conveys the instruction.
 
-**Target conciseness andd compactness.** Skills, guides and commands should not exceed ~500 lines. When approaching this ceiling, reduce descriptive and guardrail content before reducing structural specifications or procedural steps. The core operations and output formats are the substance; the surrounding prose is the variable.
+**Target conciseness and compactness.** Skills, guides and commands should not exceed ~500 lines. When approaching this ceiling, reduce descriptive and guardrail content before reducing structural specifications or procedural steps. The core operations and output formats are the substance; the surrounding prose is the variable.
 
 **Reasoning over prescription.** When agents face ambiguous situations, provide the reasoning framework (what to consider, what matters, what the tradeoffs are) rather than pre-decided answers for every case. The agent's judgment, applied to the specific situation, will outperform a generic lookup table written in advance.
 

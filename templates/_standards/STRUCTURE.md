@@ -4,13 +4,13 @@ This document defines the organizational structure for APM Skills and Commands-r
 
 ---
 
-## 1. Skill Structure
+## 1. Skill and Guide Structure
 
-Skills are agent-facing documents containing procedural instructions and operational standards. Guides follow the same structure without YAML frontmatter.
+Skills and guides are agent-facing documents containing procedural instructions and operational standards. Skills include YAML frontmatter and may be read by multiple Agent Roles. Guides follow the same section structure but omit YAML frontmatter; each guide is read by only one Agent Role.
 
-### 1.1 YAML Frontmatter
+### 1.1 YAML Frontmatter (Skills Only)
 
-Every skill file begins with YAML frontmatter.
+Every skill file begins with YAML frontmatter. Guides omit YAML frontmatter entirely.
 
 **Schema:**
 
@@ -39,7 +39,7 @@ description: Construction and delivery of Task Prompts to Worker Agents.
 
 ### 1.2 Section Structure
 
-Skills follow a consistent structure with §1 Overview, §2 Operational Standards, §3 Procedure(s), §4 Structural Specifications and §5 Content Guidelines.
+Skills and guides follow a consistent structure with §1 Overview, §2 Operational Standards, §3 Procedure(s), §4 Structural Specifications and §5 Content Guidelines.
 
 **Required Sections:**
 | Section | Number | Purpose |
@@ -360,7 +360,17 @@ Each format definition includes:
 
 **Example:** `skills/task-assignment/SKILL.md`
 
-### 6.2 Command Files
+### 6.2 Guide Files
+
+| Component | Convention |
+|-----------|------------|
+| Directory | `guides/` |
+| File | `<guide-name>.md` |
+| Guide name | kebab-case |
+
+**Example:** `guides/context-gathering.md`
+
+### 6.3 Command Files
 
 | Component | Convention |
 |-----------|------------|
