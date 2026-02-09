@@ -120,3 +120,8 @@ website/static/docs-gif/*.gif
 
 # Generated API documentation (run `npm run apidocs` to regenerate)
 api-docs/
+
+# Assistant Files
+.claude/
+AGENTS.md
+CLAUDE.md

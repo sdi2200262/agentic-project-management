@@ -6,7 +6,7 @@ This document defines the organizational structure for APM Skills and Commands-r
 
 ## 1. Skill Structure
 
-Skills are agent-facing documents containing procedural instructions and operational standards.
+Skills are agent-facing documents containing procedural instructions and operational standards. Guides follow the same structure without YAML frontmatter.
 
 ### 1.1 YAML Frontmatter
 
@@ -386,6 +386,14 @@ Every skill and command file ends with an end marker followed by a blank line.
 ---
 
 **End of Skill**
+
+```
+
+**Guides:**
+```
+---
+
+**End of Guide**
 
 ```
 
