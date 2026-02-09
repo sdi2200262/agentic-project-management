@@ -4,13 +4,13 @@ This document contains development notes, research findings, and implementation 
 
 ---
 
-## Parallel Task Coordination (Implemented)
+## Parallel Task Coordination (Standards Complete — Awaiting Template Refactor)
 
-**Context:** The Message Bus architecture (`{SKILL_PATH:apm-communication}`) supports parallel Task execution. Components 1-3 (Batch Task Assignment, Parallel Dispatch, Dependency Graph) have been implemented across the Communication Skill, Task Assignment, Task Execution, Memory Logging, Memory Maintenance guides, and the Implementation Plan template. The Manager's Coordination Loop now supports batch assignment, parallel dispatch, and independent Report processing.
+**Context:** The Message Bus architecture (`{SKILL_PATH:apm-communication}`) supports parallel Task execution. Components 1-3 (Batch Task Assignment, Parallel Dispatch, Dependency Graph) have been specified in `_standards/` — WORKFLOW.md defines the procedures and protocols, and the Planning Phase templates (Communication Skill, Work Breakdown guide, Implementation Plan template) have been updated accordingly. However, the Implementation Phase templates (Manager and Worker initiation commands, Task Assignment, Task Execution, Memory Logging, Memory Maintenance guides) have not yet been refactored to fully incorporate these specifications.
 
 Additionally, platforms with native multi-agent capabilities (e.g., Claude Code Agent Teams) enable Workers to internally parallelize complex work by spawning sub-teams. APM can leverage this without coupling to any single platform by using the existing conditional placeholder system in the build pipeline.
 
-**Status:** Components 1-3 implemented. Component 4 (Claude Code Agent Teams) is optional and unimplemented — depends on an experimental platform feature. Design Principle 5 (source control) is being formalized into a dedicated `apm-version-control` skill — see the Version Control Skill entry below.
+**Status:** Components 1-3 specified in `_standards/` (ground truth). Planning Phase templates updated. Implementation Phase templates awaiting refactor — the guides currently contain partial parallel support (batch envelope in apm-communication, dispatch standards in task-assignment, merge checkpoints in memory-maintenance) but do not yet fully reflect the WORKFLOW.md specification. Component 4 (Claude Code Agent Teams) is optional and unimplemented — depends on an experimental platform feature. Design Principle 5 (source control) is being formalized into the `apm-version-control` skill — see the Version Control Skill entry below. The Implementation Phase template refactor and the Version Control Skill are tightly coupled: parallel dispatch in practice requires version control coordination, so both should be addressed together.
 
 ### Design Principles
 
@@ -168,7 +168,7 @@ Manager may only Handoff when no outstanding dispatches exist — all Reports fr
 
 Git branching alone does not enable true parallelism. A git repository has one working directory — when Worker A checks out branch-a and Worker B checks out branch-b in separate terminals, B's checkout switches the shared directory out from under A. Git worktrees solve this: each worktree is a separate physical directory checked out on its own branch, sharing the same git database. Worktrees are the standard git mechanism for simultaneous multi-branch work.
 
-**Status:** Future work. Requires a new universal skill (`apm-version-control`), updates to task-assignment and task-execution guides to reference the skill, and a flat markdown integration file for non-APM agents. Should be implemented after the Implementation Phase guide refactor is complete, since the skill's integration points are defined by those guides.
+**Status:** Future work. This skill introduces version control as a fundamental part of the APM workflow — not an optional add-on. Integration path: (1) define the skill specification and incorporate version control into `_standards/WORKFLOW.md` as a core Implementation Phase concern, (2) build the skill template (`SKILL.md` + `apm-vc-integration.md`), (3) refactor the Implementation Phase templates (task-assignment, task-execution, memory-maintenance guides and Manager/Worker commands) to reference and invoke the skill. Steps 2-3 are tightly coupled with the broader Implementation Phase template refactor — the guides that reference version control operations are the same guides being refactored for parallel dispatch.
 
 ### Design Principles
 
