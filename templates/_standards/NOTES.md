@@ -4,13 +4,13 @@ This document contains development notes, research findings, and implementation 
 
 ---
 
-## Parallel Task Coordination (Future)
+## Parallel Task Coordination (Implemented)
 
-**Context:** The Message Bus architecture (implemented in `{SKILL_PATH:apm-communication}`) supports parallel Task execution. The Manager can write Task Prompts to multiple Send Buses before receiving Reports. This requires changes to the Manager's Coordination Loop (currently sequential) to support batch assignment and independent Report processing.
+**Context:** The Message Bus architecture (`{SKILL_PATH:apm-communication}`) supports parallel Task execution. Components 1-3 (Batch Task Assignment, Parallel Dispatch, Dependency Graph) have been implemented across the Communication Skill, Task Assignment, Task Execution, Memory Logging, Memory Maintenance guides, and the Implementation Plan template. The Manager's Coordination Loop now supports batch assignment, parallel dispatch, and independent Report processing.
 
 Additionally, platforms with native multi-agent capabilities (e.g., Claude Code Agent Teams) enable Workers to internally parallelize complex work by spawning sub-teams. APM can leverage this without coupling to any single platform by using the existing conditional placeholder system in the build pipeline.
 
-**Status:** Future work. Bus infrastructure supports parallel dispatch; Manager coordination model and Worker execution model do not yet support it. This proposal covers three coordinated enhancements: Batch Task Assignment, Parallel Dispatch, and a Dependency Graph for the Implementation Plan, plus an optional Claude Code-specific Team Execution capability.
+**Status:** Components 1-3 implemented. Component 4 (Claude Code Agent Teams) is optional and unimplemented — depends on an experimental platform feature. Design Principle 5 (source control) is being formalized into a dedicated `apm-version-control` skill — see the Version Control Skill entry below.
 
 ### Design Principles
 
@@ -18,7 +18,7 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 2. **Manager abstraction** - The Manager assigns tasks and reviews reports. Whether a Worker executes solo, uses subagents, or spawns a platform-native team is an internal Worker decision invisible to the Manager. Reports and Memory Logs have the same structure regardless.
 3. **Individual task logging** - Every task gets its own Memory Log at its own `memory_log_path`, whether executed solo, in a batch, or via a team. Batch and team execution affect user friction and speed, not the Memory System's structure.
 4. **Fail-fast on batch** - A Blocked or Failed task in a batch stops execution of remaining tasks. The Worker reports partial results. The Manager makes per-task Coordination Decisions on what completed and re-plans the rest.
-5. **Source control and conflict management** - Neither APM nor any known platform provides real file-level locking for concurrent agent edits. When dispatching tasks in parallel, the Manager warns the User about possible file overlaps and overwrites across concurrent Workers. The Manager suggests initializing a git repository if one is not present, or working in branches if already suggested by the Implementation Plan, Specifications, or Standards. The recommended strategy is hierarchical branching: each Worker operates on its own branch off the main branch. If a Worker uses Team Execution (Component 4), each teammate operates on a sub-branch off the Worker's branch. Merges happen hierarchically -- the Worker merges teammate branches before logging and reporting; the Manager merges Worker branches when needed or when requested by the User. Conflicts are resolved by the "merger" at each branching point, as the top instance in that hierarchy has the best context to make resolution decisions. File-partitioned task decomposition (ensuring distinct file ownership per Worker) remains a complementary practice that reduces merge conflicts but does not replace branching.
+5. **Source control and conflict management** - Neither APM nor any known platform provides real file-level locking for concurrent agent edits. When dispatching tasks in parallel, the Manager warns the User about possible file overlaps and overwrites across concurrent Workers. The Manager suggests initializing a git repository if one is not present, or working in branches if already suggested by the Implementation Plan, Specifications, or Standards. The recommended strategy is hierarchical branching: each Worker operates on its own branch off the main branch. If a Worker uses Team Execution (Component 4), each teammate operates on a sub-branch off the Worker's branch. Merges happen hierarchically -- the Worker merges teammate branches before logging and reporting; the Manager merges Worker branches when needed or when requested by the User. Conflicts are resolved by the "merger" at each branching point, as the top instance in that hierarchy has the best context to make resolution decisions. File-partitioned task decomposition (ensuring distinct file ownership per Worker) remains a complementary practice that reduces merge conflicts but does not replace branching. **Note:** This principle is being formalized into the `apm-version-control` skill proposal — see the Version Control Skill entry below — which replaces the loose branching guidance here with a structured skill covering branches, worktrees, merge coordination, and conflict resolution.
 
 ### Component 1: Batch Task Assignment ✓
 
@@ -130,15 +130,21 @@ No explicit configuration needed. The Implementation Plan already contains depen
 For Parallel Dispatch: the User delivers Send Bus files to each Worker session after the Manager writes them. Workers execute concurrently in separate sessions. Reports return to the Manager as the User collects them. For Batch Assignment: the User delivers one Send Bus file per Worker and returns one Batch Report -- reduced round-trips. For Team Execution (CC): the Worker spawns and manages teammates autonomously within its session; no additional User management needed.
 
 **4. Git branching strategy for parallel Workers modifying the same codebase?**
-Recommended strategy: hierarchical branching. Each Worker operates on its own branch; teammates (if Team Execution is used) operate on sub-branches off the Worker's branch. Merges happen bottom-up: teammates into Worker branch, Worker branches into main. The merger at each level has the best context to resolve conflicts. File-partitioned task decomposition complements this by reducing the frequency and severity of merge conflicts. The Manager suggests this strategy to the User when dispatching parallel work and warns about overlap risks. The final choice is the User's.
+Hierarchical branching: Workers on own branches, teammates on sub-branches, merges bottom-up. Being formalized into the `apm-version-control` skill — see the Version Control Skill entry below.
 
-### New Open Questions
+**5. Batch size limit?**
+Soft guidance of 3-5 tasks per batch, no hard limit. Implemented in task-assignment §2.5.
 
-1. **Batch size limit:** Should there be a maximum batch size (e.g., 5 tasks) to prevent Workers from accumulating excessive context before reporting? Or is the fail-fast principle sufficient?
-2. **Batch + FollowUp interaction:** When a batch task fails and the Manager issues a FollowUp, should remaining unstarted tasks from the original batch be re-batched with the FollowUp, or dispatched separately after the FollowUp succeeds?
-3. **Dependency Graph maintenance:** Should the Manager update the Dependency Graph when modifying the Implementation Plan (adding/removing tasks), or is it a Planner-only artifact that becomes a point-in-time snapshot?
-4. **Team Execution cost guidance:** Should APM provide guidance on when Team Execution is cost-effective vs. wasteful? Token costs scale with team size. This could be part of the Team Execution Standards or left entirely to Worker judgment.
-5. **Parallel Dispatch + Handoff interaction:** If the Manager needs a Handoff while multiple Workers have in-flight tasks, should all Reports be collected first, or can the Handoff proceed with in-flight state noted in the Handoff File?
+**6. Dependency Graph maintenance?**
+Manager updates the Dependency Graph when modifying the Implementation Plan during Artifact Maintenance. Implemented in WORKFLOW.md §7.7.
+
+**7. Parallel Dispatch + Handoff interaction?**
+Manager may only Handoff when no outstanding dispatches exist — all Reports from active Workers must be collected first. Implemented in WORKFLOW.md §7.8.
+
+### Open Questions
+
+1. **Batch + FollowUp interaction:** When a batch task fails and the Manager issues a FollowUp, should remaining unstarted tasks from the original batch be re-batched with the FollowUp, or dispatched separately after the FollowUp succeeds?
+2. **Team Execution cost guidance:** Should APM provide guidance on when Team Execution is cost-effective vs. wasteful? Token costs scale with team size. This could be part of the Team Execution Standards or left entirely to Worker judgment.
 
 ### Affected Components
 
@@ -153,6 +159,160 @@ Recommended strategy: hierarchical branching. Each Worker operates on its own br
 | Implementation Plan template | Add Dependency Graph header field | All platforms |
 | Build config (`build-config.json`) | Add `teamGuidance` field for Claude Code target | Build system |
 | Placeholder processor (`placeholders.js`) | Add `{WORKER_TEAM_GUIDANCE}` replacement | Build system |
+
+---
+
+## Version Control Skill (Future)
+
+**Context:** The Implementation Phase's parallel dispatch system (Components 1-3 above) requires source control coordination to prevent file conflicts between concurrent Workers. The current implementation includes lightweight branch instructions in Task Prompts (task-assignment §2.6) and merge checkpoints in memory-maintenance §2.5, but these are informal guidance rather than a structured protocol. As parallel dispatch becomes a core workflow pattern, version control operations need formal skill-level treatment — comparable to how `apm-communication` formalizes the Message Bus protocol.
+
+Git branching alone does not enable true parallelism. A git repository has one working directory — when Worker A checks out branch-a and Worker B checks out branch-b in separate terminals, B's checkout switches the shared directory out from under A. Git worktrees solve this: each worktree is a separate physical directory checked out on its own branch, sharing the same git database. Worktrees are the standard git mechanism for simultaneous multi-branch work.
+
+**Status:** Future work. Requires a new universal skill (`apm-version-control`), updates to task-assignment and task-execution guides to reference the skill, and a flat markdown integration file for non-APM agents. Should be implemented after the Implementation Phase guide refactor is complete, since the skill's integration points are defined by those guides.
+
+### Design Principles
+
+1. **Manager owns all git operations** — The Manager initializes git (if needed), creates branches and worktrees, coordinates merges, and cleans up. Workers receive a workspace path and commit instructions — they don't manage branches or worktrees themselves. The User is not asked to perform git operations; the Manager executes them autonomously, respecting the User's existing repository setup and preferences.
+2. **Branches always, worktrees when parallel** — Every dispatched task (single or batch) gets its own feature branch off the base branch. For sequential dispatch, the Worker works in the main directory on their branch. For parallel dispatch, the Manager creates worktrees (separate physical directories) so multiple Workers can edit files simultaneously without interference. This is not tiered or optional — branches are the baseline, worktrees are added when parallelism requires them.
+3. **Version control drives dispatch** — Merge state is a dispatch prerequisite. If Task B depends on Task A's output and Task A was on a separate branch, the Manager must merge A into the base branch before dispatching B. Merge checkpoints are coordination decisions, not afterthoughts. The Manager factors version control state into every readiness assessment.
+4. **Respect User's existing setup** — Most projects already have git initialized, a branching convention, and potentially branch protection rules. The Manager detects the existing configuration and adapts. The base branch is whatever the User is currently on, not assumed to be `main`. Branch protection and PR workflows are handled reactively — if a merge fails due to protection rules, the Manager adapts (e.g., creates a PR instead of direct merge, or asks the User). The skill does not impose a workflow; it operates within the User's environment.
+5. **Bounded worktree footprint** — Maximum 3-4 concurrent worktrees. Worktrees create a full checkout of all tracked files, so disk usage scales linearly with working directory size. The Manager is aware of this cost and factors it into dispatch decisions, especially for large repositories. Worktrees are short-lived — created at dispatch, removed promptly after merge.
+
+### Component 1: Git Setup & Configuration
+
+**What:** Manager Session 1 initialization detects existing git state, determines the base branch, and records configuration in Memory Root Working Notes.
+
+**Initialization Procedure:**
+1. Check if git is initialized. If yes, proceed. If no, initialize and inform User.
+2. Detect current branch — this is the base branch unless User specifies otherwise.
+3. Record in Working Notes: base branch name, repo root path, `.apm/` path (may differ from repo root), any User-stated preferences.
+4. Add `.apm/worktrees/` to `.gitignore` if not already present.
+
+**Configuration is lightweight.** No config file, no questionnaire. The Manager detects what it can and asks the User only when something is ambiguous. Preferences discovered later (e.g., branch protection encountered during first merge) are noted in Working Notes as they arise.
+
+**Handoff continuity.** Incoming Manager reads VC configuration from Working Notes — base branch, active branches, pending merges. No re-detection needed.
+
+### Component 2: Branch Management (Sequential Dispatch)
+
+**What:** Every dispatched task gets a feature branch. For sequential dispatch, the Worker works in the main directory on that branch. Manager merges after successful review.
+
+**Dispatch flow:**
+1. Manager creates branch off base: `git checkout -b <branch-name>`
+2. Task Prompt includes branch name — Worker is on the branch when they start
+3. Worker executes task, commits work to the branch
+4. Worker reports; Manager reviews
+5. On success: Manager merges branch into base, deletes branch
+6. On FollowUp: branch persists, Worker continues on it
+
+**Branch naming** is derived from task objective (e.g., `feat/user-authentication`, `feat/api-endpoints`). Readable, descriptive, traceable to the task.
+
+**Batch dispatch** follows the same pattern — the batch gets one branch, Worker executes all tasks sequentially on it, Manager merges after the batch completes.
+
+### Component 3: Worktree Management (Parallel Dispatch)
+
+**What:** For parallel dispatch, the Manager creates worktrees under `.apm/worktrees/` so multiple Workers operate in physically separate directories. Each worktree is on its own branch.
+
+**Worktree mechanics:** A git worktree is a full checkout of the repository in a separate directory. All tracked files are physically present (real files, real directories). Worktrees share the git database (history, objects) with the main working directory — they don't duplicate the `.git` storage. Untracked files (data, local configs, build artifacts) exist only in the directory where they were created and are not present in worktrees.
+
+**Dispatch flow:**
+1. Manager creates worktrees before writing Task Prompts:
+   ```
+   git worktree add .apm/worktrees/<branch-slug> -b <branch-name>
+   ```
+2. Task Prompt includes the worktree path as the Worker's workspace — all file operations happen in that directory
+3. Worker commits work in their worktree
+4. Worker reports; Manager reviews
+5. On success: Manager merges branch into base, removes worktree (`git worktree remove`), deletes branch
+6. On FollowUp: worktree persists, Worker continues in it
+
+**Constraints:**
+- Maximum 3-4 concurrent worktrees
+- Worktrees live under `.apm/worktrees/`, which is gitignored
+- Worktrees are short-lived — created at dispatch, removed after merge
+- Each worktree contains all tracked files. For large repositories, the Manager notes disk cost when first proposing parallel dispatch and lets the User decide whether to proceed or fall back to sequential
+- If untracked assets are needed by a Worker in a worktree, the Manager notes this in the Task Prompt (Worker can symlink or copy as needed)
+
+**Directory structure (`.apm/` inside repo):**
+```
+project/
+├── .apm/
+│   ├── worktrees/
+│   │   ├── feat-auth/        # Worker A's worktree
+│   │   └── feat-api/         # Worker B's worktree
+│   ├── bus/
+│   └── Memory/
+├── src/
+└── ...
+```
+
+**Directory structure (`.apm/` outside repo):**
+```
+root/
+├── .apm/
+│   ├── worktrees/
+│   │   ├── feat-auth/        # Worktree of project/
+│   │   └── feat-api/         # Worktree of project/
+│   ├── bus/
+│   └── Memory/
+└── project/                  # Git repo, main working directory
+```
+
+The worktree command is run from the git repo root; the output path points into `.apm/worktrees/`. The Manager bridges these paths using the repo root and `.apm/` paths recorded during initialization.
+
+### Component 4: Merge Coordination
+
+**What:** The Manager merges branches into the base branch after successful Task Review. Merge timing is a coordination decision driven by the dependency graph and dispatch readiness.
+
+**Merge rules:**
+- *After successful review:* Manager merges the completed task's branch into base.
+- *Before dependent dispatch:* If an upcoming task depends on a completed parallel task's output, the Manager merges that branch before creating the dependent task's branch or worktree (so the dependent task starts with the latest code).
+- *Stage-end sweep:* Before transitioning to the next Stage, all branches from the current Stage must be merged.
+- *Automated by default:* The Manager performs merges autonomously. No User intervention for clean merges.
+- *Escalation for conflicts:* When merge conflicts arise, the Manager resolves them using coordination-level context (knowledge of both tasks' objectives, project design, specifications). For complex conflicts requiring deeper investigation, the Manager spawns a Debug Subagent or escalates to the User.
+- *Branch protection adaptation:* If the base branch has protection rules that prevent direct merges, the Manager adapts — creates a PR, merges into an intermediate branch, or asks the User how they want to handle it. Discovered reactively, noted in Working Notes for future merges.
+
+**Hierarchical merging with Teams:** When a Worker uses Team Execution (Parallel Task Coordination Component 4), teammates operate on sub-branches off the Worker's branch. The Worker merges teammate branches before reporting — the Manager only sees the Worker's clean, merged branch.
+
+### Component 5: Skill Structure
+
+**What:** The skill follows the standard APM skill structure per `STRUCTURE.md`. Universal skill loaded by both Manager and Worker, like `apm-communication`.
+
+**Skill directory:**
+```
+templates/skills/apm-version-control/
+├── SKILL.md                  # Main skill document
+└── apm-vc-integration.md     # Integration guide for non-APM agents
+```
+
+**Skill sections:**
+- §1 Overview — Purpose, how to use, objectives, outputs
+- §2 Operational Standards — Base branch detection, branch naming, worktree placement, merge rules, conflict resolution, large repo awareness, User preference handling
+- §3 Version Control Procedure — Git initialization, branch operations, worktree operations, merge coordination, cleanup
+- §4 Structural Specifications — Branch naming patterns, worktree directory layout, Working Notes VC entry format
+- §5 Content Guidelines — Common mistakes, role-specific guidance
+
+**Role-specific usage:** Both Manager and Worker load the skill. The Manager uses it for setup, branch/worktree creation, merge coordination, and cleanup. The Worker uses it to understand their workspace (branch or worktree path), commit conventions, and what not to do (no merging, no branch management). The guide-level commentary in task-assignment, task-execution, and memory-maintenance shapes each Agent's understanding based on their role.
+
+**Integration file:** `apm-vc-integration.md` provides a lightweight guide for non-APM agents — how to identify the base branch, create and work on a branch, commit conventions, and how to signal readiness for merge. Parallels `apm-bus-integration.md`.
+
+### Open Questions
+
+1. **Branch naming convention:** Should branch names be derived from task objectives (e.g., `feat/user-authentication`) or task IDs (e.g., `apm/2.1`)? Objective-based is more readable; ID-based is guaranteed unique and traceable. Could be hybrid (`apm/2.1-user-auth`).
+2. **Merge strategy:** Should the skill specify a default merge strategy (merge commit vs rebase vs squash)? Or leave it to the Manager's judgment per-merge? This may also depend on User preferences.
+3. **Stale worktree recovery:** If a session crashes mid-workflow, worktrees may be left behind. Should the Manager detect and clean stale worktrees during initialization? Or is this a User concern?
+4. **Worktree path when `.apm/` is not in repo root:** When the User's setup has `.apm/` at a different level than the git repo root, the `git worktree add` command must be run from the repo root but the output path could be under `.apm/worktrees/`. Both paths are recorded during initialization — is this sufficient, or does the skill need explicit path-bridging logic?
+5. **Untracked file handling:** Should the skill provide a standard mechanism for making untracked assets available in worktrees (e.g., symlinks, documented copy steps), or handle it as an edge case the Manager addresses per-situation in the Task Prompt?
+
+### Affected Components
+
+| Component | Change Type | Scope |
+|-----------|------------|-------|
+| New skill: `apm-version-control` | New SKILL.md and apm-vc-integration.md | All platforms |
+| Task Assignment guide | Replace §2.6 Branch Instructions with skill reference; update §3.1 dispatch to invoke VC operations | All platforms |
+| Task Execution guide | Update `has_branch_instructions` handling to support worktree paths; add VC skill reference | All platforms |
+| Memory Maintenance guide | Update §2.5 Merge Checkpoints with skill reference; integrate merge coordination into Task Review flow | All platforms |
+| WORKFLOW.md | Update §7.3 branch instructions to reference VC skill; add version control to Implementation Phase description | All platforms |
+| Manager initiation command | Add VC initialization step to Session 1 procedure | All platforms |
 
 ---
 
