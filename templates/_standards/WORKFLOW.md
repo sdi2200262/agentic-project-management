@@ -397,7 +397,7 @@ The workflow defines two behavioral types used at specific points. These are exp
 
 ### 8.2 Spawning Mechanism
 
-Subagents are spawned through platform-native tools. The build pipeline's placeholder system replaces spawn instruction placeholders in templates with platform-specific tool invocations at build time (e.g., `{SUBAGENT_SPAWN_INSTRUCTION:debug}` resolves to the target platform's spawn syntax). This keeps templates platform-agnostic while producing platform-correct output. The spawning Agent structures a task description and passes it as the prompt parameter per the resolved instructions.
+Subagents are spawned through platform-native tools. The build pipeline's placeholder system replaces subagent guidance placeholders in templates with platform-specific tool invocations at build time (e.g., `{PLANNER_SUBAGENT_GUIDANCE}` resolves to the target platform's spawn syntax and tool name). This keeps templates platform-agnostic while producing platform-correct output. The spawning Agent structures a task description and passes it as the prompt parameter per the resolved instructions.
 
 ### 8.3 When to Use
 
@@ -431,10 +431,11 @@ The User carries Bus Files between Agent Sessions. After the Manager writes to a
 Checkpoints where the workflow pauses for explicit User approval:
 
 1. **Specifications approval** — After Planner writes Specifications during Work Breakdown.
-2. **Implementation Plan and Standards approval** — After Planner completes all Coordination Artifacts.
-3. **Manager understanding confirmation** — After Manager Session 1 initialization summary.
-4. **Artifact modification collaboration** — When modifications exceed Manager authority.
-5. **User validation** — When Tasks specify User validation type, Workers pause for review.
+2. **Implementation Plan approval** — After Planner completes Implementation Plan during Work Breakdown.
+3. **Standards approval** — After Planner writes Standards during Work Breakdown.
+4. **Manager understanding confirmation** — After Manager Session 1 initialization summary.
+5. **Artifact modification collaboration** — When modifications exceed Manager authority.
+6. **User validation** — When Tasks specify User validation type, Workers pause for review.
 
 ### 9.4 Parallel Session Management
 

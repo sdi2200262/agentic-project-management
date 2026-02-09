@@ -56,17 +56,10 @@ function isAgentTemplate(templatePath, sourceDir) {
 /**
  * Processes agent definition files.
  *
- * Agent templates are now minimal - delegates only need memory-logging capability.
- * Skill content embedding has been removed; delegating agents read delegation skills
- * to understand HOW to create prompts, while delegates receive those prompts directly.
- *
  * @param {string} content - Agent template content.
  * @returns {string} Content (unchanged, placeholders handled by replacePlaceholders).
  */
 function processAgentContent(content) {
-  // Agent templates no longer embed skill content.
-  // Placeholders like {CLAUDE_SKILLS_FIELD:*} and {DELEGATE_MEMORY_LOGGING_INSTRUCTION}
-  // are handled by replacePlaceholders() in placeholders.js.
   return content;
 }
 

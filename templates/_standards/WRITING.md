@@ -172,7 +172,9 @@ Decision rules define criteria for choosing between outcomes. Each condition map
 
 ## 4. Output Guidance
 
-Agent outputs to Users use natural language adapted to the situation. Internal terminology from skills and commands is not exposed. Agents use contextually appropriate phrasing - there are no rigid templates. When pausing, communicating status, requesting input, or completing a procedure, adapt the phrasing to what the situation requires while conveying the necessary information (what is done, what needs attention, what options exist, what happens next).
+Agent outputs to Users use natural language adapted to the situation. Internal terminology from skills and commands is not exposed — this includes section references (§N.M), procedure names, and structural labels, which agents translate into natural language for Users. Agents use contextually appropriate phrasing - there are no rigid templates. When pausing, communicating status, requesting input, or completing a procedure, adapt the phrasing to what the situation requires while conveying the necessary information (what is done, what needs attention, what options exist, what happens next).
+
+**Reasoning templates.** When procedures require visible reasoning in chat (round summaries, analysis presentations, checkpoint communications), guides provide light templates — named aspects to cover and general shape. These make reasoning auditable and expectable while allowing the agent to adapt presentation to the situation. Light templates specify required coverage, not exact formatting.
 
 ---
 
@@ -180,9 +182,11 @@ Agent outputs to Users use natural language adapted to the situation. Internal t
 
 References use "See" or "per" exclusively. Nearby sentences are adapted so references fit naturally. References appear inline within prose or as standalone sentences; references are not list items.
 
-**Same-Skill:** "See §N.M Section Title" or "per §N.M Section Title" where N.M is the section number and Section Title is the exact heading text. Examples: "See §2.1 Context Dependency Standards." or "Integrate dependent context per §3.2 Context Integration."
+**Same-Document:** "See §N.M Section Title" or "per §N.M Section Title" where N.M is the section number and Section Title is the exact heading text. Applies to skills, guides, and commands referencing their own sections. Examples: "See §2.1 Context Dependency Standards." or "Integrate dependent context per §3.2 Context Integration."
 
 **Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title" or "per `{SKILL_PATH:skill-name}` §N.M Section Title" where skill-name is the skill directory name. Example: "Create the Task Memory Log per `{SKILL_PATH:memory-logging}` §3.1 Task Memory Log Procedure."
+
+**Cross-Guide:** "See `{GUIDE_PATH:guide-name}` §N.M Section Title" or "per `{GUIDE_PATH:guide-name}` §N.M Section Title" where guide-name is the guide file name without extension. Example: "See `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure."
 
 **Command:** "See `{COMMAND_PATH:command-name}`" where command-name is the command file name without extension.
 
@@ -207,6 +211,7 @@ Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctu
 **Label punctuation:**
 - *Colon (`Label:`)* - Content follows directly (list or inline prose)
 - *Arrow (`Label →`)* - Prose follows; use when prose ends with colon to avoid two colons on one line
+- *Dash (`Label` —)* - Descriptive prose follows. Used in reasoning templates and named aspect lists within procedures.
 
 **Colon rule:** Avoid two colons on one line. When prose after a label ends with colon, the label uses arrow.
 
@@ -229,6 +234,8 @@ Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctu
 - Item one
 
 - *Option:* Description → Action.       # Italic list item label
+
+- **Aspect** — Description of aspect.   # Dash label in reasoning template
 ```
 
 ### 7.2 Spacing
