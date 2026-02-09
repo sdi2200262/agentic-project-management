@@ -397,7 +397,7 @@ The workflow defines two behavioral types used at specific points. These are exp
 
 ### 8.2 Spawning Mechanism
 
-Subagents are spawned through platform-native tools. The build pipeline's placeholder system replaces spawn instruction placeholders in templates with platform-specific tool invocations at build time (e.g., `{DELEGATE_SPAWN_INSTRUCTION:debug-delegate}` resolves to the target platform's spawn syntax). This keeps templates platform-agnostic while producing platform-correct output. The spawning Agent structures a task description and passes it as the prompt parameter per the resolved instructions.
+Subagents are spawned through platform-native tools. The build pipeline's placeholder system replaces spawn instruction placeholders in templates with platform-specific tool invocations at build time (e.g., `{SUBAGENT_SPAWN_INSTRUCTION:debug}` resolves to the target platform's spawn syntax). This keeps templates platform-agnostic while producing platform-correct output. The spawning Agent structures a task description and passes it as the prompt parameter per the resolved instructions.
 
 ### 8.3 When to Use
 

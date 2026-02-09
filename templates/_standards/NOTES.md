@@ -6,7 +6,7 @@ This document contains development notes, research findings, and implementation 
 
 ## Parallel Task Coordination (Future)
 
-**Context:** The Message Bus architecture (implemented in `{SKILL_PATH:apm-communication}`) supports parallel Task execution. The Manager can write Task Prompts to multiple Send Buses before receiving Reports. This requires changes to the Manager's Task Cycle (currently sequential) to support batch assignment and independent Report processing.
+**Context:** The Message Bus architecture (implemented in `{SKILL_PATH:apm-communication}`) supports parallel Task execution. The Manager can write Task Prompts to multiple Send Buses before receiving Reports. This requires changes to the Manager's Coordination Loop (currently sequential) to support batch assignment and independent Report processing.
 
 Additionally, platforms with native multi-agent capabilities (e.g., Claude Code Agent Teams) enable Workers to internally parallelize complex work by spawning sub-teams. APM can leverage this without coupling to any single platform by using the existing conditional placeholder system in the build pipeline.
 
@@ -15,7 +15,7 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 ### Design Principles
 
 1. **Platform agnosticism** - Batch Assignment and Parallel Dispatch are platform-agnostic enhancements to the bus protocol and Manager/Worker coordination models. Platform-specific capabilities (Team Execution) are additive and delivered through the existing conditional placeholder system.
-2. **Manager abstraction** - The Manager assigns tasks and reviews reports. Whether a Worker executes solo, uses delegates, or spawns a platform-native team is an internal Worker decision invisible to the Manager. Reports and Memory Logs have the same structure regardless.
+2. **Manager abstraction** - The Manager assigns tasks and reviews reports. Whether a Worker executes solo, uses subagents, or spawns a platform-native team is an internal Worker decision invisible to the Manager. Reports and Memory Logs have the same structure regardless.
 3. **Individual task logging** - Every task gets its own Memory Log at its own `memory_log_path`, whether executed solo, in a batch, or via a team. Batch and team execution affect user friction and speed, not the Memory System's structure.
 4. **Fail-fast on batch** - A Blocked or Failed task in a batch stops execution of remaining tasks. The Worker reports partial results. The Manager makes per-task Coordination Decisions on what completed and re-plans the rest.
 5. **Source control and conflict management** - Neither APM nor any known platform provides real file-level locking for concurrent agent edits. When dispatching tasks in parallel, the Manager warns the User about possible file overlaps and overwrites across concurrent Workers. The Manager suggests initializing a git repository if one is not present, or working in branches if already suggested by the Implementation Plan, Specifications, or Standards. The recommended strategy is hierarchical branching: each Worker operates on its own branch off the main branch. If a Worker uses Team Execution (Component 4), each teammate operates on a sub-branch off the Worker's branch. Merges happen hierarchically -- the Worker merges teammate branches before logging and reporting; the Manager merges Worker branches when needed or when requested by the User. Conflicts are resolved by the "merger" at each branching point, as the top instance in that hierarchy has the best context to make resolution decisions. File-partitioned task decomposition (ensuring distinct file ownership per Worker) remains a complementary practice that reduces merge conflicts but does not replace branching.
@@ -46,7 +46,7 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 
 **When:** Tasks in the current Stage are assigned to different Workers and share no unresolved cross-Agent dependencies between them. The Dependency Graph (Component 3) aids this assessment visually; the Manager identifies parallel dispatch opportunities by examining same-stage tasks with independent dependency chains.
 
-**In-Flight Tracking** - The Manager maintains a lightweight in-flight tracker in working context: which Workers have active tasks, which tasks are dispatched, and which Reports are outstanding. This is not a new artifact -- it is part of the Manager's operational reasoning during the Task Cycle.
+**In-Flight Tracking** - The Manager maintains a lightweight in-flight tracker in working context: which Workers have active tasks, which tasks are dispatched, and which Reports are outstanding. This is not a new artifact -- it is part of the Manager's operational reasoning during the Coordination Loop.
 
 **Dispatch Procedure** - After identifying parallelizable tasks, the Manager generates Task Prompts for each (individually or as batches per Worker) and writes them to respective Send Buses. The Manager informs the User of all pending Send Bus paths and which Worker sessions need them. The Manager then awaits Reports, processing each as it arrives through the standard Coordination Decision procedure.
 
@@ -102,7 +102,7 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 
 ### Component 4: Claude Code Agent Teams Integration (Optional)
 
-**What:** On Claude Code, Workers MAY optionally use the Agent Teams feature to internally spawn a team and parallelize work within their assigned task scope. The Worker becomes the team lead, delegates sub-work to teammates, synthesizes results, cleans up the team, and reports back through the standard bus protocol. The Manager is unaware this happened.
+**What:** On Claude Code, Workers MAY optionally use the Agent Teams feature to internally spawn a team and parallelize work within their assigned task scope. The Worker becomes the team lead, assigns sub-work to teammates, synthesizes results, cleans up the team, and reports back through the standard bus protocol. The Manager is unaware this happened.
 
 **Experimental Status:** Claude Code Agent Teams is an experimental feature, disabled by default, requiring the `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` environment variable. Because the underlying platform feature is experimental, this APM integration is optional and should be treated as such. Reference: https://code.claude.com/docs/en/agent-teams
 
