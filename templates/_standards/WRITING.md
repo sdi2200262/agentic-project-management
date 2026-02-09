@@ -41,6 +41,20 @@ Skills and commands serve two audiences:
 
 Content serves both audiences. Structured formats appear where appropriate and prose for explanations, with consistent section patterns for reliable agent parsing.
 
+### 1.4 Simplicity Standards
+
+Skills and commands are written for capable models that reason well from clear, concise instructions. The following standards govern content density and instructional approach:
+
+**Trust model reasoning.** State rules and criteria clearly; do not enumerate every possible violation or edge case. Guide the agent's assessment process rather than dictating decisions. Prefer "assess X considering Y" over exhaustive if/then trees covering every scenario.
+
+**Guardrail restraint.** One clear statement of a rule is sufficient. Do not restate the same constraint in multiple forms, provide extensive negative examples of what not to do, or pad instructions with cautionary variations. Agents that understand the rule once do not benefit from seeing it three times.
+
+**Example economy.** Include examples only when the pattern is genuinely non-obvious — a structural schema, an unfamiliar format, or a counterintuitive convention. One well-chosen example is better than three that illustrate the same point. Omit examples when prose alone conveys the instruction.
+
+**Target conciseness andd compactness.** Skills, guides and commands should not exceed ~500 lines. When approaching this ceiling, reduce descriptive and guardrail content before reducing structural specifications or procedural steps. The core operations and output formats are the substance; the surrounding prose is the variable.
+
+**Reasoning over prescription.** When agents face ambiguous situations, provide the reasoning framework (what to consider, what matters, what the tradeoffs are) rather than pre-decided answers for every case. The agent's judgment, applied to the specific situation, will outperform a generic lookup table written in advance.
+
 ---
 
 ## 2. Tone & Voice

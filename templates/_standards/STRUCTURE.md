@@ -194,7 +194,7 @@ Commands follow a variable structure based on purpose, with required opening and
 | §1 Overview | Role declaration, responsibilities. |
 | §2 Session Initiation | First Session vs Incoming Agent logic, artifact reading. Worker Agent includes Worker Registration. |
 | §3+ [Core Procedures] | Main Procedures for this agent type. |
-| §N Operating Rules | Boundaries, communication, delegation capability. |
+| §N Operating Rules | Boundaries, communication, subagent usage. |
 
 **Handoff Commands:**
 
@@ -343,7 +343,6 @@ Each format definition includes:
 |---------|-------------|
 | `Stage_<N>_<Slug>/` | Stage directory with number and slug. |
 | `Task_Log_<N>_<M>_<Slug>.md` | Task Memory Log with stage, task, and slug. |
-| `Delegation_Log_<N>_<M>_<Type>_<Slug>.md` | Delegation Memory Log with stage, task, type, and slug. |
 | `<AgentID>_Handoffs/` | Agent-specific Handoff directory. |
 | `<AgentID>_Handoff_Log_<N>.md` | Handoff Memory Log with agent ID and session number. |
 
