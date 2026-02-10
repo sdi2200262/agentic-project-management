@@ -47,13 +47,13 @@ This section establishes reasoning approaches and decision rules for Message Bus
 
 ### 2.1 Bus Lifecycle Standards
 
-Bus Files have two states: **empty** (no message present, the cleared/initial state) and **has content** (a message is present and awaiting delivery). Agents write content to send a message and truncate the file to clear it. There is no intermediate state or metadata envelope. The file either contains a message or it does not; the file content is the message itself, following the format defined by the relevant procedure (Task Assignment, Memory Logging, or Handoff).
+Bus Files have two states: **empty** (no message present, the cleared/initial state) and **has content** (a message is present and awaiting delivery). Agents write content to send a message and truncate the file to clear it. There is no intermediate state or metadata envelope. The file either contains a message or it does not; the file content is the message itself, following the format defined by the relevant procedure (Task Assignment, Task Logging, or Handoff).
 
 ### 2.2 Clearing Protocol Standards
 
 Clearing follows a symmetric pattern: each Agent clears its incoming Bus File before writing to its outgoing Bus File. This prevents stale messages from accumulating:
-* **Manager clearing sequence:** Clear the Report Bus (incoming), then write to the Send Bus (outgoing).
-* **Worker clearing sequence:** Clear the Send Bus (incoming), then write to the Report Bus (outgoing).
+- **Manager clearing sequence:** Clear the Report Bus (incoming), then write to the Send Bus (outgoing).
+- **Worker clearing sequence:** Clear the Send Bus (incoming), then write to the Report Bus (outgoing).
 
 Clearing is performed via terminal truncation: `truncate -s 0 <bus-file-path>`.
 
@@ -65,18 +65,15 @@ Workers validate that the Bus File they receive messages from matches their regi
 
 ### 2.4 Edge Case Standards
 
-* **Empty bus detection:** When an Agent reads a Bus File and finds it empty, the expected message has not been written yet or has already been cleared. Inform the User that no message is present and await further direction.
-* **Wrong file referenced:** When a User references a Bus File intended for a different Agent, the receiving Agent detects the mismatch per §2.3 Bus Identity Standards and rejects it.
+- **Empty bus detection:** When an Agent reads a Bus File and finds it empty, the expected message has not been written yet or has already been cleared. Inform the User that no message is present and await further direction.
+- **Wrong file referenced:** When a User references a Bus File intended for a different Agent, the receiving Agent detects the mismatch per §2.3 Bus Identity Standards and rejects it.
 
 ### 2.5 Batch Delivery Standards
 
-When dispatching multiple sequential tasks to the same Worker, the Manager sends them as a batch in a single Send Bus message.
-
-**Batch Envelope:** The Send Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters. See §4.4 Batch Envelope Format.
-
-**Task Independence:** Each Task Prompt in a batch retains its full structure as if it were standalone. The batch envelope adds coordination metadata; it does not alter task content.
-
-**Fail-Fast:** If a Worker encounters a Blocked or Failed task during batch execution, they stop the batch and do not proceed to remaining tasks. The Batch Report reflects partial completion.
+When dispatching multiple sequential tasks to the same Worker, the Manager sends them as a batch in a single Send Bus message:
+- **Batch Envelope:** The Send Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters. See §4.4 Batch Envelope Format.
+- **Task Independence:** Each Task Prompt in a batch retains its full structure as if it were standalone. The batch envelope adds coordination metadata; it does not alter task content.
+- **Fail-Fast:** If a Worker encounters a Blocked or Failed task during batch execution, they stop the batch and do not proceed to remaining tasks. The Batch Report reflects partial completion.
 
 ---
 
@@ -217,7 +214,7 @@ agent_id: <agent-slug>
 ...
 ```
 
-**Worker Processing:** Worker parses the batch envelope, executes tasks sequentially, logs each to its `memory_log_path`, and writes a Batch Report upon completion or failure. See `{GUIDE_PATH:task-execution}` for batch execution and `{GUIDE_PATH:memory-logging}` for Batch Report format.
+**Worker Processing:** Worker parses the batch envelope, executes tasks sequentially, logs each to its `memory_log_path`, and writes a Batch Report upon completion or failure. See `{GUIDE_PATH:task-execution}` for batch execution and `{GUIDE_PATH:task-logging}` for Batch Report format.
 
 ---
 

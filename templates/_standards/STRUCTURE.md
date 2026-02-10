@@ -330,8 +330,10 @@ Each format definition includes:
 | Placeholder | Purpose |
 |-------------|---------|
 | ``{SKILL_PATH:skill-name}`` | Path to skill directory. |
+| `{GUIDE_PATH:guide-name}` | Path to guide file. |
 | `{COMMAND_PATH:command-name}` | Path to command file. |
 | `{SKILLS_DIR}` | Skills directory path. |
+| `{GUIDES_DIR}` | Guides directory path. |
 | `{AGENTS_FILE}` | Platform-specific agents file (CLAUDE.md or AGENTS.md). |
 | `{VERSION}` | Package version. |
 | `{TIMESTAMP}` | Build timestamp (ISO format). |

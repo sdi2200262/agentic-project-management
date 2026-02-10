@@ -6,11 +6,11 @@ This document contains development notes, research findings, and implementation 
 
 ## Parallel Task Coordination (Standards Complete — Awaiting Template Refactor)
 
-**Context:** The Message Bus architecture (`{SKILL_PATH:apm-communication}`) supports parallel Task execution. Components 1-3 (Batch Task Assignment, Parallel Dispatch, Dependency Graph) have been specified in `_standards/` — WORKFLOW.md defines the procedures and protocols, and the Planning Phase templates (Communication Skill, Work Breakdown guide, Implementation Plan template) have been updated accordingly. However, the Implementation Phase templates (Manager and Worker initiation commands, Task Assignment, Task Execution, Memory Logging, Memory Maintenance guides) have not yet been refactored to fully incorporate these specifications.
+**Context:** The Message Bus architecture (`{SKILL_PATH:apm-communication}`) supports parallel Task execution. Components 1-3 (Batch Task Assignment, Parallel Dispatch, Dependency Graph) have been specified in `_standards/` — WORKFLOW.md defines the procedures and protocols, and the Planning Phase templates (Communication Skill, Work Breakdown guide, Implementation Plan template) have been updated accordingly. However, the Implementation Phase templates (Manager and Worker initiation commands, Task Assignment, Task Execution, Task Logging, Memory Maintenance guides) have not yet been refactored to fully incorporate these specifications.
 
 Additionally, platforms with native multi-agent capabilities (e.g., Claude Code Agent Teams) enable Workers to internally parallelize complex work by spawning sub-teams. APM can leverage this without coupling to any single platform by using the existing conditional placeholder system in the build pipeline.
 
-**Status:** Components 1-3 specified in `_standards/` (ground truth). Planning Phase templates updated. Implementation Phase templates awaiting refactor — the guides currently contain partial parallel support (batch envelope in apm-communication, dispatch standards in task-assignment, merge checkpoints in memory-maintenance) but do not yet fully reflect the WORKFLOW.md specification. Component 4 (Claude Code Agent Teams) is optional and unimplemented — depends on an experimental platform feature. Design Principle 5 (source control) is being formalized into the `apm-version-control` skill — see the Version Control Skill entry below. The Implementation Phase template refactor and the Version Control Skill are tightly coupled: parallel dispatch in practice requires version control coordination, so both should be addressed together.
+**Status:** Components 1-3 specified in `_standards/` (ground truth). Planning Phase templates updated. Implementation Phase templates awaiting refactor — the guides currently contain partial parallel support (batch envelope in apm-communication, dispatch standards in task-assignment, merge checkpoints in task-review) but do not yet fully reflect the WORKFLOW.md specification. Component 4 (Claude Code Agent Teams) is optional and unimplemented — depends on an experimental platform feature. Design Principle 5 (source control) is being formalized into the `apm-version-control` skill — see the Version Control Skill entry below. The Implementation Phase template refactor and the Version Control Skill are tightly coupled: parallel dispatch in practice requires version control coordination, so both should be addressed together.
 
 ### Design Principles
 
@@ -22,7 +22,7 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 
 ### Component 1: Batch Task Assignment ✓
 
-**Status:** Implemented. Added batch envelope format to apm-communication §4.4; batch execution standards to task-execution §2.7; Batch Report format to memory-logging §4.3; batch report handling to memory-maintenance §2.5 and §3.2.
+**Status:** Implemented. Added batch envelope format to apm-communication §4.4; batch execution standards to task-execution §2.7; Batch Report format to task-logging §4.3; batch report handling to task-review §2.5 and §3.2.
 
 **What:** The Manager sends multiple sequential tasks to the same Worker in a single Send Bus message. The Worker executes them in order, logs each individually, and returns one consolidated Batch Report. The User only shuttles files at batch boundaries, not between each task.
 
@@ -34,13 +34,13 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 
 **Worker Execution** - Addition to the Task Execution guide. On receiving a batch, the Worker parses all Task Prompts, validates `agent_id` for each, and executes them sequentially through the standard §3.1-3.8 procedure per task. Each task's Memory Log is written individually at its `memory_log_path` upon that task's completion. If any task results in Blocked or Failed status, the Worker stops the batch, does not proceed to remaining tasks, and writes the Batch Report reflecting partial completion. Workers must pause and report blockers when they encounter context dependency gaps during execution -- missing files, unavailable interfaces, or outputs that should have been produced by another Agent. Workers must NOT attempt to fill these gaps by doing another Agent's work without being asked.
 
-**Batch Report** - Addition to the Memory Logging guide. A new report format with YAML frontmatter listing per-task status and a concise body section per completed task (summary + Memory Log reference). Remaining unstarted tasks are listed as "Not started (batch stopped)". Written to the Report Bus as a single message. The Manager processes each task's result independently through the existing Coordination Decision procedure.
+**Batch Report** - Addition to the Task Logging guide. A new report format with YAML frontmatter listing per-task status and a concise body section per completed task (summary + Memory Log reference). Remaining unstarted tasks are listed as "Not started (batch stopped)". Written to the Report Bus as a single message. The Manager processes each task's result independently through the existing Coordination Decision procedure.
 
 **Manager Report Processing** - Addition to the Memory Maintenance guide. On receiving a Batch Report, the Manager reviews each completed task's Memory Log individually and makes independent Coordination Decisions per task. Remaining unstarted tasks from a stopped batch re-enter the assignment pool for the next cycle.
 
 ### Component 2: Parallel Dispatch ✓
 
-**Status:** Implemented. Added dispatch planning standards to task-assignment §2.5-2.6; dispatch assessment procedure to task-assignment §3.1; parallel coordination standards to memory-maintenance §2.5; branch instructions in Task Prompt format. Workers create branches per task instructions; Manager coordinates merges.
+**Status:** Implemented. Added dispatch planning standards to task-assignment §2.5-2.6; dispatch assessment procedure to task-assignment §3.1; parallel coordination standards to task-review §2.5; branch instructions in Task Prompt format. Workers create branches per task instructions; Manager coordinates merges.
 
 **What:** The Manager writes Task Prompts to multiple Workers' Send Buses before waiting for any Reports. Workers execute concurrently in separate sessions. The User delivers Send Bus files to each Worker session and returns Reports to the Manager as they arrive.
 
@@ -56,7 +56,7 @@ Additionally, platforms with native multi-agent capabilities (e.g., Claude Code 
 
 ### Component 3: Dependency Graph ✓
 
-**Status:** Implemented. Added §4.6 Dependency Graph Format and §3.6 step 6 to work-breakdown.md; added header field to Implementation_Plan.md. Also moved stage directory creation from Manager to Worker (memory-logging.md §3.1 step 1) to remove a pre-dispatch bottleneck.
+**Status:** Implemented. Added §4.6 Dependency Graph Format and §3.6 step 6 to work-breakdown.md; added header field to Implementation_Plan.md. Also moved stage directory creation from Manager to Worker (task-logging.md §3.1 step 1) to remove a pre-dispatch bottleneck.
 
 **What:** A mermaid dependency graph generated by the Planner Agent at the end of Work Breakdown and placed in the Implementation Plan header. Provides visual identification of parallelization opportunities, batch candidates, critical path, and cross-stage bottlenecks.
 
@@ -152,7 +152,7 @@ Manager may only Handoff when no outstanding dispatches exist — all Reports fr
 |-----------|------------|-------|
 | Task Assignment guide | Add Batch Assessment procedure | All platforms |
 | Task Execution guide | Add batch receipt handling + conditional Team Execution section | All platforms (team: CC only) |
-| Memory Logging guide | Add Batch Report format | All platforms |
+| Task Logging guide | Add Batch Report format | All platforms |
 | Communication Skill | Add Batch Delivery protocol | All platforms |
 | Memory Maintenance guide | Add batch report review + parallel report collection handling | All platforms |
 | Work Breakdown guide | Add Dependency Graph generation step | All platforms |
@@ -164,11 +164,11 @@ Manager may only Handoff when no outstanding dispatches exist — all Reports fr
 
 ## Version Control Skill (Future)
 
-**Context:** The Implementation Phase's parallel dispatch system (Components 1-3 above) requires source control coordination to prevent file conflicts between concurrent Workers. The current implementation includes lightweight branch instructions in Task Prompts (task-assignment §2.6) and merge checkpoints in memory-maintenance §2.5, but these are informal guidance rather than a structured protocol. As parallel dispatch becomes a core workflow pattern, version control operations need formal skill-level treatment — comparable to how `apm-communication` formalizes the Message Bus protocol.
+**Context:** The Implementation Phase's parallel dispatch system (Components 1-3 above) requires source control coordination to prevent file conflicts between concurrent Workers. The current implementation includes lightweight branch instructions in Task Prompts (task-assignment §2.6) and merge checkpoints in task-review §2.5, but these are informal guidance rather than a structured protocol. As parallel dispatch becomes a core workflow pattern, version control operations need formal skill-level treatment — comparable to how `apm-communication` formalizes the Message Bus protocol.
 
 Git branching alone does not enable true parallelism. A git repository has one working directory — when Worker A checks out branch-a and Worker B checks out branch-b in separate terminals, B's checkout switches the shared directory out from under A. Git worktrees solve this: each worktree is a separate physical directory checked out on its own branch, sharing the same git database. Worktrees are the standard git mechanism for simultaneous multi-branch work.
 
-**Status:** Future work. This skill introduces version control as a fundamental part of the APM workflow — not an optional add-on. Integration path: (1) define the skill specification and incorporate version control into `_standards/WORKFLOW.md` as a core Implementation Phase concern, (2) build the skill template (`SKILL.md` + `apm-vc-integration.md`), (3) refactor the Implementation Phase templates (task-assignment, task-execution, memory-maintenance guides and Manager/Worker commands) to reference and invoke the skill. Steps 2-3 are tightly coupled with the broader Implementation Phase template refactor — the guides that reference version control operations are the same guides being refactored for parallel dispatch.
+**Status:** Future work. This skill introduces version control as a fundamental part of the APM workflow — not an optional add-on. Integration path: (1) define the skill specification and incorporate version control into `_standards/WORKFLOW.md` as a core Implementation Phase concern, (2) build the skill template (`SKILL.md` + `apm-vc-integration.md`), (3) refactor the Implementation Phase templates (task-assignment, task-execution, task-review guides and Manager/Worker commands) to reference and invoke the skill. Steps 2-3 are tightly coupled with the broader Implementation Phase template refactor — the guides that reference version control operations are the same guides being refactored for parallel dispatch.
 
 ### Design Principles
 
@@ -291,7 +291,7 @@ templates/skills/apm-version-control/
 - §4 Structural Specifications — Branch naming patterns, worktree directory layout, Working Notes VC entry format
 - §5 Content Guidelines — Common mistakes, role-specific guidance
 
-**Role-specific usage:** Both Manager and Worker load the skill. The Manager uses it for setup, branch/worktree creation, merge coordination, and cleanup. The Worker uses it to understand their workspace (branch or worktree path), commit conventions, and what not to do (no merging, no branch management). The guide-level commentary in task-assignment, task-execution, and memory-maintenance shapes each Agent's understanding based on their role.
+**Role-specific usage:** Both Manager and Worker load the skill. The Manager uses it for setup, branch/worktree creation, merge coordination, and cleanup. The Worker uses it to understand their workspace (branch or worktree path), commit conventions, and what not to do (no merging, no branch management). The guide-level commentary in task-assignment, task-execution, and task-review shapes each Agent's understanding based on their role.
 
 **Integration file:** `apm-vc-integration.md` provides a lightweight guide for non-APM agents — how to identify the base branch, create and work on a branch, commit conventions, and how to signal readiness for merge. Parallels `apm-bus-integration.md`.
 
@@ -362,7 +362,7 @@ The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session s
 
 **What:** A lightweight slash command that any agent on any platform can run to produce a high-level summary of the completed APM session. This is a standalone command, not an APM Agent workflow -- it does not require initiating a Planner, Manager, or Worker. Any agent in any session can run it as a quick summarization pass over the APM artifacts.
 
-**Rationale:** Making this a full APM Agent workflow (with its own initiation command) would add friction to what should be a simple pre-archival step. The command reads existing artifacts, synthesizes a summary, and writes one file. No coordination, no bus communication, no Memory Logging.
+**Rationale:** Making this a full APM Agent workflow (with its own initiation command) would add friction to what should be a simple pre-archival step. The command reads existing artifacts, synthesizes a summary, and writes one file. No coordination, no bus communication, no Task Logging.
 
 **Output:** `APM_Session_Summary.md` written to `.apm/`. Contains a point-in-time summary of the session: project scope, stages completed, key outcomes, notable findings, and known issues. Explicitly states that it is a snapshot and the codebase may have diverged.
 
