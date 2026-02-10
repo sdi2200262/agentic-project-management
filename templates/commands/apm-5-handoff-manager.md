@@ -19,7 +19,11 @@ The Incoming Manager reconstructs context from Coordination Artifacts, guides, s
 
 Handoff is only eligible when the current Task Cycle is complete and no outstanding dispatches exist — all Reports from active Workers must be collected first.
 
-**Eligibility requires** the Manager to have completed: Task Prompt(s) issued, all Task Reports received, Task Memory Logs reviewed, and Coordination Decision(s) made.
+**Eligibility requires** the Manager to have completed:
+- Task Prompt(s) issued
+- All Task Reports received
+- Task Memory Logs reviewed
+- Coordination Decision(s) made
 
 **Blocking scenarios — deny Handoff when:**
 - Waiting for Task Report (dispatched but Worker hasn't completed)

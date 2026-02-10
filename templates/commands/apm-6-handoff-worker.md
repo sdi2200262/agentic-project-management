@@ -21,7 +21,11 @@ The Incoming Worker reconstructs context from the Handoff Memory Log and current
 
 Handoff is only eligible between Tasks, not mid-Task.
 
-**Eligibility requires** the Worker to have completed the current Task Cycle: Task Execution complete, Task Validation complete, Task Memory Log written, and Task Report output to User.
+**Eligibility requires** the Worker to have completed the current Task Cycle:
+- Task Execution complete
+- Task Validation complete
+- Task Memory Log written
+- Task Report output to User
 
 **Blocking scenarios — deny Handoff when:**
 - Mid-execution (Task steps in progress)

@@ -312,9 +312,13 @@ Review the Task Memory Log. If everything looks good — Success with no flags, 
 **Investigation scope.** Small scope (few files, straightforward verification, contained to this Task) → Manager self-investigates. Large scope (context-intensive debugging/research, systemic issues, impacts multiple Tasks) → Subagent. Default: when scope is unclear, prefer Subagent to preserve Manager context.
 
 **Post-investigation outcome:**
-- No issues → **Proceed** — update Dispatch State, check Stage completion, dispatch next Task(s).
-- FollowUp needed → Create FollowUp Task Prompt, update Dispatch State.
-- Artifact modification needed → assess affected artifacts, analyze cascade implications (Specifications and Implementation Plan have bidirectional influence; Standards are generally isolated), determine authority scope (bounded Manager authority vs User collaboration for significant changes), execute modifications, verify consistency, document with Last Modification attribution. When modifying Implementation Plan Tasks, update the Dependency Graph. After modifications, update Dispatch State and reassess readiness against the updated plan.
+- *No issues* → **Proceed** — update Dispatch State, check Stage completion, dispatch next Task(s).
+- *FollowUp needed* → Create FollowUp Task Prompt, update Dispatch State.
+- *Artifact modification needed:*
+  - *Cascade:* Assess affected artifacts, analyze cascade implications (Specifications ↔ Implementation Plan are bidirectional; Standards isolated).
+  - *Authority:* Determine scope — bounded Manager authority vs User collaboration for significant changes.
+  - *Execute:* Modify artifacts, verify consistency, document with Last Modification attribution. Update Dependency Graph when Implementation Plan Tasks change.
+  - *Post-modification:* Update Dispatch State, reassess readiness against updated plan.
 
 **Dispatch State update.** Every outcome path ends with updating the Dispatch State section in Memory Root: completed tasks, readiness changes, merge state. When all Tasks in a Stage are Done and merged, the Stage collapses to a single "Complete" line.
 
