@@ -98,7 +98,7 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 |------|------------|----------|
 | **Memory System** | Hierarchical storage for project history enabling progress tracking and Handoff continuity. | `.apm/Memory/` |
 | **Memory Root** | Central project state document containing Handoff count, Dispatch State, Working Notes, and Stage Summaries. | `.apm/Memory/Memory_Root.md` |
-| **Dispatch State** | Section within Memory Root tracking task statuses, agent assignments, active branches, and merge state per Stage. Updated by the Manager after each review cycle. | Within Memory Root |
+| **Dispatch State** | Section within Memory Root tracking task statuses, agent assignments, active branches, and merge state per Stage. Task statuses: Ready (can be dispatched), Active (in progress), Done (reviewed), Blocked (dependencies not met). Updated by the Manager after each review cycle. | Within Memory Root |
 | **Working Notes** | Ephemeral coordination notes in Memory Root maintained by the Manager and User during the Implementation Phase. Inserted and removed as context evolves. | Within Memory Root |
 | **Stage Summary** | Compressed Stage-level outcome appended to Memory Root after Stage completion. | Within Memory Root |
 | **Stage Directory** | Directory containing all Task Memory Logs for a Stage. | `.apm/Memory/Stage_<N>_<Slug>/` |
