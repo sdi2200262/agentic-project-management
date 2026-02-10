@@ -1,5 +1,5 @@
 # Ad-Hoc Delegation Guides
-This directory contains guides for specialized Ad-Hoc Agent delegation in APM v0.4. These aren't your main workflow agents, they're more like disposable helpers. Delegations happen either when they are explicitly stated in a Subtask or when an Implementation Agent deems one necessary.
+This directory contains guides for specialized Ad-Hoc Agent delegation in APM v0.5. These aren't your main workflow agents, they're more like disposable helpers. Delegations happen either when they are explicitly stated in a Subtask or when an Implementation Agent deems one necessary.
 
 ## What Are Ad-Hoc Agents
 Think of Ad-Hoc delegation like bringing in a consultant for a specific problem. When your Implementation Agent hits a debugging wall, needs to research something outside their current context, or wants focused analysis work, they delegate it to be worked on in separate chat session.
@@ -11,10 +11,11 @@ The key advantage is that these agents work in **separate branches** so they don
 Thats it... a straightforward system for bringing in help without breaking your main workflow.
 
 ## Using The Guides
-Right now I've included a few essential ones:
+Right now we've included a few essential ones:
 
 - **Debug_Delegation_Guide.md** - For persistent bugs that need dedicated debugging attention
-- **Research_Delegation_Guide.md** - For when a model's context is outdated or limited to a subject and you need to dive deep into documentation, APIs, or technical concepts - TBD
+- **Research_Delegation_Guide.md** - For when a model's context is outdated or limited to a subject and you need to dive deep into documentation, APIs, or technical concepts
+- **Testing_Automation_Delegation_Guide.md** - For focused test creation, expansion, and regression protection on features or fixes
 
 Implementation Agents will (hopefully) reference these when they hit scenarios that need delegation. You just copy-paste the prompts they create following these guides into new chat sessions and bring back the findings.
 
