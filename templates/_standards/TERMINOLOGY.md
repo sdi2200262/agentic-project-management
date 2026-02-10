@@ -97,7 +97,8 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 | Term | Definition | Location |
 |------|------------|----------|
 | **Memory System** | Hierarchical storage for project history enabling progress tracking and Handoff continuity. | `.apm/Memory/` |
-| **Memory Root** | Central project state document containing Handoff count, Working Notes, and Stage Summaries. | `.apm/Memory/Memory_Root.md` |
+| **Memory Root** | Central project state document containing Handoff count, Dispatch State, Working Notes, and Stage Summaries. | `.apm/Memory/Memory_Root.md` |
+| **Dispatch State** | Section within Memory Root tracking task statuses, agent assignments, active branches, and merge state per Stage. Updated by the Manager after each review cycle. | Within Memory Root |
 | **Working Notes** | Ephemeral coordination notes in Memory Root maintained by the Manager and User during the Implementation Phase. Inserted and removed as context evolves. | Within Memory Root |
 | **Stage Summary** | Compressed Stage-level outcome appended to Memory Root after Stage completion. | Within Memory Root |
 | **Stage Directory** | Directory containing all Task Memory Logs for a Stage. | `.apm/Memory/Stage_<N>_<Slug>/` |
@@ -158,14 +159,12 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 | Term | Definition |
 |------|------------|
 | **Task Assignment** | Procedure where the Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them to Workers via Send Bus. |
-| **Task Review** | Procedure where the Manager reviews Task Reports and Task Memory Logs and makes a Coordination Decision. |
-| **Coordination Loop** | The repeating cycle that drives the Implementation Phase: Task Assignment → Task Execution → Task Review. Includes supporting procedures (Memory Maintenance, Artifact Maintenance) as needed within iterations. |
+| **Task Review** | Procedure where the Manager reviews Task Reports and Task Memory Logs, makes Coordination Decisions, modifies Coordination Artifacts when findings warrant it, and maintains the Dispatch State. |
+| **Coordination Loop** | The repeating cycle that drives the Implementation Phase: Task Assignment → Task Execution → Task Review. Includes artifact modification and Dispatch State updates as needed within iterations. |
 | **Coordination Decision** | Manager's assessment after Task Review. Outcomes: Proceed to next Task, FollowUp (retry with refined instructions), or Artifact Modification plus next Task or FollowUp. |
 | **Ready Task** | A Task whose dependencies are all complete and can be dispatched. |
 | **Batch Dispatch** | Dispatching multiple sequential Tasks to the same Worker in a single Send Bus message. |
 | **Parallel Dispatch** | Dispatching Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist among them. |
-| **Memory Maintenance** | Procedure where the Manager initializes and maintains the Memory System throughout execution. |
-| **Artifact Maintenance** | Procedure where the Manager assesses and executes modifications to Coordination Artifacts based on execution findings. |
 
 ### 8.2 Execution (Worker Agent)
 

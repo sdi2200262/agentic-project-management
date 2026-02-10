@@ -62,8 +62,8 @@ The Manager and Worker Agents transform the Implementation Plan into completed d
 The Coordination Loop repeats per Task(s). After all Tasks in a Stage complete, the Manager creates a Stage Summary. After all Stages complete, the Manager presents a Project Completion summary.
 
 Supporting procedures run as needed within the loop:
-- **Memory Maintenance** — Manager initializes and maintains the Memory System.
-- **Artifact Maintenance** — Manager modifies Coordination Artifacts when execution findings warrant it.
+- **Task Review** — Manager reviews Reports, makes Coordination Decisions, modifies Coordination Artifacts when findings warrant it, and maintains the Memory System.
+- **Version Control** — Manager initializes and coordinates version control for workspace isolation during parallel dispatch.
 - **Handoff** — Context transfer between Sessions of the same Agent when context window limits approach.
 
 ---
@@ -72,7 +72,7 @@ Supporting procedures run as needed within the loop:
 
 ### 4.1 Message Bus
 
-The Message Bus is a file-based communication system in `.apm/bus/`. The Manager initializes it during Session 1. Each Worker has an Agent Channel (subdirectory) containing their Bus Files. The Manager has a channel for its Handoff Bus only.
+The Message Bus is a file-based communication system in `.apm/bus/`. The Manager initializes it during Session 1. Each Worker has an Agent Channel (subdirectory) containing their Bus Files. The Manager has a channel for its Handoff Bus only. Operational procedures for Bus initialization and message delivery are defined in the communication skill.
 
 ### 4.2 Bus File Types
 
@@ -104,7 +104,8 @@ The User is the message carrier at every boundary - there is no direct Manager-W
 
 The Memory System resides in `.apm/Memory/` with this hierarchy:
 
-- **Memory Root** (`Memory_Root.md`) — Central project state. Contains Handoff count, Working Notes, and Stage Summaries.
+- **Memory Root** (`Memory_Root.md`) — Central project state. Contains Handoff count, Dispatch State, Working Notes, and Stage Summaries.
+- **Dispatch State** (section within Memory Root) — Tracks task statuses, agent assignments, active branches, and merge state per Stage. Updated by the Manager after each review cycle.
 - **Stage Directories** (`Stage_<N>_<Slug>/`) — Contain Task Memory Logs for each Stage. Created by the Worker when writing their first Task Memory Log for that Stage.
 - **Task Memory Logs** — Structured logs written by Workers after Task completion. Capture status, validation results, deliverables, and flags.
 - **Handoff Memory Logs** (`Handoffs/<AgentID>_Handoffs/`) — Logs created during Handoff containing working context not captured elsewhere.
@@ -112,9 +113,11 @@ The Memory System resides in `.apm/Memory/` with this hierarchy:
 ### 5.2 Lifecycle
 
 1. **Initialization** — Manager initializes Memory Root during Session 1.
-2. **Memory Logging** — Workers create Task Memory Logs after each Task completion.
-3. **Stage Summary** — Manager appends Stage Summary to Memory Root after all Tasks in a Stage complete.
-4. **Handoff Logging** — Outgoing Agent creates Handoff Memory Log during Handoff.
+2. **Dispatch State Initialization** — Manager populates Dispatch State with Stage 1 tasks during Session 1.
+3. **Task Logging** — Workers create Task Memory Logs after each Task completion.
+4. **Dispatch State Update** — Manager updates Dispatch State after each review cycle: completed tasks, readiness changes, merge state.
+5. **Stage Summary** — Manager appends Stage Summary to Memory Root after all Tasks in a Stage complete.
+6. **Handoff Logging** — Outgoing Agent creates Handoff Memory Log during Handoff.
 
 ### 5.3 Task Memory Log Flags
 
@@ -145,6 +148,7 @@ Workers set flags based on scoped observations. The Manager interprets these wit
 | Architectural | Specifications | Define what is being built | `.apm/Specifications.md` |
 | Coordination | Implementation Plan | Define how work is organized | `.apm/Implementation_Plan.md` |
 | Execution | Standards | Define how work is performed | `AGENTS.md` (or `CLAUDE.md`) at workspace root |
+| Operational | Memory System | Track project state and execution history | `.apm/Memory/` |
 
 ### 6.2 Specifications
 
@@ -229,13 +233,13 @@ The Manager assesses readiness, determines dispatch mode, constructs Task Prompt
 
 Before constructing Task Prompts, the Manager assesses dispatch opportunities:
 
-1. **Identify Ready Tasks** — Tasks whose dependencies are all complete.
+1. **Identify Ready Tasks** — Read the Dispatch State for current task statuses, cross-reference the Dependency Graph for newly unblocked Tasks.
 2. **Group by Worker** — Ready Tasks grouped by assigned Worker Agent.
 3. **Assess Batch Candidacy** — For each Worker with multiple Ready Tasks, evaluate whether they may be batched. Candidates form a sequential chain with only internal dependencies and no external Tasks depend on intermediate Tasks in the chain. Soft guidance: 3-4 Tasks per batch. Result: each Worker gets either a single Task, a batch, or remains unscheduled.
 4. **Assess Parallel Candidacy** — Across Workers, identify which dispatch units (singles or batches from step 3) may proceed in parallel if no unresolved cross-Worker dependencies exist among them.
 5. **Formulate Dispatch Plan** — Determine overall dispatch mode: single Worker, multiple Workers in parallel, or a combination (e.g. one single; one batch; one batch and one single in parallel; two batches in parallel; etc.).
 
-**Parallel dispatch prerequisites.** Before first parallel dispatch, the Manager checks git initialization and informs the User about branch-based isolation recommending the use of worktrees if not already set up. If approved parallel Task includes branch instructions. Otherwise Manager adapts to the User's requests with caution. In addition, before the first parallel dispatch, the Manager recommends configuring the permissions on the Workers so that they don't stay idle waiting for User approval too often.
+**Parallel dispatch prerequisites.** Before first parallel dispatch, the Manager initializes version control per the VC skill — creating feature branches and worktrees for workspace isolation. The Manager also recommends configuring Worker permissions to minimize approval wait times.
 
 **In-flight tracking.** During parallel dispatch, the Manager tracks which Workers have active Tasks and which Reports are pending in its working context.
 
@@ -251,14 +255,14 @@ For each Task in the dispatch plan:
 
 #### 7.3.3 Task Prompt Construction
 
-Assemble the Task Prompt with YAML frontmatter (stage, task, agent_id, memory_log_path, flags) and markdown body (task reference, context from dependencies, objective, detailed instructions, expected output, validation criteria, memory logging instructions, reporting instructions).
+Assemble the Task Prompt with YAML frontmatter (stage, task, agent_id, memory_log_path, flags) and markdown body (task reference, context from dependencies, objective, detailed instructions, workspace path if applicable, expected output, validation criteria, memory logging instructions, reporting instructions).
 
-**Dispatch delivery:**
+**Dispatch delivery** per the communication skill:
 - **Single** — Write prompt to Worker's Send Bus.
 - **Batch** — Write multiple prompts with batch envelope (YAML frontmatter with batch metadata, prompts separated by delimiters) to Worker's Send Bus.
 - **Parallel** — Write to multiple Workers' Send Buses. Inform User of all pending deliveries.
 
-**Branch instructions.** Conditionally included for parallel dispatch if already set up or User has agreed to set up with Manager on first parallel dispatch. Worker creates the specified git worktree with relevant branch, commits work there, notes branch in Memory Log. Worker does not merge — the Manager coordinates merges.
+**Workspace instructions.** Included for parallel dispatch per the VC skill. Worker operates in the specified worktree/branch, commits work there, and notes workspace in the Task Memory Log. Workers do not merge — the Manager coordinates merges.
 
 #### 7.3.4 FollowUp Task Prompts
 
@@ -282,83 +286,51 @@ The Worker executes Task instructions, validates results, and reports back.
 
 **Subagent usage.** When a Task includes Subagent steps, the Worker spawns the relevant Subagent per its instructions. Findings are integrated into the Worker's context and reflected during execution.
 
-**Task Memory Logging.** After execution, the Worker writes a structured Task Memory Log at the path specified in the Task Prompt.
+**Task Logging.** After execution, the Worker writes a structured Task Memory Log at the path specified in the Task Prompt.
 
-**Task Reporting.** After logging, the Worker clears the Send Bus per Clear-on-Return protocol, writes a Task Report (or Batch Report for batch execution) to the Report Bus.
+**Task Reporting.** After logging, the Worker clears the Send Bus per Clear-on-Return protocol, writes a Task Report (or Batch Report for batch execution) to the Report Bus per the communication skill.
 
 ### 7.5 Task Review
 
 **Agent:** Manager. **Phase:** Implementation.
 
-The Manager reviews Worker results and makes a Coordination Decision.
+The Manager reviews Worker results, makes Coordination Decisions, modifies Coordination Artifacts when needed, and maintains project state through the Dispatch State.
 
-#### 7.5.1 Task Report Review
+#### 7.5.1 Report Processing and Log Review
 
-1. Read the Report from the Report Bus. Clear the Report Bus per Clear-on-Return protocol.
+1. Read the Report from the Report Bus. Clear per Clear-on-Return protocol.
 2. If Batch Report, process each Task's outcome individually and sequentially.
-3. Check for Worker Handoff indication. If detected, verify the Handoff Memory Log exists, update Context Dependency treatment for that Worker based on prior-Stage Tasks it has completed.
+3. Check for Worker Handoff indication. If detected, verify the Handoff Memory Log exists, update Context Dependency treatment: previous-Stage Same-Agent Dependencies for that Worker are reclassified as Cross-Agent.
 4. Update dispatch tracking — note Worker as available, note completed Tasks for readiness reassessment.
-5. If parallel dispatch active, reassess Ready Tasks and dispatch if possible, wait for next Report otherwise. Manager communicates with the User if it gets to a wait condition.
+5. If parallel dispatch active, merge the completed Task's branch per the VC skill before dispatching dependent Tasks. Reassess Ready Tasks and dispatch if possible, wait for next Report otherwise.
+6. Read the Task Memory Log referenced in the Task Report. Interpret status, flags, and body sections. Assess whether status and flags are consistent with log content.
 
-#### 7.5.2 Task Memory Log Review
+#### 7.5.2 Coordination Decision
 
-1. Read the Task Memory Log referenced in the Task Report.
-2. Interpret status, flags, and body sections (Summary, Details, Output, Validation, Issues).
-3. Assess whether status and flags are consistent with log content - common hallucination indicator.
+Review the Task Memory Log. If everything looks good — Success with no flags, log content supports the status — **Proceed**. If something needs attention — flags raised, non-Success status, or inconsistencies — **Investigate**.
 
-#### 7.5.3 Coordination Decision
+**Investigation scope.** Small scope (few files, straightforward verification, contained to this Task) → Manager self-investigates. Large scope (context-intensive debugging/research, systemic issues, impacts multiple Tasks) → Subagent. Default: when scope is unclear, prefer Subagent to preserve Manager context.
 
-Three sequential assessments:
+**Post-investigation outcome:**
+- No issues → **Proceed** — update Dispatch State, check Stage completion, dispatch next Task(s).
+- FollowUp needed → Create FollowUp Task Prompt, update Dispatch State.
+- Artifact modification needed → assess affected artifacts, analyze cascade implications (Specifications and Implementation Plan have bidirectional influence; Standards are generally isolated), determine authority scope (bounded Manager authority vs User collaboration for significant changes), execute modifications, verify consistency, document with Last Modification attribution. When modifying Implementation Plan Tasks, update the Dependency Graph. After modifications, update Dispatch State and reassess readiness against the updated plan.
 
-**Assessment 1 — Investigation Need.**
-- Success with no flags and supporting log content → **Proceed** to next Task(s).
-- Flags raised or non-Success status → **Investigation needed**, continue to Assessment 2.
-
-**Assessment 2 — Investigation Scope.**
-- Small scope (few files, straightforward verification, contained to this Task) → Manager self-investigates.
-- Large scope (context-intensive debugging/research, systemic issues, impacts multiple Tasks) → Spawn Subagent for investigation.
-- Default: when scope is unclear, prefer Subagent to preserve Manager context.
-
-**Assessment 3 — Post-Investigation Outcome.**
-- No issues (false positives, investigation revealed nothing actionable) → **Proceed** to next Task(s).
-- FollowUp needed (Worker must retry with refined instructions) → Create FollowUp Task Prompt.
-- Artifact modification needed → Transition to Artifact Maintenance procedure. After modifications complete, the Manager returns to the Coordination Loop against the now-updated plan: either **proceed** to next Task(s) per the updated plan, or create a FollowUp Task Prompt if the modification was triggered by a Task failure that still needs retry.
+**Dispatch State update.** Every outcome path ends with updating the Dispatch State section in Memory Root: completed tasks, readiness changes, merge state. When all Tasks in a Stage are Done and merged, the Stage collapses to a single "Complete" line.
 
 **Batch Report handling.** Each completed Task in a batch is reviewed independently through the Coordination Decision. Unstarted Tasks from a stopped batch re-enter the dispatch pool.
 
 **Parallel report handling.** Reports arrive asynchronously. The Manager processes each as it arrives, makes Coordination Decision, reassesses readiness, and dispatches newly Ready Tasks if any.
 
-### 7.6 Memory Maintenance
-
-**Agent:** Manager. **Phase:** Implementation.
-
-The Manager initializes and maintains the Memory System throughout execution.
-
-**Memory Root Initialization.** During Session 1, the Manager updates Memory Root with the project name and confirms Handoff count is 0.
-
-**Stage Directory Creation.** Workers create Stage Directories when writing their first Task Memory Log for a Stage.
+#### 7.5.3 Stage Summary and Memory Maintenance
 
 **Stage Summary Creation.** After all Tasks in a Stage complete, the Manager reviews all Task Memory Logs for the Stage and appends a Stage Summary to Memory Root. Summaries capture Stage-level outcomes, reference individual logs, and note cross-cutting observations.
 
-**Working Notes.** The Manager and User may maintain Working Notes in Memory Root for ephemeral coordination context — Coordination Decision rationale, User directives, cross-Task observations, or anything worth preserving in the central state document. Working Notes are inserted and removed as context evolves; they are not permanent records like Stage Summaries.
+**Working Notes.** The Manager and User may maintain Working Notes in Memory Root for ephemeral coordination context — Coordination Decision rationale, User directives, cross-Task observations. Working Notes are inserted and removed as context evolves; they are not permanent records like Stage Summaries.
 
-**Handoff Detection.** When a Worker's Task Report indicates it is an Incoming Worker (post-Handoff), the Manager verifies the Handoff Memory Log exists and updates Context Dependency treatment: previous-Stage Same-Agent Dependencies for that Worker are reclassified as Cross-Agent.
+**Memory Root Initialization.** During Session 1, the Manager updates Memory Root with the project name, confirms Handoff count is 0, and populates the Dispatch State with Stage 1 tasks.
 
-### 7.7 Artifact Maintenance
-
-**Agent:** Manager. **Phase:** Implementation.
-
-When a Coordination Decision determines that Coordination Artifacts need modification, the Manager follows this procedure:
-
-1. **Modification Assessment** — Identify affected artifacts using modification indicators for each artifact type.
-2. **Cascade Analysis** — Assess cross-artifact implications. Specifications and Implementation Plan have bidirectional influence. Standards are generally isolated.
-3. **Authority Check** — Determine if modifications are within Manager authority (bounded: small Task(s) clarification, isolated addition, minor adjustment) or require User collaboration (significant: multiple Tasks affected, design direction change, scope change, new Stage). If the latter, the Manager presents the situation to the User requesting their input for guidance.
-4. **Modification Execution** — Execute modifications, verify consistency (reference integrity, terminology, scope alignment, coherence), document with Last Modification attribution (on Specifications and Implementation Plan — Standards lack this attribution).
-5. **Return to Coordination Loop** — After modifications complete, the Manager re-enters the Coordination Loop operating against the updated artifacts. This means reassessing readiness per the now-current Implementation Plan and proceeding accordingly: dispatching next Task(s), creating a FollowUp Task Prompt, or both if parallel work is active.
-
-**Dependency Graph maintenance.** When the Manager modifies the Implementation Plan's Tasks, the Dependency Graph must be updated as well to reflect the current plan state.
-
-### 7.8 Handoff
+### 7.6 Handoff
 
 **Agents:** Manager, Worker. **Phase:** Implementation.
 
@@ -369,7 +341,7 @@ Handoff transfers context between Sessions of the same Agent when context window
 **Handoff is User-initiated.** The User provides the Handoff command when they observe context pressure or the Agent signals it.
 
 **Outgoing Agent actions:**
-1. Create Handoff Memory Log capturing working context not recorded elsewhere, including current execution context if during Task Execution.
+1. Create Handoff Memory Log capturing working context not recorded elsewhere, including current execution context if during Task Execution and VC state (active branches, worktrees, pending merges) if applicable.
 2. Write Handoff Prompt to Handoff Bus instructing the Incoming Agent on Context Reconstruction.
 
 **Incoming Agent actions:**
@@ -424,7 +396,7 @@ The User carries Bus Files between Agent Sessions. After the Manager writes to a
 | Carry messages | User references Bus Files in appropriate sessions |
 | Trigger Handoff | User provides Handoff command when context pressure observed |
 | Approve artifacts | User reviews and approves Coordination Artifacts during Planning |
-| Collaborate on modifications | User provides guidance when Artifact Maintenance, project direction, or general decisions exceed Manager authority |
+| Collaborate on modifications | User provides guidance when artifact modifications, project direction, or general decisions exceed Manager authority |
 
 ### 9.3 Approval Checkpoints
 
