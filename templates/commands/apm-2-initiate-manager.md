@@ -29,7 +29,7 @@ Perform the following actions:
    - `{AGENTS_FILE}` — universal project Standards
 2. Read all required guides and skills:
    - `{GUIDE_PATH:task-assignment}` — Task Prompt construction
-   - `{GUIDE_PATH:task-review}` — Task Review, Coordination Decisions, Artifact Maintenance
+   - `{GUIDE_PATH:task-review}` — Task Review, Coordination Decisions, artifact modifications
    - `{SKILL_PATH:apm-communication}` — Message Bus protocol
    - `{SKILL_PATH:apm-version-control}` — version control coordination
 3. Determine your role:

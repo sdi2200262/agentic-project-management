@@ -147,8 +147,8 @@ Perform the following actions:
 1. Capture triggering context: which Memory Log revealed the findings, what specific findings indicate modification, Task Status and flags, post-investigation outcome.
 2. Apply §2.3 Artifact Modification Standards: assess affected artifacts, analyze cascade implications, determine authority scope.
 3. If any modification requires User collaboration → present concisely: *trigger*, *required change*, *authority exceeded rationale*, *options with trade-offs*, *recommendation*. Integrate User guidance.
-4. Execute modifications following existing document patterns per §4 Structural Specifications. Verify consistency: reference integrity across artifacts, terminology consistency, scope alignment between Specifications and Implementation Plan.
-5. When modifying Implementation Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph to reflect the current plan state.
+4. Execute modifications following existing document patterns per §4.6 Coordination Artifact Modification. Verify consistency: reference integrity across artifacts, terminology consistency, scope alignment between Specifications and Implementation Plan.
+5. When modifying Implementation Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph per §4.6.
 6. Document: update Last Modification field in Specifications and/or Implementation Plan per §4.4 Modification Attribution Format.
 7. Return to §3.3 step 4 to update Dispatch State. Reassess readiness against the updated plan and proceed accordingly.
 
@@ -254,6 +254,19 @@ Update the Last Modification field when modifying Specifications or Implementati
     └── <AgentID>_Handoffs/
         └── <AgentID>_Handoff_Log_<N>.md
 ```
+
+### 4.6 Coordination Artifact Modification
+
+**Specifications:** Maintain existing section structure. Add content under relevant headings. Use `##` for top-level categories. Keep specifications concrete and actionable — design decisions, not implementation details.
+
+**Implementation Plan:**
+- *Adding Tasks:* Insert under the appropriate Stage, maintain numbering sequence, specify all fields (Objective, Output, Validation, Guidance, Dependencies, Steps).
+- *Modifying Tasks:* Preserve existing structure, update only affected fields.
+- *Removing Tasks:* Delete the Task section AND update any other Tasks that referenced it as a dependency.
+
+**Standards:** Modifications stay within the `APM_STANDARDS {}` block. Use `##` headings for categories. Only add genuinely universal patterns.
+
+**Dependency Graph:** When Task dependencies change, regenerate the relevant graph section. Same-Agent dependencies use `-->`, Cross-Agent use `-.->`. Update node styles if agents change.
 
 ---
 
