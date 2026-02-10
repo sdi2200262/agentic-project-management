@@ -39,7 +39,12 @@ Context gathering targets three Coordination Artifacts, each consumed differentl
 ### 2.1 Response and Gap Assessment
 
 When processing User responses, assess what was explicitly stated, what can be reasonably inferred, and what assumptions you are making. Explicit statements are high-confidence. Inferences on critical points should be verified. Assumptions should be flagged for clarification.
-- **Ambiguous responses.** When responses are vague, rephrase with concrete interpretations. When incomplete, acknowledge the covered part and ask for the remainder. When contradictory, surface the contradiction neutrally. When the User is uncertain, distinguish preferences (probe further) from genuine unknowns (consider research per §2.4 Exploration and Research Standards).
+
+**Ambiguous responses:**
+- *Vague:* Rephrase with concrete interpretations.
+- *Incomplete:* Acknowledge the covered part and ask for the remainder.
+- *Contradictory:* Surface the contradiction neutrally.
+- *Uncertain:* Distinguish preferences (probe further) from genuine unknowns (consider research per §2.4 Exploration and Research Standards).
 - **Gap assessment.** A gap exists when information needed for Coordination Artifacts is missing, ambiguous, or lacks validation criteria. After each User response, assess: what gaps remain, what ambiguities need clarification, and what follow-ups would resolve them. Gaps are resolved by asking directly (missing info), rephrasing and confirming (ambiguity), or proposing concrete criteria (validation).
 - **Round advancement.** Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect Coordination Artifact accuracy. Before advancing, present a round completion summary in chat:
    - **Context gathered** — key findings from this round, aligned with the round's focus areas.

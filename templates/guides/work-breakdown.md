@@ -50,12 +50,28 @@ Work Breakdown uses Chain-of-Thought reasoning: present your thinking in chat be
 ### 2.2 Decomposition Principles
 
 These principles apply across all decomposition levels (domains, stages, tasks, steps). Apply them with judgment adapted to project scope per §1.4 Scope Adaptation:
-- **Domain decomposition.** Identify logical work domains from Context Gathering. Each domain requires a distinct mental model or skill set. Split domains that involve different expertise areas or mental models. Combine domains that share context and have tight dependencies. When balanced, prefer separation to reduce coordination complexity. Integrate User preferences on Domain organization when needed.
-- **Stage decomposition.** Identify milestone groupings from workflow patterns. Each Stage delivers coherent value. Split when work streams are unrelated or when intermediate deliverables block subsequent work. Combine when stages would be artificially separated with immediate handoffs. When balanced, prefer fewer stages with clear milestones.
-- **Task decomposition.** Derive Tasks from Stage objectives. Each Task produces a meaningful deliverable with clear boundaries, is scoped to a single Agent's domain, and has specified validation criteria. Split when a Task contains multiple unrelated deliverables or spans domains. Combine when micro-tasks create coordination overhead without value. When balanced, prefer fewer substantial Tasks. If a Task requires investigation or research, include a Subagent step.
-- **Step decomposition.** Steps organize work within a Task and support failure tracing. They are ordered, discrete, and share the Task's validation — they do not have independent validation. If a step requires its own validation before the next step can proceed, it indicates the Task should be split.
-- **Scope boundaries.** Distinguish between Agent-assignable work and User coordination. Work is Agent-assignable when it can be completed within the development environment with autonomous or artifact-based validation. Work requires User coordination when it involves external platform interaction, User-specific credentials, or validation outside the development environment where Agents have no access. When User coordination is required, include an explicit coordination step in the Task and mark User validation.
-- **Validation types.** Each Task specifies validation criteria using one or more types: Programmatic (automated checks — tests, builds, CI), Artifact (expected output existence and structure), or User (human judgment required). Programmatic and Artifact allow autonomous Agent iteration. User validation requires pausing for review. Most Tasks have multiple Validation Types.
+- **Domain decomposition.** Identify logical work domains from Context Gathering. Each domain requires a distinct mental model or skill set.
+  - *Split when:* Domains involve different expertise areas or mental models.
+  - *Combine when:* Domains share context and have tight dependencies.
+  - *When balanced:* Prefer separation to reduce coordination complexity. Integrate User preferences on Domain organization when needed.
+- **Stage decomposition.** Identify milestone groupings from workflow patterns. Each Stage delivers coherent value.
+  - *Split when:* Work streams are unrelated or intermediate deliverables block subsequent work.
+  - *Combine when:* Stages would be artificially separated with immediate handoffs.
+  - *When balanced:* Prefer fewer stages with clear milestones.
+- **Task decomposition.** Derive Tasks from Stage objectives. Each Task produces a meaningful deliverable with clear boundaries, is scoped to a single Agent's domain, and has specified validation criteria.
+  - *Split when:* A Task contains multiple unrelated deliverables or spans domains.
+  - *Combine when:* Micro-tasks create coordination overhead without value.
+  - *When balanced:* Prefer fewer substantial Tasks. If a Task requires investigation or research, include a Subagent step.
+- **Step decomposition.** Steps organize work within a Task and support failure tracing. They are ordered, discrete, and share the Task's validation — they do not have independent validation.
+  - *Split indicator:* If a step requires its own validation before the next step can proceed, the Task should be split.
+- **Scope boundaries.** Distinguish between Agent-assignable work and User coordination.
+  - *Agent-assignable:* Work that can be completed within the development environment with autonomous or artifact-based validation.
+  - *User coordination:* Work involving external platform interaction, User-specific credentials, or validation outside the development environment. Include an explicit coordination step and mark User validation.
+- **Validation types.** Each Task specifies validation criteria using one or more types:
+  - *Programmatic:* Automated checks — tests, builds, CI.
+  - *Artifact:* Expected output existence and structure.
+  - *User:* Human judgment required.
+  Programmatic and Artifact allow autonomous Agent iteration. User validation requires pausing for review. Most Tasks have multiple Validation Types.
 
 ### 2.3 Specifications Standards
 
