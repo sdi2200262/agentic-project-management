@@ -135,7 +135,9 @@ Perform the following actions:
    - *No issues* → **Proceed** to step 4.
    - *FollowUp needed* → Create FollowUp Task Prompt per `{GUIDE_PATH:task-assignment}` §3.6 FollowUp Task Prompt Creation. Continue to step 4.
    - *Artifact modification needed* → Proceed to §3.4 Artifact Modification (returns to step 4 after completion).
-4. Update Dispatch State in Memory Root per §4.1: mark completed Tasks as Done, reassess blocked Tasks for newly Ready status, update merge state. If all Tasks in the current Stage are Done and merged → collapse Stage per §4.1 and proceed to §3.5 Stage Summary Creation. Otherwise, return to the Task Cycle for next dispatch.
+4. Update Dispatch State in Memory Root per §4.1: mark completed Tasks as Done, reassess blocked Tasks for newly Ready status, update merge state.
+   - If all Stage Tasks are Done and merged → collapse Stage per §4.1 and proceed to §3.5 Stage Summary Creation.
+   - Otherwise → return to the Task Cycle for next dispatch.
 
 ### 3.4 Artifact Modification
 
@@ -143,8 +145,8 @@ Execute when the Coordination Decision identifies that Coordination Artifacts ne
 
 Perform the following actions:
 1. Capture triggering context: which Memory Log revealed the findings, what specific findings indicate modification, Task Status and flags, post-investigation outcome.
-2. Apply §2.3 Artifact Modification Standards — assess which artifacts need modification, analyze cascade implications across the artifact hierarchy, and determine authority scope.
-3. If any modification requires User collaboration → present the situation concisely: what triggered it, what needs to change, why it exceeds Manager authority, available options with trade-offs, and a recommendation. Integrate User guidance.
+2. Apply §2.3 Artifact Modification Standards: assess affected artifacts, analyze cascade implications, determine authority scope.
+3. If any modification requires User collaboration → present concisely: *trigger*, *required change*, *authority exceeded rationale*, *options with trade-offs*, *recommendation*. Integrate User guidance.
 4. Execute modifications following existing document patterns per §4 Structural Specifications. Verify consistency: reference integrity across artifacts, terminology consistency, scope alignment between Specifications and Implementation Plan.
 5. When modifying Implementation Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph to reflect the current plan state.
 6. Document: update Last Modification field in Specifications and/or Implementation Plan per §4.4 Modification Attribution Format.

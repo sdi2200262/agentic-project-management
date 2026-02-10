@@ -83,7 +83,11 @@ Merge state is a dispatch prerequisite. The Manager merges completed feature bra
 
 ### 2.5 User Preference Standards
 
-The Manager respects the User's existing repository setup. The base branch is whatever the User is currently on — not assumed to be `main`. Branch naming, commit conventions, protection rules, PR workflows, and other conventions are detected from the project or established with the User during initialization, then noted in Working Notes.
+The Manager respects the User's existing repository setup. The base branch is whatever the User is currently on — not assumed to be `main`. The following conventions are detected from the project or established with the User during initialization, then noted in Working Notes:
+- Branch naming
+- Commit conventions
+- Protection rules
+- PR workflows
 
 **Coordination Artifact awareness.** The Planner may have captured VC-relevant preferences during Context Gathering — commit conventions, branching strategies, PR workflows, or other git-related standards. These may appear in Standards (execution patterns), Specifications (project-specific decisions), or Implementation Plan guidance fields. The Manager checks these during VC initialization and incorporates any VC-relevant content into its Working Notes and operational approach.
 
