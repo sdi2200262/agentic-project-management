@@ -23,12 +23,12 @@ A critical architectural component of APM is the concept of **Context Abstractio
 
 1.  **Execution Level**: Implementation Agents operate with full access to the codebase, processing high volumes of tokens to read files, write code, and debug errors.
 2.  **Abstraction Process**: Upon task completion, the Implementation Agent synthesizes their work into a standardized **Memory Log**. This process compresses thousands of tokens of execution data (file reads, trial-and-error) into a few hundred tokens of clear summary.
-    * For the specific file structure of a Memory Log, see [Context & Memory Management > The Memory Log Artifact](Context_and_Memory_Management.md#the-memory-log-artifact).
+    * Task Memory Logs follow a structured format - see [Agent Orchestration](Agent_Orchestration.md) for details.
 3.  **Management Level**: The Manager Agent reviews the **Memory Log** (the abstraction) rather than parsing every line of code or raw chat history. If necessary, they can use references in the Memory Log to investigate further details as needed.
 
 This architecture enables the Manager Agent to efficiently coordinate complex projects, operating primarily on the abstracted layer while retaining the option to drill down into execution details only when critical issues arise. 
 
-For more details on how APM manages its Agents' context and memory see [Context_and_Memory_Management.md](Context_and_Memory_Management.md).
+For more details on how APM manages Agent communication and memory see [Agent Orchestration](Agent_Orchestration.md).
 
 ### 2. Operational Boundaries and Scopes
 

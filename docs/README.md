@@ -26,7 +26,7 @@ This documentation suite provides in-depth coverage of APM's architecture, workf
 - **[Troubleshooting Guide](Troubleshooting_Guide.md)** - Solutions for common issues encountered during Setup Phase, Task Loop Phase, and Handovers.
 
 ### Advanced Topics
-- **[Context and Memory Management](Context_and_Memory_Management.md)** - Deep dive into APM's architecture and Dynamic-MD Memory System.
+- **[Agent Orchestration](Context_and_Memory_Management.md)** - Deep dive into APM's architecture and Dynamic-MD Memory System.
 - **[Context and Prompt Engineering](Context_and_Prompt_Engineering.md)** - In-depth explanation of how APM's prompts and guides shape Agent context and behavior.
 
 ## Recommended Reading Order
@@ -36,7 +36,7 @@ This documentation suite provides in-depth coverage of APM's architecture, workf
 3.  As you work through your initial sessions, review **[Agent Types](Agent_Types.md)** and **[Workflow Overview](Workflow_Overview.md)** to understand Agent roles and the overall process.
 4.  As you gain experience, consult **[Token Consumption Tips](Token_Consumption_Tips.md)** for cost optimization. Refer to the **[Troubleshooting Guide](Troubleshooting_Guide.md)** when you encounter issues.
 5.  To tailor APM's prompts and guides to your specific needs, see **[Modifying APM](Modifying_APM.md)**.
-6.  For a deep dive into APM's architecture and technical details, read **[Context and Memory Management](Context_and_Memory_Management.md)** and **[Context and Prompt Engineering](Context_and_Prompt_Engineering.md)**.
+6.  For a deep dive into APM's architecture and technical details, read **[Agent Orchestration](Context_and_Memory_Management.md)** and **[Context and Prompt Engineering](Context_and_Prompt_Engineering.md)**.
 
 > **Note on visualizations:** All screenshots and GIFs in this documentation suite are taken from APM sessions using Cursor. However, the described workflow and procedures are nearly identical across all supported AI IDEs. If you're using a different assistant, you can readily adapt these steps to work with your platform's unique quirks or workflows. 
 >

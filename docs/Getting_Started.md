@@ -92,13 +92,13 @@ After initialization completes, you're ready to begin.
 
 The Planning Phase creates the Coordination Artifacts that guide all subsequent work.
 
-### Create Planner Agent Session
+### 1. Create Planner Agent Session
 
 1. Open a new chat session in your AI assistant (Agent mode if available)
 2. Name it clearly: "Planner Agent" or "APM Planner"
 3. Select a top-tier model as recommended in Prerequisites
 
-### Run Initialization Command
+### 2. Run Initialization Command
 
 Enter the command:
 
@@ -114,52 +114,33 @@ The Planner will greet you and outline its two-step process:
 
 ## Step 2: Work Through the Planning Phase
 
-The Planner guides you through two sequential procedures: Context Gathering and Work Breakdown.
+The Planner guides you through Context Gathering and Work Breakdown to create the Coordination Artifacts.
 
-### Context Gathering
+### 1. Context Gathering
 
-The Planner conducts structured discovery through three question rounds. This is the most critical phase - thoroughness here prevents issues during implementation.
+The Planner asks questions across three rounds to understand your project:
+- **Round 1:** Project vision, existing materials, and goals
+- **Round 2:** Technical requirements and validation criteria
+- **Round 3:** Implementation approach and quality standards
 
-**Question Round 1: Existing Materials and Vision**
-- Share project type, goals, and scope
-- Provide any existing documentation, PRDs, or requirements
-- Describe success criteria and deliverables
+After each round, the Planner iterates on gaps before advancing. After all rounds, it presents an Understanding Summary for your approval.
 
-**Question Round 2: Technical Requirements**
-- Discuss work structure, dependencies, and complexity
-- Specify technical requirements and constraints
-- Identify validation criteria for each requirement
-
-**Question Round 3: Implementation Approach and Quality**
-- Define technical constraints and preferences
-- Establish workflow patterns and quality standards
-- Clarify domain organization and coordination requirements
-
-After all rounds, the Planner presents an Understanding Summary for your review. You can request modifications or approve to proceed.
-
-> **Tips for Context Gathering:**
-> - Share all relevant constraints and uncertainties
-> - Provide documents early - this improves subsequent questions
+> **Tips:**
+> - Share all relevant constraints and uncertainties upfront
+> - Provide existing documentation early to improve subsequent questions
 > - Be specific about validation criteria - how will you know each requirement is met?
 
-### Work Breakdown
+### 2. Work Breakdown
 
-The Planner decomposes gathered context into three Coordination Artifacts that serve different roles during execution:
+The Planner creates three Coordination Artifacts:
 
-**Specifications** - Project-specific design decisions and constraints defining what is being built. The Planner analyzes your requirements across scope, entities, behaviors, relationships, and constraints, then writes the Specifications file. Workers do not access this file directly - the Manager extracts relevant content into Task Prompts as needed. You'll review and approve before continuing.
+- **Specifications** - Design decisions and constraints defining what is being built
+- **Implementation Plan** - Stages, Tasks, Worker assignments, and Dependency Graph defining how work is organized
+- **Standards** - Universal execution patterns defining how work is performed
 
-**Implementation Plan** - Stage and Task breakdown with Agent assignments, a Dependency Graph, and validation criteria defining how work is organized. The Planner:
-- Identifies logical work domains and creates Worker Agent assignments
-- Defines project stages with clear objectives
-- Breaks down each stage into tasks with validation criteria
-- Reviews workload distribution and cross-agent dependencies making relevant updates if needed
-- Generates a Dependency Graph visualizing final task dependencies and workflow
+You'll review and approve each artifact before the Planner proceeds to the next. After all three approvals, the Planning Phase completes.
 
-Workers do not access the Implementation Plan - the Manager extracts Task contents and creates Task Prompts accordingly. You'll review the complete plan and request any changes before approval.
-
-**Standards** - Universal execution patterns defining how work is performed. The Planner extracts patterns that apply across all tasks (coding conventions, quality requirements, prohibited patterns) and writes them in an APM_STANDARDS block in the Standards file (AGENTS.md or CLAUDE.md at workspace root). All Agents have direct access to this file - both Manager and Workers may update it during the Implementation Phase. You'll review and approve to complete the Planning Phase.
-
-After all three approvals, the Planner confirms completion. You're ready to initialize the Manager Agent.
+> For detailed mechanics of Context Gathering and Work Breakdown, see [Workflow Overview](Workflow_Overview.md).
 
 ---
 
@@ -167,13 +148,13 @@ After all three approvals, the Planner confirms completion. You're ready to init
 
 The Manager Agent coordinates execution of the Implementation Plan.
 
-### Create Manager Agent Session
+### 1. Create Manager Agent Session
 
 1. Open a new chat session in Agent mode
 2. Name it clearly: "Manager Agent" or "APM Manager 1"
 3. Select a model as recommended in Prerequisites
 
-### Run Initialization Command
+### 2. Run Initialization Command
 
 Enter the command:
 
@@ -194,127 +175,72 @@ Review the Manager's summary carefully. If it accurately reflects your project a
 
 ## Step 4: Work Through the Implementation Phase
 
-The Implementation Phase executes the Implementation Plan through repeating Coordination Cycles. This step walks through your first cycle as an example.
+This step walks through your first Coordination Cycle as an example of the repeating pattern.
 
-### Manager Creates Task Assignment
+### 1. Manager Assigns Task
 
-The Manager:
-- Assesses which tasks are ready (dependencies satisfied)
-- Constructs a Task Prompt with all required context
-- Writes it to a Send Bus file in `.apm/bus/<agent-slug>/`
-- Provides you with the file path to carry to the Worker
+The Manager assesses which tasks are ready and creates a Task Prompt with all required context. It writes this to a Send Bus file and provides you with the file path.
 
-### Initialize Worker Agent
+### 2. Initialize Worker Agent
 
 1. Open a new chat session for the assigned Worker
-2. Name it appropriately using the Agent name from the Implementation Plan (e.g., "Frontend Agent")
+2. Name it using the Agent name from the Implementation Plan (e.g., "Frontend Agent")
 3. Select a model as recommended in Prerequisites
-4. Enter the initialization command:
+4. Run the initialization command:
 
 ```
 /apm-3-initiate-worker
 ```
 
-The Worker will confirm initialization and await input.
+### 3. Deliver Task Assignment
 
-### Deliver Task Assignment
+Reference the Send Bus file in the Worker's session. The Worker reads the Task Prompt, registers its identity, and begins execution.
 
-Reference the Send Bus file in the Worker's session. Most platforms support direct file attachment or path reference. The Worker will:
-- Read the Task Prompt
-- Register with the specified Agent identity
-- Confirm task requirements
-- Begin execution
+### 4. Worker Executes
 
-### Worker Executes Task
+The Worker works through the task, validates results, and creates a Task Memory Log documenting the outcome. It then writes a Task Report to the Report Bus and provides the file path.
 
-The Worker executes the task following these steps:
+> **Tips:**
+> - Workers pause for your review when User validation is specified
+> - You can interrupt or steer the conversation as needed during execution
 
-1. **Context Integration** - If the task depends on prior work, the Worker reads specified files and integrates context as instructed in the Task Prompt
-2. **Execution** - Works through the task instructions step by step
-3. **Validation** - Validates results per the specified criteria (programmatic tests, artifact checks, user review)
-4. **Iteration** - If validation fails, attempts tocorrect and re-validates until success or a stop condition
-5. **Logging** - Creates a Task Memory Log at the specified path documenting the outcome
-6. **Reporting** - Writes a Task Report to the Report Bus file
+### 5. Carry Report to Manager
 
-The Worker provides the Report Bus file path for you to carry back to the Manager.
+Reference the Report Bus file in the Manager's session. The Manager reads the Task Report and Task Memory Log, then makes a Coordination Decision:
+- **Proceed** - Move to next task
+- **FollowUp** - Send refined Task Prompt to retry
+- **Artifact Modification** - Update Coordination Artifacts, then proceed or follow up
 
-> **Tips for Task Execution:**
-> - Workers pause for user validation when specified in the Task Prompt; when prompted, review the work and provide feedback
-> - The Workers iterate on agentic loops trying to autonomously correct themselfs, however you are free to interrupt or steer the conversation as needed
+The Manager updates the Memory System to track progress. This completes one Coordination Cycle.
 
-### Manager Reviews and Decides
-
-Once the Worker finishes, reference the Report Bus file in the Manager's session. The Manager will:
-- Read the Task Report and Task Memory Log of the Worker
-- Make a Coordination Decision:
-  - **Proceed** - Task successful, assess readiness and move to next task(s)
-  - **FollowUp** - Issue refined Task Prompt to the same Worker to retry with different approach
-  - **Artifact Modification** - Update Coordination Artifacts if findings warrant it, then proceed or issue FollowUp as needed
-- Update the Memory System to track progress
-
-This completes one Coordination Cycle for this task. The pattern repeats for each task until all stages complete.
-
-> **Tips for Task Dispatch** For efficiency, the Manager may dispatch multiple tasks, each with their own Coordination Cycle:
-> - **Batch Dispatch** - When multiple sequential tasks are assigned to the same Worker with no external dependencies between them, the Manager can send them as a batch in a single Send Bus message. The Worker executes them sequentially, logging each task individually, and returns a consolidated Batch Report.
-> - **Parallel Dispatch** - When multiple tasks across different Workers have no cross-Worker dependencies among them, the Manager can dispatch them simultaneously. You'll manage multiple Worker sessions concurrently, carrying Send Bus files to each Worker and Report Bus files back to the Manager as they complete in any order. The Manager initializes version control (feature branches and worktrees) for workspace isolation during parallel work.
+> For detailed mechanics of Task Assignment, Task Cycle, and Task Review, see [Workflow Overview](Workflow_Overview.md).
 
 ---
 
 ## Step 5: Establish Your Workflow
 
-Understanding how Coordination Cycles repeat and scale across your project.
-
-### The Coordination Cycle Pattern
-
-Each task executes through its own Coordination Cycle, which follows this flow:
-
-1. **Manager assigns task** - Creates Task Prompt, writes to Send Bus
-2. **User carries message** - References Send Bus file in Worker session
-3. **Worker executes** - Completes work, validates, iterates on failure, logs to memory, writes to Report Bus
-4. **User carries message** - References Report Bus file in Manager session
-5. **Manager reviews** - Reads logs, makes coordination decision, updates Memory System
-
-This pattern repeats for each task until all tasks in all stages complete. When the Manager dispatches multiple tasks (batch or parallel), each task has its own Coordination Cycle - they may run sequentially or concurrently, but the per-task cycle structure remains the same.
+The Coordination Cycle from Step 4 repeats for each task. As you work through the project, you'll encounter variations:
 
 ### FollowUp Tasks
 
-When a Coordination Decision determines retry is needed, the Manager creates a FollowUp Task Prompt with different content than the original attempt:
-- Refined objective and instructions based on what went wrong
-- Updated output expectations and validation criteria
-- FollowUp Context section explaining the issue and required changes
-- Same Memory Log path (Worker overwrites the previous log)
-
-FollowUps enter the Coordination Cycle like any task assignment.
+When a task needs retry, the Manager creates a FollowUp Task Prompt with refined instructions based on what went wrong. The Worker uses the same Memory Log path and overwrites the previous attempt.
 
 ### Artifact Modifications
 
-When execution reveals issues with Coordination Artifacts, the Manager may modify them:
-- **Specifications** - Design decisions proved incorrect or new constraints emerged
-- **Implementation Plan** - Task definitions need adjustment, dependencies changed, new tasks required
-- **Standards** - Universal patterns need updating or conflicts with execution discovered
+When execution reveals issues, the Manager may update Coordination Artifacts:
+- **Specifications** - Design decisions need adjustment
+- **Implementation Plan** - Task definitions or dependencies changed
+- **Standards** - Universal patterns need updating
 
-The Manager assesses cascade implications and determines whether modifications require User collaboration (significant changes) or fall within Manager authority (bounded corrections). After modifications, the Manager reassesses task readiness and continues coordination.
+The Manager determines whether modifications require your collaboration or fall within its authority.
 
-### Batch Dispatch
+### Batch and Parallel Dispatch
 
-When the Manager identifies batch candidates (sequential same-Worker tasks with only internal dependencies):
-- Writes all Task Prompts to a single Send Bus message with batch envelope
-- Worker parses the batch and executes tasks sequentially
-- Worker creates individual Task Memory Logs immediately after each task
-- If any task results in Blocked or Failed status, Worker stops (fail-fast) and reports partial completion
-- Worker returns a consolidated Batch Report covering all completed tasks
+For efficiency, the Manager may dispatch multiple tasks:
 
-Soft guidance: 3-4 tasks per batch. The Manager balances efficiency gains against granular progress tracking.
+**Batch Dispatch** - Sequential tasks to the same Worker in a single message. The Worker executes each task, logs immediately, and stops if any task fails. Returns a consolidated Batch Report.
 
-### Parallel Dispatch
-
-During parallel dispatch:
-- Manager tracks which Workers have active tasks and which Reports are pending
-- User manages multiple Worker sessions simultaneously
-- As Reports arrive, Manager processes each, merges completed branches, reassesses readiness, dispatches newly Ready tasks
-- When no Ready tasks exist but Workers are still active, Manager communicates wait state
-
-At Stage end, Manager performs merge sweep to ensure all feature branches are integrated before advancing to next Stage.
+**Parallel Dispatch** - Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist. You manage multiple Worker sessions, carrying messages as each completes in any order. The Manager initializes version control using git worktrees for workspace isolation.
 
 ---
 
@@ -354,5 +280,5 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
 **Next Steps:**
 
 - [Token Consumption Tips](Token_Consumption_Tips.md) - Optimize model usage and costs
-- [Context and Memory Management](Context_and_Memory_Management.md) - Deep dive into APM's memory architecture
+- [Agent Orchestration](Agent_Orchestration.md) - Understand Agent communication and memory architecture
 - [Modifying APM](Modifying_APM.md) - Customize APM for your specific needs
