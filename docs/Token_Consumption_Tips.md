@@ -7,6 +7,8 @@ sidebar_position: 10
 
 # Token Consumption Tips - APM v0.5
 
+> **Note:** This document reflects APM v0.5.x and will be updated for the official v1.0 release. For current v1.0 preview documentation, see [Introduction](Introduction.md), [Getting Started](Getting_Started.md), [Agent Types](Agent_Types.md), [Workflow Overview](Workflow_Overview.md), and [Agent Orchestration](Agent_Orchestration.md).
+
 APM is designed for better structure, but multi-agent coordination introduces overhead. This guide provides strategies for optimizing cost while maintaining effectiveness across different model tiers.
 
 > **Note:** All percentages and statistics in this document are approximate estimates based on testing.
