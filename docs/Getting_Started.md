@@ -5,70 +5,64 @@ sidebar_label: Getting Started
 sidebar_position: 2
 ---
 
-# Getting Started - APM v0.5
+# Getting Started with APM
 
-This guide walks you through launching your first APM session, from initial setup through completing your first few tasks. **The more time spent during setup and planning, the better your project execution will be.**
+This guide walks you through your first APM session, from installation through completing your first few tasks. The time invested in planning determines execution quality - thorough planning prevents roadblocks during implementation.
 
- - For a clearer understanding of each Agent's roles and responsibilities, refer to the [Agent Types document](Agent_Types.md).
-
- - For a detailed walkthrough of APM workflows and protocols, refer to the [Workflow Overview document](Workflow_Overview.md).
+For deeper context on Agent roles and workflow structure, see [Agent Types](Agent_Types.md) and [Workflow Overview](Workflow_Overview.md).
 
 ---
 
 ## Prerequisites
 
-Before starting your first APM session, ensure you have the following in place:
+Before starting, ensure you have:
 
 ### Required Resources
-* **Node.js**: APM v0.5 CLI requires Node.js (v18 or higher recommended).
-* **AI IDE Platform**: Access to one of the supported AI Assistants.
-* **Project Workspace**: A dedicated directory for your project files.
+- **Node.js** - Version 18 or higher for the APM CLI
+- **AI Assistant Platform** - Access to Claude, Cursor, GitHub Copilot, or similar
+- **Project Workspace** - A dedicated directory for your project
 
-### Recommended Model Tiers
+### Recommended Models
 
-APM Agents function best with models that excel at systematic reasoning and context management. Model selection can be optimized by role, but **Claude Sonnet 4** stands out for its consistent performance across all Agent instances.
+APM Agents perform best with models that excel at systematic reasoning and context management. **Claude Sonnet 4.5** provides consistent performance across all Agent types.
 
-| Agent Type | Recommended Models (Best Results) | Cost-Effective Alternatives | Key Model Selection Note |
+| Agent Type | Recommended Models | Cost-Effective Alternatives | Notes |
 | :--- | :--- | :--- | :--- |
-| **Setup Agent** | Claude Sonnet 4, Claude Sonnet 4.5 | - | **Crucial:** Avoid switching models mid-conversation during the Setup Phase to prevent context gaps. Use one model throughout. |
-| **Manager Agent** | Claude Sonnet 4, Claude Sonnet 4.5, Gemini 2.5 Pro | Claude 3.7 Sonnet, Cursor Auto, Cursor's Composer 1 | Switching models mid-session is not encouraged, though testing showed fewer issues here than with the Setup Agent. **Cursor Auto delivered outstanding performance in testing.** |
-| **Implementation Agent** | Sonnet 4.5, GPT-5, GPT-5-Codex, Gemini 2.5 Pro | GPT-4.1 in Copilot, Cursor Auto, Cursor's Comopser 1, Grok Code | **Flexible:** Context is tightly scoped, making model switching viable for matching task complexity (e.g., switching to premium for design-heavy tasks). |
+| **Planner Agent** | Claude Sonnet 4/4.5, Claude Opus 4.5/4.6, | - | Prefer the recommended models for best planning output. Avoid switching models during Planning Phase to prevent context gaps. Use one model throughout. |
+| **Manager Agent** | Claude Sonnet 4/4.5, Claude Opus 4.5/4.6, Gemini 3 Pro | Claude Haiku 4.5, Cursor Auto | Model switching mid-session not recommended though less critical than for Planner. |
+| **Worker Agents** | Claude Sonnet 4.5, Claude Opus 4.5/4.6, GPT-5.x, GPT-5.x-Codex, Gemini 3 Pro | Claude Haiku 4.5, GPT-5.x-mini, GPT-5.x-Codex-mini, Grok Code, Cursor Composer, Cursor Auto | Context is tightly scoped, making model switching viable for matching task complexity. |
 
-> **Note:** For guidance on choosing models in an economical way, be sure to read the [Token_Consumption_Tips.md](Token_Consumption_Tips.md).
-
----
-
-## Notes for specific AI IDEs
-
-Notes for specific IDEs will be added here as new releases occur and user feedback is collected.
-
-> **As of November 2025, GitHub Copilot does not provide a context window consumption visualization.** Instead, it uses an internal "summarizing conversation history" mechanism that is known to be buggy and can break cached context, disrupting APM workflows.
->
-> * **If summarization triggers (in any phase)**: The Agent may lose track of crucial context (guides, prompts, task details), resulting in degraded responses. **Stop the response immediately**, then re-provide the necessary prompts, guides, or task context before continuing. If issues persist, consider starting a new Agent session and manually rebuilding context to resume work where you left off.
->
-> **Tip:** Consider disabling the summarization mechanism by setting `github.copilot.chat.summarizeAgentConversationHistory.enabled` to `false` in your Copilot settings.
+> For guidance on economical model selection, see [Token Consumption Tips](Token_Consumption_Tips.md).
 
 ---
 
-## Step 1: Install and Initialize APM
+## Platform-Specific Notes
 
-APM v0.5 introduces a CLI tool that automates the installation and setup process.
+Platform-specific guidance will be added as new releases occur and user feedback is collected.
 
-### 1.1 Install the CLI
+> **GitHub Copilot Context Summarization:** As of November 2025, GitHub Copilot lacks context window visualization and uses internal "conversation history summarization" that can break cached context. If summarization triggers during any phase, the Agent may lose crucial context (guides, commands, task details). Stop the response immediately and re-provide necessary context. Consider disabling summarization via `github.copilot.chat.summarizeAgentConversationHistory.enabled: false` in settings.
 
-Install the APM CLI globally using npm:
+---
+
+## Installation
+
+APM provides a CLI tool that automates installation and setup.
+
+### Install the CLI
+
+Install globally via npm:
 
 ```bash
 npm install -g agentic-pm
-````
+```
 
-**Alternatively:** for local installation in your project's workspace:
+Or locally in your project workspace:
 
 ```bash
 npm install agentic-pm
 ```
 
-### 1.2 Initialize Your Project
+### Initialize Your Project
 
 Navigate to your project directory and run:
 
@@ -76,277 +70,289 @@ Navigate to your project directory and run:
 apm init
 ```
 
-<div align="center">
-  <video 
-    controls 
-    autoplay 
-    loop 
-    muted 
-    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
-  >
-    <source src={require('@site/static/docs-video/cursor-apm-install-and-init.mp4').default} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
+The initialization command will:
 
+- **Prompt for AI Assistant** - Select your platform from supported assistants
+- **Download APM Assets** - Fetch the latest commands, guides, and skills
+- **Create APM Directory Structure** - Set up `.apm/` with:
+  - `.apm/Memory/Memory_Root.md` - Central memory file (populated by Manager)
+  - `.apm/Implementation_Plan.md` - Plan template (populated by Planner)
+  - `.apm/Specifications.md` - Specifications template (populated by Planner)
+  - `.apm/metadata.json` - Installation metadata
+- **Install Procedural Files** - Create required commands, guides and skills in platform-specific directories (`.cursor/`, `.github/`, `claude/` etc.):
+  - `.cursor/commands/` - Agent initiation and handoff commands
+  - `.cursor/guides/` - Procedure guides for Agents
+  - `.cursor/skills/` - Shared procedural skills
 
-The `init` command will:
-
-  * **Prompt for AI Assistant Selection**: Select your AI assistant from a list of supported platforms.
-  * **Download APM Assets**: Automatically fetch the latest prompts and guides.
-  * **Create Directory Structure**: Set up the `.apm/` directory with:
-      * `.apm/guides/` - All template guides for APM workflows
-      * `.apm/Memory/Memory_Root.md` - Root memory file with header template (to be filled by Manager Agent)
-      * `.apm/Implementation_Plan.md` - Implementation plan file with header template (to be filled by Setup Agent)
-      * `.apm/metadata.json` - Installation metadata
-  * **Install Commands**: Create assistant-specific slash commands in the appropriate directory (e.g., `.cursor/`, `.github/copilot/`, etc.)
-
-After initialization completes, you're ready to begin using APM.
+After initialization completes, you're ready to begin.
 
 ---
 
-## Step 2: Initialize Setup Agent
+## Step 1: Initiate Planner Agent
 
-The Setup Agent conducts comprehensive project planning and creates all necessary APM assets.
+The Planning Phase creates the Coordination Artifacts that guide all subsequent work.
 
-### 2.1 Create Setup Agent Session
+### Create Planner Agent Session
 
-1.  **Open New Chat Session**: Start a dedicated chat session for the Setup Agent (e.g., "AI Agent" mode).
-2.  **Name It Clearly**: Use a clear name like "Setup Agent" or "APM Setup."
-3.  **Model Choice**: Select a top-tier model as recommended in the [Prerequisites](#prerequisites).
+1. Open a new chat session in your AI assistant (Agent mode if available)
+2. Name it clearly: "Planner Agent" or "APM Planner"
+3. Select a top-tier model as recommended in Prerequisites
 
-### 2.2 Run Setup Agent Initialization Command
+### Run Initialization Command
 
-To initialize the Setup Agent, simply enter the command:
+Enter the command:
 
 ```
-/apm-1-initiate-setup
+/apm-1-initiate-planner
 ```
 
-<div align="center">
-  <video 
-    controls 
-    autoplay 
-    loop 
-    muted 
-    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
-  >
-    <source src={require('@site/static/docs-video/cursor-apm-setup-agent.mp4').default} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
+The Planner will greet you and outline its two-step process:
+1. Context Gathering - Structured project discovery through question rounds
+2. Work Breakdown - Decomposition into Coordination Artifacts
 
 ---
 
-## Step 3: Work Through Setup Phase
-The Setup Agent will greet you and outline its 4-step workflow:
+## Step 2: Work Through the Planning Phase
 
-1.  Context Synthesis
-2.  Project Breakdown & Plan Creation
-3.  Implementation Plan Review & Refinement (Optional)
-4.  Manager Bootstrap Prompt Creation
+The Planner guides you through two sequential procedures: Context Gathering and Work Breakdown.
 
-The Setup Agent will guide you through each step systematically, always asking for your confirmation before moving on so you can review, clarify, or request changes. **Be thorough during this phase** - time invested here prevents roadblocks later.
+### Context Gathering
 
-### 3.1 Context Synthesis (Project Discovery)
+The Planner conducts structured discovery through three question rounds. This is the most critical phase - thoroughness here prevents issues during implementation.
 
-**This is the most important stage.** The Setup Agent will conduct structured discovery through four mandatory **Question Rounds:**
+**Question Round 1: Existing Materials and Vision**
+- Share project type, goals, and scope
+- Provide any existing documentation, PRDs, or requirements
+- Describe success criteria and deliverables
 
-  * **Existing Materials & Vision**: Share PRDs, requirements, existing code, or project documentation.
-  * **Technical Requirements**: Discuss technologies, constraints, dependencies, and technical scope.
-  * **Process Requirements**: Explain workflow preferences, quality standards, and coordination needs.
-  * **Final Validation**: The Agent presents a comprehensive summary for your review and approval before proceeding to Project Breakdown.
+**Question Round 2: Technical Requirements**
+- Discuss work structure, dependencies, and complexity
+- Specify technical requirements and constraints
+- Identify validation criteria for each requirement
 
-> **Tips for Context Synthesis:** Share all relevant project details, constraints, and uncertainties with the Setup Agent. **Try to provide requested context in the order that you are prompted** — early delivery of artifacts like PRDs or documentation improves the Agent's discovery process.
+**Question Round 3: Implementation Approach and Quality**
+- Define technical constraints and preferences
+- Establish workflow patterns and quality standards
+- Clarify domain organization and coordination requirements
 
-### 3.2 Project Breakdown & Plan Creation
+After all rounds, the Planner presents an Understanding Summary for your review. You can request modifications or approve to proceed.
 
-The Setup Agent will systematically break down your project through key stages:
+> **Tips for Context Gathering:**
+> - Share all relevant constraints and uncertainties
+> - Provide documents early - this improves subsequent questions
+> - Be specific about validation criteria - how will you know each requirement is met?
 
-  * **Domain Analysis**: Identify work areas and create Implementation Agent assignments.
-  * **Phase Definition**: Establish project progression and logical groupings.
-  * **Phase Cycles**: Create detailed task breakdown with dependency analysis.
-  * **Final Review**: Agent workload balancing and cross-Agent coordination planning.
+### Work Breakdown
 
-> **Tips for Project Breakdown:** Review the Agent's reasoning in the chat and thoroughly check the full Implementation Plan at the end. Request any changes or clarifications now. **Fixing issues early is much easier and cheaper than later adjustments.**
+The Planner decomposes gathered context into three Coordination Artifacts that serve different roles during execution:
 
-### 3.3 Implementation Plan AI Review & Refinement (Optional)
+**Specifications** - Project-specific design decisions and constraints defining what is being built. The Planner analyzes your requirements across scope, entities, behaviors, relationships, and constraints, then writes the Specifications file. Workers do not access this file directly - the Manager extracts relevant content into Task Prompts as needed. You'll review and approve before continuing.
 
-The Setup Agent will offer systematic review of the Implementation Plan:
+**Implementation Plan** - Stage and Task breakdown with Agent assignments, a Dependency Graph, and validation criteria defining how work is organized. The Planner:
+- Identifies logical work domains and creates Worker Agent assignments
+- Defines project stages with clear objectives
+- Breaks down each stage into tasks with validation criteria
+- Reviews workload distribution and cross-agent dependencies making relevant updates if needed
+- Generates a Dependency Graph visualizing final task dependencies and workflow
 
-  * **Recommended**: For complex projects or first-time APM users.
-  * **Optional**: If you're satisfied with the plan quality, you can skip this step and proceed directly to Bootstrap Creation.
+Workers do not access the Implementation Plan - the Manager extracts Task contents and creates Task Prompts accordingly. You'll review the complete plan and request any changes before approval.
 
-> **Tip for Implementation Plan AI-driven Review:** This AI-driven review focuses on AI-specific planning issues (task packing, classification errors). **You must still conduct your own manual review** for requirement gaps or constraints.
+**Standards** - Universal execution patterns defining how work is performed. The Planner extracts patterns that apply across all tasks (coding conventions, quality requirements, prohibited patterns) and writes them in an APM_STANDARDS block in the Standards file (AGENTS.md or CLAUDE.md at workspace root). All Agents have direct access to this file - both Manager and Workers may update it during the Implementation Phase. You'll review and approve to complete the Planning Phase.
 
-### 3.4 Manager Bootstrap Creation
-
-The Setup Agent will create a **Bootstrap Prompt** summarizing project context, key requirements, and next steps for the Manager Agent. 
-
-**Save or copy this prompt** — you'll need it to initialize the Manager Agent session.
+After all three approvals, the Planner confirms completion. You're ready to initialize the Manager Agent.
 
 ---
 
-## Step 4: Initialize Manager Agent
+## Step 3: Initiate Manager Agent
 
-### 4.1 Create Manager Agent Session
+The Manager Agent coordinates execution of the Implementation Plan.
 
-1.  **Open New Chat**: Create another dedicated chat session in "Agent" mode.
-2.  **Name It Clearly**: Use a clear name, such as "Manager Agent" or "APM Manager 1."
-3.  **Model Choice**: Select a premium or budget model as recommended in the [Prerequisites](#prerequisites).
+### Create Manager Agent Session
 
-### 4.2 Run Manager Agent Initialization Command
+1. Open a new chat session in Agent mode
+2. Name it clearly: "Manager Agent" or "APM Manager 1"
+3. Select a model as recommended in Prerequisites
 
-Enter the Manager Agent initialization command:
+### Run Initialization Command
+
+Enter the command:
 
 ```
 /apm-2-initiate-manager
 ```
 
-### 4.3 Deliver Bootstrap Prompt
+The Manager will:
+- Read the Coordination Artifacts (Specifications, Implementation Plan, Standards)
+- Initialize the Memory System
+- Initialize the Message Bus for Agent communication
+- Initialize version control if a git repository exists
+- Present an understanding summary
 
-The Manager Agent requires the Bootstrap Prompt to receive initial project context.
-
-**Paste the Bootstrap Prompt** created by your Setup Agent.
-
-The Manager Agent will review project materials and the required guides and then summarize understanding before requesting authorization to begin tasks. **Authorize the Manager Agent** once you confirm their understanding is accurate. For example:
-
-`"Your understanding of your responsibilities is complete. Please proceed to phase 1 execution."`
-
-The Manager Agent will **initialize the Memory System** and create a **Task Assignment Prompt** for the first task in your Implementation Plan. The prompt will be presented **in a markdown code block** for easy copy-paste.
-
-<div align="center">
-  <video 
-    controls 
-    autoplay 
-    loop 
-    muted 
-    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
-  >
-    <source src={require('@site/static/docs-video/cursor-apm-manager-agent-budget-model.mp4').default} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
+Review the Manager's summary carefully. If it accurately reflects your project authorize it to proceed, otherwise make corrections as needed. The Manager will then prepare the first Coordination Cycle.
 
 ---
 
-## Step 5: First Task Assignment
+## Step 4: Work Through the Implementation Phase
 
-### 5.1 Initialize Implementation Agent
+The Implementation Phase executes the Implementation Plan through repeating Coordination Cycles. This step walks through your first cycle as an example.
 
-1.  **Open New Chat**: Create another dedicated chat session for the assigned Implementation Agent.
-2.  **Name Appropriately**: Use the Agent name from the Implementation Plan (e.g., "Agent_Frontend").
-3.  **Model Choice**: Select a premium or budget model as recommended in the [Prerequisites](#prerequisites).
-4.  **Enter the Implementation Agent Initialization Command**:
+### Manager Creates Task Assignment
+
+The Manager:
+- Assesses which tasks are ready (dependencies satisfied)
+- Constructs a Task Prompt with all required context
+- Writes it to a Send Bus file in `.apm/bus/<agent-slug>/`
+- Provides you with the file path to carry to the Worker
+
+### Initialize Worker Agent
+
+1. Open a new chat session for the assigned Worker
+2. Name it appropriately using the Agent name from the Implementation Plan (e.g., "Frontend Agent")
+3. Select a model as recommended in Prerequisites
+4. Enter the initialization command:
+
 ```
-/apm-3-initiate-implementation
+/apm-3-initiate-worker
 ```
-The Implementation Agent will confirm its role, read the Memory Log Guide, and wait for the Task Assignment.
 
-### 5.2 Deliver Task Assignment
+The Worker will confirm initialization and await input.
 
-**Copy the Task Assignment Prompt** from the Manager Agent and **paste it to the Implementation Agent**.
+### Deliver Task Assignment
 
-The Implementation Agent will confirm task requirements, carry out the work, and report completion with a Memory Log entry.
+Reference the Send Bus file in the Worker's session. Most platforms support direct file attachment or path reference. The Worker will:
+- Read the Task Prompt
+- Register with the specified Agent identity
+- Confirm task requirements
+- Begin execution
 
-### 5.3 Task Execution & Memory Logging
-The Implementation Agent will execute the task in one of two ways:
-  * **Single-Step Tasks**: Agent completes all subtasks and proceeds directly to Memory Logging.
-  * **Multi-Step Tasks**: Agent executes step-by-step with your confirmation at each stage. You can provide feedback and request modifications between steps.
+### Worker Executes Task
 
-> * **Efficiency tip**: Request step combination for related work: `"Step 2 looks alright. Combine steps 3-4 and log in your next response."`
-> * **Explanation Tip:** Ask the Manager Agent to include explanation instructions in Task Assignment Prompts, or request detailed explanations directly from the Implementation Agent during task execution.
+The Worker executes the task following these steps:
 
-Once task is complete, or faced serious blockers, the Agent will create a concise Memory Log entry summarizing task completion, outputs, any delegations or any issues encountered, and next steps or recommendations.
+1. **Context Integration** - If the task depends on prior work, the Worker reads specified files and integrates context as instructed in the Task Prompt
+2. **Execution** - Works through the task instructions step by step
+3. **Validation** - Validates results per the specified criteria (programmatic tests, artifact checks, user review)
+4. **Iteration** - If validation fails, attempts tocorrect and re-validates until success or a stop condition
+5. **Logging** - Creates a Task Memory Log at the specified path documenting the outcome
+6. **Reporting** - Writes a Task Report to the Report Bus file
 
-After Memory Logging, the Implementation Agent will output a **Final Task Report** code block written from your perspective. This report includes task completion status, execution notes, and key flags. **Copy this code block** and paste it back to the Manager Agent.
+The Worker provides the Report Bus file path for you to carry back to the Manager.
 
-### 5.4 Report to Manager for Review & Next Steps
+> **Tips for Task Execution:**
+> - Workers pause for user validation when specified in the Task Prompt; when prompted, review the work and provide feedback
+> - The Workers iterate on agentic loops trying to autonomously correct themselfs, however you are free to interrupt or steer the conversation as needed
 
-**Return to your Manager Agent session** and paste the Final Task Report code block from the Implementation Agent. If necessary, you can add additional context to this prompt. The Manager Agent will review the Memory Log and task outputs, then decide to either continue with the next task, request corrections, or update the Implementation Plan as needed.
+### Manager Reviews and Decides
 
-<div align="center">
-  <video 
-    controls 
-    autoplay 
-    loop 
-    muted 
-    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
-  >
-    <source src={require('@site/static/docs-video/cursor-apm-first-task-assignment.mp4').default} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
+Once the Worker finishes, reference the Report Bus file in the Manager's session. The Manager will:
+- Read the Task Report and Task Memory Log of the Worker
+- Make a Coordination Decision:
+  - **Proceed** - Task successful, assess readiness and move to next task(s)
+  - **FollowUp** - Issue refined Task Prompt to the same Worker to retry with different approach
+  - **Artifact Modification** - Update Coordination Artifacts if findings warrant it, then proceed or issue FollowUp as needed
+- Update the Memory System to track progress
 
----
+This completes one Coordination Cycle for this task. The pattern repeats for each task until all stages complete.
 
-## Establish Your Workflow
-
-### Task Loop Pattern
-
-You'll repeat this cycle:
-
-1.  **Manager**: Creates Task Assignment Prompt.
-2.  **User**: Delivers prompt to the appropriate Implementation Agent.
-3.  **Implementation Agent**: Executes task, logs work, and outputs Final Task Report.
-4.  **User**: Copies Final Task Report and pastes it to the Manager.
-5.  **Manager**: Reviews Memory Log and determines the next action.
-
-### Agent Management
-
-  * **Multiple Implementation Agents**: Create separate sessions for different domains (Frontend, Backend, Research).
-  * **Agent Naming**: Use clear, consistent naming (e.g., "Agent_Frontend_1", "Manager_Agent_1").
-  * **Session Organization**: Keep Manager and Implementation Agent sessions easily accessible.
-
-### Handover Procedure: Managing Context Window Limits
-
-When Agents approach the context window limit, perform a **Handover Procedure** for smooth continuation.
-
-
-1.  **Detect the Limit:** Watch for context window usage (if your IDE provides a visualization) or signs like repeated questions or generic responses.
-2.  **Request a Handover:** Ask the Agent to begin a Handover Procedure using the appropriate command.
-      * The Agent will produce a **Handover File** (active, undocumented context) and a **Handover Prompt** (onboarding instructions).
-3.  **Open a New Agent Session:** Start a new chat for the same Agent role (e.g., "Agent_Backend_2") and initialize it.
-4.  **Initialize the New Agent:** Paste the **Handover Prompt** (and provide the Handover File as context if needed) as the first message.
-5.  **Verify and Resume:** **Verify the new Agent's understanding** of the project state. Once verified, authorize the Agent to continue work.
-
-<div align="center">
-  <video 
-    controls 
-    autoplay 
-    loop 
-    muted 
-    style={{ maxWidth: '100%', borderRadius: '14px', width: '1200px' }}
-  >
-    <source src={require('@site/static/docs-video/cursor-apm-handover.mp4').default} type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
-
-> **Note:** In the video above, the Handover is performed before the Implementation Agent's context window fills, purely for demonstration. In actual APM workflows, you should perform handovers proactively, ideally when your Agent is nearing 80–90% of their context window limit.
+> **Tips for Task Dispatch** For efficiency, the Manager may dispatch multiple tasks, each with their own Coordination Cycle:
+> - **Batch Dispatch** - When multiple sequential tasks are assigned to the same Worker with no external dependencies between them, the Manager can send them as a batch in a single Send Bus message. The Worker executes them sequentially, logging each task individually, and returns a consolidated Batch Report.
+> - **Parallel Dispatch** - When multiple tasks across different Workers have no cross-Worker dependencies among them, the Manager can dispatch them simultaneously. You'll manage multiple Worker sessions concurrently, carrying Send Bus files to each Worker and Report Bus files back to the Manager as they complete in any order. The Manager initializes version control (feature branches and worktrees) for workspace isolation during parallel work.
 
 ---
 
-## Common First Session Issues & Tips
+## Step 5: Establish Your Workflow
 
-### Common First Session Issues
+Understanding how Coordination Cycles repeat and scale across your project.
 
-| Agent | Problem | Solution |
-| :--- | :--- | :--- |
-| **Setup Agent** | Splits responses or doesn't follow chat-to-file procedure. | Prompt for a complete systematic sequence in a single response, or adjust exchanges to complete the procedure. |
-| **Setup Agent** | Implementation Plan tasks are too broad or packed. | Request task splitting and a more granular breakdown. |
-| **Manager Agent** | Creates plain text instead of a markdown code block for Task Assignment. | Clarify format requirement: `"Please provide the Task Assignment Prompt in a markdown code block for copy-paste."` |
-| **Implementation Agent** | Doesn't follow single-step vs multi-step patterns correctly. | Reference the task format and clarify execution expectations. |
-| **Implementation Agent** | Memory Logging is incomplete or non-standard. | Reference the Memory Log Guide for the proper format *before* providing the next Task Assignment. |
+### The Coordination Cycle Pattern
 
-> For more detailed troubleshooting guidance and solutions to common issues, refer to the [`docs/Troubleshooting_Guide.md`](https://www.google.com/search?q=Troubleshooting_Guide.md)
+Each task executes through its own Coordination Cycle, which follows this flow:
+
+1. **Manager assigns task** - Creates Task Prompt, writes to Send Bus
+2. **User carries message** - References Send Bus file in Worker session
+3. **Worker executes** - Completes work, validates, iterates on failure, logs to memory, writes to Report Bus
+4. **User carries message** - References Report Bus file in Manager session
+5. **Manager reviews** - Reads logs, makes coordination decision, updates Memory System
+
+This pattern repeats for each task until all tasks in all stages complete. When the Manager dispatches multiple tasks (batch or parallel), each task has its own Coordination Cycle - they may run sequentially or concurrently, but the per-task cycle structure remains the same.
+
+### FollowUp Tasks
+
+When a Coordination Decision determines retry is needed, the Manager creates a FollowUp Task Prompt with different content than the original attempt:
+- Refined objective and instructions based on what went wrong
+- Updated output expectations and validation criteria
+- FollowUp Context section explaining the issue and required changes
+- Same Memory Log path (Worker overwrites the previous log)
+
+FollowUps enter the Coordination Cycle like any task assignment.
+
+### Artifact Modifications
+
+When execution reveals issues with Coordination Artifacts, the Manager may modify them:
+- **Specifications** - Design decisions proved incorrect or new constraints emerged
+- **Implementation Plan** - Task definitions need adjustment, dependencies changed, new tasks required
+- **Standards** - Universal patterns need updating or conflicts with execution discovered
+
+The Manager assesses cascade implications and determines whether modifications require User collaboration (significant changes) or fall within Manager authority (bounded corrections). After modifications, the Manager reassesses task readiness and continues coordination.
+
+### Batch Dispatch
+
+When the Manager identifies batch candidates (sequential same-Worker tasks with only internal dependencies):
+- Writes all Task Prompts to a single Send Bus message with batch envelope
+- Worker parses the batch and executes tasks sequentially
+- Worker creates individual Task Memory Logs immediately after each task
+- If any task results in Blocked or Failed status, Worker stops (fail-fast) and reports partial completion
+- Worker returns a consolidated Batch Report covering all completed tasks
+
+Soft guidance: 3-4 tasks per batch. The Manager balances efficiency gains against granular progress tracking.
+
+### Parallel Dispatch
+
+During parallel dispatch:
+- Manager tracks which Workers have active tasks and which Reports are pending
+- User manages multiple Worker sessions simultaneously
+- As Reports arrive, Manager processes each, merges completed branches, reassesses readiness, dispatches newly Ready tasks
+- When no Ready tasks exist but Workers are still active, Manager communicates wait state
+
+At Stage end, Manager performs merge sweep to ensure all feature branches are integrated before advancing to next Stage.
 
 ---
 
-**Congratulations!** You've successfully launched your first APM session. The structured, Agentic spec-driven approach provides reliable project execution and prevents the chaos typical of AI collaboration.
+## When Agents Reach Context Limits
 
-**Additional Resources:**
+When an Agent's context window approaches limits, perform a Handoff to transfer context to a fresh instance.
 
-  * [`Token_Consumption_Tips.md`](Token_Consumption_Tips.md) - Optimize model usage and costs
-  * [`Context_and_Memory_Management.md`](Context_and_Memory_Management.md) - Deep dive into how APM manages context and memory
-  * [`Modifying_APM.md`](Modifying_APM.md) - Customize APM for your specific needs
+### When to Handoff
+
+- Look for signs: repeated questions, forgetting constraints, degraded responses
+- Handoff proactively at 70-80% capacity to reduce hallucination risk
+
+### Handoff Process
+
+1. **Trigger Handoff** - When context pressure appears, use the appropriate command:
+   - `/apm-5-handoff-manager` for Manager Agent
+   - `/apm-6-handoff-worker` for Worker Agent
+
+2. **Outgoing Agent Actions** - The Agent creates:
+   - Handoff Memory Log capturing working knowledge not in formal logs (tracked Worker handoffs and VC state for Manager; working context and technical notes for Worker)
+   - Handoff Prompt with context reconstruction instructions
+   - Writes Handoff Prompt to Handoff Bus file
+
+3. **Create New Session** - Open a new session for the same Agent role (e.g., "Manager Agent 2" or "Frontend Agent 2")
+
+4. **Initialize Incoming Agent** - Enter the same initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`), then reference the Handoff Bus file
+
+5. **Verify and Resume** - The Incoming Agent reconstructs context from:
+   - Coordination Artifacts
+   - Handoff Memory Log
+   - Relevant Task Memory Logs (current-Stage for Workers, Stage Summaries and recent logs for Manager)
+
+---
+
+**Congratulations!** You've launched your first APM session. The structured multi-agent approach provides consistent project execution and prevents the chaos typical of single-session AI collaboration.
+
+**Next Steps:**
+
+- [Token Consumption Tips](Token_Consumption_Tips.md) - Optimize model usage and costs
+- [Context and Memory Management](Context_and_Memory_Management.md) - Deep dive into APM's memory architecture
+- [Modifying APM](Modifying_APM.md) - Customize APM for your specific needs

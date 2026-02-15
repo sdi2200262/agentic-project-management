@@ -53,13 +53,13 @@ The Planning Phase concludes when the User approves all Coordination Artifacts. 
 
 ### 3.2 Implementation Phase
 
-The Manager and Worker Agents transform the Implementation Plan into completed deliverables. The phase operates through the Coordination Cycle:
+The Manager and Worker Agents transform the Implementation Plan into completed deliverables. Each task executes through its own Coordination Cycle:
 
-1. **Task Assignment** — Manager assesses readiness, determines dispatch mode, constructs Task Prompts, delivers via Send Bus.
-2. **Task Cycle(s)** — Worker's execution loop. Each Task Cycle includes: receiving Task Prompt, Task Execution (execute instructions, validate results, iterate if needed), logging to Task Memory Log, and writing Task Report to Report Bus. Multiple Task Cycles may occur within a single Coordination Cycle when parallel or batch dispatch is used.
-3. **Task Review** — Manager reviews Task Report(s) and Task Memory Log(s), makes a Coordination Decision.
+1. **Task Assignment** — Manager assesses readiness, determines dispatch mode, constructs Task Prompt, delivers via Send Bus.
+2. **Task Cycle** — Worker's execution loop. Each Task Cycle includes: receiving Task Prompt, Task Execution (execute instructions, validate results, iterate if needed), logging to Task Memory Log, and writing Task Report to Report Bus.
+3. **Task Review** — Manager reviews Task Report and Task Memory Log, makes a Coordination Decision.
 
-The Coordination Cycle repeats per Task(s). After all Tasks in a Stage complete, the Manager creates a Stage Summary. After all Stages complete, the Manager presents a Project Completion summary.
+The Coordination Cycle repeats per task. When the Manager dispatches multiple tasks (batch or parallel), each task has its own Coordination Cycle - they may run sequentially or concurrently, but the per-task cycle structure remains the same. After all Tasks in a Stage complete, the Manager creates a Stage Summary. After all Stages complete, the Manager presents a Project Completion summary.
 
 Supporting procedures run as needed within the cycle:
 - **Version Control** — Manager initializes and coordinates version control for workspace isolation during parallel dispatch.
