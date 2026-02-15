@@ -160,7 +160,8 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 |------|------------|
 | **Task Assignment** | Procedure where the Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them to Workers via Send Bus. |
 | **Task Review** | Procedure where the Manager reviews Task Reports and Task Memory Logs, makes Coordination Decisions, modifies Coordination Artifacts when findings warrant it, and maintains the Dispatch State. |
-| **Coordination Loop** | The repeating cycle that drives the Implementation Phase: Task Assignment → Task Execution → Task Review. Includes artifact modification and Dispatch State updates as needed within iterations. |
+| **Coordination Cycle** | The repeating cycle that drives the Implementation Phase: Task Assignment → Task Cycle(s) → Task Review. Each Coordination Cycle includes one or more Task Cycles. Includes artifact modification and Dispatch State updates as needed within iterations. |
+| **Task Cycle** | The Worker's execution loop within a Coordination Cycle: receive Task Prompt → execute → validate → iterate (if needed) → log → report. A single Coordination Cycle may include multiple Task Cycles when parallel or batch dispatch is used. |
 | **Coordination Decision** | Manager's assessment after Task Review. Outcomes: Proceed to next Task, FollowUp (retry with refined instructions), or Artifact Modification plus next Task or FollowUp. |
 | **Ready Task** | A Task whose dependencies are all complete and can be dispatched. |
 | **Batch Dispatch** | Dispatching multiple sequential Tasks to the same Worker in a single Send Bus message. |
