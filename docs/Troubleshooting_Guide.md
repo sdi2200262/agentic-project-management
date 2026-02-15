@@ -7,6 +7,8 @@ sidebar_position: 11
 
 # Troubleshooting Guide - APM v0.5
 
+> **Note:** This document reflects APM v0.5.x and will be updated for the official v1.0 release. For current v1.0 preview documentation, see [Introduction](Introduction.md), [Getting Started](Getting_Started.md), [Agent Types](Agent_Types.md), [Workflow Overview](Workflow_Overview.md), and [Agent Orchestration](Agent_Orchestration.md).
+
 Effective troubleshooting prevents minor issues from becoming project blockers. This guide covers common scenarios encountered during APM sessions and provides recovery strategies.
 
 

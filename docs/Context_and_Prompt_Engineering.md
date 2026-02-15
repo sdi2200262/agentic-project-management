@@ -7,6 +7,8 @@ sidebar_position: 8
 
 # Context and Prompt Engineering - APM v0.5
 
+> **Note:** This document reflects APM v0.5.x and will be updated for the official v1.0 release. For current v1.0 preview documentation, see [Introduction](Introduction.md), [Getting Started](Getting_Started.md), [Agent Types](Agent_Types.md), [Workflow Overview](Workflow_Overview.md), and [Agent Orchestration](Agent_Orchestration.md).
+
 APM's design relies on advanced context and prompt engineering techniques that work together to create reliable, efficient AI workflows. This document explores how APM constructs operational environments for LLMs and engineers prompts for maximum parsing accuracy and token efficiency.
 
 ## Context Engineering: Establishing Operational Environments
