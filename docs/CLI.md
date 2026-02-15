@@ -7,6 +7,8 @@ sidebar_position: 5
 
 # APM CLI Guide
 
+> **Note:** This document reflects APM v0.5.x and will be updated for the official v1.0 release. For current v1.0 preview documentation, see [Introduction](Introduction.md), [Getting Started](Getting_Started.md), [Agent Types](Agent_Types.md), [Workflow Overview](Workflow_Overview.md), and [Agent Orchestration](Agent_Orchestration.md).
+
 The APM CLI (`agentic-pm`) is the setup tool of the APM framework. It manages the installation of prompt templates, keeps your commands and guides up to date, and ensures version compatibility across different AI assistants.
 
 ## Installation
