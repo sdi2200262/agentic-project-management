@@ -5,212 +5,244 @@ sidebar_label: Workflow Overview
 sidebar_position: 6
 ---
 
-# Workflow Overview - APM v0.5
+# Workflow Overview
 
-APM establishes an **Agentic Spec-Driven Development** workflow that operates through two main phases:
-1. **Setup Phase** with the *Setup Agent*
-2. **Task Loop** with the *Manager, Implementation and Ad-Hoc Agents,* supported by **Handover Procedures** for context management.
-
-> **Note on AI IDEs:** For specific behaviors and settings regarding IDEs like GitHub Copilot (e.g., context summarization issues), please refer to the [Getting Started](Getting_Started.md#notes-for-specific-ai-ides) guide.
+APM operates through two distinct phases: the Planning Phase establishes project structure through Coordination Artifacts, and the Implementation Phase executes the plan through repeating Coordination Cycles. Each phase has specific procedures, agents, and outcomes that build toward project completion.
 
 ---
 
-## Setup Phase
+## Planning Phase
 
-The Setup Phase is a mandatory linear sequence. It functions as the project's architectural stage, ensuring a solid plan exists before any code is written.
+The Planning Phase transforms User requirements into Coordination Artifacts that guide all subsequent work. The Planner Agent operates once at project start, conducting structured discovery and decomposing gathered context into actionable documents.
 
 ```mermaid
 graph LR
-    A[User Initializes<br/>Setup Agent] --> C[Context<br/>Synthesis]
-    C --> D[Project<br/>Breakdown]
-    D --> E{User Chooses<br/>Review?}
-    E -->|Yes| F[Systematic<br/>Review]
-    E -->|No| H[Bootstrap<br/>Creation]
-    F --> H
-    H --> I[Manager Agent<br/>Handoff]
-    
+    A[User Initiates<br/>Planner Agent] --> B[Context<br/>Gathering]
+    B --> C[Work<br/>Breakdown]
+    C --> D[Coordination<br/>Artifacts Complete]
+
     classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
 
-### 1. Context Synthesis & Discovery
+### Context Gathering
 
-The Setup Agent initiates a structured, interactive interview process to build a complete "contextual foundation." This stage is critical for preventing downstream issues and ensuring the plan matches your specific constraints.
+The Planner conducts structured discovery through three Question Rounds, each focused on progressive refinement:
 
-The Agent leads the User through three distinct discovery phases:
-  1.  **Existing Materials & Vision:** Focuses on high-level scope, PRDs, existing codebases, and project documentation.
-  2.  **Technical Requirements:** Drills down into specific stack choices, architectural constraints, dependencies, and other technical matters.
-  3.  **Process Requirements:** Aligns on workflow preferences, coding standards, testing protocols, and review gates.
-  4.  **Final Validation:** Presents a comprehensive summary for user review and approval before proceeding to Project Breakdown.
+**Question Round 1: Existing Materials and Vision**
+- Project type, problem statement, and scope
+- Existing documentation, PRDs, or codebase
+- High-level goals and success criteria
 
-The Agent enforces **mandatory iterative follow-up cycles** for each Question Round (1-3) and requires explicit user approval in Question Round 4. It analyzes your responses and requests clarifications or missing details before advancing to the next Question Round, ensuring no critical requirements are overlooked. Early delivery of foundational documents (like PRDs) allows the Agent to tailor its technical questions in subsequent Question Rounds.
+**Question Round 2: Technical Requirements**
+- Work structure and dependencies
+- Technical requirements and constraints
+- Validation criteria for each requirement
+- Emerging Specifications and Standards
 
-### 2. Project Breakdown & Plan Creation
-Once context is established, the Setup Agent initiates the Project Breakdown. It uses a carefully designed "Chat-to-File" procedure designed to overcome common LLM limitations (like lazy planning or pattern matching) by forcing the model to articulate its reasoning in the chat before writing to the file. This process is often called "forced chain-of-thought" as it forces non-CoT models to use much higher quality reasoning while still utilizing their advanced agentic capabilities.
+**Question Round 3: Implementation Approach and Quality**
+- Technical constraints and preferences
+- Workflow patterns and quality standards
+- Domain organization and coordination needs
+- Finalizing Specifications and Standards
 
-The Agent executes a systematic 4-step progression to transform requirements into a concrete plan:
-  1.  **Domain Analysis:** Identifies distinct work areas (e.g., Frontend, Backend, DevOps) and assigns them to specialized Implementation Agents to ensure separation of concerns.
-  2.  **Phase Definition:** Establishes the logical sequence of development (e.g., "Phase 1: Foundation" → "Phase 2: Core Features").
-  3.  **Phase Cycles & Task Breakdown:** The Agent analyzes tasks phase-by-phase. It  assesses dependencies, applies **anti-packing guardrails** and other quality checks, *in the chat* before committing them to the plan.
-  4.  **Final Review & Generation:** The Agent balances agent workloads, marks cross-agent dependencies, and finalizes the `Implementation_Plan.md` file.
+After each round, the Planner iterates on gaps and unclear areas before advancing. When User responses reference codebase elements or documentation, the Planner explores proactively to gather concrete information. Research Subagents may be spawned to avoid consuming the Planner's context during exploration.
 
-The Agent will produce the plan incrementally, explaining its reasoning logic as it generates the file content. The User can review the finalized plan to request modifications and verify the Agent's rationale as presented in the chat.
+After all rounds complete, the Planner presents an Understanding Summary for User review. Modifications loop back through targeted follow-ups until User approval triggers transition to Work Breakdown.
 
-### 3. Implementation Plan AI Review & Refinement (Optional)
-Before finalizing the plan, you can opt for a systematic, agent-driven quality assurance pass. This step is designed to catch specific AI planning pitfalls—such as "task packing" (squeezing too much work into one task) or pattern matching, that might cause issues during execution.
+### Work Breakdown
 
-This is not a generic re-read. The Setup Agent applies an analytical testing framework to specific sections of the plan you select. It challenges its own previous planning decisions to identify risks, ambiguity, or missing context. The Agent will present a critique of the selected sections. You must review these findings and approve or reject the proposed modifications.
+The Planner decomposes gathered context into three Coordination Artifacts through forced Chain-of-Thought methodology - reasoning is presented in chat before file output.
 
-> **Crucial:** This AI review focuses on structural and logical integrity. It does not replace your manual review for requirements or domain constraints.
+**Specifications Creation**
+- Analyzes design decisions across scope, entities, behaviors, relationships, constraints, and interfaces
+- Writes Specifications file with project-specific design decisions
+- Presents for User review, iterates on feedback until approval
 
-### 4. Manager Bootstrap
+**Implementation Plan Creation**
+- Identifies logical work domains and defines Worker Agents
+- Identifies all Stages with objectives
+- For each Stage, completes detailed Task breakdown with objectives, outputs, validation criteria, guidance, dependencies, and steps
+- Assesses workload distribution across Agents
+- Generates Dependency Graph visualizing Task dependencies and Agent assignments
+- Presents for User review, iterates on feedback until approval
 
-Finaly, the Agent generates a **Bootstrap Prompt**. This prompt acts as the "seed" for the Manager Agent, containing the user intent, project context, and initialization instructions.
+**Standards Creation**
+- Extracts universal execution patterns from gathered context
+- Writes APM_STANDARDS block in Standards file
+- Presents for User review, iterates on feedback until approval
+
+After all three Coordination Artifacts receive User approval, the Planning Phase concludes. The User initializes the Manager Agent to begin the Implementation Phase.
 
 ---
 
-## Task Loop Phase
+## Implementation Phase
 
-The Manager Agent coordinates the project, while Implementation Agents execute the work. This cycle repeats until the project is complete.
+The Implementation Phase executes the Implementation Plan through repeating Coordination Cycles. The Manager assigns tasks to Workers, reviews completed work, and maintains project state. Each task executes through its own Coordination Cycle.
 
 ```mermaid
 graph LR
-    A[Manager Issues Task<br/>Assignment Prompt] --> B[User Delivers Task<br/>to Implementation Agent]
-    B --> C[Implementation Agent<br/>Executes & Logs]
-    C --> D[User Returns<br/>to Manager]
-    D --> E[Manager Reviews<br/>Task output and Log]
-    E --> F{Manager Decides<br/>on Next Actions}
-    F -->|Continue| G[Next Task]
-    F -->|Task execution<br/>needs corrections| H[Follow-up<br/>Prompt]
-    F -->|Plan needs<br/>modifications| I[Modify<br/>Plan]
-    G --> A
-    H --> A
-    I -->|Move to next task<br/>based on modified plan| G
-    
+    A[Task<br/>Assignment] --> B[Task<br/>Cycle]
+    B --> C[Task<br/>Review]
+    C --> D{Coordination<br/>Decision}
+    D -->|Proceed| E[Next Task]
+    D -->|FollowUp| F[Refined<br/>Task Prompt]
+    D -->|Artifact<br/>Modification| G[Update<br/>Artifacts]
+    E --> A
+    F --> A
+    G -->|Then Proceed<br/>or FollowUp| E
+
     classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
 
-### 1. Manager Initialization
-The Manager parses a specialized prompt (either a **Bootstrap Prompt** from the Setup Phase or a **Handover Prompt** from a previous session) to understand the current project state. It then reads the required guides and the `Implementation_Plan.md` to build its mental model.
-  
-After completing these steps, the Manager summarizes its understanding and requests user authorization to proceed. To continue, the User reviews the Agent's summary and explicitly **authorizes** the Manager to proceed before any tasks are assigned. This is to make clarifications or corrections if the Manager's understanding seems incorrect, before proceeding to project execution.
+### Manager Initialization
 
-### 2. Task Assignment Prompt Creation
-The Manager analyzes the next task in the `Implementation_Plan.md` to determine its requirements, and it constructs a detailed [**Meta-Prompt**](Context_and_Prompt_Engineering.md#apm-prompt-asset-architecture) designed to ensure the Implementation Agent has exactly the context needed to execute it successfully. This **Task Assignment Prompt** is presented in a Markdown code block in-chat, for the User to copy-paste to the corresponding Implementation Agent's chat session.
+After the Planning Phase, the User creates a Manager Agent session and runs the initialization command. The Manager:
+- Reads all Coordination Artifacts 
+- Initializes the Memory System 
+- Initializes the Message Bus for Agent communication
+- Initializes version control if a git repository exists
+- Presents understanding summary for User review
 
-When fetching the next task, the Manager Agent scans for context dependencies. It distinguishes between **Same-Agent Dependencies** (which rely on the same agent's active context) and **Cross-Agent Dependencies** (which require explicit file reading and integration steps). If the task relies on a different agent's work, the Task Assignment includes a specific `## Context from Dependencies` section with instructions to read relevant output files.
+After User authorization, the Manager begins coordinating task execution through Coordination Cycles.
 
-### 3. Task Execution (Implementation Agents)
+### Coordination Cycle
 
-After receiving a Task Assignment Prompt, an Implementation Agent executes the work based on the task type:
+Each task executes through its own Coordination Cycle containing three parts: Task Assignment, Task Cycle, and Task Review. When multiple tasks are dispatched (batch or parallel), each task still has its own Coordination Cycle - they may run sequentially or concurrently, but the per-task cycle structure remains the same.
 
-  * **Single-Step:** For atomic tasks, the Agent completes the work and logs to Memory, in one response.
-  * **Multi-Step:** For complex tasks, the Agent executes the work step-by-step, requiring User confirmation at each checkpoint. This allows for course correction between steps.
+#### Task Assignment
 
-If Cross-Agent Dependencies exist, the Agent explicitly reads files/outputs from previous task executions by other Agents before starting their own.
+The Manager assesses which tasks are ready based on dependency completion and Dispatch State. For each ready task:
 
-Implementation Agents operate in a focused context scope, only being aware of what is in their task assignments, preventing "context pollution" from unrelated project work.
+1. **Context Dependency Analysis** - Classifies dependencies as Same-Agent (light context with recall anchors) or Cross-Agent (comprehensive context with file reading instructions). After Worker Handoff, prior-Stage Same-Agent Dependencies are reclassified as Cross-Agent.
 
-The User is the active "Human-in-the-Loop" overseeing and guiding task execution. Additionally,  you can combine steps to save tokens (e.g., `"Step 1 looks good. Combine steps 2 and 3 in your next response."`) or request strict explanations when needed.
+2. **Specification Extraction** - Extracts relevant design decisions from Specifications for contextual integration into the Task Prompt. Workers cannot access Specifications directly.
+
+3. **Task Prompt Construction** - Assembles a self-contained prompt with task reference, context from dependencies, objective, detailed instructions, expected output, validation criteria, memory logging instructions, and reporting instructions.
+
+4. **Delivery via Send Bus** - Writes the Task Prompt to the Worker's Send Bus file. Provides the file path to the User for delivery to the Worker session.
+
+**Dispatch Modes:**
+- **Single Dispatch** - One task to one Worker
+- **Batch Dispatch** - Multiple sequential tasks to the same Worker in a single Send Bus message
+- **Parallel Dispatch** - Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist among them
+
+For parallel dispatch, the Manager initializes version control (feature branches and worktrees) for workspace isolation.
+
+#### Task Cycle
+
+The Worker receives the Task Prompt and executes through this loop:
+
+1. **Worker Registration** - On first Task Prompt, the Worker binds to the Agent identity specified in the prompt. This identity persists across the Worker's Session.
+
+2. **Context Integration** - If Cross-Agent Dependencies exist, the Worker reads specified files to integrate context from prior tasks by other Workers.
+
+3. **Execution** - Works through task instructions step by step according to the Task Prompt.
+
+4. **Validation** - Validates results per specified criteria in order: Programmatic tests, then Artifact checks, then User review. User validation requires pausing for review before proceeding.
+
+5. **Iteration** - If validation fails, attempts to correct and re-validates. This cycle repeats until success or a stop condition.
+
+6. **Task Memory Logging** - Creates Task Memory Log at specified path documenting outcome, validation results, deliverables, technical decisions, and flags.
+
+7. **Task Reporting** - Clears the Send Bus, writes Task Report to Report Bus summarizing completion status and key findings.
+
+The Worker provides the Report Bus file path for the User to carry back to the Manager.
+
+**Batch Execution:** When receiving a batch, the Worker executes each task sequentially and writes a Task Memory Log immediately after each. If any task results in Blocked or Failed status, the Worker stops execution (fail-fast) and reports partial completion with unstarted tasks listed as "Not started (batch stopped)."
+
+**Subagent Spawning:** Workers may spawn platform-native subagents (Debug Subagent, Research Subagent) for isolated context-heavy work that would pollute the main session. Findings are integrated into the Worker's context after completion.
+
+#### Task Review
+
+The Manager receives the Task Report via Report Bus and reviews the outcome:
+
+1. **Report Processing** - Reads the Task Report from Report Bus, clears per Clear-on-Return protocol. If Batch Report, processes each task's outcome individually.
+
+2. **Log Review** - Reads the Task Memory Log referenced in the Report. Interprets task status (Success, Partial, Failed, Blocked), flags (important_findings, compatibility_issues), and log content.
+
+3. **Coordination Decision** - Determines next action based on review:
+   - **Proceed** - Task successful, no issues detected. Update Dispatch State, check Stage completion, dispatch next task(s).
+   - **FollowUp** - Task needs retry with refined approach. Create FollowUp Task Prompt with different content (refined objective, updated instructions, FollowUp Context section explaining what went wrong). Same memory log path - Worker overwrites previous log.
+   - **Artifact Modification** - Execution revealed issues with Coordination Artifacts (Specifications, Implementation Plan, or Standards). Determine authority scope (bounded Manager authority vs User collaboration for significant changes). Modify artifacts, verify consistency, update Dependency Graph if Implementation Plan Task relationships change. Then proceed to next task or issue FollowUp as needed.
+
+4. **Dispatch State Update** - Every outcome path ends with updating the Dispatch State section in Memory Root: completed tasks, readiness changes, merge state.
+
+5. **Stage Summary** - After all tasks in a Stage complete, the Manager reviews all Task Memory Logs for that Stage and appends a Stage Summary to Memory Root capturing Stage-level outcomes and cross-cutting observations.
+
+**Parallel Report Handling:** During parallel dispatch, Reports arrive asynchronously. The Manager processes each as it arrives, makes Coordination Decision, merges the completed task's branch, reassesses readiness, and dispatches newly Ready tasks if any. When no Ready tasks exist but Workers are still active, the Manager communicates what is pending and waits.
+
+### Memory System
+
+The Memory System in `.apm/Memory/` tracks project state and execution history:
+
+- **Memory Root** (`Memory_Root.md`) - Central project state containing Handoff count, Dispatch State, Working Notes, and Stage Summaries
+
+- **Dispatch State** (section within Memory Root) - Tracks task statuses per Stage (Ready, Active, Done, Blocked), agent assignments, active branches, and merge state. Updated by the Manager after each Task Review.
+
+- **Task Memory Logs** (`Stage_<N>_<Slug>/Task_Log_<N>_<M>_<Slug>.md`) - Structured logs created by Workers after each task completion. Serve as context abstraction layer between Manager's coordination view and Worker's execution details.
+
+- **Handoff Memory Logs** (`Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<N>.md`) - Logs created during Handoff containing working context not captured elsewhere.
+
+- **Working Notes** (section within Memory Root) - Ephemeral coordination notes maintained by the Manager and User during the Implementation Phase. Inserted and removed as context evolves.
+
+### Message Bus
+
+The Message Bus in `.apm/bus/` enables file-based communication between Agent Sessions:
+
+- **Send Bus** (`apm-send-to-<agent-slug>.md`) - Manager-to-Worker communication containing Task Prompts
+- **Report Bus** (`apm-report-from-<agent-slug>.md`) - Worker-to-Manager communication containing Task Reports
+- **Handoff Bus** (`apm-handoff-<agent-slug>.md`) - Outgoing-to-Incoming Agent communication containing Handoff Prompts
+
+The User carries Bus Files between sessions - there is no direct Manager-Worker communication. The Clear-on-Return protocol ensures each Agent clears its incoming Bus File before writing to its outgoing Bus File, preventing stale messages.
+
+---
+
+## Handoff
+
+When an Agent's context window approaches limits (70-80% capacity), a Handoff transfers context to a fresh instance of the same Agent. Handoff applies to Manager and Worker Agents only - the Planner operates in a single Session.
 
 ```mermaid
 graph LR
-    A[Task Assignment<br/>Execution] --> B{Task Format?}
-    
-    B -->|Bullet List| C[Single-Step<br/>Execution]
-    C --> D[Memory Logging]
-    
-    B -->|Numbered List| E[Multi-Step<br/>Execution]
-    E --> F[User Confirmations]
+    A[Context Limits<br/>Approaching] --> B[Outgoing Agent<br/>Creates Artifacts]
+    B --> C[User Opens<br/>New Session]
+    C --> D[Incoming Agent<br/>Reconstructs Context]
+    D --> E{Understanding<br/>Verified?}
+    E -->|No| F[Clarify]
     F --> D
-    
-    G[Dependencies] --> H{Type?}
-    H -->|Same-Agent| I[Already Active Context]
-    H -->|Cross-Agent| J[Cohesive Context<br/>Integration Steps]
-    I --> A
-    J --> A
-    
+    E -->|Yes| G[Resume<br/>Operations]
+
     classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
     linkStyle default stroke:#9A9A9A,stroke-width:2px
 ```
 
-### 4. Memory Logging & Review
+### Handoff Process
 
-Upon completion or if facing a serious blocker, the Implementation Agent creates a **Memory Log** summarizing the output, decisions, and file changes. The Memory Log serves as a *"context abstraction layer"* between the Manager's big-picture and the Implementation Agent's execution details.
+**Eligibility**
+- Manager may only Handoff when no outstanding dispatches exist - all Reports from active Workers must be collected first
+- Workers may Handoff between tasks; if during Task Execution, they must include current execution context in detail in their Handoff Memory Log
 
-After completing task execution and Memory Logging, Implementation Agents output a Final Task Report code block written from the User's perspective. This report includes task completion status, execution notes, and key flags. The User copies this report and pastes it back to the Manager Agent for review.
+**Outgoing Agent**
+1. Creates Handoff Memory Log capturing working context not recorded elsewhere (effective patterns, User preferences, undocumented insights, current execution context if mid-task, version control state if applicable)
+2. Writes Handoff Prompt to Handoff Bus instructing the Incoming Agent on context reconstruction
+3. Provides Handoff Bus file path to User
 
-The Manager reviews the log and decides to **Continue** to the next task, **Request Corrections** by issuing a follow-up pronpt, or **Update the Plan** if the task revealed a need to do so.
+**Incoming Agent**
+1. User creates new session for the same Agent role (e.g., "Manager Agent 2" or "Frontend Agent 2")
+2. User runs initialization command and references Handoff Bus file
+3. Agent follows Handoff Prompt to read Handoff Memory Log and relevant Task Memory Logs
+4. Agent reconstructs working context and presents understanding summary
+5. User verifies accuracy and authorizes Agent to resume from where Outgoing Agent left off
 
-### 5. Error Handling (Ad-Hoc Delegation)
-
-APM tries to prevent Implementation Agents from spiraling into long debugging loops that waste tokens and corrupt context. If an Implementation Agent cannot solve an issue after **3 attempts**, it triggers the **Ad-Hoc Delegation Protocol**.
-
-The issue is handed to a temporary **Ad-Hoc Agent**. The blocked Implementation Agent creates a **Delegation Prompt** describing the bug and how to reproduce it.
-
-The User copies and pastes the delegation prompt into an Ad-Hoc Agent chat session, collaborates with the temporary Agent to resolve the bug, and after a solution is found, returns to the original Implementation Agent with the fix. If the problem remains unresolved, it may be escalated back to the Manager for further guidance.
-
-```mermaid
-graph LR
-    B{Issue Complexity?}
-    B -->|Simple| C[Debug Locally<br/>3 Attempts]
-    B -->|Complex| D[Implementation Agent<br/>Issues Ad-Hoc<br/>Delegation Prompt]
-    C -->|Issue Persists| D
-
-    D --> E[User Opens<br/>Ad-Hoc Session &<br/>Initializes]
-    E --> F[User Provides<br/>Delegation Prompt]
-    F --> G[Ad-Hoc Agent<br/>Attempts to Fix Bug]
-    G --> H{Resolved?}
-    H -->|Yes| I[User Returns<br/>with Solution Findings]
-    H -->|No| J[User Returns<br/>with Bug Persistence<br/>Findings]
-    I --> K[Implementation Agent<br/>Integrates Findings]
-    K --> L[Continue Task]
-    J --> M[Implementation Agent<br/>Escalates to Manager]
-    
-    classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
-    linkStyle default stroke:#9A9A9A,stroke-width:2px
-```
+**Context Reconstruction Scope**
+- Incoming Manager reads Memory Root Stage Summaries, Handoff Memory Log, and relevant recent Task Memory Logs
+- Incoming Worker reads current-Stage Task Memory Logs for their Agent. Previous-Stage logs are not loaded for efficiency - the Manager accounts for this when constructing future Task Prompts by treating prior-Stage Same-Agent Dependencies as Cross-Agent Dependencies.
 
 ---
 
-## Handover Procedures
+**Next Steps:**
 
-When an Agent's context window approaches its limits, a Handover is required to maintain performance and project continuity. This is a standard procedure, not a failure state.
-
-```mermaid
-graph LR
-    A[Agent Context<br/>Limits Reached] --> B[Create Handover<br/>Artifacts]
-    B --> C[User Reviews Artifacts &<br/>Opens New Session &<br/>Initializes New Agent]
-    C --> D[User Delivers<br/>Handover Prompt]
-    D --> E[New Agent Processes<br/>Handover Context]
-    E --> F[User Verifies<br/>Understanding]
-    F --> G{Context<br/>Accurate?}
-    G -->|No| H[Provide<br/>Clarifications]
-    H --> E
-    G -->|Yes| I[Resume<br/>Operations]
-    I --> J[Archive Previous<br/>Session]
-    
-    classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
-    linkStyle default stroke:#9A9A9A,stroke-width:2px
-```
-
-### The Handover Process
-A Handover Procedure transfers the outgoing Agent's working memory, insights, user preferences, and not-logged context, to a fresh instance to ensure seamless continuity.
-
-#### 1. Trigger & Eligibility
-Handovers must be proactive. Waiting until the context window is full may cause hallucinated or corrupted handovers. The procedure must be performed *between* tasks (after a Memory Log is completed), never during active execution.
-
-Watch for context usage (~80-90% capacity) or signs of context degradation (repetitive questions, forgetting constraints) and when needed command the "full" Agent to begin the handover protocol once the current task cycle is fully resolved.
-
-#### 2. Artifact Creation (The Two-Artifact System)
-The Agent distills its "mental state" into two distinct components:
-  * **Handover File:** A Markdown file capturing undocumented insights, effective workflow patterns, and specific user preferences that are not recorded in formal Memory Logs.
-  * **Handover Prompt:** A structured meta-prompt containing onboarding instructions and reading protocols for the new Agent. It is presented in a Markdown code block for copy-paste to the new Agent instance.
-
-#### 3. Initialization & Verification
-The new Agent is initialized and given the Handover Prompt, which instructs it to read the Handover File and the relevant Memory Logs to reconstruct the required context.
-
-The new Agent will summarize its understanding. The User **must** carefully review the summary to make sure no hallucinations or broken context has been transferred to the new Agent instance. Once verified, the User authorizes the new Agent to continue from where the previous left off.
-
-> **Note:** For recovery from failed handovers, see the relevant section in the [Troubleshooting Guide](Troubleshooting_Guide.md#troubleshooting-guide---apm-v05)
+- See the complete workflow mechanics in [Getting Started](Getting_Started.md)
+- Understand Agent responsibilities in [Agent Types](Agent_Types.md)
+- Learn about Agent communication and memory in [Agent Orchestration](Agent_Orchestration.md)
