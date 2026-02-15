@@ -53,16 +53,15 @@ The Planning Phase concludes when the User approves all Coordination Artifacts. 
 
 ### 3.2 Implementation Phase
 
-The Manager and Worker Agents transform the Implementation Plan into completed deliverables. The phase operates through the Coordination Loop:
+The Manager and Worker Agents transform the Implementation Plan into completed deliverables. The phase operates through the Coordination Cycle:
 
 1. **Task Assignment** — Manager assesses readiness, determines dispatch mode, constructs Task Prompts, delivers via Send Bus.
-2. **Task Execution** — Worker executes Task instructions, validates results, logs to Task Memory Log, writes Task Report to Report Bus.
+2. **Task Cycle(s)** — Worker's execution loop. Each Task Cycle includes: receiving Task Prompt, Task Execution (execute instructions, validate results, iterate if needed), logging to Task Memory Log, and writing Task Report to Report Bus. Multiple Task Cycles may occur within a single Coordination Cycle when parallel or batch dispatch is used.
 3. **Task Review** — Manager reviews Task Report(s) and Task Memory Log(s), makes a Coordination Decision.
 
-The Coordination Loop repeats per Task(s). After all Tasks in a Stage complete, the Manager creates a Stage Summary. After all Stages complete, the Manager presents a Project Completion summary.
+The Coordination Cycle repeats per Task(s). After all Tasks in a Stage complete, the Manager creates a Stage Summary. After all Stages complete, the Manager presents a Project Completion summary.
 
-Supporting procedures run as needed within the loop:
-- **Task Review** — Manager reviews Reports, makes Coordination Decisions, modifies Coordination Artifacts when findings warrant it, and maintains the Memory System.
+Supporting procedures run as needed within the cycle:
 - **Version Control** — Manager initializes and coordinates version control for workspace isolation during parallel dispatch.
 - **Handoff** — Context transfer between Sessions of the same Agent when context window limits approach.
 
