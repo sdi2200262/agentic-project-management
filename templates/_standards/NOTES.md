@@ -4,112 +4,6 @@ This document contains development notes, research findings, and implementation 
 
 ---
 
-## Message Bus UX Redesign & Handoff Logic (Future)
-
-**Context:** The current Message Bus protocol requires users to reference bus files by path (e.g., `@.apm/bus/frontend-agent/apm-send-to-frontend-agent.md`) when carrying messages between agent sessions. File pickers (`@` in Claude Code, `#` in Copilot) frequently fail to locate `.apm/bus/` files — dotfile directories are deprioritized in fuzzy search. When the picker fails, users type 55+ character paths manually, and sometimes the platform treats the input as a plain string rather than a file reference. This adds significant friction to what should be the smoothest part of the workflow.
-
-Core insight: agents already know their identity and bus paths after initialization. The user is manually providing information both sides already possess. The user's role should shift from "file carrier" to "trigger puller" — signaling agents to check their bus rather than referencing files.
-
-**Status:** Future work. Requires new command templates, modifications to existing init and handoff commands, bus file renaming, and updates to the communication skill and workflow guides.
-
-### Simplified Bus File Names
-
-Rename bus files to remove redundant agent slug repetition. The directory provides agent context; the filename reflects intent:
-
-| Current | New |
-|---------|-----|
-| `apm-send-to-<slug>.md` | `apm-task.md` |
-| `apm-report-from-<slug>.md` | `apm-report.md` |
-| `apm-handoff-<slug>.md` | `apm-handoff.md` |
-
-Agent identity is derived from the directory name (`.apm/bus/<slug>/`).
-
-### Trigger Commands
-
-Two new slash commands. Users signal agents to check their bus instead of carrying file references.
-
-**`/apm-check-tasks [agent-id]`** — Worker reads incoming task from its task bus. Argument required before registration (so the agent knows which channel to read), optional after registration (agent knows its slug). Empty bus reports no pending task.
-
-**`/apm-check-reports [agent-id]`** — Manager reads incoming reports. Without argument: scans all `.apm/bus/*/apm-report.md` and processes all pending reports. With argument: checks specific worker's report only.
-
-### Agent-ID Resolution
-
-All commands accepting `[agent-id]` resolve it against `.apm/bus/` directory names: exact match first, then prefix match (e.g., `fe` → `frontend-agent`), then substring match (e.g., `front` → `frontend-agent`). Ambiguous matches list candidates and ask the user to clarify. This is agent-side logic — platform-agnostic, no special features needed.
-
-### Enhanced Init Commands with Optional Registration
-
-**`/apm-3-initiate-worker [agent-id]`** — Optional argument enables early registration. With argument, the agent registers, reads guides, then auto-detects session type by checking buses in priority order:
-
-1. Handoff bus (`apm-handoff.md`) has content → handoff session, process it
-2. Handoff bus empty, task bus (`apm-task.md`) has content → fresh session, validate `agent_id` match against registration, execute first task
-3. Both empty → registered and ready, wait for `/apm-check-tasks`
-
-Without argument: agent sets up role, waits for `/apm-check-tasks <id>` to register on first use.
-
-The argument also enables **cross-validation** — the pre-registered slug is checked against the task prompt's `agent_id` field. Mismatch flags a routing error immediately.
-
-**`/apm-2-initiate-manager`** — Auto-detects handoff by checking `.apm/bus/manager/apm-handoff.md`. Content present means handoff session; empty means fresh start. No argument needed (single manager).
-
-This eliminates the need for a separate `/apm-resume` command. Init commands handle both fresh starts and handoffs transparently — the user runs the same command regardless of scenario.
-
-### Handoff Prompt vs Handoff Memory Log
-
-Clear separation between the bus file (handoff prompt) and the memory log:
-
-**Handoff prompt (`apm-handoff.md`, ephemeral)** — Current state + context reconstruction instructions. What IS happening: outstanding tasks with review-relevant detail, mid-task progress, what to expect next. Pointers to memory logs and files to read. Cleared after the incoming agent processes it. This is the directive — actionable, present-tense, one-time.
-
-**Handoff memory log (memory system, persistent)** — What WAS done: working notes, decisions made, approaches tried, files modified, observations. Strictly past tense. No current state — the incoming agent's own task and handoff logs will capture the completion of ongoing work, maintaining the full archival chain.
-
-The current state does not belong in the persistent archive because it is inherently transient — the incoming agent will change it immediately. Archiving "3 tasks outstanding" becomes stale and misleading the moment one report arrives.
-
-### Worker vs Manager Handoff Asymmetry
-
-**Worker mid-task:** Clear-on-return hasn't fired yet (the worker hasn't written a report), so the task bus (`apm-task.md`) is still intact with the original task prompt. The handoff prompt references it directly: "Read the task from `apm-task.md`, I completed steps 1-4, resume from step 5." Lean prompt, no task re-description.
-
-**Worker between-tasks:** Task bus already cleared (clear-on-return fired when writing the report). Handoff prompt states "no active task, await `/apm-check-tasks`."
-
-**Manager:** Workers may have already cleared their task buses. The outgoing manager must describe outstanding tasks in the handoff prompt with enough detail for the incoming manager to review reports properly — task objectives, expected outputs, review criteria, relevant specification sections.
-
-### Handoff Eligibility
-
-With self-contained handoff prompts (current state lives in the bus file, not dependent on other bus file states), handoff eligibility restrictions can be relaxed. An agent can handoff at any point — mid-task, between tasks, while awaiting reports — as long as the outgoing agent writes comprehensive current state to the handoff prompt. The incoming agent reconstructs from the handoff prompt + memory system, not from other bus files.
-
-This simplifies the handoff model: no eligibility checks, no prerequisite conditions. The only requirement is that the outgoing agent writes a complete handoff prompt before the session ends.
-
-### User Journey Summary
-
-| Scenario | Current | New |
-|----------|---------|-----|
-| New worker, first task | `/apm-3-initiate-worker` + `@.apm/bus/.../apm-send-to-....md` | `/apm-3-initiate-worker fe` |
-| Subsequent tasks | User references send bus file | `/apm-check-tasks` |
-| Manager checks reports | User references report bus file(s) | `/apm-check-reports` |
-| Worker handoff (incoming) | `/apm-3-initiate-worker` + `@.apm/bus/.../apm-handoff-....md` | `/apm-3-initiate-worker fe` (auto-detects) |
-| Manager handoff (incoming) | `/apm-2-initiate-manager` + `@.apm/bus/.../apm-handoff-....md` | `/apm-2-initiate-manager` (auto-detects) |
-
-### Open Questions
-
-1. **Batch + trigger commands:** Does the batch envelope format need adjustment for `/apm-check-tasks`, or does the worker process batches the same way through the trigger command?
-2. **Manager handoff with outstanding dispatches:** WORKFLOW.md §7.8 currently restricts Manager handoff to when no dispatches are outstanding. With self-contained handoff prompts, this restriction should likely be relaxed — needs formal update.
-3. **Agent-ID fuzzy matching edge cases:** Minimum character requirements for prefix matching? Behavior with single-character input or no bus directories present?
-4. **Naming conflict awareness:** `/apm-check-tasks` and `/apm-check-reports` use the `check-` prefix to avoid confusion with the bus file names `apm-task.md` and `apm-report.md`. This is intentional and should be preserved.
-
-### Affected Components
-
-| Component | Change Type | Scope |
-|-----------|------------|-------|
-| Communication Skill (`apm-communication`) | Rename bus files, update protocol for trigger commands, update handoff prompt/log separation | All platforms |
-| Worker init command (`apm-3-initiate-worker`) | Add optional `[agent-id]` argument, auto-detect handoff vs fresh session | All platforms |
-| Manager init command (`apm-2-initiate-manager`) | Add handoff auto-detection on init | All platforms |
-| Worker handoff command (`apm-6-handoff-worker`) | Update handoff prompt guidance (current state in prompt, past actions in log) | All platforms |
-| Manager handoff command (`apm-5-handoff-manager`) | Update handoff prompt guidance (current state in prompt, past actions in log) | All platforms |
-| New command: `/apm-check-tasks` | New template — worker trigger command with agent-ID resolution | All platforms |
-| New command: `/apm-check-reports` | New template — manager trigger command with scan-all and agent-ID resolution | All platforms |
-| Task Assignment guide | Replace "reference this file" guidance with "run `/apm-check-tasks`" | All platforms |
-| Task Review guide | Replace file reference flow with `/apm-check-reports` guidance | All platforms |
-| WORKFLOW.md | Update bus protocol, handoff eligibility rules (relax §7.8), communication flow descriptions | All platforms |
-
----
-
 ## Claude Code Agent Teams Integration (Future)
 
 **Context:** Claude Code's experimental Agent Teams feature enables Workers to internally spawn a team and parallelize work within their assigned task scope. The Worker becomes the team lead, assigns sub-work to teammates, synthesizes results, and reports back through the standard bus protocol. The Manager is unaware this happened — reports and memory logs have the same structure regardless.
@@ -175,7 +69,7 @@ $ apm continue [-n|--name <name>]
 └── Memory/
 ```
 
-The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session state (Send Bus, Report Bus, Handoff Bus files) that is meaningless outside the session that created it. A new session will have different Workers and a fresh bus layout.
+The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session state (Task Bus, Report Bus, Handoff Bus files) that is meaningless outside the session that created it. A new session will have different Workers and a fresh bus layout.
 
 ### Component 2: `/apm-summarize-session` Standalone Command
 

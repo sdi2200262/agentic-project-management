@@ -67,7 +67,7 @@ The Manager coordinates execution of the Implementation Plan. It operates throug
 
 **Core Responsibilities:**
 
-- **Task Assignment** - Assesses task readiness based on dependency completion and the current Dispatch State. Constructs Task Prompts with objective, instructions, validation criteria, and context extracted from Specifications when needed. Determines dispatch mode (single, batch or parallel) and delivers Task Prompts via Send Bus.
+- **Task Assignment** - Assesses task readiness based on dependency completion and the current Dispatch State. Constructs Task Prompts with objective, instructions, validation criteria, and context extracted from Specifications when needed. Determines dispatch mode (single, batch or parallel) and delivers Task Prompts via Task Bus.
 
 - **Task Review** - Reads Task Reports from Report Bus and Task Memory Logs from Workers. Makes Coordination Decisions: Proceed to next task, FollowUp (retry with refined instructions), or Artifact Modification followed proceedding by next task or a FollowUp.
 
@@ -89,7 +89,7 @@ Workers execute Tasks assigned by the Manager. Each Worker is defined in the Imp
 
 **Core Responsibilities:**
 
-- **Task Execution** - Receives Task Prompt via Send Bus. If Cross-Agent Dependencies exist, reads specified files to integrate context from prior tasks of other Workers. Executes instructions step by step, validates results per specified criteria (programmatic tests, artifact checks, User review), iterates on failure until success or stop condition.
+- **Task Execution** - Receives Task Prompt via Task Bus. If Cross-Agent Dependencies exist, reads specified files to integrate context from prior tasks of other Workers. Executes instructions step by step, validates results per specified criteria (programmatic tests, artifact checks, User review), iterates on failure until success or stop condition.
 
 - **Task Memory Logging** - Creates Task Memory Log at specified path documenting outcome, validation results, deliverables, technical decisions, and flags for Manager review. This serves as context abstraction layer between Manager's coordination view and Worker's execution details.
 

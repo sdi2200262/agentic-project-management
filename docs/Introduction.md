@@ -58,8 +58,8 @@ APM maintains project state through structured documents and protocols:
 
 - **Memory System** - A hierarchical folder structure containing Memory Logs for each completed task. Workers document their work in these logs. The Manager reads them to track progress without reviewing code directly, maintaining coordination-level focus.
 
-- **Message Bus** - A file-based communication system for passing messages between Agent sessions. The Manager writes task assignments to Send Bus files; Workers write completion reports to Report Bus files. The User carries these files between sessions, keeping APM platform agnostic while also making communication explicit and auditable.
-- **Handoff Protocol** - When an Agent's context window approaches limits, the User triggers a Handoff. The outgoing Agent creates a Handoff File capturing working knowledge. The replacement Agent reads this file and required Memory Logs to reconstruct context and continue work seamlessly.
+- **Message Bus** - A file-based communication system for passing messages between Agent sessions. The Manager writes task assignments to Task Bus files; Workers write completion reports to Report Bus files. The User triggers bus checks using commands (`/apm-4-check-tasks`, `/apm-5-check-reports`), keeping APM platform agnostic while also making communication explicit and auditable.
+- **Handoff Protocol** - When an Agent's context window approaches limits, the User triggers a Handoff. The outgoing Agent creates a Handoff Memory Log capturing working knowledge and a Handoff Prompt with reconstruction instructions. The replacement Agent reads these artifacts and required Memory Logs to reconstruct context and continue work seamlessly.
 
 ---
 
@@ -71,9 +71,9 @@ APM operates in two distinct phases:
 
 - **Implementation Phase** - The Manager and Worker Agents execute the Implementation Plan through repeating Coordination Cycles:
 
-  1. **Task Assignment** - Manager assesses task readiness, constructs task prompts with required context, delivers via Message Bus
-  2. **Task Execution** - Worker receives task assignment, executes work, validates results, logs outcomes
-  3. **Task Review** - Manager reviews completion logs, makes coordination decisions
+  1. **Task Assignment** - Manager assesses task readiness, constructs task prompts with required context, delivers via Task Bus
+  2. **Task Execution** - Worker receives task assignment via trigger command, executes work, validates results, logs outcomes
+  3. **Task Review** - Manager reviews completion logs via trigger command, makes coordination decisions
 
   The cycle repeats until all tasks complete. The Manager can dispatch multiple tasks in parallel when dependencies allow, or send batches of sequential tasks to the same Worker for efficiency.
 

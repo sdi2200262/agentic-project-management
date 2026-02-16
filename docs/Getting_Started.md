@@ -179,7 +179,7 @@ This step walks through your first Coordination Cycle as an example of the repea
 
 ### 1. Manager Assigns Task
 
-The Manager assesses which tasks are ready and creates a Task Prompt with all required context. It writes this to a Send Bus file and provides you with the file path.
+The Manager assesses which tasks are ready and creates a Task Prompt with all required context. It writes this to the Worker's Task Bus file and provides you with the file path.
 
 ### 2. Initialize Worker Agent
 
@@ -194,11 +194,11 @@ The Manager assesses which tasks are ready and creates a Task Prompt with all re
 
 ### 3. Deliver Task Assignment
 
-Reference the Send Bus file in the Worker's session. The Worker reads the Task Prompt, registers its identity, and begins execution.
+Run `/apm-4-check-tasks` in the Worker's session. The Worker reads the Task Prompt from its Task Bus, registers its identity, and begins execution.
 
 ### 4. Worker Executes
 
-The Worker works through the task, validates results, and creates a Task Memory Log documenting the outcome. It then writes a Task Report to the Report Bus and provides the file path.
+The Worker works through the task, validates results, and creates a Task Memory Log documenting the outcome. It then writes a Task Report to the Report Bus and directs you to run `/apm-5-check-reports` in the Manager's session.
 
 > **Tips:**
 > - Workers pause for your review when User validation is specified
@@ -206,7 +206,7 @@ The Worker works through the task, validates results, and creates a Task Memory 
 
 ### 5. Carry Report to Manager
 
-Reference the Report Bus file in the Manager's session. The Manager reads the Task Report and Task Memory Log, then makes a Coordination Decision:
+Run `/apm-5-check-reports` in the Manager's session. The Manager reads the Task Report and Task Memory Log, then makes a Coordination Decision:
 - **Proceed** - Move to next task
 - **FollowUp** - Send refined Task Prompt to retry
 - **Artifact Modification** - Update Coordination Artifacts, then proceed or follow up
@@ -256,8 +256,8 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
 ### Handoff Process
 
 1. **Trigger Handoff** - When context pressure appears, use the appropriate command:
-   - `/apm-5-handoff-manager` for Manager Agent
-   - `/apm-6-handoff-worker` for Worker Agent
+   - `/apm-6-handoff-manager` for Manager Agent
+   - `/apm-7-handoff-worker` for Worker Agent
 
 2. **Outgoing Agent Actions** - The Agent creates:
    - Handoff Memory Log capturing working knowledge not in formal logs (tracked Worker handoffs and VC state for Manager; working context and technical notes for Worker)
@@ -266,7 +266,7 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
 
 3. **Create New Session** - Open a new session for the same Agent role (e.g., "Manager Agent 2" or "Frontend Agent 2")
 
-4. **Initialize Incoming Agent** - Enter the same initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`), then reference the Handoff Bus file
+4. **Initialize Incoming Agent** - Enter the same initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`) — the Incoming Agent auto-detects the Handoff Prompt from the Handoff Bus
 
 5. **Verify and Resume** - The Incoming Agent reconstructs context from:
    - Coordination Artifacts
