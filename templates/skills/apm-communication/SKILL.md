@@ -31,9 +31,9 @@ This skill defines the Message Bus protocol for structured communication between
 **Message Bus Directory:** `.apm/bus/` containing per-agent subdirectories (Agent Channels) with Bus Files for each communication direction.
 
 **Bus File Types:**
-- **Send Bus** (`apm-send-to-<agent-slug>.md`) - Manager-to-Worker communication.
-- **Report Bus** (`apm-report-from-<agent-slug>.md`) - Worker-to-Manager communication.
-- **Handoff Bus** (`apm-handoff-<agent-slug>.md`) - Outgoing-to-Incoming Agent communication.
+- **Task Bus** (`apm-task.md`) — Manager-to-Worker communication.
+- **Report Bus** (`apm-report.md`) — Worker-to-Manager communication.
+- **Handoff Bus** (`apm-handoff.md`) — Outgoing-to-Incoming Agent communication.
 
 ### 1.4 Non-APM Agent Integration
 
@@ -52,16 +52,16 @@ Bus Files have two states: **empty** (no message present, the cleared/initial st
 ### 2.2 Clearing Protocol Standards
 
 Clearing follows a symmetric pattern: each Agent clears its incoming Bus File before writing to its outgoing Bus File. This prevents stale messages from accumulating:
-- **Manager clearing sequence:** Clear the Report Bus (incoming), then write to the Send Bus (outgoing).
-- **Worker clearing sequence:** Clear the Send Bus (incoming), then write to the Report Bus (outgoing).
+- **Manager clearing sequence:** Clear the Report Bus (incoming), then write to the Task Bus (outgoing).
+- **Worker clearing sequence:** Clear the Task Bus (incoming), then write to the Report Bus (outgoing).
 
 Clearing is performed via terminal truncation: `truncate -s 0 <bus-file-path>`.
 
 ### 2.3 Bus Identity Standards
 
-Workers validate that the Bus File they receive messages from matches their registered Agent identity. The Send Bus filename contains the target Agent slug (`apm-send-to-<agent-slug>.md`). The Worker extracts the Agent slug from the filename and confirms it matches their registered `agent_id`.
+Agent identity is derived from the Agent Channel directory name (`.apm/bus/<agent-slug>/`). Workers validate by confirming the channel directory matches their registered `agent_id`. When using trigger commands, the agent resolves its own bus path from its identity, making explicit validation implicit.
 
-**Validation Rule:** If the Send Bus filename does not match the Worker's registered `agent_id`, reject the message and inform the User of the mismatch.
+**Validation Rule:** If the Agent Channel directory does not match the Worker's registered `agent_id`, reject the message and inform the User of the mismatch.
 
 ### 2.4 Edge Case Standards
 
@@ -70,10 +70,20 @@ Workers validate that the Bus File they receive messages from matches their regi
 
 ### 2.5 Batch Delivery Standards
 
-When dispatching multiple sequential tasks to the same Worker, the Manager sends them as a batch in a single Send Bus message:
-- **Batch Envelope:** The Send Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters. See §4.4 Batch Envelope Format.
+When dispatching multiple sequential tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message:
+- **Batch Envelope:** The Task Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters. See §4.4 Batch Envelope Format.
 - **Task Independence:** Each Task Prompt in a batch retains its full structure as if it were standalone. The batch envelope adds coordination metadata; it does not alter task content.
 - **Fail-Fast:** If a Worker encounters a Blocked or Failed task during batch execution, they stop the batch and do not proceed to remaining tasks. The Batch Report reflects partial completion.
+
+### 2.6 Agent-ID Resolution Standards
+
+When trigger commands accept an `[agent-id]` argument, the agent resolves it against `.apm/bus/` directory names:
+
+1. **Exact match** against `.apm/bus/` directory names.
+2. **Prefix match** (e.g., `fe` → `frontend-agent`). Minimum 2 characters for prefix matching; single character requires exact match.
+3. **Substring match** (e.g., `front` → `frontend-agent`).
+4. **Ambiguous matches** → list candidates and ask User to clarify.
+5. **No match** → inform User. If no bus directories exist, inform User that the Message Bus is not initialized.
 
 ---
 
@@ -83,7 +93,7 @@ This section defines the sequential actions for Message Bus operations.
 
 **Procedure:**
 1. Bus Initialization (Manager Session 1 only)
-2. Task Prompt Delivery (Manager writes Task Prompt to Send Bus)
+2. Task Prompt Delivery (Manager writes Task Prompt to Task Bus)
 3. Task Report Delivery (Worker writes Task Report to Report Bus)
 4. Receiving Protocol (read message from Bus File)
 5. Clearing Protocol (truncate incoming Bus File)
@@ -96,31 +106,31 @@ Execute once during Manager Agent Session 1 Initiation, after Memory Root initia
 2. Read the Implementation Plan to identify all Worker Agents defined in the Agents field.
 3. For each Worker Agent, derive the Agent Slug per §4.3 Agent Slug Convention and create the Agent Channel:
    - Create directory: `.apm/bus/<agent-slug>/`
-   - Create empty Send Bus: `.apm/bus/<agent-slug>/apm-send-to-<agent-slug>.md`
-   - Create empty Report Bus: `.apm/bus/<agent-slug>/apm-report-from-<agent-slug>.md`
-   - Create empty Handoff Bus: `.apm/bus/<agent-slug>/apm-handoff-<agent-slug>.md`
+   - Create empty Task Bus: `.apm/bus/<agent-slug>/apm-task.md`
+   - Create empty Report Bus: `.apm/bus/<agent-slug>/apm-report.md`
+   - Create empty Handoff Bus: `.apm/bus/<agent-slug>/apm-handoff.md`
 4. Create the Manager Channel:
    - Create directory: `.apm/bus/manager/`
-   - Create empty Handoff Bus: `.apm/bus/manager/apm-handoff-manager.md`
+   - Create empty Handoff Bus: `.apm/bus/manager/apm-handoff.md`
 
 ### 3.2 Task Prompt Delivery
 
 Execute when the Manager Agent needs to send a Task Prompt or FollowUp Task Prompt to a Worker Agent. Perform the following actions:
 1. Clear the Report Bus (incoming) per §3.5 Clearing Protocol. Skip on first Task Prompt when no Report exists.
-2. Write the complete Task Prompt content to the Send Bus: `.apm/bus/<agent-slug>/apm-send-to-<agent-slug>.md`.
-3. Inform the User that the Task Prompt is ready and provide the Send Bus path. Direct the User to reference the file in the Worker Agent's session. {CONTEXT_ATTACH_SYNTAX}
+2. Write the complete Task Prompt content to the Task Bus: `.apm/bus/<agent-slug>/apm-task.md`.
+3. Inform the User that the Task Prompt is ready for Worker `<agent-slug>`. Direct the User to run `/apm-4-check-tasks` in the Worker's session.
 
 ### 3.3 Task Report Delivery
 
 Execute when a Worker Agent needs to send a Task Report to the Manager Agent. Perform the following actions:
-1. Clear the Send Bus (incoming) per §3.5 Clearing Protocol.
-2. Write the complete Task Report content to the Report Bus: `.apm/bus/<agent-slug>/apm-report-from-<agent-slug>.md`.
-3. Inform the User that the Task Report is ready and provide the Report Bus path. Direct the User to reference the file in the Manager Agent's session. {CONTEXT_ATTACH_SYNTAX}
+1. Clear the Task Bus (incoming) per §3.5 Clearing Protocol.
+2. Write the complete Task Report content to the Report Bus: `.apm/bus/<agent-slug>/apm-report.md`.
+3. Inform the User that the Task Report is ready. Direct the User to run `/apm-5-check-reports` in the Manager's session.
 
 ### 3.4 Receiving Protocol
 
-Execute when a User references a Bus File in the Agent's session. Perform the following actions:
-1. Read the referenced Bus File.
+Execute when a trigger command is invoked or a User references a Bus File in the Agent's session. Perform the following actions:
+1. Read the Bus File (resolved from agent identity for trigger commands, or directly referenced by User).
 2. Validate that the file contains content. If empty → Inform the User that no message is present.
 3. For Workers: Validate Bus identity per §2.3 Bus Identity Standards.
 4. Process the message content according to the relevant procedure.
@@ -129,8 +139,8 @@ Execute when a User references a Bus File in the Agent's session. Perform the fo
 
 Execute before writing to an outgoing Bus File, to clear the incoming Bus File. Perform the following actions:
 1. Identify the incoming Bus File:
-   - For Manager: `.apm/bus/<agent-slug>/apm-report-from-<agent-slug>.md` (the Worker's Report Bus)
-   - For Worker: `.apm/bus/<agent-slug>/apm-send-to-<agent-slug>.md` (the received Send Bus)
+   - For Manager: `.apm/bus/<agent-slug>/apm-report.md` (the Worker's Report Bus)
+   - For Worker: `.apm/bus/<agent-slug>/apm-task.md` (the received Task Bus)
 2. Truncate the incoming Bus File via terminal: `truncate -s 0 <bus-file-path>`
 3. Proceed to write the outgoing message.
 
@@ -138,10 +148,10 @@ Execute before writing to an outgoing Bus File, to clear the incoming Bus File. 
 
 Execute when an Agent performs a Handoff and needs to write a Handoff Prompt. Perform the following actions:
 1. Determine the Handoff Bus File:
-   - Manager Handoff → `.apm/bus/manager/apm-handoff-manager.md`
-   - Worker Handoff → `.apm/bus/<agent-slug>/apm-handoff-<agent-slug>.md`
+   - Manager Handoff → `.apm/bus/manager/apm-handoff.md`
+   - Worker Handoff → `.apm/bus/<agent-slug>/apm-handoff.md`
 2. Write the Handoff Prompt content to the Handoff Bus File.
-3. Inform the User that the Handoff Prompt is available at the Bus File path. Direct the User to reference the Handoff Bus file in a new session. {CONTEXT_ATTACH_SYNTAX}
+3. Inform the User that the Handoff Prompt is available. Direct the User to start a new session using the appropriate init command — the incoming agent will auto-detect the Handoff Prompt.
 
 ---
 
@@ -154,20 +164,20 @@ This section defines the directory structure, file naming, and conventions for t
 ```
 .apm/bus/
 ├── <agent-slug>/
-│   ├── apm-send-to-<agent-slug>.md
-│   ├── apm-report-from-<agent-slug>.md
-│   └── apm-handoff-<agent-slug>.md
+│   ├── apm-task.md
+│   ├── apm-report.md
+│   └── apm-handoff.md
 └── manager/
-    └── apm-handoff-manager.md
+    └── apm-handoff.md
 ```
 
 ### 4.2 File Naming Convention
 
 | Bus File | Pattern | Direction |
 |----------|---------|-----------|
-| Send Bus | `apm-send-to-<agent-slug>.md` | Manager to Worker |
-| Report Bus | `apm-report-from-<agent-slug>.md` | Worker to Manager |
-| Handoff Bus | `apm-handoff-<agent-slug>.md` | Outgoing to Incoming Agent |
+| Task Bus | `apm-task.md` | Manager to Worker |
+| Report Bus | `apm-report.md` | Worker to Manager |
+| Handoff Bus | `apm-handoff.md` | Outgoing to Incoming Agent |
 
 ### 4.3 Agent Slug Convention
 
@@ -175,7 +185,7 @@ Agent slugs are derived from the Agent names listed in the Implementation Plan A
 
 ### 4.4 Batch Envelope Format
 
-When sending multiple tasks to a Worker in a batch, the Send Bus file uses this structure:
+When sending multiple tasks to a Worker in a batch, the Task Bus file uses this structure:
 
 **YAML Frontmatter:**
 ```yaml
@@ -222,14 +232,14 @@ agent_id: <agent-slug>
 
 ### 5.1 User Guidance Standards
 
-When directing Users to reference Bus Files, use natural language adapted to the situation. Include the file path and contextually appropriate phrasing. {CONTEXT_ATTACH_SYNTAX}
+When directing Users to trigger bus checks, use natural language adapted to the situation. Reference the appropriate trigger command (`/apm-4-check-tasks` or `/apm-5-check-reports`) and the target session.
 
 ### 5.2 Common Mistakes to Avoid
 
-- **Writing to the wrong Bus File:** Manager writes to Send Bus, Worker writes to Report Bus.
+- **Writing to the wrong Bus File:** Manager writes to Task Bus, Worker writes to Report Bus.
 - **Forgetting to clear:** Always clear the incoming Bus File before writing to the outgoing Bus File per §3.5 Clearing Protocol.
 - **Referencing bus files by wrong path:** Use the exact path per §4.1 Directory Structure, derived from the Agent Slug.
-- **Not validating bus identity:** Workers must verify the Send Bus filename matches their `agent_id` per §2.3 Bus Identity Standards.
+- **Not validating bus identity:** Workers must verify the Agent Channel directory matches their `agent_id` per §2.3 Bus Identity Standards.
 
 ---
 

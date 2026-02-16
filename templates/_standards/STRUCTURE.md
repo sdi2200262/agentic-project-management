@@ -385,7 +385,10 @@ Each format definition includes:
 - `commands/apm-1-initiate-planner.md`
 - `commands/apm-2-initiate-manager.md`
 - `commands/apm-3-initiate-worker.md`
-- `commands/apm-5-handoff-manager.md`
+- `commands/apm-4-check-tasks.md`
+- `commands/apm-5-check-reports.md`
+- `commands/apm-6-handoff-manager.md`
+- `commands/apm-7-handoff-worker.md`
 
 ---
 

@@ -111,7 +111,7 @@ Pauses interrupt execution flow.
 
 ### 2.7 Batch Execution Standards
 
-When receiving a batch of tasks (multiple Task Prompts in a single Send Bus message), execute them sequentially and report consolidated results.
+When receiving a batch of tasks (multiple Task Prompts in a single Task Bus message), execute them sequentially and report consolidated results.
 
 **Sequential Execution:** Execute tasks in order. Complete each fully (including validation and logging) before starting the next.
 
@@ -138,8 +138,8 @@ Pause Handling (§3.5) and Subagent Handling (§3.6) are invoked from within the
 ### 3.1 Task Assignment Receipt
 
 Perform the following actions:
-1. Check for batch envelope: If Send Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format and execute each task sequentially per §2.7 Batch Execution Standards.
-2. Verify `agent_id` in YAML frontmatter matches your registered instance. If received via Send Bus, validate the filename matches `agent_id` per `{SKILL_PATH:apm-communication}` §2.3 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries.
+1. Check for batch envelope: If Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format and execute each task sequentially per §2.7 Batch Execution Standards.
+2. Verify `agent_id` in YAML frontmatter matches your registered instance. Validate the Agent Channel directory matches `agent_id` per `{SKILL_PATH:apm-communication}` §2.3 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries.
 3. Parse Task Assignment structure — YAML frontmatter fields and body sections.
 4. Identify execution parameters:
    - `has_dependencies: true` → Context Integration required
@@ -220,8 +220,8 @@ Perform the following actions:
 1. Determine final status per §2.5 Failure Status Standards (Success if all validation passed).
 2. Determine `failure_point`: `null` for Success; `Execution`, `Validation`, or `<description>` based on where stopped.
 3. Create Task Memory Log per `{GUIDE_PATH:task-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
-4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Include Continuing Worker indication if this is your first Task after Handoff. Inform User to reference the Report Bus file in the Manager session.
-5. Await next Task Assignment or Handoff initiation.
+4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Include Continuing Worker indication if this is your first Task after Handoff. Direct User to run `/apm-5-check-reports` in the Manager session.
+5. Await `/apm-4-check-tasks` or Handoff initiation.
 
 ---
 

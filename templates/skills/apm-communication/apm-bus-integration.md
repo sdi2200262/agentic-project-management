@@ -9,25 +9,25 @@ To participate in Message Bus communication, create your own Agent Channel in `.
 1. Choose an Agent Slug for your identity (lowercase, hyphenated). Example: `external-reviewer`.
 2. Create your Agent Channel directory: `.apm/bus/<your-agent-slug>/`.
 3. Create the Bus Files you need:
-   - To receive messages: `apm-send-to-<your-agent-slug>.md`.
-   - To send messages: `apm-report-from-<your-agent-slug>.md`.
-   - For Handoff (if applicable): `apm-handoff-<your-agent-slug>.md`.
+   - To receive tasks: `apm-task.md`.
+   - To send reports: `apm-report.md`.
+   - For Handoff (if applicable): `apm-handoff.md`.
 
 ## File Naming
 
 Bus Files follow a strict naming convention:
 
 | Purpose | File Name |
-|---------|-----------|
-| Receive from Manager | `apm-send-to-<your-agent-slug>.md` |
-| Send to Manager | `apm-report-from-<your-agent-slug>.md` |
-| Handoff | `apm-handoff-<your-agent-slug>.md` |
+|---------|----------|
+| Receive from Manager | `apm-task.md` |
+| Send to Manager | `apm-report.md` |
+| Handoff | `apm-handoff.md` |
 
 ## Clearing Protocol
 
 Before writing a message to your outgoing Bus File, clear your incoming Bus File by truncating it:
 ```
-truncate -s 0 .apm/bus/<your-agent-slug>/apm-send-to-<your-agent-slug>.md
+truncate -s 0 .apm/bus/<your-agent-slug>/apm-task.md
 ```
 
 Then write your message to the outgoing file.
@@ -38,9 +38,9 @@ Bus Files contain message content directly. No YAML frontmatter envelope is used
 
 ## Communication Flow
 
-1. The Manager (or User) writes a message to your Send Bus File.
-2. The User references the file in your session.
-3. Read the Send Bus File and process the message content.
-4. Clear the incoming Send Bus File.
-5. Write your response to the Report Bus File.
-6. Inform the User to reference the Report Bus File in the Manager session.
+1. The Manager (or User) writes a message to your Task Bus file.
+2. The User signals you to check your bus (via `/apm-4-check-tasks` or by referencing the file).
+3. Read the Task Bus file and process the message content.
+4. Clear the incoming Task Bus file.
+5. Write your response to the Report Bus file.
+6. Inform the User that a report is ready. The User runs `/apm-5-check-reports` in the Manager session.

@@ -106,10 +106,10 @@ When multiple Workers are active simultaneously, the Manager coordinates asynchr
 
 ### 3.1 Report Processing
 
-Execute when User returns with a Task Report (or Batch Report) from a Worker Agent.
+Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or Batch Report) from a Worker Agent.
 
 Perform the following actions:
-1. Read the Report from the Report Bus. Clear per `{SKILL_PATH:apm-communication}` §3.5 Clearing Protocol.
+1. Read the Report from the Report Bus (`.apm/bus/<agent-slug>/apm-report.md`). Clear per `{SKILL_PATH:apm-communication}` §3.5 Clearing Protocol.
 2. If Batch Report (`batch: true` in frontmatter), process each Task's outcome individually through §3.2 and §3.3. Unstarted Tasks re-enter the dispatch pool.
 3. Check for Handoff indication per §2.4 Handoff Detection Standards. If detected, verify Handoff Memory Log exists and update Context Dependency treatment.
 4. Update dispatch tracking: mark this Worker as available, note completed Task(s) for readiness assessment.

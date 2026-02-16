@@ -63,28 +63,30 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 |------|------------|
 | **Message Bus** | File-based communication system within `.apm/bus/` enabling structured message exchange between Agent Sessions. Initialized by Manager during Session 1. |
 | **Agent Channel** | Per-agent subdirectory within the Message Bus containing that Agent's Bus Files. |
-| **Send Bus** | Bus File for Manager-to-Worker communication (`apm-send-to-<agent-slug>.md`). Contains Task Prompts. |
-| **Report Bus** | Bus File for Worker-to-Manager communication (`apm-report-from-<agent-slug>.md`). Contains Task Reports. |
-| **Handoff Bus** | Bus File for Outgoing-to-Incoming Agent communication (`apm-handoff-<agent-slug>.md`). Contains Handoff Prompts. |
+| **Task Bus** | Bus File for Manager-to-Worker communication (`apm-task.md`). Contains Task Prompts. Direction: Manager → Worker. |
+| **Report Bus** | Bus File for Worker-to-Manager communication (`apm-report.md`). Contains Task Reports. Direction: Worker → Manager. |
+| **Handoff Bus** | Bus File for Outgoing-to-Incoming Agent communication (`apm-handoff.md`). Contains Handoff Prompts. Direction: Outgoing → Incoming. |
 | **Clear-on-Return** | Protocol where an Agent clears its incoming Bus File before writing to its outgoing Bus File. |
+| **Trigger Command** | Slash command that signals an Agent to check its bus for pending messages. Replaces manual file referencing. |
+| **Agent-ID Resolution** | Process of matching a partial agent identifier against `.apm/bus/` directory names using exact, prefix, then substring matching. |
 
 **Message Bus Structure:**
 
 ```
 .apm/bus/
 ├── <agent-slug>/
-│   ├── apm-send-to-<agent-slug>.md
-│   ├── apm-report-from-<agent-slug>.md
-│   └── apm-handoff-<agent-slug>.md
+│   ├── apm-task.md
+│   ├── apm-report.md
+│   └── apm-handoff.md
 └── manager/
-    └── apm-handoff-manager.md
+    └── apm-handoff.md
 ```
 
 **Communications:**
 
 | Term | Definition |
 |------|------------|
-| **Task Prompt** | Self-contained prompt delivered via Send Bus providing a Worker with everything needed to execute and validate a Task. |
+| **Task Prompt** | Self-contained prompt delivered via Task Bus providing a Worker with everything needed to execute and validate a Task. |
 | **FollowUp Task Prompt** | Refined Task Prompt issued after a Coordination Decision determines retry is needed. Contains different content from the original based on what went wrong. |
 | **Handoff Prompt** | Prompt delivered via Handoff Bus instructing an Incoming Agent to reconstruct context. |
 | **Task Report** | Concise summary delivered via Report Bus by Worker for Manager review. |
@@ -158,13 +160,13 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 
 | Term | Definition |
 |------|------------|
-| **Task Assignment** | Procedure where the Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them to Workers via Send Bus. |
+| **Task Assignment** | Procedure where the Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them to Workers via Task Bus. |
 | **Task Review** | Procedure where the Manager reviews Task Reports and Task Memory Logs, makes Coordination Decisions, modifies Coordination Artifacts when findings warrant it, and maintains the Dispatch State. |
 | **Coordination Cycle** | The repeating cycle that drives the Implementation Phase, scoped per task: Task Assignment → Task Cycle → Task Review. Each task executes through its own Coordination Cycle. Includes artifact modification and Dispatch State updates as needed within iterations. |
 | **Task Cycle** | The Worker's execution loop within a Coordination Cycle: receive Task Prompt → execute → validate → iterate (if needed) → log → report. Each Coordination Cycle contains one Task Cycle. When multiple tasks are dispatched (batch or parallel), multiple Coordination Cycles occur - sequentially for batch, concurrently for parallel. |
 | **Coordination Decision** | Manager's assessment after Task Review. Outcomes: Proceed to next Task, FollowUp (retry with refined instructions), or Artifact Modification plus next Task or FollowUp. |
 | **Ready Task** | A Task whose dependencies are all complete and can be dispatched. |
-| **Batch Dispatch** | Dispatching multiple sequential Tasks to the same Worker in a single Send Bus message. |
+| **Batch Dispatch** | Dispatching multiple sequential Tasks to the same Worker in a single Task Bus message. |
 | **Parallel Dispatch** | Dispatching Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist among them. |
 
 ### 8.2 Execution (Worker Agent)

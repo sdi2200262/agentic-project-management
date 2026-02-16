@@ -23,7 +23,9 @@ This guide defines the methodology for Work Breakdown, which transforms gathered
 - **`Implementation_Plan.md`** — Stage and Task breakdown with Agent assignments, validation criteria, dependency chains, and Dependency Graph.
 - **`{AGENTS_FILE}`** — Universal execution-level Standards applied during Task Execution.
 
-These artifacts serve different consumers during the Implementation Phase. The Manager uses Specifications and the Implementation Plan for coordination — extracting Specification content into Task Prompts and using the Plan for dispatch and progress tracking. `{AGENTS_FILE}` is the only artifact Workers access directly. Design each artifact with its consumer's needs in mind.
+**Artifact visibility rules — design for the consumer:**
+- **Specifications and Implementation Plan → Manager only.** Workers never see or interact with these files. The Manager reads them for coordination, extracts relevant Specification content into Task Prompts, and uses the Plan for dispatch and progress tracking. Write these artifacts for the Manager's coordination needs — organization, cross-referencing, and extraction efficiency matter more than standalone readability for executors.
+- **`{AGENTS_FILE}` → Workers directly.** This is the only artifact Workers access during Task Execution. Workers can read and reference it at any time. Write Standards so they are self-contained and actionable without Specifications or Implementation Plan context.
 
 ### 1.4 Scope Adaptation
 
@@ -89,7 +91,12 @@ The Implementation Plan defines how work is organized — Stages, Tasks, Agent a
 
 **Task self-sufficiency.** Each Task must contain enough context in its guidance and dependency references for a Worker to execute it from a Task Prompt alone. Workers do not have access to the full Implementation Plan or Specifications — the Manager extracts relevant content during Task Assignment.
 
-**Dispatch-aware structuring.** When assignments and task ordering could reasonably go multiple ways, prefer arrangements that create batch candidates (sequential same-Agent chains) and parallel opportunities (independent tasks across Agents).
+**Dispatch-aware structuring.** When assignments and task ordering could reasonably go multiple ways, prefer arrangements that maximize dispatch opportunities:
+- **Batch candidates** — same-Agent Task groups dispatchable together. Two patterns qualify: sequential same-Agent chains where each Task depends only on the previous, or multiple independent same-Agent Tasks with no same-Agent dependencies that become Ready simultaneously.
+- **Parallel candidates** — independent Ready Tasks assigned to different Agents with no unresolved Cross-Agent Dependencies among them, dispatchable simultaneously.
+- **Single dispatch** — a lone Ready Task with no batch or parallel partners.
+
+All three patterns are valid. Structure the plan to create natural opportunities across all of them rather than forcing one pattern.
 
 ### 2.5 `{AGENTS_FILE}` Standards
 
@@ -163,10 +170,12 @@ For each Stage from §3.4 Stage Analysis, complete detailed Task breakdown. Exec
 2. For each Task, present reasoning in chat:
    - **Agent assignment** — which Agent and why.
    - **Validation** — types selected and rationale.
-   - **Dependencies** — what this Task requires, especially Cross-Agent Dependencies.
+   - **Dependencies** — enumerate every dependency this Task has. For each dependency, explicitly classify:
+     - *Same-Agent Dependency:* producer and consumer are the same Agent. Use `Task N.M` format.
+     - *Cross-Agent Dependency:* producer and consumer are different Agents. Use **`Task N.M by <Agent>`** (bolded) format. Specify what the consumer needs from the producer — the deliverable at the boundary (files, interfaces, schemas, configurations).
    - **Steps** — ordered operations with purpose.
    Use more detail for complex Tasks (Cross-Agent Dependencies, multiple validation types, domain boundary questions) and less for straightforward ones. Use free-form markdown structure when presenting your reasoning in chat, but include all required dimensions.
-3. Append the Stage to the Implementation Plan per §4.3 Stage Format and §4.4 Task Format, with Steps per §4.5 Step Format. Enrich Task details based on your chat reasoning.
+3. Append the Stage to the Implementation Plan per §4.3 Stage Format and §4.4 Task Format, with Steps per §4.5 Step Format. Enrich Task details based on your chat reasoning. Ensure every Cross-Agent Dependency is bolded in the Dependencies field at write time — do not defer to Plan Review.
 
 ### 3.6 Plan Review
 
@@ -175,11 +184,12 @@ After completing all Stage Cycles, review the plan. Apply §2.4 Implementation P
    - **Sub-domain boundaries** — where to split and why.
    - **Agent coherence** — how sub-Agents maintain clear, focused domains.
    Update Implementation Plan assignments and emergent task dependencies.
-2. **Cross-Agent Dependency review.** Identify all Cross-Agent Dependencies. Present reasoning in chat:
-   - **Dependency chains** — for each, the provider Task, consumer Task, and required deliverable at the boundary.
+2. **Cross-Agent Dependency review.** Verify all Cross-Agent Dependencies are correctly identified and bolded. Walk through every Task's Dependencies field and cross-check Agent assignments — if a dependency's producer Agent differs from the consumer's Agent, it must be a bolded Cross-Agent Dependency. Present reasoning in chat:
+   - **Full dependency audit** — list every dependency in the plan, classify each as Same-Agent or Cross-Agent, flag any misclassified entries.
+   - **Dependency chains** — for each Cross-Agent Dependency, the provider Task, consumer Task, assigned Agents, and required deliverable at the boundary.
    - **Risk assessment** — dependencies that create bottlenecks or coordination complexity. Assess whether dependencies could be resolved by adjusting Agent assignments.
-   Bold Cross-Agent Dependencies in the Implementation Plan Dependencies fields.
-3. **Dependency Graph generation.** Generate a mermaid graph per §4.6 Dependency Graph Format using finalized Tasks, Agent assignments, and dependencies. Write to Implementation Plan header under `* **Dependency Graph:**`.
+   Fix any misclassified dependencies in the Implementation Plan Dependencies fields.
+3. **Dependency Graph generation.** Generate a mermaid graph per §4.6 Dependency Graph Format using finalized Tasks, Agent assignments, and dependencies. For each edge, verify the edge type matches the dependency classification: `-->` for Same-Agent, `-.->` for Cross-Agent. Write to Implementation Plan header under `* **Dependency Graph:**`.
 4. **Plan summary.** Present in chat: Agent count, Stage count with names and Task counts, total Tasks, Cross-Agent Dependency count.
 5. **Implementation Plan Checkpoint.** Pause for User review. Present the checkpoint:
    - State Implementation Plan is complete.
@@ -297,7 +307,13 @@ style T2_1 fill:#f4a261,color:#000
 style T2_2 fill:#a8dadc,color:#000
 ```
 
-**Dispatch patterns visible:** In this example T1_1 → T1_2 form a batch candidate (same Agent, sequential chain), T2_1 and T2_2 are parallel candidates (independent, different Agents), while T1_2 -.-> T2_1 and T1_2 -.-> T2_2 are Cross-Agent Dependencies. Any lone ready Task is a single dispatch.
+**Dispatch patterns visible from the graph:**
+- **Batch candidates** — same-Agent Task groups dispatchable together. Two patterns qualify:
+  - *Sequential chain:* each Task depends only on the previous (e.g., T1_1 → T1_2 → T1_3, all same Agent).
+  - *Independent group:* same-Agent Tasks with no same-Agent dependencies, all Ready simultaneously.
+- **Parallel candidates** — independent Ready Tasks assigned to different Agents (e.g., T2_1 and T2_2 above), dispatchable simultaneously.
+- **Cross-Agent coordination points** — dotted arrows (e.g., T1_2 -.-> T2_1) indicate where one Agent's output feeds another Agent's input.
+- **Single dispatch** — a lone Ready Task with no batch or parallel partners.
 
 **Node format:** `T<Stage>_<Task>["<Task ID> <Title><br/><i><Agent Name></i>"]`
 
@@ -328,7 +344,8 @@ style T2_2 fill:#a8dadc,color:#000
 - **Task packing:** Multiple unrelated deliverables in one Task — split them.
 - **Over-decomposition:** Excessive small Tasks — combine when they share context and validation.
 - **Vague validation:** "Works correctly" — specify what "correctly" means concretely. Include actionable validation instructions.
-- **Missing dependencies:** Tasks requiring prior work not marked — trace prerequisites and dependency chains. Mark Cross-Agent Dependencies when Agents split in §3.6 Plan Review.
+- **Missing dependencies:** Tasks requiring prior work not marked — trace prerequisites and dependency chains.
+- **Misclassified dependencies:** Cross-Agent Dependencies not bolded, Same-Agent Dependencies incorrectly bolded, or wrong edge types in the Dependency Graph (`-->` vs `-.->`) — classify at write time in §3.5 Stage Cycles by checking whether producer and consumer share the same Agent. In §3.6 Plan Review, verify both the Dependencies fields and the graph edges match the classification.
 - **Non-universal standards:** Task-specific patterns elevated to `{AGENTS_FILE}` — if it only applies to some Tasks, it's Task guidance.
 
 ---

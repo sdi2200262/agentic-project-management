@@ -20,7 +20,7 @@ This guide defines how the Manager Agent constructs Task Prompts for Worker Agen
 
 ### 1.3 Outputs
 
-**Task Prompt:** Content written to Send Bus for Worker Agent to receive. Contains all context a Worker needs to execute a Task.
+**Task Prompt:** Content written to Task Bus for Worker Agent to receive. Contains all context a Worker needs to execute a Task.
 
 **FollowUp Task Prompt:** A new Task Prompt with different content than the previous failed attempt, issued when the Coordination Decision (per `{GUIDE_PATH:task-review}` §3.3 Coordination Decision) determines FollowUp is needed. Content is refined based on what went wrong, guided by a FollowUp Context section.
 
@@ -58,13 +58,17 @@ FollowUp Task Prompts occur when the Coordination Decision determines FollowUp i
 
 ### 2.4 Dispatch Standards
 
-Before constructing individual Task Prompts, the Manager assesses dispatch opportunities across Ready Tasks. The Dependency Graph informs these assessments.
+Before constructing individual Task Prompts, the Manager assesses dispatch opportunities across Ready Tasks. The Dependency Graph and Dispatch State inform these assessments.
 
 **Task readiness.** A Task is Ready when all its dependencies are complete.
 
-**Batch candidacy.** Multiple Ready Tasks assigned to the same Worker may be batched if each depends only on the previous in the chain (or already-complete Tasks) and no external Tasks depend on intermediate Tasks. Soft guidance: 3-5 Tasks per batch.
-
-**Parallel candidacy.** Ready Tasks assigned to different Workers may be dispatched in parallel if no unresolved cross-Worker dependencies exist among them.
+**Dispatch types.** Assess all Ready Tasks and determine the appropriate dispatch type for each:
+- **Batch dispatch** — multiple Ready Tasks assigned to the same Worker, dispatched together in a single prompt. Two qualifying patterns:
+  - *Sequential chain:* Tasks form an ordered chain where each depends only on the previous (or already-complete Tasks) and no external Tasks depend on intermediate Tasks.
+  - *Independent group:* Tasks have no same-Agent dependencies between them and are all Ready simultaneously.
+  - Soft guidance: 3-5 Tasks per batch.
+- **Parallel dispatch** — Ready Tasks assigned to different Workers with no unresolved Cross-Agent Dependencies among them, dispatched simultaneously to their respective Workers. Requires version control workspace isolation.
+- **Single dispatch** — one Ready Task dispatched to its assigned Worker. Applies when a Task has no batch or parallel partners.
 
 **Parallel dispatch prerequisites.** Before first parallel dispatch, the Manager initializes version control per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization — creating feature branches and worktrees for workspace isolation. The Manager also recommends configuring Worker permissions to minimize approval wait times. If the User declines VC setup, fall back to sequential dispatch.
 
@@ -92,11 +96,13 @@ Assess dispatch opportunities before constructing individual Task Prompts per §
 Perform the following actions:
 1. Identify Ready Tasks — read the Dispatch State in Memory Root for current task statuses, cross-reference the Dependency Graph for newly unblocked Tasks.
 2. Group Ready Tasks by assigned Worker.
-3. Assess batch candidacy — same-Worker chains with only internal dependencies, no external Tasks depending on intermediates.
-4. Assess parallel candidacy — multiple Workers with Ready Tasks and no cross-Worker dependencies among them.
-5. If parallel dispatch planned, initialize version control per `{SKILL_PATH:apm-version-control}` §3.2 Branch Operations and §3.3 Worktree Operations.
-6. Formulate dispatch plan: which Workers receive dispatches, single/batch/parallel mode.
-7. For each Task in the dispatch plan, proceed to §3.2-§3.4, then §3.5.
+3. Assess dispatch type for each group per §2.4 Dispatch Standards:
+   - *Batch:* same-Worker group with 2+ Ready Tasks — check for sequential chain (internal-only dependencies, no external dependents on intermediates) or independent group (no same-Agent dependencies, all Ready).
+   - *Parallel:* multiple Workers each have Ready Tasks — verify no unresolved Cross-Agent Dependencies among them.
+   - *Single:* one Ready Task for a Worker with no batch or parallel partners.
+4. If parallel dispatch planned, initialize version control per `{SKILL_PATH:apm-version-control}` §3.2 Branch Operations and §3.3 Worktree Operations.
+5. Formulate dispatch plan: which Workers receive dispatches, dispatch type per Worker (single, batch, or parallel).
+6. For each Task in the dispatch plan, proceed to §3.2-§3.4, then §3.5.
 
 ### 3.2 Context Dependency Analysis
 
@@ -136,9 +142,9 @@ Perform the following actions:
 1. Construct YAML frontmatter per §4.1 Task Prompt Format.
 2. Construct prompt body: Task Reference, Context from Dependencies (if applicable), Objective, Detailed Instructions, Workspace (if parallel dispatch), Expected Output, Validation Criteria, Task Logging instructions, Reporting Protocol.
 3. If parallel dispatch, include workspace path per `{SKILL_PATH:apm-version-control}` — worktree path or branch name.
-4. Write to Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery. For batches, use `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
-5. For parallel dispatch, write to each Worker's Send Bus.
-6. Direct the User to reference the file(s) in the respective Worker session(s). {CONTEXT_ATTACH_SYNTAX}
+4. Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery. For batches, use `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
+5. For parallel dispatch, write to each Worker's Task Bus.
+6. Direct the User to run `/apm-4-check-tasks` in the respective Worker session(s).
 
 ### 3.6 FollowUp Task Prompt Creation
 
@@ -149,8 +155,8 @@ Perform the following actions:
 2. If Coordination Artifacts were modified, extract relevant updated content per §3.3 and §3.4.
 3. Refine all content sections — Objective, Instructions, Output, Validation — based on what went wrong. Include a FollowUp Context section explaining the issue and required refinement.
 4. Construct the FollowUp prompt using §4.2 FollowUp Assignment Format. Same `memory_log_path` as the original.
-5. Write to Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
-6. Direct the User to reference the Send Bus file in the Worker session. {CONTEXT_ATTACH_SYNTAX}
+5. Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
+6. Direct the User to run `/apm-4-check-tasks` in the Worker session.
 
 ---
 
