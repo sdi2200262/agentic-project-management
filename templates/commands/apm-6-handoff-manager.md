@@ -17,22 +17,15 @@ The Incoming Manager reconstructs context from Coordination Artifacts, guides, s
 
 ## 2. Handoff Eligibility
 
-Handoff is only eligible when the current Task Cycle is complete and no outstanding dispatches exist — all Reports from active Workers must be collected first.
+Handoff is eligible at any point as long as the Handoff Prompt captures comprehensive current state. The requirement is documentation completeness, not workflow stage.
 
-**Eligibility requires** the Manager to have completed:
-- Task Prompt(s) issued
-- All Task Reports received
-- Task Memory Logs reviewed
-- Coordination Decision(s) made
+**Handoff Prompt comprehensiveness requires** the Outgoing Manager to describe:
+- Outstanding tasks with enough detail for the Incoming Manager to review reports properly — task objectives, expected outputs, review criteria, relevant specification sections.
+- Mid-review progress if a review is in progress.
+- Pending dispatches and which Workers are active.
+- Any investigation or artifact modification in progress.
 
-**Blocking scenarios — deny Handoff when:**
-- Waiting for Task Report (dispatched but Worker hasn't completed)
-- Mid-review (Report received but Coordination Decision not yet made)
-- Mid-investigation (investigating flags or non-Success status)
-- Mid-artifact modification (modification in progress)
-- Outstanding parallel dispatches (Reports pending from active Workers)
-
-**If not eligible:** Explain the blocking reason concisely, state what must complete first, and offer to proceed with Handoff after completion.
+**No blocking scenarios.** The Manager can Handoff mid-review, with outstanding dispatches, or while awaiting Reports. The requirement shifts from "complete everything first" to "document everything comprehensively."
 
 ---
 
@@ -49,23 +42,31 @@ Assess against §2 criteria. If not eligible, deny with reason and re-offer afte
 Perform the following actions:
 1. Determine session numbers: your current session number and Incoming Manager session number (yours + 1).
 2. Increment Manager Handoffs counter in Memory Root.
-3. Create Handoff Memory Log per §4 Handoff Memory Log Structure, capturing:
+3. Create Handoff Memory Log per §4 Handoff Memory Log Structure, capturing **past actions** — what WAS done:
    - Tracked Worker Handoffs (which Workers, from which Stage) — most critical for Context Dependency treatment.
    - VC state: active branches, worktrees, pending merges per `{SKILL_PATH:apm-version-control}`.
    - User preferences and communication patterns.
-   - Coordination insights not captured elsewhere.
+   - Coordination insights, decisions made, approaches tried, not captured elsewhere.
+   - Working notes from this session.
+
+**Content focus:** Strictly past tense. What was done, what was decided, what was observed. No current state — current state belongs in the Handoff Prompt.
 
 ### 3.3 Handoff Prompt Creation
 
 Perform the following actions:
-1. Create Handoff Prompt per §5 Handoff Prompt Structure.
-2. Include: session takeover statement, instructions to read Coordination Artifacts and guides/skills, Handoff Memory Log path, instructions to read current-Stage Memory Logs, current state summary, and immediate next action.
+1. Create Handoff Prompt per §5 Handoff Prompt Structure, capturing **current state** — what IS happening:
+   - Outstanding tasks with review-relevant detail: objectives, expected outputs, review criteria, relevant specification sections.
+   - Mid-review progress and pending coordination decisions.
+   - Active Workers and their dispatch state.
+   - Pointers to memory logs and files the Incoming Manager should read.
+
+**Content focus:** Actionable, present-tense, one-time. The Incoming Manager processes this prompt during auto-detection in the init command. The prompt is cleared after processing.
 
 ### 3.4 User Review and Finalization
 
 Perform the following actions:
 1. Write Handoff Prompt to Handoff Bus per `{SKILL_PATH:apm-communication}` §3.6 Handoff Bus Protocol.
-2. Present both artifacts to User: Handoff Memory Log (file path) and Handoff Prompt (Bus path). Request review and direct User to reference the Handoff Bus file in a new session. {CONTEXT_ATTACH_SYNTAX}
+2. Present both artifacts to User: Handoff Memory Log (file path) and Handoff Prompt (Bus path). Request review and direct User to start a new session using `/apm-2-initiate-manager` — the Incoming Manager will auto-detect the Handoff Prompt.
 3. If modifications requested, update accordingly. Session ends when User starts the new session.
 
 ---
@@ -98,7 +99,9 @@ Contains working context not captured in Coordination Artifacts or Memory Logs. 
 
 ## 5. Handoff Prompt Structure
 
-The Handoff Prompt instructs the Incoming Manager to reconstruct context procedurally. Written to `.apm/bus/manager/apm-handoff-manager.md`.
+The Handoff Prompt instructs the Incoming Manager to reconstruct context procedurally. Written to `.apm/bus/manager/apm-handoff.md`.
+
+The Incoming Manager processes this prompt during auto-detection in the init command. The prompt is cleared after processing.
 
 **Required content:** Structure with `#` title and `##` section headings.
 

@@ -33,8 +33,10 @@ Perform the following actions:
    - `{SKILL_PATH:apm-communication}` — Message Bus protocol
    - `{SKILL_PATH:apm-version-control}` — version control coordination
 3. Determine your role:
-   - If Manager Handoffs is 0 → **Manager Agent Session 1**. Proceed to §2.1.
-   - If Manager Handoffs > 0 → **Incoming Manager** (Session N = Handoffs + 1). Proceed to §2.2.
+   - Check `.apm/bus/manager/apm-handoff.md` for content.
+   - If Handoff Bus has content → **Incoming Manager** (Session N). Proceed to §2.2.
+   - If Handoff Bus is empty AND Manager Handoffs is 0 → **Manager Agent Session 1**. Proceed to §2.1.
+   - If Handoff Bus is empty AND Manager Handoffs > 0 → Error state (handoff count mismatch). Inform User.
 
 ### 2.1 Manager Agent Session 1 Initiation
 
@@ -51,16 +53,17 @@ Perform the following actions:
 Perform the following actions:
 1. Review Memory Root Stage Summaries to understand project state.
 2. Present current state: completed Stages, current Stage progress, noted issues, working notes.
-3. Request the Handoff Prompt from User.
-4. Upon receiving Handoff Prompt: extract session number, read Handoff Memory Log and relevant Task Memory Logs as instructed.
-5. Confirm Handoff and resume coordination with §3 Task Cycle.
+3. Read Handoff Prompt from `.apm/bus/manager/apm-handoff.md`.
+4. Process Handoff Prompt: extract session number, read Handoff Memory Log and relevant Task Memory Logs as instructed.
+5. Clear the Handoff Bus after processing.
+6. Confirm Handoff and resume coordination with §3 Task Cycle.
 
 ## 3. Task Cycle
 
 The Task Cycle alternates between Dispatch and Review. Repeat until all Stages complete, User intervenes, or Handoff is needed.
 
-1. **Dispatch** — Assess readiness and construct Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure. Write to Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
-2. **Await Report(s)** — User references Send Bus file(s) in Worker session(s). Worker(s) execute, validate, log, and write Task Report(s) to Report Bus. User references Report Bus file in Manager session.
+1. **Dispatch** — Assess readiness and construct Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure. Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
+2. **Await Report(s)** — User runs `/apm-4-check-tasks` in Worker session(s). Worker(s) execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this session.
 3. **Review and Decide** — Process the Report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Memory Log, make Coordination Decision, modify Coordination Artifacts if needed, update Dispatch State.
 4. **Execute outcome:**
    - *Proceed* → return to step 1.
@@ -104,7 +107,7 @@ Worker Agents are defined in the Implementation Plan. Each Worker operates in a 
 ### 7.3 Communication Standards
 
 - Reference guides and skills by path — do not quote their content.
-- Write to Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
+- Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
 - Keep communication concise while maintaining clarity.
 
 ---

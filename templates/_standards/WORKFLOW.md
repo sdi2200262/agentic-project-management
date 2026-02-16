@@ -10,7 +10,7 @@ Terms used here are defined in `TERMINOLOGY.md`. Structural patterns follow `STR
 
 APM is a multi-agent project management framework that coordinates Agent Sessions through file-based communication and structured Coordination Artifacts. The framework operates on these principles:
 
-**User-mediated coordination.** The User initiates Agent Sessions, carries Bus Files between sessions via the Message Bus (markdown files in `.apm/bus/`), approves key decisions, and triggers Handoffs. All inter-agent communication occurs through file-based coordination rather than direct programmatic connection. This user-mediated model works universally across tools and environments without requiring platform-specific integrations.
+**User-mediated coordination.** The User initiates Agent Sessions, triggers bus checks between sessions via trigger commands, approves key decisions, and triggers Handoffs. All inter-agent communication occurs through file-based coordination rather than direct programmatic connection. Agents resolve their own bus paths from their registered identity — the User signals when to check, not what to read. This user-mediated model works universally across tools and environments without requiring platform-specific integrations.
 
 **Platform agnosticism.** Core concepts (Message Bus, Memory System, Coordination Artifacts) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
 
@@ -55,7 +55,7 @@ The Planning Phase concludes when the User approves all Coordination Artifacts. 
 
 The Manager and Worker Agents transform the Implementation Plan into completed deliverables. Each task executes through its own Coordination Cycle:
 
-1. **Task Assignment** — Manager assesses readiness, determines dispatch mode, constructs Task Prompt, delivers via Send Bus.
+1. **Task Assignment** — Manager assesses readiness, determines dispatch mode, constructs Task Prompt, delivers via Task Bus.
 2. **Task Cycle** — Worker's execution loop. Each Task Cycle includes: receiving Task Prompt, Task Execution (execute instructions, validate results, iterate if needed), logging to Task Memory Log, and writing Task Report to Report Bus.
 3. **Task Review** — Manager reviews Task Report and Task Memory Log, makes a Coordination Decision.
 
@@ -71,15 +71,15 @@ Supporting procedures run as needed within the cycle:
 
 ### 4.1 Message Bus
 
-The Message Bus is a file-based communication system in `.apm/bus/`. The Manager initializes it during Session 1. Each Worker has an Agent Channel (subdirectory) containing their Bus Files. The Manager has a channel for its Handoff Bus only. Operational procedures for Bus initialization and message delivery are defined in the communication skill.
+The Message Bus is a file-based communication system in `.apm/bus/`. The Manager initializes it during Session 1. Each Worker has an Agent Channel (subdirectory) containing their Bus Files. The Manager has a channel for its Handoff Bus only. Agents use trigger commands to read their bus after initialization. Operational procedures for Bus initialization and message delivery are defined in the communication skill.
 
 ### 4.2 Bus File Types
 
-| Bus File | Direction | Contains |
-|----------|-----------|----------|
-| Send Bus | Manager → Worker | Task Prompts (single or batched) |
-| Report Bus | Worker → Manager | Task Reports or Batch Reports |
-| Handoff Bus | Outgoing → Incoming Agent | Handoff Prompts |
+| Bus File | File Name | Direction | Contains |
+|----------|-----------|-----------|----------|
+| Task Bus | `apm-task.md` | Manager → Worker | Task Prompts (single or batched) |
+| Report Bus | `apm-report.md` | Worker → Manager | Task Reports or Batch Reports |
+| Handoff Bus | `apm-handoff.md` | Outgoing → Incoming Agent | Handoff Prompts |
 
 ### 4.3 Clear-on-Return Protocol
 
@@ -87,13 +87,15 @@ Before writing to an outgoing Bus File, an Agent clears its incoming Bus File. T
 
 ### 4.4 Communication Flow
 
-1. Manager writes Task Prompt to Worker's Send Bus.
-2. User references the Send Bus file in the Worker's session.
-3. Worker executes, logs, writes Task Report to Report Bus.
-4. User references the Report Bus file in the Manager's session.
-5. Manager reviews and makes Coordination Decision.
+1. Manager writes Task Prompt to Worker's Task Bus.
+2. Manager informs User a task is ready for Worker `<id>`.
+3. User runs `/apm-4-check-tasks` in the Worker's session (or `/apm-4-check-tasks <id>` if not yet registered).
+4. Worker executes, logs, writes Task Report to Report Bus.
+5. Worker informs User a report is ready.
+6. User runs `/apm-5-check-reports` in the Manager's session (or `/apm-5-check-reports <id>` for a specific Worker).
+7. Manager reviews and makes Coordination Decision.
 
-The User is the message carrier at every boundary - there is no direct Manager-Worker communication.
+Trigger commands replace manual file referencing. Agents resolve their bus paths from their registered identity. The User is the trigger puller at every boundary — there is no direct Manager-Worker communication.
 
 ---
 
@@ -226,7 +228,7 @@ The Planner decomposes gathered context into Coordination Artifacts through a fo
 
 **Agent:** Manager. **Phase:** Implementation.
 
-The Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them via Send Bus. This procedure operates in three parts: dispatch assessment, per-task analysis, and prompt creation.
+The Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them via Task Bus. This procedure operates in three parts: dispatch assessment, per-task analysis, and prompt creation.
 
 #### 7.3.1 Dispatch Assessment
 
@@ -257,9 +259,9 @@ For each Task in the dispatch plan:
 Assemble the Task Prompt with YAML frontmatter (stage, task, agent_id, memory_log_path, flags) and markdown body (task reference, context from dependencies, objective, detailed instructions, workspace path if applicable, expected output, validation criteria, memory logging instructions, reporting instructions).
 
 **Dispatch delivery** per the communication skill:
-- **Single** — Write prompt to Worker's Send Bus.
-- **Batch** — Write multiple prompts with batch envelope (YAML frontmatter with batch metadata, prompts separated by delimiters) to Worker's Send Bus.
-- **Parallel** — Write to multiple Workers' Send Buses. Inform User of all pending deliveries.
+- **Single** — Write prompt to Worker's Task Bus. Inform User to run `/apm-4-check-tasks` in the Worker's session.
+- **Batch** — Write multiple prompts with batch envelope (YAML frontmatter with batch metadata, prompts separated by delimiters) to Worker's Task Bus. Inform User to run `/apm-4-check-tasks` in the Worker's session.
+- **Parallel** — Write to multiple Workers' Task Buses. Inform User of all pending deliveries and which Worker sessions need `/apm-4-check-tasks`.
 
 **Workspace instructions.** Included for parallel dispatch per the VC skill. Worker operates in the specified worktree/branch, commits work there, and notes workspace in the Task Memory Log. Workers do not merge — the Manager coordinates merges.
 
@@ -273,7 +275,7 @@ Issued when a Coordination Decision determines retry is needed. A FollowUp Task 
 
 The Worker executes Task instructions, validates results, and reports back.
 
-**Worker Registration.** On first Task Prompt, the Worker binds to the Agent identity specified in the prompt's `agent_id` field. This identity persists across the Worker's Session.
+**Worker Registration.** The Worker binds to an Agent identity either via the init command's optional `[agent-id]` argument (pre-registration) or on first Task Prompt from the `agent_id` field. This identity persists across the Worker's Session.
 
 **Context Integration.** If included, before executing the Worker reads and integrates dependency context as specified in the Task Prompt's Context from Dependencies section.
 
@@ -287,7 +289,7 @@ The Worker executes Task instructions, validates results, and reports back.
 
 **Task Logging.** After execution, the Worker writes a structured Task Memory Log at the path specified in the Task Prompt.
 
-**Task Reporting.** After logging, the Worker clears the Send Bus per Clear-on-Return protocol, writes a Task Report (or Batch Report for batch execution) to the Report Bus per the communication skill.
+**Task Reporting.** After logging, the Worker clears the Task Bus per Clear-on-Return protocol, writes a Task Report (or Batch Report for batch execution) to the Report Bus per the communication skill. The Worker informs the User that a report is ready and directs the User to run `/apm-5-check-reports` in the Manager's session.
 
 ### 7.5 Task Review
 
@@ -339,17 +341,30 @@ Review the Task Memory Log. If everything looks good — Success with no flags, 
 
 Handoff transfers context between Sessions of the same Agent when context window limits approach. The Planner does not perform Handoff (single Session).
 
-**Eligibility.** The Manager may only Handoff when no outstanding dispatches exist — all Reports from active Workers must be collected first. Workers may Handoff between Tasks; if during Task Execution, they must include their current execution context in detail in their Handoff Memory Log.
+**Eligibility.** Agents can Handoff at any point — mid-task, between tasks, while awaiting reports — as long as the Handoff Prompt captures comprehensive current state. The requirement is completeness of the Handoff Prompt, not completion of in-flight work.
+
+- **Manager:** Can Handoff at any point (mid-review, with outstanding dispatches). Must describe outstanding tasks with enough detail for the incoming Manager to review reports properly — task objectives, expected outputs, review criteria, relevant specification sections.
+- **Worker:** Can Handoff mid-Task as well as between Tasks.
 
 **Handoff is User-initiated.** The User provides the Handoff command when they observe context pressure or the Agent signals it.
 
+**Handoff Prompt vs Handoff Memory Log.** The two artifacts serve distinct purposes:
+- **Handoff Prompt** (ephemeral, in Bus File): Current state — what IS happening. Outstanding tasks with detail, mid-task progress, what to expect next, pointers to logs and files. Actionable, present-tense. Cleared after the incoming Agent processes it.
+- **Handoff Memory Log** (persistent, in Memory System): Past actions — what WAS done. Working notes, decisions made, approaches tried, files modified, observations. Strictly archival.
+
+**Worker vs Manager Handoff asymmetry:**
+- *Mid-Task:* Task Bus still contains the original task prompt (Clear-on-Return hasn't fired). Handoff Prompt references it: "Read the task from `apm-task.md`, I completed steps 1-4, resume from step 5."
+- *Between-Tasks:* Task Bus cleared. Handoff Prompt states "no active task, await `/apm-4-check-tasks`."
+- *Manager:* Workers may have already cleared their Task Buses. The outgoing Manager must describe outstanding tasks in the Handoff Prompt with enough detail for the incoming Manager to review reports properly.
+
 **Outgoing Agent actions:**
-1. Create Handoff Memory Log capturing working context not recorded elsewhere, including current execution context if during Task Execution and VC state (active branches, worktrees, pending merges) if applicable.
-2. Write Handoff Prompt to Handoff Bus instructing the Incoming Agent on Context Reconstruction.
+1. Create Handoff Memory Log capturing past working context — what was done, decisions made, approaches tried. VC state (active branches, worktrees, pending merges) if applicable.
+2. Write Handoff Prompt to Handoff Bus with current state and Context Reconstruction instructions for the Incoming Agent.
 
 **Incoming Agent actions:**
-1. Follow Handoff Prompt to read Handoff Memory Log and relevant Task Memory Logs.
-2. Reconstruct working context and resume from where the Outgoing Agent left off.
+1. The init command auto-detects the Handoff Prompt in the Handoff Bus and processes it.
+2. Follow Handoff Prompt to read Handoff Memory Log and relevant Task Memory Logs.
+3. Reconstruct working context and resume from where the Outgoing Agent left off.
 
 **Context Reconstruction scope:**
 - Incoming Manager reads Memory Root Stage Summaries, Handoff Memory Log, and relevant recent Task Memory Logs.
@@ -385,9 +400,9 @@ Subagent findings are integrated into the spawning Agent's context and reflected
 
 ## 9. User Interaction Model
 
-### 9.1 User as Message Carrier
+### 9.1 User as Trigger Puller
 
-The User carries Bus Files between Agent Sessions. After the Manager writes to a Send Bus, the User references that file in the Worker's session. After the Worker writes to a Report Bus, the User references that file in the Manager's session. The User decides delivery timing and order.
+The User signals Agents to check their Bus Files using trigger commands. After the Manager writes to a Task Bus, the User runs `/apm-4-check-tasks` in the Worker's session. After the Worker writes to a Report Bus, the User runs `/apm-5-check-reports` in the Manager's session. The User decides delivery timing and order.
 
 ### 9.2 User-Initiated Actions
 
@@ -396,7 +411,7 @@ The User carries Bus Files between Agent Sessions. After the Manager writes to a
 | Start Planning Phase | User initiates Planner Agent session |
 | Start Implementation Phase | User initiates first Manager Agent session |
 | Start Worker Session | User initiates Worker Agent sessions |
-| Carry messages | User references Bus Files in appropriate sessions |
+| Trigger bus checks | User runs trigger commands (`/apm-4-check-tasks`, `/apm-5-check-reports`) in appropriate sessions |
 | Trigger Handoff | User provides Handoff command when context pressure observed |
 | Approve artifacts | User reviews and approves Coordination Artifacts during Planning |
 | Collaborate on modifications | User provides guidance when artifact modifications, project direction, or general decisions exceed Manager authority |
@@ -414,7 +429,7 @@ Checkpoints where the workflow pauses for explicit User approval:
 
 ### 9.4 Parallel Session Management
 
-During parallel dispatch, the User manages multiple Worker sessions simultaneously. The Manager provides all pending Send Bus paths and indicates which sessions need delivery. Reports return as Workers complete — the User carries them to the Manager in any order.
+During parallel dispatch, the User manages multiple Worker sessions simultaneously. The Manager indicates which Worker sessions need `/apm-4-check-tasks`. Reports return as Workers complete — the User runs `/apm-5-check-reports` in the Manager's session in any order.
 
 ---
 

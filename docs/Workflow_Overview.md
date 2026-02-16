@@ -121,11 +121,11 @@ The Manager assesses which tasks are ready based on dependency completion and Di
 
 3. **Task Prompt Construction** - Assembles a self-contained prompt with task reference, context from dependencies, objective, detailed instructions, expected output, validation criteria, memory logging instructions, and reporting instructions.
 
-4. **Delivery via Send Bus** - Writes the Task Prompt to the Worker's Send Bus file. Provides the file path to the User for delivery to the Worker session.
+4. **Delivery via Task Bus** - Writes the Task Prompt to the Worker's Task Bus file. Directs the User to run `/apm-4-check-tasks` in the Worker's session.
 
 **Dispatch Modes:**
 - **Single Dispatch** - One task to one Worker
-- **Batch Dispatch** - Multiple sequential tasks to the same Worker in a single Send Bus message
+- **Batch Dispatch** - Multiple sequential tasks to the same Worker in a single Task Bus message
 - **Parallel Dispatch** - Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist among them
 
 For parallel dispatch, the Manager initializes version control (feature branches and worktrees) for workspace isolation.
@@ -146,9 +146,9 @@ The Worker receives the Task Prompt and executes through this loop:
 
 6. **Task Memory Logging** - Creates Task Memory Log at specified path documenting outcome, validation results, deliverables, technical decisions, and flags.
 
-7. **Task Reporting** - Clears the Send Bus, writes Task Report to Report Bus summarizing completion status and key findings.
+7. **Task Reporting** - Clears the Task Bus, writes Task Report to Report Bus summarizing completion status and key findings.
 
-The Worker provides the Report Bus file path for the User to carry back to the Manager.
+The Worker directs the User to run `/apm-5-check-reports` in the Manager's session.
 
 **Batch Execution:** When receiving a batch, the Worker executes each task sequentially and writes a Task Memory Log immediately after each. If any task results in Blocked or Failed status, the Worker stops execution (fail-fast) and reports partial completion with unstarted tasks listed as "Not started (batch stopped)."
 
@@ -158,7 +158,7 @@ The Worker provides the Report Bus file path for the User to carry back to the M
 
 The Manager receives the Task Report via Report Bus and reviews the outcome:
 
-1. **Report Processing** - Reads the Task Report from Report Bus, clears per Clear-on-Return protocol. If Batch Report, processes each task's outcome individually.
+1. **Report Processing** - Reads the Task Report from Report Bus (triggered by `/apm-5-check-reports`), clears per Clear-on-Return protocol. If Batch Report, processes each task's outcome individually.
 
 2. **Log Review** - Reads the Task Memory Log referenced in the Report. Interprets task status (Success, Partial, Failed, Blocked), flags (important_findings, compatibility_issues), and log content.
 
@@ -191,11 +191,11 @@ The Memory System in `.apm/Memory/` tracks project state and execution history:
 
 The Message Bus in `.apm/bus/` enables file-based communication between Agent Sessions:
 
-- **Send Bus** (`apm-send-to-<agent-slug>.md`) - Manager-to-Worker communication containing Task Prompts
-- **Report Bus** (`apm-report-from-<agent-slug>.md`) - Worker-to-Manager communication containing Task Reports
-- **Handoff Bus** (`apm-handoff-<agent-slug>.md`) - Outgoing-to-Incoming Agent communication containing Handoff Prompts
+- **Task Bus** (`apm-task.md`) - Manager-to-Worker communication containing Task Prompts
+- **Report Bus** (`apm-report.md`) - Worker-to-Manager communication containing Task Reports
+- **Handoff Bus** (`apm-handoff.md`) - Outgoing-to-Incoming Agent communication containing Handoff Prompts
 
-The User carries Bus Files between sessions - there is no direct Manager-Worker communication. The Clear-on-Return protocol ensures each Agent clears its incoming Bus File before writing to its outgoing Bus File, preventing stale messages.
+The User triggers bus checks using commands (`/apm-4-check-tasks`, `/apm-5-check-reports`) — there is no direct Manager-Worker communication. The Clear-on-Return protocol ensures each Agent clears its incoming Bus File before writing to its outgoing Bus File, preventing stale messages.
 
 ---
 
@@ -220,18 +220,18 @@ graph LR
 ### Handoff Process
 
 **Eligibility**
-- Manager may only Handoff when no outstanding dispatches exist - all Reports from active Workers must be collected first
-- Workers may Handoff between tasks; if during Task Execution, they must include current execution context in detail in their Handoff Memory Log
+- Manager may Handoff at any point as long as the Handoff Prompt captures comprehensive current state
+- Workers may Handoff between tasks or mid-task; must include current execution context in detail in their Handoff Memory Log
 
 **Outgoing Agent**
 1. Creates Handoff Memory Log capturing working context not recorded elsewhere (effective patterns, User preferences, undocumented insights, current execution context if mid-task, version control state if applicable)
 2. Writes Handoff Prompt to Handoff Bus instructing the Incoming Agent on context reconstruction
-3. Provides Handoff Bus file path to User
+3. Directs User to start a new session using the initialization command — the Incoming Agent auto-detects the Handoff Prompt
 
 **Incoming Agent**
 1. User creates new session for the same Agent role (e.g., "Manager Agent 2" or "Frontend Agent 2")
-2. User runs initialization command and references Handoff Bus file
-3. Agent follows Handoff Prompt to read Handoff Memory Log and relevant Task Memory Logs
+2. User runs initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`)
+3. Agent auto-detects Handoff Prompt from Handoff Bus, follows instructions to read Handoff Memory Log and relevant Task Memory Logs
 4. Agent reconstructs working context and presents understanding summary
 5. User verifies accuracy and authorizes Agent to resume from where Outgoing Agent left off
 

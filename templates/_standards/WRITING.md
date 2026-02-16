@@ -184,7 +184,7 @@ References use "See" or "per" exclusively. Nearby sentences are adapted so refer
 
 **Same-Document:** "See §N.M Section Title" or "per §N.M Section Title" where N.M is the section number and Section Title is the exact heading text. Applies to skills, guides, and commands referencing their own sections. Examples: "See §2.1 Context Dependency Standards." or "Integrate dependent context per §3.2 Context Integration."
 
-**Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title" or "per `{SKILL_PATH:skill-name}` §N.M Section Title" where skill-name is the skill directory name. Example: "Write to Send Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery."
+**Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title" or "per `{SKILL_PATH:skill-name}` §N.M Section Title" where skill-name is the skill directory name. Example: "Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery."
 
 **Cross-Guide:** "See `{GUIDE_PATH:guide-name}` §N.M Section Title" or "per `{GUIDE_PATH:guide-name}` §N.M Section Title" where guide-name is the guide file name without extension. Example: "See `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure."
 

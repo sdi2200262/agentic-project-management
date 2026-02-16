@@ -21,10 +21,10 @@ The framework establishes a coordination hierarchy where Agents interact through
 - No ongoing relationship - Planner completes and exits
 
 **Manager ↔ Workers (via User)**
-- Manager assigns tasks by writing Task Prompts to Send Bus files
-- User carries Send Bus files to Worker Sessions
+- Manager assigns tasks by writing Task Prompts to Task Bus files
+- User runs `/apm-4-check-tasks` in Worker Sessions to deliver assignments
 - Workers execute tasks and write Task Reports to Report Bus files
-- User carries Report Bus files back to Manager
+- User runs `/apm-5-check-reports` in Manager Session to deliver reports
 - Manager reviews and makes Coordination Decisions
 
 **Outgoing Agent → Incoming Agent (via User)**
@@ -47,17 +47,17 @@ The Message Bus in `.apm/bus/` provides file-based communication between Agent S
 
 Each Agent Channel contains three Bus Files:
 
-**Send Bus** (`apm-send-to-<agent-slug>.md`)
+**Task Bus** (`apm-task.md`)
 - Manager writes Task Prompts (single or batched)
 - Worker reads to receive assignments
 - Direction: Manager → Worker
 
-**Report Bus** (`apm-report-from-<agent-slug>.md`)
+**Report Bus** (`apm-report.md`)
 - Worker writes Task Reports (single or batched)
 - Manager reads to review outcomes
 - Direction: Worker → Manager
 
-**Handoff Bus** (`apm-handoff-<agent-slug>.md`)
+**Handoff Bus** (`apm-handoff.md`)
 - Outgoing Agent writes Handoff Prompt
 - Incoming Agent reads to reconstruct context
 - Direction: Outgoing Agent → Incoming Agent
@@ -66,16 +66,16 @@ Each Agent Channel contains three Bus Files:
 
 Before writing to an outgoing Bus File, an Agent clears its incoming Bus File. This prevents stale messages from accumulating and signals message processing completion.
 
-Example: Worker clears Send Bus before writing to Report Bus.
+Example: Worker clears Task Bus before writing to Report Bus.
 
 ### Message Flow
 
-All communication requires User as carrier. For example:
+All communication requires User as trigger puller. For example:
 
-1. Manager writes Task Prompt to Worker's Send Bus
-2. User references Send Bus file in Worker Session
-3. Worker executes, clears Send Bus, writes Task Report to Report Bus
-4. User references Report Bus file in Manager Session
+1. Manager writes Task Prompt to Worker's Task Bus
+2. User runs `/apm-4-check-tasks` in Worker Session
+3. Worker executes, clears Task Bus, writes Task Report to Report Bus
+4. User runs `/apm-5-check-reports` in Manager Session
 5. Manager reads Report, clears Report Bus, makes Coordination Decision
 
 This user-mediated model works universally across platforms without requiring tool-specific integrations.
@@ -162,7 +162,7 @@ Single Session, no Handoff.
 **Access:**
 - All Coordination Artifacts (reads, may update)
 - Memory System (Memory Root with Dispatch State and Stage Summaries, all Task Memory Logs)
-- Message Bus (all Send/Report/Handoff buses)
+- Message Bus (all Task/Report/Handoff buses)
 - Version control state during parallel dispatch
 
 **Does not access:**
@@ -205,13 +205,12 @@ The Incoming Agent inherits clean context without session noise, enabling multip
 ### Handoff Eligibility
 
 **Manager:**
-- May only Handoff when no outstanding dispatches exist
-- All Reports from active Workers must be collected first
-- Clean coordination state required
+- May Handoff at any point as long as the Handoff Prompt captures comprehensive current state
+- Documentation completeness is the requirement, not workflow stage
 
 **Worker:**
-- May Handoff between tasks (preferred)
-- May Handoff during Task Execution if necessary (must document current execution context in detail in Handoff Memory Log)
+- May Handoff between tasks or mid-task
+- Must document current execution context in detail in Handoff Memory Log if mid-task
 
 ### Two-Artifact Handoff System
 
