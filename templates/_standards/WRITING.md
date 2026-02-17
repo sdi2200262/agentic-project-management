@@ -76,7 +76,7 @@ Neutral, direct language is required. Statements specify actions without hedging
 |----------|-------------|
 | **Active voice** | "The Manager creates a Task Assignment." Not "A Task Assignment is created." |
 | **Second person for procedures** | "Perform the following actions" addresses the reading agent directly. |
-| **Third person for descriptions** | "The Worker Agent executes Tasks" describes behavior. |
+| **Third person for descriptions** | "The Worker executes Tasks" describes behavior. |
 | **No anthropomorphization** | Agents "execute" and "perform." They do not "want," "feel," or "think." |
 
 ### 2.3 Neutrality
@@ -133,7 +133,7 @@ Rules:
 ### 3.3 Conditional Branching
 
 Arrow notation is used for conditions:
-- If condition A → Proceed to §3.2 Context Integration.
+- If condition A → Proceed to §3.2 Dependency Context.
 - If condition B → Continue to action 4.
 
 For complex branching with multiple outcomes:
@@ -182,7 +182,7 @@ Agent outputs to Users use natural language adapted to the situation. Internal t
 
 References use "See" or "per" exclusively. Nearby sentences are adapted so references fit naturally. References appear inline within prose or as standalone sentences; references are not list items.
 
-**Same-Document:** "See §N.M Section Title" or "per §N.M Section Title" where N.M is the section number and Section Title is the exact heading text. Applies to skills, guides, and commands referencing their own sections. Examples: "See §2.1 Context Dependency Standards." or "Integrate dependent context per §3.2 Context Integration."
+**Same-Document:** "See §N.M Section Title" or "per §N.M Section Title" where N.M is the section number and Section Title is the exact heading text. Applies to skills, guides, and commands referencing their own sections. Examples: "See §2.1 Context Dependency Standards." or "Read and integrate dependent context per §3.2 Dependency Context."
 
 **Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title" or "per `{SKILL_PATH:skill-name}` §N.M Section Title" where skill-name is the skill directory name. Example: "Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery."
 

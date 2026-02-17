@@ -1,17 +1,17 @@
 ---
 command_name: handoff-manager
-description: Initiates and guides the Manager Agent through the Handoff Procedure to transfer coordination context to an Incoming Manager Agent instance.
+description: Initiates and guides the Manager through the Handoff Procedure to transfer coordination context to an Incoming Manager instance.
 ---
 
-# APM {VERSION} - Manager Agent Handoff Command
+# APM {VERSION} - Manager Handoff Command
 
 ## 1. Overview
 
-This command initiates the Handoff Procedure for a Manager Agent approaching context window limits. The Outgoing Manager creates two artifacts:
+This command initiates the Handoff Procedure for a Manager approaching context window limits. The Outgoing Manager creates two artifacts:
 - **Handoff Memory Log:** Working context not captured in Coordination Artifacts or Memory Logs, stored in `.apm/Memory/Handoffs/Manager_Handoffs/`.
 - **Handoff Prompt:** Written to the Handoff Bus, instructing the Incoming Manager to reconstruct context procedurally.
 
-The Incoming Manager reconstructs context from Coordination Artifacts, guides, skills, Memory Logs, and the Handoff Memory Log — not from the Handoff Memory Log alone.
+The Incoming Manager rebuilds working context from Coordination Artifacts, guides, skills, Memory Logs, and the Handoff Memory Log — not from the Handoff Memory Log alone.
 
 ---
 
@@ -56,7 +56,7 @@ Perform the following actions:
 Perform the following actions:
 1. Create Handoff Prompt per §5 Handoff Prompt Structure, capturing **current state** — what IS happening:
    - Outstanding tasks with review-relevant detail: objectives, expected outputs, review criteria, relevant specification sections.
-   - Mid-review progress and pending coordination decisions.
+   - Mid-review progress and pending review outcomes.
    - Active Workers and their dispatch state.
    - Pointers to memory logs and files the Incoming Manager should read.
 
@@ -105,8 +105,8 @@ The Incoming Manager processes this prompt during auto-detection in the init com
 
 **Required content:** Structure with `#` title and `##` section headings.
 
-- **Session takeover statement:** "You are taking over from Manager Agent Session <N> as Manager Agent Session <N+1>."
-- **Context Reconstruction Protocol:**
+- **Session takeover statement:** "You are taking over from Manager Session <N> as Manager Session <N+1>."
+- **Rebuilding context:**
   1. Read Handoff Memory Log — note Tracked Worker Handoffs and VC state.
   2. Read current-Stage Memory Logs (all Agents).
   3. For previous-Stage Context Dependencies encountered later: read the specific Task Memory Log on demand. If the Task Memory Log is insufficient, read referenced files to reconstruct context.

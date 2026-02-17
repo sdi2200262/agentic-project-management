@@ -2,18 +2,18 @@
 
 ## 1. Overview
 
-**Reading Agent:** Worker Agent
+**Reading Agent:** Worker
 
-This guide defines how Worker Agents log Task outcomes and report results. Task Memory Logs capture task-level context using structured Markdown files, enabling the Manager Agent to track progress and make Coordination Decisions without parsing raw code or chat history.
+This guide defines how Workers log Task outcomes and report results. Task Memory Logs capture task-level context using structured Markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
 
 ### 1.1 How to Use This Guide
 
-**Execute the Procedure** in §3 Task Logging Procedure — follow §3.1 Task Memory Log Procedure after Task Execution. **Use Operational Standards** in §2 for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). **Follow Structural Specifications** in §4 for output formats.
+**Execute the Procedure** in §3 Task Logging Procedure — follow §3.1 Task Memory Log Procedure after task execution. **Use Operational Standards** in §2 for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). **Follow Structural Specifications** in §4 for output formats.
 
 ### 1.2 Objectives
 
 - Capture task outcomes in a structured, reviewable format
-- Enable Manager Agent coordination through consistent log structure
+- Enable Manager coordination through consistent log structure
 - Preserve execution context for progress tracking and handoff continuity
 - Flag important findings and compatibility issues for Manager attention
 
@@ -74,11 +74,11 @@ Status reflects outcome — whether the objective was achieved. Select status ba
 
 ### 2.3 Detail Level Standards
 
-Task Memory Logs serve the Manager Agent's coordination needs, not archival documentation.
+Task Memory Logs serve the Manager's coordination needs, not archival documentation.
 
 *Assessment Questions:*
 - Does this detail help the Manager understand what was accomplished?
-- Would this detail affect the Manager's next coordination decision?
+- Would this detail affect the Manager's next review decision?
 - Can this detail be found by reading the referenced artifacts directly?
 
 *Default:* When uncertain, prefer concise but comprehensive summaries with artifact references over verbose inline content.
@@ -140,7 +140,7 @@ Perform the following actions:
     ---
 
 **Field Descriptions:**
-- `agent`: string, required. Worker Agent identifier.
+- `agent`: string, required. Worker identifier.
 - `task_id`: string, required. Task reference from Implementation Plan (e.g., `Task 2.1`).
 - `status`: enum, required. Task outcome per §2.2 Outcome Standards.
 - `failure_point`: string or null, required. Where/why the task didn't succeed; `null` for Success.
@@ -182,7 +182,7 @@ Perform the following actions:
 
 ### 4.2 Batch Report Format
 
-When executing a batch of tasks, the Worker writes a consolidated Batch Report to the Report Bus after completing all tasks (or stopping on failure).
+When executing a batch of tasks, the Worker writes a consolidated batch report to the Report Bus after completing all tasks (or stopping on failure).
 
 **YAML Frontmatter Schema:**
 
