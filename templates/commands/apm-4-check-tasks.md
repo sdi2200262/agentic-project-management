@@ -1,13 +1,13 @@
 ---
 command_name: check-tasks
-description: Signals a Worker Agent to check its Task Bus for pending Task Prompts.
+description: Signals a Worker to check its Task Bus for pending Task Prompts.
 ---
 
 # APM {VERSION} - Worker Check Tasks Command
 
 ## 1. Overview
 
-This command signals a Worker Agent to check its Task Bus for pending Task Prompts. It replaces manual file referencing — the Worker resolves its bus path from its registered identity or from the provided `[agent-id]` argument.
+This command signals a Worker to check its Task Bus for pending Task Prompts. It replaces manual file referencing — the Worker resolves its bus path from its registered identity or from the provided `[agent-id]` argument.
 
 Accepts an optional `[agent-id]` argument:
 - **Registered Worker:** Argument is optional (ignored if registered — the Worker knows its bus path).
@@ -24,8 +24,8 @@ Perform the following actions:
    - If Worker is not registered → argument `{ARGS}` is required. If no argument provided, inform User that an agent-id is required before registration. Proceed to step 2.
 
 2. **Resolve agent-id** (unregistered Workers only):
-   - Resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §2.6 Agent-ID Resolution Standards.
-   - Register as the resolved Agent per `{COMMAND_PATH:apm-3-initiate-worker}` §2.1 Worker Registration.
+   - Resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §2.6 Resolving Agent IDs.
+   - Register as the resolved agent per `{COMMAND_PATH:apm-3-initiate-worker}` §2.1 Registration.
 
 3. **Read Task Bus** at `.apm/bus/<agent-slug>/apm-task.md`.
    - If empty → inform User that no pending task is available. Await next invocation.
@@ -39,9 +39,9 @@ Perform the following actions:
 
 ## 3. Operating Rules
 
-### 3.1 Instance Boundaries
+### 3.1 Identity Scope
 
-After registration, only accept Task Assignments for your registered AgentID per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries. When receiving an assignment for a different AgentID, decline and direct User to the correct Worker Agent session.
+After registration, only accept tasks assigned to your registered AgentID per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope. When receiving an assignment for a different AgentID, decline and direct User to the correct Worker session.
 
 ### 3.2 Communication Standards
 

@@ -1,5 +1,5 @@
 # <Project Name> – APM Specifications
-**Last Modification:** [To be filled by Planner Agent during Work Breakdown]
+**Last Modification:** [To be filled by Planner during Work Breakdown]
 
 ---
 

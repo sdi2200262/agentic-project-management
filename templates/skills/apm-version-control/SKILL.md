@@ -7,7 +7,7 @@ description: Version control coordination for workspace isolation during paralle
 
 ## 1. Overview
 
-**Reading Agent:** Manager Agent, Worker Agent
+**Reading Agent:** Manager, Worker
 
 This skill defines version control operations for workspace isolation during the Implementation Phase. The Manager uses it to initialize git, create branches and worktrees, coordinate merges, and track VC state. Workers use it to understand their workspace context and commit conventions.
 
@@ -21,7 +21,7 @@ This skill defines version control operations for workspace isolation during the
 
 ### 1.2 Objectives
 
-- Initialize version control during Manager Session 1 when a git repository is present
+- Initialize version control during Manager session 1 when a git repository is present
 - Provide workspace isolation through feature branches and worktrees for parallel dispatch
 - Coordinate merges as a dispatch prerequisite — merge completed branches before dispatching dependent Tasks
 - Track VC state in Working Notes for Handoff continuity
@@ -42,7 +42,7 @@ This section establishes reasoning approaches and decision rules for version con
 
 ### 2.1 Repository Detection Standards
 
-The Manager detects existing repository state during Session 1 initialization. Detection is passive — the Manager reads what exists rather than imposing configuration.
+The Manager detects existing repository state during session 1 initialization. Detection is passive — the Manager reads what exists rather than imposing configuration.
 
 **Detection checks:**
 - Is git initialized in the project directory? If no, initialize and inform the User.
@@ -77,7 +77,7 @@ Merge state is a dispatch prerequisite. The Manager merges completed feature bra
 
 **Merge execution.** The Manager performs merges autonomously. Clean merges require no User intervention.
 
-**Conflict resolution.** The Manager resolves merge conflicts using coordination-level context — knowledge of both Tasks' objectives, project design, and Specifications. For complex conflicts, spawn a Debug Subagent or escalate to the User.
+**Conflict resolution.** The Manager resolves merge conflicts using coordination-level context — knowledge of both Tasks' objectives, project design, and Specifications. For complex conflicts, spawn a debug subagent or escalate to the User.
 
 **Branch protection adaptation.** If the base branch has protection rules that prevent direct merges, the Manager adapts (creates a PR, merges into an intermediate branch, or asks the User). Discovered reactively and noted in Working Notes for future merges.
 
@@ -100,7 +100,7 @@ The Manager does not impose a workflow. It operates within the User's environmen
 This section defines the sequential actions for version control operations.
 
 **Procedure:**
-1. VC Initialization (Manager Session 1)
+1. VC Initialization (Manager session 1)
 2. Branch Operations (per dispatch)
 3. Worktree Operations (parallel dispatch only)
 4. Merge Coordination (after Task Review)
@@ -108,7 +108,7 @@ This section defines the sequential actions for version control operations.
 
 ### 3.1 VC Initialization
 
-Execute once during Manager Agent Session 1 Initiation, after Memory System initialization. Perform the following actions:
+Execute once during Manager session 1 initiation, after Memory System initialization. Perform the following actions:
 
 1. Check if git is initialized. If not, run `git init` and inform the User.
 2. Detect the current branch — record as base branch.
@@ -141,7 +141,7 @@ Execute for parallel dispatch when multiple Workers need isolated workspaces. Pe
 
 ### 3.4 Merge Coordination
 
-Execute after a successful Task Review when the Coordination Decision is Proceed. Perform the following actions:
+Execute after a successful Task Review when the review outcome is Proceed. Perform the following actions:
 
 1. Switch to the base branch: `git checkout <base-branch>`.
 2. Merge the completed feature branch: `git merge <branch-name>`.
@@ -175,7 +175,7 @@ Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived 
 
 ### 4.3 Working Notes VC Entry Format
 
-The Manager records VC state in Memory Root Working Notes. This entry is the source of truth for Handoff continuity — an Incoming Manager reads it to reconstruct VC context.
+The Manager records VC state in Memory Root Working Notes. This entry is the source of truth for Handoff continuity — an incoming Manager reads it to rebuild working VC context.
 
 **Format:**
 ```markdown

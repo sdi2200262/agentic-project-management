@@ -2,9 +2,9 @@
 
 ## 1. Overview
 
-**Reading Agent:** Worker Agent
+**Reading Agent:** Worker
 
-This guide defines how Worker Agents execute Tasks assigned by the Manager Agent via Task Prompts. Task Execution transforms Task Prompts into completed deliverables through context integration, execution, validation, and iteration.
+This guide defines how Workers execute Tasks assigned by the Manager via Task Prompts. Task execution transforms Task Prompts into completed deliverables through context integration, execution, validation, and iteration.
 
 ### 1.1 How to Use This Guide
 
@@ -19,7 +19,7 @@ This guide defines how Worker Agents execute Tasks assigned by the Manager Agent
 - Validate execution against provided criteria in correct order
 - Iterate on failures until success or stop condition
 - Handle User collaboration points
-- Log outcomes and report to Manager Agent via User
+- Log outcomes and report to Manager via User
 
 ### 1.3 Outputs
 
@@ -52,7 +52,7 @@ Workers operate with narrow context — only their Task Assignment and accumulat
 
 ### 2.2 Validation Standards
 
-Validation confirms that Task Execution achieved the intended outcome.
+Validation confirms that task execution achieved the intended outcome.
 
 **Validation Types:**
 - *Programmatic:* Automated verification — tests pass, builds succeed, scripts execute correctly. Worker assesses results autonomously.
@@ -65,7 +65,7 @@ Validation confirms that Task Execution achieved the intended outcome.
 
 ### 2.3 Iteration Standards
 
-When Task Validation fails, the Worker enters an iteration cycle — correct, re-execute, re-validate.
+When Task Validation fails, the Worker enters a correction loop — correct, re-execute, re-validate.
 
 **Decision Rules:**
 - **Continue when:** cause identified, fix within scope, measurable progress toward resolution
@@ -75,7 +75,7 @@ When Task Validation fails, the Worker enters an iteration cycle — correct, re
 
 **Default:** When uncertain, pause and present situation to User with options.
 
-### 2.4 Pause Standards
+### 2.4 Pause and Breakpoint Standards
 
 Pauses interrupt execution flow.
 
@@ -91,7 +91,7 @@ Pauses interrupt execution flow.
 
 **Validation Failures** → The Worker completes execution but validation criteria cannot be met: execution gaps, criteria issues, revealed issues.
 
-**Status Taxonomy with `failure_point` Values:**
+**Status values with `failure_point`:**
 - **Success:** Objective achieved, all validation passed. `failure_point: null`
 - **Partial:** Intermediate state — progress made but incomplete; needs guidance. `failure_point: Execution`, `Validation`, or `<description>`
 - **Failed:** Worker attempted but couldn't succeed; issue within Task scope but beyond resolution. `failure_point: Execution` or `Validation`
@@ -119,7 +119,7 @@ When receiving a batch of tasks (multiple Task Prompts in a single Task Bus mess
 
 **Fail-Fast:** If any task results in Blocked or Failed status, stop the batch. Do not proceed to remaining tasks.
 
-**Batch Report:** After completing all tasks (or stopping on failure), write a single Batch Report to the Report Bus per `{GUIDE_PATH:task-logging}` §4.2 Batch Report Format.
+**Batch report:** After completing all tasks (or stopping on failure), write a single batch report to the Report Bus per `{GUIDE_PATH:task-logging}` §4.2 Batch Report Format.
 
 ---
 
@@ -130,7 +130,7 @@ When receiving a batch of tasks (multiple Task Prompts in a single Task Bus mess
 2. Context Integration (if dependencies exist)
 3. Task Execution
 4. Task Validation
-5. Iteration Cycle (if validation fails)
+5. Correction Loop (if validation fails)
 6. Task Completion
 
 Pause Handling (§3.5) and Subagent Handling (§3.6) are invoked from within the main flow when conditions are met.
@@ -139,7 +139,7 @@ Pause Handling (§3.5) and Subagent Handling (§3.6) are invoked from within the
 
 Perform the following actions:
 1. Check for batch envelope: If Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format and execute each task sequentially per §2.7 Batch Execution Standards.
-2. Verify `agent_id` in YAML frontmatter matches your registered instance. Validate the Agent Channel directory matches `agent_id` per `{SKILL_PATH:apm-communication}` §2.3 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Instance Boundaries.
+2. Verify `agent_id` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent_id` per `{SKILL_PATH:apm-communication}` §2.3 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Agent Binding.
 3. Parse Task Assignment structure — YAML frontmatter fields and body sections.
 4. Identify execution parameters:
    - `has_dependencies: true` → Context Integration required
@@ -150,7 +150,7 @@ Perform the following actions:
 
 ### 3.2 Context Integration
 
-Execute when `has_dependencies: true`. MUST complete before Task Execution begins.
+Execute when `has_dependencies: true`. MUST complete before task execution begins.
 
 Perform the following actions:
 1. Read the `Context from Dependencies` section.
@@ -168,21 +168,21 @@ Perform the following actions:
 2. For each instruction step:
    - Standard instruction → execute and continue
    - Explicit User action required → follow §3.5 Pause Handling, await completion, then resume
-3. Assess for autonomous pause consideration per §2.4 Pause Standards. If warranted, follow §3.5 Pause Handling at a natural breakpoint.
+3. Assess for autonomous pause consideration per §2.4 Pause and Breakpoint Standards. If warranted, follow §3.5 Pause Handling at a natural breakpoint.
 4. When all instructions complete → proceed immediately to §3.4 Task Validation. Do NOT pause between execution and validation.
 
 ### 3.4 Task Validation
 
 Perform the following actions:
 1. Order validations: Programmatic first, then Artifact, then User — adapt based on which are required. User validation is always performed LAST.
-2. Execute Programmatic validations. If any fail → do NOT proceed to User validation — proceed to §3.7 Iteration Cycle. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
-3. Execute Artifact validations. If any fail → do NOT proceed to User validation — proceed to §3.7 Iteration Cycle.
-4. If User validation present: pause and present work for review. Communicate what was accomplished, what needs review, and where deliverables are located. If approved → proceed to §3.8 Task Completion with Success. If feedback provided → proceed to §3.7 Iteration Cycle with feedback integrated.
+2. Execute Programmatic validations. If any fail → do NOT proceed to User validation — proceed to §3.7 Correction Loop. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
+3. Execute Artifact validations. If any fail → do NOT proceed to User validation — proceed to §3.7 Correction Loop.
+4. If User validation present: pause and present work for review. Communicate what was accomplished, what needs review, and where deliverables are located. If approved → proceed to §3.8 Task Completion with Success. If feedback provided → proceed to §3.7 Correction Loop with feedback integrated.
 5. If all validation passed → proceed to §3.8 Task Completion with Success.
 
 ### 3.5 Pause Handling
 
-Invoked when a pause point is reached per §2.4 Pause Standards.
+Invoked when a pause point is reached per §2.4 Pause and Breakpoint Standards.
 
 Perform the following actions:
 1. Determine pause type:
@@ -203,7 +203,7 @@ Perform the following actions:
    - **If resolved:** Apply findings to current Task context and resume execution.
    - **If unresolved:** Apply §2.5 Failure Status Standards — assess whether to continue with partial findings, attempt a different approach, or pause for User guidance.
 
-### 3.7 Iteration Cycle
+### 3.7 Correction Loop
 
 Invoked when validation fails.
 
@@ -211,7 +211,7 @@ Perform the following actions:
 1. Assess the failure — what specifically failed, what is the likely cause, is it correctable?
 2. Apply decision rules from §2.3 Iteration Standards.
 3. If continuing: correct the issue, re-execute affected portions, return to §3.4 Task Validation.
-4. If stopping: present situation to User explaining what validation failed, what corrections were attempted, why iteration is stopping, current state, and options for proceeding. Await guidance.
+4. If stopping: present situation to User explaining what validation failed, what corrections were attempted, why the correction loop is stopping, current state, and options for proceeding. Await guidance.
 5. Upon User guidance: if new direction given, integrate and return to appropriate procedure step; if stopping confirmed, apply §2.5 Failure Status Standards and proceed to §3.8 Task Completion.
 
 ### 3.8 Task Completion
@@ -220,7 +220,7 @@ Perform the following actions:
 1. Determine final status per §2.5 Failure Status Standards (Success if all validation passed).
 2. Determine `failure_point`: `null` for Success; `Execution`, `Validation`, or `<description>` based on where stopped.
 3. Create Task Memory Log per `{GUIDE_PATH:task-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
-4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Include Continuing Worker indication if this is your first Task after Handoff. Direct User to run `/apm-5-check-reports` in the Manager session.
+4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Include continuing Worker indication if this is your first Task after Handoff. Direct User to run `/apm-5-check-reports` in the Manager session.
 5. Await `/apm-4-check-tasks` or Handoff initiation.
 
 ---
@@ -258,9 +258,9 @@ Perform the following actions:
 - Not pausing when genuinely stuck
 - Running User validation before Programmatic/Artifact
 - Vague failure descriptions
-- Not indicating Continuing Worker status after Handoff
+- Not indicating continuing Worker status after Handoff
 - Proceeding with incomplete Cross-Agent integration
-- Conflating pause (temporary) with stop (ends iteration cycle)
+- Conflating pause (temporary) with stop (ends correction loop)
 
 ---
 
