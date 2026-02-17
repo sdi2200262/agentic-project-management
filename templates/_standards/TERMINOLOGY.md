@@ -12,10 +12,9 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 
 | Term | Definition |
 |------|------------|
-| **Planner Agent** | Role responsible for Context Gathering and Work Breakdown. Single instance, single Session per project. |
-| **Manager Agent** | Role responsible for Task assignment and orchestration. Single instance, multiple Sessions via Handoff. |
-| **Worker Agent** | Role responsible for Task execution. Multiple instances defined in Implementation Plan, multiple Sessions each via Handoff. |
-| **Agent Session** | A continuous execution context for an Agent. Increments on Handoff. Format: `[Agent Name] Session [N]`. |
+| **Planner** | Role responsible for Context Gathering and Work Breakdown. Single instance, single session per project. |
+| **Manager** | Role responsible for Task assignment and orchestration. Single instance, multiple sessions via Handoff. |
+| **Worker** | Role responsible for Task execution. Multiple instances defined in Implementation Plan, multiple sessions each via Handoff. |
 
 **Role Characteristics:**
 
@@ -34,7 +33,7 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 | **Coordination Artifact** | Document that guides project coordination. Three types exist: Specifications, Implementation Plan, Standards. | `.apm/` and workspace root |
 | **Specifications** | Project-specific design decisions and constraints that inform the Implementation Plan. | `.apm/Specifications.md` |
 | **Implementation Plan** | Stage and Task breakdown with Agent assignments, Dependency Graph, and validation criteria. | `.apm/Implementation_Plan.md` |
-| **Standards** | Universal project standards applied during Task Execution. | `AGENTS.md` (or `CLAUDE.md`) at workspace root |
+| **Standards** | Universal project standards applied during task execution. | `AGENTS.md` (or `CLAUDE.md`) at workspace root |
 | **APM_STANDARDS Block** | Namespace block within Standards file containing APM-managed content. | Within Standards file |
 
 **Coordination Artifact Hierarchy:**
@@ -61,14 +60,11 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 
 | Term | Definition |
 |------|------------|
-| **Message Bus** | File-based communication system within `.apm/bus/` enabling structured message exchange between Agent Sessions. Initialized by Manager during Session 1. |
-| **Agent Channel** | Per-agent subdirectory within the Message Bus containing that Agent's Bus Files. |
+| **Message Bus** | File-based communication system within `.apm/bus/`. Each agent has a directory containing its Bus Files. Initialized by Manager during session 1. |
 | **Task Bus** | Bus File for Manager-to-Worker communication (`apm-task.md`). Contains Task Prompts. Direction: Manager → Worker. |
 | **Report Bus** | Bus File for Worker-to-Manager communication (`apm-report.md`). Contains Task Reports. Direction: Worker → Manager. |
 | **Handoff Bus** | Bus File for Outgoing-to-Incoming Agent communication (`apm-handoff.md`). Contains Handoff Prompts. Direction: Outgoing → Incoming. |
-| **Clear-on-Return** | Protocol where an Agent clears its incoming Bus File before writing to its outgoing Bus File. |
-| **Trigger Command** | Slash command that signals an Agent to check its bus for pending messages. Replaces manual file referencing. |
-| **Agent-ID Resolution** | Process of matching a partial agent identifier against `.apm/bus/` directory names using exact, prefix, then substring matching. |
+| **Clear-on-Return** | Before writing to an outgoing Bus File, an Agent clears its incoming Bus File. This prevents stale messages from accumulating. |
 
 **Message Bus Structure:**
 
@@ -87,10 +83,8 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 | Term | Definition |
 |------|------------|
 | **Task Prompt** | Self-contained prompt delivered via Task Bus providing a Worker with everything needed to execute and validate a Task. |
-| **FollowUp Task Prompt** | Refined Task Prompt issued after a Coordination Decision determines retry is needed. Contains different content from the original based on what went wrong. |
-| **Handoff Prompt** | Prompt delivered via Handoff Bus instructing an Incoming Agent to reconstruct context. |
+| **Handoff Prompt** | Prompt delivered via Handoff Bus instructing an Incoming Agent to rebuild working context. |
 | **Task Report** | Concise summary delivered via Report Bus by Worker for Manager review. |
-| **Batch Task Report** | Consolidated report covering multiple Tasks executed in a batch. Contains per-task status and Memory Log references. |
 
 ---
 
@@ -141,12 +135,10 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 
 | Term | Definition |
 |------|------------|
-| **Planning Phase** | First phase of APM workflow. Planner Agent transforms User requirements into Coordination Artifacts through Context Gathering and Work Breakdown. |
-| **Context Gathering** | Procedure where the Planner elicits requirements through structured Question Rounds and produces an Understanding Summary. |
+| **Planning Phase** | First phase of APM workflow. The Planner transforms User requirements into Coordination Artifacts through Context Gathering and Work Breakdown. |
+| **Context Gathering** | Procedure where the Planner elicits requirements through structured rounds of questions and produces a consolidated summary for User review. |
 | **Work Breakdown** | Procedure where the Planner decomposes gathered context into Specifications, Implementation Plan, and Standards. |
-| **Question Round** | Iteration cycle within Context Gathering focused on specific discovery areas. Three rounds: vision, technical requirements, and implementation approach. |
-| **Understanding Summary** | Consolidated context presentation for User review before Work Breakdown. |
-| **Dependency Graph** | Mermaid diagram in the Implementation Plan header visualizing Task dependencies and Agent assignments. Generated during Work Breakdown. |
+| **Dependency Graph** | Mermaid diagram in the Implementation Plan header visualizing Task dependencies and agent assignments. Generated during Work Breakdown. |
 
 ---
 
@@ -154,51 +146,40 @@ All structural patterns follow `STRUCTURE.md`. All writing conventions follow `W
 
 | Term | Definition |
 |------|------------|
-| **Implementation Phase** | Second phase of APM workflow. Manager and Worker Agents transform the Implementation Plan into completed deliverables through coordinated Task execution. |
+| **Implementation Phase** | Second phase of APM workflow. The Manager and Workers transform the Implementation Plan into completed deliverables through coordinated task execution. |
 
-### 8.1 Coordination (Manager Agent)
+### 8.1 Coordination (Manager)
 
 | Term | Definition |
 |------|------------|
 | **Task Assignment** | Procedure where the Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them to Workers via Task Bus. |
-| **Task Review** | Procedure where the Manager reviews Task Reports and Task Memory Logs, makes Coordination Decisions, modifies Coordination Artifacts when findings warrant it, and maintains the Dispatch State. |
-| **Coordination Cycle** | The repeating cycle that drives the Implementation Phase, scoped per task: Task Assignment → Task Cycle → Task Review. Each task executes through its own Coordination Cycle. Includes artifact modification and Dispatch State updates as needed within iterations. |
-| **Task Cycle** | The Worker's execution loop within a Coordination Cycle: receive Task Prompt → execute → validate → iterate (if needed) → log → report. Each Coordination Cycle contains one Task Cycle. When multiple tasks are dispatched (batch or parallel), multiple Coordination Cycles occur - sequentially for batch, concurrently for parallel. |
-| **Coordination Decision** | Manager's assessment after Task Review. Outcomes: Proceed to next Task, FollowUp (retry with refined instructions), or Artifact Modification plus next Task or FollowUp. |
-| **Ready Task** | A Task whose dependencies are all complete and can be dispatched. |
+| **Task Review** | Procedure where the Manager reviews Task Reports and Task Memory Logs, determines the review outcome, modifies Coordination Artifacts when findings warrant it, and maintains the Dispatch State. |
 | **Batch Dispatch** | Dispatching multiple sequential Tasks to the same Worker in a single Task Bus message. |
 | **Parallel Dispatch** | Dispatching Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist among them. |
 
-### 8.2 Execution (Worker Agent)
+### 8.2 Execution (Worker)
 
 | Term | Definition |
 |------|------------|
-| **Worker Registration** | Process of binding a Worker Session to a specific Agent identity from the first prompt received. |
-| **Task Execution** | Procedure where the Worker executes Task instructions, validates, and iterates. |
-| **Context Integration** | Pre-execution action where Worker reads and understands dependency outputs before Task Execution begins. |
 | **Context Dependency** | Relationship where a Task requires outputs or context from a prior Task. Two types: Same-Agent and Cross-Agent. |
 | **Same-Agent Dependency** | Dependency where producer and consumer are the same Worker. Requires light context (recall anchors). |
 | **Cross-Agent Dependency** | Dependency where producer and consumer are different Workers. Requires comprehensive context. After Handoff, prior-Stage Same-Agent Dependencies are treated as Cross-Agent. |
 | **Validation Types** | Methods for verifying Task completion: Programmatic (automated checks), Artifact (output existence and structure), User (human judgment). Executed in that order. |
-| **Task Status** | Outcome of Task execution: Success (objective achieved), Partial (progress made, needs guidance), Failed (attempted, could not succeed), Blocked (external factors prevent progress). |
-| **Iteration Cycle** | Correction loop when validation fails: correct, re-execute, re-validate until success or stop condition. |
+| **Task Status** | Outcome of task execution: Success (objective achieved), Partial (progress made, needs guidance), Failed (attempted, could not succeed), Blocked (external factors prevent progress). |
 
 ### 8.3 Handoff
 
 | Term | Definition |
 |------|------------|
-| **Handoff** | Context transfer between Sessions of the same Agent when context window limits approach. Applies to Manager and Worker only. |
+| **Handoff** | Context transfer between sessions of the same Agent when context window limits approach. Applies to Manager and Worker only. |
 | **Outgoing Agent** | The Agent performing Handoff. Creates Handoff Memory Log and Handoff Prompt. |
-| **Incoming Agent** | The replacement Agent receiving Handoff. Reconstructs context from artifacts and logs. |
-| **Context Reconstruction** | Process by which an Incoming Agent rebuilds working context from Coordination Artifacts, Memory Logs, and Handoff Memory Log. |
+| **Incoming Agent** | The replacement Agent receiving Handoff. Rebuilds working context from Coordination Artifacts, logs, and Handoff Prompt. |
 
 ### 8.4 Subagents
 
 | Term | Definition |
 |------|------------|
-| **Subagent** | A platform-native spawned agent for isolated, focused work. Executes autonomously and returns findings to the spawning Agent. APM defines behavioral expectations; the platform handles lifecycle and tool access. |
-| **Debug Subagent** | Subagent for isolating and resolving complex bugs. Expected access: full (edit, terminal). |
-| **Research Subagent** | Subagent for investigating knowledge gaps using current sources. Expected access: read-only, web. |
+| **Subagent** | A platform-native spawned agent for isolated, focused work. Executes autonomously and returns findings to the spawning Agent. APM defines behavioral expectations; the platform handles lifecycle and tool access. Two common types: debug subagents (full access: edit, terminal) and research subagents (read-only, web). |
 
 ---
 

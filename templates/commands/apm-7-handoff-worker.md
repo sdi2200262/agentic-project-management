@@ -1,19 +1,19 @@
 ---
 command_name: handoff-worker
-description: Initiates and guides a Worker Agent through the Handoff Procedure to transfer execution context to an Incoming Worker Agent instance.
+description: Initiates and guides a Worker through the Handoff Procedure to transfer execution context to an Incoming Worker instance.
 ---
 
-# APM {VERSION} - Worker Agent Handoff Command
+# APM {VERSION} - Worker Handoff Command
 
 ## 1. Overview
 
-This command initiates the Handoff Procedure for a Worker Agent approaching context window limits. The Outgoing Worker creates two artifacts:
+This command initiates the Handoff Procedure for a Worker approaching context window limits. The Outgoing Worker creates two artifacts:
 - **Handoff Memory Log:** Working context from the current session, stored in `.apm/Memory/Handoffs/<AgentID>_Handoffs/`.
 - **Handoff Prompt:** Written to the Handoff Bus, instructing the Incoming Worker to reconstruct context.
 
-The Incoming Worker reconstructs context from the Handoff Memory Log and current Stage Task Memory Logs — not from the Handoff Memory Log alone.
+The Incoming Worker rebuilds working context from the Handoff Memory Log and current Stage Task Memory Logs — not from the Handoff Memory Log alone.
 
-**Important:** The Incoming Worker must indicate Handoff status in their first Task Report. This triggers the Manager Agent's Handoff Detection, which affects Context Dependency classification for future Task Assignments.
+**Important:** The Incoming Worker must indicate Handoff status in their first Task Report. This triggers the Manager's Handoff Detection, which affects Context Dependency classification for future task assignments.
 
 ---
 
@@ -104,7 +104,7 @@ The Incoming Worker processes this prompt during auto-detection in the init comm
 **Required content:** Structure with `#` title and `##` section headings.
 
 - **Session takeover statement:** "You are taking over from [AgentID] Session <N> as [AgentID] Session <N+1>."
-- **Context Reconstruction Protocol:**
+- **Rebuilding context:**
   1. Read Handoff Memory Log — note working context, technical notes, continuation guidance.
   2. Read current Stage Task Memory Logs (this Worker's logs only).
   3. Previous Stage logs are not loaded; Manager provides comprehensive context via Task Prompts for Cross-Stage dependencies.

@@ -31,7 +31,7 @@ description: <one or two sentence description of skill purpose>
 ```yaml
 ---
 name: task-assignment
-description: Construction and delivery of Task Prompts to Worker Agents.
+description: Construction and delivery of Task Prompts to Workers.
 ---
 ```
 
@@ -82,7 +82,7 @@ Skills and guides follow a consistent structure with §1 Overview, §2 Operation
 | Single Procedure | Each skill contains one Procedure in §3. Subsections (§3.1, §3.2...) are Procedure Activities. |
 | Naming | Section title is `## 3. [Procedure Name] Procedure` matching or derived from skill name. |
 | Activities | Each subsection defines one Activity with clear purpose and actions. |
-| Naming parallel | If §2 has "[X] Standards", corresponding §3 Activities should use matching terminology (e.g., "[X] Analysis", "[X] Assessment"). |
+| Naming correspondence | If §2 has "[X] Standards", corresponding §3 Activities should use matching terminology (e.g., "[X] Analysis", "[X] Assessment"). |
 | Actions format | The "Perform the following actions:" format is followed by an ordered list. |
 | Cross-references | Reference §2 standards when decisions apply using format: "per §2.N [Title]." |
 | Flow control | Include conditional branching where applicable using decision rules from §2 standards. |
@@ -132,7 +132,7 @@ description: <one or two sentence description of command purpose>
 ```yaml
 ---
 command_name: initiate-manager
-description: Initializes a Manager Agent to coordinate project execution.
+description: Initializes a Manager to coordinate project execution.
 ---
 ```
 
@@ -192,7 +192,7 @@ Commands follow a variable structure based on purpose, with required opening and
 | Section Pattern | Content |
 |-----------------|---------|
 | §1 Overview | Role declaration, responsibilities. |
-| §2 Session Initiation | First Session vs Incoming Agent logic, artifact reading. Worker Agent includes Worker Registration. |
+| §2 Session Initiation | First session vs Incoming Agent logic, artifact reading. Worker includes identity binding. |
 | §3+ [Core Procedures] | Main Procedures for this agent type. |
 | §N Operating Rules | Boundaries, communication, subagent usage. |
 
@@ -228,7 +228,7 @@ Deeper hierarchy within subsections uses **bold** to introduce sub-topics and *i
 | `## 1. Section Name` | Major sections. |
 | `### 1.1 Subsection Name` | Subsections. |
 
-Section numbers in text references use the § symbol with section title: "See §3.2 Context Integration."
+Section numbers in text references use the § symbol with section title: "See §3.2 Dependency Context."
 
 ### 3.3 Horizontal Rules
 

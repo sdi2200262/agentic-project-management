@@ -1,13 +1,13 @@
 # APM Message Bus Integration Guide
 
-This guide explains how non-APM agents can interact with an APM session through the Message Bus. If you are a standalone agent (not managed by APM's Manager Agent) and need to communicate with APM-managed Workers or the Manager, follow this guide to create your own Agent Channel.
+This guide explains how non-APM agents can interact with an APM session through the Message Bus. If you are a standalone agent (not managed by APM's Manager) and need to communicate with APM-managed Workers or the Manager, follow this guide to create your own bus directory.
 
-## Creating an Agent Channel
+## Creating a Bus Directory
 
-To participate in Message Bus communication, create your own Agent Channel in `.apm/bus/`:
+To participate in Message Bus communication, create your own bus directory in `.apm/bus/`:
 
-1. Choose an Agent Slug for your identity (lowercase, hyphenated). Example: `external-reviewer`.
-2. Create your Agent Channel directory: `.apm/bus/<your-agent-slug>/`.
+1. Choose a slug for your identity (lowercase, hyphenated name). Example: `external-reviewer`.
+2. Create your bus directory: `.apm/bus/<your-agent-slug>/`.
 3. Create the Bus Files you need:
    - To receive tasks: `apm-task.md`.
    - To send reports: `apm-report.md`.
@@ -23,7 +23,7 @@ Bus Files follow a strict naming convention:
 | Send to Manager | `apm-report.md` |
 | Handoff | `apm-handoff.md` |
 
-## Clearing Protocol
+## Clear-on-Return
 
 Before writing a message to your outgoing Bus File, clear your incoming Bus File by truncating it:
 ```
@@ -43,4 +43,4 @@ Bus Files contain message content directly. No YAML frontmatter envelope is used
 3. Read the Task Bus file and process the message content.
 4. Clear the incoming Task Bus file.
 5. Write your response to the Report Bus file.
-6. Inform the User that a report is ready. The User runs `/apm-5-check-reports` in the Manager session.
+6. Inform the User that a report is ready. The User runs `/apm-5-check-reports` in the Manager's session.

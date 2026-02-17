@@ -41,7 +41,7 @@ When an APM session completes (all stages done, deliverables working), there is 
 
 1. **No programmatic linking** - Archives are storage, not dependency sources. Automatic session linking creates fragile dependency chains -- Session B may invalidate Session A's context without explicit relationship.
 2. **User decides relevance** - The Planner asks about archives; it does not assume they are relevant.
-3. **Verify before asking** - Context retrieval and codebase verification happen BEFORE the Planner incorporates archived context into Question Rounds. Stale context is worse than no context.
+3. **Verify before asking** - Context retrieval and codebase verification happen BEFORE the Planner incorporates archived context into question rounds. Stale context is worse than no context.
 4. **Snapshot acknowledgment** - Summaries and archives explicitly state their point-in-time nature. The archived context is a snapshot; the codebase is mutable.
 
 ### Component 1: `apm continue` CLI Command
@@ -94,7 +94,7 @@ The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session s
 **§0.2 Context Retrieval (if User indicates relevance):**
 1. Spawn exploration subagent to examine the indicated archive(s) -- read Implementation Plan, Specifications, Session Summary (if present), and Memory Root Stage Summaries
 2. Spawn verification subagent to check archived context against the current codebase -- identify what still holds, what has changed, and what has been invalidated
-3. Integrate verified findings into Question Rounds as delta-focused questions (what changed since the archived session, not re-asking what was already established)
+3. Integrate verified findings into question rounds as delta-focused questions (what changed since the archived session, not re-asking what was already established)
 
 ### Open Questions
 

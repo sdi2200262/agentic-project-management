@@ -2,21 +2,21 @@
 
 ## 1. Overview
 
-**Reading Agent:** Manager Agent
+**Reading Agent:** Manager
 
-This guide defines how the Manager Agent reviews Task results, makes Coordination Decisions, maintains Coordination Artifacts when findings warrant it, and tracks dispatch state. It consolidates the Manager's review-side logic into a single procedure.
+This guide defines how the Manager reviews Task results, determines review outcomes, maintains Coordination Artifacts when findings warrant it, and tracks dispatch state. It consolidates the Manager's review-side logic into a single procedure.
 
 ### 1.1 How to Use This Guide
 
-**Execute the Procedure** in §3 Task Review Procedure when processing a Task Report from a Worker. **Use Operational Standards** in §2 when interpreting Task Memory Logs, making Coordination Decisions, assessing artifact modifications, detecting Handoffs, or coordinating parallel work. **Follow Structural Specifications** in §4 for Dispatch State, Memory Root, Stage Summary, and modification attribution formats.
+**Execute the Procedure** in §3 Task Review Procedure when processing a Task Report from a Worker. **Use Operational Standards** in §2 when interpreting Task Memory Logs, determining review outcomes, assessing artifact modifications, detecting Handoffs, or coordinating parallel work. **Follow Structural Specifications** in §4 for Dispatch State, Memory Root, Stage Summary, and modification attribution formats.
 
 ### 1.2 Objectives
 
-- Review Task Reports and Task Memory Logs to assess completion and make Coordination Decisions
+- Review Task Reports and Task Memory Logs to assess completion and determine review outcomes
 - Investigate findings when needed, using self-investigation or Subagents based on scope
 - Modify Coordination Artifacts when execution findings warrant it, with cascade and authority awareness
 - Maintain the Dispatch State in Memory Root as the single source of task tracking
-- Detect Worker Agent Handoffs and adjust Context Dependency treatment accordingly
+- Detect Worker Handoffs and adjust Context Dependency treatment accordingly
 - Create Stage Summaries to preserve high-level progress context
 
 ### 1.3 Outputs
@@ -25,7 +25,7 @@ This guide defines how the Manager Agent reviews Task results, makes Coordinatio
 
 **Updated Dispatch State:** The Dispatch State section of Memory Root, updated after each review cycle to reflect completed tasks, readiness changes, and merge state.
 
-**Modified Coordination Artifacts:** When findings warrant it — updated Specifications, Implementation Plan, or Standards with modification attribution.
+**Modified Coordination Artifacts:** When findings warrant it — updated Specifications, Implementation Plan, or Standards with attributed modifications.
 
 ---
 
@@ -33,7 +33,7 @@ This guide defines how the Manager Agent reviews Task results, makes Coordinatio
 
 ### 2.1 Task Memory Log Review Standards
 
-The goal is to extract information needed for the next Coordination Decision.
+The goal is to extract information needed for the next review decision.
 
 **Status interpretation.** See `WORKFLOW.md` §5.4 Task Status Values for status definitions. Assess whether the status and flags are consistent with the log's body content — inconsistency is a common hallucination indicator.
 
@@ -41,11 +41,11 @@ The goal is to extract information needed for the next Coordination Decision.
 - `important_findings: true` — Worker observed something potentially beyond Task scope. Assess whether it affects Coordination Artifacts or other Tasks.
 - `compatibility_issues: true` — Worker observed conflicts with existing systems. Assess whether it indicates Implementation Plan, Specification, or Standards issues.
 
-**Content review.** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened and inform the Coordination Decision.
+**Content review.** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened and inform the review outcome.
 
-### 2.2 Coordination Decision Standards
+### 2.2 Review Outcome Standards
 
-After reviewing a Task Memory Log, the Manager makes a Coordination Decision. The decision follows a natural reasoning flow rather than a rigid assessment pipeline.
+After reviewing a Task Memory Log, the Manager determines the review outcome. The decision follows a natural reasoning flow rather than a rigid checklist.
 
 **Review the log.** If everything looks good — Success with no flags, log content supports the status — **Proceed**. If something needs attention — flags raised, non-Success status, or inconsistencies — **Investigate**.
 
@@ -53,7 +53,7 @@ After reviewing a Task Memory Log, the Manager makes a Coordination Decision. Th
 
 **Post-investigation outcome.** Based on findings, determine the appropriate action:
 - *No issues* (false positives, nothing actionable) → **Proceed** to next Task(s).
-- *FollowUp needed* (Worker must retry with refined instructions) → Create FollowUp Task Prompt per `{GUIDE_PATH:task-assignment}` §3.6 FollowUp Task Prompt Creation.
+- *Follow-up needed* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.6 Follow-Up Task Prompt Creation.
 - *Artifact modification needed* → Proceed to §3.4 Artifact Modification.
 
 **Artifact modification indicators.** These anchor when modification might be warranted — not a prescriptive checklist:
@@ -85,13 +85,13 @@ Stage Summaries compress Stage execution for future Incoming Manager instances (
 
 When multiple Workers are active simultaneously, the Manager coordinates asynchronously.
 
-**Async report handling.** Reports arrive in any order. Process each as it comes: complete the Coordination Decision, reassess readiness, dispatch newly Ready Tasks if Workers are available.
+**Async report handling.** Reports arrive in any order. Process each as it comes: complete the review, reassess readiness, dispatch newly ready Tasks if Workers are available.
 
 **Merge coordination.** After successful Task Review during parallel dispatch, merge the completed Task's branch per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination before dispatching dependent Tasks. At Stage end, perform a merge sweep per the VC skill.
 
-**Wait state.** When no Ready Tasks exist but Workers are still active, communicate to the User what was processed, what is pending, and what to do when the next Report arrives.
+**Wait state.** When no tasks are ready for dispatch but Workers are still active, communicate to the User what was processed, what is pending, and what to do when the next Report arrives.
 
-**Batch report handling.** Process each completed Task's outcome individually through the Coordination Decision. Unstarted Tasks from a stopped batch re-enter the dispatch pool.
+**Batch report handling.** Process each completed Task's outcome individually through the review process. Unstarted Tasks from a stopped batch re-enter the dispatch pool.
 
 ---
 
@@ -100,20 +100,20 @@ When multiple Workers are active simultaneously, the Manager coordinates asynchr
 **Procedure:**
 1. Report Processing (receive Report, clear bus, check Handoff)
 2. Task Memory Log Review (read and interpret the log)
-3. Coordination Decision (determine outcome, update Dispatch State)
-4. Artifact Modification (when Coordination Decision identifies need)
+3. Review Outcome (determine outcome, update Dispatch State)
+4. Artifact Modification (when review outcome identifies need)
 5. Stage Summary Creation (when all Stage Tasks complete)
 
 ### 3.1 Report Processing
 
-Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or Batch Report) from a Worker Agent.
+Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or batch report) from a Worker.
 
 Perform the following actions:
-1. Read the Report from the Report Bus (`.apm/bus/<agent-slug>/apm-report.md`). Clear per `{SKILL_PATH:apm-communication}` §3.5 Clearing Protocol.
-2. If Batch Report (`batch: true` in frontmatter), process each Task's outcome individually through §3.2 and §3.3. Unstarted Tasks re-enter the dispatch pool.
+1. Read the Report from the Report Bus (`.apm/bus/<agent-slug>/apm-report.md`). Clear per `{SKILL_PATH:apm-communication}` §3.5 Clear-on-Return.
+2. If batch report (`batch: true` in frontmatter), process each Task's outcome individually through §3.2 and §3.3. Unstarted Tasks re-enter the dispatch pool.
 3. Check for Handoff indication per §2.4 Handoff Detection Standards. If detected, verify Handoff Memory Log exists and update Context Dependency treatment.
 4. Update dispatch tracking: mark this Worker as available, note completed Task(s) for readiness assessment.
-5. If parallel dispatch active: reassess Ready Tasks, merge completed branch per `{SKILL_PATH:apm-version-control}` §3.4 if dependent Tasks need it, or communicate wait state per §2.6.
+5. If parallel dispatch active: reassess tasks ready for dispatch, merge completed branch per `{SKILL_PATH:apm-version-control}` §3.4 if dependent Tasks need it, or communicate wait state per §2.6.
 
 ### 3.2 Task Memory Log Review
 
@@ -122,26 +122,26 @@ Execute after Report Processing.
 Perform the following actions:
 1. Read the Task Memory Log at the path referenced in the Task Report.
 2. Interpret content per §2.1 Task Memory Log Review Standards: status, flags, body sections. Assess consistency between status/flags and body content.
-3. Proceed to §3.3 Coordination Decision with interpreted findings.
+3. Proceed to §3.3 Review Outcome with interpreted findings.
 
-### 3.3 Coordination Decision
+### 3.3 Review Outcome
 
 Execute after Task Memory Log Review.
 
 Perform the following actions:
-1. Review findings from the Task Memory Log per §2.2 Coordination Decision Standards. If everything looks good → **Proceed** (skip to step 4). If something needs attention → continue to step 2.
+1. Review findings from the Task Memory Log per §2.2 Review Outcome Standards. If everything looks good → **Proceed** (skip to step 4). If something needs attention → continue to step 2.
 2. Determine investigation scope per §2.2: small scope → self-investigate, large scope → Subagent.
 3. Investigate and determine outcome per §2.2:
    - *No issues* → **Proceed** to step 4.
-   - *FollowUp needed* → Create FollowUp Task Prompt per `{GUIDE_PATH:task-assignment}` §3.6 FollowUp Task Prompt Creation. Continue to step 4.
+   - *Follow-up needed* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.6 Follow-Up Task Prompt Creation. Continue to step 4.
    - *Artifact modification needed* → Proceed to §3.4 Artifact Modification (returns to step 4 after completion).
-4. Update Dispatch State in Memory Root per §4.1: mark completed Tasks as Done, reassess blocked Tasks for newly Ready status, update merge state.
+4. Update Dispatch State in Memory Root per §4.1: mark completed Tasks as Done, reassess blocked Tasks for newly ready status, update merge state.
    - If all Stage Tasks are Done and merged → collapse Stage per §4.1 and proceed to §3.5 Stage Summary Creation.
-   - Otherwise → return to the Task Cycle for next dispatch.
+   - Otherwise → return to the per-task assignment-execution-review cycle for next dispatch.
 
 ### 3.4 Artifact Modification
 
-Execute when the Coordination Decision identifies that Coordination Artifacts need modification. This is not a standalone entry point — it is always triggered from §3.3.
+Execute when the review outcome identifies that Coordination Artifacts need modification. This is not a standalone entry point — it is always triggered from §3.3.
 
 Perform the following actions:
 1. Capture triggering context: which Memory Log revealed the findings, what specific findings indicate modification, Task Status and flags, post-investigation outcome.
@@ -149,7 +149,7 @@ Perform the following actions:
 3. If any modification requires User collaboration → present concisely: *trigger*, *required change*, *authority exceeded rationale*, *options with trade-offs*, *recommendation*. Integrate User guidance.
 4. Execute modifications following existing document patterns per §4.6 Coordination Artifact Modification. Verify consistency: reference integrity across artifacts, terminology consistency, scope alignment between Specifications and Implementation Plan.
 5. When modifying Implementation Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph per §4.6.
-6. Document: update Last Modification field in Specifications and/or Implementation Plan per §4.4 Modification Attribution Format.
+6. Document: update Last Modification field in Specifications and/or Implementation Plan per §4.4 Modification Log Format.
 7. Return to §3.3 step 4 to update Dispatch State. Reassess readiness against the updated plan and proceed accordingly.
 
 ### 3.5 Stage Summary Creation
@@ -207,7 +207,7 @@ The Dispatch State is a section within Memory Root that tracks task statuses, ag
 
 **Header Fields:**
 - **Project Name:** Actual project name (replace `<Project Name>` placeholder).
-- **Manager Handoffs:** Count of Manager Agent Handoffs (increment on each Handoff).
+- **Manager Handoffs:** Count of Manager Handoffs (increment on each Handoff).
 
 **Dispatch State:** Section immediately after header, tracking per-Stage task state per §4.1.
 
@@ -223,20 +223,20 @@ Append to Memory Root after each Stage completion:
 
     **Notes:** [Undocumented context, findings, compatibility issues — omit if none]
 
-    **Agents Involved:** [Worker Agents who worked on this Stage]
+    **Agents Involved:** [Workers who worked on this Stage]
 
     **Task Memory Logs:**
     - [Task_Log_<N>_<M>_<Slug>.md] - [Status]
 
 Keep ≤30 lines. Reference logs rather than duplicating content.
 
-### 4.4 Modification Attribution Format
+### 4.4 Modification Log Format
 
 Update the Last Modification field when modifying Specifications or Implementation Plan:
 
-    **Last Modification:** [Brief description] based on [Memory Log reference]. Modified by the Manager Agent.
+    **Last Modification:** [Brief description] based on [Memory Log reference]. Modified by the Manager.
 
-**Example:** `Task 2.3 scope clarified based on Task_Log_02_02_API_Integration.md findings. Modified by the Manager Agent.`
+**Example:** `Task 2.3 scope clarified based on Task_Log_02_02_API_Integration.md findings. Modified by the Manager.`
 
 ### 4.5 Directory Structure
 
@@ -276,7 +276,7 @@ Update the Last Modification field when modifying Specifications or Implementati
 
 - **Managerial perspective:** Focus on coordination, progress, and decisions — leave implementation details to Workers.
 - **Concise updates:** Summarize log findings briefly; User can read full logs if needed.
-- **Investigation outcomes:** Clearly state the outcome (no issues, FollowUp, or artifact modification) with structured rationale. Acknowledge false positives when flags don't indicate real coordination issues.
+- **Investigation outcomes:** Clearly state the outcome (no issues, follow-up, or artifact modification) with structured rationale. Acknowledge false positives when flags don't indicate real coordination issues.
 
 ### 5.2 Common Mistakes
 
