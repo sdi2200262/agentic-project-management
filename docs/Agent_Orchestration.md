@@ -16,36 +16,38 @@ APM coordinates multiple Agent Sessions through file-based communication and str
 The framework establishes a coordination hierarchy where Agents interact through defined channels:
 
 **Planner ↔ User → Manager**
-- Planner creates Coordination Artifacts during Planning Phase
+
+- Planner creates planning documents during Planning Phase
 - User reviews, requests modifications if needed and approves, then initializes Manager for Implementation Phase
 - No ongoing relationship - Planner completes and exits
 
 **Manager ↔ Workers (via User)**
+
 - Manager assigns tasks by writing Task Prompts to Task Bus files
 - User runs `/apm-4-check-tasks` in Worker Sessions to deliver assignments
 - Workers execute tasks and write Task Reports to Report Bus files
 - User runs `/apm-5-check-reports` in Manager Session to deliver reports
-- Manager reviews and makes Coordination Decisions
+- Manager reviews and determines review outcome
 
 **Outgoing Agent → Incoming Agent (via User)**
-- Outgoing Agent creates Handoff Memory Log and Handoff Prompt
-- User initializes new Session and delivers Handoff Prompt
-- Incoming Agent reconstructs context and continues work
+- Outgoing agent creates Handoff Memory Log and handoff prompt
+- User initializes new Session and delivers handoff prompt
+- Incoming agent reconstructs context and continues work
 
-**All Agents ↔ Coordination Artifacts**
-- Planner creates all three Coordination Artifacts
+**All Agents ↔ Planning Documents**
+- Planner creates all three planning documents
 - Manager reads all three, extracts from Specifications and Implementation Plan into Task Prompts, may update all three
-- Workers read Standards directly, receive extracted context via Task Prompts, may update Standards
+- Workers read Execution Standards directly, receive extracted context via Task Prompts, may update Execution Standards
 
 ---
 
 ## Message Bus
 
-The Message Bus in `.apm/bus/` provides file-based communication between Agent Sessions. The Manager initializes the Bus during Session 1, creating Agent Channels (subdirectories) for each Worker defined in the Implementation Plan.
+The Message Bus in `.apm/bus/` provides file-based communication between Agent Sessions. The Manager initializes the Bus during Session 1, creating agent directories (subdirectories) for each Worker defined in the Implementation Plan.
 
 ### Bus File Types
 
-Each Agent Channel contains three Bus Files:
+Each agent directory contains three Bus Files:
 
 **Task Bus** (`apm-task.md`)
 - Manager writes Task Prompts (single or batched)
@@ -76,7 +78,7 @@ All communication requires User as trigger puller. For example:
 2. User runs `/apm-4-check-tasks` in Worker Session
 3. Worker executes, clears Task Bus, writes Task Report to Report Bus
 4. User runs `/apm-5-check-reports` in Manager Session
-5. Manager reads Report, clears Report Bus, makes Coordination Decision
+5. Manager reads Report, clears Report Bus, determines review outcome
 
 This user-mediated model works universally across platforms without requiring tool-specific integrations.
 
@@ -92,8 +94,7 @@ The Memory System in `.apm/Memory/` tracks project state and execution history t
 
 Central project state document containing:
 
-- **Handoff Count** - Tracks total handoffs across all Agents for reference
-- **Dispatch State** - Task statuses per Stage (Ready, Active, Done, Blocked), agent assignments, active branches, merge state
+- **Project Tracker** - Task statuses per Stage (ready, active, done, waiting), agent assignments, active branches, merge state; updated by Manager after each Task Review
 - **Working Notes** - Ephemeral coordination notes maintained by Manager and User, inserted and removed as context evolves
 - **Stage Summaries** - Compressed Stage-level outcomes appended after each Stage completes
 
@@ -135,7 +136,7 @@ As the project progresses, the Memory System becomes a comprehensive archive map
 
 - **Efficient Handoff** - Incoming Agents reconstruct context from Memory Root (if Manager), Handoff Memory Log, and relevant Task Memory Logs rather than full session history
 - **Cross-Agent Context** - Workers integrate outputs from other Agents by reading specified Task Memory Logs as instructed in Task Prompts
-- **Progress Tracking** - Manager assesses project state by reading Stage Summaries and Dispatch State rather than reviewing all code changes
+- **Progress Tracking** - Manager assesses project state by reading Stage Summaries and Project Tracker rather than reviewing all code changes
 
 ---
 
@@ -143,7 +144,7 @@ As the project progresses, the Memory System becomes a comprehensive archive map
 
 APM achieves Agent specialization through intentional context boundaries. Each Agent sees only the information relevant to its role.
 
-### Planner Agent
+### Planner
 
 **Access:**
 - User-provided requirements and existing documentation
@@ -157,11 +158,11 @@ APM achieves Agent specialization through intentional context boundaries. Each A
 
 Single Session, no Handoff.
 
-### Manager Agent
+### Manager
 
 **Access:**
-- All Coordination Artifacts (reads, may update)
-- Memory System (Memory Root with Dispatch State and Stage Summaries, all Task Memory Logs)
+- All planning documents (reads, may update)
+- Memory System (Memory Root with Project Tracker and Stage Summaries, all Task Memory Logs)
 - Message Bus (all Task/Report/Handoff buses)
 - Version control state during parallel dispatch
 
@@ -171,18 +172,18 @@ Single Session, no Handoff.
 
 Multiple Sessions via Handoff. Each Session continues from where previous left off using Handoff Memory Log and Memory System.
 
-### Worker Agent
+### Worker
 
 **Access:**
 - Current Task Prompt (includes extracted Specifications context, instructions, validation criteria)
-- Standards file directly
-- Accumulated working context from prior same-Agent tasks in current Stage
-- Specified Task Memory Logs when Cross-Agent Dependencies exist
+- Execution Standards file directly
+- Accumulated working context from prior same-agent tasks in current Stage
+- Specified Task Memory Logs when cross-agent dependencies exist
 
 **Does not access:**
 - Specifications file directly (receives extracted context via Task Prompt)
 - Implementation Plan file directly (receives Task definition via Task Prompt)
-- Memory Root, Stage Summaries, or Dispatch State
+- Memory Root, Stage Summaries, or Project Tracker
 - Other Workers' working context unless explicitly provided in Task Prompt
 
 Multiple Sessions via Handoff. After Handoff, Incoming Worker reads current-Stage Task Memory Logs for their Agent to reconstruct working context.
@@ -228,17 +229,17 @@ The Incoming Agent inherits clean context without session noise, enabling multip
 ### Context Reconstruction
 
 **Incoming Manager reads:**
-- All Coordination Artifacts
-- Memory Root (Dispatch State, Stage Summaries, Working Notes)
+- All planning documents
+- Memory Root (Project Tracker, Stage Summaries, Working Notes)
 - Handoff Memory Log
 - Relevant recent Task Memory Logs
 
 **Incoming Worker reads:**
-- Standards file
-- Current-Stage Task Memory Logs for their Agent
+- Execution Standards file
+- Current-Stage Task Memory Logs for their agent
 - Handoff Memory Log
 
-Previous-Stage logs are not loaded for efficiency - the Manager accounts for this by treating prior-Stage Same-Agent Dependencies as Cross-Agent Dependencies (providing file reading instructions in Task Prompts).
+Previous-Stage logs are not loaded for efficiency - the Manager accounts for this by treating prior-Stage same-agent dependencies as cross-agent dependencies (providing file reading instructions in Task Prompts).
 
 ---
 

@@ -18,6 +18,7 @@ For deeper context on Agent roles and workflow structure, see [Agent Types](Agen
 Before starting, ensure you have:
 
 ### Required Resources
+
 - **Node.js** - Version 18 or higher for the APM CLI
 - **AI Assistant Platform** - Access to Claude, Cursor, GitHub Copilot, or similar
 - **Project Workspace** - A dedicated directory for your project
@@ -88,37 +89,39 @@ After initialization completes, you're ready to begin.
 
 ---
 
-## Step 1: Initiate Planner Agent
+## Step 1: Initiate Planner
 
-The Planning Phase creates the Coordination Artifacts that guide all subsequent work.
+The Planning Phase creates the planning documents that guide all subsequent work.
 
-### 1. Create Planner Agent Session
+### 1. Create Planner Session
 
 1. Open a new chat session in your AI assistant (Agent mode if available)
-2. Name it clearly: "Planner Agent" or "APM Planner"
+2. Name it clearly: "Planner" or "APM Planner"
 3. Select a top-tier model as recommended in Prerequisites
 
 ### 2. Run Initialization Command
 
 Enter the command:
 
-```
+```markdown
 /apm-1-initiate-planner
 ```
 
 The Planner will greet you and outline its two-step process:
+
 1. Context Gathering - Structured project discovery through question rounds
-2. Work Breakdown - Decomposition into Coordination Artifacts
+2. Work Breakdown - Decomposition into planning documents
 
 ---
 
 ## Step 2: Work Through the Planning Phase
 
-The Planner guides you through Context Gathering and Work Breakdown to create the Coordination Artifacts.
+The Planner guides you through Context Gathering and Work Breakdown to create the planning documents.
 
 ### 1. Context Gathering
 
 The Planner asks questions across three rounds to understand your project:
+
 - **Round 1:** Project vision, existing materials, and goals
 - **Round 2:** Technical requirements and validation criteria
 - **Round 3:** Implementation approach and quality standards
@@ -126,69 +129,72 @@ The Planner asks questions across three rounds to understand your project:
 After each round, the Planner iterates on gaps before advancing. After all rounds, it presents an Understanding Summary for your approval.
 
 > **Tips:**
+>
 > - Share all relevant constraints and uncertainties upfront
+>
 > - Provide existing documentation early to improve subsequent questions
 > - Be specific about validation criteria - how will you know each requirement is met?
 
 ### 2. Work Breakdown
 
-The Planner creates three Coordination Artifacts:
+The Planner creates three planning documents:
 
 - **Specifications** - Design decisions and constraints defining what is being built
 - **Implementation Plan** - Stages, Tasks, Worker assignments, and Dependency Graph defining how work is organized
-- **Standards** - Universal execution patterns defining how work is performed
+- **Execution Standards** - Universal execution patterns defining how work is performed
 
-You'll review and approve each artifact before the Planner proceeds to the next. After all three approvals, the Planning Phase completes.
+You'll review and approve each document before the Planner proceeds to the next. After all three approvals, the Planning Phase completes.
 
 > For detailed mechanics of Context Gathering and Work Breakdown, see [Workflow Overview](Workflow_Overview.md).
 
 ---
 
-## Step 3: Initiate Manager Agent
+## Step 3: Initiate Manager
 
-The Manager Agent coordinates execution of the Implementation Plan.
+The Manager coordinates execution of the Implementation Plan.
 
-### 1. Create Manager Agent Session
+### 1. Create Manager Session
 
 1. Open a new chat session in Agent mode
-2. Name it clearly: "Manager Agent" or "APM Manager 1"
+2. Name it clearly: "Manager" or "APM Manager 1"
 3. Select a model as recommended in Prerequisites
 
 ### 2. Run Initialization Command
 
 Enter the command:
 
-```
+```markdown
 /apm-2-initiate-manager
 ```
 
 The Manager will:
-- Read the Coordination Artifacts (Specifications, Implementation Plan, Standards)
+
+- Read the planning documents (Specifications, Implementation Plan, Execution Standards)
 - Initialize the Memory System
 - Initialize the Message Bus for Agent communication
 - Initialize version control if a git repository exists
 - Present an understanding summary
 
-Review the Manager's summary carefully. If it accurately reflects your project authorize it to proceed, otherwise make corrections as needed. The Manager will then prepare the first Coordination Cycle.
+Review the Manager's summary carefully. If it accurately reflects your project authorize it to proceed, otherwise make corrections as needed. The Manager will then prepare the first assignment-execution-review cycle.
 
 ---
 
 ## Step 4: Work Through the Implementation Phase
 
-This step walks through your first Coordination Cycle as an example of the repeating pattern.
+This step walks through your first assignment-execution-review cycle as an example of the repeating pattern.
 
 ### 1. Manager Assigns Task
 
 The Manager assesses which tasks are ready and creates a Task Prompt with all required context. It writes this to the Worker's Task Bus file and provides you with the file path.
 
-### 2. Initialize Worker Agent
+### 2. Initialize Worker
 
 1. Open a new chat session for the assigned Worker
 2. Name it using the Agent name from the Implementation Plan (e.g., "Frontend Agent")
 3. Select a model as recommended in Prerequisites
 4. Run the initialization command:
 
-```
+```markdown
 /apm-3-initiate-worker
 ```
 
@@ -201,36 +207,39 @@ Run `/apm-4-check-tasks` in the Worker's session. The Worker reads the Task Prom
 The Worker works through the task, validates results, and creates a Task Memory Log documenting the outcome. It then writes a Task Report to the Report Bus and directs you to run `/apm-5-check-reports` in the Manager's session.
 
 > **Tips:**
+>
 > - Workers pause for your review when User validation is specified
 > - You can interrupt or steer the conversation as needed during execution
 
 ### 5. Carry Report to Manager
 
-Run `/apm-5-check-reports` in the Manager's session. The Manager reads the Task Report and Task Memory Log, then makes a Coordination Decision:
+Run `/apm-5-check-reports` in the Manager's session. The Manager reads the Task Report and Task Memory Log, then determines the review outcome:
+
 - **Proceed** - Move to next task
-- **FollowUp** - Send refined Task Prompt to retry
-- **Artifact Modification** - Update Coordination Artifacts, then proceed or follow up
+- **Follow-up** - Send refined Task Prompt to retry
+- **Document Modification** - Update planning documents, then proceed or follow up
 
-The Manager updates the Memory System to track progress. This completes one Coordination Cycle.
+The Manager updates the Memory System to track progress. This completes one assignment-execution-review cycle.
 
-> For detailed mechanics of Task Assignment, Task Cycle, and Task Review, see [Workflow Overview](Workflow_Overview.md).
+> For detailed mechanics of Task Assignment, Task Execution, and Task Review, see [Workflow Overview](Workflow_Overview.md).
 
 ---
 
 ## Step 5: Establish Your Workflow
 
-The Coordination Cycle from Step 4 repeats for each task. As you work through the project, you'll encounter variations:
+The cycle from Step 4 repeats for each task. As you work through the project, you'll encounter variations:
 
-### FollowUp Tasks
+### Follow-up Tasks
 
-When a task needs retry, the Manager creates a FollowUp Task Prompt with refined instructions based on what went wrong. The Worker uses the same Memory Log path and overwrites the previous attempt.
+When a task needs retry, the Manager creates a follow-up Task Prompt with refined instructions based on what went wrong. The Worker uses the same Memory Log path and overwrites the previous attempt.
 
-### Artifact Modifications
+### Document Modifications
 
-When execution reveals issues, the Manager may update Coordination Artifacts:
+When execution reveals issues, the Manager may update planning documents:
+
 - **Specifications** - Design decisions need adjustment
 - **Implementation Plan** - Task definitions or dependencies changed
-- **Standards** - Universal patterns need updating
+- **Execution Standards** - Universal patterns need updating
 
 The Manager determines whether modifications require your collaboration or fall within its authority.
 
@@ -256,20 +265,20 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
 ### Handoff Process
 
 1. **Trigger Handoff** - When context pressure appears, use the appropriate command:
-   - `/apm-6-handoff-manager` for Manager Agent
-   - `/apm-7-handoff-worker` for Worker Agent
+   - `/apm-6-handoff-manager` for Manager
+   - `/apm-7-handoff-worker` for Worker
 
 2. **Outgoing Agent Actions** - The Agent creates:
    - Handoff Memory Log capturing working knowledge not in formal logs (tracked Worker handoffs and VC state for Manager; working context and technical notes for Worker)
    - Handoff Prompt with context reconstruction instructions
    - Writes Handoff Prompt to Handoff Bus file
 
-3. **Create New Session** - Open a new session for the same Agent role (e.g., "Manager Agent 2" or "Frontend Agent 2")
+3. **Create New Session** - Open a new session for the same agent role (e.g., "Manager session 2" or "Frontend Worker session 2")
 
 4. **Initialize Incoming Agent** - Enter the same initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`) — the Incoming Agent auto-detects the Handoff Prompt from the Handoff Bus
 
-5. **Verify and Resume** - The Incoming Agent reconstructs context from:
-   - Coordination Artifacts
+5. **Verify and Resume** - The incoming agent reconstructs context from:
+   - Planning documents
    - Handoff Memory Log
    - Relevant Task Memory Logs (current-Stage for Workers, Stage Summaries and recent logs for Manager)
 

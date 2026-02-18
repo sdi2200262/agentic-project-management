@@ -7,19 +7,19 @@ sidebar_position: 6
 
 # Workflow Overview
 
-APM operates through two distinct phases: the Planning Phase establishes project structure through Coordination Artifacts, and the Implementation Phase executes the plan through repeating Coordination Cycles. Each phase has specific procedures, agents, and outcomes that build toward project completion.
+APM operates through two distinct phases: the Planning Phase establishes project structure through planning documents, and the Implementation Phase executes the plan through repeating assignment-execution-review cycles. Each phase has specific procedures, agents, and outcomes that build toward project completion.
 
 ---
 
 ## Planning Phase
 
-The Planning Phase transforms User requirements into Coordination Artifacts that guide all subsequent work. The Planner Agent operates once at project start, conducting structured discovery and decomposing gathered context into actionable documents.
+The Planning Phase transforms User requirements into planning documents that guide all subsequent work. The Planner operates once at project start, conducting structured discovery and decomposing gathered context into actionable documents.
 
 ```mermaid
 graph LR
-    A[User Initiates<br/>Planner Agent] --> B[Context<br/>Gathering]
+    A[User Initiates<br/>Planner] --> B[Context<br/>Gathering]
     B --> C[Work<br/>Breakdown]
-    C --> D[Coordination<br/>Artifacts Complete]
+    C --> D[Planning<br/>Documents Complete]
 
     classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
     linkStyle default stroke:#9A9A9A,stroke-width:2px
@@ -38,13 +38,13 @@ The Planner conducts structured discovery through three Question Rounds, each fo
 - Work structure and dependencies
 - Technical requirements and constraints
 - Validation criteria for each requirement
-- Emerging Specifications and Standards
+- Emerging Specifications and Execution Standards
 
 **Question Round 3: Implementation Approach and Quality**
 - Technical constraints and preferences
 - Workflow patterns and quality standards
 - Domain organization and coordination needs
-- Finalizing Specifications and Standards
+- Finalizing Specifications and Execution Standards
 
 After each round, the Planner iterates on gaps and unclear areas before advancing. When User responses reference codebase elements or documentation, the Planner explores proactively to gather concrete information. Research Subagents may be spawned to avoid consuming the Planner's context during exploration.
 
@@ -52,7 +52,7 @@ After all rounds complete, the Planner presents an Understanding Summary for Use
 
 ### Work Breakdown
 
-The Planner decomposes gathered context into three Coordination Artifacts through forced Chain-of-Thought methodology - reasoning is presented in chat before file output.
+The Planner decomposes gathered context into three planning documents through visible reasoning - reasoning is presented in chat before file output.
 
 **Specifications Creation**
 - Analyzes design decisions across scope, entities, behaviors, relationships, constraints, and interfaces
@@ -60,37 +60,37 @@ The Planner decomposes gathered context into three Coordination Artifacts throug
 - Presents for User review, iterates on feedback until approval
 
 **Implementation Plan Creation**
-- Identifies logical work domains and defines Worker Agents
+- Identifies logical work domains and defines Workers
 - Identifies all Stages with objectives
 - For each Stage, completes detailed Task breakdown with objectives, outputs, validation criteria, guidance, dependencies, and steps
-- Assesses workload distribution across Agents
-- Generates Dependency Graph visualizing Task dependencies and Agent assignments
+- Assesses workload distribution across agents
+- Generates Dependency Graph visualizing Task dependencies and agent assignments
 - Presents for User review, iterates on feedback until approval
 
-**Standards Creation**
+**Execution Standards Creation**
 - Extracts universal execution patterns from gathered context
-- Writes APM_STANDARDS block in Standards file
+- Writes APM_STANDARDS block in Execution Standards file
 - Presents for User review, iterates on feedback until approval
 
-After all three Coordination Artifacts receive User approval, the Planning Phase concludes. The User initializes the Manager Agent to begin the Implementation Phase.
+After all three planning documents receive User approval, the Planning Phase concludes. The User initializes the Manager to begin the Implementation Phase.
 
 ---
 
 ## Implementation Phase
 
-The Implementation Phase executes the Implementation Plan through repeating Coordination Cycles. The Manager assigns tasks to Workers, reviews completed work, and maintains project state. Each task executes through its own Coordination Cycle.
+The Implementation Phase executes the Implementation Plan through repeating assignment-execution-review cycles. The Manager assigns tasks to Workers, reviews completed work, and maintains project state. Each task executes through its own cycle.
 
 ```mermaid
 graph LR
-    A[Task<br/>Assignment] --> B[Task<br/>Cycle]
+    A[Task<br/>Assignment] --> B[Task<br/>Execution]
     B --> C[Task<br/>Review]
-    C --> D{Coordination<br/>Decision}
+    C --> D{Review<br/>Outcome}
     D -->|Proceed| E[Next Task]
-    D -->|FollowUp| F[Refined<br/>Task Prompt]
-    D -->|Artifact<br/>Modification| G[Update<br/>Artifacts]
+    D -->|Follow-up| F[Refined<br/>Task Prompt]
+    D -->|Document<br/>Modification| G[Update<br/>Documents]
     E --> A
     F --> A
-    G -->|Then Proceed<br/>or FollowUp| E
+    G -->|Then Proceed<br/>or Follow-up| E
 
     classDef default fill:#434343,stroke:#888888,stroke-width:2px,color:#ffffff
     linkStyle default stroke:#9A9A9A,stroke-width:2px
@@ -98,24 +98,24 @@ graph LR
 
 ### Manager Initialization
 
-After the Planning Phase, the User creates a Manager Agent session and runs the initialization command. The Manager:
-- Reads all Coordination Artifacts 
+After the Planning Phase, the User creates a Manager session and runs the initialization command. The Manager:
+- Reads all planning documents 
 - Initializes the Memory System 
 - Initializes the Message Bus for Agent communication
 - Initializes version control if a git repository exists
 - Presents understanding summary for User review
 
-After User authorization, the Manager begins coordinating task execution through Coordination Cycles.
+After User authorization, the Manager begins coordinating task execution through assignment-execution-review cycles.
 
-### Coordination Cycle
+### Assignment-Execution-Review Cycle
 
-Each task executes through its own Coordination Cycle containing three parts: Task Assignment, Task Cycle, and Task Review. When multiple tasks are dispatched (batch or parallel), each task still has its own Coordination Cycle - they may run sequentially or concurrently, but the per-task cycle structure remains the same.
+Each task executes through its own assignment-execution-review cycle containing three parts: Task Assignment, Task Execution, and Task Review. When multiple tasks are dispatched (batch or parallel), each task still has its own cycle - they may run sequentially or concurrently, but the per-task structure remains the same.
 
 #### Task Assignment
 
-The Manager assesses which tasks are ready based on dependency completion and Dispatch State. For each ready task:
+The Manager assesses which tasks are ready based on dependency completion and the Project Tracker. For each ready task:
 
-1. **Context Dependency Analysis** - Classifies dependencies as Same-Agent (light context with recall anchors) or Cross-Agent (comprehensive context with file reading instructions). After Worker Handoff, prior-Stage Same-Agent Dependencies are reclassified as Cross-Agent.
+1. **Dependency Context Analysis** - Classifies dependencies as same-agent (light context with recall anchors) or cross-agent (comprehensive context with file reading instructions). After Worker Handoff, prior-Stage same-agent dependencies are reclassified as cross-agent.
 
 2. **Specification Extraction** - Extracts relevant design decisions from Specifications for contextual integration into the Task Prompt. Workers cannot access Specifications directly.
 
@@ -130,19 +130,19 @@ The Manager assesses which tasks are ready based on dependency completion and Di
 
 For parallel dispatch, the Manager initializes version control (feature branches and worktrees) for workspace isolation.
 
-#### Task Cycle
+#### Task Execution
 
 The Worker receives the Task Prompt and executes through this loop:
 
-1. **Worker Registration** - On first Task Prompt, the Worker binds to the Agent identity specified in the prompt. This identity persists across the Worker's Session.
+1. **Registration** - On first Task Prompt, the Worker binds to the agent identity specified in the prompt. This identity persists across the Worker's Session.
 
-2. **Context Integration** - If Cross-Agent Dependencies exist, the Worker reads specified files to integrate context from prior tasks by other Workers.
+2. **Context Integration** - If cross-agent dependencies exist, the Worker reads specified files to integrate context from prior tasks by other Workers.
 
 3. **Execution** - Works through task instructions step by step according to the Task Prompt.
 
 4. **Validation** - Validates results per specified criteria in order: Programmatic tests, then Artifact checks, then User review. User validation requires pausing for review before proceeding.
 
-5. **Iteration** - If validation fails, attempts to correct and re-validates. This cycle repeats until success or a stop condition.
+5. **Correction Loop** - If validation fails, attempts to correct and re-validates. This loop repeats until success or a stop condition.
 
 6. **Task Memory Logging** - Creates Task Memory Log at specified path documenting outcome, validation results, deliverables, technical decisions, and flags.
 
@@ -162,24 +162,24 @@ The Manager receives the Task Report via Report Bus and reviews the outcome:
 
 2. **Log Review** - Reads the Task Memory Log referenced in the Report. Interprets task status (Success, Partial, Failed, Blocked), flags (important_findings, compatibility_issues), and log content.
 
-3. **Coordination Decision** - Determines next action based on review:
-   - **Proceed** - Task successful, no issues detected. Update Dispatch State, check Stage completion, dispatch next task(s).
-   - **FollowUp** - Task needs retry with refined approach. Create FollowUp Task Prompt with different content (refined objective, updated instructions, FollowUp Context section explaining what went wrong). Same memory log path - Worker overwrites previous log.
-   - **Artifact Modification** - Execution revealed issues with Coordination Artifacts (Specifications, Implementation Plan, or Standards). Determine authority scope (bounded Manager authority vs User collaboration for significant changes). Modify artifacts, verify consistency, update Dependency Graph if Implementation Plan Task relationships change. Then proceed to next task or issue FollowUp as needed.
+3. **Review Outcome** - Determines next action based on review:
+   - **Proceed** - Task successful, no issues detected. Update Project Tracker, check Stage completion, dispatch next task(s).
+   - **Follow-up** - Task needs retry with refined approach. Create follow-up Task Prompt with different content (refined objective, updated instructions, follow-up context section explaining what went wrong). Same memory log path - Worker overwrites previous log.
+   - **Document Modification** - Execution revealed issues with planning documents (Specifications, Implementation Plan, or Execution Standards). Determine authority scope (bounded Manager authority vs User collaboration for significant changes). Modify documents, verify consistency, update Dependency Graph if Implementation Plan Task relationships change. Then proceed to next task or issue follow-up as needed.
 
-4. **Dispatch State Update** - Every outcome path ends with updating the Dispatch State section in Memory Root: completed tasks, readiness changes, merge state.
+4. **Project Tracker Update** - Every outcome path ends with updating the Project Tracker section in Memory Root: completed tasks, readiness changes, merge state.
 
 5. **Stage Summary** - After all tasks in a Stage complete, the Manager reviews all Task Memory Logs for that Stage and appends a Stage Summary to Memory Root capturing Stage-level outcomes and cross-cutting observations.
 
-**Parallel Report Handling:** During parallel dispatch, Reports arrive asynchronously. The Manager processes each as it arrives, makes Coordination Decision, merges the completed task's branch, reassesses readiness, and dispatches newly Ready tasks if any. When no Ready tasks exist but Workers are still active, the Manager communicates what is pending and waits.
+**Parallel Report Handling:** During parallel dispatch, Reports arrive asynchronously. The Manager processes each as it arrives, determines the review outcome, merges the completed task's branch, reassesses readiness, and dispatches newly ready tasks if any. When no ready tasks exist but Workers are still active, the Manager communicates what is pending and waits.
 
 ### Memory System
 
 The Memory System in `.apm/Memory/` tracks project state and execution history:
 
-- **Memory Root** (`Memory_Root.md`) - Central project state containing Handoff count, Dispatch State, Working Notes, and Stage Summaries
+- **Memory Root** (`Memory_Root.md`) - Central project state containing Project Tracker, Working Notes, and Stage Summaries
 
-- **Dispatch State** (section within Memory Root) - Tracks task statuses per Stage (Ready, Active, Done, Blocked), agent assignments, active branches, and merge state. Updated by the Manager after each Task Review.
+- **Project Tracker** (section within Memory Root) - Tracks task statuses per Stage (ready, active, done, waiting), agent assignments, active branches, and merge state. Updated by the Manager after each Task Review.
 
 - **Task Memory Logs** (`Stage_<N>_<Slug>/Task_Log_<N>_<M>_<Slug>.md`) - Structured logs created by Workers after each task completion. Serve as context abstraction layer between Manager's coordination view and Worker's execution details.
 
@@ -201,7 +201,7 @@ The User triggers bus checks using commands (`/apm-4-check-tasks`, `/apm-5-check
 
 ## Handoff
 
-When an Agent's context window approaches limits (70-80% capacity), a Handoff transfers context to a fresh instance of the same Agent. Handoff applies to Manager and Worker Agents only - the Planner operates in a single Session.
+When an Agent's context window approaches limits (70-80% capacity), a Handoff transfers context to a fresh instance of the same Agent. Handoff applies to Manager and Workers only - the Planner operates in a single Session.
 
 ```mermaid
 graph LR
@@ -229,7 +229,7 @@ graph LR
 3. Directs User to start a new session using the initialization command — the Incoming Agent auto-detects the Handoff Prompt
 
 **Incoming Agent**
-1. User creates new session for the same Agent role (e.g., "Manager Agent 2" or "Frontend Agent 2")
+1. User creates new session for the same agent role (e.g., "Manager session 2" or "Frontend Worker session 2")
 2. User runs initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`)
 3. Agent auto-detects Handoff Prompt from Handoff Bus, follows instructions to read Handoff Memory Log and relevant Task Memory Logs
 4. Agent reconstructs working context and presents understanding summary
@@ -237,7 +237,7 @@ graph LR
 
 **Context Reconstruction Scope**
 - Incoming Manager reads Memory Root Stage Summaries, Handoff Memory Log, and relevant recent Task Memory Logs
-- Incoming Worker reads current-Stage Task Memory Logs for their Agent. Previous-Stage logs are not loaded for efficiency - the Manager accounts for this when constructing future Task Prompts by treating prior-Stage Same-Agent Dependencies as Cross-Agent Dependencies.
+- Incoming Worker reads current-Stage Task Memory Logs for their agent. Previous-Stage logs are not loaded for efficiency - the Manager accounts for this when constructing future Task Prompts by treating prior-Stage same-agent dependencies as cross-agent dependencies.
 
 ---
 
