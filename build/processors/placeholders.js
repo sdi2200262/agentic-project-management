@@ -86,7 +86,7 @@ export function replacePlaceholders(content, context) {
   replaced = replaced.replace(/{MANAGER_SUBAGENT_GUIDANCE}/g, managerGuidanceText);
 
   // Replace WORKER_SUBAGENT_GUIDANCE placeholder
-  const workerGuidanceText = `For complex Cross-Agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`.`;
+  const workerGuidanceText = `For complex cross-agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`.`;
   replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
 
   // Replace CONTEXT_ATTACH_SYNTAX placeholder
@@ -111,15 +111,3 @@ export function getOutputExtension(target) {
   return '.md';
 }
 
-/**
- * Gets the output extension for agent files.
- *
- * @param {Object} target - Target configuration object.
- * @returns {string} File extension for agent files.
- */
-export function getAgentExtension(target) {
-  if (target.id === 'copilot') {
-    return '.agent.md';
-  }
-  return '.md';
-}

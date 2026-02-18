@@ -11,7 +11,7 @@ import path from 'path';
 import logger from '../utils/logger.js';
 import { findMdFiles } from '../utils/files.js';
 import { parseFrontmatter } from './frontmatter.js';
-import { replacePlaceholders, getOutputExtension, getAgentExtension } from './placeholders.js';
+import { replacePlaceholders, getOutputExtension } from './placeholders.js';
 import { generateReleaseManifest } from '../generators/manifest.js';
 import { createZipArchive } from '../generators/archive.js';
 import { getVersion } from '../core/config.js';
@@ -42,28 +42,6 @@ function isGuideTemplate(templatePath, sourceDir) {
 }
 
 /**
- * Determines if a template file is an agent definition based on its source directory.
- *
- * @param {string} templatePath - Path to template file.
- * @param {string} sourceDir - Source templates directory.
- * @returns {boolean} True if file is in agents/ directory.
- */
-function isAgentTemplate(templatePath, sourceDir) {
-  const relativePath = path.relative(sourceDir, templatePath);
-  return relativePath.startsWith('agents' + path.sep);
-}
-
-/**
- * Processes agent definition files.
- *
- * @param {string} content - Agent template content.
- * @returns {string} Content (unchanged, placeholders handled by replacePlaceholders).
- */
-function processAgentContent(content) {
-  return content;
-}
-
-/**
  * Processes a single template file.
  *
  * @param {string} templatePath - Path to template file.
@@ -71,14 +49,13 @@ function processAgentContent(content) {
  * @returns {Promise<void>}
  */
 async function processTemplate(templatePath, options) {
-  const { target, version, commandsDir, skillsDir, guidesDir, agentsDir, targetBuildDir, sourceDir } = options;
+  const { target, version, commandsDir, skillsDir, guidesDir, targetBuildDir, sourceDir } = options;
 
   const content = await fs.readFile(templatePath, 'utf8');
 
   const isCommand = isCommandTemplate(templatePath, sourceDir);
   const isGuide = isGuideTemplate(templatePath, sourceDir);
-  const isAgent = isAgentTemplate(templatePath, sourceDir);
-  const category = isCommand ? 'command' : (isGuide ? 'guide' : (isAgent ? 'agent' : 'skill'));
+  const category = isCommand ? 'command' : (isGuide ? 'guide' : 'skill');
 
   const context = { version, target };
   const basename = path.basename(templatePath, '.md');
@@ -90,17 +67,6 @@ async function processTemplate(templatePath, options) {
     // Guides: plain markdown, no frontmatter, flat files
     finalContent = replacePlaceholders(content, context);
     outputPath = path.join(guidesDir, `${basename}.md`);
-  } else if (isAgent) {
-    // Agent definitions: process content, then placeholders
-    let processedContent = processAgentContent(content);
-    processedContent = replacePlaceholders(processedContent, context);
-
-    // Clean up empty lines in frontmatter that result from removed placeholders
-    processedContent = cleanAgentFrontmatter(processedContent);
-
-    finalContent = processedContent;
-    const agentExt = getAgentExtension(target);
-    outputPath = path.join(agentsDir, `${basename}${agentExt}`);
   } else {
     // Commands and Skills: parse frontmatter
     const { frontmatter, content: body } = parseFrontmatter(content);
@@ -131,28 +97,6 @@ async function processTemplate(templatePath, options) {
 
   await fs.writeFile(outputPath, finalContent);
   logger.info(`${category}: ${basename}.md → ${path.relative(targetBuildDir, outputPath)}`);
-}
-
-/**
- * Cleans up agent frontmatter by removing empty lines from removed placeholders.
- *
- * @param {string} content - Agent content with frontmatter.
- * @returns {string} Cleaned content.
- */
-function cleanAgentFrontmatter(content) {
-  // Split into frontmatter and body
-  const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  if (!match) return content;
-
-  const [, frontmatter, body] = match;
-
-  // Remove empty lines from frontmatter
-  const cleanedFrontmatter = frontmatter
-    .split('\n')
-    .filter(line => line.trim() !== '')
-    .join('\n');
-
-  return `---\n${cleanedFrontmatter}\n---\n${body}`;
 }
 
 /**
@@ -188,14 +132,12 @@ async function buildTarget(target, config, version) {
   const commandsDir = path.join(targetBuildDir, target.directories.commands);
   const skillsDir = path.join(targetBuildDir, target.directories.skills);
   const guidesDir = path.join(targetBuildDir, target.directories.guides);
-  const agentsDir = path.join(targetBuildDir, target.directories.agents);
 
   logger.info(`\nProcessing target: ${target.name} (${target.id})`);
 
   await fs.ensureDir(commandsDir);
   await fs.ensureDir(skillsDir);
   await fs.ensureDir(guidesDir);
-  await fs.ensureDir(agentsDir);
 
   // Copy apm/ → .apm/ (common to all targets)
   await copyApmDirectory(sourceDir, targetBuildDir);
@@ -212,7 +154,6 @@ async function buildTarget(target, config, version) {
       commandsDir,
       skillsDir,
       guidesDir,
-      agentsDir,
       targetBuildDir,
       sourceDir
     });
