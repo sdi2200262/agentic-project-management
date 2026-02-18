@@ -1,101 +1,129 @@
 # APM Workflow
 
-This document is the formal specification of the APM workflow. It defines phases, procedures, and decision models that govern how Agents coordinate to deliver project outcomes. All guides and commands derive their behavior from this specification.
+This document is the formal specification of the APM workflow. It defines the phases, systems, and procedures that govern how agents coordinate to deliver project outcomes. All commands, guides, and skills derive their behavior from this specification.
 
-Terms used here are defined in `TERMINOLOGY.md`. Structural patterns follow `STRUCTURE.md`. Writing conventions follow `WRITING.md`.
+Terms used here are defined in `TERMINOLOGY.md`. Writing conventions follow `WRITING.md`.
 
 ---
 
 ## 1. Design
 
-APM is a multi-agent project management framework that coordinates agent sessions through file-based communication and structured Coordination Artifacts. The framework operates on these principles:
+APM is a multi-agent project management framework that coordinates agent sessions through file-based communication and structured planning documents.
 
-**User-mediated coordination.** The User initiates sessions, triggers bus checks in agent sessions via `/apm-4-check-tasks` and `/apm-5-check-reports`, approves key decisions, and triggers Handoffs. All inter-agent communication occurs through file-based coordination rather than direct programmatic connection. Agents resolve their own bus paths from their registered identity — the User signals when to check, not what to read. This user-mediated model works universally across tools and environments without requiring platform-specific integrations.
+**User-mediated coordination** - The User initiates sessions, triggers bus checks, approves key decisions, and triggers Handoffs. All inter-agent communication passes through the file system; agents never communicate directly. The User decides when messages are delivered by running trigger commands in the appropriate session.
 
-**Platform agnosticism.** Core concepts (Message Bus, Memory System, Coordination Artifacts) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
+**Platform agnosticism** - Core concepts (the bus system, the Memory System, planning documents) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
 
-**Context scoping.** Each Agent operates with intentionally scoped context. Workers receive only Task Prompts and their accumulated working context. The Manager holds coordination-level context and only when requested dives into execution-level. The Planner holds full initial project context during planning but does not intervene during coordination or execution. This scoping prevents context overload and keeps Agents focused.
+**Context scoping** - Each agent operates with intentionally limited context. Workers receive only Task Prompts, Execution Standards, and their accumulated working context. The Manager holds coordination-level context: planning documents, the Memory System, and the full project picture. The Planner holds initial project context during the Planning Phase but does not participate during implementation. This scoping prevents context overload and keeps agents focused on their role.
 
-**Structured memory.** The Memory System captures project history in a hierarchical structure that enables Handoff continuity and efficient progress tracking. As the project evolves, this archive provides rich context for coordination decisions and future reference.
-
----
-
-## 2. Roles
-
-### 2.1 Planner
-
-Single instance, single session. Responsible for the Planning Phase: transforming User requirements into Coordination Artifacts through Context Gathering and Work Breakdown. Does not participate in the Implementation Phase.
-
-### 2.2 Manager
-
-Single instance, multiple sessions via Handoff. Responsible for coordination and orchestration during the Implementation Phase. Assigns Tasks, reviews results, maintains Coordination Artifacts and the Memory System. Does not execute implementation work unless explicitly directed by the User.
-
-### 2.3 Worker
-
-Multiple instances (one per domain defined in the Implementation Plan), multiple sessions each via Handoff. Responsible for task execution. Workers operate with scoped context: they receive Task Prompts, interact with the workspace and have access to the Standards file, but not to the Implementation Plan, Specifications, or Memory System - apart from their own Task Memory Logs.
-
-### 2.4 Sessions
-
-A session is a continuous execution context. Sessions are initiated by the User. The Planner has one session. The Manager and Workers have multiple sessions, incrementing on Handoff. Format: `[Agent Name] Session [N]`.
+**Structured memory** - The Memory System captures project history in a hierarchical file structure that enables Handoff continuity and efficient progress tracking. The Manager operates on execution summaries rather than raw implementation detail, enabling coordination of multiple Workers without context overload.
 
 ---
 
-## 3. Phases
+## 2. Phases
 
-### 3.1 Planning Phase
+### 2.1 Planning Phase
 
-The Planner transforms User requirements into Coordination Artifacts. Two procedures execute sequentially:
+The Planner transforms User requirements into planning documents through two sequential procedures: Context Gathering, then Work Breakdown. The Planning Phase concludes when the User approves all three planning documents - Specifications, Implementation Plan, and Execution Standards. Control then transfers to the User, who initiates the Manager.
 
-1. **Context Gathering** — elicits requirements through structured rounds of questions, produces a consolidated summary.
-2. **Work Breakdown** — decomposes gathered context into Specifications, Implementation Plan, and Standards.
+### 2.2 Implementation Phase
 
-The Planning Phase concludes when the User approves all Coordination Artifacts. Control transfers to the User, who initiates the Manager to begin the Implementation Phase.
+The Manager and Workers transform the Implementation Plan into completed deliverables. The Implementation Phase begins when the User initiates the Manager session.
 
-### 3.2 Implementation Phase
+**Manager initialization** - During its first session, the Manager reads all planning documents, initializes the bus system and version control (if not already implemented), populates the Project Tracker in Memory Root (task tracking with the first Stage's Tasks, agent tracking with all Workers, version control state), presents an understanding summary, and requests User approval before dispatching work.
 
-The Manager and Workers transform the Implementation Plan into completed deliverables. Each task executes through its own assignment-execution-review cycle:
+**Task cycle** - Each Task progresses through three procedures: Task Assignment (Manager assesses readiness, constructs a Task Prompt, delivers it via Task Bus) → Task Execution (Worker executes, validates, iterates if needed, writes a Task Memory Log and Task Report) → Task Review (Manager reviews the report and log, determines outcome and next steps). This cycle repeats per Task. When multiple Tasks are dispatched as a batch or in parallel, each maintains its own cycle.
 
-1. **Task Assignment** — Manager assesses readiness, determines dispatch mode, constructs Task Prompt, delivers via Task Bus.
-2. **Task Execution** — Worker receives a Task Prompt, executes instructions, validates results, iterates if needed, logs to Task Memory Log, and writes Task Report to Report Bus.
-3. **Task Review** — Manager reviews Task Report and Task Memory Log, determines the review outcome and next steps.
+**Continuous coordination** - After each Task Review, the Manager reassesses readiness and dispatches the next Task in the same turn when one is ready. Review and dispatch happen without waiting for User input. The Manager pauses only when no Tasks are ready and Workers are active, when a decision requires User collaboration, or when waiting for an outstanding Task to complete will unblock more efficient dispatches.
 
-This per-task cycle repeats for each task. When the Manager dispatches multiple tasks (batch or parallel), each task has its own assignment-execution-review cycle — they may run sequentially or concurrently, but the per-task structure remains the same. After all Tasks in a Stage complete, the Manager creates a Stage Summary. After all Stages complete, the Manager presents a Project Completion summary.
+**Stage completion** - After all Tasks in a Stage complete, the Manager creates a stage summary capturing Stage-level outcomes, then proceeds to the next Stage.
 
-Supporting procedures run as needed within the cycle:
-- **Version Control** — Manager initializes and coordinates version control for workspace isolation during parallel dispatch.
-- **Handoff** — Context transfer between Sessions of the same Agent when context window limits approach.
+**Project completion** - After all Stages complete, the Manager presents a project completion summary covering: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
+
+**Version control** - Version control provides workspace isolation during parallel dispatch. Each dispatch unit operates on its own branch, and the Manager coordinates all merges. Workers commit to their assigned branch but do not create branches, manage worktrees, or merge.
+
+**Handoff** - Handoff transfers context between sessions of the same agent when context window limits approach. The Planner does not Handoff (single session).
+
+---
+
+## 3. Planning Documents
+
+| Document | Purpose | Location | Access |
+| -------- | ------- | -------- | ------ |
+| Specifications | Define what is being built | `.apm/Specifications.md` | Manager only; extracted into Task Prompts for Workers |
+| Implementation Plan | Define how work is organized | `.apm/Implementation_Plan.md` | Manager only; extracted into Task Prompts for Workers |
+| Execution Standards | Define how work is performed | `{AGENTS_FILE}` at workspace root | All agents |
+
+### 3.1 Specifications
+
+Specifications define what is being built - project-specific design decisions and constraints. They reside at `.apm/Specifications.md` with a free-form markdown structure determined by project needs. Specifications inform the Implementation Plan.
+
+Workers do not have access to Specifications. The Manager extracts relevant content into Task Prompts during Task Assignment and may update Specifications during the Implementation Phase when execution findings warrant it.
+
+### 3.2 Implementation Plan
+
+The Implementation Plan defines how work is organized - Stages, Tasks, agent assignments, a dependency graph, and validation criteria. It resides at `.apm/Implementation_Plan.md`.
+
+The plan contains a header (project name, overview, agents, Stages, dependency graph) followed by Stage sections containing Tasks. Each Task specifies an objective, output, validation criteria, guidance, dependencies, and steps. The dependency graph is a mermaid diagram that visualizes Task dependencies and agent assignments, enabling the Manager to identify batch candidates, parallel dispatch opportunities, and critical path bottlenecks.
+
+Task dependencies are listed in each Task's dependencies field. Cross-agent dependencies - between different Workers - are bolded for visual distinction.
+
+Workers do not have access to the Implementation Plan. The Manager extracts Task content into Task Prompts during Task Assignment and may update the Implementation Plan during the Implementation Phase. The Manager updates the dependency graph when modifications affect Task dependencies.
+
+### 3.3 Execution Standards
+
+Execution Standards define how work is performed - universal execution patterns applied during Task Execution. They are stored within the APM standards block in `{AGENTS_FILE}` at the workspace root. Content outside this block is user-managed and preserved. When relevant standards already exist outside the block, the APM standards block references them rather than duplicating.
+
+All agents have direct access to this file. Both the Manager and Workers may update Execution Standards during the Implementation Phase.
+
+### 3.4 Document Modification
+
+Specifications and the Implementation Plan have bidirectional influence - changes to one may require adjustments in the other. Execution Standards are generally isolated from architecture and coordination-level documents. When modifying any planning document, the Manager assesses cascade implications before executing changes.
+
+**Manager authority** (small contained changes):
+
+- Single Task clarification or correction
+- Adding a missing dependency
+- Isolated Specification addition
+- Minor Execution Standards adjustment
+
+**User collaboration required** (significant changes):
+
+- Multiple Tasks affected
+- Design direction change
+- Scope change
+- New Stage addition or major restructure
+- Multiple small modifications that together represent significant change
 
 ---
 
 ## 4. Communication System
 
-### 4.1 Message Bus
+### 4.1 Bus System
 
-The Message Bus is a file-based communication system in `.apm/bus/`. The Manager initializes it during session 1. Each Worker has a bus directory (subdirectory) containing their Bus Files. The Manager has a directory for its Handoff Bus only. Agents read their bus via `/apm-4-check-tasks` and `/apm-5-check-reports` after initialization. Operational procedures for Bus initialization and message delivery are defined in the communication skill.
-
-### 4.2 Bus File Types
+The bus system is a file-based communication mechanism in `.apm/bus/`. The Manager initializes it during session 1. Each Worker has a bus directory containing three bus files. The Manager has a bus directory containing only a Handoff Bus.
 
 | Bus File | File Name | Direction | Contains |
-|----------|-----------|-----------|----------|
+| -------- | --------- | --------- | -------- |
 | Task Bus | `apm-task.md` | Manager → Worker | Task Prompts (single or batched) |
-| Report Bus | `apm-report.md` | Worker → Manager | Task Reports or Batch Reports |
-| Handoff Bus | `apm-handoff.md` | Outgoing → Incoming Agent | Handoff Prompts |
+| Report Bus | `apm-report.md` | Worker → Manager | Task Reports |
+| Handoff Bus | `apm-handoff.md` | Outgoing → incoming agent | Handoff prompt content |
 
-### 4.3 Clear-on-Return
+A bus file is either empty (no message present) or contains a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. This prevents stale messages from accumulating and signals that the previous message was processed.
 
-Before writing to an outgoing Bus File, an Agent clears its incoming Bus File. This prevents stale messages from accumulating and signals that the previous message was processed.
+Workers read their Task Bus when the User runs `/apm-4-check-tasks` in the Worker's session. The Manager reads Report Buses when the User runs `/apm-5-check-reports`. Both commands accept an optional agent identifier argument for targeted delivery.
 
-### 4.4 Communication Flow
+When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. Each Task Prompt within the batch retains its full standalone structure.
 
-1. Manager writes Task Prompt to Worker's Task Bus.
-2. Manager informs User a task is ready for Worker `<id>`.
-3. User runs `/apm-4-check-tasks` in the Worker's session (or `/apm-4-check-tasks <id>` if not yet registered).
-4. Worker executes, logs, writes Task Report to Report Bus.
-5. Worker informs User a report is ready.
-6. User runs `/apm-5-check-reports` in the Manager's session (or `/apm-5-check-reports <id>` for a specific Worker).
-7. Manager reviews and determines next steps.
+### 4.2 Communication Flow
 
-The `/apm-4-check-tasks` and `/apm-5-check-reports` commands replace manual file referencing. Agents resolve their bus paths from their registered identity. The User is the trigger puller at every boundary — there is no direct Manager-Worker communication.
+1. Manager writes a Task Prompt to a Worker's Task Bus and provides the User with specific action guidance - which command to run, in which session, and whether the Worker needs initialization first.
+2. User runs the indicated command(s) in the Worker's session.
+3. Worker executes the Task, writes a Task Memory Log, writes a Task Report to the Report Bus, and directs the User to deliver the report to the Manager - including the agent identifier for targeted retrieval.
+4. User runs `/apm-5-check-reports` in the Manager's session.
+5. Manager reviews the report and log, determines next steps.
+
+The User is the trigger puller at every boundary - there is no direct agent-to-agent communication. Each agent provides concise, actionable guidance covering only their end of the exchange.
 
 ---
 
@@ -105,331 +133,195 @@ The `/apm-4-check-tasks` and `/apm-5-check-reports` commands replace manual file
 
 The Memory System resides in `.apm/Memory/` with this hierarchy:
 
-- **Memory Root** (`Memory_Root.md`) — Central project state. Contains Handoff count, Dispatch State, Working Notes, and Stage Summaries.
-- **Dispatch State** (section within Memory Root) — Tracks task statuses, agent assignments, active branches, and merge state per Stage. Updated by the Manager after each review cycle.
-- **Stage Directories** (`Stage_<N>_<Slug>/`) — Contain Task Memory Logs for each Stage. Created by the Worker when writing their first Task Memory Log for that Stage.
-- **Task Memory Logs** — Structured logs written by Workers after Task completion. Capture status, validation results, deliverables, and flags.
-- **Handoff Memory Logs** (`Handoffs/<AgentID>_Handoffs/`) — Logs created during Handoff containing working context not captured elsewhere.
+```text
+.apm/Memory/
+├── Memory_Root.md
+├── Stage_<N>_<Slug>/
+│   └── Task_Log_<N>_<M>_<Slug>.md
+└── Handoffs/
+    └── <AgentID>_Handoffs/
+        └── <AgentID>_Handoff_Log_<N>.md
+```
 
-### 5.2 Lifecycle
+**Memory Root** (`Memory_Root.md`) is the central project state document. It contains the Project Tracker, working notes, and stage summaries.
 
-1. **Initialization** — Manager initializes Memory Root during session 1.
-2. **Dispatch State Initialization** — Manager populates Dispatch State with Stage 1 tasks during session 1.
-3. **Task Logging** — Workers create Task Memory Logs after each Task completion.
-4. **Dispatch State Update** — Manager updates Dispatch State after each review cycle: completed tasks, readiness changes, merge state.
-5. **Stage Summary** — Manager appends Stage Summary to Memory Root after all Tasks in a Stage complete.
-6. **Handoff Logging** — Outgoing Agent creates Handoff Memory Log during Handoff.
+**Project Tracker** (within Memory Root) is a structured section containing task tracking, agent tracking, and version control state. The Manager updates it throughout the Implementation Phase. It serves as the operational view for dispatch decisions, dependency analysis, and Handoff continuity.
+
+**Task tracking** (within Project Tracker) records Task statuses, agent assignments, active branches, and merge state per Stage. The Manager updates it after each Task Review. Tasks progress through lifecycle states per `TERMINOLOGY.md` §8: waiting, ready, active, done.
+
+**Agent tracking** (within Project Tracker) records agent states and session numbers. Agents start as uninitialized and transition to Session N when initialized. The Manager updates it when agents are first dispatched to, and when Handoffs are detected. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies.
+
+**Stage directories** (`Stage_<N>_<Slug>/`) contain Task Memory Logs for each Stage. Workers create the directory when writing their first Task Memory Log for that Stage.
+
+**Task Memory Logs** are structured logs written by Workers after Task completion. They capture outcome status, validation results, deliverables, and flags.
+
+**Handoff Memory Logs** (`Handoffs/<AgentID>_Handoffs/`) are logs created during Handoff containing working context not captured elsewhere.
+
+**Working notes** are ephemeral coordination context maintained by the Manager and User within Memory Root. Contents include User preferences, coordination insights, and other context not captured in the Project Tracker. Working notes are inserted and removed as context evolves - they are not permanent records.
+
+### 5.2 Interactions
+
+Both the Manager and Workers interact with the Memory System and its components at various parts of the workflow:
+
+1. The Manager initializes Memory Root and populates the Project Tracker (task tracking with Stage 1 Tasks, agent tracking with all Workers, version control state) during session 1.
+2. Workers create Task Memory Logs after each Task completion.
+3. The Manager updates Task tracking after each Task Review: completed Tasks, readiness changes, merge state.
+4. The Manager appends a stage summary to Memory Root after all Tasks in a Stage complete.
+5. Outgoing agents create Handoff Memory Logs during Handoff.
 
 ### 5.3 Task Memory Log Flags
 
-Workers set flags based on scoped observations. The Manager interprets these with full project awareness:
+Workers set flags based on what they observe during execution. The Manager interprets these flags with full project awareness:
 
-| Flag | Meaning | Manager Action |
-|------|---------|----------------|
-| `important_findings` | Worker observed something potentially beyond its Task scope | Assess whether it affects Coordination Artifacts or other Tasks |
-| `compatibility_issues` | Worker observed conflicts with existing systems or with Task's dependencies | Assess whether it indicates Implementation Plan, Specification, or Standards issues |
+| Flag | Interpretation |
+| ---- | -------------- |
+| `important_findings` | The Worker observed something potentially beyond the Task's scope. The Manager assesses whether it affects planning documents or other Tasks. |
+| `compatibility_issues` | The Worker observed dependency or system conflicts. The Manager assesses whether this indicates issues with the Implementation Plan, Specifications, or Execution Standards. |
 
-### 5.4 Task Status Values
+When uncertain whether a finding warrants a flag, Workers set it to true. False negatives harm coordination more than false positives.
+
+### 5.4 Task Outcome Status
+
+Task outcome status reflects whether the objective was achieved:
 
 | Status | Definition |
-|--------|------------|
-| Success | Task objective achieved, all validation passed |
-| Partial | Some execution/validation succeeded, some failed |
-| Failed | Most or all execution/validation failed |
-| Blocked | Serious blockers that the Worker lacks scope or authority to address |
+| ------ | ---------- |
+| Success | Objective achieved, all validation passed |
+| Partial | Some execution or validation succeeded, some failed; the Worker needs guidance to continue |
+| Failed | The Worker attempted but could not succeed; the issue is within scope but beyond resolution |
+| Blocked | External factors outside the Worker's scope or authority prevent progress |
 
 ---
 
-## 6. Coordination Artifacts
+## 6. Procedures
 
-### 6.1 Hierarchy
+### 6.1 Context Gathering
 
-| Level | Artifact | Purpose | Location |
-|-------|----------|---------|----------|
-| Architectural | Specifications | Define what is being built | `.apm/Specifications.md` |
-| Coordination | Implementation Plan | Define how work is organized | `.apm/Implementation_Plan.md` |
-| Execution | Standards | Define how work is performed | `AGENTS.md` (or `CLAUDE.md`) at workspace root |
-| Operational | Memory System | Track project state and execution history | `.apm/Memory/` |
+The Planner elicits project requirements through three progressive rounds of questions:
 
-### 6.2 Specifications
+**Round 1 - Existing Materials and Vision.** Project type, problem, scope, skills, existing documentation, current vision.
 
-Project-specific design decisions and constraints. Free-form markdown structure determined by project needs. Informs the Implementation Plan. Workers do not have direct access — the Manager extracts relevant content into Task Prompts and updates it as needed during the Implementation Phase.
+**Round 2 - Technical Requirements.** Work structure, dependencies, technical requirements, emerging Specifications and Execution Standards, validation criteria.
 
-### 6.3 Implementation Plan
+**Round 3 - Implementation Approach and Quality.** Technical constraints, workflow preferences, quality standards, coordination needs, domain organization, finalizing Specifications and Execution Standards.
 
-Stage and Task breakdown with Agent assignments, Dependency Graph, and validation criteria. Contains:
+Each round follows an iteration cycle: ask initial questions, assess gaps after each response, follow up until understanding is complete, present a round summary, advance. When User responses reference codebase elements, the Planner proactively explores before continuing - subagent usage is encouraged to avoid context bloat. The Planner captures validation criteria for each requirement, proposing concrete measures when the User does not specify them.
 
-- **Header** — Project name, overview, Agents, Stages, Dependency Graph (mermaid).
-- **Stages** — Milestone groupings containing Tasks.
-- **Tasks** — Discrete work units with Objective, Output, Validation, Guidance, Dependencies, and Steps.
+After all rounds, the Planner presents a consolidated understanding summary for User review. Modifications loop back through targeted follow-ups. User approval triggers transition to Work Breakdown.
 
-The **Dependency Graph** is a mermaid diagram generated by the Planner during Work Breakdown. It visualizes Task dependencies and Agent assignments, enabling the Manager to identify batch candidates, parallel dispatch opportunities, and critical path bottlenecks. The Manager updates the Dependency Graph when significant plan modifications occur during Task Review.
+### 6.2 Work Breakdown
 
-**Task Dependencies** are listed in each Task's Dependencies field. Cross-Agent Dependencies (between different Workers) are bolded for visual distinction.
+The Planner decomposes gathered context into planning documents through visible reasoning - thinking is presented in chat before file output. The User sees decomposition decisions and can redirect before artifacts are written.
 
-The Implementation Plan is not accessed by the Workers - the Manager extracts relevant Task contents creating Task Prompts accordingly and updates it as needed during the Implementation Phase.
+**Sequence:**
 
-### 6.4 Standards
+1. **Specifications Analysis** - Analyze design decisions, write Specifications, present for User approval.
+2. **Implementation Plan Analysis** - Identify work domains and Workers, identify all Stages with objectives and Tasks, complete detailed Task breakdown per Stage (objective, output, validation, guidance, dependencies, steps), assess workload distribution, review cross-agent dependencies, generate the dependency graph, present for User approval.
+3. **Execution Standards Analysis** - Extract universal execution patterns, write the APM standards block, present for User approval.
 
-Universal execution patterns applied during Task Execution. Stored in the APM_STANDARDS block within the Standards file. Content outside this block is user-managed and preserved. If relevant standards already exist outside the block, the APM_STANDARDS block references them rather than duplicating. All Agents have direct access to this file, and both the Manager and Worker may update it during the Implementation Phase.
+**Task decomposition principles.** Each Task produces a meaningful deliverable with clear boundaries, scoped to a single Worker's domain, with specified validation criteria (programmatic, artifact, or user-based). Steps within Tasks support failure tracing but have no independent validation. Subagent steps are included when investigation or research is needed. Decomposition granularity adapts to project size and complexity - smaller projects warrant lighter breakdown.
 
-### 6.5 Cascade Patterns
+### 6.3 Task Assignment
 
-Specifications and Implementation Plan have bidirectional influence — Specification changes may require Implementation Plan adjustments and vice versa. Standards are generally isolated from architecture and coordination-level artifacts. When modifying any artifact, the Manager assesses cascade implications before executing changes and proceeds accordingly to ensure coherence.
+The Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them via the Task Bus.
+
+**Dispatch assessment** - The Manager identifies ready Tasks from the Project Tracker in Memory Root, groups them by Worker, and forms dispatch units. Three dispatch modes exist:
+
+| Mode | Description | Prerequisites |
+| ---- | ----------- | ------------- |
+| Single | One Task dispatched to one Worker | Task is ready |
+| Batch | Multiple Tasks dispatched to the same Worker in one message | Tasks form a sequential chain or are independent same-Worker Tasks all ready simultaneously |
+| Parallel | Dispatch units sent to different Workers simultaneously | No unresolved cross-agent dependencies; version control workspace isolation |
+
+**Intelligent waiting** - Before dispatching a ready unit, the Manager checks whether a pending report would unlock Tasks that combine well with the current unit. If waiting costs little and a plausible combination exists, the Manager may wait. If multiple reports are pending or no beneficial combination is plausible, the Manager dispatches immediately.
+
+**Wait state** - When no Tasks are ready but Workers are active, the Manager communicates what was processed, what is pending, and what the User should do next.
+
+**Per-Task analysis** - For each Task, the Manager analyzes dependencies, extracts relevant Specification content, and extracts Implementation Plan Task fields. Dependency context depth depends on Worker familiarity with the producer's work. Same-agent dependencies receive light context: recall anchors and file paths. Cross-agent dependencies receive comprehensive context: file reading instructions, output summaries, and integration guidance. After a Worker Handoff, previous-Stage same-agent dependencies become cross-agent because the incoming Worker lacks that working context. The Manager traces dependency chains upstream when ancestors established patterns, schemas, or contracts the current Task must follow. The Manager never references Specifications or the Implementation Plan by path in Task Prompts; Workers cannot access these documents.
+
+**Task Prompt construction** - The Manager assembles each Task Prompt as a self-contained document with metadata (Stage, Task, agent identifier, memory log path, dependency indicator) and a body containing the Task objective, dependency context, detailed instructions, expected output, validation criteria, and reporting instructions. For parallel dispatch, the Task Prompt includes the workspace path where the Worker operates. Workers commit to their assigned branch and note the workspace in their Task Memory Log.
+
+**Dispatch delivery** - For each dispatch, the Manager writes to the Worker's Task Bus and directs the User to the Worker's session with specific action guidance. For uninitialized Workers, the Manager directs the User to create a new session and initialize with the agent identifier; for initialized Workers, to deliver the Task Prompt. For batch dispatch, the Manager summarizes what the Worker will receive. For parallel dispatch, the Manager lists each Worker session with its required action. Parallel dispatch may contain any combination of single or batch dispatch for multiple Workers concurrently.
+
+**Follow-up Task Prompts** - When a Task Review determines retry is needed, the Manager issues a follow-up. The follow-up is a new Task Prompt with objective, instructions, output, and validation refined based on what went wrong. It uses the same memory log path as the original (the Worker overwrites the previous log) and includes context explaining the issue and required refinement.
+
+### 6.4 Task Execution
+
+The Worker executes Task instructions, validates results, iterates if needed, logs the outcome, and reports back.
+
+**Worker registration** - A Worker binds to an agent identity during session initiation by resolving the provided agent identifier against `.apm/bus/` directory names. This identity persists across the session. The Task Prompt's agent identifier field is used for cross-validation, not identity binding.
+
+**Execution flow** - The Worker integrates dependency context if present, executes steps sequentially, then validates per the Task Prompt's validation criteria. Validation follows a fixed order: automated checks first, then output verification, then user approval if specified. When validation fails, the Worker corrects and re-validates until success or a stop condition is reached. Stop conditions: same error three or more times, fixes causing new issues, or the issue requires external resolution.
+
+**Batch execution** - When receiving a batch of Tasks, the Worker executes them sequentially. After each Task, a Task Memory Log is written immediately before proceeding to the next. If any Task results in a failed or blocked status, execution stops. After completing all Tasks (or stopping on failure), the Worker writes a batch Task Report to the Report Bus containing outcomes for each Task.
+
+**Subagent usage** - When a Task includes subagent steps, the Worker spawns the relevant subagent. Findings are integrated into the Worker's context and reflected during execution.
+
+**Completion** - After execution, the Worker writes a Task Memory Log, clears the incoming bus file, writes a Task Report to the Report Bus, and directs the User to deliver the report - providing both the targeted command with agent identifier and the general command, since multiple Workers may finish concurrently.
+
+### 6.5 Task Review
+
+The Manager reviews Worker results, determines review outcomes, modifies planning documents when needed, and updates Task tracking in Memory Root.
+
+**Report processing** - The Manager reads the Task Report from the Report Bus and clears its incoming bus file. For batch reports, each Task's outcome is processed individually. Unstarted Tasks from a stopped batch re-enter the dispatch pool.
+
+**Handoff detection** - An incoming Worker (post-Handoff) indicates in its first Task Report that it is a new instance and lists the specific Task Memory Logs it loaded during Handoff initialization. When the Manager detects this, it verifies the Handoff Memory Log exists, compares the loaded logs against all Tasks previously completed by this Worker, and records cross-agent overrides in the Project Tracker for any completed Tasks whose logs were not loaded. The Manager checks these overrides during future Task Assignments to determine dependency context depth.
+
+**Log review** - The Manager reads the Task Memory Log, interprets status, flags, and body content. Consistency between claimed status and actual content is assessed; inconsistency is a hallucination indicator.
+
+**Review outcome** - If the log shows success with no flags and the content supports the status, the Manager proceeds to the next Task. If something needs attention (flags raised, non-success status, or inconsistencies), the Manager investigates. For small-scope issues, the Manager self-investigates. For large-scope issues (context-intensive, systemic, multi-Task impact), the Manager uses a subagent. When scope is unclear, prefer subagent to preserve Manager context. After investigation, three outcomes are possible: no issues found (proceed to next Task), follow-up needed (issue a follow-up Task Prompt), or planning document modification needed (assess cascade per §3.4 Document Modification, determine authority, execute or collaborate with User). Every outcome path ends with updating Task tracking.
+
+**Parallel report handling** - During parallel dispatch, reports arrive asynchronously. The Manager processes each as it arrives, completes the review, merges the completed Task's branch before dispatching dependent Tasks, reassesses readiness, and dispatches newly ready Tasks, all in a single turn.
+
+**Stage summary** - After all Tasks in a Stage complete, the Manager reviews the Stage's Task Memory Logs and appends a stage summary to Memory Root capturing Stage-level outcomes, agents involved, notable findings, and references to individual logs.
+
+### 6.6 Handoff
+
+Handoff transfers context between sessions of the same agent when context window limits approach. It applies to the Manager and Workers only - the Planner operates in a single session. Handoff is User-initiated: the User provides the command when they observe context pressure or the agent signals it.
+
+**Eligibility** - An agent can Handoff at any point (mid-Task, between Tasks, while awaiting reports) as long as the handoff prompt captures comprehensive current state.
+
+**Two artifacts** - Handoff produces two artifacts with distinct purposes:
+
+| Artifact | Location | Content | Lifecycle |
+| -------- | -------- | ------- | --------- |
+| Handoff prompt | Handoff Bus | Current state: outstanding Tasks, mid-Task progress, pointers to logs and files | Ephemeral; cleared after incoming agent processes it |
+| Handoff Memory Log | Memory System | Past actions: working context, decisions made, approaches tried, files modified | Persistent archival context |
+
+**Worker and Manager asymmetry** - Workers and the Manager have different Handoff characteristics due to their bus clearing behavior. A mid-Task Worker Handoff occurs while the Task Bus still contains the original Task Prompt (the bus has not been cleared yet); the handoff prompt references the intact Task Prompt directly. A between-Tasks Worker Handoff occurs after the Task Bus was cleared; the handoff prompt states readiness to await the next Task. A Manager Handoff must describe outstanding Tasks in full because Workers may have already cleared their Task Buses.
+
+**Context rebuilding** - An incoming Manager reads Memory Root stage summaries, the Handoff Memory Log, and relevant recent Task Memory Logs to reconstruct working context. An incoming Worker reads the Handoff Memory Log and current-Stage Task Memory Logs only. The Manager accounts for this limited context in future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent.
 
 ---
 
-## 7. Procedures
+## 7. Subagent Usage
 
-### 7.1 Context Gathering
+Subagents are platform-native spawned agents used for isolated, focused work. APM defines behavioral expectations; the platform handles subagent lifecycle and tool access. Users may also use their own custom subagent configurations.
 
-**Agent:** Planner. **Phase:** Planning.
+Two common behavioral types exist: debug subagents (full access - editing, terminal) for isolating and resolving complex bugs, and research subagents (read-only, with web access) for investigating knowledge gaps. These are expectations, not a closed set - platforms and Users may provide additional types.
 
-The Planner elicits project requirements through three rounds of questions, each focused on progressive discovery:
+Subagents are spawned through platform-native tools. The build pipeline's placeholder system replaces subagent guidance placeholders with platform-specific invocations at build time, keeping templates platform-agnostic. The spawning agent structures a Task description and passes it to the platform's subagent mechanism.
 
-1. **Round 1 — Existing Materials and Vision.** Project type, problem, scope, skills, existing documentation, current vision.
-2. **Round 2 — Technical Requirements.** Work structure, dependencies, technical requirements, emerging Specifications and Standards, validation criteria.
-3. **Round 3 — Implementation Approach and Quality.** Technical constraints, workflow preferences, quality standards, coordination needs, domain organization, finalizing Specifications and Standards.
-
-**Iteration within rounds.** Each round follows an iteration cycle: ask initial questions, assess gaps after each response, follow up until round understanding is complete, present round summary, advance.
-
-**Exploration on signal.** When User responses reference codebase elements or documentation, the Planner proactively explores to gather concrete information before continuing questions. Research subagent use is encouraged to avoid consuming the Planner's context window during exploration.
-
-**Validation criteria gathering.** The Planner captures success states and criteria for each requirement. If the User does not specify how a requirement will be validated, the Planner proposes concrete measures. Criteria are categorized by Validation Type (Programmatic, Artifact, User) when finalizing understanding.
-
-**Finalizing understanding.** After all rounds, the Planner presents a consolidated summary for User review. Modifications loop back through targeted follow-ups. User approval triggers transition to Work Breakdown.
-
-### 7.2 Work Breakdown
-
-**Agent:** Planner. **Phase:** Planning.
-
-The Planner decomposes gathered context into Coordination Artifacts through a forced Chain-of-Thought process — reasoning is presented in chat before file output.
-
-**Procedure sequence:**
-
-1. **Specifications Analysis** — Analyze design decisions across universal dimensions (scope, entities, behaviors, relationships, constraints, interfaces). Write Specifications. Present for User review. Modification requests are applied and updated Specifications are presented again for review until approval to proceed.
-2. **Implementation Plan Header** — Set project name, overview.
-3. **Domain Analysis** — Identify logical work domains, define initial Workers.
-4. **Stage Analysis** — Identify all Stages with objectives and Tasks upfront.
-5. **Stage Cycles** — For each Stage, complete detailed Task breakdown (objective, output, validation, guidance, dependencies, steps). Append Stage contents to Implementation Plan.
-6. **Plan Review** — Assess workload distribution (flag Agents with 8+ tasks for subdivision). Review Cross-Agent Dependencies. Generate Dependency Graph. Present for User review. Modification requests are applied and the updated Implementation Plan is presented again for review until approval to proceed.
-7. **Standards Analysis** — Extract universal execution patterns. Write APM_STANDARDS block. Present for User review. Modification requests are applied and the updated Standards are presented again for review until approval to proceed.
-
-**Task decomposition principles:**
-- Each Task produces a meaningful deliverable with clear boundaries.
-- Tasks are scoped to a single Agent's domain.
-- Validation criteria are specified per Task with type (Programmatic, Artifact, User).
-- Steps within Tasks support failure tracing but have no independent validation.
-- When investigation or research is needed within a Task, include a Subagent step.
-
-**Scope adaptation.** Decomposition granularity adapts to project size, complexity and other factors. Stages, Tasks, and Steps are relative concepts — smaller projects warrant lighter breakdown and larger projects might require more detail accordingly.
-
-### 7.3 Task Assignment
-
-**Agent:** Manager. **Phase:** Implementation.
-
-The Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them via Task Bus. This procedure operates in three parts: dispatch assessment, per-task analysis, and prompt creation.
-
-#### 7.3.1 Dispatch Assessment
-
-Before constructing Task Prompts, the Manager assesses dispatch opportunities:
-
-1. **Identify ready tasks** — Read the Dispatch State for current task statuses, cross-reference the Dependency Graph for newly unblocked tasks.
-2. **Group by Worker** — Ready tasks grouped by assigned Worker.
-3. **Assess Batch Candidacy** — For each Worker with multiple ready tasks, evaluate whether they may be batched. Candidates form a sequential chain with only internal dependencies and no external Tasks depend on intermediate Tasks in the chain. Soft guidance: 3-4 Tasks per batch. Result: each Worker gets either a single Task, a batch, or remains unscheduled.
-4. **Assess Parallel Candidacy** — Across Workers, identify which dispatch units (singles or batches from step 3) may proceed in parallel if no unresolved cross-Worker dependencies exist among them.
-5. **Formulate Dispatch Plan** — Determine overall dispatch mode: single Worker, multiple Workers in parallel, or a combination (e.g. one single; one batch; one batch and one single in parallel; two batches in parallel; etc.).
-
-**Parallel dispatch prerequisites.** Before first parallel dispatch, the Manager initializes version control per the VC skill — creating feature branches and worktrees for workspace isolation. The Manager also recommends configuring Worker permissions to minimize approval wait times.
-
-**In-flight tracking.** During parallel dispatch, the Manager tracks which Workers have active Tasks and which Reports are pending in its working context.
-
-**Wait state.** When no tasks are ready for dispatch but Workers are still active, the Manager communicates what was processed, what is pending, what the User should do when the next Report arrives and waits.
-
-#### 7.3.2 Per-Task Analysis
-
-For each Task in the dispatch plan:
-
-1. **Context Dependency Analysis** — Classify dependencies as Same-Agent (light context: recall anchors, file paths), Cross-Agent (comprehensive context: integration steps, output summaries, explicit file reading instructions), or Handoff-reclassified (prior-Stage Same-Agent Dependencies treated as Cross-Agent after Worker Handoff). Trace upstream chains when ancestors are relevant.
-2. **Extract relevant specification content** — Pull relevant Specification content for contextual integration into the Task Prompt. Never reference Specifications by path — Workers cannot access them.
-3. **Implementation Plan Context Extraction** — Extract Task definition fields (objective, steps, guidance, output, validation).
-
-#### 7.3.3 Task Prompt Construction
-
-Assemble the Task Prompt with YAML frontmatter (stage, task, agent_id, memory_log_path, flags) and markdown body (task reference, context from dependencies, objective, detailed instructions, workspace path if applicable, expected output, validation criteria, memory logging instructions, reporting instructions).
-
-**Dispatch delivery** per the communication skill:
-- **Single** — Write prompt to Worker's Task Bus. Inform User to run `/apm-4-check-tasks` in the Worker's session.
-- **Batch** — Write multiple prompts with batch envelope (YAML frontmatter with batch metadata, prompts separated by delimiters) to Worker's Task Bus. Inform User to run `/apm-4-check-tasks` in the Worker's session.
-- **Parallel** — Write to multiple Workers' Task Buses. Inform User of all pending deliveries and which Worker sessions need `/apm-4-check-tasks`.
-
-**Workspace instructions.** Included for parallel dispatch per the VC skill. Worker operates in the specified worktree/branch, commits work there, and notes workspace in the Task Memory Log. Workers do not merge — the Manager coordinates merges.
-
-#### 7.3.4 Follow-up Task Prompts
-
-Issued when a review outcome determines retry is needed. A follow-up task prompt is a new prompt with different content — objective, instructions, output, and validation are refined based on what went wrong previously. Uses the same `memory_log_path` as the original (Worker overwrites the previous log). Includes a FollowUp Context section explaining the issue and required refinement.
-
-### 7.4 Task Execution
-
-**Agent:** Worker. **Phase:** Implementation.
-
-The Worker executes Task instructions, validates results, and reports back.
-
-**Binding to an identity.** The Worker binds to an agent identity either via the init command's optional `[agent-id]` argument (pre-registration) or on first Task Prompt from the `agent_id` field. This identity persists across the Worker's session.
-
-**Reading dependency context.** If included, before executing the Worker reads and integrates dependency context as specified in the Task Prompt's Context from Dependencies section.
-
-**Execution and Validation.** The Worker executes Steps sequentially, then validates per the Task Prompt's Validation Criteria. Validation Types execute in order: Programmatic first, then Artifact, then User. User validation requires pausing for review before proceeding. Many Tasks may have multiple Validation Types.
-
-**Correction loop.** When validation fails, the Worker corrects and re-validates. This loop repeats until success or a stop condition (Blocked/Failed Task Status).
-
-**Batch Execution.** When receiving a batch, the Worker parses all Task Prompts and validates agent_id. For each Task in the batch, the Worker executes sequentially, writes a Task Memory Log immediately after, then proceeds to the next Task. If any Task results in Blocked or Failed status, the Worker stops execution (fail-fast) and reports partial completion. Unstarted Tasks are listed as "Not started (batch stopped)." This immediate logging per Task enables early detection and prevents wasted effort on dependent Tasks.
-
-**Subagent usage.** When a Task includes Subagent steps, the Worker spawns the relevant Subagent per its instructions. Findings are integrated into the Worker's context and reflected during execution.
-
-**Task Logging.** After execution, the Worker writes a structured Task Memory Log at the path specified in the Task Prompt.
-
-**Task Reporting.** After logging, the Worker clears the Task Bus per Clear-on-Return, writes a Task Report (or Batch Report for batch execution) to the Report Bus per the communication skill. The Worker informs the User that a report is ready and directs the User to run `/apm-5-check-reports` in the Manager's session.
-
-### 7.5 Task Review
-
-**Agent:** Manager. **Phase:** Implementation.
-
-The Manager reviews Worker results, determines review outcomes, modifies Coordination Artifacts when needed, and maintains project state through the Dispatch State.
-
-#### 7.5.1 Report Processing and Log Review
-
-1. Read the Report from the Report Bus. Clear per Clear-on-Return.
-2. If Batch Report, process each Task's outcome individually and sequentially.
-3. Check for Worker Handoff indication. If detected, verify the Handoff Memory Log exists, update Context Dependency treatment: previous-Stage Same-Agent Dependencies for that Worker are reclassified as Cross-Agent.
-4. Update dispatch tracking — note Worker as available, note completed Tasks for readiness reassessment.
-5. If parallel dispatch active, merge the completed Task's branch per the VC skill before dispatching dependent Tasks. Reassess ready tasks and dispatch if possible, wait for next Report otherwise.
-6. Read the Task Memory Log referenced in the Task Report. Interpret status, flags, and body sections. Assess whether status and flags are consistent with log content.
-
-#### 7.5.2 Review Outcome
-
-Review the Task Memory Log. If everything looks good — Success with no flags, log content supports the status — **Proceed**. If something needs attention — flags raised, non-Success status, or inconsistencies — **Investigate**.
-
-**Investigation scope.** Small scope (few files, straightforward verification, contained to this Task) → Manager self-investigates. Large scope (context-intensive debugging/research, systemic issues, impacts multiple Tasks) → Subagent. Default: when scope is unclear, prefer Subagent to preserve Manager context.
-
-**Post-investigation outcome:**
-- *No issues* → **Proceed** — update Dispatch State, check Stage completion, dispatch next Task(s).
-- *FollowUp needed* → Create follow-up task prompt, update Dispatch State.
-- *Artifact modification needed:*
-  - *Cascade:* Assess affected artifacts, analyze cascade implications (Specifications ↔ Implementation Plan are bidirectional; Standards isolated).
-  - *Authority:* Determine scope — bounded Manager authority vs User collaboration for significant changes.
-  - *Execute:* Modify artifacts, verify consistency, document with Last Modification attribution. Update Dependency Graph when Implementation Plan Tasks change.
-  - *Post-modification:* Update Dispatch State, reassess readiness against updated plan.
-
-**Dispatch State update.** Every outcome path ends with updating the Dispatch State section in Memory Root: completed tasks, readiness changes, merge state. When all Tasks in a Stage are Done and merged, the Stage collapses to a single "Complete" line.
-
-**Batch report handling.** Each completed Task in a batch is reviewed independently through the same review process. Unstarted Tasks from a stopped batch re-enter the dispatch pool.
-
-**Parallel report handling.** Reports arrive asynchronously. The Manager processes each as it arrives, determines the review outcome, reassesses readiness, and dispatches newly ready tasks if any.
-
-#### 7.5.3 Stage Summary and Memory State
-
-**Stage Summary Creation.** After all Tasks in a Stage complete, the Manager reviews all Task Memory Logs for the Stage and appends a Stage Summary to Memory Root. Summaries capture Stage-level outcomes, reference individual logs, and note cross-cutting observations.
-
-**Working Notes.** The Manager and User may maintain Working Notes in Memory Root for ephemeral coordination context — review outcome rationale, User directives, cross-Task observations. Working Notes are inserted and removed as context evolves; they are not permanent records like Stage Summaries.
-
-**Memory Root Initialization.** During session 1, the Manager updates Memory Root with the project name, confirms Handoff count is 0, and populates the Dispatch State with Stage 1 tasks.
-
-### 7.6 Handoff
-
-**Agents:** Manager, Worker. **Phase:** Implementation.
-
-Handoff transfers context between sessions of the same Agent when context window limits approach. The Planner does not perform Handoff (single session).
-
-**Eligibility.** Agents can Handoff at any point — mid-task, between tasks, while awaiting reports — as long as the Handoff Prompt captures comprehensive current state. The requirement is completeness of the Handoff Prompt, not completion of in-flight work.
-
-- **Manager:** Can Handoff at any point (mid-review, with outstanding dispatches). Must describe outstanding tasks with enough detail for the incoming Manager to review reports properly — task objectives, expected outputs, review criteria, relevant specification sections.
-- **Worker:** Can Handoff mid-Task as well as between Tasks.
-
-**Handoff is User-initiated.** The User provides the Handoff command when they observe context pressure or the Agent signals it.
-
-**Handoff Prompt vs Handoff Memory Log.** The two artifacts serve distinct purposes:
-- **Handoff Prompt** (ephemeral, in Bus File): Current state — what IS happening. Outstanding tasks with detail, mid-task progress, what to expect next, pointers to logs and files. Actionable, present-tense. Cleared after the incoming Agent processes it.
-- **Handoff Memory Log** (persistent, in Memory System): Past actions — what WAS done. Working notes, decisions made, approaches tried, files modified, observations. Strictly archival.
-
-**Worker vs Manager Handoff asymmetry:**
-- *Mid-Task:* Task Bus still contains the original task prompt (Clear-on-Return hasn't fired). Handoff Prompt references it: "Read the task from `apm-task.md`, I completed steps 1-4, resume from step 5."
-- *Between-Tasks:* Task Bus cleared. Handoff Prompt states "no active task, await `/apm-4-check-tasks`."
-- *Manager:* Workers may have already cleared their Task Buses. The outgoing Manager must describe outstanding tasks in the Handoff Prompt with enough detail for the incoming Manager to review reports properly.
-
-**Outgoing Agent actions:**
-1. Create Handoff Memory Log capturing past working context — what was done, decisions made, approaches tried. VC state (active branches, worktrees, pending merges) if applicable.
-2. Write Handoff Prompt to Handoff Bus with current state and instructions for the Incoming Agent to rebuild working context.
-
-**Incoming Agent actions:**
-1. The init command auto-detects the Handoff Prompt in the Handoff Bus and processes it.
-2. Follow Handoff Prompt to read Handoff Memory Log and relevant Task Memory Logs.
-3. Reconstruct working context and resume from where the Outgoing Agent left off.
-
-**Rebuilding working context:**
-- Incoming Manager reads Memory Root Stage Summaries, Handoff Memory Log, and relevant recent Task Memory Logs.
-- Incoming Worker reads current-Stage Task Memory Logs for their Agent. Previous-Stage logs are not loaded for efficiency — the Manager accounts for this when constructing future Task Prompts.
+Debug subagents are appropriate when a bug resists initial fix attempts, spans multiple components, or debugging would consume significant agent context. Research subagents are appropriate when current knowledge is outdated, documentation needs verification, or codebase exploration is needed. Findings are integrated into the spawning agent's context. Workers log subagent usage in their Task Memory Log.
 
 ---
 
-## 8. Subagent Usage
+## 8. Implementation Reference
 
-Subagents are platform-native spawned agents for isolated, focused work. APM does not control the subagent ecosystem — it defines behavioral expectations and relies on the platform to handle subagent lifecycle and tool access. Users may also use their own custom subagent configurations alongside the ones APM expects.
-
-### 8.1 Subagent Types
-
-The workflow defines two behavioral types used at specific points. These are expectations, not a closed set — platforms and Users may provide additional subagent types as needed.
-
-| Type | Purpose | Expected Access | Spawned By |
-|------|---------|-----------------|------------|
-| debug subagent | Isolate and resolve complex bugs | Full (edit, terminal) | Worker, Manager |
-| research subagent | Investigate knowledge gaps using current sources | Read-only, web | Worker, Manager, Planner |
-
-### 8.2 Spawning Mechanism
-
-Subagents are spawned through platform-native tools. The build pipeline's placeholder system replaces subagent guidance placeholders in templates with platform-specific tool invocations at build time (e.g., `{PLANNER_SUBAGENT_GUIDANCE}` resolves to the target platform's spawn syntax and tool name). This keeps templates platform-agnostic while producing platform-correct output. The spawning Agent structures a task description and passes it as the prompt parameter per the resolved instructions.
-
-### 8.3 When to Use
-
-- **Debug subagent** — Bug resists initial fix attempts (2-3 failed corrections), issue spans multiple components, or debugging would consume significant Agent context.
-- **Research subagent** — Current knowledge is outdated or uncertain, official documentation needs verification, knowledge gap cannot be resolved through User clarification, codebase exploration is required, or context reconstruction spans multiple files.
-
-Subagent findings are integrated into the spawning Agent's context and reflected during execution. Workers log Subagent usage in their Task Memory Log.
-
----
-
-## 9. User Interaction Model
-
-### 9.1 User as Trigger Puller
-
-The User signals Agents to check their Bus Files using `/apm-4-check-tasks` and `/apm-5-check-reports`. After the Manager writes to a Task Bus, the User runs `/apm-4-check-tasks` in the Worker's session. After the Worker writes to a Report Bus, the User runs `/apm-5-check-reports` in the Manager's session. The User decides delivery timing and order.
-
-### 9.2 User-Initiated Actions
-
-| Action | When |
-|--------|------|
-| Start Planning Phase | User initiates Planner session |
-| Start Implementation Phase | User initiates first Manager session |
-| Start Worker Session | User initiates Worker sessions |
-| Trigger bus checks | User runs `/apm-4-check-tasks` and `/apm-5-check-reports` in appropriate sessions |
-| Trigger Handoff | User provides Handoff command when context pressure observed |
-| Approve artifacts | User reviews and approves Coordination Artifacts during Planning |
-| Collaborate on modifications | User provides guidance when artifact modifications, project direction, or general decisions exceed Manager authority |
-
-### 9.3 Approval Checkpoints
-
-Checkpoints where the workflow pauses for explicit User approval:
-
-1. **Specifications approval** — After Planner writes Specifications during Work Breakdown.
-2. **Implementation Plan approval** — After Planner completes Implementation Plan during Work Breakdown.
-3. **Standards approval** — After Planner writes Standards during Work Breakdown.
-4. **Manager understanding confirmation** — After Manager session 1 initialization summary.
-5. **Artifact modification collaboration** — When modifications exceed Manager authority.
-6. **User validation** — When Tasks specify User validation type, Workers pause for review.
-
-### 9.4 Parallel Session Management
-
-During parallel dispatch, the User manages multiple Worker sessions simultaneously. The Manager indicates which Worker sessions need `/apm-4-check-tasks`. Reports return as Workers complete — the User runs `/apm-5-check-reports` in the Manager's session in any order.
+| Spec Section | Implementation Files |
+| ------------- | --------------------- |
+| §2.1 Planning Phase | `commands/apm-1-initiate-planner.md`, `guides/context-gathering.md`, `guides/work-breakdown.md` |
+| §2.2 Implementation Phase | `commands/apm-2-initiate-manager.md`, `commands/apm-3-initiate-worker.md` |
+| §3 Planning Documents | `apm/Specifications.md`, `apm/Implementation_Plan.md` |
+| §4 Communication System | `skills/apm-communication/SKILL.md`, `commands/apm-4-check-tasks.md`, `commands/apm-5-check-reports.md` |
+| §5 Memory System | `apm/Memory/Memory_Root.md`, `guides/task-logging.md` |
+| §6.1 Context Gathering | `guides/context-gathering.md` |
+| §6.2 Work Breakdown | `guides/work-breakdown.md` |
+| §6.3 Task Assignment | `guides/task-assignment.md` |
+| §6.4 Task Execution | `guides/task-execution.md` |
+| §6.5 Task Review | `guides/task-review.md` |
+| §6.6 Handoff | `commands/apm-6-handoff-manager.md`, `commands/apm-7-handoff-worker.md` |
+| §7 Subagent Usage | Platform-specific (build pipeline placeholders) |
 
 ---
 
