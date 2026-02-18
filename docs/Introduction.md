@@ -23,7 +23,7 @@ APM addresses context limitations by treating the AI not as a single continuous 
 
 - **Specialization:** Different Agents handle planning, coordination, and implementation. Each operates in its own session with only the context needed for its specific role.
 
-- **Persistence:** Project state lives in structured documents outside Agent sessions. Coordination Artifacts define all work. A Memory System tracks the project's progression. A file-based Message Bus enables communication between Agents.
+- **Persistence:** Project state lives in structured documents outside Agent sessions. Planning documents define all work. A Memory System tracks the project's progression. A file-based Message Bus enables communication between Agents.
 
 - **Continuity:** When an Agent's context window fills, a Handoff Protocol transfers working knowledge to a fresh instance, which reconstructs context using the project's documents and continues seamlessly.
 
@@ -35,15 +35,15 @@ This architecture mirrors how human teams collaborate: specialized roles, shared
 
 APM coordinates three specialized Agent types that are all capable of using platform-native subagents:
 
-- **Planner Agent** - Operates once at project start. Conducts structured project discovery to gather requirements and constraints, then decomposes the gathered context into detailed three Coordination Artifacts: Specifications, Implementation Plan, Standards. Acts as the project architect - designs the structure that guides all subsequent work.
+- **Planner** - Operates once at project start. Conducts structured project discovery to gather requirements and constraints, then decomposes the gathered context into three planning documents: Specifications, Implementation Plan, Execution Standards. Acts as the project architect - designs the structure that guides all subsequent work.
 
-- **Manager Agent** - Received the populated Coordination Artifacts from the Planner and coordinates overall the project execution. Assigns tasks to Workers, reviews completed work, manages task dependencies, and maintains the big picture.
+- **Manager** - Receives the populated planning documents from the Planner and coordinates overall project execution. Assigns tasks to Workers, reviews completed work, manages task dependencies, and maintains the big picture.
 
-- **Worker Agents** - Execute specific tasks within defined domains. Each Worker is assigned a specialized area (frontend, backend, API development, etc.) and receives focused task assignments. Workers operate with tightly scopedd context - they see their current task and accumulated working context from previous tasks, but not the full project scope.
+- **Workers** - Execute specific tasks within defined domains. Each Worker is assigned a specialized area (frontend, backend, API development, etc.) and receives focused task assignments. Workers operate with tightly scoped context - they see their current task and accumulated working context from previous tasks, but not the full project scope.
 
-- **SubAgents** - Temporary instances spawned for isolated work such as debugging or research. Solve a specific problem and close, preventing context pollution in the main Agent sessions. Modern AI platforms provide native subagent support that APM leverages.
+- **Subagents** - Temporary instances spawned for isolated work such as debugging or research. Solve a specific problem and close, preventing context pollution in the main Agent sessions. Modern AI platforms provide native subagent support that APM leverages.
 
-> For detailed descripion on the three APM Agents, see [Agent Types](Agent_Types.md).
+> For detailed description on the three APM agent types, see [Agent Types](Agent_Types.md).
 
 ---
 
@@ -51,10 +51,10 @@ APM coordinates three specialized Agent types that are all capable of using plat
 
 APM maintains project state through structured documents and protocols:
 
-- **Coordination Artifacts** - Design and coordination documents that guide all work
+- **Planning Documents** - Design and coordination documents that guide all work
   - **Specifications** - Define what is being built (design decisions and constraints)
   - **Implementation Plan** - Define how work is organized (stages, tasks, dependencies)
-  - **Standards** - Define how work is performed (universal execution patterns)
+  - **Execution Standards** - Define how work is performed (universal execution patterns)
 
 - **Memory System** - A hierarchical folder structure containing Memory Logs for each completed task. Workers document their work in these logs. The Manager reads them to track progress without reviewing code directly, maintaining coordination-level focus.
 
@@ -67,13 +67,13 @@ APM maintains project state through structured documents and protocols:
 
 APM operates in two distinct phases:
 
-- **Planning Phase** - The Planner Agent conducts structured discovery through question rounds, gathering comprehensive project context. It then performs Work Breakdown, decomposing requirements into a concrete Implementation Plan with defined stages, tasks, worker assignments, and dependencies.
+- **Planning Phase** - The Planner conducts structured discovery through question rounds, gathering comprehensive project context. It then performs Work Breakdown, decomposing requirements into a concrete Implementation Plan with defined stages, tasks, worker assignments, and dependencies.
 
-- **Implementation Phase** - The Manager and Worker Agents execute the Implementation Plan through repeating Coordination Cycles:
+- **Implementation Phase** - The Manager and Workers execute the Implementation Plan through repeating assignment-execution-review cycles:
 
   1. **Task Assignment** - Manager assesses task readiness, constructs task prompts with required context, delivers via Task Bus
   2. **Task Execution** - Worker receives task assignment via trigger command, executes work, validates results, logs outcomes
-  3. **Task Review** - Manager reviews completion logs via trigger command, makes coordination decisions
+  3. **Task Review** - Manager reviews completion logs via trigger command, determines review outcome
 
   The cycle repeats until all tasks complete. The Manager can dispatch multiple tasks in parallel when dependencies allow, or send batches of sequential tasks to the same Worker for efficiency.
 
