@@ -1,12 +1,37 @@
-# <Project Name> – APM Memory Root
-**Manager Handoffs:** 0
+# <Project Name> - APM Memory Root
 
-## Dispatch State
+## Project Tracker
+
+### Task Tracking
 
 **Base:** <base-branch>
 
 **Stage 1:**
-[Populated by Manager during Session 1 initialization]
+
+| Task | Status | Agent | Branch |
+|------|--------|-------|--------|
+
+### Agent Tracking
+
+| Agent | State |
+|-------|-------|
+
+### Version Control
+
+| Field | Value |
+|-------|-------|
+| Base Branch | <base-branch> |
+| Branch Convention | <convention> |
+| Active Branches | none |
+| Pending Merges | none |
+| Notes | |
+
+## Working Notes
+
+[Free-form. Manager inserts/removes entries as context evolves.]
 
 ---
 
+## Stage Summaries
+
+[Appended after each Stage completion per stage summary format.]
