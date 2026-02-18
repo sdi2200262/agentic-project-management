@@ -30,11 +30,13 @@ The framework establishes a coordination hierarchy where Agents interact through
 - Manager reviews and determines review outcome
 
 **Outgoing Agent → Incoming Agent (via User)**
+
 - Outgoing agent creates Handoff Memory Log and handoff prompt
 - User initializes new Session and delivers handoff prompt
 - Incoming agent reconstructs context and continues work
 
 **All Agents ↔ Planning Documents**
+
 - Planner creates all three planning documents
 - Manager reads all three, extracts from Specifications and Implementation Plan into Task Prompts, may update all three
 - Workers read Execution Standards directly, receive extracted context via Task Prompts, may update Execution Standards
@@ -50,16 +52,19 @@ The Message Bus in `.apm/bus/` provides file-based communication between Agent S
 Each agent directory contains three Bus Files:
 
 **Task Bus** (`apm-task.md`)
+
 - Manager writes Task Prompts (single or batched)
 - Worker reads to receive assignments
 - Direction: Manager → Worker
 
 **Report Bus** (`apm-report.md`)
+
 - Worker writes Task Reports (single or batched)
 - Manager reads to review outcomes
 - Direction: Worker → Manager
 
 **Handoff Bus** (`apm-handoff.md`)
+
 - Outgoing Agent writes Handoff Prompt
 - Incoming Agent reads to reconstruct context
 - Direction: Outgoing Agent → Incoming Agent
@@ -147,11 +152,13 @@ APM achieves Agent specialization through intentional context boundaries. Each A
 ### Planner
 
 **Access:**
+
 - User-provided requirements and existing documentation
 - Codebase if applicable
 - Full project vision during Planning Phase
 
 **Does not access:**
+
 - Memory System (does not exist yet)
 - Message Bus (does not exist yet)
 - Implementation Phase activities
@@ -161,12 +168,14 @@ Single Session, no Handoff.
 ### Manager
 
 **Access:**
+
 - All planning documents (reads, may update)
 - Memory System (Memory Root with Project Tracker and Stage Summaries, all Task Memory Logs)
 - Message Bus (all Task/Report/Handoff buses)
 - Version control state during parallel dispatch
 
 **Does not access:**
+
 - Worker's detailed execution context (reads Task Memory Logs instead of code)
 - Task-level implementation details unless investigation requires it or User requests it
 
@@ -175,12 +184,14 @@ Multiple Sessions via Handoff. Each Session continues from where previous left o
 ### Worker
 
 **Access:**
+
 - Current Task Prompt (includes extracted Specifications context, instructions, validation criteria)
 - Execution Standards file directly
 - Accumulated working context from prior same-agent tasks in current Stage
 - Specified Task Memory Logs when cross-agent dependencies exist
 
 **Does not access:**
+
 - Specifications file directly (receives extracted context via Task Prompt)
 - Implementation Plan file directly (receives Task definition via Task Prompt)
 - Memory Root, Stage Summaries, or Project Tracker
@@ -206,21 +217,25 @@ The Incoming Agent inherits clean context without session noise, enabling multip
 ### Handoff Eligibility
 
 **Manager:**
+
 - May Handoff at any point as long as the Handoff Prompt captures comprehensive current state
 - Documentation completeness is the requirement, not workflow stage
 
 **Worker:**
+
 - May Handoff between tasks or mid-task
 - Must document current execution context in detail in Handoff Memory Log if mid-task
 
 ### Two-Artifact Handoff System
 
 **Handoff Memory Log**
+
 - Created by Outgoing Agent
 - Captures uncommitted knowledge not in formal logs
 - Includes working patterns, User preferences, undocumented state, current execution context (if worker), version control state (if manager)
 
 **Handoff Prompt**
+
 - Created by Outgoing Agent, written to Handoff Bus
 - Instructs Incoming Agent on context reconstruction
 - Specifies which artifacts to read (Handoff Memory Log, relevant Task Memory Logs)
@@ -229,12 +244,14 @@ The Incoming Agent inherits clean context without session noise, enabling multip
 ### Context Reconstruction
 
 **Incoming Manager reads:**
+
 - All planning documents
 - Memory Root (Project Tracker, Stage Summaries, Working Notes)
 - Handoff Memory Log
 - Relevant recent Task Memory Logs
 
 **Incoming Worker reads:**
+
 - Execution Standards file
 - Current-Stage Task Memory Logs for their agent
 - Handoff Memory Log
