@@ -30,17 +30,20 @@ graph LR
 The Planner conducts structured discovery through three Question Rounds, each focused on progressive refinement:
 
 **Question Round 1: Existing Materials and Vision**
+
 - Project type, problem statement, and scope
 - Existing documentation, PRDs, or codebase
 - High-level goals and success criteria
 
 **Question Round 2: Technical Requirements**
+
 - Work structure and dependencies
 - Technical requirements and constraints
 - Validation criteria for each requirement
 - Emerging Specifications and Execution Standards
 
 **Question Round 3: Implementation Approach and Quality**
+
 - Technical constraints and preferences
 - Workflow patterns and quality standards
 - Domain organization and coordination needs
@@ -55,11 +58,13 @@ After all rounds complete, the Planner presents an Understanding Summary for Use
 The Planner decomposes gathered context into three planning documents through visible reasoning - reasoning is presented in chat before file output.
 
 **Specifications Creation**
+
 - Analyzes design decisions across scope, entities, behaviors, relationships, constraints, and interfaces
 - Writes Specifications file with project-specific design decisions
 - Presents for User review, iterates on feedback until approval
 
 **Implementation Plan Creation**
+
 - Identifies logical work domains and defines Workers
 - Identifies all Stages with objectives
 - For each Stage, completes detailed Task breakdown with objectives, outputs, validation criteria, guidance, dependencies, and steps
@@ -99,8 +104,9 @@ graph LR
 ### Manager Initialization
 
 After the Planning Phase, the User creates a Manager session and runs the initialization command. The Manager:
-- Reads all planning documents 
-- Initializes the Memory System 
+
+- Reads all planning documents
+- Initializes the Memory System
 - Initializes the Message Bus for Agent communication
 - Initializes version control if a git repository exists
 - Presents understanding summary for User review
@@ -124,6 +130,7 @@ The Manager assesses which tasks are ready based on dependency completion and th
 4. **Delivery via Task Bus** - Writes the Task Prompt to the Worker's Task Bus file. Directs the User to run `/apm-4-check-tasks` in the Worker's session.
 
 **Dispatch Modes:**
+
 - **Single Dispatch** - One task to one Worker
 - **Batch Dispatch** - Multiple sequential tasks to the same Worker in a single Task Bus message
 - **Parallel Dispatch** - Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist among them
@@ -220,15 +227,18 @@ graph LR
 ### Handoff Process
 
 **Eligibility**
+
 - Manager may Handoff at any point as long as the Handoff Prompt captures comprehensive current state
 - Workers may Handoff between tasks or mid-task; must include current execution context in detail in their Handoff Memory Log
 
 **Outgoing Agent**
+
 1. Creates Handoff Memory Log capturing working context not recorded elsewhere (effective patterns, User preferences, undocumented insights, current execution context if mid-task, version control state if applicable)
 2. Writes Handoff Prompt to Handoff Bus instructing the Incoming Agent on context reconstruction
 3. Directs User to start a new session using the initialization command — the Incoming Agent auto-detects the Handoff Prompt
 
 **Incoming Agent**
+
 1. User creates new session for the same agent role (e.g., "Manager session 2" or "Frontend Worker session 2")
 2. User runs initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`)
 3. Agent auto-detects Handoff Prompt from Handoff Bus, follows instructions to read Handoff Memory Log and relevant Task Memory Logs
@@ -236,6 +246,7 @@ graph LR
 5. User verifies accuracy and authorizes Agent to resume from where Outgoing Agent left off
 
 **Context Reconstruction Scope**
+
 - Incoming Manager reads Memory Root Stage Summaries, Handoff Memory Log, and relevant recent Task Memory Logs
 - Incoming Worker reads current-Stage Task Memory Logs for their agent. Previous-Stage logs are not loaded for efficiency - the Manager accounts for this when constructing future Task Prompts by treating prior-Stage same-agent dependencies as cross-agent dependencies.
 
