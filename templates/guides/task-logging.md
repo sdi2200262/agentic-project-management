@@ -4,22 +4,22 @@
 
 **Reading Agent:** Worker
 
-This guide defines how Workers log Task outcomes and report results. Task Memory Logs capture task-level context using structured Markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
+This guide defines how Workers log Task outcomes and report results. Task Memory Logs capture task-level context using structured markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
 
 ### 1.1 How to Use This Guide
 
-**Execute the Procedure** in §3 Task Logging Procedure — follow §3.1 Task Memory Log Procedure after task execution. **Use Operational Standards** in §2 for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). **Follow Structural Specifications** in §4 for output formats.
+See §3 Task Logging Procedure - follow §3.1 Task Memory Log Procedure after Task execution. See §2 Operational Standards for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). See §4 Structural Specifications for output formats.
 
 ### 1.2 Objectives
 
-- Capture task outcomes in a structured, reviewable format
+- Capture Task outcomes in a structured, reviewable format
 - Enable Manager coordination through consistent log structure
-- Preserve execution context for progress tracking and handoff continuity
+- Preserve execution context for progress tracking and Handoff continuity
 - Flag important findings and compatibility issues for Manager attention
 
 ### 1.3 Outputs
 
-**Task Memory Log:** Structured log written after task execution. Captures outcome, validation results, deliverables, and flags for Manager attention. Location: `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
+**Task Memory Log:** Structured log written after Task execution. Captures outcome, validation results, deliverables, and flags. Location: `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
 
 ---
 
@@ -27,93 +27,63 @@ This guide defines how Workers log Task outcomes and report results. Task Memory
 
 ### 2.1 Flag Assessment Standards
 
-Boolean flags in YAML frontmatter signal conditions requiring Manager attention. Set flags based on what you observed during execution relative to your Task Assignment and working context.
+Boolean flags in YAML frontmatter signal conditions requiring Manager attention. Set flags based on what you observed during execution relative to your Task Prompt and working context.
 
-**Important Findings Assessment** → Flag findings that appear to have implications beyond your current task scope:
-- Execution revealed information not in your Task Assignment that seems project-relevant
-- You discovered dependencies, risks, or constraints your assignment didn't account for
-- Something suggests other tasks or agents might be affected
+**`important_findings`** - set to `true` when execution revealed information not in your Task Prompt that seems project-relevant, you discovered dependencies, risks, or constraints your assignment didn't account for, or something suggests other Tasks or agents might be affected.
 
-**Compatibility Issues Assessment** → Flag conflicts with existing systems encountered during execution:
-- Your output conflicts with existing code, patterns, or conventions you touched
-- You discovered integration concerns that might affect other parts of the system
-- Breaking changes or migration requirements resulting from your work
+**`compatibility_issues`** - set to `true` when your output conflicts with existing code, patterns, or conventions you touched, you discovered integration concerns that might affect other parts of the system, or breaking changes or migration requirements resulted from your work.
 
-**Default:** When uncertain whether a finding is "important" or an issue is a "compatibility" concern, set the flag to `true`. False negatives hurt coordination more than false positives.
+**Default:** When uncertain whether a finding warrants a flag, set to `true`. False negatives hurt coordination more than false positives.
 
 ### 2.2 Outcome Standards
 
-Status reflects outcome — whether the objective was achieved. Select status based on the end state, not effort expended.
+Status reflects whether the objective was achieved. Select based on end state, not effort expended.
 
-*Status Values:*
-- **Success:** Objective achieved, all validation passed
-- **Failed:** Validation failed after iteration attempts
-- **Partial:** Intermediate state requiring Manager decision
-- **Blocked:** External factors prevent progress
+- **Success:** Objective achieved, all validation passed. `failure_point: null`
+- **Partial:** Some progress made but incomplete; Worker needs guidance to continue. `failure_point: Execution`, `Validation`, or `<description>`
+- **Failed:** Worker attempted but could not succeed; issue is within scope but beyond resolution. `failure_point: Execution` or `Validation`
+- **Blocked:** External factors outside Worker scope prevent progress. `failure_point: <description>`
 
-*Failure Point Values:*
-- `null` — No failure (Success only)
-- `Execution` — Failed during task work before validation
-- `Validation` — Work completed but validation criteria not met
-- `<description>` — Specific reason for Partial/Blocked status
-
-*Valid Combinations:*
-- Success + `null` → Objective achieved, all validation passed
-- Failed + `Execution` → Could not complete work properly
-- Failed + `Validation` → Work done, validation failed after iteration
-- Partial + `Execution` → Work incomplete, cannot proceed independently
-- Partial + `Validation` → Some validation passed, some failed — needs guidance
-- Partial + `<description>` → Pausing due to findings or ambiguous state
-- Blocked + `<description>` → External factors prevent progress
-
-*Invalid:* Success with any failure_point other than `null`. Failed with `null` failure_point.
-
-*Partial Status Reasoning* → Use Partial when: validation is ambiguous, important findings emerged that could affect other tasks, iteration stalled with recurring failures, or approach uncertainty depends on factors outside Worker's scope.
-
-**Continue iterating (don't log yet) when:** Validation failed but the cause is clear and fixable, no findings require Manager awareness, and progress is being made toward resolution.
+Use Partial when: validation is ambiguous, important findings emerged that could affect other Tasks, iteration stalled with recurring failures, or approach uncertainty depends on factors outside Worker's scope. Continue iterating (don't log yet) when validation failed but the cause is clear and fixable, no findings require Manager awareness, and progress is being made.
 
 ### 2.3 Detail Level Standards
 
-Task Memory Logs serve the Manager's coordination needs, not archival documentation.
+Task Memory Logs serve the Manager's coordination needs, not archival documentation. Ask: does this detail help the Manager understand what was accomplished? Would it affect the Manager's next review decision? Can it be found by reading the referenced artifacts directly?
 
-*Assessment Questions:*
-- Does this detail help the Manager understand what was accomplished?
-- Would this detail affect the Manager's next review decision?
-- Can this detail be found by reading the referenced artifacts directly?
-
-*Default:* When uncertain, prefer concise but comprehensive summaries with artifact references over verbose inline content.
+**Default:** Prefer concise but comprehensive summaries with artifact references over verbose inline content.
 
 ---
 
 ## 3. Task Logging Procedure
 
 **Procedure:**
-- Task Memory Log Procedure (after task execution)
+
+- Task Memory Log Procedure (after Task execution)
 
 ### 3.1 Task Memory Log Procedure
 
-After task execution, populate the Task Memory Log at the path provided in the Task Assignment (`memory_log_path`).
+After Task execution, populate the Task Memory Log at the path provided in the Task Prompt (`memory_log_path`).
 
 Perform the following actions:
-1. Ensure the stage directory exists at the parent of `memory_log_path`. Create it if it doesn't exist.
+
+1. Ensure the Stage directory exists at the parent of `memory_log_path`. Create it if it doesn't exist.
 2. Complete YAML frontmatter fields:
-   - Set `agent` to your agent identifier
-   - Set `task_id` to the task reference from the assignment
-   - Set `status` based on task outcome per §2.2 Outcome Standards
-   - Set `failure_point` based on where failure occurred (null if Success) per §2.2 Outcome Standards
-   - Set boolean flags:
-     - Set `important_findings` to true if discoveries appear to have implications beyond current task scope
-     - Set `compatibility_issues` to true if output conflicts with existing systems encountered during execution
-     - When uncertain, set the flag to `true`
-3. Complete Markdown body sections:
-   - Always include: Summary, Details, Output, Validation, Issues, Next Steps
-   - Include conditional sections only when their corresponding flag is `true`
-   - Apply detail level calibration:
-     - **Include:** Outcomes, key decisions, blockers, validation results, artifacts produced
-     - **Summarize:** Implementation approach, steps taken, rationale for choices
-     - **Reference (don't reproduce):** Code blocks over 20 lines, full file contents, verbose outputs
-     - **Exclude:** Routine operations, trivial details, information recoverable from artifacts
-4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Inform User to reference the Report Bus file in the Manager session. Keep post-amble minimal.
+   - Set `agent` to your agent identifier.
+   - Set `task_id` to the Task reference from the assignment.
+   - Set `status` based on Task outcome per §2.2 Outcome Standards.
+   - Set `failure_point` based on where failure occurred (`null` if Success) per §2.2 Outcome Standards.
+   - Set `important_findings` per §2.1 Flag Assessment Standards.
+   - Set `compatibility_issues` per §2.1 Flag Assessment Standards.
+3. Complete markdown body sections:
+   - Always include: Summary, Details, Output, Validation, Issues, Next Steps.
+   - Include conditional sections only when their corresponding flag is `true`.
+   - **Include:** Outcomes, key decisions, blockers, validation results, artifacts produced.
+   - **Summarize:** Implementation approach, steps taken, rationale for choices.
+   - **Reference (don't reproduce):** Code blocks over 20 lines, full file contents, verbose outputs.
+   - **Exclude:** Routine operations, trivial details, information recoverable from artifacts.
+4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Direct User to deliver the report per the communication skill - provide the targeted command with agent identifier and the general command. Keep post-amble minimal.
+
+For batch execution, write a batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.5 Batch Report Envelope Format.
 
 ---
 
@@ -124,102 +94,67 @@ Perform the following actions:
 **Location:** `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
 
 **Naming Convention:**
+
 - `<StageNum>`: Stage number (zero-padded, e.g., 01, 02)
 - `<SequentialNum>`: Task number from task ID, zero-padded (e.g., Task 2.3 → 03)
-- `<Slug>`: Brief descriptive slug derived from task title
+- `<Slug>`: Brief descriptive slug derived from Task title
 
 **YAML Frontmatter Schema:**
 
-    ---
-    agent: <Agent_ID>
-    task_id: <Task_ID>
-    status: Success | Failed | Partial | Blocked
-    failure_point: null | Execution | Validation | <description>
-    important_findings: true | false
-    compatibility_issues: true | false
-    ---
+```yaml
+---
+agent: <Agent_ID>
+task_id: <Task_ID>
+status: Success | Failed | Partial | Blocked
+failure_point: null | Execution | Validation | <description>
+important_findings: true | false
+compatibility_issues: true | false
+---
+```
 
 **Field Descriptions:**
+
 - `agent`: string, required. Worker identifier.
 - `task_id`: string, required. Task reference from Implementation Plan (e.g., `Task 2.1`).
 - `status`: enum, required. Task outcome per §2.2 Outcome Standards.
-- `failure_point`: string or null, required. Where/why the task didn't succeed; `null` for Success.
-- `important_findings`: boolean, required. Whether discoveries have implications beyond current task scope.
+- `failure_point`: string or null, required. Where/why the Task didn't succeed; `null` for Success.
+- `important_findings`: boolean, required. Whether discoveries have implications beyond current Task scope.
 - `compatibility_issues`: boolean, required. Whether output conflicts with existing systems.
 
 **Markdown Body Template:**
 
-    # Task Memory Log: <Task_ID> - <Slug>
+```markdown
+# Task Memory Log: <Task_ID> - <Slug>
 
-    ## Summary
-    [1-2 sentences describing main outcome]
+## Summary
+[1-2 sentences describing main outcome]
 
-    ## Details
-    [Work performed, decisions made, steps taken in logical order]
+## Details
+[Work performed, decisions made, steps taken in logical order]
 
-    ## Output
-    - File paths for created/modified files
-    - Code snippets (if necessary, ≤20 lines)
-    - Configuration changes
-    - Results or deliverables
+## Output
+- File paths for created/modified files
+- Code snippets (if necessary, ≤20 lines)
+- Configuration changes
+- Results or deliverables
 
-    ## Validation
-    [Description of validation performed and result]
+## Validation
+[Description of validation performed and result]
 
-    ## Issues
-    [Specific blockers or errors encountered, or "None"]
+## Issues
+[Specific blockers or errors encountered, or "None"]
 
-    ## Compatibility Concerns
-    [Only include if compatibility_issues: true]
-    [Description of compatibility issues identified]
+## Compatibility Concerns
+[Only include if compatibility_issues: true]
+[Description of compatibility issues identified]
 
-    ## Important Findings
-    [Only include if important_findings: true]
-    [Project-relevant discoveries that Manager must know]
+## Important Findings
+[Only include if important_findings: true]
+[Project-relevant discoveries that Manager must know]
 
-    ## Next Steps
-    [Recommendations for follow-up actions, or "None"]
-
-### 4.2 Batch Report Format
-
-When executing a batch of tasks, the Worker writes a consolidated batch report to the Report Bus after completing all tasks (or stopping on failure).
-
-**YAML Frontmatter Schema:**
-
-    ---
-    batch: true
-    batch_size: <N>
-    completed: <M>
-    stopped_early: true | false
-    tasks:
-    - task_ref: "<Stage>.<Task>"
-      status: Success | Partial | Failed | Blocked
-    - task_ref: "<Stage>.<Task>"
-      status: Success | Partial | Failed | Blocked | "Not started"
-    ---
-
-**Markdown Body Template:**
-
-    # Batch Report
-
-    ## Summary
-    [Brief overview: X of Y tasks completed, stopped early if applicable]
-
-    ## Task Outcomes
-
-    ### Task <N.M>: <Title>
-    **Status:** [Success | Partial | Failed | Blocked]
-    **Memory Log:** `<memory_log_path>`
-    [1-2 sentence summary of outcome]
-
-    ### Task <N.M+1>: <Title>
-    **Status:** [Status or "Not started (batch stopped)"]
-    ...
-
-    ## Batch Notes
-    [Any cross-cutting observations, patterns, or issues affecting multiple tasks]
-
-**Fail-Fast Documentation:** If batch stopped early due to Blocked or Failed task, indicate which task caused the stop and list remaining tasks as "Not started (batch stopped)."
+## Next Steps
+[Recommendations for follow-up actions, or "None"]
+```
 
 ---
 
@@ -240,8 +175,6 @@ When executing a batch of tasks, the Worker writes a consolidated batch report t
 - **Details:** "I worked on the endpoint and there were some issues" → "Added registration route with email/password validation using express-validator"
 - **Output:** "Changed some files" → "Modified: `routes/users.js`, `server.js`"
 - **Validation:** "It works now" → "Test suite: 5/5 passing. Manual testing confirmed expected responses."
-
-Good logging is specific, references artifacts by path, and states outcomes clearly.
 
 ### 5.3 Common Mistakes
 

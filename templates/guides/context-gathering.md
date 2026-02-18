@@ -4,33 +4,34 @@
 
 **Reading Agent:** Planner
 
-This guide defines the process for Context Gathering. The goal is gathering sufficient context to create accurate Coordination Artifacts — Specifications, Implementation Plan, and Standards — that enable structured project execution.
+This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents (Specifications, Implementation Plan, and Execution Standards) that enable structured project execution.
 
 ### 1.1 How to Use This Guide
 
-**Execute the Procedure** in §3 Context Gathering Procedure sequentially through all question rounds. **Use Operational Standards** in §2 Operational Standards when interpreting responses, assessing gaps, adapting depth, or deciding on exploration. **Present reasoning in chat**; round completions, understanding summaries, and exploration context are visible to the User; internal categorization is not. Section references (§N.M) throughout this guide are for your procedural navigation — communicate with the User in natural language, not internal labels.
+See §3 Context Gathering Procedure - execute sequentially through all question rounds. See §2 Operational Standards when interpreting responses, assessing gaps, or deciding on exploration. **Present reasoning in chat**; round summaries and exploration context are visible to the User; internal categorization is not. Section references (§N.M) are for your procedural navigation - communicate with the User in natural language.
 
 ### 1.2 Objectives
 
 Gather sufficient context across:
+
 - **Vision:** Project goals, deliverables, success criteria
 - **Technical:** Requirements, constraints, environments, dependencies
 - **Process:** Workflow preferences, quality standards, coordination requirements
 - **Validation:** Success states, acceptance criteria, completion indicators
 
-Context gathering targets three Coordination Artifacts, each consumed differently during the Implementation Phase — the Manager coordinates using Specifications and the Implementation Plan, while Workers execute using `{AGENTS_FILE}` alone. Use these information requirements to assess sufficiency and drive gap identification:
-- **Specifications** (what is being built) — scope boundaries, core entities and relationships, behavioral rules, design constraints, interface definitions, technology choices and their rationale. Capture decisions where reasonable alternatives existed and the User chose a direction.
-- **Implementation Plan** (how work is organized) — work domains and boundaries, dependency chains, complexity and risk indicators, validation criteria per requirement, sequential vs parallel work streams, coordination points between domains.
-- **Standards** (how work is performed) — coding conventions, quality requirements, process rules, prohibited patterns, tool and technology constraints. Universal patterns that apply across all Tasks regardless of domain.
+Context gathering targets three planning documents, each consumed differently during the Implementation Phase - the Manager coordinates using Specifications and the Implementation Plan, while Workers execute using `{AGENTS_FILE}` alone:
+
+- **Specifications** (what is being built) - scope boundaries, core entities, behavioral rules, design constraints, interface definitions, technology choices and rationale.
+- **Implementation Plan** (how work is organized) - work domains, dependency chains, complexity indicators, validation criteria, sequential vs parallel work streams, coordination points.
+- **Execution Standards** (how work is performed) - coding conventions, quality requirements, process rules, prohibited patterns, tool constraints. Universal patterns across all Tasks.
 
 ### 1.3 Guiding Principles
 
 - **Clarity over exhaustion.** Aim for sufficient understanding, not exhaustive interrogation.
 - **Leverage existing material.** Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{AGENTS_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions.
-- **Explore on signal.** When User responses reference codebase elements or documentation, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
+- **Explore on signal.** When User responses reference codebase elements or documentation, proactively explore before continuing questions. See §2.3 Exploration and Research Standards.
 - **Adapt to context.** Match language and depth to project size, type, and User expertise.
-- **Iterate within rounds.** Fill gaps in the current round through follow-ups — do not defer to later rounds.
-- **Research when blocked.** When User clarification alone is insufficient, apply §2.4 Exploration and Research Standards.
+- **Iterate within rounds.** Fill gaps in the current round through follow-ups - do not defer to later rounds.
 
 ---
 
@@ -41,45 +42,45 @@ Context gathering targets three Coordination Artifacts, each consumed differentl
 When processing User responses, assess what was explicitly stated, what can be reasonably inferred, and what assumptions you are making. Explicit statements are high-confidence. Inferences on critical points should be verified. Assumptions should be flagged for clarification.
 
 **Ambiguous responses:**
+
 - *Vague:* Rephrase with concrete interpretations.
 - *Incomplete:* Acknowledge the covered part and ask for the remainder.
 - *Contradictory:* Surface the contradiction neutrally.
-- *Uncertain:* Distinguish preferences (probe further) from genuine unknowns (consider research per §2.4 Exploration and Research Standards).
-- **Gap assessment.** A gap exists when information needed for Coordination Artifacts is missing, ambiguous, or lacks validation criteria. After each User response, assess: what gaps remain, what ambiguities need clarification, and what follow-ups would resolve them. Gaps are resolved by asking directly (missing info), rephrasing and confirming (ambiguity), or proposing concrete criteria (validation).
-- **Round advancement.** Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect Coordination Artifact accuracy. Before advancing, present a round completion summary in chat:
-   - **Context gathered** — key findings from this round, aligned with the round's focus areas.
-   - **Artifact implications** — how findings map to Specifications, Implementation Plan, or Standards. Include only artifacts with meaningful new context.
-   - **Gaps assessed** — what gaps were identified, how they were resolved, and any acceptable gaps carried forward.
-   - **Advancement reasoning** — why this round is complete and what the next round will build on.
+- *Uncertain:* Distinguish preferences (probe further) from genuine unknowns (consider research per §2.3 Exploration and Research Standards).
+
+**Gap assessment.** A gap exists when information needed for planning documents is missing, ambiguous, or lacks validation criteria. After each User response, assess what gaps remain and what follow-ups would resolve them. Gaps are resolved by asking directly (missing info), rephrasing and confirming (ambiguity), or proposing concrete criteria (validation).
+
+**Round advancement.** Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect planning document accuracy. Before advancing, present a round completion summary in chat covering:
+
+- **Context gathered** - key findings from this round.
+- **Planning document implications** - how findings map to Specifications, Implementation Plan, or Execution Standards.
+- **Gaps assessed** - what gaps were identified, how resolved, and any acceptable gaps carried forward.
+- **Advancement reasoning** - why this round is complete and what the next round builds on.
 
 After Round 1 and 2 summaries, immediately begin the next round. After Round 3, proceed to §3.5 Finalize Understanding.
 
-### 2.2 Context Tracking
-
-As you gather context, internally track how information maps to Coordination Artifacts. This tracking is internal — do not expose the categorization to the User; surface insights through round completion summaries.
-- **Specifications signals.** Watch for design decisions and constraints that define what is being built — scope boundaries, core entities, behavioral rules, relationships, constraints, external interfaces. These inform Specifications. When a design decision emerges that could go multiple ways, capture the User's chosen direction.
-- **Implementation Plan signals.** Watch for work organization patterns — domain boundaries, dependency chains, complexity indicators, coordination points, sequential vs parallel work streams. These inform Stage and Task structure. Track which areas the User identifies as challenging or risky.
-- **Standards signals.** Watch for universal execution patterns — coding conventions, quality requirements, process rules, prohibited patterns, tool/technology constraints. These go in `{AGENTS_FILE}` if they apply across all tasks.
-- **Validation signals.** Capture success criteria as they emerge. Consider which Validation Types apply: Programmatic (automated checks), Artifact (expected output existence and structure), or User (human judgment). Most requirements combine multiple types. Categorize formally when finalizing understanding.
-
-### 2.3 Questioning Depth
+### 2.2 Questioning Depth
 
 Adapt questioning depth to the project and User signals:
+
 - **Go deeper** for large/multi-domain projects, revealed dependencies or risks, unclear domain boundaries, indicated complexity.
 - **Stay light** for small/single-domain projects, clear and complete responses, straightforward requirements, demonstrated expertise.
-- Brief answers warrant completeness verification. Extensive elaboration warrants following the thread. Redirection warrants noting state and proceeding. When the User references existing materials or codebase artifacts, read them before asking redundant questions.
+- Brief answers warrant completeness verification. Extensive elaboration warrants following the thread. When the User references existing materials or codebase artifacts, read them before asking redundant questions.
 
-### 2.4 Exploration and Research Standards
+### 2.3 Exploration and Research Standards
 
-When User responses reference codebase elements, existing materials, or signal that relevant context exists, explore proactively. Do not wait for permission when signals appear.
+When User responses reference codebase elements, existing materials, or signal that relevant context exists, explore proactively. Do not wait for permission.
 
-**Delta assessment.** After integrating exploration findings, reassess gaps: what is now known that wasn't before, what questions are now answered, and what new gaps or questions have emerged. Subsequent questions target the delta — what's still missing given the new information. Do not ask about what exploration already revealed.
-- **Do not defer** research that could inform the current round or Coordination Artifacts. Gather now through direct exploration or subagents. Only defer when scope is genuinely too large, the research is itself a project deliverable, or the User explicitly requests deferral.
-- **Scope assessment** - Adapt your exploration strategy based on what is needed:
-   - *Small (1-5 files, focused question):* Self-explore directly using available tools.
-   - *Medium (cross-codebase, bounded focus):* {PLANNER_SUBAGENT_GUIDANCE}. Structure the subagent prompt with: specific research questions, expected sources or locations, and how findings will be used. Integrate findings into your understanding of the current question round needs.
-   - *Large (unbounded, project deliverable):* Note for Implementation Plan.
-   - *Uncertain:* Ask User for approach preference.
+**After exploration,** reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta - what's still missing given the new information. Do not ask about what exploration already revealed.
+
+**Scope assessment:**
+
+- *Small (1-5 files, focused question):* Self-explore directly.
+- *Medium (cross-codebase, bounded focus):* {PLANNER_SUBAGENT_GUIDANCE}. Structure the prompt with specific research questions, expected sources, and how findings will be used.
+- *Large (unbounded, project deliverable):* Note for Implementation Plan.
+- *Uncertain:* Ask User for approach preference.
+
+Do not defer research that could inform the current round. Only defer when scope is genuinely too large, is itself a project deliverable, or the User explicitly requests deferral.
 
 ---
 
@@ -88,23 +89,25 @@ When User responses reference codebase elements, existing materials, or signal t
 Complete each step before proceeding to the next.
 
 **Procedure:**
-1. Round Iteration — governs iteration within each round
-2. Question Round 1 — Existing Materials and Vision
-3. Question Round 2 — Technical Requirements
-4. Question Round 3 — Implementation Approach and Quality
-5. Finalize Understanding — understanding summary, User review, procedure completion
+
+1. Round Iteration - governs iteration within each round
+2. Question Round 1 - Existing Materials and Vision
+3. Question Round 2 - Technical Requirements
+4. Question Round 3 - Implementation Approach and Quality
+5. Finalize Understanding - understanding summary, User review, procedure completion
 
 ### 3.1 Round Iteration
 
 These rules apply across all three question rounds.
 
-**Iteration cycle** — for each question round:
+**Iteration cycle** - for each question round:
+
 1. Ask the initial questions defined for the round.
 2. After each User response, assess gaps per §2.1 Response and Gap Assessment.
 3. Follow up on gaps or advance per §2.1 Response and Gap Assessment.
 4. Repeat until the round's focus areas are sufficiently covered.
 
-Combine related questions naturally in conversation. Adapt depth per §2.3 Questioning Depth. Track what has been answered — ask only for what is missing, not what has been covered.
+Combine related questions naturally in conversation. Adapt depth per §2.2 Questioning Depth. Track what has been answered - ask only for what is missing.
 
 **Validation criteria gathering.** Capture success states and criteria for each requirement. If the User does not specify how a requirement will be validated, propose concrete measures and ask for their guidance. Integrate validation gathering into Rounds 2 and 3 follow-ups. Retain criteria for Implementation Plan Task Validation fields.
 
@@ -112,7 +115,8 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 
 **Focus areas:** Project type and deliverables, problem and purpose, essential features and scope, required skills and expertise, existing documentation and materials, current plan or vision, previous work and codebase context.
 
-**Initial questions** — select and adapt from these areas:
+**Initial questions** - select and adapt from these areas:
+
 1. What type of deliverable(s) are you creating?
 2. What problem does the project solve? What defines success and completion?
 3. What are the essential features, sections, or deliverables?
@@ -121,26 +125,24 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 6. What is your current plan or vision?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
 
-**Agent configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (§1.3 Guiding Principles), include: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration.
+**Agent configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (per §1.3 Guiding Principles), include: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration.
 
-**Gap assessment frame.** After each response, consider: Is the project type and deliverable format clear? Do I understand the problem and success criteria? Are essential features and scope identified? Are skill/expertise areas clear? Do I understand what exists vs what needs to be created? Is the User's vision clear? If existing materials were mentioned, do I understand their structure and role?
-
-If the User mentions validation criteria during Round 1, capture silently — validation gathering happens in Rounds 2 and 3. Apply §2.4 Exploration and Research Standards if gaps require exploration. Surface the results of this assessment in the round completion summary per §2.1 Response and Gap Assessment.
-
-**Round completion.** Before proceeding to Round 2, present a round completion summary in chat per §2.1 Response and Gap Assessment. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
+**Round completion.** Before proceeding to Round 2, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 
 ### 3.3 Question Round 2: Technical Requirements
 
 **Focus areas:** Work structure and dependencies, technical and resource requirements, complexity and risk assessment, validation criteria, emerging specifications and standards.
 
-**Initial questions** — select and adapt from these areas:
+**Initial questions** - select and adapt from these areas:
 
 *Work Structure and Dependencies:*
+
 - Which parts can be done independently vs need sequential order?
 - What are the most challenging aspects?
 - Any dependencies between different parts of the work?
 
 *Technical and Resource Requirements:*
+
 - Does this work involve different technical environments or platforms?
 - What is the deployment/delivery environment?
 - External resources needed? (data sources, APIs, libraries)
@@ -148,63 +150,64 @@ If the User mentions validation criteria during Round 1, capture silently — va
 - Which deliverables can be prepared/built within the development environment vs require external platform interaction?
 
 *Complexity and Risk Assessment:*
+
 - What is the target timeline or deadline?
 - What are the anticipated challenging areas or known risks?
 - Any parts requiring external input or review before proceeding?
 
 *Existing Assets (if building on previous work):*
+
 - What is the current structure and key components?
 - What existing functionality should be preserved or modified?
 
-**Artifact gathering.** As requirements emerge, track Specifications signals (design decisions, constraints) and Standards signals (universal execution patterns) per §2.2 Context Tracking. Gather validation criteria per §3.1 Round Iteration.
+**Artifact gathering.** As requirements emerge, track how information maps to planning documents per §1.2 Objectives. Gather validation criteria per §3.1 Round Iteration.
 
-**Gap assessment frame.** After each response, consider: Do I understand work structure and dependencies? Are technical and resource requirements clear? Are complexity and risk factors understood? Are specifications and standards emerging? Have validation criteria been captured for core requirements? Apply §2.4 Exploration and Research Standards if gaps require exploration. Surface the results of this assessment in the round completion summary per §2.1 Response and Gap Assessment.
-
-**Round completion.** Before proceeding to Round 3, present a round completion summary in chat per §2.1 Response and Gap Assessment. You must have sufficient understanding of: work structure and dependencies, technical requirements, complexity and risk factors, emerging specifications and standards, and validation criteria for core requirements.
+**Round completion.** Before proceeding to Round 3, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: work structure and dependencies, technical requirements, complexity and risk factors, emerging specifications and standards, and validation criteria for core requirements.
 
 ### 3.4 Question Round 3: Implementation Approach and Quality
 
 **Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, coordination and approval requirements, domain organization, finalizing specifications and standards.
 
-**Initial questions** — select and adapt from these areas:
+**Initial questions** - select and adapt from these areas:
 
 *Technical Constraints and Preferences:*
+
 - Required or prohibited tools, languages, frameworks, or platforms?
 - Performance, security, compatibility requirements?
 - Setup, configuration, or deployment steps requiring specific account access?
 
 *Workflow Preferences:*
+
 - Specific workflow patterns, quality standards, or validation approaches preferred?
 - Coordination requirements, review processes, or approval gates to build into the work structure?
 
 *Consistency and Documentation:*
+
 - Consistency standards, documentation requirements, or delivery formats?
 - Examples, templates, or reference materials illustrating preferred approach?
 
 *Domain Organization (if distinct domains identified in earlier rounds):*
+
 - Would related domains benefit from unified handling or separate parallel progress?
 - Natural handoff points between different types of work?
 - Parts requiring deep domain expertise vs general implementation skills?
 
-**Artifact gathering.** Finalize Specifications and Standards signals per §2.2 Context Tracking. Continue gathering validation criteria per §3.1 Round Iteration.
-
-**Gap assessment frame.** After each response, consider: Are technical constraints and preferences clear? Are access and coordination requirements understood? Are workflow and process preferences clear? Are approval requirements understood? If distinct domains exist, is the User's organization preference clear? Are specifications and standards finalized? Is validation coverage sufficient? Apply §2.4 Exploration and Research Standards if gaps require exploration. Surface the results of this assessment in the round completion summary per §2.1 Response and Gap Assessment.
-
-**Round completion.** Before proceeding to §3.5 Finalize Understanding, present a round completion summary in chat per §2.1 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, and documentation expectations.
+**Round completion.** Before proceeding to §3.5 Finalize Understanding, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, and documentation expectations.
 
 ### 3.5 Finalize Understanding
 
 After completing the three question rounds, present gathered context for User review.
 
 Perform the following actions:
+
 1. Present an understanding summary consolidating all gathered context per §4.1 Understanding Summary Guidelines.
 2. Pause for User review. Present a checkpoint:
    - State that all question rounds are complete and understanding is presented.
-   - Ask the User to review carefully before Coordination Artifact generation.
+   - Ask the User to review carefully before planning document generation.
    - Offer options: modifications needed (describe issues) or approved (proceed to Work Breakdown).
-   - If modifications needed → targeted follow-ups using the relevant round's approach → update summary → return to step 1.
+   - If modifications needed → targeted follow-ups → update summary → return to step 1.
    - If approved → proceed to step 3.
-3. Output procedure completion stating context gathering is complete, and note the next step: `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure.
+3. Output procedure completion stating context gathering is complete. The next step is the Work Breakdown procedure per `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
 ---
 
@@ -212,20 +215,21 @@ Perform the following actions:
 
 ### 4.1 Understanding Summary Guidelines
 
-The understanding summary is presented during §3.5 Finalize Understanding for User review. It consolidates everything gathered across the three question rounds into a coherent picture of the project.
+The understanding summary is presented per §3.5 Finalize Understanding for User review. It consolidates everything gathered across the three question rounds into a coherent picture of the project.
 
-**Structure:** Use free-form markdown. Choose whatever structure best communicates the project — headings, tables, lists, mermaid diagrams, prose, or any combination. Adapt the format to the project's nature and complexity.
+**Structure:** Use free-form markdown. Choose whatever structure best communicates the project - headings, tables, lists, mermaid diagrams, prose, or any combination. Adapt the format to the project's nature and complexity.
 
-**Required coverage.** The summary must address these areas (order and presentation are flexible):
-- **Requirements and deliverables** — essential features, scope, success criteria
-- **Work structure** — domains, dependencies, sequencing, complexity indicators
-- **Technical context** — environments, resources, constraints, access needs
-- **Process and quality** — workflow preferences, coordination requirements, approval gates
-- **Validation approach** — how success will be verified, categorized by Validation Type (Programmatic, Artifact, User)
-- **Specifications context** — design decisions and constraints gathered for `Specifications.md`
-- **Standards context** — universal execution patterns gathered for `{AGENTS_FILE}`, noting whether an existing file was found
+**Required coverage** (order and presentation are flexible):
 
-**Guidance.** Prioritize clarity and completeness. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
+- **Requirements and deliverables** - essential features, scope, success criteria
+- **Work structure** - domains, dependencies, sequencing, complexity indicators
+- **Technical context** - environments, resources, constraints, access needs
+- **Process and quality** - workflow preferences, coordination requirements, approval gates
+- **Validation approach** - how success will be verified (programmatic, artifact, user)
+- **Specifications context** - design decisions and constraints gathered for `Specifications.md`
+- **Standards context** - universal execution patterns gathered for `{AGENTS_FILE}`, noting whether an existing file was found
+
+Prioritize clarity and completeness. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
 
 ---
 
@@ -233,10 +237,10 @@ The understanding summary is presented during §3.5 Finalize Understanding for U
 
 ### 5.1 Communication Quality
 
-- **Conversational but purposeful.** Maintain natural dialogue while systematically gathering information. All questions gather context for Coordination Artifacts — not for the Planner's own execution approach.
-- **Adaptive formality.** Match the User's communication style and expertise level. Use natural terms when discussing project structure.
-- **Collaborative framing.** Frame questions as partnership — propose interpretations rather than interrogating.
-- **Facts vs preferences.** Distinguish User requirements (constraints that must be met) from User preferences (guidance that informs decisions). Requirements are non-negotiable; preferences allow judgment during Work Breakdown.
+- **Conversational but purposeful.** Maintain natural dialogue while systematically gathering information. All questions gather context for planning documents - not for the Planner's own execution approach.
+- **Adaptive formality.** Match the User's communication style and expertise level.
+- **Collaborative framing.** Frame questions as partnership - propose interpretations rather than interrogating.
+- **Facts vs preferences.** Distinguish User requirements (constraints) from preferences (guidance). Requirements are non-negotiable; preferences allow judgment during Work Breakdown.
 
 ### 5.2 Common Mistakes
 
