@@ -8,7 +8,7 @@ This document contains development notes, research findings, and implementation 
 
 **Context:** Claude Code's experimental Agent Teams feature enables Workers to internally spawn a team and parallelize work within their assigned task scope. The Worker becomes the team lead, assigns sub-work to teammates, synthesizes results, and reports back through the standard bus protocol. The Manager is unaware this happened — reports and memory logs have the same structure regardless.
 
-**Status:** Future work. Depends on an experimental platform feature (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` environment variable), disabled by default. Optional and platform-exclusive. Reference: https://code.claude.com/docs/en/agent-teams
+**Status:** Future work. Depends on an experimental platform feature (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` environment variable), disabled by default. Optional and platform-exclusive. Reference: <https://code.claude.com/docs/en/agent-teams>
 
 This applies exclusively to Claude Code and is delivered through the existing conditional placeholder system — a new placeholder (e.g., `{WORKER_TEAM_GUIDANCE}`) resolves to Team Execution Standards for Claude Code and to empty string for all other platforms. No new skill file; the placeholder inserts content into the Task Execution guide as an Operational Standard (§2) and a conditional step (§3.3).
 
@@ -22,7 +22,7 @@ Appropriate for batch assignments with 3+ independent sub-tasks or single comple
 ### Affected Components
 
 | Component | Change Type | Scope |
-|-----------|------------|-------|
+| ----------- | ------------ | ------- |
 | Task Execution guide | Add conditional Team Execution section (§2 + §3.3) | CC only |
 | Build config (`build-config.json`) | Add `teamGuidance` field for Claude Code target | Build system |
 | Placeholder processor (`placeholders.js`) | Add `{WORKER_TEAM_GUIDANCE}` replacement | Build system |
@@ -50,8 +50,8 @@ When an APM session completes (all stages done, deliverables working), there is 
 
 **Behavior:**
 
-```
-$ apm continue [-n|--name <name>]
+```markdown
+apm continue [-n|--name <name>]
 ```
 
 1. Prompt for archive name (or use `--name` flag, or generate default)
@@ -61,7 +61,8 @@ $ apm continue [-n|--name <name>]
 5. Output completion message with archive path
 
 **Archive Structure:**
-```
+
+```markdown
 .apm/archives/<name>/
 ├── Implementation_Plan.md
 ├── Specifications.md
@@ -86,12 +87,14 @@ The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session s
 **What:** Additions to the Context Gathering guide that enable the Planner to detect and optionally leverage archived sessions from previous APM runs.
 
 **§0.1 Previous Session Detection:**
+
 1. Check for `.apm/archives/`
 2. If archives exist, list to User with basic info (name, date)
 3. Ask: "Are any of these previous sessions relevant to the current project scope? If so, which ones, and are there any caveats?"
 4. User decides: none (proceed with fresh start) or specific session(s) with guidance
 
 **§0.2 Context Retrieval (if User indicates relevance):**
+
 1. Spawn exploration subagent to examine the indicated archive(s) -- read Implementation Plan, Specifications, Session Summary (if present), and Memory Root Stage Summaries
 2. Spawn verification subagent to check archived context against the current codebase -- identify what still holds, what has changed, and what has been invalidated
 3. Integrate verified findings into question rounds as delta-focused questions (what changed since the archived session, not re-asking what was already established)
@@ -106,7 +109,7 @@ The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session s
 ### Affected Components
 
 | Component | Change Type | Scope |
-|-----------|------------|-------|
+| ----------- | ------------ | ------- |
 | CLI (`src/commands/`) | New `continue` command | CLI |
 | Standalone command template | New `/apm-summarize-session` command | All platforms |
 | Context Gathering guide | Add §0.1 and §0.2 for archive detection and retrieval | All platforms |
