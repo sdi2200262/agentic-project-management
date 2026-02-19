@@ -4,7 +4,7 @@
 
 **Reading Agent:** Manager
 
-This guide defines how the Manager constructs Task Prompts for Workers. Task Prompts are self-contained - Workers receive everything needed to execute a Task without access to Specifications or the Implementation Plan.
+This guide defines how the Manager constructs Task Prompts for Workers. Task Prompts are self-contained - Workers receive everything needed to execute a Task. Workers do not reference Specifications or the Implementation Plan directly; all necessary context is extracted and embedded by the Manager.
 
 ### 1.1 How to Use This Guide
 
@@ -12,7 +12,7 @@ See §3 Task Assignment Procedure - execute sequentially to construct and delive
 
 ### 1.2 Objectives
 
-- Construct self-contained Task Prompts that enable Worker execution without access to Specifications or the Implementation Plan
+- Construct self-contained Task Prompts that embed all context Workers need, without referencing Specifications or the Implementation Plan by path
 - Provide appropriate dependency context based on Worker familiarity with producer work
 - Extract and include relevant specification content for Task execution
 - Assess dispatch opportunities (batch, parallel, single) and coordinate workspace isolation via the VC skill
@@ -43,7 +43,7 @@ Tasks may depend on outputs from previous Tasks. The context you include depends
 
 ### 2.2 Specification Extraction Standards
 
-Workers only receive Task Prompts - the Manager extracts relevant specification content and integrates it into the prompt. Never reference Specifications by path.
+Task Prompts must be self-contained. The Manager extracts relevant Specification content and integrates it directly into the prompt - never reference Specifications by path. Workers should not need to look beyond their Task Prompt.
 
 **Include** content that defines interfaces, schemas, or contracts the Task must implement; establishes constraints on approach or patterns; or clarifies design decisions affecting deliverables. **Exclude** content relating to other domains, providing background without actionable requirements, or already captured in the Task's Guidance field. Preserve specificity with exact constraints, not summaries.
 
@@ -204,7 +204,7 @@ Follow-up Task Prompts use the same structure as §4.1 with these modifications:
 
 ### 5.3 Common Mistakes
 
-- **Referencing inaccessible artifacts:** Never tell Worker to "see Specifications.md" or "check Implementation Plan" - they cannot access these.
+- **Referencing planning documents in Task Prompts:** Never tell Worker to "see Specifications.md" or "check Implementation Plan" - Task Prompts must be self-contained and Workers should not need to reference planning documents.
 - **Under-scoped cross-agent context:** Cross-agent dependencies require comprehensive context regardless of perceived simplicity. Workers cannot access other Workers' Task Memory Logs - the Manager must extract and include all needed context.
 - **Ignoring Handoff state:** Previous-Stage same-agent dependencies must be treated as cross-agent after Worker Handoff.
 - **Missing dependency chain:** Failing to trace upstream when ancestors are relevant.

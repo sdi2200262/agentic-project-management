@@ -25,7 +25,7 @@ See §3 Work Breakdown Procedure - execute sequentially. See §2 Operational Sta
 
 **Artifact visibility - design for the consumer:**
 
-- **Specifications and Implementation Plan → Manager only.** Workers never see these files. The Manager reads them for coordination, extracts relevant content into Task Prompts, and uses the plan for dispatch and progress tracking. Write for coordination needs - organization, cross-referencing, and extraction efficiency.
+- **Specifications and Implementation Plan → Manager reads directly.** Workers do not reference these files - the Manager extracts relevant content into Task Prompts, making them self-contained, and uses the plan for dispatch and progress tracking. Write for coordination needs - organization, cross-referencing, and extraction efficiency.
 - **`{AGENTS_FILE}` → Workers directly.** Workers access this during Task execution. Write standards so they are self-contained and actionable without Specifications or Implementation Plan context.
 
 ### 1.4 Scope Adaptation
@@ -91,6 +91,8 @@ All three patterns are valid. Structure the plan to create natural opportunities
 `{AGENTS_FILE}` defines how work is performed - universal execution patterns across all Tasks. Workers access it directly during Task execution.
 
 **What belongs:** Patterns recurring across multiple Tasks, User-specified conventions, coding and quality requirements that apply universally. **What does not:** Design decisions (Specifications), task-specific guidance (Implementation Plan).
+
+"Universal" means applicable to every Worker in the project regardless of domain. Because all Workers read the same Execution Standards file - a frontend Worker and a backend Worker receive identical standards - the test is: would this pattern apply to every Worker assigned to this project? If it only applies to one domain, it belongs in Task guidance, not here.
 
 When uncertain whether something is universal, prefer placing it in Task guidance - easier to promote later than to demote.
 
@@ -196,7 +198,7 @@ Perform the following actions per §2.5 `{AGENTS_FILE}` Standards:
 
 1. Analyze the Implementation Plan for universal patterns. Present reasoning:
    - **Patterns identified** - what execution patterns emerged.
-   - **Classification** - which are universal (Execution Standards) vs task-specific (Task guidance).
+   - **Classification** - which are universal (Execution Standards) vs task-specific (Task guidance). Universal means applicable to every Worker regardless of domain - test each pattern: does it apply to all Workers, or only to specific domains?
    - **Existing standards** - what `{AGENTS_FILE}` already contains, if anything.
 2. Write APM_STANDARDS block to `{AGENTS_FILE}` per §4.1 APM_STANDARDS Block:
    - If file exists: preserve existing content outside block, append APM_STANDARDS block.
