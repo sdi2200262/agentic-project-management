@@ -199,13 +199,13 @@ Task outcome status reflects whether the objective was achieved:
 
 ### 6.1 Context Gathering
 
-The Planner elicits project requirements through three progressive rounds of questions:
+The Planner gathers project requirements through three progressive rounds of questions, deriving technical formalization from natural User responses rather than asking Users to produce technical content directly:
 
 **Round 1 - Existing Materials and Vision.** Project type, problem, scope, skills, existing documentation, current vision.
 
 **Round 2 - Technical Requirements.** Work structure, dependencies, technical requirements, emerging Specifications and Execution Standards, validation criteria.
 
-**Round 3 - Implementation Approach and Quality.** Technical constraints, workflow preferences, quality standards, coordination needs, domain organization, finalizing Specifications and Execution Standards.
+**Round 3 - Implementation Approach and Quality.** Technical constraints, workflow preferences, quality standards, coordination needs, domain organization, design decisions and constraints, finalizing Specifications and Execution Standards.
 
 Each round follows an iteration cycle: ask initial questions, assess gaps after each response, follow up until understanding is complete, present a round summary, advance. When User responses reference codebase elements, the Planner proactively explores before continuing - subagent usage is encouraged to avoid context bloat. The Planner captures validation criteria for each requirement, proposing concrete measures when the User does not specify them.
 
