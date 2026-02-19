@@ -14,7 +14,7 @@ APM is a multi-agent project management framework that coordinates agent session
 
 **Platform agnosticism** - Core concepts (the bus system, the Memory System, planning documents) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
 
-**Context scoping** - Each agent operates with intentionally limited context. Workers receive only Task Prompts, Execution Standards, and their accumulated working context. The Manager holds coordination-level context: planning documents, the Memory System, and the full project picture. The Planner holds initial project context during the Planning Phase but does not participate during implementation. This scoping prevents context overload and keeps agents focused on their role.
+**Context scoping** - Each agent operates within intentionally limited context. Workers are scoped to their Task Prompts, Execution Standards, and accumulated working context. This scoping is architectural discipline, not programmatic enforcement - Workers are normal agent instances capable of reading any file. Task Prompts are designed to be fully self-contained so Workers have no reason to look beyond them. The Manager holds coordination-level context: planning documents, the Memory System, and the full project picture. The Planner holds initial project context during the Planning Phase but does not participate during implementation. This scoping prevents context overload and keeps agents focused on their role.
 
 **Structured memory** - The Memory System captures project history in a hierarchical file structure that enables Handoff continuity and efficient progress tracking. The Manager operates on execution summaries rather than raw implementation detail, enabling coordination of multiple Workers without context overload.
 
@@ -50,15 +50,15 @@ The Manager and Workers transform the Implementation Plan into completed deliver
 
 | Document | Purpose | Location | Access |
 | -------- | ------- | -------- | ------ |
-| Specifications | Define what is being built | `.apm/Specifications.md` | Manager only; extracted into Task Prompts for Workers |
-| Implementation Plan | Define how work is organized | `.apm/Implementation_Plan.md` | Manager only; extracted into Task Prompts for Workers |
+| Specifications | Define what is being built | `.apm/Specifications.md` | Manager reads directly; relevant content extracted into Task Prompts by Manager |
+| Implementation Plan | Define how work is organized | `.apm/Implementation_Plan.md` | Manager reads directly; Task definitions extracted into Task Prompts by Manager |
 | Execution Standards | Define how work is performed | `{AGENTS_FILE}` at workspace root | All agents |
 
 ### 3.1 Specifications
 
 Specifications define what is being built - project-specific design decisions and constraints. They reside at `.apm/Specifications.md` with a free-form markdown structure determined by project needs. Specifications inform the Implementation Plan.
 
-Workers do not have access to Specifications. The Manager extracts relevant content into Task Prompts during Task Assignment and may update Specifications during the Implementation Phase when execution findings warrant it.
+Workers do not reference Specifications directly. The Manager extracts relevant content into Task Prompts during Task Assignment, making them self-contained, and may update Specifications during the Implementation Phase when execution findings warrant it.
 
 ### 3.2 Implementation Plan
 
@@ -68,13 +68,15 @@ The plan contains a header (project name, overview, agents, Stages, dependency g
 
 Task dependencies are listed in each Task's dependencies field. Cross-agent dependencies - between different Workers - are bolded for visual distinction.
 
-Workers do not have access to the Implementation Plan. The Manager extracts Task content into Task Prompts during Task Assignment and may update the Implementation Plan during the Implementation Phase. The Manager updates the dependency graph when modifications affect Task dependencies.
+Workers do not reference the Implementation Plan directly. The Manager extracts Task content into Task Prompts during Task Assignment. The Manager may update the Implementation Plan during the Implementation Phase, updating the dependency graph when modifications affect Task dependencies.
 
 ### 3.3 Execution Standards
 
 Execution Standards define how work is performed - universal execution patterns applied during Task Execution. They are stored within the APM standards block in `{AGENTS_FILE}` at the workspace root. Content outside this block is user-managed and preserved. When relevant standards already exist outside the block, the APM standards block references them rather than duplicating.
 
 All agents have direct access to this file. Both the Manager and Workers may update Execution Standards during the Implementation Phase.
+
+Execution Standards are read directly by every Worker in the project - including Workers assigned to different domains. A frontend Worker and a backend Worker read the same file. Content must therefore be genuinely universal: applicable to every Worker regardless of domain. Domain-specific execution patterns belong in Task Prompts via Specification extraction, not here.
 
 ### 3.4 Document Modification
 
@@ -237,7 +239,7 @@ The Manager assesses readiness, determines dispatch mode, constructs Task Prompt
 
 **Wait state** - When no Tasks are ready but Workers are active, the Manager communicates what was processed, what is pending, and what the User should do next.
 
-**Per-Task analysis** - For each Task, the Manager analyzes dependencies, extracts relevant Specification content, and extracts Implementation Plan Task fields. Dependency context depth depends on Worker familiarity with the producer's work. Same-agent dependencies receive light context: recall anchors and file paths. Cross-agent dependencies receive comprehensive context: file reading instructions, output summaries, and integration guidance. After a Worker Handoff, previous-Stage same-agent dependencies become cross-agent because the incoming Worker lacks that working context. The Manager traces dependency chains upstream when ancestors established patterns, schemas, or contracts the current Task must follow. The Manager never references Specifications or the Implementation Plan by path in Task Prompts; Workers cannot access these documents.
+**Per-Task analysis** - For each Task, the Manager synthesizes content from three sources into the Task Prompt: dependency context (familiarity classification, producer Task Memory Log content when applicable, integration guidance), relevant Specification content (design decisions and constraints for this Task, extracted inline), and Implementation Plan Task fields (objective, steps, guidance, output, validation criteria). Execution Standards are not included in Task Prompts - Workers read `{AGENTS_FILE}` directly and the Task Prompt assumes those standards are in effect. Dependency context depth depends on Worker familiarity with the producer's work. Same-agent dependencies receive light context: recall anchors and file paths. Cross-agent dependencies receive comprehensive context: file reading instructions, output summaries, and integration guidance. After a Worker Handoff, previous-Stage same-agent dependencies become cross-agent because the incoming Worker lacks that working context. The Manager traces dependency chains upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Specification content is extracted inline - the Manager never references Specifications or the Implementation Plan by path in Task Prompts.
 
 **Task Prompt construction** - The Manager assembles each Task Prompt as a self-contained document with metadata (Stage, Task, agent identifier, memory log path, dependency indicator) and a body containing the Task objective, dependency context, detailed instructions, expected output, validation criteria, and reporting instructions. For parallel dispatch, the Task Prompt includes the workspace path where the Worker operates. Workers commit to their assigned branch and note the workspace in their Task Memory Log.
 
