@@ -112,7 +112,7 @@ Handoff is User-initiated when context window limits approach.
 
 ### 7.2 Worker Awareness
 
-Workers are defined in the Implementation Plan. Each Worker operates in a separate session with access only to their Task Prompts, accumulated working context, and `{AGENTS_FILE}`. They cannot access the Implementation Plan, Specifications, or Memory Root.
+Workers are defined in the Implementation Plan. Each Worker operates in a separate session scoped to their Task Prompts, accumulated working context, and `{AGENTS_FILE}`. Workers do not reference the Implementation Plan, Specifications, or Memory Root - Task Prompts are designed to be self-contained so Workers have no need to.
 
 **Initialization tracking.** Use agent tracking in the Project Tracker to determine which Workers have been initialized. When dispatching to an uninitialized Worker, direct the User to create a new session and run `/apm-3-initiate-worker <agent-id>` with the agent identifier from the Implementation Plan. For initialized Workers, direct to run `/apm-4-check-tasks` in the existing session. See `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery for full delivery guidance.
 
