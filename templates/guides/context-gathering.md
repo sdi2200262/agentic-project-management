@@ -41,6 +41,8 @@ Context gathering targets three planning documents, each consumed differently du
 
 When processing User responses, assess what was explicitly stated, what can be reasonably inferred, and what assumptions you are making. Explicit statements are high-confidence. Inferences on critical points should be verified. Assumptions should be flagged for clarification.
 
+**Extraction lens.** Before flagging a gap, assess whether the technical formalization can be derived from what was described naturally. The standard for gap identification is whether responses are sufficient to formalize into planning document language - not whether the User stated requirements in technical terms. Raise a follow-up only when what was gathered is genuinely insufficient to formalize.
+
 **Ambiguous responses:**
 
 - *Vague:* Rephrase with concrete interpretations.
@@ -160,6 +162,11 @@ Combine related questions naturally in conversation. Adapt depth per §2.2 Quest
 - What is the current structure and key components?
 - What existing functionality should be preserved or modified?
 
+*Emerging Design Decisions:*
+
+- What has already been decided about technical direction, tools, or approaches - and what remains open?
+- Are there things that are definitely in or out of scope?
+
 **Artifact gathering.** As requirements emerge, track how information maps to planning documents per §1.2 Objectives. Gather validation criteria per §3.1 Round Iteration.
 
 **Round completion.** Before proceeding to Round 3, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: work structure and dependencies, technical requirements, complexity and risk factors, emerging specifications and standards, and validation criteria for core requirements.
@@ -191,6 +198,12 @@ Combine related questions naturally in conversation. Adapt depth per §2.2 Quest
 - Would related domains benefit from unified handling or separate parallel progress?
 - Natural handoff points between different types of work?
 - Parts requiring deep domain expertise vs general implementation skills?
+
+*Design Decisions and Constraints:*
+
+- Have you already settled on specific approaches, tools, or ways the project should work - or is that still open?
+- Is there anything that's definitely in or out of scope?
+- Are there important reasons or principles behind the direction you've chosen - things that ruled other approaches out?
 
 **Round completion.** Before proceeding to §3.5 Finalize Understanding, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, and documentation expectations.
 
@@ -241,6 +254,7 @@ Prioritize clarity and completeness. Use diagrams for relationships, tables for 
 - **Adaptive formality.** Match the User's communication style and expertise level.
 - **Collaborative framing.** Frame questions as partnership - propose interpretations rather than interrogating.
 - **Facts vs preferences.** Distinguish User requirements (constraints) from preferences (guidance). Requirements are non-negotiable; preferences allow judgment during Work Breakdown.
+- **Extraction over elicitation.** Derive technical requirements and design decisions from what the User describes naturally - do not ask Users to produce technical specifications directly. Users articulate goals, constraints, and preferences in their own terms; the Planner translates these into planning document language during Work Breakdown. The conversation remains accessible; technical formalization happens in artifacts, not in the dialogue.
 
 ### 5.2 Common Mistakes
 
@@ -249,6 +263,7 @@ Prioritize clarity and completeness. Use diagrams for relationships, tables for 
 - **Skipping validation:** Accepting requirements without understanding success criteria.
 - **Ignoring existing materials:** Asking questions already answered in provided documentation.
 - **Deferring exploration:** Waiting to research when signals indicate relevant context exists now.
+- **Technical elicitation:** Asking Users to define schemas, interfaces, or technical specifications in precise terms rather than gathering requirements conversationally and performing the technical formalization during Work Breakdown.
 
 ---
 
