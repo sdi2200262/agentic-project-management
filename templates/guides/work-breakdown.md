@@ -64,11 +64,9 @@ These principles apply across all decomposition levels. Apply with judgment adap
 
 ### 2.3 Specifications Standards
 
-Specifications define what is being built - design decisions, constraints, and requirements that shape the deliverable. They inform the Implementation Plan but are not task-specific instructions.
+Specifications define what is being built - design decisions, constraints, and requirements that shape the deliverable. They form the foundation the Implementation Plan builds on: every design decision captured here has corresponding Tasks in the Plan that implement it.
 
-**What belongs in Specifications:** Design decisions affecting multiple Tasks, constraints limiting implementation options, choices where reasonable alternatives existed and the User chose a direction. **What does not:** Task-specific implementation details (Task guidance), universal execution patterns (Execution Standards). Structure Specifications so design decisions can be extracted per-Task - the Manager distills relevant content into individual Task Prompts.
-
-Analyze gathered context across universal dimensions - scope boundaries, core entities, behavioral rules, relationships, constraints, external interfaces. Not all dimensions apply to every project; assess relevance and elaborate only on what matters.
+**What belongs in Specifications:** Decisions with three properties - they affect what is being built (not how work is executed), they apply across multiple Tasks, and reasonable alternatives existed. **What does not:** Task-specific implementation details (Task guidance), universal execution patterns (Execution Standards). Structure Specifications so design decisions can be extracted per-Task - the Manager distills relevant content into individual Task Prompts.
 
 ### 2.4 Implementation Plan Standards
 
@@ -76,7 +74,7 @@ The Implementation Plan defines how work is organized - Stages, Tasks, agent ass
 
 **What belongs:** Task-level coordination - objectives, deliverables, agent assignments, validation criteria, dependencies, step-by-step guidance. **What does not:** Design decisions across Tasks (Specifications), universal execution patterns (Execution Standards).
 
-**Task self-sufficiency.** Each Task must contain enough context for a Worker to execute from a Task Prompt alone. Workers do not have access to the full Implementation Plan or Specifications - the Manager extracts relevant content during Task Assignment.
+**Task self-sufficiency.** Each Task must contain enough context for a Worker to execute from a Task Prompt alone. Workers do not reference the full Implementation Plan or Specifications directly - the Manager extracts relevant content during Task Assignment.
 
 **Dispatch-aware structuring.** When assignments and task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities:
 
@@ -116,18 +114,19 @@ Complete each step before proceeding to the next. Present reasoning in chat befo
 
 Perform the following actions per §2.3 Specifications Standards:
 
-1. Analyze specifications from Context Gathering. Present reasoning in chat:
-   - **Relevant dimensions** - which specification dimensions apply and why.
-   - **Design decisions** - choices from Context Gathering, including alternatives considered.
-   - **Structure rationale** - how you plan to organize the Specifications.
+1. Analyze design decisions from gathered context. Present reasoning in chat:
+   - **Design decisions** - each explicit choice and implicit constraint embedded in requirements: what was decided, what alternatives existed, why this direction. Surface assumptions stated as facts that represent actual decisions.
+   - **Boundary calls** - candidates borderline between Specifications, Plan guidance, and Standards: where each lands and why.
+   - **Decision relationships** - decisions that cascade, constrain, or cluster naturally together.
+   - **Structure rationale** - how to organize decisions so the Manager can extract relevant content per Task.
 2. Update `.apm/Specifications.md`:
    - Replace `<Project Name>` with appropriate project name.
    - Fill **Last Modification** field: "Specifications creation by the Planner."
-   - Add specification content for relevant dimensions per §4.2 Specifications Format.
+   - Add specification content per §4.2 Specifications Format. Let structure follow the decisions identified.
 3. **Specifications checkpoint.** Pause for User review:
    - State Specifications are complete and the artifact is created.
    - Ask User to review for accuracy.
-   - If modifications needed → apply and return to 3.
+   - If modifications needed → apply and return to step 3.
    - If approved → Proceed to §3.2 Implementation Plan Header.
 
 ### 3.2 Implementation Plan Header
@@ -143,7 +142,7 @@ Perform the following actions:
 
 Perform the following actions per §2.2 Decomposition Principles:
 
-1. Present domain organization reasoning in chat:
+1. Present domain organization reasoning in chat, grounded in the Specifications approved above:
    - **Domains identified** - logical work domains and their scope.
    - **Separation rationale** - why domains are separated or combined.
    - **Agent mapping** - how domains map to Workers with proposed names and responsibilities.
@@ -196,10 +195,12 @@ After completing all Stage Cycles, review the plan per §2.4 Implementation Plan
 
 Perform the following actions per §2.5 `{AGENTS_FILE}` Standards:
 
-1. Analyze the Implementation Plan for universal patterns. Present reasoning:
-   - **Patterns identified** - what execution patterns emerged.
-   - **Classification** - which are universal (Execution Standards) vs task-specific (Task guidance). Universal means applicable to every Worker regardless of domain - test each pattern: does it apply to all Workers, or only to specific domains?
-   - **Existing standards** - what `{AGENTS_FILE}` already contains, if anything.
+1. Analyze for universal execution patterns across all planning sources. Present reasoning:
+   - **From Specifications** - design decisions with execution implications: decisions that translate into rules Workers must always follow.
+   - **From the Plan** - patterns recurring across multiple Task guidance fields.
+   - **From gathered context** - workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in Specifications or the Plan.
+   - **Classification** - which candidates are truly universal vs task-specific; whether each is self-contained for Workers with no access to Specifications or the Plan. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains?
+   - **Existing standards** - what `{AGENTS_FILE}` already contains; reference rather than duplicate.
 2. Write APM_STANDARDS block to `{AGENTS_FILE}` per §4.1 APM_STANDARDS Block:
    - If file exists: preserve existing content outside block, append APM_STANDARDS block.
    - If creating new: create file with APM_STANDARDS block only.

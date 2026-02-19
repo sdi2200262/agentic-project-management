@@ -133,7 +133,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.2 Quest
 
 ### 3.3 Question Round 2: Technical Requirements
 
-**Focus areas:** Work structure and dependencies, technical and resource requirements, complexity and risk assessment, validation criteria, emerging specifications and standards.
+**Focus areas:** Design decisions and constraints, work structure and dependencies, technical and resource requirements, complexity and risk assessment, validation criteria.
 
 **Initial questions** - select and adapt from these areas:
 
@@ -167,9 +167,9 @@ Combine related questions naturally in conversation. Adapt depth per §2.2 Quest
 - What has already been decided about technical direction, tools, or approaches - and what remains open?
 - Are there things that are definitely in or out of scope?
 
-**Artifact gathering.** As requirements emerge, track how information maps to planning documents per §1.2 Objectives. Gather validation criteria per §3.1 Round Iteration.
+**Planning document mapping.** As requirements emerge, track how information maps to planning documents per §1.2 Objectives. Gather validation criteria per §3.1 Round Iteration.
 
-**Round completion.** Before proceeding to Round 3, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: work structure and dependencies, technical requirements, complexity and risk factors, emerging specifications and standards, and validation criteria for core requirements.
+**Round completion.** Before proceeding to Round 3, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: design decisions and constraints, work structure and dependencies, technical requirements, complexity and risk factors, and validation criteria for core requirements.
 
 ### 3.4 Question Round 3: Implementation Approach and Quality
 
@@ -235,12 +235,11 @@ The understanding summary is presented per §3.5 Finalize Understanding for User
 **Required coverage** (order and presentation are flexible):
 
 - **Requirements and deliverables** - essential features, scope, success criteria
+- **Design decisions and constraints** - choices made where alternatives existed, rationale, constraints that bound what's being built
 - **Work structure** - domains, dependencies, sequencing, complexity indicators
 - **Technical context** - environments, resources, constraints, access needs
-- **Process and quality** - workflow preferences, coordination requirements, approval gates
-- **Validation approach** - how success will be verified (programmatic, artifact, user)
-- **Specifications context** - design decisions and constraints gathered for `Specifications.md`
-- **Standards context** - universal execution patterns gathered for `{AGENTS_FILE}`, noting whether an existing file was found
+- **Process and quality** - workflow preferences, coordination requirements, approval gates, validation approach
+- **Execution conventions** - universal patterns or coding standards the User has specified; note whether an existing `{AGENTS_FILE}` was found
 
 Prioritize clarity and completeness. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
 
