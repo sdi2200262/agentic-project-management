@@ -47,7 +47,7 @@ Perform the following actions:
 2. Initialize bus system per `{SKILL_PATH:apm-communication}` §3.1 Bus Initialization.
 3. Initialize version control per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization.
 4. Populate the Project Tracker in Memory Root: task tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (as uninitialized), and version control state.
-5. Present a concise understanding summary: project scope and objectives, key Specifications, notable Execution Standards, Workers, Stage structure and Task count.
+5. Present a concise understanding summary: project scope and objectives, key design decisions and constraints from Specifications, notable Execution Standards, Workers, Stage structure and Task count.
 6. Request User approval to proceed. If corrections needed, integrate feedback and re-request. When approved, generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure and proceed to §3 Continuous Coordination.
 
 ### 2.2 Incoming Manager Initiation
