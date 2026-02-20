@@ -21,7 +21,7 @@ Gather sufficient context across:
 
 Context gathering targets three planning documents, each consumed differently during the Implementation Phase - the Manager coordinates using Specifications and the Implementation Plan, while Workers execute using `{AGENTS_FILE}` alone:
 
-- **Specifications** (what is being built) - scope boundaries, core entities, behavioral rules, design constraints, interface definitions, technology choices and rationale.
+- **Specifications** (what is being built) - design decisions and constraints: choices made where alternatives existed, the rationale behind them, and constraints that bound what's being built.
 - **Implementation Plan** (how work is organized) - work domains, dependency chains, complexity indicators, validation criteria, sequential vs parallel work streams, coordination points.
 - **Execution Standards** (how work is performed) - coding conventions, quality requirements, process rules, prohibited patterns, tool constraints. Universal patterns across all Tasks.
 
@@ -173,7 +173,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.2 Quest
 
 ### 3.4 Question Round 3: Implementation Approach and Quality
 
-**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, coordination and approval requirements, domain organization, finalizing specifications and standards.
+**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, coordination and approval requirements, domain organization, finalizing design decisions and Execution Standards.
 
 **Initial questions** - select and adapt from these areas:
 
@@ -205,7 +205,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.2 Quest
 - Is there anything that's definitely in or out of scope?
 - Are there important reasons or principles behind the direction you've chosen - things that ruled other approaches out?
 
-**Round completion.** Before proceeding to §3.5 Finalize Understanding, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, and documentation expectations.
+**Round completion.** Before proceeding to §3.5 Finalize Understanding, present a round completion summary per §2.1 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
 
 ### 3.5 Finalize Understanding
 

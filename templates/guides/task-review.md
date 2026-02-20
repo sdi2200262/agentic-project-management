@@ -247,7 +247,7 @@ Update the Last Modification field when modifying Specifications or Implementati
 
 ### 4.5 Planning Document Modification Guidelines
 
-**Specifications:** Maintain existing section structure. Add content under relevant headings. Use `##` for top-level categories. Keep specifications concrete and actionable - design decisions, not implementation details.
+**Specifications:** Maintain existing section structure. Add content under relevant headings. Use `##` for top-level categories. Keep specifications concrete and actionable - design decisions that affect what is being built and apply across multiple Tasks. Task-specific details belong in Task guidance, not here.
 
 **Implementation Plan:**
 

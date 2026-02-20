@@ -94,6 +94,8 @@ All three patterns are valid. Structure the plan to create natural opportunities
 
 When uncertain whether something is universal, prefer placing it in Task guidance - easier to promote later than to demote.
 
+**Self-containedness.** Workers' working context is intentionally scoped to their Task Prompt and `{AGENTS_FILE}` - Specifications, Implementation Plan, and external design artifacts are omitted by design. Standards referencing those documents undermine that scoping. Embed content directly; if it answers "what is being built", it belongs in Specifications first.
+
 ---
 
 ## 3. Work Breakdown Procedure
@@ -334,7 +336,7 @@ style T2_2 fill:#a8dadc,color:#000
 
 **Implementation Plan:** Each Task is understandable without external reference. Use specific language - not "implement properly" but the specific pattern to follow. All fields populated. Consistent naming and terminology.
 
-**`{AGENTS_FILE}`:** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. No duplication of existing project standards - reference instead.
+**`{AGENTS_FILE}`:** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{AGENTS_FILE}` already exists, preserve its content and append the APM_STANDARDS block rather than duplicating existing standards.
 
 ### 5.2 Common Mistakes
 
@@ -346,6 +348,7 @@ style T2_2 fill:#a8dadc,color:#000
 - **Missing dependencies:** Tasks requiring prior work not marked - trace prerequisites.
 - **Misclassified dependencies:** Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph (`-->` vs `-.->`) - classify at write time per §3.5 Stage Cycles by checking whether producer and consumer share the same agent. Verify per §3.6 Plan Review.
 - **Non-universal standards:** Task-specific patterns elevated to `{AGENTS_FILE}` - if it only applies to some Tasks, it's Task guidance.
+- **Standards referencing external documents:** Specifications, planning documents, and design artifacts are intentionally omitted from Workers' context - referencing them from `{AGENTS_FILE}` undermines that scoping. See §2.5 `{AGENTS_FILE}` Standards.
 
 ---
 
