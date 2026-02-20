@@ -203,7 +203,7 @@ The Planner gathers project requirements through three progressive rounds of que
 
 **Round 1 - Existing Materials and Vision.** Project type, problem, scope, skills, existing documentation, current vision.
 
-**Round 2 - Technical Requirements.** Work structure, dependencies, technical requirements, emerging Specifications and Execution Standards, validation criteria.
+**Round 2 - Technical Requirements.** Design decisions and constraints, work structure, dependencies, technical requirements, validation criteria.
 
 **Round 3 - Implementation Approach and Quality.** Technical constraints, workflow preferences, quality standards, coordination needs, domain organization, design decisions and constraints, finalizing Specifications and Execution Standards.
 
