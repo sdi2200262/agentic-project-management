@@ -40,7 +40,7 @@ The Planner conducts structured discovery through three Question Rounds, each fo
 - Work structure and dependencies
 - Technical requirements and constraints
 - Validation criteria for each requirement
-- Emerging Specifications and Execution Standards
+- Design decisions and constraints
 
 **Question Round 3: Implementation Approach and Quality**
 
@@ -59,8 +59,8 @@ The Planner decomposes gathered context into three planning documents through vi
 
 **Specifications Creation**
 
-- Analyzes design decisions across scope, entities, behaviors, relationships, constraints, and interfaces
-- Writes Specifications file with project-specific design decisions
+- Surfaces design decisions from gathered context: explicit choices, implicit constraints, and alternatives not taken
+- Writes Specifications file with project-specific design decisions; structure follows the decisions identified
 - Presents for User review, iterates on feedback until approval
 
 **Implementation Plan Creation**
@@ -73,7 +73,7 @@ The Planner decomposes gathered context into three planning documents through vi
 - Presents for User review, iterates on feedback until approval
 
 **Execution Standards Creation**
-- Extracts universal execution patterns from gathered context
+- Extracts universal execution patterns from three sources: Specifications decisions with execution implications, recurring patterns across Plan Tasks, and workflow conventions from Context Gathering
 - Writes APM_STANDARDS block in Execution Standards file
 - Presents for User review, iterates on feedback until approval
 
@@ -123,7 +123,7 @@ The Manager assesses which tasks are ready based on dependency completion and th
 
 1. **Dependency Context Analysis** - Classifies dependencies as same-agent (light context with recall anchors) or cross-agent (comprehensive context with file reading instructions). After Worker Handoff, prior-Stage same-agent dependencies are reclassified as cross-agent.
 
-2. **Specification Extraction** - Extracts relevant design decisions from Specifications for contextual integration into the Task Prompt. Workers cannot access Specifications directly.
+2. **Specification Extraction** - Extracts relevant design decisions from Specifications for contextual integration into the Task Prompt. Workers do not reference Specifications directly - all necessary context is embedded by the Manager.
 
 3. **Task Prompt Construction** - Assembles a self-contained prompt with task reference, context from dependencies, objective, detailed instructions, expected output, validation criteria, memory logging instructions, and reporting instructions.
 

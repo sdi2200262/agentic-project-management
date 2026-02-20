@@ -190,10 +190,10 @@ Multiple Sessions via Handoff. Each Session continues from where previous left o
 - Accumulated working context from prior same-agent tasks in current Stage
 - Specified Task Memory Logs when cross-agent dependencies exist
 
-**Does not access:**
+**Does not reference directly:**
 
-- Specifications file directly (receives extracted context via Task Prompt)
-- Implementation Plan file directly (receives Task definition via Task Prompt)
+- Specifications file (receives extracted context via Task Prompt - Manager embeds all necessary content)
+- Implementation Plan file (receives Task definition via Task Prompt)
 - Memory Root, Stage Summaries, or Project Tracker
 - Other Workers' working context unless explicitly provided in Task Prompt
 
