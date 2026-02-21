@@ -68,7 +68,7 @@ These principles apply across all decomposition levels. Apply with judgment adap
 
 Specifications define what is being built - design decisions, constraints, and requirements that shape the deliverable. They form the foundation the Implementation Plan builds on: every design decision captured here has corresponding Tasks in the Plan that implement it.
 
-The test for each candidate: would changing this decision reshape the project's design, or only affect a single scope of work? Project-shaping decisions — choices where alternatives existed, affecting what is being built across the project — belong here. Single-scope details and universal execution patterns do not. When User documents already authoritatively define requirements, reference them — Specifications capture design decisions layered on existing requirements, not restate them. Structure Specifications so design decisions can be extracted per-Task — the Manager distills relevant content into individual Task Prompts.
+The test for each candidate: would changing this decision reshape the project's design, or only affect a single scope of work? Project-shaping decisions - choices where alternatives existed, affecting what is being built across the project - belong here. Single-scope details and universal execution patterns do not. Within a design topic, capture the decision - not its implementation mechanics. If changing a detail does not change the decision, the detail belongs in Task Guidance. When User documents already authoritatively define requirements, reference them - Specifications capture design decisions layered on existing requirements, not restate them. Structure Specifications so design decisions can be extracted per-Task - the Manager distills relevant content into individual Task Prompts.
 
 ### 2.4 Implementation Plan Standards
 
@@ -90,11 +90,11 @@ All three patterns are valid. Structure the plan to create natural opportunities
 
 `{AGENTS_FILE}` defines how work is performed - universal execution patterns across all Tasks. Workers access it directly during Task execution.
 
-**Two-gate test.** First: does the candidate describe how work is performed, or what is being built? Output formats, response strings, data schemas, and interface contracts define what is being built — they belong in Specifications even when multiple Workers need them. Only execution patterns proceed to the second gate. Second: does the pattern apply to every Worker in the project regardless of domain? All Workers read the same file — if the pattern only applies to one domain, it does not belong here.
+**Two-gate test.** First: does the candidate describe how work is performed, or what is being built? Output formats, response strings, data schemas, and interface contracts define what is being built - they belong in Specifications even when multiple Workers need them. Only execution patterns proceed to the second gate. Second: does the pattern apply to every Worker in the project regardless of domain? All Workers read the same file - if the pattern only applies to one domain, it does not belong here.
 
-When uncertain whether something qualifies, prefer placing it in Task guidance — easier to promote later than to demote.
+When uncertain whether something qualifies, prefer placing it in Task guidance - easier to promote later than to demote.
 
-**Self-containedness.** Workers' working context is intentionally scoped to their Task Prompt and `{AGENTS_FILE}` — Specifications, Implementation Plan, and external design artifacts are omitted by design. Standards referencing those documents undermine that scoping. Embed content directly.
+**Self-containedness.** Workers' working context is intentionally scoped to their Task Prompt and `{AGENTS_FILE}` - Specifications, Implementation Plan, and external design artifacts are omitted by design. Standards referencing those documents undermine that scoping. Embed content directly.
 
 ---
 
@@ -168,8 +168,8 @@ For each Stage per §3.4 Stage Analysis, complete detailed Task breakdown. Execu
 2. For each Task, present reasoning in chat:
    - **Agent assignment** - which agent and why.
    - **Task Scope** - what is the Task's scope?
-   - **Task Guidance** - what implementation context does this Worker need? Domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics).
-   - **Task Validation** - approaches selected and rationale. Validation criteria co-define the Task with Guidance — together they specify what "done" means.
+   - **Task Guidance** - what implementation context does this Worker need? Domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as task-scoped during §3.1 boundary calls.
+   - **Task Validation** - approaches selected and rationale. Validation criteria co-define the Task with Guidance - together they specify what "done" means.
    - **Dependencies** - enumerate every dependency. Same-agent: `Task N.M` format. Cross-agent: **`Task N.M by <Agent>`** (bolded), specifying the deliverable at the boundary.
    - **Steps** - ordered operations with purpose.
    Use more detail for complex Tasks and less for straightforward ones. Include all required dimensions.
@@ -201,7 +201,7 @@ After completing all Stage Cycles, review the plan per §2.4 Implementation Plan
 Perform the following actions per §2.5 `{AGENTS_FILE}` Standards:
 
 1. Analyze for universal execution patterns across all planning sources. Present reasoning:
-   - **From Specifications** - execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in Specifications — they reach Workers through Task Prompts.
+   - **From Specifications** - execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in Specifications - they reach Workers through Task Prompts.
    - **From the Plan** - patterns recurring across multiple Task guidance fields.
    - **From gathered context** - workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in Specifications or the Plan.
    - **Classification** - which candidates are truly universal vs task-specific; whether each is self-contained for Workers with no access to Specifications or the Plan. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains?
@@ -352,7 +352,7 @@ style T2_2 fill:#a8dadc,color:#000
 - **Misclassified dependencies:** Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph (`-->` vs `-.->`) - classify at write time per §3.5 Stage Cycles by checking whether producer and consumer share the same agent. Verify per §3.6 Plan Review.
 - **Duplicating source documents:** Restating requirements from User documents (PRD, specifications) instead of referencing the source. Specifications capture design decisions layered on existing requirements.
 - **Non-universal standards:** Task-specific patterns elevated to `{AGENTS_FILE}` - if it only applies to some Tasks, it's Task guidance.
-- **Output specifications as standards:** Elevating response formats, error strings, or interface contracts to `{AGENTS_FILE}`. These define what is being built and belong in Specifications — universality across Workers does not make them execution patterns.
+- **Output specifications as standards:** Elevating response formats, error strings, or interface contracts to `{AGENTS_FILE}`. These define what is being built and belong in Specifications - universality across Workers does not make them execution patterns.
 - **Standards referencing external documents:** Specifications, planning documents, and design artifacts are intentionally omitted from Workers' context - referencing them from `{AGENTS_FILE}` undermines that scoping. See §2.5 `{AGENTS_FILE}` Standards.
 
 ---
