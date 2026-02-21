@@ -43,7 +43,7 @@ Tasks may depend on outputs from previous Tasks. The context you include depends
 
 ### 2.2 Specification Extraction Standards
 
-Task Prompts must be self-contained. The Manager extracts relevant Specification content and integrates it directly into the prompt - never reference Specifications by path. Workers should not need to look beyond their Task Prompt. When Specifications reference external User documents for specific content, follow those references and extract the relevant content directly — the Task Prompt remains self-contained regardless of where the source content resides.
+Task Prompts must be self-contained. The Manager extracts relevant Specification content and integrates it directly into the prompt - never reference Specifications by path. Workers should not need to look beyond their Task Prompt. When Specifications reference external User documents for specific content, follow those references and extract the relevant content directly - the Task Prompt remains self-contained regardless of where the source content resides.
 
 **Include** content that defines interfaces, schemas, or contracts the Task must implement; establishes constraints on approach or patterns; or clarifies design decisions affecting deliverables. **Exclude** content relating to other domains, providing background without actionable requirements, or already captured in the Task's Guidance field. Preserve specificity with exact constraints, not summaries.
 

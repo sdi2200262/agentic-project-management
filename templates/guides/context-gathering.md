@@ -75,7 +75,7 @@ When User responses reference codebase elements, existing materials, or signal t
 
 **After exploration,** reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta - what's still missing given the new information. Do not ask about what exploration already revealed.
 
-**Scope assessment.** The key distinction is purpose: research that builds the Planner's understanding of the project belongs in Context Gathering — exploring the codebase, verifying documentation, checking external systems, resolving technical unknowns. This includes research that informs the current question round, subsequent rounds, or planning document creation. Research that is itself a project deliverable belongs in the Implementation Plan. Only defer when research is a project deliverable or the User explicitly requests deferral.
+**Scope assessment.** The key distinction is purpose: research that builds the Planner's understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, checking external systems, resolving technical unknowns. This includes research that informs the current question round, subsequent rounds, or planning document creation. Research that is itself a project deliverable belongs in the Implementation Plan. Only defer when research is a project deliverable or the User explicitly requests deferral.
 
 For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}. Structure the prompt with specific research questions, expected sources, and how findings will be used.
 
@@ -236,7 +236,7 @@ The understanding summary is presented per §3.5 Finalize Understanding for User
 - **Process and quality** - workflow preferences, coordination requirements, approval gates, validation approach
 - **Execution conventions** - universal patterns or coding standards the User has specified; note whether an existing `{AGENTS_FILE}` was found
 
-The understanding summary captures signals that inform Work Breakdown — domains, dependencies, constraints. Concrete decomposition into Stages, Tasks, and agent assignments happens after reading `{GUIDE_PATH:work-breakdown}` and applying its reasoning framework.
+The understanding summary captures signals that inform Work Breakdown - domains, dependencies, constraints. Concrete decomposition into Stages, Tasks, and agent assignments happens after reading `{GUIDE_PATH:work-breakdown}` and applying its reasoning framework.
 
 Prioritize clarity and completeness. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
 
