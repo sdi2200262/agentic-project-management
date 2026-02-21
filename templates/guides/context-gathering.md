@@ -55,7 +55,7 @@ When processing User responses, assess what was explicitly stated, what can be r
 **Round advancement.** Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect planning document accuracy. Before advancing, present a round completion summary in chat covering:
 
 - **Context gathered** - key findings from this round.
-- **Planning document implications** - how findings map to Specifications, Implementation Plan, or Execution Standards.
+- **Planning document relevance** - which planning documents the findings inform and what type of content they contribute (design decisions, work structure signals, execution patterns).
 - **Gaps assessed** - what gaps were identified, how resolved, and any acceptable gaps carried forward.
 - **Advancement reasoning** - why this round is complete and what the next round builds on.
 
@@ -75,14 +75,9 @@ When User responses reference codebase elements, existing materials, or signal t
 
 **After exploration,** reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta - what's still missing given the new information. Do not ask about what exploration already revealed.
 
-**Scope assessment:**
+**Scope assessment.** The key distinction is purpose: research that builds the Planner's understanding of the project belongs in Context Gathering — exploring the codebase, verifying documentation, checking external systems, resolving technical unknowns. This includes research that informs the current question round, subsequent rounds, or planning document creation. Research that is itself a project deliverable belongs in the Implementation Plan. Only defer when research is a project deliverable or the User explicitly requests deferral.
 
-- *Small (1-5 files, focused question):* Self-explore directly.
-- *Medium (cross-codebase, bounded focus):* {PLANNER_SUBAGENT_GUIDANCE}. Structure the prompt with specific research questions, expected sources, and how findings will be used.
-- *Large (unbounded, project deliverable):* Note for Implementation Plan.
-- *Uncertain:* Ask User for approach preference.
-
-Do not defer research that could inform the current round. Only defer when scope is genuinely too large, is itself a project deliverable, or the User explicitly requests deferral.
+For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}. Structure the prompt with specific research questions, expected sources, and how findings will be used.
 
 ---
 
@@ -236,10 +231,12 @@ The understanding summary is presented per §3.5 Finalize Understanding for User
 
 - **Requirements and deliverables** - essential features, scope, success criteria
 - **Design decisions and constraints** - choices made where alternatives existed, rationale, constraints that bound what's being built
-- **Work structure** - domains, dependencies, sequencing, complexity indicators
+- **Work structure signals** - identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified
 - **Technical context** - environments, resources, constraints, access needs
 - **Process and quality** - workflow preferences, coordination requirements, approval gates, validation approach
 - **Execution conventions** - universal patterns or coding standards the User has specified; note whether an existing `{AGENTS_FILE}` was found
+
+The understanding summary captures signals that inform Work Breakdown — domains, dependencies, constraints. Concrete decomposition into Stages, Tasks, and agent assignments happens after reading `{GUIDE_PATH:work-breakdown}` and applying its reasoning framework.
 
 Prioritize clarity and completeness. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
 
@@ -262,6 +259,7 @@ Prioritize clarity and completeness. Use diagrams for relationships, tables for 
 - **Skipping validation:** Accepting requirements without understanding success criteria.
 - **Ignoring existing materials:** Asking questions already answered in provided documentation.
 - **Deferring exploration:** Waiting to research when signals indicate relevant context exists now.
+- **Premature decomposition:** Producing Stage, Task, or agent assignment structures during Context Gathering. Context Gathering identifies work structure signals; decomposition happens in Work Breakdown.
 - **Technical elicitation:** Asking Users to define schemas, interfaces, or technical specifications in precise terms rather than gathering requirements conversationally and performing the technical formalization during Work Breakdown.
 
 ---
