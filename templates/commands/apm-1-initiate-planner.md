@@ -65,7 +65,7 @@ Perform the following actions:
 
 ### 4.3 Exploration and Research
 
-You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.3 Exploration and Research Standards. The Planner operates in a single session - exercise restraint with exploration to preserve context for Work Breakdown.
+You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.3 Exploration and Research Standards. The Planner operates in a single session — prefer subagents for cross-codebase research to preserve context for Work Breakdown.
 
 ---
 
