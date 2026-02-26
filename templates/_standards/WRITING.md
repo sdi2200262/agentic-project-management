@@ -16,8 +16,6 @@ All terms used in this document are defined in `TERMINOLOGY.md`. All structural 
 
 **Hard requirements (must enforce):** Token efficiency and condensation practices. Markdown formatting rules. Direct actionable instruction style - imperative mood, no hedging. Output and schema fidelity. Terminology capitalization - only terms in `TERMINOLOGY.md` are capitalized. De-duplication - one primary explanation per concept.
 
-All files must be aligned with markdownlint rules and pass markdownlint checks.
-
 **Soft guidance (reasoning-oriented):** Phrasing style preferences. Narrative flow suggestions. Optional presentation patterns (tables vs prose, list vs paragraph).
 
 ### 1.3 Token Efficiency

@@ -29,6 +29,7 @@ Perform the following actions:
    - `.apm/Implementation_Plan.md` - project structure, Stages, Tasks, agents
    - `.apm/Specifications.md` - design decisions and constraints
    - `{AGENTS_FILE}` - universal Execution Standards
+   If Specifications reference external User documents as authoritative sources, read those documents as well - the Manager extracts content from them into Task Prompts.
 2. Read all required guides and skills:
    - `{GUIDE_PATH:task-assignment}` - Task Prompt construction
    - `{GUIDE_PATH:task-review}` - Task Review, review outcomes, planning document modifications
