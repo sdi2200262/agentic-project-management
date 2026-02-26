@@ -38,13 +38,13 @@ See §3 Version Control Procedure for initialization, branch operations, worktre
 
 The Manager detects existing repository state during session 1 initialization. Detection is passive - read what exists rather than imposing configuration.
 
-**Detection checks:** Is git initialized? (if not, initialize and inform User). What is the current branch? (becomes base branch unless User specifies otherwise). Where is `.apm/` relative to repository root? (both paths recorded for worktree path construction). Is `.apm/worktrees/` in `.gitignore`? (if not, add it).
+**Detection checks:** Is git initialized? (if not, initialize and inform User). What is the current branch? (becomes base branch unless User specifies otherwise). Which directory is the working repository? (check Specifications for workspace structure if multiple directories or repos exist). Where is `.apm/` relative to repository root? (both paths recorded for worktree path construction). Is `.apm/worktrees/` in `.gitignore`? (if not, add it).
 
 **Stale state recovery.** If leftover worktrees or branches from a prior session exist (e.g., crash recovery), detect and clean during initialization - remove worktrees and delete orphaned feature branches.
 
 ### 2.2 Branch Standards
 
-Every dispatch unit (single Task or batch) gets its own feature branch off the base branch. Naming convention is established during VC initialization based on existing project conventions or User preference. Branch names should be descriptive of the work being performed; for batches, the name reflects the batch scope. A batch of sequential Tasks assigned to the same Worker shares one branch.
+Every dispatch unit (single Task or batch) gets its own feature branch off the base branch. Naming convention is established during VC initialization based on existing project conventions or User preference. Branch names should be descriptive of the work being performed; for batches, the name reflects the batch scope. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
 
 ### 2.3 Worktree Standards
 
@@ -184,6 +184,7 @@ The Manager records VC state in the Version Control table within the Project Tra
 - **Accumulating worktrees:** Worktrees are short-lived. Remove promptly after merge.
 - **Assuming base branch name:** Detect the current branch during initialization. Do not assume `main` or `master`.
 - **Forgetting VC state in Handoff:** Ensure the Project Tracker Version Control table is current before Handoff. Include active branches, worktrees, and pending merges in the Handoff Memory Log.
+- **Committing build artifacts:** Do not commit generated files (compiled binaries, object files, build output). Create or update `.gitignore` for build directories.
 
 ---
 

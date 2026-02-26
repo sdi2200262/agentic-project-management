@@ -62,13 +62,13 @@ These principles apply across all decomposition levels. Apply with judgment adap
 
 **Scope boundaries.** Agent-assignable work is completable within the development environment with autonomous or artifact-based validation. User coordination involves external platforms, credentials, or validation outside the environment - include explicit coordination steps and mark user validation.
 
-**Validation criteria.** Each Task specifies validation: programmatic (automated checks), artifact (output existence and structure), or user (human judgment). Programmatic and artifact allow autonomous iteration; user validation requires pausing. Most Tasks combine multiple approaches.
+**Validation criteria.** Each Task specifies validation: programmatic (automated checks), artifact (output existence and structure), or user (human judgment). Programmatic and artifact allow autonomous iteration; user validation requires pausing. Most Tasks combine multiple approaches. Validation criteria are Worker-scoped - no references to other Stages, Tasks, or coordination-level gates. Workers validate their own deliverables; Stage coordination is the Manager's concern.
 
 ### 2.3 Specifications Standards
 
 Specifications define what is being built - design decisions, constraints, and requirements that shape the deliverable. They form the foundation the Implementation Plan builds on: every design decision captured here has corresponding Tasks in the Plan that implement it.
 
-The test for each candidate: would changing this decision reshape the project's design, or only affect a single scope of work? Project-shaping decisions - choices where alternatives existed, affecting what is being built across the project - belong here. Single-scope details and universal execution patterns do not. Within a design topic, capture the decision - not its implementation mechanics. If changing a detail does not change the decision, the detail belongs in Task Guidance. When User documents already authoritatively define requirements, reference them - Specifications capture design decisions layered on existing requirements, not restate them. Structure Specifications so design decisions can be extracted per-Task - the Manager distills relevant content into individual Task Prompts.
+The test for each candidate: would changing this decision reshape the project's design, or only affect a single scope of work? Project-shaping decisions - choices where alternatives existed, affecting what is being built across the project - belong here. Single-scope details and universal execution patterns do not. Within a design topic, capture the decision - not its implementation mechanics. If changing a detail does not change the decision, the detail belongs in Task Guidance. When User documents already authoritatively define requirements, reference them - Specifications capture design decisions layered on existing requirements, not restate them. When the workspace contains multiple repositories or codebases, capture workspace structure in Specifications - which repository is the working target, which are read-only references, and where Workers operate. Structure Specifications so design decisions can be extracted per-Task - the Manager distills relevant content into individual Task Prompts.
 
 ### 2.4 Implementation Plan Standards
 
@@ -252,7 +252,7 @@ The structure for `.apm/Specifications.md`:
 [Specification content using appropriate structural elements]
 ```
 
-**Content rules:** Use markdown headings (`##`) for categories. Free-form structure determined by project context. Each specification must be concrete and actionable. Reference existing User documents rather than duplicating. References to User documents must be specific (document name and section) so the Manager can extract relevant content during Task Assignment. Use tables for enumerated values, mermaid diagrams for relationships, code blocks for schemas, prose for rationale.
+**Content rules:** Use markdown headings (`##`) for categories. Free-form structure determined by project context. Each specification must be concrete and actionable. Reference existing User documents rather than duplicating. References to User documents must include file paths and be specific (document path and section) so the Manager can locate and extract relevant content during Task Assignment. Use tables for enumerated values, mermaid diagrams for relationships, code blocks for schemas, prose for rationale.
 
 ### 4.3 Stage Format
 
