@@ -160,7 +160,7 @@ has_dependencies: true | false
 - `stage`: integer, required. Stage number.
 - `task`: integer, required. Task number within Stage.
 - `agent_id`: string, required. Worker identifier (lowercase, hyphenated).
-- `memory_log_path`: string, required. Full path for the Task Memory Log.
+- `memory_log_path`: string, required. Full path for the Task Memory Log. The Stage slug is derived from the Stage name in the Implementation Plan (e.g., Stage 1 "Parallel Feature and Baseline Development" produces `Stage_1_Parallel_Feature_and_Baseline_Development`). All Tasks in the same Stage share the same Stage directory.
 - `has_dependencies`: boolean, required. Whether dependency context is present.
 
 **Prompt Body Sections:** Title with `#` using Task ID and title. Each section uses `##` heading.
@@ -195,7 +195,7 @@ Follow-up Task Prompts use the same structure as §4.1 with these modifications:
 - **Self-contained:** Workers should never need to ask "where do I find X?"
 - **Specific:** Specify files, patterns, constraints - avoid vague instructions.
 - **Actionable:** Every instruction should be directly executable.
-- **Scoped:** Include only what is relevant to this Task.
+- **Scoped:** Include only what is relevant to this Task. Task Prompts do not reference Stage numbers, other Task IDs, or coordination-level concepts. Validation criteria are Worker-scoped.
 
 ### 5.2 Context Quality
 

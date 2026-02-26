@@ -47,13 +47,15 @@ Validate automated checks first, then output verification, then user approval if
 - *Artifact:* Output existence and structural verification - files exist with required sections, configs valid, outputs match patterns. Worker verifies autonomously.
 - *User:* Human judgment required - design approval, content quality, architectural decisions. Worker pauses for User review. Always performed last.
 
+When validation requires resources outside the Worker's current environment (credentials, access tokens, configuration files, external platform access), request these from the User before proceeding.
+
 **Default:** Fail-fast on autonomous validations to avoid wasted User reviews.
 
 ### 2.3 Iteration Standards
 
 When validation fails, the Worker enters a correction loop - correct, re-execute, re-validate.
 
-**Continue when:** cause identified, fix within scope, measurable progress toward resolution. **Stop when:** same error 3+ times, fixes causing new issues, requires external resolution. A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve - perhaps a misunderstanding of requirements, a dependency issue, or a systemic problem.
+**Continue when:** cause identified, fix within scope, measurable progress toward resolution. **Stop when:** same error 3+ times, fixes causing new issues, requires external resolution. A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve - perhaps a misunderstanding of requirements, a dependency issue, or a systemic problem. When a stop condition is reached: spawn a debug subagent to attempt resolution with fresh context. If the subagent cannot resolve or subagent tools are unavailable, apply §2.4 Failure Status Standards and proceed to §3.6 Task Completion.
 
 **Default:** When uncertain, pause and present situation to User with options.
 
@@ -68,7 +70,7 @@ Partial means "I need guidance to continue." Failed means "I tried everything wi
 
 ### 2.5 User Collaboration Standards
 
-**Required:** User validation (Worker cannot self-approve subjective quality), explicit User actions (Worker cannot act outside development environment), and iteration pauses (Worker needs guidance).
+**Required:** User validation (Worker cannot self-approve subjective quality), explicit User actions (Worker cannot act outside development environment), environment resources needed for validation (credentials, configuration, access), and iteration pauses (Worker needs guidance).
 
 **Autonomous:** Programmatic/artifact validation, continuing iteration when cause is clear and fix is within scope, standard instruction execution.
 
@@ -135,7 +137,7 @@ Perform the following actions:
    - Explicit User action required → communicate what needs User action, why, and what options exist. Await completion, then resume.
    - Subagent step → spawn the relevant subagent with a structured task description. If resolved, apply findings and resume. If unresolved, apply §2.4 Failure Status Standards. {WORKER_SUBAGENT_GUIDANCE}
 3. For complex Tasks with natural breakpoints where risk of wasted effort is high or unexpected complexity emerges, consider an autonomous pause - communicate progress, why pausing, and options. Simple Tasks run continuously.
-4. When all instructions complete → proceed immediately to §3.4 Task Validation. Do NOT pause between execution and validation.
+4. When all instructions complete → proceed immediately to §3.4 Task Validation.
 
 ### 3.4 Task Validation
 
@@ -156,7 +158,7 @@ Perform the following actions:
 1. Assess the failure - what specifically failed, what is the likely cause, is it correctable?
 2. Apply decision rules from §2.3 Iteration Standards.
 3. If continuing: correct the issue, re-execute affected portions, return to §3.4 Task Validation.
-4. If stopping: present situation to User explaining what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Await guidance.
+4. If stopping (stop condition reached per §2.3): first attempt a debug subagent for resolution with fresh context. If unresolved, present situation to User explaining what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Await guidance.
 5. Upon User guidance: if new direction given, integrate and return to appropriate procedure step; if stopping confirmed, apply §2.4 Failure Status Standards and proceed to §3.6 Task Completion.
 
 ### 3.6 Task Completion

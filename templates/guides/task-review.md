@@ -39,7 +39,7 @@ The goal is to extract information needed for the next review decision.
 
 **Flag interpretation.** Workers set flags based on scoped observations. The Manager interprets with full project awareness:
 
-- `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks.
+- `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done.
 - `compatibility_issues: true` - Worker observed conflicts with existing systems. Assess whether it indicates Implementation Plan, Specification, or Execution Standards issues.
 
 **Content review.** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened and inform the review outcome.
@@ -57,6 +57,8 @@ After reviewing a Task Memory Log, the Manager determines the review outcome.
 - *No issues* (false positives, nothing actionable) → **Proceed** to next Task(s).
 - *Follow-up needed* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction.
 - *Planning document modification needed* → Proceed to §3.4 Planning Document Modification.
+
+Within-authority actions (follow-ups for small contained issues, minor planning document corrections) are executed immediately during the review cycle. Present findings to the User for awareness after acting. Only changes exceeding Manager authority per §2.3 pause for User approval.
 
 ### 2.3 Planning Document Modification Standards
 
@@ -126,7 +128,7 @@ Perform the following actions:
    - *No issues* → **Proceed** to step 4.
    - *Follow-up needed* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. Continue to step 4.
    - *Planning document modification needed* → Proceed to §3.4 Planning Document Modification (returns to step 4 after completion).
-4. Update task tracking and agent tracking (when applicable) in Memory Root per §4.1 and §4.2: mark completed Tasks as Done, reassess waiting Tasks for newly ready status, update merge state.
+4. Update task tracking and agent tracking (when applicable) in Memory Root per §4.1 and §4.2: mark completed Tasks as Done, reassess waiting Tasks for newly ready status, update merge state. Execute pending merges per `{SKILL_PATH:apm-version-control}` §3.4 before reassessing readiness.
 5. Assess next action per §2.4 Parallel Coordination Standards:
    - If all Stage Tasks are Done and merged → collapse Stage per §4.1 and proceed to §3.5 Stage Summary Creation.
    - If Tasks are ready → continue to `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment in the same turn.
@@ -141,14 +143,14 @@ Perform the following actions:
 1. Capture triggering context: which Task Memory Log revealed the findings, what specific findings indicate modification, Task status and flags, post-investigation outcome.
 2. Apply §2.3 Planning Document Modification Standards: assess affected documents, analyze cascade implications, determine authority scope.
 3. If any modification requires User collaboration → present concisely: trigger, required change, authority exceeded rationale, options with trade-offs, recommendation. Integrate User guidance.
-4. Execute modifications following existing document patterns per §4.5 Planning Document Modification Guidelines. Verify consistency: reference integrity across documents, terminology consistency, scope alignment between Specifications and Implementation Plan.
+4. Execute modifications following existing document patterns per §4.5 Planning Document Modification Guidelines. Verify consistency: reference integrity across documents (same data descriptions match), terminology consistency, scope alignment between Specifications and Implementation Plan. When correcting Specifications, check whether the Implementation Plan references the same content and update accordingly.
 5. When modifying Implementation Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph per §4.5.
 6. Document: update Last Modification field in Specifications and/or Implementation Plan per §4.4 Modification Log Format.
 7. Return to §3.3 step 4 to update task tracking. Reassess readiness against the updated plan and proceed accordingly.
 
 ### 3.5 Stage Summary Creation
 
-Execute when all Tasks in a Stage are complete.
+Execute when all Tasks in a Stage are complete. A Task is complete when its final review outcome is Proceed with no outstanding follow-ups. Write the Stage Summary once, after all follow-up cycles finish.
 
 Perform the following actions:
 

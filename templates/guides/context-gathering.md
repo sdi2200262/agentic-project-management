@@ -31,6 +31,7 @@ Context gathering targets three planning documents, each consumed differently du
 - **Leverage existing material.** Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{AGENTS_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions.
 - **Explore on signal.** When User responses reference codebase elements or documentation, proactively explore before continuing questions. See §2.3 Exploration and Research Standards.
 - **Adapt to context.** Match language and depth to project size, type, and User expertise.
+- **Signals, not structure.** Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition - Stages, Tasks, and agent assignments wait for Work Breakdown.
 - **Iterate within rounds.** Fill gaps in the current round through follow-ups - do not defer to later rounds.
 
 ---
@@ -75,7 +76,7 @@ When User responses reference codebase elements, existing materials, or signal t
 
 **After exploration,** reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta - what's still missing given the new information. Do not ask about what exploration already revealed.
 
-**Scope assessment.** The key distinction is purpose: research that builds the Planner's understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, checking external systems, resolving technical unknowns. This includes research that informs the current question round, subsequent rounds, or planning document creation. Research that is itself a project deliverable belongs in the Implementation Plan. Only defer when research is a project deliverable or the User explicitly requests deferral.
+**Scope assessment.** The key distinction is purpose: research that builds the Planner's understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, checking external systems, resolving technical unknowns. This includes research that informs the current question round, subsequent rounds, or planning document creation. Research that is itself a project deliverable belongs in the Implementation Plan. Only defer when research is a project deliverable or the User explicitly requests deferral. When the project involves existing codebases that Workers will interact with, exploring those codebases to inform the planning documents is Context Gathering work - not a deliverable for the Implementation Plan.
 
 For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}. Structure the prompt with specific research questions, expected sources, and how findings will be used.
 
@@ -250,7 +251,7 @@ Prioritize clarity and completeness. Use diagrams for relationships, tables for 
 - **Adaptive formality.** Match the User's communication style and expertise level.
 - **Collaborative framing.** Frame questions as partnership - propose interpretations rather than interrogating.
 - **Facts vs preferences.** Distinguish User requirements (constraints) from preferences (guidance). Requirements are non-negotiable; preferences allow judgment during Work Breakdown.
-- **Extraction over elicitation.** Derive technical requirements and design decisions from what the User describes naturally - do not ask Users to produce technical specifications directly. Users articulate goals, constraints, and preferences in their own terms; the Planner translates these into planning document language during Work Breakdown. The conversation remains accessible; technical formalization happens in artifacts, not in the dialogue.
+- **Extraction over elicitation.** Derive technical requirements and design decisions from what the User describes naturally - do not ask Users to produce technical specifications directly. Technical formalization happens during Work Breakdown, not in the dialogue.
 
 ### 5.2 Common Mistakes
 
@@ -259,7 +260,7 @@ Prioritize clarity and completeness. Use diagrams for relationships, tables for 
 - **Skipping validation:** Accepting requirements without understanding success criteria.
 - **Ignoring existing materials:** Asking questions already answered in provided documentation.
 - **Deferring exploration:** Waiting to research when signals indicate relevant context exists now.
-- **Premature decomposition:** Producing Stage, Task, or agent assignment structures during Context Gathering. Context Gathering identifies work structure signals; decomposition happens in Work Breakdown.
+- **Premature decomposition:** Discussing or deciding decomposition structures (Stages, Tasks, agent assignments) during Context Gathering - these wait for Work Breakdown per §1.3 Guiding Principles.
 - **Technical elicitation:** Asking Users to define schemas, interfaces, or technical specifications in precise terms rather than gathering requirements conversationally and performing the technical formalization during Work Breakdown.
 
 ---

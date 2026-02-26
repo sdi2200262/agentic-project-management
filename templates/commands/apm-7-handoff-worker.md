@@ -26,7 +26,7 @@ Handoff is eligible at any point - between Tasks or mid-Task - as long as the ha
 
 **Mid-Task Handoff:** Task Bus still contains the original Task Prompt (clear-on-return hasn't fired). The handoff prompt references it directly: "Read the Task from `apm-task.md`, I completed steps 1-4, resume from step 5." Execution progress must be captured in detail.
 
-**No blocking scenarios.** The requirement shifts from "complete everything first" to "document everything comprehensively."
+**No blocking scenarios.** Eligibility is determined by documentation completeness, not workflow stage.
 
 ---
 

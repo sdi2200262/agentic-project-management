@@ -27,7 +27,7 @@ Handoff is eligible at any point as long as the handoff prompt captures comprehe
 - Pending dispatches and which Workers are active.
 - Any investigation or artifact modification in progress.
 
-**No blocking scenarios.** The Manager can Handoff mid-review, with outstanding dispatches, or while awaiting reports. The requirement shifts from "complete everything first" to "document everything comprehensively."
+**No blocking scenarios.** The Manager can Handoff mid-review, with outstanding dispatches, or while awaiting reports.
 
 ---
 
