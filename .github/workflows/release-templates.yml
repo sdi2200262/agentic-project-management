@@ -108,9 +108,10 @@ jobs:
           TAG: ${{ steps.version.outputs.tag }}
           VERSION: ${{ steps.version.outputs.version }}
           PRERELEASE: ${{ steps.version.outputs.prerelease }}
+          RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
         run: |
-          if [[ -n "${{ github.event.inputs.release_notes }}" ]]; then
-            NOTES="${{ github.event.inputs.release_notes }}"
+          if [[ -n "$RELEASE_NOTES" ]]; then
+            NOTES="$RELEASE_NOTES"
           else
             NOTES="APM Release $TAG"
           fi
