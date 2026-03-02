@@ -90,7 +90,6 @@ public
 
 # Temporary folders
 tmp/
-temp/
 
 # Editor directories and files
 .vscode/*
@@ -127,4 +126,4 @@ AGENTS.md
 CLAUDE.md
 
 # Test session analysis workspace (temporary copies for analysis)
-temp/
+test/
