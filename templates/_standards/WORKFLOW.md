@@ -18,6 +18,8 @@ APM is a multi-agent project management framework that coordinates agent session
 
 **Structured memory** - The Memory System captures project history in a hierarchical file structure that enables Handoff continuity and efficient progress tracking. The Manager operates on execution summaries rather than raw implementation detail, enabling coordination of multiple Workers without context overload.
 
+**Decision-point reasoning** - At procedural decision points - where agents assess, determine, or choose between alternatives - agents state brief reasoning grounded in current project conditions before acting on the conclusion. This makes decision logic visible and auditable, enabling the User to follow agent reasoning and redirect when needed.
+
 ---
 
 ## 2. Phases
@@ -259,7 +261,7 @@ The Worker executes Task instructions, validates results, iterates if needed, lo
 
 **Subagent usage** - When a Task includes subagent steps, the Worker spawns the relevant subagent. Findings are integrated into the Worker's context and reflected during execution.
 
-**Completion** - After execution, the Worker writes a Task Memory Log, clears the incoming bus file, writes a Task Report to the Report Bus, and directs the User to deliver the report - providing both the targeted command with agent identifier and the general command, since multiple Workers may finish concurrently.
+**Completion** - After execution, the Worker commits work to the assigned branch if VC is implemented, writes a Task Memory Log, clears the incoming bus file, writes a Task Report to the Report Bus, and directs the User to deliver the report - providing both the targeted command with agent identifier and the general command, since multiple Workers may finish concurrently.
 
 ### 6.5 Task Review
 

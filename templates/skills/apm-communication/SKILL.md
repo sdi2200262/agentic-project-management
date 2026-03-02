@@ -27,10 +27,9 @@ See §3 Communication Procedure for bus initialization, sending, receiving, and 
 **Bus directory:** `.apm/bus/` containing per-agent subdirectories with bus files for each communication direction.
 
 **Bus file types:**
-
-- **Task Bus** (`apm-task.md`) - Manager-to-Worker communication.
-- **Report Bus** (`apm-report.md`) - Worker-to-Manager communication.
-- **Handoff Bus** (`apm-handoff.md`) - outgoing-to-incoming agent communication.
+- *Task Bus* (`apm-task.md`) - Manager-to-Worker communication.
+- *Report Bus* (`apm-report.md`) - Worker-to-Manager communication.
+- *Handoff Bus* (`apm-handoff.md`) - outgoing-to-incoming agent communication.
 
 ### 1.4 Non-APM Agent Integration
 
@@ -54,8 +53,8 @@ When `/apm-4-check-tasks` or `/apm-5-check-reports` accept an `[agent-id]` argum
 
 ### 2.3 Edge Case Standards
 
-- **Empty bus:** When an agent reads a bus file and finds it empty, inform the User that no message is present and await direction.
-- **Wrong file referenced:** When a User references a bus file intended for a different agent, the receiving agent detects the mismatch per §2.1 and rejects it.
+- *Empty bus:* When an agent reads a bus file and finds it empty, inform the User that no message is present and await direction.
+- *Wrong file referenced:* When a User references a bus file intended for a different agent, the receiving agent detects the mismatch per §2.1 and rejects it.
 
 ### 2.4 Batch Delivery Standards
 
@@ -66,18 +65,16 @@ When dispatching multiple sequential Tasks to the same Worker, the Manager sends
 ## 3. Communication Procedure
 
 **Procedure:**
-
-1. Bus Initialization (Manager session 1 only)
-2. Task Prompt Delivery (Manager writes Task Prompt to Task Bus)
-3. Task Report Delivery (Worker writes Task Report to Report Bus)
-4. Receiving Protocol (read message from bus file)
-5. Clear-on-Return (clear incoming bus file before writing outgoing)
-6. Handoff Bus Protocol (write handoff prompt to Handoff Bus)
+1. Bus Initialization (Manager session 1 only).
+2. Task Prompt Delivery (Manager writes Task Prompt to Task Bus).
+3. Task Report Delivery (Worker writes Task Report to Report Bus).
+4. Receiving Protocol (read message from bus file).
+5. Clear-on-Return (clear incoming bus file before writing outgoing).
+6. Handoff Bus Protocol (write handoff prompt to Handoff Bus).
 
 ### 3.1 Bus Initialization
 
 Execute once during Manager session 1 initiation, after Memory Root initialization. Perform the following actions:
-
 1. Create the `.apm/bus/` directory.
 2. Read the Implementation Plan to identify all Workers defined in the Agents field.
 3. For each Worker, derive the agent slug (lowercase, hyphenated name) per §4.3 and create the agent directory:
@@ -92,7 +89,6 @@ Execute once during Manager session 1 initiation, after Memory Root initializati
 ### 3.2 Task Prompt Delivery
 
 Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Perform the following actions:
-
 1. Clear the incoming Report Bus per §3.5 Clear-on-Return. Skip on first Task Prompt when no report exists.
 2. Write the complete Task Prompt content to the Task Bus: `.apm/bus/<agent-slug>/apm-task.md`.
 3. Provide the User with specific action guidance for Worker `<agent-slug>`:
@@ -105,7 +101,6 @@ Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Pe
 ### 3.3 Task Report Delivery
 
 Execute when a Worker sends a Task Report to the Manager. Perform the following actions:
-
 1. Clear the incoming Task Bus per §3.5 Clear-on-Return.
 2. Write the complete Task Report content to the Report Bus: `.apm/bus/<agent-slug>/apm-report.md`.
 3. Direct the User to deliver the report to the Manager. Provide both:
@@ -116,7 +111,6 @@ Execute when a Worker sends a Task Report to the Manager. Perform the following 
 ### 3.4 Receiving Protocol
 
 Execute when a trigger command is invoked or a User references a bus file. Perform the following actions:
-
 1. Read the bus file (resolved from agent identity for trigger commands, or directly referenced by User).
 2. Validate that the file contains content. If empty → inform the User that no message is present.
 3. For Workers: validate bus identity per §2.1 Bus Identity Standards.
@@ -125,7 +119,6 @@ Execute when a trigger command is invoked or a User references a bus file. Perfo
 ### 3.5 Clear-on-Return
 
 Before writing to an outgoing bus file, clear the incoming bus file to prevent stale messages. Perform the following actions:
-
 1. Identify the incoming bus file:
    - For Manager: `.apm/bus/<agent-slug>/apm-report.md` (the Worker's Report Bus)
    - For Worker: `.apm/bus/<agent-slug>/apm-task.md` (the received Task Bus)
@@ -135,7 +128,6 @@ Before writing to an outgoing bus file, clear the incoming bus file to prevent s
 ### 3.6 Handoff Bus Protocol
 
 Execute when an agent performs a Handoff. Perform the following actions:
-
 1. Determine the Handoff Bus file:
    - Manager Handoff → `.apm/bus/manager/apm-handoff.md`
    - Worker Handoff → `.apm/bus/<agent-slug>/apm-handoff.md`
@@ -235,14 +227,13 @@ tasks:
 ```
 
 **Field Descriptions:**
-
 - `batch`: boolean, required. Always `true` for batch reports.
 - `batch_size`: number, required. Total Tasks in the batch.
 - `completed`: number, required. Tasks that were executed (excludes unstarted).
 - `stopped_early`: boolean, required. Whether the batch stopped before completing all Tasks.
 - `tasks`: list, required. Per-Task reference and outcome status.
 - `tasks[].task_ref`: string, required. Task reference in `<Stage>.<Task>` format.
-- `tasks[].status`: enum, required. Task outcome per `{GUIDE_PATH:task-logging}` §2.2, or `"Not started"` for unexecuted Tasks.
+- `tasks[].status`: enum, required. Task outcome per `{GUIDE_PATH:task-logging}` §2.3, or `"Not started"` for unexecuted Tasks.
 
 **Markdown Body Template:**
 
@@ -279,10 +270,10 @@ When directing Users to trigger bus actions, provide specific actionable guidanc
 
 ### 5.2 Common Mistakes
 
-- **Writing to the wrong bus file:** Manager writes to Task Bus, Worker writes to Report Bus.
-- **Forgetting to clear:** Always clear the incoming bus file before writing to the outgoing bus file per §3.5 Clear-on-Return.
-- **Referencing bus files by wrong path:** Use the exact path per §4.1 Directory Structure, derived from the agent slug.
-- **Not validating bus identity:** Workers must verify the agent directory matches their `agent_id` per §2.1 Bus Identity Standards.
+- *Writing to the wrong bus file:* Manager writes to Task Bus, Worker writes to Report Bus.
+- *Forgetting to clear:* Always clear the incoming bus file before writing to the outgoing bus file per §3.5 Clear-on-Return.
+- *Referencing bus files by wrong path:* Use the exact path per §4.1 Directory Structure, derived from the agent slug.
+- *Not validating bus identity:* Workers must verify the agent directory matches their `agent_id` per §2.1 Bus Identity Standards.
 
 ---
 

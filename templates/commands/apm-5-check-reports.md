@@ -10,7 +10,6 @@ This command signals the Manager to check Report Bus(es) for pending Task Report
 Accepts an optional `[agent-id]` argument. Without an argument, scans all Workers. With an argument, checks only that Worker's Report Bus.
 
 **Procedure:**
-
 1. Determine scan scope:
    - If `{ARGS}` provided → resolve agent-id per `{SKILL_PATH:apm-communication}` §2.2 Agent ID Resolution. Check only `.apm/bus/<agent-slug>/apm-report.md`. Skip to step 3.
    - If no argument → scan all Worker bus directories. Proceed to step 2.
