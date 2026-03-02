@@ -44,13 +44,13 @@ The Manager detects existing repository state during session 1 initialization. D
 
 ### 2.2 Branch Standards
 
-Every dispatch unit (single Task or batch) gets its own feature branch off the base branch. Naming convention is established during VC initialization based on existing project conventions or User preference. Branch names should be descriptive of the work being performed; for batches, the name reflects the batch scope. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
+Every dispatch unit (single Task or batch) gets its own feature branch off the base branch. Naming per §4.1 Branch Naming. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
 
 ### 2.3 Worktree Standards
 
 Worktrees are created only for parallel dispatch - when multiple Workers need physically separate directories simultaneously. For sequential dispatch, the Worker operates in the main working directory on their feature branch.
 
-**Placement:** `.apm/worktrees/<branch-slug>/` where `<branch-slug>` is derived from the branch name (e.g., replacing `/` with `-`). **Concurrency limit:** maximum 3-4 concurrent worktrees - disk usage scales linearly with working directory size. **Lifecycle:** short-lived - created before dispatch, removed promptly after merge. **Untracked files:** worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
+Directory layout per §4.2 Worktree Directory Layout. **Concurrency limit:** maximum 3-4 concurrent worktrees - disk usage scales linearly with working directory size. **Lifecycle:** short-lived - created before dispatch, removed promptly after merge. **Untracked files:** worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
 
 ### 2.4 Merge Standards
 
@@ -75,17 +75,15 @@ The Manager respects the User's existing repository setup. The base branch is wh
 ## 3. Version Control Procedure
 
 **Procedure:**
-
-1. VC Initialization (Manager session 1)
-2. Branch Operations (per dispatch)
-3. Worktree Operations (parallel dispatch only)
-4. Merge Coordination (after Task Review)
-5. Cleanup (after merge)
+1. VC Initialization (Manager session 1).
+2. Branch Operations (per dispatch).
+3. Worktree Operations (parallel dispatch only).
+4. Merge Coordination (after Task Review).
+5. Cleanup (after merge).
 
 ### 3.1 VC Initialization
 
 Execute once during Manager session 1 initiation, after memory system initialization. Perform the following actions:
-
 1. Check if git is initialized. If not, run `git init` and inform the User.
 2. Detect the current branch - record as base branch.
 3. Record the repository root path and `.apm/` path (they may differ).
@@ -98,7 +96,6 @@ Execute once during Manager session 1 initiation, after memory system initializa
 ### 3.2 Branch Operations
 
 Execute per dispatch unit when constructing Task Prompts. Perform the following actions:
-
 1. Create a feature branch off the base branch using the naming convention established during initialization.
 2. For sequential dispatch: the Worker operates in the main directory on this branch. Include the branch name in the Task Prompt.
 3. For parallel dispatch: proceed to §3.3 Worktree Operations instead.
@@ -107,7 +104,6 @@ Execute per dispatch unit when constructing Task Prompts. Perform the following 
 ### 3.3 Worktree Operations
 
 Execute for parallel dispatch when multiple Workers need isolated workspaces. Perform the following actions:
-
 1. Create a worktree with a new feature branch:
 
    ```
@@ -120,7 +116,6 @@ Execute for parallel dispatch when multiple Workers need isolated workspaces. Pe
 ### 3.4 Merge Coordination
 
 Execute after a successful Task Review when the review outcome is Proceed. Perform the following actions:
-
 1. Switch to the base branch: `git checkout <base-branch>`.
 2. Merge the completed feature branch: `git merge <branch-name>`.
 3. If conflicts arise, resolve per §2.4 Merge Standards.
@@ -132,7 +127,6 @@ Execute after a successful Task Review when the review outcome is Proceed. Perfo
 ### 3.5 Cleanup
 
 Execute after a successful merge. Perform the following actions:
-
 1. If a worktree exists for the merged branch: `git worktree remove .apm/worktrees/<branch-slug>`.
 2. Delete the merged feature branch: `git branch -d <branch-name>`.
 3. Verify clean state - no dangling worktrees or branches for completed Tasks.
@@ -143,7 +137,7 @@ Execute after a successful merge. Perform the following actions:
 
 ### 4.1 Branch Naming
 
-Branch naming follows the project's existing conventions or is established with the User during VC initialization. The Manager records the agreed convention in the Project Tracker Version Control table. Branch names should be descriptive; for batches, the name reflects the batch scope.
+Branch naming follows the project's existing conventions or is established with the User during VC initialization. The Manager records the agreed convention in the Project Tracker Version Control table. Branch names are descriptive; for batches, the name reflects the batch scope.
 
 ### 4.2 Worktree Directory Layout
 
@@ -179,12 +173,12 @@ The Manager records VC state in the Version Control table within the Project Tra
 
 ### 5.2 Common Mistakes
 
-- **Worker attempting to merge:** Workers commit to their branch. The Manager coordinates all merges.
-- **Dispatching before merging dependencies:** If Task B depends on Task A's output and A was on a separate branch, A must be merged before B's branch is created.
-- **Accumulating worktrees:** Worktrees are short-lived. Remove promptly after merge.
-- **Assuming base branch name:** Detect the current branch during initialization. Do not assume `main` or `master`.
-- **Forgetting VC state in Handoff:** Ensure the Project Tracker Version Control table is current before Handoff. Include active branches, worktrees, and pending merges in the Handoff Memory Log.
-- **Committing build artifacts:** Do not commit generated files (compiled binaries, object files, build output). Create or update `.gitignore` for build directories.
+- *Worker attempting to merge:* Workers commit to their branch. The Manager coordinates all merges.
+- *Dispatching before merging dependencies:* If Task B depends on Task A's output and A was on a separate branch, A must be merged before B's branch is created.
+- *Accumulating worktrees:* Worktrees are short-lived. Remove promptly after merge.
+- *Assuming base branch name:* Detect the current branch during initialization. Do not assume `main` or `master`.
+- *Forgetting VC state in Handoff:* Ensure the Project Tracker Version Control table is current before Handoff. Include active branches, worktrees, and pending merges in the Handoff Memory Log.
+- *Committing build artifacts:* Do not commit generated files (compiled binaries, object files, build output). Create or update `.gitignore` for build directories.
 
 ---
 
