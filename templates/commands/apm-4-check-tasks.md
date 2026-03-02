@@ -10,7 +10,6 @@ This command signals a Worker to check its Task Bus for pending Task Prompts. It
 Accepts an optional `[agent-id]` argument. Registered Workers ignore it (bus path already known). Unregistered Workers require it to resolve identity.
 
 **Procedure:**
-
 1. Determine registration state:
    - If registered → resolve bus path from registration. Skip to step 3.
    - If not registered → `{ARGS}` is required. If no argument provided, inform User that an agent-id is required. Proceed to step 2.

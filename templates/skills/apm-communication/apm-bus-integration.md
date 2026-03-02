@@ -5,12 +5,11 @@ This guide explains how non-APM agents can interact with an APM session through 
 ## Creating a Bus Directory
 
 To participate in bus communication, create your own bus directory in `.apm/bus/`:
-
 1. Choose a slug for your identity (lowercase, hyphenated name). Example: `external-reviewer`.
 2. Create your bus directory: `.apm/bus/<your-agent-slug>/`.
 3. Create the bus files you need:
    - To receive Tasks: `apm-task.md`.
-   - To send reports: `apm-report.md`.
+   - To send Task Reports: `apm-report.md`.
    - For Handoff (if applicable): `apm-handoff.md`.
 
 ## File Naming
@@ -35,7 +34,7 @@ Then write your message to the outgoing file.
 
 ## Message Format
 
-Bus files contain message content directly. No YAML frontmatter envelope is used. Write the message content (Task Report, response, etc.) as the entire file content.
+Bus files contain message content directly. No YAML frontmatter envelope is used. Write the message content (Task Report, etc.) as the entire file content.
 
 ## Communication Flow
 
@@ -43,5 +42,5 @@ Bus files contain message content directly. No YAML frontmatter envelope is used
 2. The User signals you to check your bus (via `/apm-4-check-tasks` or by referencing the file).
 3. Read the Task Bus file and process the message content.
 4. Clear the incoming Task Bus file.
-5. Write your response to the Report Bus file.
-6. Inform the User that a report is ready. The User runs `/apm-5-check-reports` in the Manager's session.
+5. Write the Task Report to the Report Bus file.
+6. Inform the User that the Task Report is ready. The User runs `/apm-5-check-reports` in the Manager's session.
