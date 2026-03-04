@@ -64,13 +64,13 @@ Perform the following actions:
 
 After each review, reassess readiness and continue to dispatch in the same turn when Tasks are ready - review and next dispatch happen in a single response without waiting for User input. Repeat until all Stages complete, User intervenes, or Handoff is needed.
 
-1. **Dispatch** - Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment (intelligent waiting, dispatch units, parallel opportunities), construct Task Prompt(s), and write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery. Direct User to the Worker session(s).
-2. **Await Report** - User runs `/apm-4-check-tasks` in Worker session(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this session.
-3. **Review and Continue** - Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Memory Log, determine review outcome, modify planning documents if needed, update task tracking. Then in the same turn:
-   - *Tasks ready* → continue to step 1.
-   - *No Tasks ready, Workers active* → communicate wait state per `{GUIDE_PATH:task-review}` §2.5 Parallel Coordination Standards and direct User to return the next report (return to step 2).
-   - *Follow-up needed* → construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction (return to step 2).
-   - *Stage complete* → stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation, then continue to step 1 for next Stage.
+1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment (intelligent waiting, dispatch units, parallel opportunities), construct Task Prompt(s), and write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery. Direct User to the Worker session(s).
+2. **Await Report:** User runs `/apm-4-check-tasks` in Worker session(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this session.
+3. **Review and Continue** → Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Memory Log, determine review outcome, modify planning documents if needed, update task tracking. Then in the same turn:
+   - *Tasks ready* → Continue to step 1.
+   - *No Tasks ready, Workers active* → Communicate wait state per `{GUIDE_PATH:task-review}` §2.5 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
+   - *Follow-up needed* → Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction (repeat step 2).
+   - *Stage complete* → Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation, then Continue to step 1 for next Stage.
 
 ---
 
@@ -111,9 +111,9 @@ Handoff is User-initiated when context window limits approach.
 
 Workers are defined in the Implementation Plan. Each Worker operates in a separate session scoped to their Task Prompts, accumulated working context, and `{AGENTS_FILE}`. Workers do not reference the Implementation Plan, Specifications, or Memory Root - Task Prompts are designed to be self-contained so Workers have no need to.
 
-**Initialization tracking.** Use agent tracking in the Project Tracker to determine which Workers have been initialized. When dispatching to an uninitialized Worker, direct the User to create a new session and run `/apm-3-initiate-worker <agent-id>` with the agent identifier from the Implementation Plan. For initialized Workers, direct to run `/apm-4-check-tasks` in the existing session. See `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery for full delivery guidance.
+**Initialization tracking:** Use agent tracking in the Project Tracker to determine which Workers have been initialized. When dispatching to an uninitialized Worker, direct the User to create a new session and run `/apm-3-initiate-worker <agent-id>` with the agent identifier from the Implementation Plan. For initialized Workers, direct to run `/apm-4-check-tasks` in the existing session. See `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery for full delivery guidance.
 
-**Handoff tracking.** Use agent tracking and cross-agent overrides in the Project Tracker to track which Workers have performed Handoffs and from which Stage. Previous-Stage same-agent dependencies become cross-agent - the incoming Worker lacks that working context.
+**Handoff tracking:** Use agent tracking and cross-agent overrides in the Project Tracker to track which Workers have performed Handoffs and from which Stage. Previous-Stage same-agent dependencies become cross-agent - the incoming Worker lacks that working context.
 
 ### 7.3 Communication Standards
 

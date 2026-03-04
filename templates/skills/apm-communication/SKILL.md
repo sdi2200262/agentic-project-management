@@ -27,9 +27,9 @@ See §3 Communication Procedure for bus initialization, sending, receiving, and 
 **Bus directory:** `.apm/bus/` containing per-agent subdirectories with bus files for each communication direction.
 
 **Bus file types:**
-- *Task Bus* (`apm-task.md`) - Manager-to-Worker communication.
-- *Report Bus* (`apm-report.md`) - Worker-to-Manager communication.
-- *Handoff Bus* (`apm-handoff.md`) - outgoing-to-incoming agent communication.
+- *Task Bus:* (`apm-task.md`) Manager-to-Worker communication.
+- *Report Bus:* (`apm-report.md`) Worker-to-Manager communication.
+- *Handoff Bus:* (`apm-handoff.md`) Outgoing-to-incoming agent communication.
 
 ### 1.4 Non-APM Agent Integration
 
@@ -86,6 +86,8 @@ Execute once during Manager session 1 initiation, after Memory Root initializati
    - Create directory: `.apm/bus/manager/`
    - Create empty Handoff Bus: `.apm/bus/manager/apm-handoff.md`
 
+Create all directories and bus files using `mkdir -p` and `touch` in a single terminal command rather than individual file creation calls.
+
 ### 3.2 Task Prompt Delivery
 
 Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Perform the following actions:
@@ -122,7 +124,7 @@ Before writing to an outgoing bus file, clear the incoming bus file to prevent s
 1. Identify the incoming bus file:
    - For Manager: `.apm/bus/<agent-slug>/apm-report.md` (the Worker's Report Bus)
    - For Worker: `.apm/bus/<agent-slug>/apm-task.md` (the received Task Bus)
-2. Truncate via terminal: `truncate -s 0 <bus-file-path>`
+2. Clear the file contents via terminal (e.g., `truncate -s 0` or shell redirection).
 3. Proceed to write the outgoing message.
 
 ### 3.6 Handoff Bus Protocol

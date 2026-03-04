@@ -19,13 +19,13 @@ The incoming Manager rebuilds working context from planning documents, guides, s
 
 Handoff is eligible at any point as long as the handoff prompt captures comprehensive current state. The requirement is documentation completeness, not workflow stage.
 
-**Handoff prompt comprehensiveness requires** the outgoing Manager to describe:
+**Handoff prompt comprehensiveness** → The outgoing Manager must describe:
 - Outstanding Tasks with enough detail for the incoming Manager to review reports properly - Task objectives, expected outputs, review criteria, relevant Specification sections.
 - Mid-review progress if a review is in progress.
 - Pending dispatches and which Workers are active.
 - Any investigation or artifact modification in progress.
 
-**No blocking scenarios.** The Manager can Handoff mid-review, with outstanding dispatches, or while awaiting reports.
+**No blocking scenarios:** The Manager can Handoff mid-review, with outstanding dispatches, or while awaiting reports.
 
 ---
 
@@ -89,11 +89,11 @@ timestamp: <Date/time of Handoff>
 
 **Body Sections:** `#` title with handoff number and session. Each section uses `##` heading.
 
-- *Tracked Worker Handoffs* - table of Workers that performed Handoffs: Agent ID, Handoff Stage, current-Stage logs loaded, notes. Include dependency context implication: previous-Stage same-agent dependencies become cross-agent.
-- *VC State* - active feature branches, worktrees, pending merges, base branch, any branch protection notes. Sourced from the Project Tracker. The incoming Manager reads this to resume VC coordination.
-- *User Preferences* - communication patterns, explanation preferences, feedback style.
-- *Coordination Insights* - decisions, rationale, or observations not captured elsewhere.
-- *Working Notes* - any other context that would be lost without explicit capture.
+- *Tracked Worker Handoffs:* Table of Workers that performed Handoffs: Agent ID, Handoff Stage, current-Stage logs loaded, notes. Include dependency context implication: previous-Stage same-agent dependencies become cross-agent.
+- *VC State:* Active feature branches, worktrees, pending merges, base branch, any branch protection notes. Sourced from the Project Tracker. The incoming Manager reads this to resume VC coordination.
+- *User Preferences:* Communication patterns, explanation preferences, feedback style.
+- *Coordination Insights:* Decisions, rationale, or observations not captured elsewhere.
+- *Working Notes:* Any other context that would be lost without explicit capture.
 
 ---
 

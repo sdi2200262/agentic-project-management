@@ -38,9 +38,9 @@ See §3 Version Control Procedure for initialization, branch operations, worktre
 
 The Manager detects existing repository state during session 1 initialization. Detection is passive - read what exists rather than imposing configuration.
 
-**Detection checks:** Is git initialized? (if not, initialize and inform User). What is the current branch? (becomes base branch unless User specifies otherwise). Which directory is the working repository? (check Specifications for workspace structure if multiple directories or repos exist). Where is `.apm/` relative to repository root? (both paths recorded for worktree path construction). Is `.apm/worktrees/` in `.gitignore`? (if not, add it).
+**Detection checks:** Which directory is the working repository? (check Specifications for workspace structure - navigate there before other checks). Is git initialized? (if not, initialize and inform User). What is the current branch? (becomes base branch unless User specifies otherwise). Where is `.apm/` relative to repository root? (both paths recorded for worktree path construction). Is `.apm/worktrees/` in `.gitignore`? (if `.apm/` is inside the repository, add it if absent; if `.apm/` is outside the repository, no `.gitignore` modification needed).
 
-**Stale state recovery.** If leftover worktrees or branches from a prior session exist (e.g., crash recovery), detect and clean during initialization - remove worktrees and delete orphaned feature branches.
+**Stale state recovery:** If leftover worktrees or branches from a prior session exist (e.g., crash recovery), detect and clean during initialization - remove worktrees and delete orphaned feature branches.
 
 ### 2.2 Branch Standards
 
@@ -58,17 +58,17 @@ Merge state is a dispatch prerequisite. The Manager merges completed feature bra
 
 **Merge timing:** after successful Task Review, merge the completed branch. Before dependent dispatch, merge if the dependent Task needs the completed Task's output. At Stage end, all current-Stage feature branches must be merged.
 
-**Merge execution.** The Manager performs merges autonomously. Clean merges require no User intervention.
+**Merge execution:** The Manager performs merges autonomously. Clean merges require no User intervention.
 
-**Conflict resolution.** Resolve using coordination-level context - knowledge of both Tasks' objectives, project design, and Specifications. For complex conflicts, spawn a debug subagent or escalate to the User.
+**Conflict resolution:** Resolve using coordination-level context - knowledge of both Tasks' objectives, project design, and Specifications. For complex conflicts, spawn a debug subagent or escalate to the User.
 
-**Branch protection adaptation.** If the base branch has protection rules preventing direct merges, adapt (create a PR, merge into an intermediate branch, or ask the User). Discovered reactively and noted in working notes.
+**Branch protection adaptation:** If the base branch has protection rules preventing direct merges, adapt (create a PR, merge into an intermediate branch, or ask the User). Discovered reactively and noted in working notes.
 
 ### 2.5 User Preference Standards
 
 The Manager respects the User's existing repository setup. The base branch is whatever the User is currently on - not assumed to be `main`. These conventions are detected from the project or established with the User during initialization, then noted in working notes: branch naming, commit conventions, protection rules, PR workflows.
 
-**Planning document awareness.** The Planner may have captured VC-relevant preferences during Context Gathering - commit conventions, branching strategies, PR workflows. These may appear in Execution Standards, Specifications, or Implementation Plan guidance fields. The Manager checks these during VC initialization and incorporates relevant content into working notes.
+**Planning document awareness:** The Planner may have captured VC-relevant preferences during Context Gathering - commit conventions, branching strategies, PR workflows. These may appear in Execution Standards, Specifications, or Implementation Plan guidance fields. The Manager checks these during VC initialization and incorporates relevant content into working notes.
 
 ---
 
@@ -84,14 +84,15 @@ The Manager respects the User's existing repository setup. The base branch is wh
 ### 3.1 VC Initialization
 
 Execute once during Manager session 1 initiation, after memory system initialization. Perform the following actions:
-1. Check if git is initialized. If not, run `git init` and inform the User.
-2. Detect the current branch - record as base branch.
-3. Record the repository root path and `.apm/` path (they may differ).
-4. Check planning documents (Execution Standards, Specifications, Implementation Plan) for VC-relevant guidance - commit conventions, branching strategies, PR workflows. Incorporate findings.
-5. Detect branch naming conventions from existing branches, planning document guidance, or establish with User. Record in the Project Tracker Version Control table.
-6. Check `.gitignore` for `.apm/worktrees/`. If absent, add it.
-7. Check for stale worktrees or orphaned feature branches from prior sessions. Clean if found.
-8. Write VC state to the Version Control table in the Project Tracker per §4.3 Project Tracker VC Entry Format.
+1. Check Specifications for workspace structure - identify which directory is the working repository. If Specifications specify a repository directory, navigate there before proceeding.
+2. Check if git is initialized in the working repository directory. If not, run `git init` and inform the User.
+3. Detect the current branch - record as base branch.
+4. Record the repository root path and `.apm/` path (they may differ).
+5. Check planning documents (Execution Standards, Specifications, Implementation Plan) for VC-relevant guidance - commit conventions, branching strategies, PR workflows. Incorporate findings.
+6. Detect branch naming conventions from existing branches, planning document guidance, or establish with User. Record in the Project Tracker Version Control table.
+7. Check `.gitignore` for `.apm/worktrees/`. If `.apm/` is inside the repository directory, add it if absent. If `.apm/` is outside the repository, `.gitignore` modification is not needed.
+8. Check for stale worktrees or orphaned feature branches from prior sessions. Clean if found.
+9. Write VC state to the Version Control table in the Project Tracker per §4.3 Project Tracker VC Entry Format.
 
 ### 3.2 Branch Operations
 
@@ -122,7 +123,7 @@ Execute after a successful Task Review when the review outcome is Proceed. Perfo
 4. If this merge unblocks dependent Tasks, note readiness for the next dispatch cycle.
 5. Update the Project Tracker Version Control table - remove the merged branch from active branches.
 
-**Stage-end merge sweep.** After all Tasks in a Stage complete and are reviewed, verify all Stage feature branches are merged. Merge any that were deferred.
+**Stage-end merge sweep:** After all Tasks in a Stage complete and are reviewed, verify all Stage feature branches are merged. Merge any that were deferred.
 
 ### 3.5 Cleanup
 

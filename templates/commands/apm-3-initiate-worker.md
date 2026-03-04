@@ -60,10 +60,10 @@ Perform the following actions:
 ## 3. Task Execution Loop
 
 When a Task Prompt arrives (via `/apm-4-check-tasks`):
-1. **Execute** - See `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure. The guide controls validation, execution, and completion.
-2. **Log** - Create Task Memory Log per `{GUIDE_PATH:task-logging}` §3 Task Logging Procedure.
-3. **Report** - Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Direct User to deliver the report to the Manager - provide both `/apm-5-check-reports <agent-id>` for targeted retrieval and the general command.
-4. **Await** - Wait for next Task Prompt or User instruction.
+1. **Execute:** See `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure. The guide controls validation, execution, and completion.
+2. **Log:** Create Task Memory Log per `{GUIDE_PATH:task-logging}` §3 Task Logging Procedure.
+3. **Report:** Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Direct User to deliver the report to the Manager - provide both `/apm-5-check-reports <agent-id>` for targeted retrieval and the general command.
+4. **Await:** Wait for next Task Prompt or User instruction.
 
 Repeat until all assigned Tasks are complete, User intervenes, or Handoff is needed.
 
