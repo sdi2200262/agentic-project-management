@@ -41,7 +41,7 @@ Workers operate with narrow context - only their Task Prompt and accumulated wor
 
 The Task Prompt's Context from Dependencies section reflects how much the Worker knows about the producer's work. Cross-agent dependencies provide detailed integration instructions - specific files to read, artifacts to review, interfaces to understand. Follow completely. Same-agent dependencies provide lighter guidance - recall anchors and file references as additional context.
 
-**Integration issues:** If integration reveals problems - missing files, broken references, conflicts with expectations - the Worker cannot proceed safely. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities → proceed with best interpretation and note uncertainty; missing expected files → pause for guidance. Default: do not execute on an unstable foundation.
+**Integration issues:** If integration reveals problems - missing files, broken references, conflicts with expectations - the Worker cannot proceed safely. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities → Proceed with best interpretation and note uncertainty; missing expected files → Pause for guidance. Default: do not execute on an unstable foundation.
 
 ### 2.3 Validation Standards
 
@@ -51,7 +51,7 @@ Validate automated checks first, then output verification, then user approval if
 - *Artifact:* Output existence and structural verification - files exist with required sections, configs valid, outputs match patterns. Worker verifies autonomously.
 - *User:* Human judgment required - design approval, content quality, architectural decisions. Worker pauses for User review. Always performed last.
 
-When validation requires resources outside the Worker's current environment (credentials, access tokens, configuration files, external platform access), request these from the User before proceeding.
+Validation criteria define the required verification level. When criteria require resources not currently available, request them from the User rather than substituting a lower verification level.
 
 **Default:** Fail-fast on autonomous validations to avoid wasted User reviews.
 
@@ -59,7 +59,7 @@ When validation requires resources outside the Worker's current environment (cre
 
 When validation fails, the Worker enters a correction loop - correct, re-execute, re-validate.
 
-**Continue when:** cause identified, fix within scope, measurable progress toward resolution. **Stop when:** same error 3+ times, fixes causing new issues, requires external resolution. A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve - perhaps a misunderstanding of requirements, a dependency issue, or a systemic problem. When a stop condition is reached: spawn a debug subagent to attempt resolution with fresh context. If the subagent cannot resolve or subagent tools are unavailable, apply §2.5 Failure Status Standards and proceed to §3.6 Task Completion.
+**Continue when:** cause identified, fix within scope, measurable progress toward resolution. **Stop when:** same error 3+ times, fixes causing new issues, requires external resolution, or iterative debugging consumes disproportionate context relative to the Task scope (5+ attempts on the same issue). A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve. When a stop condition is reached: spawn a debug subagent to attempt resolution with fresh context. If the subagent resolves the issue, apply findings and resume. If the subagent cannot resolve or subagent tools are unavailable, prefer reporting back with Partial status over exhausting context - the Manager can restructure or reassign. Apply §2.5 Failure Status Standards and proceed to §3.6 Task Completion.
 
 **Default:** When uncertain, pause and present situation to User with options.
 
@@ -82,13 +82,13 @@ Partial means "I need guidance to continue." Failed means "I tried everything wi
 
 ### 2.7 Execution Standards Updates
 
-When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, the Worker should pause before logging and present the observation to the User. Propose the specific update to `{AGENTS_FILE}` and request User approval before modifying. Workers do not have authority to modify Execution Standards unilaterally - the User decides whether the change is warranted.
+When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{AGENTS_FILE}` and request User approval before modifying. Execution Standards are not modified unilaterally - the User decides whether the change is warranted.
 
 ### 2.8 Batch Execution Standards
 
-When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus message), execute sequentially. Complete each fully (including validation and logging) before starting the next. Each Task gets its own Task Memory Log at its specified `memory_log_path`.
+When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus message), execute sequentially. Complete each Task fully - execute, validate, and write the Task Memory Log - before starting the next Task in the batch. Each Task gets its own Task Memory Log at its specified `memory_log_path`.
 
-**Fail-fast:** If any Task results in Blocked or Failed status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.5 Batch Report Envelope Format.
+**Fail-fast:** If any Task results in Blocked or Failed status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.5 Batch Report Envelope Format. Do not defer logging to the end of the batch.
 
 ---
 
@@ -110,7 +110,7 @@ Perform the following actions:
 3. Parse Task Prompt structure - YAML frontmatter fields and body sections.
 4. Identify execution parameters:
    - `has_dependencies: true` → context integration required
-   - Workspace section present → operate in specified workspace (worktree path or branch)
+   - Workspace section present → Operate in specified workspace (worktree path or branch)
    - Note validation approaches in Validation Criteria section
 5. If Workspace section present: switch to the specified branch or worktree path before starting work. Note the workspace in your Task Memory Log output section when complete.
 6. Assess Task scope: what the objective requires, how instructions sequence toward it, and what validation will verify.
@@ -132,29 +132,29 @@ Execute when `has_dependencies: true`. Must complete before Task execution begin
 Perform the following actions:
 1. Execute Detailed Instructions sequentially, applying Guidance and relevant Execution Standards from `{AGENTS_FILE}`, working toward the Objective.
 2. For each instruction step:
-   - Standard instruction → execute and continue.
-   - Explicit User action required → communicate what needs User action, why, and what options exist. Await completion, then resume.
-   - Subagent step → spawn the relevant subagent with a structured task description. If resolved, apply findings and resume. If unresolved, apply §2.5 Failure Status Standards. {WORKER_SUBAGENT_GUIDANCE}
+   - Standard instruction → Execute and continue.
+   - Explicit User action required → Communicate what needs User action, why, and what options exist. Await completion, then resume.
+   - Subagent step → Spawn the relevant subagent with a structured task description. If resolved, apply findings and resume. If unresolved, apply §2.5 Failure Status Standards. {WORKER_SUBAGENT_GUIDANCE}
 3. For complex Tasks with natural breakpoints where risk of wasted effort is high or unexpected complexity emerges, consider an autonomous pause - communicate progress, why pausing, and options. Simple Tasks run continuously.
-4. When all instructions complete → proceed immediately to §3.4 Task Validation.
+4. When all instructions complete → Proceed immediately to §3.4 Task Validation.
 
 ### 3.4 Task Validation
 
 Perform the following actions:
 1. Order validations per §2.3 Validation Standards: programmatic first, then artifact, then user.
-2. Execute programmatic validations. If any fail → proceed to §3.5 Correction Loop. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
-3. Execute artifact validations. If any fail → proceed to §3.5 Correction Loop.
-4. If user validation present: pause and present work for review. Communicate what was accomplished, what needs review, and where deliverables are located. If approved → proceed to §3.6 Task Completion with Success. If feedback provided → proceed to §3.5 Correction Loop with feedback integrated.
-5. If all validation passed → proceed to §3.6 Task Completion with Success.
+2. Execute programmatic validations. If any fail → Proceed to §3.5 Correction Loop. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
+3. Execute artifact validations. If any fail → Proceed to §3.5 Correction Loop.
+4. If user validation present: pause and present work for review. Communicate what was accomplished, what needs review, and where deliverables are located. If approved → Proceed to §3.6 Task Completion with Success. If feedback provided → Proceed to §3.5 Correction Loop with feedback integrated.
+5. If all validation passed → Proceed to §3.6 Task Completion with Success.
 
 ### 3.5 Correction Loop
 
 Invoked when validation fails. Perform the following actions:
 1. Assess the failure - what specifically failed, what is the likely cause, is it correctable?
 2. Apply decision rules from §2.4 Iteration Standards.
-3. If continuing: correct the issue, re-execute affected portions, return to §3.4 Task Validation.
+3. If continuing: correct the issue, re-execute affected portions, proceed to §3.4 Task Validation.
 4. If stopping (stop condition reached per §2.4 Iteration Standards): first attempt a debug subagent for resolution with fresh context. If unresolved, present situation to User explaining what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Await guidance.
-5. Upon User guidance: if new direction given, integrate and return to appropriate procedure step; if stopping confirmed, apply §2.5 Failure Status Standards and proceed to §3.6 Task Completion.
+5. Upon User guidance: if new direction given, integrate and proceed to the appropriate procedure step; if stopping confirmed, apply §2.5 Failure Status Standards and proceed to §3.6 Task Completion.
 
 ### 3.6 Task Completion
 
@@ -195,14 +195,15 @@ Perform the following actions:
 
 ### 5.3 Common Mistakes
 
-- Skipping context integration for cross-agent dependencies
-- Pausing too frequently on simple Tasks
-- Not pausing when genuinely stuck
-- Running user validation before programmatic/artifact
-- Vague failure descriptions
-- Not indicating incoming Worker status after Handoff
-- Proceeding with incomplete cross-agent integration
-- Conflating pause (temporary) with stop (ends correction loop)
+- *Skipping context integration:* Proceeding without reading cross-agent dependency context.
+- *Over-pausing:* Pausing too frequently on simple Tasks.
+- *Under-pausing:* Not pausing when genuinely stuck.
+- *Wrong validation order:* Running user validation before programmatic/artifact.
+- *Vague failures:* Failure descriptions without specifics on what failed and why.
+- *Missing Handoff indication:* Not indicating incoming Worker status after Handoff.
+- *Incomplete integration:* Proceeding with incomplete cross-agent integration.
+- *Pause vs stop confusion:* Conflating pause (temporary) with stop (ends correction loop).
+- *Task Prompt metadata in code:* Step numbers, Task IDs, and APM terminology do not belong in project source files, comments, or commit messages.
 
 ---
 

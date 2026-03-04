@@ -11,14 +11,14 @@ Accepts an optional `[agent-id]` argument. Registered Workers ignore it (bus pat
 
 **Procedure:**
 1. Determine registration state:
-   - If registered → resolve bus path from registration. Skip to step 3.
-   - If not registered → `{ARGS}` is required. If no argument provided, inform User that an agent-id is required. Proceed to step 2.
+   - If registered → Resolve bus path from registration. Skip to step 3.
+   - If not registered → `{ARGS}` is required. If no argument provided, inform User that an agent-id is required. Continue to step 2.
 
 2. Resolve agent-id (unregistered Workers only): resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §2.2 Agent ID Resolution. Register as the resolved agent per `{COMMAND_PATH:apm-3-initiate-worker}` §2.1 Registration.
 
 3. Read Task Bus at `.apm/bus/<agent-slug>/apm-task.md`.
-   - If empty → inform User that no pending Task is available. Await next invocation.
-   - If content present → proceed to step 4.
+   - If empty → Inform User that no pending Task is available. Await next invocation.
+   - If content present → Continue to step 4.
 
 4. Cross-validate `agent_id` field in YAML frontmatter against registered identity. Mismatch flags a routing error - inform User. Process the Task per `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure.
 

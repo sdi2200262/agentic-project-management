@@ -41,52 +41,51 @@ Section references and procedure labels are for your navigation - communicate wi
 
 The goal is to extract information needed for the next review decision.
 
-**Status interpretation.** Assess whether the status and flags are consistent with the log's body content - inconsistency is a common hallucination indicator. Status values: Success (objective achieved, all validation passed), Partial (some succeeded, some failed), Failed (most or all failed), Blocked (serious blockers outside Worker scope).
+**Status interpretation:** Assess whether the status and flags are consistent with the log's body content - inconsistency is a common hallucination indicator. Status values: Success (objective achieved, all validation passed), Partial (some succeeded, some failed), Failed (most or all failed), Blocked (serious blockers outside Worker scope).
 
-**Flag interpretation.** Workers set flags based on scoped observations. The Manager interprets with full project awareness:
-
+**Flag interpretation** → Workers set flags based on scoped observations. The Manager interprets with full project awareness:
 - `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done.
 - `compatibility_issues: true` - Worker observed conflicts with existing systems. Assess whether it indicates Implementation Plan, Specification, or Execution Standards issues.
 
-**Content review.** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened and inform the review outcome.
+**Content review:** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened and inform the review outcome.
 
 ### 2.3 Review Outcome Standards
 
 After reviewing a Task Memory Log, the Manager determines the review outcome.
 
-**Review the log.** If everything looks good - Success with no flags, log content supports the status - **Proceed**. If something needs attention - flags raised, non-Success status, or inconsistencies - **Investigate**.
+**Review the log:** If everything looks good - Success with no flags, log content supports the status - **Proceed**. If something needs attention - flags raised, non-Success status, or inconsistencies - **Investigate**.
 
-**Investigation scope.** Small scope (few files, straightforward verification, contained to this Task) - Manager self-investigates. Large scope (context-intensive debugging/research, systemic issues, impacts multiple Tasks) - spawn subagent. {MANAGER_SUBAGENT_GUIDANCE} Default: when scope is unclear, prefer subagent to preserve Manager context.
+**Investigation scope:** Small scope (few files, straightforward verification, contained to this Task) - Manager self-investigates. Large scope (context-intensive debugging/research, systemic issues, impacts multiple Tasks) - spawn subagent. {MANAGER_SUBAGENT_GUIDANCE} Default: when scope is unclear, prefer subagent to preserve Manager context.
 
 **Post-investigation outcome:**
 
-- *No issues* (false positives, nothing actionable) → **Proceed** to next Task(s).
-- *Follow-up needed* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction.
-- *Planning document modification needed* → Proceed to §3.4 Planning Document Modification.
+- *No issues:* (false positives, nothing actionable) → **Proceed** to next Task(s).
+- *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction.
+- *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification.
 
 Within-authority actions (follow-ups for small contained issues, minor planning document corrections) are executed immediately during the review cycle. Present findings to the User for awareness after acting. Only changes exceeding Manager authority per §2.4 pause for User approval.
 
 ### 2.4 Planning Document Modification Standards
 
-**Cascade reasoning.** Specifications and Implementation Plan have bidirectional influence - changes to one may require adjustments in the other. Execution Standards are generally isolated. When modifying any document, assess cascade implications before executing. Distinguish execution adjustments within design intent (no cascade) from design assumptions that proved incorrect (cascade warranted). When uncertain, assess the related document rather than assuming isolation.
+**Cascade reasoning:** Specifications and Implementation Plan have bidirectional influence - changes to one may require adjustments in the other. Execution Standards are generally isolated. When modifying any document, assess cascade implications before executing. Distinguish execution adjustments within design intent (no cascade) from design assumptions that proved incorrect (cascade warranted). When uncertain, assess the related document rather than assuming isolation.
 
-**Modification authority.** Small contained changes are Manager authority: single Task clarification or correction, adding a missing dependency, isolated Specification addition, minor Execution Standards adjustment. Significant changes require User collaboration: multiple Tasks affected, design direction change, scope expansion or reduction, new Stage or major restructure. Multiple small modifications that together represent significant change require User collaboration. When authority is unclear, prefer User collaboration.
+**Modification authority:** Small contained changes are Manager authority: single Task clarification or correction, adding a missing dependency, isolated Specification addition, minor Execution Standards adjustment. Significant changes require User collaboration: multiple Tasks affected, design direction change, scope expansion or reduction, new Stage or major restructure. Multiple small modifications that together represent significant change require User collaboration. When authority is unclear, prefer User collaboration.
 
 ### 2.5 Parallel Coordination Standards
 
 When multiple Workers are active simultaneously, the Manager coordinates asynchronously.
 
-**Immediate reassessment.** After processing each report, reassess readiness and continue to dispatch assessment in the same turn - review and next dispatch happen in a single response without waiting for User input. The only reasons to pause are when no Tasks are ready (wait state) or when a modification requires User collaboration per §2.3.
+**Immediate reassessment:** After processing each report, reassess readiness and continue to dispatch assessment in the same turn - review and next dispatch happen in a single response without waiting for User input. The only reasons to pause are when no Tasks are ready (wait state) or when a modification requires User collaboration per §2.3.
 
-**Async report handling.** Reports arrive in any order. Process each as it comes: complete the review, merge if needed, reassess readiness, dispatch newly ready Tasks. Each report-to-dispatch cycle is continuous.
+**Async report handling:** Reports arrive in any order. Process each as it comes: complete the review, merge if needed, reassess readiness, dispatch newly ready Tasks. Each report-to-dispatch cycle is continuous.
 
-**Merge coordination.** After successful review during parallel dispatch, merge the completed Task's branch per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination before dispatching dependent Tasks. At Stage end, perform a merge sweep per the VC skill.
+**Merge coordination:** After successful review during parallel dispatch, merge the completed Task's branch per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination before dispatching dependent Tasks. At Stage end, perform a merge sweep per the VC skill.
 
-**Wait state.** When no Tasks are ready but Workers are active, communicate what was processed, what is pending, and which report(s) the User should return next. Apply intelligent waiting per `{GUIDE_PATH:task-assignment}` §2.5 Dispatch Standards - if a pending report would unlock a better dispatch combination, recommend the User prioritize that report.
+**Wait state:** When no Tasks are ready but Workers are active, communicate what was processed, what is pending, and which report(s) the User should return next. Apply intelligent waiting per `{GUIDE_PATH:task-assignment}` §2.5 Dispatch Standards - if a pending report would unlock a better dispatch combination, recommend the User prioritize that report.
 
 ### 2.6 Stage Summary Standards
 
-Stage summaries compress Stage execution for future incoming Manager instances (after Handoff) and project retrospectives. **Include:** overall outcome, agents involved, notable findings, compatibility concerns. **Reference** individual Task Memory Log files for Task-specific detail. **Exclude:** implementation details, code specifics, routine operations. Keep summaries ≤30 lines.
+Stage summaries compress Stage execution for future incoming Manager instances (after Handoff) and project retrospectives. **Include:** overall outcome, agents involved, notable findings, compatibility concerns. **Reference:** Individual Task Memory Log files for Task-specific detail. **Exclude:** implementation details, code specifics, routine operations. Keep summaries ≤30 lines.
 
 ---
 
@@ -124,17 +123,17 @@ Perform the following actions:
 Execute after Task Memory Log review.
 
 Perform the following actions:
-1. Review findings from the Task Memory Log per §2.3 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If everything looks good → **Proceed** (skip to step 4). If something needs attention → continue to step 2.
-2. Determine investigation scope per §2.3: small scope → self-investigate, large scope → subagent.
+1. Review findings from the Task Memory Log per §2.3 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If everything looks good → **Proceed** (skip to step 4). If something needs attention → Continue to step 2.
+2. Determine investigation scope per §2.3: small scope → Self-investigate, large scope → subagent.
 3. Investigate and determine outcome per §2.3:
-   - *No issues* → **Proceed** to step 4.
-   - *Follow-up needed* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. Continue to step 4.
-   - *Planning document modification needed* → Proceed to §3.4 Planning Document Modification (returns to step 4 after completion).
+   - *No issues:* → **Proceed** to step 4.
+   - *Follow-up needed:* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. Continue to step 4.
+   - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification (returns to step 4 after completion).
 4. Update task tracking and agent tracking (when applicable) in Memory Root per §4.1 and §4.2: mark completed Tasks as Done, reassess waiting Tasks for newly ready status, update merge state. Execute pending merges per `{SKILL_PATH:apm-version-control}` §3.4 before reassessing readiness.
 5. Assess next action per §2.5 Parallel Coordination Standards:
-   - If all Stage Tasks are Done and merged → collapse Stage per §4.1 and proceed to §3.5 Stage Summary Creation.
-   - If Tasks are ready → continue to `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment in the same turn.
-   - If no Tasks are ready but Workers are active → communicate wait state per §2.5 Parallel Coordination Standards and direct User to return the next report.
+   - If all Stage Tasks are Done and merged → Collapse Stage per §4.1 and Proceed to §3.5 Stage Summary Creation.
+   - If Tasks are ready → Continue to `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment in the same turn.
+   - If no Tasks are ready but Workers are active → Communicate wait state per §2.5 Parallel Coordination Standards and direct User to return the next report.
 
 ### 3.4 Planning Document Modification
 
@@ -143,11 +142,11 @@ Execute when the review outcome identifies that planning documents need modifica
 Perform the following actions:
 1. Capture triggering context: which Task Memory Log revealed the findings, what specific findings indicate modification, Task status and flags, post-investigation outcome.
 2. Apply §2.4 Planning Document Modification Standards: assess affected documents, analyze cascade implications, determine authority scope.
-3. If any modification requires User collaboration → present concisely: trigger, required change, authority exceeded rationale, options with trade-offs, recommendation. Integrate User guidance.
+3. If any modification requires User collaboration → Present concisely: trigger, required change, authority exceeded rationale, options with trade-offs, recommendation. Integrate User guidance.
 4. Execute modifications following existing document patterns per §4.5 Planning Document Modification Guidelines. Verify consistency: reference integrity across documents (same data descriptions match), terminology consistency, scope alignment between Specifications and Implementation Plan. When correcting Specifications, check whether the Implementation Plan references the same content and update accordingly.
 5. When modifying Implementation Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph per §4.5.
 6. Document: update Last Modification field in Specifications and/or Implementation Plan per §4.4 Modification Log Format.
-7. Return to §3.3 step 4 to update task tracking. Reassess readiness against the updated plan and proceed accordingly.
+7. Proceed to §3.3 step 4 to update task tracking. Reassess readiness against the updated plan and proceed accordingly.
 
 ### 3.5 Stage Summary Creation
 
@@ -198,9 +197,9 @@ The task tracking section within Memory Root tracks task statuses, agent assignm
 - `Done | branch-name` - reviewed, branch pending merge.
 - `Done` (no branch) - merged.
 
-**Stage collapse.** When all Tasks in a Stage are Done with no branches remaining: replace all task rows with `**Stage N:** Complete`.
+**Stage collapse:** When all Tasks in a Stage are Done with no branches remaining: replace all task rows with `**Stage N:** Complete`.
 
-**One table row per task.** Task ID column guarantees edit tool uniqueness. Each status change is a single-row edit.
+**One table row per task:** Task ID column guarantees edit tool uniqueness. Each status change is a single-row edit.
 
 ### 4.2 Memory Root Format
 
@@ -210,9 +209,9 @@ The task tracking section within Memory Root tracks task statuses, agent assignm
 
 **`## Project Tracker`** contains three subsections:
 
-- *`### Task Tracking`* - per-Stage task state per §4.1 Task Tracking Format.
-- *`### Agent Tracking`* - records agent states and session numbers. Agents start as uninitialized and transition to Session N when initialized. The Manager updates agent tracking when agents are first dispatched to, and when Handoffs are detected. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
-- *`### Version Control`* - per `{SKILL_PATH:apm-version-control}` §4.3 Project Tracker VC Entry Format.
+- *`### Task Tracking`:* Per-Stage task state per §4.1 Task Tracking Format.
+- *`### Agent Tracking`:* Records agent states and session numbers. Agents start as uninitialized and transition to Session N when initialized. The Manager updates agent tracking when agents are first dispatched to, and when Handoffs are detected. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
+- *`### Version Control`:* Per `{SKILL_PATH:apm-version-control}` §4.3 Project Tracker VC Entry Format.
 
 **`## Working Notes`** - ephemeral coordination context maintained by Manager and User. Contents are inserted and removed as context evolves.
 
