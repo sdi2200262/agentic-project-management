@@ -25,7 +25,7 @@ Handoff is eligible at any point - between Tasks or mid-Task - as long as the ha
 
 **Mid-Task Handoff:** Task Bus still contains the original Task Prompt (clear-on-return hasn't fired). The handoff prompt references it directly: "Read the Task from `apm-task.md`, I completed steps 1-4, resume from step 5." Execution progress must be captured in detail.
 
-**No blocking scenarios.** Eligibility is determined by documentation completeness, not workflow stage.
+**No blocking scenarios:** Eligibility is determined by documentation completeness, not workflow stage.
 
 ---
 
@@ -89,10 +89,10 @@ timestamp: <Date/time of Handoff>
 
 **Body Sections:** `#` title with Agent ID and handoff number. Each section uses `##` heading.
 
-- *Session Summary* - Tasks completed count, current Stage, Stage progress for this Worker.
-- *Working Context* - Patterns, approaches, or context established during this session.
-- *Technical Notes* - Technical details or environment observations not captured in Task Memory Logs.
-- *Continuation Guidance* - Specific guidance for the incoming Worker about in-progress patterns or upcoming work.
+- *Session Summary:* Tasks completed count, current Stage, Stage progress for this Worker.
+- *Working Context:* Patterns, approaches, or context established during this session.
+- *Technical Notes:* Technical details or environment observations not captured in Task Memory Logs.
+- *Continuation Guidance:* Specific guidance for the incoming Worker about in-progress patterns or upcoming work.
 
 ---
 

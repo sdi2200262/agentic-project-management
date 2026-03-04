@@ -37,15 +37,15 @@ Section references and procedure labels are for your navigation - communicate wi
 
 Tasks may depend on outputs from previous Tasks. The context you include depends on the Worker's familiarity with the producer's work.
 
-**Same-agent dependencies.** The Worker previously completed the producer Task and has working familiarity. Provide light context - recall anchors, key file paths, brief reference to previous work. Detail increases with dependency complexity.
+**Same-agent dependencies:** The Worker previously completed the producer Task and has working familiarity. Provide light context - recall anchors, key file paths, brief reference to previous work. Detail increases with dependency complexity.
 
-**Cross-agent dependencies.** A different Worker completed the producer Task. The Worker has zero familiarity. Provide comprehensive context - explicit file reading instructions, output summaries, integration guidance. Assume nothing.
+**Cross-agent dependencies:** A different Worker completed the producer Task. The Worker has zero familiarity. Provide comprehensive context - explicit file reading instructions, output summaries, integration guidance. Assume nothing.
 
-**After Worker Handoff.** The incoming Worker only has current-Stage Task Memory Logs loaded. Current-Stage same-agent dependencies remain same-agent. Previous-Stage same-agent dependencies are reclassified as cross-agent because the incoming Worker lacks that working context. Check cross-agent overrides in the Project Tracker during dependency analysis to determine which Tasks have been reclassified.
+**After Worker Handoff:** The incoming Worker only has current-Stage Task Memory Logs loaded. Current-Stage same-agent dependencies remain same-agent. Previous-Stage same-agent dependencies are reclassified as cross-agent because the incoming Worker lacks that working context. Check cross-agent overrides in the Project Tracker during dependency analysis to determine which Tasks have been reclassified.
 
-**Dependency identification.** Check the Task's Dependencies field in the Implementation Plan. Cross-agent dependencies are bolded. "None" indicates no dependencies.
+**Dependency identification:** Check the Task's Dependencies field in the Implementation Plan. Cross-agent dependencies are bolded. "None" indicates no dependencies.
 
-**Chain reasoning.** Dependencies may have their own dependencies. Trace upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Stop tracing when an intermediate node fully abstracts what came before. When uncertain, include rather than risk missing critical context.
+**Chain reasoning:** Dependencies may have their own dependencies. Trace upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Stop tracing when an intermediate node fully abstracts what came before. When uncertain, include rather than risk missing critical context.
 
 ### 2.3 Specification Extraction Standards
 
@@ -57,27 +57,27 @@ Task Prompts must be self-contained. The Manager extracts relevant Specification
 
 Follow-up Task Prompts occur when the review outcome determines retry after investigation. The Manager arrives with: original Task Memory Log findings, investigation results, understanding of what went wrong, and potentially modified planning documents.
 
-**Content principle.** The follow-up is a new prompt - Objective, Instructions, Output, and Validation are refined based on what went wrong. Do not copy the previous prompt.
+**Content principle:** The follow-up is a new prompt - Objective, Instructions, Output, and Validation are refined based on what went wrong. Do not copy the previous prompt.
 
-**Log path continuity.** Use the same `memory_log_path` as the original. The Worker overwrites the previous log. The Manager captures iteration patterns in Stage summaries when relevant.
+**Log path continuity:** Use the same `memory_log_path` as the original. The Worker overwrites the previous log. The Manager captures iteration patterns in Stage summaries when relevant.
 
 ### 2.5 Dispatch Standards
 
 Before constructing individual Task Prompts, the Manager assesses dispatch opportunities across ready Tasks.
 
-**Task readiness.** A Task is ready when all its dependencies are complete. Read the task tracking section in Memory Root for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
+**Task readiness:** A Task is ready when all its dependencies are complete. Read the task tracking section in Memory Root for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
 
-**Dispatch modes.** Assess all ready Tasks, group by Worker, and form dispatch units:
+**Dispatch modes** → Assess all ready Tasks, group by Worker, and form dispatch units:
 
 - *Batch:* multiple ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks, no external Tasks depend on intermediates) or are an independent group (no dependencies between them, all ready simultaneously). Soft guidance: 3-5 Tasks per batch.
 - *Single:* one ready Task for a Worker.
 - *Parallel:* two or more dispatch units (any mix) with no unresolved cross-agent dependencies among them, dispatched simultaneously. Requires version control workspace isolation.
 
-**Parallel prerequisites.** Before first parallel dispatch, initialize version control per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization. Recommend configuring Worker permissions to minimize approval wait times. If the User declines VC setup, fall back to sequential dispatch.
+**Parallel prerequisites:** Before first parallel dispatch, initialize version control per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization. Recommend configuring Worker permissions to minimize approval wait times. If the User declines VC setup, fall back to sequential dispatch.
 
-**Intelligent waiting.** Before dispatching a ready unit, check whether a pending report would unlock Tasks that combine well with the current unit. If it's the only outstanding report, waiting costs little. If multiple reports are pending or no plausible combination exists, dispatch immediately.
+**Intelligent waiting:** Before dispatching a ready unit, check whether a pending report would unlock Tasks that combine well with the current unit. If it's the only outstanding report, waiting costs little. If multiple reports are pending or no plausible combination exists, dispatch immediately.
 
-**Wait state.** When no Tasks are ready but Workers are still active, communicate what was processed, what is pending, and what the User should do next.
+**Wait state:** When no Tasks are ready but Workers are still active, communicate what was processed, what is pending, and what the User should do next.
 
 ---
 
@@ -166,17 +166,17 @@ has_dependencies: true | false
 
 **Prompt Body Sections:** Title with `#` using Task ID and title. Each section uses `##` heading.
 
-- *Task Reference* - Task ID and assigned agent.
-- *Context from Dependencies* - included when `has_dependencies: true`. Format depends on dependency type per §2.2 Dependency Context Standards:
+- *Task Reference:* Task ID and assigned agent.
+- *Context from Dependencies:* Included when `has_dependencies: true`. Format depends on dependency type per §2.2 Dependency Context Standards:
   - *Same-agent:* "Building on your previous work:" intro → `**From Task <N.M>:**` with key outputs and recall points → `**Integration Approach:**` with brief guidance.
   - *Cross-agent:* "This Task depends on work completed by [Producer Agent]:" intro → `**Integration Steps:**` numbered file reading instructions → `**Producer Output Summary:**` key features, files, interfaces, constraints → `**Upstream Context:**` for relevant ancestors.
-- *Objective* - single-sentence Task goal, optionally enhanced with coordination-level context.
-- *Detailed Instructions* - Implementation Plan steps transformed into actionable instructions with integrated specification content and guidance.
-- *Workspace* - Branch name for sequential dispatch, worktree path for parallel dispatch per `{SKILL_PATH:apm-version-control}`. Worker operates in the specified workspace, commits there, and notes it in the Task Memory Log. Workers do not merge.
-- *Expected Output* - deliverables from Implementation Plan Output field.
-- *Validation Criteria* - from Implementation Plan Validation field with validation approaches (programmatic, artifact, user).
-- *Task Logging* - path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Memory Log Procedure.
-- *Task Report* - instruction to output a Task Report for User to return to Manager.
+- *Objective:* Single-sentence Task goal, optionally enhanced with coordination-level context.
+- *Detailed Instructions:* Implementation Plan steps transformed into actionable instructions with integrated specification content and guidance.
+- *Workspace:* Branch name for sequential dispatch, worktree path for parallel dispatch per `{SKILL_PATH:apm-version-control}`. Worker operates in the specified workspace, commits there, and notes it in the Task Memory Log. Workers do not merge.
+- *Expected Output:* Deliverables from Implementation Plan Output field.
+- *Validation Criteria:* From Implementation Plan Validation field with validation approaches (programmatic, artifact, user).
+- *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Memory Log Procedure.
+- *Task Report:* Instruction to output a Task Report for User to return to Manager.
 
 ### 4.2 Follow-Up Format
 
