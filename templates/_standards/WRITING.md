@@ -1,6 +1,6 @@
 # APM Writing Standards
 
-This document defines how to write content within APM skills and commands. It establishes tone, instruction patterns, output guidance, and terminology usage rules.
+This document defines how to write content within APM skills and commands. It establishes tone, instruction patterns, output guidance, and terminology usage rules. This is a development-time specification: agents do not read this file during runtime. Every rule here takes effect only through the templates that implement it — template authors embed these rules contextually in commands, guides, and skills.
 
 All terms used in this document are defined in `TERMINOLOGY.md`. All structural patterns follow `STRUCTURE.md`.
 
@@ -14,7 +14,7 @@ All terms used in this document are defined in `TERMINOLOGY.md`. All structural 
 
 ### 1.2 Enforcement Tiers
 
-**Hard requirements (must enforce):** Token efficiency and condensation practices. Markdown formatting rules. Direct actionable instruction style - imperative mood, no hedging. Output and schema fidelity. Terminology capitalization - only terms in `TERMINOLOGY.md` are capitalized. De-duplication - one primary explanation per concept.
+**Hard requirements (must enforce):** Token efficiency and condensation practices. Markdown formatting rules. Direct actionable instruction style - imperative mood, no hedging. Output and schema fidelity. Formal terminology - `TERMINOLOGY.md` defines the only formal APM terms; all other language is natural. See §6 Terminology Usage. De-duplication - one primary explanation per concept.
 
 **Soft guidance (reasoning-oriented):** Phrasing style preferences. Narrative flow suggestions. Optional presentation patterns (tables vs prose, list vs paragraph).
 
@@ -124,9 +124,13 @@ Decision rules define criteria for choosing between outcomes. Each condition map
 
 ## 4. Output Guidance
 
-Agent outputs to Users use natural language adapted to the situation. Internal terminology from skills and commands is not exposed - this includes section references (§N.M), procedure names, and structural labels, which agents translate into natural language for Users. Agents use contextually appropriate phrasing - there are no rigid templates. When pausing, communicating status, requesting input, or completing a procedure, adapt the phrasing to what the situation requires while conveying the necessary information (what is done, what needs attention, what options exist, what happens next).
+Agent communication standards - including agent-to-user communication, visible reasoning, and terminology boundaries - are defined in the communication skill and implemented through guide and command instructions. This section governs how template authors write those instructions.
 
-**Reasoning templates.** When procedures require visible reasoning in chat (round summaries, analysis presentations, checkpoint communications), guides provide light templates - named aspects to cover and general shape. These make reasoning auditable and expectable while allowing the agent to adapt presentation to the situation.
+**Reasoning frames.** When writing reasoning frames (labeled aspect lists), use italic labels per `STRUCTURE.md` §5.1. These are guided reasoning - intentionally visible to Users. The label text should describe the analytical aspect, not use framework vocabulary.
+
+**Procedure transitions.** When writing procedure transitions, use natural sequential flow ("Continue to the next step") rather than section-targeted navigation with procedure names ("Proceed to §3.2 Implementation Plan Analysis") where possible. Include §N.M references only where non-sequential jumps require them.
+
+**Terminology distinction.** `TERMINOLOGY.md` terms are the only formal APM terms. All other labels — procedural step names, decision categories, section names — are natural language. Standard English capitalization applies in context but confers no formal status. Formatting (bold/italic) establishes hierarchy within content per §7.1, not term formality.
 
 ---
 
@@ -136,7 +140,7 @@ References use "See" or "per" exclusively. References appear inline within prose
 
 **Same-Document:** "See §N.M Section Title" or "per §N.M Section Title." Example: "See §2.1 Context Integration Standards."
 
-**Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title." Example: "Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery."
+**Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title." Example: "Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery."
 
 **Cross-Guide:** "See `{GUIDE_PATH:guide-name}` §N.M Section Title." Example: "See `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure."
 
@@ -148,7 +152,9 @@ References use "See" or "per" exclusively. References appear inline within prose
 
 ## 6. Terminology Usage
 
-Terms are used exactly as defined in `TERMINOLOGY.md`. Synonyms are not used. Only formal terms listed in `TERMINOLOGY.md` are capitalized; all other words are written in lowercase. Defined concepts (same-agent/cross-agent dependencies, dispatch modes) are explained clearly but written in lowercase. Singular form is used when referring to the concept; plural when referring to multiple instances.
+Terms are used exactly as defined in `TERMINOLOGY.md`. Synonyms are not used. `TERMINOLOGY.md` terms are always capitalized and carry formal defined meaning — they are the APM vocabulary. All other language is natural: standard English capitalization applies (headings, procedural labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language.
+
+Defined concepts (same-agent/cross-agent dependencies, dispatch modes) are explained through their implications in natural prose — not elevated through naming conventions. Singular form is used when referring to the concept; plural when referring to multiple instances.
 
 ---
 
@@ -221,17 +227,6 @@ Only hyphens (`-`) are used for inline separation. Em-dashes (`—`) and en-dash
 Fenced code blocks (triple backticks) are used for output templates, file structure examples, YAML schemas, markdown body templates, and multi-line code. Inline backticks are used for file paths, field names, values, and section references.
 
 When code blocks appear inside code blocks (such as examples showing template usage), indent the inner code block by 4 spaces. The outer block uses triple backticks; the indented inner block uses triple backticks at the indented level.
-
-**Example:**
-
-```text
-Example output template:
-
-    ```yaml
-    task_id: string
-    status: string
-    ```
-```
 
 ---
 

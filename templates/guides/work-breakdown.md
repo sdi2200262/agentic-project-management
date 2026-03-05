@@ -8,7 +8,7 @@ This guide defines the process for Work Breakdown, which transforms gathered con
 
 ### 1.1 How to Use This Guide
 
-See §3 Work Breakdown Procedure - execute sequentially. See §2 Operational Standards for decomposition decisions, specification reasoning, plan assessment, and standards extraction. **Present reasoning in chat** before file output - the User sees your thinking and can redirect before artifacts are written. Section references (§N.M) are for your procedural navigation - communicate with the User in natural language.
+See §3 Work Breakdown Procedure - execute sequentially. See §2 Operational Standards for decomposition decisions, specification reasoning, plan assessment, and standards extraction. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
 
 ### 1.2 Objectives
 
@@ -37,17 +37,7 @@ Decomposition granularity adapts to project size and complexity. Stages, Tasks, 
 
 ## 2. Operational Standards
 
-### 2.1 Visible Reasoning
-
-Work Breakdown uses visible reasoning (chain-of-thought): present your thinking in chat before writing to files. This makes decomposition decisions visible and auditable, and gives the User opportunity to redirect.
-
-**Chat reasoning:** Free-form. Explain your thinking about domain boundaries, Task decomposition, dependency rationale, and specification decisions. The goal is that the User can follow your logic and agree or disagree before you write files.
-
-**Reasoning frame** → While the format is flexible, cover these aspects when they apply: what you're analyzing and why, key decisions and reasoning, how Context Gathering findings inform each decision, dependencies or risks worth noting.
-
-**File output:** Uses the structural templates per §4 Structural Specifications. Chat reasoning transforms into structured file entries - the reasoning in chat is the thinking, the file entry is the result.
-
-### 2.2 Decomposition Principles
+### 2.1 Decomposition Principles
 
 These principles apply across all decomposition levels. Apply with judgment adapted to project scope per §1.4 Scope Adaptation.
 
@@ -63,13 +53,13 @@ These principles apply across all decomposition levels. Apply with judgment adap
 
 **Validation criteria:** Each Task specifies validation: programmatic (automated checks), artifact (output existence and structure), or user (human judgment). Programmatic and artifact allow autonomous iteration; user validation requires pausing. Most Tasks combine multiple approaches. Validation criteria are Worker-scoped - no references to other Stages, Tasks, or coordination-level gates. Workers validate their own deliverables; Stage coordination is the Manager's concern.
 
-### 2.3 Specifications Standards
+### 2.2 Specifications Standards
 
 Specifications define what is being built - design decisions, constraints, and requirements that shape the deliverable. They form the foundation the Implementation Plan builds on: every design decision captured here has corresponding Tasks in the Plan that implement it.
 
 The test for each candidate: would changing this decision reshape the project's design, or only affect a single scope of work? Project-shaping decisions - choices where alternatives existed, affecting what is being built across the project - belong here. Single-scope details and universal execution patterns do not. Within a design topic, capture the decision - not its implementation mechanics. If changing a detail does not change the decision, the detail belongs in Task Guidance. When User documents already authoritatively define requirements, reference them - Specifications capture design decisions layered on existing requirements, not restate them. When the workspace contains multiple repositories or codebases, capture workspace structure in Specifications - which repository is the working target, which are read-only references, and where Workers operate. Structure Specifications so design decisions can be extracted per-Task - the Manager distills relevant content into individual Task Prompts.
 
-### 2.4 Implementation Plan Standards
+### 2.3 Implementation Plan Standards
 
 The Implementation Plan defines how work is organized - Stages, Tasks, agent assignments, dependencies, and validation criteria. The Manager uses it for dispatch decisions, dependency analysis, coordination, and progress tracking.
 
@@ -79,19 +69,19 @@ The Implementation Plan defines how work is organized - Stages, Tasks, agent ass
 
 Guidance may reference authoritative sources by path - the Manager reads those sources and integrates relevant content into the Task Prompt. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Specification content and Guidance.
 
-**Dispatch-aware structuring** → When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities:
+**Dispatch-aware structuring** → When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities. Three dispatch modes exist per `{GUIDE_PATH:task-assignment}` §2.4 Dispatch Standards:
 
-- *Batch candidates* → same-agent Task groups dispatchable together. Two patterns qualify: sequential same-agent chains where each Task depends only on the previous, or multiple independent same-agent Tasks with no same-agent dependencies that become ready simultaneously.
-- *Parallel candidates:* independent Tasks ready for dispatch assigned to different agents with no unresolved cross-agent dependencies among them, dispatchable simultaneously.
-- *Single dispatch:* a lone ready Task with no batch or parallel partners.
+- *Batch candidates:* same-agent Task groups dispatchable together (sequential chains or independent groups).
+- *Parallel candidates:* independent dispatch units for different agents, dispatchable simultaneously.
+- *Single dispatch:* a lone Ready Task with no batch or parallel partners.
 
 All three patterns are valid. Structure the plan to create natural opportunities across all of them rather than forcing one pattern.
 
-### 2.5 `{AGENTS_FILE}` Standards
+### 2.4 `{AGENTS_FILE}` Standards
 
 `{AGENTS_FILE}` defines how work is performed - universal execution patterns across all Tasks. Workers access it directly during Task execution.
 
-**Two-gate test** → First: does the candidate describe how work is performed, or what is being built? Output formats, response strings, data schemas, and interface contracts define what is being built - they belong in Specifications even when multiple Workers need them. Only execution patterns proceed to the second gate. Second: does the pattern apply to every Worker in the project regardless of domain? All Workers read the same file - if the pattern only applies to one domain, it does not belong here.
+The test for each candidate: does it describe how work is performed, or what is being built? Output formats, response strings, data schemas, and interface contracts define what is being built - they belong in Specifications even when multiple Workers need them. For candidates that pass as execution patterns: does the pattern apply to every Worker regardless of domain? All Workers read the same file - if the pattern only applies to one domain, it does not belong here.
 
 When uncertain whether something qualifies, prefer placing it in Task guidance - easier to promote later than to demote.
 
@@ -101,16 +91,16 @@ When uncertain whether something qualifies, prefer placing it in Task guidance -
 
 ## 3. Work Breakdown Procedure
 
-Complete each section before proceeding to the next. Present reasoning in chat before writing files per §2.1 Visible Reasoning.
+Complete each section before proceeding to the next. Present reasoning in chat before writing files - explain your thinking about domain boundaries, Task decomposition, dependency rationale, and specification decisions so the User can follow your logic and redirect before artifacts are written. Cover these aspects when they apply: what you are analyzing and why, key decisions and reasoning, how Context Gathering findings inform each decision, dependencies or risks worth noting. Chat reasoning transforms into structured file entries per §4 Structural Specifications.
 
 **Procedure:**
-1. Specifications Analysis → set header, write Specifications, **checkpoint: User approval**.
-2. Implementation Plan Analysis → set header, domain analysis, stage analysis, per-stage Task breakdown, plan review, **checkpoint: User approval**.
-3. Standards Analysis → write Execution Standards, **checkpoint: User approval**, procedure completion.
+1. Analyze requirements and write Specifications → set header, write Specifications, pause for User approval.
+2. Organize work into the Implementation Plan → set header, domain analysis, stage analysis, per-stage Task breakdown, plan review, pause for User approval.
+3. Define Execution Standards → write Execution Standards, pause for User approval, procedure completion.
 
 ### 3.1 Specifications Analysis
 
-Perform the following actions per §2.3 Specifications Standards.
+Perform the following actions per §2.2 Specifications Standards.
 
 **Specifications Header:**
 1. Replace `<Project Name>` in `.apm/Specifications.md` with appropriate project name.
@@ -121,11 +111,11 @@ Perform the following actions per §2.3 Specifications Standards.
 1. Analyze design decisions from gathered context. Present reasoning in chat:
    - *Design decisions:* each explicit choice and implicit constraint embedded in requirements: what was decided, what alternatives existed, why this direction. Surface assumptions stated as facts that represent actual decisions.
    - *Source documents:* which requirements already have authoritative definitions in User documents; reference rather than duplicate.
-   - *Boundary calls:* for each candidate, determine its primary location: Specifications (project-level design decisions), Task guidance (task-scoped details, validation approach, single-domain constraints), or Execution Standards (universal execution patterns). Each item belongs in one primary location. Items are placed during the Implementation Plan and Standards Analysis phases.
+   - *Boundary calls:* for each candidate, determine its primary location: Specifications (project-level design decisions), Task guidance (task-scoped details, validation approach, single-domain constraints), or Execution Standards (universal execution patterns). Each item belongs in one primary location. Items are placed during the Implementation Plan and Execution Standards Analysis phases.
    - *Decision relationships:* decisions that cascade, constrain, or cluster naturally together.
    - *Structure rationale:* how to organize decisions so the Manager can extract relevant content per Task.
 2. Add specification content per §4.1 Specifications Format. Let structure follow the decisions identified.
-3. *Specifications checkpoint* → Pause for User review:
+3. Pause for User review:
    - State Specifications are complete and the artifact is created.
    - Ask User to review for accuracy.
    - If modifications needed → Apply and repeat step 3.
@@ -133,58 +123,58 @@ Perform the following actions per §2.3 Specifications Standards.
 
 ### 3.2 Implementation Plan Analysis
 
-Perform the following actions per §2.4 Implementation Plan Standards.
+Perform the following actions per §2.3 Implementation Plan Standards.
 
 **Implementation Plan Header:**
 1. Replace `<Project Name>` in `.apm/Implementation_Plan.md` with appropriate project name (same as Specifications).
 2. Fill **Last Modification** field: "Plan creation by the Planner."
 
-**Domain Analysis** → Perform the following actions per §2.2 Decomposition Principles:
+**Domain Analysis** → Perform the following actions per §2.1 Decomposition Principles:
 1. Present domain organization reasoning in chat, grounded in the Specifications approved above:
    - *Domains identified:* logical work domains and their scope.
    - *Separation rationale:* why domains are separated or combined.
    - *Agent mapping:* how domains map to Workers with proposed names and responsibilities.
 2. Update Implementation Plan header Agents field.
 
-**Stage Analysis** → Identify all Stages and their Tasks upfront per §2.2 Decomposition Principles - see **Stage Cycles** for detailed Task breakdown:
+**Stage Analysis** → Identify all Stages and their Tasks upfront per §2.1 Decomposition Principles - see **Stage Cycles** for detailed Task breakdown:
 1. Present stage structure reasoning in chat:
    - *Stage objectives:* what each Stage delivers and its boundary rationale.
    - *Task overview:* identified Tasks per Stage with brief descriptions.
 2. Update Implementation Plan header Stages field.
 
-**Stage Cycles** → For each Stage per **Stage Analysis**, complete detailed Task breakdown. Execute in Stage order per §2.2 Decomposition Principles:
+**Stage Cycles** → For each Stage per **Stage Analysis**, complete detailed Task breakdown. Execute in Stage order per §2.1 Decomposition Principles:
 1. State context for the current Stage: User requirements and constraints influencing it.
 2. For each Task, present reasoning in chat:
    - *Agent assignment:* which agent and why.
    - *Task Scope:* what is the Task's scope?
    - *Task Guidance:* what implementation context does this Worker need? Domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as task-scoped per §3.1 Specifications Analysis.
-   - *Task Validation:* approaches selected from programmatic, artifact, and user (per §4.2 Task Format), with rationale for inclusion or exclusion. Validation criteria co-define the Task with Guidance.
+   - *Task Validation:* approaches selected from programmatic, artifact, and user (per §4.2 Implementation Plan Format), with rationale for inclusion or exclusion. Validation criteria co-define the Task with Guidance.
    - *Dependencies:* enumerate every dependency. Same-agent: `Task N.M` format. Cross-agent: **`Task N.M by <Agent>`** (bolded), specifying the deliverable at the boundary.
    - *Steps:* ordered operations with purpose.
-   Use more detail for complex Tasks and less for straightforward ones. Include all required dimensions. After reasoning through all Tasks in the Stage, assess whether each Task represents independently validatable work per §2.2 Decomposition Principles - combined scopes that need separate validation indicate further decomposition.
-3. Append the Stage to the Implementation Plan per §4.2 Stage Format and Task Format. Enrich Task details based on chat reasoning. Ensure every cross-agent dependency is bolded at write time - do not defer to **Plan Review**. After reasoning through all Tasks in a Stage, write the Stage to the Implementation Plan before proceeding to the next Stage. Do not batch reasoning or writing across Stages.
+   Use more detail for complex Tasks and less for straightforward ones. Include all required dimensions. After reasoning through all Tasks in the Stage, assess whether each Task represents independently validatable work per §2.1 Decomposition Principles - combined scopes that need separate validation indicate further decomposition.
+3. Append the Stage to the Implementation Plan per §4.2 Implementation Plan Format. Enrich Task details based on chat reasoning. Ensure every cross-agent dependency is bolded at write time - do not defer to **Plan Review**. After reasoning through all Tasks in a Stage, write the Stage to the Implementation Plan before proceeding to the next Stage. Do not batch reasoning or writing across Stages.
 
-**Plan Review** → After completing all Stage Cycles, review the plan per §2.4 Implementation Plan Standards:
-1. *Workload assessment.* Count Tasks per agent. Flag agents with disproportionately large workloads relative to other agents for subdivision review. If subdividing, present reasoning:
+**Plan Review** → After completing all Stage Cycles, review the plan per §2.3 Implementation Plan Standards:
+1. *Workload assessment:* Count Tasks per agent. Flag agents with disproportionately large workloads relative to other agents for subdivision review. If subdividing, present reasoning:
    - Sub-domain boundaries - where to split and why.
    - Agent coherence - how sub-agents maintain clear, focused domains.
    Update Implementation Plan assignments and emergent Task dependencies.
-2. *Cross-agent dependency review.* Verify all cross-agent dependencies are correctly identified and bolded. Cross-check agent assignments - if a dependency's producer differs from the consumer's agent, it must be bolded. Present reasoning:
+2. *Cross-agent dependency review:* Verify all cross-agent dependencies are correctly identified and bolded. Cross-check agent assignments - if a dependency's producer differs from the consumer's agent, it must be bolded. Present reasoning:
    - Dependency audit - list every dependency, classify each, flag misclassified entries.
    - Cross-agent chains - provider, consumer, agents, required deliverable.
    - Risk assessment - bottlenecks or coordination complexity.
    Fix any misclassified dependencies.
-3. *Dependency Graph generation.* Generate a mermaid graph per §4.2 Dependency Graph Format using finalized Tasks, agent assignments, and dependencies. For each edge, verify the type matches: `-->` for same-agent, `-.->` for cross-agent. Write to Implementation Plan header.
-4. *Plan summary.* Present in chat: agent count, Stage count with names and Task counts, total Tasks, cross-agent dependency count.
-5. *Implementation Plan checkpoint* → Pause for User review:
+3. *Dependency Graph generation:* Generate a mermaid graph per §4.2 Implementation Plan Format using finalized Tasks, agent assignments, and dependencies. For each edge, verify the type matches: `-->` for same-agent, `-.->` for cross-agent. Write to Implementation Plan header.
+4. *Plan summary:* Present in chat: agent count, Stage count with names and Task counts, total Tasks, cross-agent dependency count.
+5. Pause for User review:
    - State Implementation Plan is complete.
    - Ask User to review the plan.
    - If modifications needed → Apply and repeat step 5.
-   - If approved → Proceed to §3.3 Standards Analysis.
+   - If approved → Proceed to §3.3 Execution Standards Analysis.
 
-### 3.3 Standards Analysis
+### 3.3 Execution Standards Analysis
 
-Perform the following actions per §2.5 `{AGENTS_FILE}` Standards:
+Perform the following actions per §2.4 `{AGENTS_FILE}` Standards:
 1. Analyze for universal execution patterns across all planning sources. Present reasoning:
    - **From Specifications:** execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in Specifications - they reach Workers through Task Prompts.
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
@@ -194,12 +184,11 @@ Perform the following actions per §2.5 `{AGENTS_FILE}` Standards:
 2. Write APM_STANDARDS block to `{AGENTS_FILE}` per §4.3 APM_STANDARDS Block:
    - If file exists: preserve existing content outside block, append APM_STANDARDS block.
    - If creating new: create file with APM_STANDARDS block only.
-3. **Standards checkpoint** → Pause for User review:
+3. Pause for User review:
    - State Execution Standards are complete.
    - Ask User to review `{AGENTS_FILE}` for accuracy.
    - If modifications needed → Apply and repeat step 3.
-   - If approved → State Work Breakdown is complete and all planning documents are created. This completes the Planning Phase. The next step is to start the Implementation Phase by initializing the first Manager with `/apm-2-initiate-manager` in a new session.
-
+   - If approved → State Work Breakdown is complete and all planning documents are created. Proceed to `{COMMAND_PATH:apm-1-initiate-planner}` §4 Planning Phase Completion. 
 ---
 
 ## 4. Structural Specifications
@@ -261,13 +250,11 @@ style T2_1 fill:#f4a261,color:#000
 style T2_2 fill:#a8dadc,color:#000
 ```
 
-Dispatch patterns visible from the graph:
-- *Batch candidates* → same-agent Task groups dispatchable together. Two patterns qualify:
-  - *Sequential chain:* each Task depends only on the previous (e.g., T1_1 → T1_2 → T1_3, all same agent).
-  - *Independent group:* same-agent Tasks with no same-agent dependencies, all ready simultaneously.
-- *Parallel candidates:* independent Tasks ready for dispatch assigned to different agents (e.g., T2_1 and T2_2 above), dispatchable simultaneously.
+Dispatch patterns visible from the graph per §2.3 Implementation Plan Standards:
+- *Batch candidates:* same-agent Task groups (e.g., T1_1 → T1_2 → T1_3, all same agent).
+- *Parallel candidates:* independent Tasks assigned to different agents (e.g., T2_1 and T2_2 above), dispatchable simultaneously.
 - *Cross-agent coordination points:* dotted arrows (e.g., T1_2 -.-> T2_1) indicate where one agent's output feeds another agent's input.
-- *Single dispatch:* a lone ready Task with no batch or parallel partners.
+- *Single dispatch:* a lone Ready Task with no batch or parallel partners.
 
 *Node format:* `T<Stage>_<Task>["<Task ID> <Title><br/><i><Agent Name></i>"]`
 
@@ -311,11 +298,11 @@ APM_STANDARDS {
 - *Over-decomposition:* Excessive small Tasks - combine when they share context and validation.
 - *Vague validation:* "Works correctly" - specify what "correctly" means concretely.
 - *Missing dependencies:* Tasks requiring prior work not marked - trace prerequisites.
-- *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph (`-->` vs `-.->`) - classify at write time per §3.2 Stage Cycles by checking whether producer and consumer share the same agent. Verify per §3.2 Plan Review.
+- *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph (`-->` vs `-.->`) - classify at write time by checking whether producer and consumer share the same agent per §3.2 Implementation Plan Analysis. Verify during plan review.
 - *Duplicating source documents:* Restating requirements from User documents (PRD, specifications) instead of referencing the source. Specifications capture design decisions layered on existing requirements.
 - *Non-universal standards:* Task-specific patterns elevated to `{AGENTS_FILE}` - if it only applies to some Tasks, it's Task guidance.
 - *Output specifications as standards:* Elevating response formats, error strings, or interface contracts to `{AGENTS_FILE}`. These define what is being built and belong in Specifications - universality across Workers does not make them execution patterns.
-- *Standards referencing external documents:* Specifications, planning documents, and design artifacts are intentionally omitted from Workers' context - referencing them from `{AGENTS_FILE}` undermines that scoping. See §2.5 `{AGENTS_FILE}` Standards.
+- *Standards referencing external documents:* Specifications, planning documents, and design artifacts are intentionally omitted from Workers' context - referencing them from `{AGENTS_FILE}` undermines that scoping. See §2.4 `{AGENTS_FILE}` Standards.
 
 ---
 

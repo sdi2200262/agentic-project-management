@@ -8,14 +8,14 @@ This guide defines how Workers execute Tasks assigned by the Manager via Task Pr
 
 ### 1.1 How to Use This Guide
 
-See §3 Task Execution Procedure - follow subsections sequentially from Task Prompt receipt through completion. See §2 Operational Standards when reasoning about iteration, pauses, failures, or complexity.
+See §3 Task Execution Procedure - follow subsections sequentially from Task Prompt receipt through completion. See §2 Operational Standards when reasoning about iteration, pauses, failures, or complexity. Communication and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
 
 ### 1.2 Objectives
 
 - Execute Tasks following Task Prompt instructions
 - Integrate context from dependencies before execution begins
 - Validate execution against provided criteria in correct order
-- Iterate on failures until success or stop condition
+- Iterate on failures until Success or stop condition
 - Handle User collaboration points
 - Log outcomes and report to Manager via User
 
@@ -25,25 +25,21 @@ See §3 Task Execution Procedure - follow subsections sequentially from Task Pro
 
 **Task Memory Log:** Structured log per `{GUIDE_PATH:task-logging}` §4.1 Task Memory Log Format.
 
-**Task Report:** Concise summary written to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery.
+**Task Report:** Concise summary written to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
 
 ---
 
 ## 2. Operational Standards
 
-### 2.1 Visible Reasoning
-
-On Task receipt, assess the scope: what the objective requires, how instructions sequence toward it, and what validation will verify. Before logging, assess whether all objectives are met and deliverables are ready for review, if any important findings or compatibility issues came up and determine the Task's status based on your conclusion.
-
-### 2.2 Context Integration Standards
+### 2.1 Context Integration Standards
 
 Workers operate with narrow context - only their Task Prompt and accumulated working context from prior Tasks in this session.
 
 The Task Prompt's Context from Dependencies section reflects how much the Worker knows about the producer's work. Cross-agent dependencies provide detailed integration instructions - specific files to read, artifacts to review, interfaces to understand. Follow completely. Same-agent dependencies provide lighter guidance - recall anchors and file references as additional context.
 
-**Integration issues:** If integration reveals problems - missing files, broken references, conflicts with expectations - the Worker cannot proceed safely. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities → Proceed with best interpretation and note uncertainty; missing expected files → Pause for guidance. Default: do not execute on an unstable foundation.
+**Integration issues:** If integration reveals problems - missing files, broken references, conflicts with expectations - the Worker cannot proceed safely. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities → Proceed with best interpretation and note uncertainty; missing expected files → Pause for guidance. **Default:** Do not execute on an unstable foundation.
 
-### 2.3 Validation Standards
+### 2.2 Validation Standards
 
 Validate automated checks first, then output verification, then user approval if needed. Do not waste User time on work that fails automated checks.
 
@@ -55,15 +51,15 @@ Validation criteria define the required verification level. When criteria requir
 
 **Default:** Fail-fast on autonomous validations to avoid wasted User reviews.
 
-### 2.4 Iteration Standards
+### 2.3 Iteration Standards
 
 When validation fails, the Worker enters a correction loop - correct, re-execute, re-validate.
 
-**Continue when:** cause identified, fix within scope, measurable progress toward resolution. **Stop when:** same error 3+ times, fixes causing new issues, requires external resolution, or iterative debugging consumes disproportionate context relative to the Task scope (5+ attempts on the same issue). A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve. When a stop condition is reached: spawn a debug subagent to attempt resolution with fresh context. If the subagent resolves the issue, apply findings and resume. If the subagent cannot resolve or subagent tools are unavailable, prefer reporting back with Partial status over exhausting context - the Manager can restructure or reassign. Apply §2.5 Failure Status Standards and proceed to §3.6 Task Completion.
+**Continue when:** cause identified, fix within scope, measurable progress toward resolution. **Stop when:** same error 3+ times, fixes causing new issues, requires external resolution, or iterative debugging consumes disproportionate context relative to the Task scope (5+ attempts on the same issue). A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve. When a stop condition is reached: spawn a debug subagent to attempt resolution with fresh context. If the subagent resolves the issue, apply findings and resume. If the subagent cannot resolve or subagent tools are unavailable, prefer reporting back with Partial status over exhausting context - the Manager can restructure or reassign. Apply §2.4 Failure Status Standards and proceed to §3.6 Task Completion.
 
 **Default:** When uncertain, pause and present situation to User with options.
 
-### 2.5 Failure Status Standards
+### 2.4 Failure Status Standards
 
 - *Success:* Objective achieved, all validation passed. `failure_point: null`
 - *Partial:* Progress made but incomplete; needs guidance. `failure_point: Execution`, `Validation`, or `<description>`
@@ -72,7 +68,7 @@ When validation fails, the Worker enters a correction loop - correct, re-execute
 
 Partial means "I need guidance to continue." Failed means "I tried everything within my scope." Blocked means "factors outside my control prevent progress." When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
 
-### 2.6 User Collaboration Standards
+### 2.5 User Collaboration Standards
 
 **Required:** User validation (Worker cannot self-approve subjective quality), explicit User actions (Worker cannot act outside development environment), environment resources needed for validation (credentials, configuration, access), and iteration pauses (Worker needs guidance).
 
@@ -80,15 +76,15 @@ Partial means "I need guidance to continue." Failed means "I tried everything wi
 
 **Default:** When stopping without Success, present situation with options rather than unilateral decisions.
 
-### 2.7 Execution Standards Updates
+### 2.6 Execution Standards Updates
 
 When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{AGENTS_FILE}` and request User approval before modifying. Execution Standards are not modified unilaterally - the User decides whether the change is warranted.
 
-### 2.8 Batch Execution Standards
+### 2.7 Batch Execution Standards
 
 When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus message), execute sequentially. Complete each Task fully - execute, validate, and write the Task Memory Log - before starting the next Task in the batch. Each Task gets its own Task Memory Log at its specified `memory_log_path`.
 
-**Fail-fast:** If any Task results in Blocked or Failed status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.5 Batch Report Envelope Format. Do not defer logging to the end of the batch.
+**Fail-fast:** If any Task results in Failed or Blocked status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.15 Batch Report Envelope Format. Do not defer logging to the end of the batch.
 
 ---
 
@@ -104,9 +100,9 @@ When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus mess
 
 ### 3.1 Task Prompt Receipt
 
-Perform the following actions:
-1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format and execute each Task sequentially per §2.8 Batch Execution Standards.
-2. Verify `agent_id` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent_id` per `{SKILL_PATH:apm-communication}` §2.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope.
+On Task receipt, perform the following actions:
+1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.14 Batch Envelope Format and execute each Task sequentially per §2.7 Batch Execution Standards.
+2. Verify `agent_id` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent_id` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope.
 3. Parse Task Prompt structure - YAML frontmatter fields and body sections.
 4. Identify execution parameters:
    - `has_dependencies: true` → context integration required
@@ -114,18 +110,18 @@ Perform the following actions:
    - Note validation approaches in Validation Criteria section
 5. If Workspace section present: switch to the specified branch or worktree path before starting work. Note the workspace in your Task Memory Log output section when complete.
 6. Assess Task scope: what the objective requires, how instructions sequence toward it, and what validation will verify.
-7. Proceed to §3.2 Context Integration (or §3.3 Task Execution if no dependencies).
+7. Continue to context integration, or proceed to §3.3 Task Execution if no dependencies.
 
 ### 3.2 Context Integration
 
 Execute when `has_dependencies: true`. Must complete before Task execution begins. Perform the following actions:
 1. Read the Context from Dependencies section.
-2. Execute integration based on dependency type per §2.2 Context Integration Standards:
+2. Execute integration based on dependency type per §2.1 Context Integration Standards:
    - **Cross-agent:** Follow integration steps completely - read files, review artifacts, understand interfaces. Do not proceed until complete. {WORKER_SUBAGENT_GUIDANCE}
    - **Same-agent:** Use guidance to recall and build upon prior work; review referenced paths to refresh context if needed.
 3. Verify integration is complete - required context understood, referenced files accessible, foundation clear.
-4. If integration issues discovered, apply decision rules from §2.2 Context Integration Standards.
-5. Proceed to §3.3 Task Execution.
+4. If integration issues discovered, apply decision rules from §2.1 Context Integration Standards.
+5. Continue to execution.
 
 ### 3.3 Task Execution
 
@@ -134,35 +130,35 @@ Perform the following actions:
 2. For each instruction step:
    - Standard instruction → Execute and continue.
    - Explicit User action required → Communicate what needs User action, why, and what options exist. Await completion, then resume.
-   - Subagent step → Spawn the relevant subagent with a structured task description. If resolved, apply findings and resume. If unresolved, apply §2.5 Failure Status Standards. {WORKER_SUBAGENT_GUIDANCE}
+   - Subagent step → Spawn the relevant subagent with a structured task description. If resolved, apply findings and resume. If unresolved, apply §2.4 Failure Status Standards. {WORKER_SUBAGENT_GUIDANCE}
 3. For complex Tasks with natural breakpoints where risk of wasted effort is high or unexpected complexity emerges, consider an autonomous pause - communicate progress, why pausing, and options. Simple Tasks run continuously.
-4. When all instructions complete → Proceed immediately to §3.4 Task Validation.
+4. When all instructions complete → Continue immediately to validation.
 
 ### 3.4 Task Validation
 
 Perform the following actions:
-1. Order validations per §2.3 Validation Standards: programmatic first, then artifact, then user.
-2. Execute programmatic validations. If any fail → Proceed to §3.5 Correction Loop. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
-3. Execute artifact validations. If any fail → Proceed to §3.5 Correction Loop.
-4. If user validation present: pause and present work for review. Communicate what was accomplished, what needs review, and where deliverables are located. If approved → Proceed to §3.6 Task Completion with Success. If feedback provided → Proceed to §3.5 Correction Loop with feedback integrated.
-5. If all validation passed → Proceed to §3.6 Task Completion with Success.
+1. Order validations per §2.2 Validation Standards: programmatic first, then artifact, then user.
+2. Execute programmatic validations. If any fail → continue to the correction loop. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
+3. Execute artifact validations. If any fail → continue to the correction loop.
+4. If user validation present: pause and present work for review. Communicate what was accomplished, what needs review, and where deliverables are located. If approved → proceed to §3.6 Task Completion with Success status. If feedback provided → continue to the correction loop with feedback integrated.
+5. If all validation passed → proceed to §3.6 Task Completion with Success status.
 
 ### 3.5 Correction Loop
 
 Invoked when validation fails. Perform the following actions:
 1. Assess the failure - what specifically failed, what is the likely cause, is it correctable?
-2. Apply decision rules from §2.4 Iteration Standards.
+2. Apply decision rules from §2.3 Iteration Standards.
 3. If continuing: correct the issue, re-execute affected portions, proceed to §3.4 Task Validation.
-4. If stopping (stop condition reached per §2.4 Iteration Standards): first attempt a debug subagent for resolution with fresh context. If unresolved, present situation to User explaining what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Await guidance.
-5. Upon User guidance: if new direction given, integrate and proceed to the appropriate procedure step; if stopping confirmed, apply §2.5 Failure Status Standards and proceed to §3.6 Task Completion.
+4. If stopping (stop condition reached per §2.3 Iteration Standards): first attempt a debug subagent for resolution with fresh context. If unresolved, present situation to User explaining what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Await guidance.
+5. Upon User guidance: if new direction given, integrate and proceed to the appropriate procedure step; if stopping confirmed, apply §2.4 Failure Status Standards and continue to completion.
 
 ### 3.6 Task Completion
 
 Perform the following actions:
-1. Assess completion: whether all objectives are met and deliverables are ready for review. Determine final status per §2.5 Failure Status Standards (Success if all validation passed).
+1. Before logging, assess visibly in chat whether all objectives are met and deliverables are ready for review, whether any important findings or compatibility issues arose, and determine the Task's status based on your conclusion per §2.4 Failure Status Standards (Success if all validation passed).
 2. Commit work to the assigned branch per `{SKILL_PATH:apm-version-control}` §5.1 Role Boundaries.
 3. Create Task Memory Log per `{GUIDE_PATH:task-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
-4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. If this is the first Task after Handoff initialization, include incoming Worker indication in the Task Report: state session number and list the specific Task Memory Log files loaded. Direct User to deliver the report per the communication skill - provide both the targeted command (`/apm-5-check-reports <agent-id>`) and the general command.
+4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. If this is the first Task after Handoff initialization, include incoming Worker indication in the Task Report: state session number, list the specific Task Memory Log files loaded, and note that previous-Stage logs were not loaded. Direct User to deliver the report per the communication skill - provide both the targeted command (`/apm-5-check-reports <agent-id>`) and the general command.
 5. Await `/apm-4-check-tasks` or Handoff initiation.
 
 ---
@@ -173,7 +169,7 @@ Perform the following actions:
 
 **Task Memory Log:** Per `{GUIDE_PATH:task-logging}` §4.1 Task Memory Log Format, at `memory_log_path` from Task Prompt.
 
-**Task Report:** Per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery.
+**Task Report:** Per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
 
 ---
 

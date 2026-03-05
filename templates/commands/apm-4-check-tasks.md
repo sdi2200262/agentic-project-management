@@ -11,10 +11,10 @@ Accepts an optional `[agent-id]` argument. Registered Workers ignore it (bus pat
 
 **Procedure:**
 1. Determine registration state:
-   - If registered → Resolve bus path from registration. Skip to step 3.
-   - If not registered → `{ARGS}` is required. If no argument provided, inform User that an agent-id is required. Continue to step 2.
+   - If registered → Resolve bus path from registration. Proceed to step 3.
+   - If not registered → `{ARGS}` is required. If no argument provided, inform User that an agent-id is required.
 
-2. Resolve agent-id (unregistered Workers only): resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §2.2 Agent ID Resolution. Register as the resolved agent per `{COMMAND_PATH:apm-3-initiate-worker}` §2.1 Registration.
+2. Resolve agent-id (unregistered Workers only): resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. Initialize per `{COMMAND_PATH:apm-3-initiate-worker}` §2 Session Initiation.
 
 3. Read Task Bus at `.apm/bus/<agent-slug>/apm-task.md`.
    - If empty → Inform User that no pending Task is available. Await next invocation.
@@ -22,7 +22,7 @@ Accepts an optional `[agent-id]` argument. Registered Workers ignore it (bus pat
 
 4. Cross-validate `agent_id` field in YAML frontmatter against registered identity. Mismatch flags a routing error - inform User. Process the Task per `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure.
 
-**Identity scope:** After registration, only accept Tasks assigned to your registered AgentID per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope. When receiving an assignment for a different AgentID, decline and direct User to the correct Worker session.
+**Identity scope:** After registration, only accept Tasks assigned to your registered agent identifier per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope. When receiving an assignment for a different agent identifier, decline and direct User to the correct Worker session.
 
 ---
 
