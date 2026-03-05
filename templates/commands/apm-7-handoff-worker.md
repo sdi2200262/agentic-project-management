@@ -17,31 +17,15 @@ The incoming Worker must indicate Handoff status in their first Task Report. Thi
 
 ---
 
-## 2. Handoff Eligibility
+## 2. Handoff Procedure
 
-Handoff is eligible at any point - between Tasks or mid-Task - as long as the handoff prompt captures comprehensive current state.
+Execute when User initiates Handoff.
 
-**Between-Tasks Handoff:** Standard Handoff. Task Bus is cleared (clear-on-return fired when writing the report). The handoff prompt states "no active Task, await `/apm-4-check-tasks`."
-
-**Mid-Task Handoff:** Task Bus still contains the original Task Prompt (clear-on-return hasn't fired). The handoff prompt references it directly: "Read the Task from `apm-task.md`, I completed steps 1-4, resume from step 5." Execution progress must be captured in detail.
-
-**No blocking scenarios:** Eligibility is determined by documentation completeness, not workflow stage.
-
----
-
-## 3. Handoff Procedure
-
-Execute when User initiates Handoff and eligibility is confirmed.
-
-### 3.1 Eligibility Check
-
-Assess against §2 Handoff Eligibility criteria. If not eligible, deny with reason and re-offer after Task completion. If eligible, proceed to §3.2 Handoff Memory Log Creation.
-
-### 3.2 Handoff Memory Log Creation
+### 2.1 Handoff Memory Log Creation
 
 Perform the following actions:
 1. Determine session numbers: your current session number and incoming Worker session number (yours + 1).
-2. Create Handoff Memory Log per §4 Handoff Memory Log Structure, capturing **past actions** - what WAS done:
+2. Create Handoff Memory Log per §3 Handoff Memory Log Structure, capturing **past actions** - what WAS done:
    - Tasks completed and Stage progress this session.
    - Working context, patterns, and approaches established during this session.
    - Technical notes not captured in Task Memory Logs.
@@ -49,27 +33,27 @@ Perform the following actions:
 
 **Content focus:** Strictly past tense. What was done, what was tried, what was observed. No current state - current state belongs in the handoff prompt.
 
-### 3.3 Handoff Prompt Creation
+### 2.2 Handoff Prompt Creation
 
 Perform the following actions:
-1. Create handoff prompt per §5 Handoff Prompt Structure, capturing **current state** - what IS happening.
+1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what IS happening.
 2. Apply Worker Handoff asymmetry:
    - *Mid-Task:* "Read the Task from `apm-task.md`, I completed steps 1-4, resume from step 5." Reference the intact Task Bus. Include execution progress detail.
    - *Between-Tasks:* "No active Task, await `/apm-4-check-tasks`." State session context and readiness.
-3. Include: session takeover statement, Handoff Memory Log path, instructions to read current Stage Task Memory Logs, reminder to indicate incoming Worker status in first Task Report (listing specific Task Memory Log files loaded), and continuation guidance.
+3. Include: session takeover statement, Handoff Memory Log path, instructions to read current Stage Task Memory Logs, reminder to indicate incoming Worker status in first Task Report (listing specific Task Memory Log files loaded and noting that previous-Stage logs were not loaded), and continuation guidance.
 
 **Content focus:** Actionable, present-tense, one-time. The incoming Worker processes this prompt during auto-detection in the init command. The prompt is cleared after processing.
 
-### 3.4 User Review and Finalization
+### 2.3 User Review and Finalization
 
 Perform the following actions:
-1. Write handoff prompt to Handoff Bus per `{SKILL_PATH:apm-communication}` §3.6 Handoff Bus Protocol.
-2. Present both artifacts to User: Handoff Memory Log (file path) and handoff prompt (Bus path). Request review and direct User to start a new session using `/apm-3-initiate-worker <agent-id>` - the incoming Worker will auto-detect the handoff prompt.
+1. Write handoff prompt to Handoff Bus per `{SKILL_PATH:apm-communication}` §4.10 Handoff Bus Protocol.
+2. Present both artifacts to User: Handoff Memory Log (file path) and handoff prompt (bus path). Request review and direct User to start a new session using `/apm-3-initiate-worker <agent-id>` - the incoming Worker will auto-detect the handoff prompt.
 3. If modifications requested, update accordingly. Session ends when User starts the new session.
 
 ---
 
-## 4. Handoff Memory Log Structure
+## 3. Handoff Memory Log Structure
 
 Contains working context from this session that supports the incoming Worker's execution. Task Memory Logs contain task-specific details - this file provides session-level context.
 
@@ -87,8 +71,8 @@ timestamp: <Date/time of Handoff>
 ---
 ```
 
-**Body Sections:** `#` title with Agent ID and handoff number. Each section uses `##` heading.
-
+**Body Sections:**
+- *Title:* `#` heading title with agent identifier and handoff number. Each section uses `##` heading.
 - *Session Summary:* Tasks completed count, current Stage, Stage progress for this Worker.
 - *Working Context:* Patterns, approaches, or context established during this session.
 - *Technical Notes:* Technical details or environment observations not captured in Task Memory Logs.
@@ -96,20 +80,19 @@ timestamp: <Date/time of Handoff>
 
 ---
 
-## 5. Handoff Prompt Structure
+## 4. Handoff Prompt Structure
 
 The handoff prompt instructs the incoming Worker to reconstruct context. Written to `.apm/bus/<agent-slug>/apm-handoff.md`.
 
 The incoming Worker processes this prompt during auto-detection in the init command. The prompt is cleared after processing.
 
-**Required content:** Structure with `#` title and `##` section headings.
-
+**Required content:** 
 - *Session takeover statement:* "You are taking over from [AgentID] Session [N] as [AgentID] Session [N+1]."
 - *Rebuilding context:*
   1. Read Handoff Memory Log - note working context, technical notes, continuation guidance.
   2. Read current Stage Task Memory Logs (this Worker's logs only).
-  3. Previous Stage logs are not loaded; Manager provides comprehensive context via Task Prompts for cross-Stage dependencies.
-- *Current Session State:* current Stage, Tasks completed this session, notes.
+  3. Do not load previous-Stage logs - the Manager provides comprehensive context via Task Prompts for cross-Stage dependencies.
+- *Current Session State:* Current Stage, Tasks completed this session, notes.
 - *Incoming Worker indication:* Remind incoming Worker to include Handoff status in first Task Report - state session number and list specific Task Memory Log files loaded. This triggers Manager Handoff detection.
 - *Immediate Next Action:* Await next Task Prompt from User via `/apm-4-check-tasks`.
 - *Closing instruction:* Confirm to User that Handoff Memory Log and Stage context have been read, then state readiness for next Task Prompt.

@@ -8,7 +8,7 @@ This guide defines how the Manager constructs Task Prompts for Workers. Task Pro
 
 ### 1.1 How to Use This Guide
 
-See §3 Task Assignment Procedure - execute sequentially to construct and deliver Task Prompts. See §2 Operational Standards when analyzing dependencies, extracting specification content, assessing dispatch opportunities, or handling follow-up assignments. See §4 Structural Specifications for Task Prompt format.
+See §3 Task Assignment Procedure - execute sequentially to construct and deliver Task Prompts. See §2 Operational Standards when analyzing dependencies, extracting specification content, assessing dispatch opportunities, or handling follow-up assignments. See §4 Structural Specifications for Task Prompt format. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
 
 ### 1.2 Objectives
 
@@ -27,13 +27,7 @@ See §3 Task Assignment Procedure - execute sequentially to construct and delive
 
 ## 2. Operational Standards
 
-### 2.1 Visible Reasoning
-
-Task Assignment involves coordination-level decisions - dispatch mode selection, dependency context depth, specification extraction scope, and workspace isolation. Before each dispatch decision, assess the current project state: which Tasks are ready, what dependency relationships exist among them, and what dispatch mode best serves progress and efficiency. State this assessment visibly in chat before constructing Task Prompts.
-
-Section references and procedure labels are for your navigation - communicate with the User strictly in natural language.
-
-### 2.2 Dependency Context Standards
+### 2.1 Dependency Context Standards
 
 Tasks may depend on outputs from previous Tasks. The context you include depends on the Worker's familiarity with the producer's work.
 
@@ -47,13 +41,13 @@ Tasks may depend on outputs from previous Tasks. The context you include depends
 
 **Chain reasoning:** Dependencies may have their own dependencies. Trace upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Stop tracing when an intermediate node fully abstracts what came before. When uncertain, include rather than risk missing critical context.
 
-### 2.3 Specification Extraction Standards
+### 2.2 Specification Extraction Standards
 
 Task Prompts must be self-contained. The Manager extracts relevant Specification content and integrates it directly into the prompt - never reference Specifications by path. Workers should not need to look beyond their Task Prompt. When Specifications reference external User documents for specific content, follow those references and extract the relevant content directly - the Task Prompt remains self-contained regardless of where the source content resides.
 
 **Include** content that defines interfaces, schemas, or contracts the Task must implement; establishes constraints on approach or patterns; or clarifies design decisions affecting deliverables. **Exclude** content relating to other domains, providing background without actionable requirements, or already captured in the Task's Guidance field. Preserve specificity with exact constraints, not summaries.
 
-### 2.4 Follow-Up Standards
+### 2.3 Follow-Up Standards
 
 Follow-up Task Prompts occur when the review outcome determines retry after investigation. The Manager arrives with: original Task Memory Log findings, investigation results, understanding of what went wrong, and potentially modified planning documents.
 
@@ -61,23 +55,22 @@ Follow-up Task Prompts occur when the review outcome determines retry after inve
 
 **Log path continuity:** Use the same `memory_log_path` as the original. The Worker overwrites the previous log. The Manager captures iteration patterns in Stage summaries when relevant.
 
-### 2.5 Dispatch Standards
+### 2.4 Dispatch Standards
 
-Before constructing individual Task Prompts, the Manager assesses dispatch opportunities across ready Tasks.
+Before constructing individual Task Prompts, the Manager assesses dispatch opportunities across Ready Tasks.
 
-**Task readiness:** A Task is ready when all its dependencies are complete. Read the task tracking section in Memory Root for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
+**Task readiness:** A Task is Ready when all its dependencies are complete. Read the task tracking section in Memory Root for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
 
-**Dispatch modes** → Assess all ready Tasks, group by Worker, and form dispatch units:
-
-- *Batch:* multiple ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks, no external Tasks depend on intermediates) or are an independent group (no dependencies between them, all ready simultaneously). Soft guidance: 3-5 Tasks per batch.
-- *Single:* one ready Task for a Worker.
+**Dispatch modes** → Assess all Ready Tasks, group by Worker, and form dispatch units:
+- *Batch:* multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks, no external Tasks depend on intermediates) or are an independent group (no dependencies between them, all ready simultaneously). Soft guidance: 3-5 Tasks per batch.
+- *Single:* one Ready Task for a Worker.
 - *Parallel:* two or more dispatch units (any mix) with no unresolved cross-agent dependencies among them, dispatched simultaneously. Requires version control workspace isolation.
 
 **Parallel prerequisites:** Before first parallel dispatch, initialize version control per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization. Recommend configuring Worker permissions to minimize approval wait times. If the User declines VC setup, fall back to sequential dispatch.
 
 **Intelligent waiting:** Before dispatching a ready unit, check whether a pending report would unlock Tasks that combine well with the current unit. If it's the only outstanding report, waiting costs little. If multiple reports are pending or no plausible combination exists, dispatch immediately.
 
-**Wait state:** When no Tasks are ready but Workers are still active, communicate what was processed, what is pending, and what the User should do next.
+**Wait state:** When no Tasks are Ready but Workers are still active, communicate what was processed, what is pending, and what the User should do next.
 
 ---
 
@@ -91,15 +84,15 @@ Before constructing individual Task Prompts, the Manager assesses dispatch oppor
 
 ### 3.1 Dispatch Assessment
 
-Assess dispatch opportunities from current project state per §2.5 Dispatch Standards. Each dispatch cycle is a fresh assessment - dispatch conditions change as Tasks complete and dependencies resolve or as execution reveals important findings.
+Assess dispatch opportunities from current project state per §2.4 Dispatch Standards. Before each dispatch decision, assess the current project state visibly in chat: which Tasks are Ready, what dependency relationships exist among them, and what dispatch mode best serves progress and efficiency. Each dispatch cycle is a fresh assessment - dispatch conditions change as Tasks complete and dependencies resolve or as execution reveals important findings.
 
 Perform the following actions:
-1. Identify ready Tasks from the task tracking section in Memory Root. Cross-reference the Dependency Graph for newly unblocked Tasks.
-2. Apply intelligent waiting - if a pending report would unlock Tasks that combine well with currently ready Tasks, consider waiting. If no beneficial combination is plausible, proceed.
-3. Group ready Tasks by assigned Worker. Form dispatch units per §2.5 Dispatch Standards.
+1. Identify Ready Tasks from the task tracking section in Memory Root. Cross-reference the Dependency Graph for newly unblocked Tasks.
+2. Apply intelligent waiting - if a pending report would unlock Tasks that combine well with currently Ready Tasks, consider waiting. If no beneficial combination is plausible, proceed.
+3. Group Ready Tasks by assigned Worker. Form dispatch units per §2.4 Dispatch Standards.
 4. Assess parallel opportunity: if 2+ dispatch units exist with no unresolved cross-agent dependencies → parallel dispatch.
 5. If parallel dispatch planned, initialize version control per `{SKILL_PATH:apm-version-control}` §3.2 Branch Operations and §3.3 Worktree Operations.
-6. Formulate dispatch plan: which Workers receive which units, whether parallel. For each Task, proceed to §3.2.
+6. Formulate dispatch plan: which Workers receive which units, whether parallel. For each Task, continue to per-Task analysis.
 
 ### 3.2 Per-Task Analysis
 
@@ -107,9 +100,9 @@ Execute for each Task in the dispatch plan.
 
 Perform the following actions:
 1. Read the Task's Dependencies field from the Implementation Plan. If "None," skip dependency context steps.
-2. For each dependency, determine context depth per §2.2 Dependency Context Standards - check Worker Handoff state, classify as same-agent or cross-agent, check cross-agent overrides in the Project Tracker, and trace upstream when ancestors are relevant.
+2. For each dependency, determine context depth per §2.1 Dependency Context Standards - check Worker Handoff state, classify as same-agent or cross-agent, check cross-agent overrides in the Project Tracker, and trace upstream when ancestors are relevant.
 3. For cross-agent dependencies, read the producer's Task Memory Log and note key outputs, file paths, and integration details.
-4. Review Specifications for content relevant to this Task per §2.3 Specification Extraction Standards. Note relevant content for integration.
+4. Review Specifications for content relevant to this Task per §2.2 Specification Extraction Standards. Note relevant content for integration.
 5. Extract Task definition fields from the Implementation Plan: Objective, Steps, Guidance, Output, Validation. Transform steps into actionable instructions, incorporating Guidance and relevant specification content.
 
 ### 3.3 Task Prompt Construction
@@ -120,9 +113,9 @@ Perform the following actions:
 1. Construct YAML frontmatter per §4.1 Task Prompt Format.
 2. Construct prompt body: Task Reference, Context from Dependencies (if applicable), Objective, Detailed Instructions, Workspace, Expected Output, Validation Criteria, Task Logging instructions, Reporting Instructions.
 3. Include workspace context per `{SKILL_PATH:apm-version-control}` - branch name for sequential dispatch, worktree path for parallel dispatch.
-4. Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery. For batches, use `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
+4. Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery. For batches, per `{SKILL_PATH:apm-communication}` §4.14 Batch Envelope Format.
 5. For parallel dispatch, write to each Worker's Task Bus.
-6. Direct the User to the respective Worker session(s) per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery - differentiate between uninitialized Workers (initialization required) and initialized Workers.
+6. Direct the User to the respective Worker session(s) per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery - differentiate between uninitialized Workers (initialization required) and initialized Workers.
 
 ### 3.4 Follow-Up Task Prompt Construction
 
@@ -133,8 +126,8 @@ Perform the following actions:
 2. If planning documents were modified, extract relevant updated content per §3.2.
 3. Refine all content sections - Objective, Instructions, Output, Validation - based on what went wrong. Include a follow-up context section explaining the issue and required refinement.
 4. Construct the follow-up prompt per §4.2 Follow-Up Format. Same `memory_log_path` as the original.
-5. Write to Task Bus per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
-6. Direct the User to the Worker session per `{SKILL_PATH:apm-communication}` §3.2 Task Prompt Delivery.
+5. Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery.
+6. Direct the User to the Worker session per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery.
 
 ---
 
@@ -145,7 +138,6 @@ Perform the following actions:
 Task Prompts are markdown files. Adapt based on Task needs - not all sections are required for every Task.
 
 **YAML Frontmatter:**
-
 ```yaml
 ---
 stage: <N>
@@ -157,17 +149,16 @@ has_dependencies: true | false
 ```
 
 **Field Descriptions:**
-
 - `stage`: integer, required. Stage number.
 - `task`: integer, required. Task number within Stage.
 - `agent_id`: string, required. Worker identifier (lowercase, hyphenated).
 - `memory_log_path`: string, required. Full path for the Task Memory Log. The Stage slug is derived from the Stage name in the Implementation Plan (e.g., Stage 1 "Parallel Feature and Baseline Development" produces `Stage_1_Parallel_Feature_and_Baseline_Development`). All Tasks in the same Stage share the same Stage directory.
 - `has_dependencies`: boolean, required. Whether dependency context is present.
 
-**Prompt Body Sections:** Title with `#` using Task ID and title. Each section uses `##` heading.
-
+**Prompt Body Sections:** 
+- **Title:** `#` heading using Task ID and title. Each section uses `##` heading:
 - *Task Reference:* Task ID and assigned agent.
-- *Context from Dependencies:* Included when `has_dependencies: true`. Format depends on dependency type per §2.2 Dependency Context Standards:
+- *Context from Dependencies:* Included when `has_dependencies: true`. Format depends on dependency type per §2.1 Dependency Context Standards:
   - *Same-agent:* "Building on your previous work:" intro → `**From Task <N.M>:**` with key outputs and recall points → `**Integration Approach:**` with brief guidance.
   - *Cross-agent:* "This Task depends on work completed by [Producer Agent]:" intro → `**Integration Steps:**` numbered file reading instructions → `**Producer Output Summary:**` key features, files, interfaces, constraints → `**Upstream Context:**` for relevant ancestors.
 - *Objective:* Single-sentence Task goal, optionally enhanced with coordination-level context.
@@ -181,7 +172,6 @@ has_dependencies: true | false
 ### 4.2 Follow-Up Format
 
 Follow-up Task Prompts use the same structure as §4.1 with these modifications:
-
 - *Title:* `APM Follow-Up Task: <Task Title>`
 - *Follow-up context section* after Task Reference - previous issue, investigation findings, required refinement, additional guidance.
 - *All content sections* refined based on what went wrong, not copied from the previous attempt.

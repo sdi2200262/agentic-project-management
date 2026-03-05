@@ -8,7 +8,7 @@ This guide defines how Workers log Task outcomes and report results. Task Memory
 
 ### 1.1 How to Use This Guide
 
-See §3 Task Logging Procedure - follow §3.1 Task Memory Log Procedure after Task execution. See §2 Operational Standards for visible reasoning (§2.1), flag assessment (§2.2), status selection (§2.3), and detail calibration (§2.4). See §4 Structural Specifications for output formats.
+See §3 Task Logging Procedure - follow §3.1 Task Memory Log Procedure after Task execution. See §2 Operational Standards for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). See §4 Structural Specifications for output formats. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
 
 ### 1.2 Objectives
 
@@ -19,27 +19,23 @@ See §3 Task Logging Procedure - follow §3.1 Task Memory Log Procedure after Ta
 
 ### 1.3 Outputs
 
-**Task Memory Log:** Structured log written after Task execution. Captures outcome, validation results, deliverables, and flags. Location: `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
+**Task Memory Log** → Structured log written after Task execution. Captures outcome, validation results, deliverables, and flags. Location: `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
 
 ---
 
 ## 2. Operational Standards
 
-### 2.1 Visible Reasoning
-
-Before writing a Task Memory Log, assess execution outcomes visibly in chat: what was delivered, what important findings or issues arose, and what the Manager may need to know for coordination decisions.
-
-### 2.2 Flag Assessment Standards
+### 2.1 Flag Assessment Standards
 
 Boolean flags in YAML frontmatter signal conditions requiring Manager attention. Set flags based on what you observed during execution relative to your Task Prompt and working context.
 
-**`important_findings`** - set to `true` when execution revealed information not in your Task Prompt that seems project-relevant, you discovered dependencies, risks, or constraints your assignment didn't account for, or something suggests other Tasks or agents might be affected.
+**`important_findings`:** Set to `true` when execution revealed information not in your Task Prompt that seems project-relevant, you discovered dependencies, risks, or constraints your assignment didn't account for, or something suggests other Tasks or agents might be affected.
 
-**`compatibility_issues`** - set to `true` when your output conflicts with existing code, patterns, or conventions you touched, you discovered integration concerns that might affect other parts of the system, or breaking changes or migration requirements resulted from your work.
+**`compatibility_issues`:** Set to `true` when your output conflicts with existing code, patterns, or conventions you touched, you discovered integration concerns that might affect other parts of the system, or breaking changes or migration requirements resulted from your work.
 
 **Default:** When uncertain whether a finding warrants a flag, set to `true`. False negatives hurt coordination more than false positives.
 
-### 2.3 Outcome Standards
+### 2.2 Outcome Standards
 
 Status reflects whether the objective was achieved. Select based on end state, not effort expended.
 
@@ -48,9 +44,9 @@ Status reflects whether the objective was achieved. Select based on end state, n
 - *Failed:* Worker attempted but could not succeed; issue is within scope but beyond resolution. `failure_point: Execution` or `Validation`
 - *Blocked:* External factors outside Worker scope prevent progress. `failure_point: <description>`
 
-Use Partial when: validation is ambiguous, important findings emerged that could affect other Tasks, iteration stalled with recurring failures, or approach uncertainty depends on factors outside Worker's scope. Continue iterating (don't log yet) when validation failed but the cause is clear and fixable, no findings require Manager awareness, and progress is being made.
+Use Partial when: validation is ambiguous, important findings emerged that could affect other Tasks, iteration stalled with recurring failures, or approach uncertainty depends on factors outside Worker's scope. Continue iterating (do not log yet) when validation failed but the cause is clear and fixable, no findings require Manager awareness, and progress is being made.
 
-### 2.4 Detail Level Standards
+### 2.3 Detail Level Standards
 
 Task Memory Logs serve the Manager's coordination needs, not archival documentation. Ask: does this detail help the Manager understand what was accomplished? Would it affect the Manager's next review decision? Can it be found by reading the referenced artifacts directly?
 
@@ -68,25 +64,25 @@ Task Memory Logs serve the Manager's coordination needs, not archival documentat
 After Task execution, populate the Task Memory Log at the path provided in the Task Prompt (`memory_log_path`).
 
 Perform the following actions:
-1. Assess execution outcomes per §2.1 Visible Reasoning: what was delivered, what issues or important findings arose, and what to flag for the Manager.
+1. Assess execution outcomes visibly in chat: what was delivered, what issues or important findings arose, and what to flag for the Manager.
 2. Ensure the Stage directory exists at the parent of `memory_log_path`. Create it if it doesn't exist.
 3. Complete YAML frontmatter fields:
    - Set `agent` to your agent identifier.
    - Set `task_id` to the Task reference from the assignment.
-   - Set `status` based on Task outcome per §2.3 Outcome Standards.
-   - Set `failure_point` based on where failure occurred (`null` if Success) per §2.3 Outcome Standards.
-   - Set `important_findings` per §2.2 Flag Assessment Standards.
-   - Set `compatibility_issues` per §2.2 Flag Assessment Standards.
+   - Set `status` based on Task outcome per §2.2 Outcome Standards.
+   - Set `failure_point` based on where failure occurred (`null` if Success) per §2.2 Outcome Standards.
+   - Set `important_findings` per §2.1 Flag Assessment Standards.
+   - Set `compatibility_issues` per §2.1 Flag Assessment Standards.
 4. Complete markdown body sections:
    - Always include: Summary, Details, Output, Validation, Issues, Next Steps.
    - Include conditional sections only when their corresponding flag is `true`.
    - *Include:* Outcomes, key decisions, blockers, validation results, artifacts produced.
    - *Summarize:* Implementation approach, steps taken, rationale for choices.
-   - *Reference (don't reproduce):* Code blocks over 20 lines, full file contents, verbose outputs.
+   - *Reference (do not reproduce):* Code blocks over 20 lines, full file contents, verbose outputs.
    - *Exclude:* Routine operations, trivial details, information recoverable from artifacts.
-5. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §3.3 Task Report Delivery. Direct User to deliver the report per the communication skill - provide the targeted command with agent identifier and the general command. Keep post-amble minimal.
+5. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. Direct User to deliver the report per the communication skill - provide the targeted command with agent identifier and the general command. Keep post-amble minimal.
 
-For batch execution, write a batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.5 Batch Report Envelope Format.
+For batch execution, write a batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.15 Batch Report Envelope Format.
 
 ---
 
@@ -119,7 +115,7 @@ compatibility_issues: true | false
 
 - `agent`: string, required. Worker identifier.
 - `task_id`: string, required. Task reference from Implementation Plan (e.g., `Task 2.1`).
-- `status`: enum, required. Task outcome per §2.3 Outcome Standards.
+- `status`: enum, required. Task outcome per §2.2 Outcome Standards.
 - `failure_point`: string or null, required. Where/why the Task didn't succeed; `null` for Success.
 - `important_findings`: boolean, required. Whether discoveries have implications beyond current Task scope.
 - `compatibility_issues`: boolean, required. Whether output conflicts with existing systems.

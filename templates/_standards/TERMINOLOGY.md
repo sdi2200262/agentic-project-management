@@ -1,6 +1,8 @@
 # APM Terminology
 
-This document defines all terms used in the APM workflow. Terms defined here are capitalized consistently across all guides and commands. Words not listed here are not capitalized or treated as formal terms. Workflow definitions follow `WORKFLOW.md`.
+This document defines the formal vocabulary of the APM workflow. This is a development-time specification: agents do not read this file or any `_standards/` document during runtime. The vocabulary defined here takes effect through the commands, guides, and skills that use these terms consistently. Template authors use terms exactly as defined here; agents inherit correct terminology through the templates they read.
+
+Formal terms are always capitalized and carry defined meaning. All other language is natural — standard English capitalization applies (headings, labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language. Workflow definitions follow `WORKFLOW.md`.
 
 ---
 
@@ -42,6 +44,32 @@ Three documents form a waterfall: Specifications (what to build) → Implementat
 | ------ | ------------ |
 | **Stage** | Milestone grouping of related Tasks representing a coherent project progression. |
 | **Task** | Discrete work unit with objective, deliverables, validation criteria, and dependencies. Tasks contain ordered sub-units (steps) that support failure tracing but have no independent validation. |
+
+### Task Lifecycle States
+
+Tasks in the Project Tracker progress through these states:
+
+| Term | Definition |
+| ------ | ------------ |
+| **Waiting** | Dependencies not met. |
+| **Ready** | All dependencies complete; can be dispatched. |
+| **Active** | Dispatched to a Worker; execution in progress. |
+| **Done** | Coordination decision finalized - terminal state. |
+
+Outcome statuses are inputs to the Manager's coordination decision — the Manager reviews the outcome, investigates if needed, and then decides the lifecycle transition. A Task becomes Done when the Manager makes a terminal coordination decision - proceeding after Success, accepting a non-Success outcome, or restructuring work. A Task remains Active during investigation, while a follow-up is pending, or while the Manager is deciding how to proceed. Done is terminal; if completed work needs revisiting due to later findings, the Manager creates a new Task through plan modification rather than reopening the original. The original remains Done as a historical coordination decision; the new Task references it and captures what specifically needs correction. When all Tasks in a Stage are Done with no pending merges, the Stage collapses to complete.
+
+### Task Outcome Statuses
+
+Task Memory Logs record the execution result:
+
+| Term | Definition |
+| ------ | ------------ |
+| **Success** | Objective achieved, all validation passed. |
+| **Partial** | Some progress made; Worker needs guidance to continue. |
+| **Failed** | Worker attempted but could not succeed within scope. |
+| **Blocked** | External factors outside Worker scope prevent progress. |
+
+Partial means "I need guidance to continue." Failed means "I tried everything within my scope." Blocked means "factors outside my control prevent progress." The `failure_point` field accompanies non-Success statuses: `null` for Success, `Execution` or `Validation` for Failed/Partial, or a description for Blocked.
 
 ---
 
@@ -100,15 +128,11 @@ These concepts are not formal capitalized terms but are clearly defined because 
 - *Same-agent dependency:* producer and consumer are the same Worker. The Worker has working familiarity - provide light context (recall anchors, file paths).
 - *Cross-agent dependency:* producer and consumer are different Workers. The Worker has zero familiarity - provide comprehensive context (file reading instructions, output summaries, integration guidance). After a Worker Handoff, previous-Stage same-agent dependencies are treated as cross-agent because the incoming Worker lacks that working context.
 
-**Dispatch modes.** The Manager determines how to dispatch ready Tasks:
+**Dispatch modes.** The Manager determines how to dispatch Ready Tasks:
 
 - *Single:* one Task dispatched to one Worker.
-- *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates form a chain with only internal dependencies and no external Tasks depending on intermediate results. Soft guidance: 3-5 Tasks per batch.
+- *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates either form a chain with only internal dependencies and no external Tasks depending on intermediate results, or are an independent group of same-Worker Tasks all Ready simultaneously. Soft guidance: 3-5 Tasks per batch.
 - *Parallel:* two or more dispatch units (singles or batches) sent to different Workers simultaneously when no unresolved cross-Worker dependencies exist. Requires version control workspace isolation.
-
-**Task lifecycle states.** Tasks in the Project Tracker progress through: waiting (dependencies not met), ready (all dependencies complete), active (dispatched to a Worker), done (coordination decision finalized). A Task becomes done when the Manager makes a terminal coordination decision - proceeding after success, accepting a non-success outcome, or restructuring work. A Task remains active during investigation, while a follow-up is pending, or while the Manager is deciding how to proceed. Done is terminal; if completed work needs revisiting due to later findings, that is a new Task. When all Tasks in a Stage are done with no pending merges, the Stage collapses to complete.
-
-**Task outcome statuses.** Task Memory Logs record the execution result: success (objective achieved, all validation passed), partial (some progress made, Worker needs guidance to continue), failed (Worker attempted but could not succeed within scope), blocked (external factors outside Worker scope prevent progress). Partial means "I need guidance to continue." Failed means "I tried everything within my scope." Blocked means "factors outside my control prevent progress." The `failure_point` field accompanies non-success statuses: `null` for success, `Execution` or `Validation` for failed/partial, or a description for blocked.
 
 **Agent states.** Agents in the Project Tracker are either uninitialized (defined in the Implementation Plan but no session started) or on a specific session (Session N). Session numbers increment on Handoff. A session number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
 
@@ -116,7 +140,13 @@ These concepts are not formal capitalized terms but are clearly defined because 
 
 **Cross-agent overrides.** When a Worker Handoff is detected, same-agent dependencies from Tasks whose logs were not loaded by the incoming Worker are reclassified as cross-agent. The Manager maintains an override list in the Project Tracker, recording the specific Tasks affected. During Task Assignment, the Manager checks this list to determine dependency context depth. The Dependency Graph is not modified; overrides are a runtime layer over the static plan.
 
-**Visible reasoning (chain-of-thought).** Agents present their thinking visibly in chat before committing to file output. This makes decomposition decisions, analysis, and reasoning auditable and gives the User opportunity to redirect before artifacts are written. Used during Work Breakdown and other Procedures where reasoning transparency supports User collaboration.
+**Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. Internal authoring structure - section references (§N.M), procedure names, step labels, checkpoint labels, decision categories - is not exposed. Only `TERMINOLOGY.md` terms are used formally; these are the agent's public vocabulary.
+
+**Agent-to-system communication.** Agents write to APM artifacts, memory logs, and bus files using structured formats defined by the relevant skill or guide structural specifications.
+
+**Visible reasoning (chain-of-thought).** Agents present their thinking visibly in chat before committing to file output. This makes decisions auditable and gives the User opportunity to redirect. Two forms exist: 
+  1. **Guided reasoning**, where specific procedures define labeled reasoning frames that structure the analysis (the structure forces thorough analysis and produces better outputs - these frames are intentionally visible and designed for better output quality) 
+  2. **Free-form reasoning**, the baseline for all other decision points - formal and technical, no framework labels or procedure vocabulary as output structure. Guided reasoning frames are defined by the procedures that use them; the communication skill defines the baseline.
 
 ---
 

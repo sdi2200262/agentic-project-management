@@ -8,7 +8,7 @@ This guide defines the process for Context Gathering - gathering sufficient cont
 
 ### 1.1 How to Use This Guide
 
-See §3 Context Gathering Procedure - execute sequentially through all question rounds. See §2 Operational Standards when interpreting responses, assessing gaps, or deciding on exploration. **Present reasoning in chat**; round summaries and exploration context are visible to the User; internal categorization is not. Section references (§N.M) are for your procedural navigation - communicate with the User in natural language.
+See §3 Context Gathering Procedure - execute sequentially through all question rounds. See §2 Operational Standards when interpreting responses, assessing gaps, or deciding on exploration. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Round summaries and exploration context are visible to the User; internal categorization is not.
 
 ### 1.2 Objectives
 
@@ -66,7 +66,7 @@ When processing User responses, assess what was explicitly stated, what can be r
 
 Round summaries present what was learned - do not organize findings into proposed work streams, structural groupings, or decomposition patterns. Describe signals and constraints; work organization happens strictly during Work Breakdown.
 
-After Round 1 and 2 summaries, immediately begin the next round. After Round 3, proceed to §3.5 Finalize Understanding.
+After Round 1 and 2 summaries, immediately begin the next round. After Round 3, continue to the understanding summary.
 
 ### 2.3 Questioning Depth
 
@@ -104,7 +104,6 @@ Complete each step before proceeding to the next.
 These rules apply across all three question rounds.
 
 **Iteration cycle** → For each question round:
-
 1. Ask the initial questions defined for the round.
 2. After each User response, assess gaps per §2.2 Response and Gap Assessment.
 3. Follow up on gaps or advance per §2.2 Response and Gap Assessment.
@@ -119,7 +118,6 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 **Focus areas:** Project type and deliverables, problem and purpose, essential features and scope, required skills and expertise, existing documentation and materials, current plan or vision, previous work and codebase context.
 
 **Initial questions** → Select and adapt from these areas:
-
 1. What type of deliverable(s) are you creating?
 2. What problem does the project solve? What defines success and completion?
 3. What are the essential features, sections, or deliverables?
@@ -128,7 +126,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 6. What is your current plan or vision?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
 
-**Agent configuration:** If `{AGENTS_FILE}` was not found during the workspace scan (per §2.1 Guiding Principles), include: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration.
+**Agent configuration** → If `{AGENTS_FILE}` was not found during the workspace scan (per §2.1 Guiding Principles), include: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration.
 
 **Round completion** → Before proceeding to Round 2, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 
@@ -139,13 +137,11 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 **Initial questions** → Select and adapt from these areas:
 
 *Work Structure and Dependencies:*
-
 - Which parts can be done independently vs need sequential order?
 - What are the most challenging aspects?
 - Any dependencies between different parts of the work?
 
 *Technical and Resource Requirements:*
-
 - Does this work involve different technical environments or platforms?
 - What is the deployment/delivery environment?
 - External resources needed? (data sources, APIs, libraries)
@@ -153,18 +149,15 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 - Which deliverables can be prepared/built within the development environment vs require external platform interaction?
 
 *Complexity and Risk Assessment:*
-
 - What is the target timeline or deadline?
 - What are the anticipated challenging areas or known risks?
 - Any parts requiring external input or review before proceeding?
 
 *Existing Assets (if building on previous work):*
-
 - What is the current structure and key components?
 - What existing functionality should be preserved or modified?
 
 *Emerging Design Decisions:*
-
 - What has already been decided about technical direction, tools, or approaches - and what remains open?
 - Are there things that are definitely in or out of scope?
 
@@ -179,34 +172,29 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 **Initial questions** → Select and adapt from these areas:
 
 *Technical Constraints and Preferences:*
-
 - Required or prohibited tools, languages, frameworks, or platforms?
 - Performance, security, compatibility requirements?
 - Setup, configuration, or deployment steps requiring specific account access?
 
 *Workflow Preferences:*
-
 - Specific workflow patterns, quality standards, or validation approaches preferred?
 - Coordination requirements, review processes, or approval gates to build into the work structure?
 
 *Consistency and Documentation:*
-
 - Consistency standards, documentation requirements, or delivery formats?
 - Examples, templates, or reference materials illustrating preferred approach?
 
 *Domain Organization (if distinct domains identified in earlier rounds):*
-
 - Would related domains benefit from unified handling or separate parallel progress?
 - Natural handoff points between different types of work?
 - Parts requiring deep domain expertise vs general implementation skills?
 
 *Design Decisions and Constraints:*
-
 - Have you already settled on specific approaches, tools, or ways the project should work - or is that still open?
 - Is there anything that's definitely in or out of scope?
 - Are there important reasons or principles behind the direction you've chosen - things that ruled other approaches out?
 
-**Round completion** → Before proceeding to §3.5 Finalize Understanding, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
+**Round completion** → Before proceeding to §3.5, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
 
 ### 3.5 Finalize Understanding
 

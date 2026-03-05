@@ -50,13 +50,13 @@ Every dispatch unit (single Task or batch) gets its own feature branch off the b
 
 Worktrees are created only for parallel dispatch - when multiple Workers need physically separate directories simultaneously. For sequential dispatch, the Worker operates in the main working directory on their feature branch.
 
-Directory layout per §4.2 Worktree Directory Layout. **Concurrency limit:** maximum 3-4 concurrent worktrees - disk usage scales linearly with working directory size. **Lifecycle:** short-lived - created before dispatch, removed promptly after merge. **Untracked files:** worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
+Directory layout per §4.2 Worktree Directory Layout. **Concurrency limit:** Maximum 3-4 concurrent worktrees - disk usage scales linearly with working directory size. **Lifecycle:** Short-lived - created before dispatch, removed promptly after merge. **Untracked files:** Worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
 
 ### 2.4 Merge Standards
 
 Merge state is a dispatch prerequisite. The Manager merges completed feature branches into the base branch at specific coordination points.
 
-**Merge timing:** after successful Task Review, merge the completed branch. Before dependent dispatch, merge if the dependent Task needs the completed Task's output. At Stage end, all current-Stage feature branches must be merged.
+**Merge timing:** After successful Task Review, merge the completed branch. Before dependent dispatch, merge if the dependent Task needs the completed Task's output. At Stage end, all current-Stage feature branches must be merged.
 
 **Merge execution:** The Manager performs merges autonomously. Clean merges require no User intervention.
 
@@ -116,7 +116,7 @@ Execute for parallel dispatch when multiple Workers need isolated workspaces. Pe
 
 ### 3.4 Merge Coordination
 
-Execute after a successful Task Review when the review outcome is Proceed. Perform the following actions:
+Execute after a successful Task Review with no outstanding follow-ups. Perform the following actions:
 1. Switch to the base branch: `git checkout <base-branch>`.
 2. Merge the completed feature branch: `git merge <branch-name>`.
 3. If conflicts arise, resolve per §2.4 Merge Standards.
