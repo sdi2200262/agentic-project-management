@@ -1,6 +1,6 @@
 # APM Structure Standards
 
-This document defines the organizational structure for APM commands, guides and skills - required sections, ordering, and document-level formatting. Content presentation and writing conventions follow [`WRITING.md`](./WRITING.md). All terms are defined in [`TERMINOLOGY.md`](./TERMINOLOGY.md).
+This document defines the organizational structure for APM commands, guides, and skills — required sections, ordering, and document-level formatting. This is a development-time specification: agents do not read this file during runtime. The structural patterns defined here are implemented by template authors in commands, guides, and skills. Content presentation and writing conventions follow [`WRITING.md`](./WRITING.md). All terms are defined in [`TERMINOLOGY.md`](./TERMINOLOGY.md).
 
 ---
 
@@ -12,67 +12,19 @@ Different document types have different structural needs. This matrix defines th
 
 | Document Type | Structure Policy |
 | ------------- | ---------------- |
-| **Guides** | Strict 5-section pattern (§1 Overview through §5 Content Guidelines) by default. Sections may be merged only when there is a clear, justified reduction in cross-referencing overhead - not for cosmetic reasons. |
 | **Initiation commands** (`apm-1`, `apm-2`, `apm-3`) | Strict structure. Role declaration, session initiation, core procedures, operating rules. |
 | **Utility commands** (`apm-4-check-tasks`, `apm-5-check-reports`) | Lightweight structure. These are short trigger commands - full rigidity adds no clarity. |
-| **Handoff commands** (`apm-6`, `apm-7`) | Lightweight structure. EProcedure, structural specs for artifacts. |
-| **Skills** | Freer, advisory/procedural structure. The 5-section pattern used in guides is preferred for consistency but not rigidly enforced. Skills may adapt section organization to their procedural needs. |
+| **Handoff commands** (`apm-6`, `apm-7`) | Lightweight structure. Procedure, structural specs for artifacts. |
+| **Guides** | Strict 5-section pattern (§1 Overview through §5 Content Guidelines) by default. Sections may be merged only when there is a clear, justified reduction in cross-referencing overhead - not for cosmetic reasons. |
+| **Skills** | Free-form structure. Required: §1 Overview (reading agents, objectives, outputs) and end marker. Internal organization adapts to the skill's nature - skills may contain standards, procedures, reference content, or any combination. |
 
 ---
 
-## 2. Skill and Guide Structure
-
-Skills and guides are agent-facing documents containing procedural instructions and operational standards. Skills include YAML frontmatter and may be read by multiple agent roles. Guides follow the same section structure but omit YAML frontmatter; each guide is read by only one agent role.
-
-### 2.1 YAML Frontmatter (Skills Only)
-
-Every skill file begins with YAML frontmatter. Guides omit YAML frontmatter entirely.
-
-**Schema:**
-
-```yaml
----
-name: <skill-name>
-description: <one or two sentence description of skill purpose>
----
-```
-
-- `name` (required, kebab-case): Skill identifier. Matches directory name.
-- `description` (required, one or two sentences): Brief statement of skill purpose.
-
-### 2.2 Section Structure
-
-Skills and guides follow a consistent structure with §1 Overview, §2 Operational Standards, §3 Procedure(s), §4 Structural Specifications, and §5 Content Guidelines.
-
-| Section | Number | Purpose |
-| ------- | ------ | ------- |
-| Overview | §1 | Introduce purpose, usage instructions, objectives, and outputs (if applicable). |
-| Operational Standards | §2 | Define reasoning approaches and decision rules for the procedure. |
-| [Procedure Section] | §3 | Define the procedure and its activities. |
-| Structural Specifications | §4 | Define output formats and schemas. |
-| Content Guidelines | §5 | Define quality standards and common mistakes. |
-
-**Procedure section structure:** Each skill/guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. Subsections (§3.1, §3.2...) are the procedure's activities.
-
-### 2.3 Section Requirements
-
-**§1 Overview:** Must include usage guidance, objectives (bulleted outcomes), and outputs (conditional - omit if no artifacts are produced).
-
-**§2 Operational Standards:** One subsection per standards area. Cover all reasoning and decision areas for the procedure. Include decision rules with conditions and actions. Include default behavior statements where ambiguity is possible.
-
-**§3 Procedure:** Single procedure with subsection activities. Follows the "Perform the following actions:" format. Cross-references §2 standards when decisions apply. Includes conditional branching where applicable.
-
-**§4 Structural Specifications:** Define formats for all outputs. Specify file path patterns. Provide schemas with field descriptions.
-
-**§5 Content Guidelines:** Quality standards specific to outputs. Always includes Common Mistakes as final subsection.
-
----
-
-## 3. Command Structure
+## 2. Command Structure
 
 Commands are user-facing prompts that initiate key workflow actions.
 
-### 3.1 YAML Frontmatter
+### 2.1 YAML Frontmatter
 
 Every command file begins with YAML frontmatter.
 
@@ -88,7 +40,7 @@ description: <one or two sentence description of command purpose>
 - `command_name` (required, kebab-case): Command identifier.
 - `description` (required, one or two sentences): Brief statement of command purpose.
 
-### 3.2 Section Structure
+### 2.2 Section Structure
 
 Commands follow a variable structure based on purpose, with required opening and closing sections.
 
@@ -98,7 +50,7 @@ Commands follow a variable structure based on purpose, with required opening and
 | [Procedures] | §2 through §(N-1) | Primary procedures for this command. Variable based on purpose. |
 | Operating Rules | §N (always last numbered) | Boundaries, standards, and constraints for agent behavior. |
 
-### 3.3 Command Profiles
+### 2.3 Command Profiles
 
 **Initiation commands** (strict profile):
 
@@ -116,15 +68,70 @@ Commands follow a variable structure based on purpose, with required opening and
 | Section | Content |
 | ------- | ------- |
 | §1 Overview | Handoff purpose, artifacts produced. |
-| §2 Handoff Eligibility | Requirements, blocking scenarios. |
-| §3 Handoff Procedure | Handoff execution actions. |
-| §4+ [Structural Sections] | Handoff Memory Log structure, handoff prompt structure. |
+| §2 Handoff Procedure | Handoff execution actions. |
+| §3+ [Structural Sections] | Handoff Memory Log structure, handoff prompt structure. |
 
 ---
 
-## 4. Section Formatting Rules
+## 3. Guide Structure
 
-### 4.1 Heading Levels
+Guides are agent-facing documents containing procedural instructions and operational standards. Each guide is read by only one agent role and omits YAML frontmatter.
+
+### 3.1 Section Structure
+
+Guides follow a consistent structure with §1 Overview, §2 Operational Standards, §3 Procedure(s), §4 Structural Specifications, and §5 Content Guidelines.
+
+| Section | Number | Purpose |
+| ------- | ------ | ------- |
+| Overview | §1 | Introduce purpose, usage instructions, objectives, and outputs (if applicable). |
+| Operational Standards | §2 | Define reasoning approaches and decision rules for the procedure. |
+| [Procedure Section] | §3 | Define the procedure and its activities. |
+| Structural Specifications | §4 | Define output formats and schemas. |
+| Content Guidelines | §5 | Define quality standards and common mistakes. |
+
+**Procedure section structure:** Each guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. Subsections (§3.1, §3.2...) are the procedure's activities.
+
+### 3.2 Section Requirements
+
+**§1 Overview:** Must include usage guidance, objectives (bulleted outcomes), and outputs (conditional - omit if no artifacts are produced).
+
+**§2 Operational Standards:** One subsection per standards area. Cover all reasoning and decision areas for the procedure. Include decision rules with conditions and actions. Include default behavior statements where ambiguity is possible.
+
+**§3 Procedure:** Single procedure with subsection activities. Follows the "Perform the following actions:" format. Cross-references §2 standards when decisions apply. Includes conditional branching where applicable.
+
+**§4 Structural Specifications:** Define formats for all outputs. Specify file path patterns. Provide schemas with field descriptions.
+
+**§5 Content Guidelines:** Quality standards specific to outputs. Always includes Common Mistakes as final subsection.
+
+---
+
+## 4. Skill Structure
+
+Skills are agent-facing documents with free-form internal organization. Each skill file begins with YAML frontmatter.
+
+### 4.1 YAML Frontmatter
+
+**Schema:**
+
+```yaml
+---
+name: <skill-name>
+description: <one or two sentence description of skill purpose>
+---
+```
+
+- `name` (required, kebab-case): Skill identifier. Matches directory name.
+- `description` (required, one or two sentences): Brief statement of skill purpose.
+
+### 4.2 Section Structure
+
+Skills require §1 Overview (including reading agents, objectives, and outputs) and an end marker. Beyond §1, skills organize content freely to match their nature. Skills may contain operational standards, procedures, structural specifications, content guidelines, or any combination - section naming and ordering adapts to the skill's purpose.
+
+---
+
+## 5. Section Formatting Rules
+
+### 5.1 Heading Levels
 
 | Level | Markdown | Usage |
 | ----- | -------- | ----- |
@@ -136,7 +143,7 @@ Commands follow a variable structure based on purpose, with required opening and
 
 Deeper hierarchy within subsections uses **bold** to introduce sub-topics and *italic* to label items within lists. See `WRITING.md` §7.1 for formatting patterns.
 
-### 4.2 Section Numbering
+### 5.2 Section Numbering
 
 | Format | Usage |
 | ------ | ----- |
@@ -145,15 +152,15 @@ Deeper hierarchy within subsections uses **bold** to introduce sub-topics and *i
 
 Section numbers in text references use the § symbol with section title: "See §3.2 Dependency Context."
 
-### 4.3 Horizontal Rules
+### 5.3 Horizontal Rules
 
 Horizontal rules (`---`) separate major sections (## headings) only. Horizontal rules are not used within sections or between subsections.
 
 ---
 
-## 5. YAML Frontmatter Rules
+## 6. YAML Frontmatter Rules
 
-### 5.1 General Rules
+### 6.1 General Rules
 
 | Rule | Description |
 | ---- | ----------- |
@@ -162,7 +169,7 @@ Horizontal rules (`---`) separate major sections (## headings) only. Horizontal 
 | Indentation | No indentation for top-level fields. |
 | Quotes | Strings containing special characters are quoted. |
 
-### 5.2 Field Naming
+### 6.2 Field Naming
 
 | Rule | Description |
 | ---- | ----------- |
@@ -170,7 +177,7 @@ Horizontal rules (`---`) separate major sections (## headings) only. Horizontal 
 | Clarity | Field names are descriptive. |
 | Consistency | Field names are consistent across all files of the same type. |
 
-### 5.3 Field Values
+### 6.3 Field Values
 
 | Type | Format |
 | ---- | ------ |
@@ -181,15 +188,15 @@ Horizontal rules (`---`) separate major sections (## headings) only. Horizontal 
 
 ---
 
-## 6. Structural Specifications Rules
+## 7. Structural Specifications Rules
 
 These rules govern output format definitions in structural specifications sections of skills and guides. Tables are the appropriate format for structural specifications, schemas, format definitions, and enumerated field descriptions. Prose remains preferred for explanatory and instructional content per `WRITING.md` §1.3.
 
-### 6.1 Format Definition Structure
+### 7.1 Format Definition Structure
 
 Each format definition includes: location (file path pattern with placeholders), naming convention (explanation of path components), schema (YAML frontmatter and/or markdown body structure), and field descriptions (type, required status, allowed values, purpose).
 
-### 6.2 Schema Representation
+### 7.2 Schema Representation
 
 **YAML Schemas:** Use fenced code blocks with `yaml` language tag:
 
@@ -205,37 +212,21 @@ field_two: <type or allowed values>
 
 **Field Descriptions:**
 
-- `field_one`: string, required, specifies [purpose]. 
+- `field_one`: string, required, specifies [purpose].
 - `field_two`: enum, required, indicates [purpose]. Allowed values are `A`, `B`, or `C`.
 ````
 
 **Markdown Body Templates:** Use fenced code blocks with `markdown` language tag.
 
-### 6.3 Placeholder Notation
+### 7.3 Placeholder Notation
 
 Value placeholders use `<placeholder>` for values to fill, `[optional]` for conditional content, `...` for pattern continuation, `N`/`M` for numeric values, and `<Slug>` for descriptive identifiers. Cross-reference placeholders (`{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_FILE}`, `{VERSION}`, `{TIMESTAMP}`, `{ARGS}`) are resolved during build.
 
 ---
 
-## 7. File Naming Conventions
+## 8. File Naming Conventions
 
-### 7.1 Skill Files
-
-| Component | Convention |
-| --------- | ---------- |
-| Directory | `skills/<skill-name>/` |
-| File | `SKILL.md` (uppercase) |
-| Skill name | kebab-case, matches directory name |
-
-### 7.2 Guide Files
-
-| Component | Convention |
-| --------- | ---------- |
-| Directory | `guides/` |
-| File | `<guide-name>.md` |
-| Guide name | kebab-case |
-
-### 7.3 Command Files
+### 8.1 Command Files
 
 | Component | Convention |
 | --------- | ---------- |
@@ -244,18 +235,34 @@ Value placeholders use `<placeholder>` for values to fill, `[optional]` for cond
 | Prefix | `apm-<N>-` where N is sort order |
 | Names | kebab-case throughout |
 
+### 8.2 Guide Files
+
+| Component | Convention |
+| --------- | ---------- |
+| Directory | `guides/` |
+| File | `<guide-name>.md` |
+| Guide name | kebab-case |
+
+### 8.3 Skill Files
+
+| Component | Convention |
+| --------- | ---------- |
+| Directory | `skills/<skill-name>/` |
+| File | `SKILL.md` (uppercase) |
+| Skill name | kebab-case, matches directory name |
+
 ---
 
-## 8. End Markers
+## 9. End Markers
 
-Every skill and command file ends with an end marker followed by a blank line.
+Every command, guide, and skill file ends with an end marker followed by a blank line.
 
-**Skills:**
+**Commands:**
 
 ```text
 ---
 
-**End of Skill**
+**End of Command**
 
 ```
 
@@ -268,12 +275,12 @@ Every skill and command file ends with an end marker followed by a blank line.
 
 ```
 
-**Commands:**
+**Skills:**
 
 ```text
 ---
 
-**End of Command**
+**End of Skill**
 
 ```
 
