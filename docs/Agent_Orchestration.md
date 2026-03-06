@@ -31,47 +31,47 @@ The framework establishes a coordination hierarchy where Agents interact through
 
 **Outgoing Agent → Incoming Agent (via User)**
 
-- Outgoing agent creates Handoff Memory Log and handoff prompt
-- User initializes new Session and delivers handoff prompt
-- Incoming agent reconstructs context and continues work
+- Outgoing Agent creates Handoff Log and handoff prompt
+- User initializes new Session; incoming Agent auto-detects handoff prompt
+- Incoming Agent reconstructs context and continues work
 
 **All Agents ↔ Planning Documents**
 
 - Planner creates all three planning documents
-- Manager reads all three, extracts from Specifications and Implementation Plan into Task Prompts, may update all three
-- Workers read Execution Standards directly, receive extracted context via Task Prompts, may update Execution Standards
+- Manager reads all three, extracts from the Spec and Plan into Task Prompts, may update all three
+- Workers read Rules directly (via platform's agents file), receive extracted context via Task Prompts, may update Rules
 
 ---
 
-## Message Bus
+## Bus System
 
-The Message Bus in `.apm/bus/` provides file-based communication between Agent Sessions. The Manager initializes the Bus during Session 1, creating agent directories (subdirectories) for each Worker defined in the Implementation Plan.
+The bus system in `.apm/bus/` provides file-based communication between Agent Sessions. The Planner initializes it at the end of the Planning Phase, creating agent directories for each Worker defined in the Plan. The Manager has a bus directory containing only a Handoff Bus.
 
 ### Bus File Types
 
-Each agent directory contains three Bus Files:
+Each Worker's agent directory contains three bus files:
 
-**Task Bus** (`apm-task.md`)
+**Task Bus** (`task.md`)
 
 - Manager writes Task Prompts (single or batched)
 - Worker reads to receive assignments
 - Direction: Manager → Worker
 
-**Report Bus** (`apm-report.md`)
+**Report Bus** (`report.md`)
 
 - Worker writes Task Reports (single or batched)
 - Manager reads to review outcomes
 - Direction: Worker → Manager
 
-**Handoff Bus** (`apm-handoff.md`)
+**Handoff Bus** (`handoff.md`)
 
-- Outgoing Agent writes Handoff Prompt
+- Outgoing Agent writes handoff prompt
 - Incoming Agent reads to reconstruct context
 - Direction: Outgoing Agent → Incoming Agent
 
 ### Clear-on-Return Protocol
 
-Before writing to an outgoing Bus File, an Agent clears its incoming Bus File. This prevents stale messages from accumulating and signals message processing completion.
+Before writing to an outgoing bus file, an Agent clears its incoming bus file. This prevents stale messages from accumulating and signals message processing completion.
 
 Example: Worker clears Task Bus before writing to Report Bus.
 
@@ -89,25 +89,37 @@ This user-mediated model works universally across platforms without requiring to
 
 ---
 
-## Memory System
+## Memory
 
-The Memory System in `.apm/Memory/` tracks project state and execution history through a hierarchical structure. Workers document their work, Managers review logs and track coordination state, and all Agents use this archive for context reconstruction during Handoff.
+Memory resides in `.apm/` and tracks project state and execution history through a hierarchical structure. Workers document their work, the Manager reviews logs and tracks coordination state, and all Agents use this archive for context reconstruction during Handoff.
 
-### Memory Root
+### Tracker
 
-**Location:** `.apm/Memory/Memory_Root.md`
+**Location:** `.apm/tracker.md`
 
-Central project state document containing:
+Live project state document containing:
 
-- **Project Tracker** - Task statuses per Stage (ready, active, done, waiting), agent assignments, active branches, merge state; updated by Manager after each Task Review
-- **Working Notes** - Ephemeral coordination notes maintained by Manager and User, inserted and removed as context evolves
-- **Stage Summaries** - Compressed Stage-level outcomes appended after each Stage completes
+- **Task tracking** - Task statuses per Stage (Waiting, Ready, Active, Done), agent assignments, active branches, merge state; updated by Manager after each Task Review
+- **Agent tracking** - Agent identifiers, session numbers, and notes; updated when agents are dispatched to or Handoffs are detected
+- **Version control state** - Base branch, branch convention, active branches, pending merges
+- **Working notes** - Ephemeral coordination notes maintained by Manager and User, inserted and removed as context evolves
 
-The Manager initializes Memory Root during Session 1 and updates it after each Task Review.
+The Manager populates the Tracker during Session 1 and updates it after each Task Review.
 
-### Task Memory Logs
+### Index
 
-**Location:** `.apm/Memory/Stage_<N>_<Slug>/Task_Log_<N>_<M>_<Slug>.md`
+**Location:** `.apm/memory/index.md`
+
+Durable project memory containing:
+
+- **Memory notes** - Persistent observations and patterns with lasting value, placed first so incoming Managers encounter durable knowledge immediately
+- **Stage summaries** - Stage-level outcomes appended after each Stage completes
+
+The Manager initializes the Index during Session 1 and appends stage summaries as Stages complete.
+
+### Task Logs
+
+**Location:** `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`
 
 Structured logs created by Workers after Task completion. Each log documents:
 
@@ -117,13 +129,13 @@ Structured logs created by Workers after Task completion. Each log documents:
 - Technical decisions made during execution
 - Flags for Manager attention (important_findings, compatibility_issues)
 
-Task Memory Logs serve as context abstraction layer - the Manager reads logs to understand outcomes without reviewing code and other output directly. During Handoff, Incoming Agents read relevant logs to reconstruct context.
+Task Logs serve as context abstraction layer - the Manager reads logs to understand outcomes without reviewing code and other output directly. During Handoff, incoming Agents read relevant logs to reconstruct context.
 
-Workers create the Stage Directory when writing their first log for that Stage.
+Workers create the stage directory when writing their first log for that Stage.
 
-### Handoff Memory Logs
+### Handoff Logs
 
-**Location:** `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<N>.md`
+**Location:** `.apm/memory/handoffs/<agent>/handoff-<NN>.log.md`
 
 Logs created during Handoff capturing working context not recorded elsewhere:
 
@@ -133,15 +145,15 @@ Logs created during Handoff capturing working context not recorded elsewhere:
 - Current execution context if Handoff occurs mid-task
 - Version control state (active branches, worktrees, pending merges)
 
-Incoming Agents read the Handoff Memory Log during context reconstruction to resume seamlessly.
+Incoming Agents read the Handoff Log during context reconstruction to resume seamlessly.
 
 ### Memory as Context Archive
 
-As the project progresses, the Memory System becomes a comprehensive archive mapping the Implementation Plan to execution history. This structured mapping enables:
+As the project progresses, Memory becomes a comprehensive archive mapping the Plan to execution history. This structured mapping enables:
 
-- **Efficient Handoff** - Incoming Agents reconstruct context from Memory Root (if Manager), Handoff Memory Log, and relevant Task Memory Logs rather than full session history
-- **Cross-Agent Context** - Workers integrate outputs from other Agents by reading specified Task Memory Logs as instructed in Task Prompts
-- **Progress Tracking** - Manager assesses project state by reading Stage Summaries and Project Tracker rather than reviewing all code changes
+- **Efficient Handoff** - Incoming Agents reconstruct context from the Tracker and Index (if Manager), Handoff Log, and relevant Task Logs rather than full session history
+- **Cross-Agent Context** - Workers integrate outputs from other Agents by reading specified Task Logs as instructed in Task Prompts
+- **Progress Tracking** - Manager assesses project state by reading stage summaries in the Index and task tracking in the Tracker rather than reviewing all code changes
 
 ---
 
@@ -159,8 +171,8 @@ APM achieves Agent specialization through intentional context boundaries. Each A
 
 **Does not access:**
 
-- Memory System (does not exist yet)
-- Message Bus (does not exist yet)
+- Memory (does not exist yet)
+- Bus system (does not exist yet)
 - Implementation Phase activities
 
 Single Session, no Handoff.
@@ -170,34 +182,35 @@ Single Session, no Handoff.
 **Access:**
 
 - All planning documents (reads, may update)
-- Memory System (Memory Root with Project Tracker and Stage Summaries, all Task Memory Logs)
-- Message Bus (all Task/Report/Handoff buses)
+- Tracker and Index
+- All Task Logs
+- Bus system (all Task/Report/Handoff buses)
 - Version control state during parallel dispatch
 
 **Does not access:**
 
-- Worker's detailed execution context (reads Task Memory Logs instead of code)
+- Worker's detailed execution context (reads Task Logs instead of code)
 - Task-level implementation details unless investigation requires it or User requests it
 
-Multiple Sessions via Handoff. Each Session continues from where previous left off using Handoff Memory Log and Memory System.
+Multiple Sessions via Handoff. Each Session continues from where previous left off using Handoff Log and Memory.
 
 ### Worker
 
 **Access:**
 
-- Current Task Prompt (includes extracted Specifications context, instructions, validation criteria)
-- Execution Standards file directly
+- Current Task Prompt (includes extracted Spec context, instructions, validation criteria)
+- Rules directly (via platform's agents file)
 - Accumulated working context from prior same-agent tasks in current Stage
-- Specified Task Memory Logs when cross-agent dependencies exist
+- Specified Task Logs when cross-agent dependencies exist
 
 **Does not reference directly:**
 
-- Specifications file (receives extracted context via Task Prompt - Manager embeds all necessary content)
-- Implementation Plan file (receives Task definition via Task Prompt)
-- Memory Root, Stage Summaries, or Project Tracker
+- Spec (receives extracted context via Task Prompt - Manager embeds all necessary content)
+- Plan (receives Task definition via Task Prompt)
+- Tracker, Index, or stage summaries
 - Other Workers' working context unless explicitly provided in Task Prompt
 
-Multiple Sessions via Handoff. After Handoff, Incoming Worker reads current-Stage Task Memory Logs for their Agent to reconstruct working context.
+Multiple Sessions via Handoff. After Handoff, incoming Worker reads current-Stage Task Logs for their Agent to reconstruct working context.
 
 ---
 
@@ -209,8 +222,8 @@ When an Agent's context window approaches limits (70-80% capacity), Handoff tran
 
 Traditional session compaction accumulates noise - debugging attempts, trial-and-error, intermediate reasoning. Handoff filters this noise through structured artifacts:
 
-- **Memory System** preserves execution outcomes and coordination state
-- **Handoff Memory Log** preserves working knowledge and undocumented insights
+- **Memory** (Tracker, Index, Task Logs) preserves execution outcomes and coordination state
+- **Handoff Log** preserves working knowledge and undocumented insights
 
 The Incoming Agent inherits clean context without session noise, enabling multiple consecutive handoffs without degradation.
 
@@ -224,21 +237,21 @@ The Incoming Agent inherits clean context without session noise, enabling multip
 **Worker:**
 
 - May Handoff between tasks or mid-task
-- Must document current execution context in detail in Handoff Memory Log if mid-task
+- Must document current execution context in detail in Handoff Log if mid-task
 
 ### Two-Artifact Handoff System
 
-**Handoff Memory Log**
+**Handoff Log**
 
-- Created by Outgoing Agent
+- Created by outgoing Agent
 - Captures uncommitted knowledge not in formal logs
-- Includes working patterns, User preferences, undocumented state, current execution context (if worker), version control state (if manager)
+- Includes working patterns, User preferences, undocumented state, current execution context (if Worker), version control state (if Manager)
 
 **Handoff Prompt**
 
-- Created by Outgoing Agent, written to Handoff Bus
-- Instructs Incoming Agent on context reconstruction
-- Specifies which artifacts to read (Handoff Memory Log, relevant Task Memory Logs)
+- Created by outgoing Agent, written to Handoff Bus
+- Instructs incoming Agent on context reconstruction
+- Specifies which artifacts to read (Handoff Log, relevant Task Logs)
 - Includes verification step before resuming operations
 
 ### Context Reconstruction
@@ -246,17 +259,18 @@ The Incoming Agent inherits clean context without session noise, enabling multip
 **Incoming Manager reads:**
 
 - All planning documents
-- Memory Root (Project Tracker, Stage Summaries, Working Notes)
-- Handoff Memory Log
-- Relevant recent Task Memory Logs
+- Tracker (task tracking, agent tracking, working notes)
+- Index (memory notes, stage summaries)
+- Handoff Log
+- Relevant recent Task Logs
 
 **Incoming Worker reads:**
 
-- Execution Standards file
-- Current-Stage Task Memory Logs for their agent
-- Handoff Memory Log
+- Rules (via platform's agents file)
+- Current-Stage Task Logs for their agent
+- Handoff Log
 
-Previous-Stage logs are not loaded for efficiency - the Manager accounts for this by treating prior-Stage same-agent dependencies as cross-agent dependencies (providing file reading instructions in Task Prompts).
+Previous-Stage logs are not loaded for efficiency - the Manager accounts for this by treating previous-Stage same-agent dependencies as cross-agent dependencies (providing file reading instructions in Task Prompts).
 
 ---
 

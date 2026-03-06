@@ -19,9 +19,9 @@ APM provides each Agent with different views of the project:
 
 - **Planner** - Sees project requirements, constraints, and the complete vision. Operates with full context during Planning Phase to create planning documents. Interacts only with these initial documents and does not participate in the project's execution.
 
-- **Manager** - Sees planning documents (Specifications, Implementation Plan, Execution Standards), Task Memory Logs, and Working Notes. Maintains coordination-level perspective without implementation details, while overseeing the project's execution.
+- **Manager** - Sees planning documents (Spec, Plan, Rules), Task Logs, the Tracker, and the Index. Maintains coordination-level perspective without implementation details, while overseeing the project's execution.
 
-- **Workers** - See their Task Prompts, accumulated working context from prior tasks, and Execution Standards document. No visibility into full project scope or other agents' work unless explicitly provided. Actively participates in the project's execution.
+- **Workers** - See their Task Prompts, accumulated working context from prior tasks, and the Rules. No visibility into full project scope or other agents' work unless explicitly provided. Actively participate in the project's execution.
 
 - **Subagents** - Platform-native temporary agents that see only the specific context provided for their isolated task (debugging, research). Execute autonomously and return findings.
 
@@ -32,7 +32,7 @@ APM provides each Agent with different views of the project:
 | Agent Type | Role | Context Scope | Sessions | Active Phase |
 | :--- | :--- | :--- | :--- | :--- |
 | **Planner** | Architect | Full project vision and requirements | 1 | Planning Phase |
-| **Manager** | Coordinator | Planning documents and Memory System | Multiple (via Handoff) | Implementation Phase |
+| **Manager** | Coordinator | Planning documents and Memory | Multiple (via Handoff) | Implementation Phase |
 | **Worker** | Developer | Task Prompt and working context | Multiple (via Handoff) | Implementation Phase |
 | **Subagent** | Specialist | Isolated context for specific problem | Temporary | As spawned |
 
@@ -49,11 +49,11 @@ The Planner operates once at project start to transform User requirements into p
 - **Context Gathering** - Conducts structured discovery through three Question Rounds focused on project vision, technical requirements, and implementation approach. Produces an Understanding Summary for User review and approval.
 
 - **Work Breakdown** - Decomposes gathered context into three planning documents:
-  - **Specifications** - Project-specific design decisions and constraints defining what is being built
-  - **Implementation Plan** - Stage and Task breakdown with agent assignments, validation criteria and Dependency Graph defining how work is organized
-  - **Execution Standards** - Universal execution patterns defining how work is performed
+  - **Spec** - Project-specific design decisions and constraints defining what is being built
+  - **Plan** - Stage and Task breakdown with agent assignments, validation criteria, and Dependency Graph defining how work is organized
+  - **Rules** - Universal execution patterns defining how work is performed (written as the APM standards block in the platform's agents file)
 
-  Reviews each planning document with the User for approval before proceeding. Iterates based on feedback until all three are finalized.
+  Reviews each planning document with the User for approval before proceeding. Iterates based on feedback until all three are finalized. Initializes the bus system for all agents defined in the Plan.
 
 The Planner's work establishes the foundation for the entire Implementation Phase. Thoroughness during Planning Phase prevents ambiguity and blockers during execution.
 
@@ -61,45 +61,45 @@ The Planner's work establishes the foundation for the entire Implementation Phas
 
 ## Manager
 
-The Manager coordinates execution of the Implementation Plan. It operates throughout the project, assigning tasks to Workers, reviewing completed work, making review outcome decisions, and maintaining project state.
+The Manager coordinates execution of the Plan. It operates throughout the project, assigning tasks to Workers, reviewing completed work, making review outcome decisions, and maintaining project state.
 
-**Operational Context:** Sees all planning documents, the Memory System and the Message Bus. Maintains coordination-level perspective without diving into code, unless explicitly required or requested.
+**Operational Context:** Sees all planning documents, the Tracker, the Index, and the bus system. Maintains coordination-level perspective without diving into code, unless explicitly required or requested.
 
 **Core Responsibilities:**
 
-- **Task Assignment** - Assesses task readiness based on dependency completion and the current Project Tracker. Constructs Task Prompts with objective, instructions, validation criteria, and context extracted from Specifications when needed. Determines dispatch mode (single, batch or parallel) and delivers Task Prompts via Task Bus.
+- **Task Assignment** - Assesses task readiness based on dependency completion and the current Tracker. Constructs Task Prompts with objective, instructions, validation criteria, and context extracted from the Spec when needed. Determines dispatch mode (single, batch, or parallel) and delivers Task Prompts via Task Bus.
 
-- **Task Review** - Reads Task Reports from Report Bus and Task Memory Logs from Workers. Determines review outcome: proceed to next task, issue a follow-up (retry with refined instructions), or modify planning documents then proceed or follow up.
+- **Task Review** - Reads Task Reports from Report Bus and Task Logs from Workers. Determines review outcome: proceed to next task, issue a follow-up (retry with refined instructions), or modify planning documents then proceed or follow up.
 
-- **Planning Document Maintenance** - Updates Specifications, Implementation Plan, or Execution Standards when execution reveals issues with initial design decisions, task definitions, dependencies, or universal patterns. Assesses cascade implications and determines whether modifications require User collaboration.
+- **Planning Document Maintenance** - Updates the Spec, Plan, or Rules when execution reveals issues with initial design decisions, task definitions, dependencies, or universal patterns. Assesses cascade implications and determines whether modifications require User collaboration.
 
-- **Memory System Maintenance** - Updates Project Tracker in Memory Root after each Task Review to track task statuses (ready, active, done, waiting), agent assignments, active branches, and merge state. Creates Stage Summaries after Stage completion. Maintains Working Notes for ephemeral coordination context.
+- **Memory Maintenance** - Updates the Tracker after each Task Review to track task statuses (Ready, Active, Done, Waiting), agent assignments, active branches, and merge state. Appends stage summaries to the Index after Stage completion. Maintains working notes in the Tracker for ephemeral coordination context.
 
 - **Version Control Coordination** - Initializes and manages feature branches and worktrees for parallel task execution. Performs merge sweeps at Stage boundaries to ensure all work is integrated before advancing.
 
-The Manager operates through multiple Sessions via Handoff when context limits approach. Each Session continues from where the previous left off using Handoff Memory Logs and the Memory System.
+The Manager operates through multiple Sessions via Handoff when context limits approach. Each Session continues from where the previous left off using Handoff Logs and the Tracker and Index.
 
 ---
 
 ## Workers
 
-Workers execute Tasks assigned by the Manager. Each Worker is defined in the Implementation Plan with a specific domain (frontend, backend, API, infrastructure, etc.). Multiple Workers operate in parallel when dependencies allow.
+Workers execute Tasks assigned by the Manager. Each Worker is defined in the Plan with a specific domain (frontend, backend, API, infrastructure, etc.). Multiple Workers operate in parallel when dependencies allow.
 
-**Operational Context:** Sees the current Task Prompt (including extracted Specifications context, instructions, validation criteria), accumulated working context from prior tasks executed, and Execution Standards document. No visibility into full project scope, other agents' work, or planning documents unless explicitly provided in Task Prompt.
+**Operational Context:** Sees the current Task Prompt (including extracted Spec context, instructions, validation criteria), accumulated working context from prior tasks executed, and the Rules. No visibility into full project scope, other agents' work, or planning documents unless explicitly provided in Task Prompt.
 
 **Core Responsibilities:**
 
 - **Task Execution** - Receives Task Prompt via Task Bus. If cross-agent dependencies exist, reads specified files to integrate context from prior tasks of other Workers. Executes instructions step by step, validates results per specified criteria (programmatic tests, artifact checks, User review), iterates on failure until success or stop condition.
 
-- **Task Memory Logging** - Creates Task Memory Log at specified path documenting outcome, validation results, deliverables, technical decisions, and flags for Manager review. This serves as context abstraction layer between Manager's coordination view and Worker's execution details.
+- **Task Logging** - Creates Task Log at specified path documenting outcome, validation results, deliverables, technical decisions, and flags for Manager review. This serves as context abstraction layer between Manager's coordination view and Worker's execution details.
 
 - **Task Reporting** - Writes Task Report to Report Bus summarizing completion status, execution notes, and key findings for Manager review.
 
-- **Execution Standards Updates** - Updates Execution Standards file when discovering universal patterns or conflicts during execution. Changes apply across all agents.
+- **Rules Updates** - Updates Rules when discovering universal patterns or conflicts during execution. Changes apply across all agents.
 
 - **Subagent Spawning** - Spawns platform-native subagents (Debug Subagent, Research Subagent etc) for isolated context-heavy work that would pollute the main session. Waits for subagent findings or works in parallel and integrates results to continue task execution.
 
-Workers operate through multiple Sessions via Handoff when context limits approach. After Handoff, prior-Stage same-agent dependencies are treated as cross-agent dependencies requiring explicit file reading.
+Workers operate through multiple Sessions via Handoff when context limits approach. After Handoff, previous-Stage same-agent dependencies are treated as cross-agent dependencies requiring explicit file reading.
 
 ---
 
