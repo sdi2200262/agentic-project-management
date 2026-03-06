@@ -128,7 +128,7 @@ Agent communication standards - including agent-to-user communication, visible r
 
 **Reasoning frames.** When writing reasoning frames (labeled aspect lists), use italic labels per `STRUCTURE.md` §5.1. These are guided reasoning - intentionally visible to Users. The label text should describe the analytical aspect, not use framework vocabulary.
 
-**Procedure transitions.** When writing procedure transitions, use natural sequential flow ("Continue to the next step") rather than section-targeted navigation with procedure names ("Proceed to §3.2 Implementation Plan Analysis") where possible. Include §N.M references only where non-sequential jumps require them.
+**Procedure transitions.** When writing procedure transitions, use natural sequential flow ("Continue to the next step") rather than section-targeted navigation with procedure names ("Proceed to §3.2 Plan Analysis") where possible. Include §N.M references only where non-sequential jumps require them.
 
 **Terminology distinction.** `TERMINOLOGY.md` terms are the only formal APM terms. All other labels — procedural step names, decision categories, section names — are natural language. Standard English capitalization applies in context but confers no formal status. Formatting (bold/italic) establishes hierarchy within content per §7.1, not term formality.
 

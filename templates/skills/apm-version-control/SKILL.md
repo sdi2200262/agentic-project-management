@@ -13,14 +13,14 @@ This skill defines version control operations for workspace isolation during the
 
 ### 1.1 How to Use This Skill
 
-See §3 Version Control Procedure for initialization, branch operations, worktree operations, merge coordination, and cleanup. See §2 Operational Standards when detecting repository state, choosing dispatch modes, naming branches, or resolving merge conflicts. See §4 Structural Specifications for branch naming, worktree layout, and the Project Tracker VC entry format.
+See §3 Version Control Procedure for initialization, branch operations, worktree operations, merge coordination, and cleanup. See §2 Operational Standards when detecting repository state, choosing dispatch modes, naming branches, or resolving merge conflicts. See §4 Structural Specifications for branch naming, worktree layout, and the Tracker VC entry format.
 
 ### 1.2 Objectives
 
-- Initialize version control during Manager session 1 when a git repository is present
-- Provide workspace isolation through feature branches and worktrees for parallel dispatch
-- Coordinate merges as a dispatch prerequisite - merge completed branches before dispatching dependent Tasks
-- Track VC state in the Project Tracker for Handoff continuity
+- Initialize version control during Manager session 1 when a git repository is present.
+- Provide workspace isolation through feature branches and worktrees for parallel dispatch.
+- Coordinate merges as a dispatch prerequisite - merge completed branches before dispatching dependent Tasks.
+- Track VC state in the Tracker for Handoff continuity.
 
 ### 1.3 Outputs
 
@@ -28,7 +28,7 @@ See §3 Version Control Procedure for initialization, branch operations, worktre
 
 **Worktrees:** Isolated working directories under `.apm/worktrees/` for parallel dispatch. Each worktree is checked out on its own feature branch.
 
-**Project Tracker VC entry:** VC state recorded in the Version Control table within the Project Tracker in Memory Root - base branch, active branches, pending merges.
+**Tracker VC entry:** VC state recorded in the Version Control table within the Tracker - base branch, active branches, pending merges.
 
 ---
 
@@ -38,7 +38,7 @@ See §3 Version Control Procedure for initialization, branch operations, worktre
 
 The Manager detects existing repository state during session 1 initialization. Detection is passive - read what exists rather than imposing configuration.
 
-**Detection checks:** Which directory is the working repository? (check Specifications for workspace structure - navigate there before other checks). Is git initialized? (if not, initialize and inform User). What is the current branch? (becomes base branch unless User specifies otherwise). Where is `.apm/` relative to repository root? (both paths recorded for worktree path construction). Is `.apm/worktrees/` in `.gitignore`? (if `.apm/` is inside the repository, add it if absent; if `.apm/` is outside the repository, no `.gitignore` modification needed).
+**Detection checks:** Which directory is the working repository? (check the Spec for workspace structure - navigate there before other checks). Is git initialized? (if not, initialize and inform User). What is the current branch? (becomes base branch unless User specifies otherwise). Where is `.apm/` relative to repository root? (both paths recorded for worktree path construction). Is `.apm/worktrees/` in `.gitignore`? (if `.apm/` is inside the repository, add it if absent; if `.apm/` is outside the repository, no `.gitignore` modification needed).
 
 **Stale state recovery:** If leftover worktrees or branches from a prior session exist (e.g., crash recovery), detect and clean during initialization - remove worktrees and delete orphaned feature branches.
 
@@ -60,7 +60,7 @@ Merge state is a dispatch prerequisite. The Manager merges completed feature bra
 
 **Merge execution:** The Manager performs merges autonomously. Clean merges require no User intervention.
 
-**Conflict resolution:** Resolve using coordination-level context - knowledge of both Tasks' objectives, project design, and Specifications. For complex conflicts, spawn a debug subagent or escalate to the User.
+**Conflict resolution:** Resolve using coordination-level context - knowledge of both Tasks' objectives, project design, and the Spec. For complex conflicts, spawn a debug subagent or escalate to the User.
 
 **Branch protection adaptation:** If the base branch has protection rules preventing direct merges, adapt (create a PR, merge into an intermediate branch, or ask the User). Discovered reactively and noted in working notes.
 
@@ -68,7 +68,7 @@ Merge state is a dispatch prerequisite. The Manager merges completed feature bra
 
 The Manager respects the User's existing repository setup. The base branch is whatever the User is currently on - not assumed to be `main`. These conventions are detected from the project or established with the User during initialization, then noted in working notes: branch naming, commit conventions, protection rules, PR workflows.
 
-**Planning document awareness:** The Planner may have captured VC-relevant preferences during Context Gathering - commit conventions, branching strategies, PR workflows. These may appear in Execution Standards, Specifications, or Implementation Plan guidance fields. The Manager checks these during VC initialization and incorporates relevant content into working notes.
+**Planning document awareness:** The Planner may have captured VC-relevant preferences during Context Gathering - commit conventions, branching strategies, PR workflows. These may appear in Rules, the Spec, or Plan guidance fields. The Manager checks these during VC initialization and incorporates relevant content into working notes.
 
 ---
 
@@ -83,16 +83,16 @@ The Manager respects the User's existing repository setup. The base branch is wh
 
 ### 3.1 VC Initialization
 
-Execute once during Manager session 1 initiation, after memory system initialization. Perform the following actions:
-1. Check Specifications for workspace structure - identify which directory is the working repository. If Specifications specify a repository directory, navigate there before proceeding.
+Execute once during Manager session 1 initiation, after Memory initialization. Perform the following actions:
+1. Check the Spec for workspace structure - identify which directory is the working repository. If the Spec specifies a repository directory, navigate there before proceeding.
 2. Check if git is initialized in the working repository directory. If not, run `git init` and inform the User.
 3. Detect the current branch - record as base branch.
 4. Record the repository root path and `.apm/` path (they may differ).
-5. Check planning documents (Execution Standards, Specifications, Implementation Plan) for VC-relevant guidance - commit conventions, branching strategies, PR workflows. Incorporate findings.
-6. Detect branch naming conventions from existing branches, planning document guidance, or establish with User. Record in the Project Tracker Version Control table.
+5. Check planning documents (Rules, Spec, Plan) for VC-relevant guidance - commit conventions, branching strategies, PR workflows. Incorporate findings.
+6. Detect branch naming conventions from existing branches, planning document guidance, or establish with User. Record in the Tracker Version Control table.
 7. Check `.gitignore` for `.apm/worktrees/`. If `.apm/` is inside the repository directory, add it if absent. If `.apm/` is outside the repository, `.gitignore` modification is not needed.
 8. Check for stale worktrees or orphaned feature branches from prior sessions. Clean if found.
-9. Write VC state to the Version Control table in the Project Tracker per §4.3 Project Tracker VC Entry Format.
+9. Write VC state to the Version Control table in the Tracker per §4.3 Tracker VC Entry Format.
 
 ### 3.2 Branch Operations
 
@@ -100,7 +100,7 @@ Execute per dispatch unit when constructing Task Prompts. Perform the following 
 1. Create a feature branch off the base branch using the naming convention established during initialization.
 2. For sequential dispatch: the Worker operates in the main directory on this branch. Include the branch name in the Task Prompt.
 3. For parallel dispatch: proceed to §3.3 Worktree Operations instead.
-4. Update the Project Tracker Version Control table with the active branch.
+4. Update the Tracker Version Control table with the active branch.
 
 ### 3.3 Worktree Operations
 
@@ -112,7 +112,7 @@ Execute for parallel dispatch when multiple Workers need isolated workspaces. Pe
    ```
 
 2. Include the worktree path as the Worker's workspace in the Task Prompt - all file operations happen in that directory.
-3. Update the Project Tracker Version Control table with the active branch and worktree path.
+3. Update the Tracker Version Control table with the active branch and worktree path.
 
 ### 3.4 Merge Coordination
 
@@ -121,7 +121,7 @@ Execute after a successful Task Review with no outstanding follow-ups. Perform t
 2. Merge the completed feature branch: `git merge <branch-name>`.
 3. If conflicts arise, resolve per §2.4 Merge Standards.
 4. If this merge unblocks dependent Tasks, note readiness for the next dispatch cycle.
-5. Update the Project Tracker Version Control table - remove the merged branch from active branches.
+5. Update the Tracker Version Control table - remove the merged branch from active branches.
 
 **Stage-end merge sweep:** After all Tasks in a Stage complete and are reviewed, verify all Stage feature branches are merged. Merge any that were deferred.
 
@@ -138,20 +138,20 @@ Execute after a successful merge. Perform the following actions:
 
 ### 4.1 Branch Naming
 
-Branch naming follows the project's existing conventions or is established with the User during VC initialization. The Manager records the agreed convention in the Project Tracker Version Control table. Branch names are descriptive; for batches, the name reflects the batch scope.
+Branch naming follows the project's existing conventions or is established with the User during VC initialization. The Manager records the agreed convention in the Tracker Version Control table. Branch names are descriptive; for batches, the name reflects the batch scope.
 
 ### 4.2 Worktree Directory Layout
 
 Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived from the branch name (e.g., replacing `/` with `-`). Each worktree directory contains a full checkout of all tracked files. Untracked files are not present.
 
-### 4.3 Project Tracker VC Entry Format
+### 4.3 Tracker VC Entry Format
 
-The Manager records VC state in the Version Control table within the Project Tracker in Memory Root. This table is the source of truth for Handoff continuity - an incoming Manager reads it to rebuild working VC context.
+The Manager records VC state in the Version Control table within the Tracker. This table is the source of truth for Handoff continuity - an incoming Manager reads it to rebuild working VC context.
 
 **Format:**
 
 ```markdown
-### Version Control
+## Version Control
 
 | Field | Value |
 |-------|-------|
@@ -159,7 +159,6 @@ The Manager records VC state in the Version Control table within the Project Tra
 | Branch Convention | <agreed naming convention> |
 | Active Branches | <list of current feature branches, or "none"> |
 | Pending Merges | <branches awaiting merge after review, or "none"> |
-| Notes | <branch protection rules, User preferences, or other VC observations> |
 ```
 
 ---
@@ -170,7 +169,7 @@ The Manager records VC state in the Version Control table within the Project Tra
 
 **Manager responsibilities:** All VC operations - initialization, branch creation, worktree creation, merge coordination, cleanup, and state tracking. The Manager is the sole VC coordinator.
 
-**Worker responsibilities:** Operate in the workspace provided (main directory or worktree path), commit work to the assigned branch, and note the workspace in the Task Memory Log. Workers do not create branches, manage worktrees, or merge.
+**Worker responsibilities:** Operate in the workspace provided (main directory or worktree path), commit work to the assigned branch, and note the workspace in the Task Log. Workers do not create branches, manage worktrees, or merge.
 
 ### 5.2 Common Mistakes
 
@@ -178,7 +177,7 @@ The Manager records VC state in the Version Control table within the Project Tra
 - *Dispatching before merging dependencies:* If Task B depends on Task A's output and A was on a separate branch, A must be merged before B's branch is created.
 - *Accumulating worktrees:* Worktrees are short-lived. Remove promptly after merge.
 - *Assuming base branch name:* Detect the current branch during initialization. Do not assume `main` or `master`.
-- *Forgetting VC state in Handoff:* Ensure the Project Tracker Version Control table is current before Handoff. Include active branches, worktrees, and pending merges in the Handoff Memory Log.
+- *Forgetting VC state in Handoff:* Ensure the Tracker Version Control table is current before Handoff. Include active branches, worktrees, and pending merges in the Handoff Log.
 - *Committing build artifacts:* Do not commit generated files (compiled binaries, object files, build output). Create or update `.gitignore` for build directories.
 
 ---
