@@ -21,20 +21,20 @@ Formal terms are always capitalized and carry defined meaning. All other languag
 | Term | Definition |
 | ------ | ------------ |
 | **Planning Phase** | The Planner transforms User requirements into planning documents through Context Gathering and Work Breakdown. |
-| **Implementation Phase** | The Manager and Workers transform the Implementation Plan into completed deliverables through coordinated Task execution. |
+| **Implementation Phase** | The Manager and Workers transform the Spec, Plan and Rules into completed deliverables through coordinated Task execution. |
 
 ---
 
 ## 3. Planning Documents
 
-Three documents form a waterfall: Specifications (what to build) → Implementation Plan (how work is organized) → Execution Standards (how work is performed).
+Three documents form a waterfall: Spec (what to build) → Plan (how work is organized) → Rules (how work is performed).
 
 | Term | Definition | Location |
 | ------ | ------------ | ---------- |
-| **Specifications** | Project-specific design decisions and constraints that inform the Implementation Plan. The Manager may update it during the Implementation Phase. | `.apm/Specifications.md` |
-| **Implementation Plan** | Stage and Task breakdown with agent assignments, Dependency Graph, and validation criteria. The Manager may update it during the Implementation Phase. | `.apm/Implementation_Plan.md` |
-| **Execution Standards** | Universal execution rules maintained as the APM standards block within `{AGENTS_FILE}`. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | `{AGENTS_FILE}` at workspace root |
-| **Dependency Graph** | Mermaid diagram in the Implementation Plan header that visualizes Task dependencies, agent assignments, and execution flow. Enables the Manager to identify batch candidates, parallel dispatch opportunities, and critical path bottlenecks. | Within `.apm/Implementation_Plan.md` |
+| **Spec** | Project-specific design decisions and constraints that inform the Plan. The Manager may update it during the Implementation Phase. | `.apm/spec.md` |
+| **Plan** | Stage and Task breakdown with agent assignments, Dependency Graph, and validation criteria. The Manager may update it during the Implementation Phase. | `.apm/plan.md` |
+| **Rules** | Universal execution rules maintained as the APM standards block within `{AGENTS_FILE}`. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | `{AGENTS_FILE}` at workspace root |
+| **Dependency Graph** | Mermaid diagram in the Plan header that visualizes Task dependencies, agent assignments, and execution flow. Enables the Manager to identify batch candidates, parallel dispatch opportunities, and critical path bottlenecks. | Within `.apm/plan.md` |
 
 ---
 
@@ -47,7 +47,7 @@ Three documents form a waterfall: Specifications (what to build) → Implementat
 
 ### Task Lifecycle States
 
-Tasks in the Project Tracker progress through these states:
+Tasks in the Tracker progress through these states:
 
 | Term | Definition |
 | ------ | ------------ |
@@ -60,7 +60,7 @@ Outcome statuses are inputs to the Manager's coordination decision — the Manag
 
 ### Task Outcome Statuses
 
-Task Memory Logs record the execution result:
+Task Logs record the execution result:
 
 | Term | Definition |
 | ------ | ------------ |
@@ -82,11 +82,11 @@ Partial means "I need guidance to continue." Failed means "I tried everything wi
 | Term | Definition |
 | ------ | ------------ |
 | **Context Gathering** | Planner elicits requirements through structured question rounds and produces a consolidated summary for User review. |
-| **Work Breakdown** | Planner decomposes gathered context into Specifications, Implementation Plan, and Execution Standards. |
+| **Work Breakdown** | Planner decomposes gathered context into Spec, Plan, and Rules. |
 | **Task Assignment** | Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them to Workers via Task Bus. |
 | **Task Execution** | Worker receives a Task Prompt, executes instructions, validates results, iterates if needed, and logs the outcome to memory. |
-| **Task Review** | Manager reviews Task Reports and Task Memory Logs, determines review outcome, modifies planning documents when findings warrant it, and maintains task tracking state. |
-| **Task Logging** | Worker writes a structured Task Memory Log capturing outcome, validation, deliverables, and flags. |
+| **Task Review** | Manager reviews Task Reports and Task Logs, determines review outcome, modifies planning documents when findings warrant it, and updates the Tracker. |
+| **Task Logging** | Worker writes a structured Task Log capturing outcome, validation, deliverables, and flags. |
 | **Handoff** | Context transfer between sessions of the same agent when context window limits approach. Applies to Manager and Worker only. |
 
 ---
@@ -97,9 +97,9 @@ The communication system is a file-based bus mechanism in `.apm/bus/`. Each agen
 
 | Term | Definition |
 | ------ | ------------ |
-| **Task Bus** | Manager-to-Worker bus file (`apm-task.md`). Contains Task Prompts. |
-| **Report Bus** | Worker-to-Manager bus file (`apm-report.md`). Contains Task Reports. |
-| **Handoff Bus** | Outgoing-to-incoming agent bus file (`apm-handoff.md`). Contains the handoff prompt content that instructs the incoming agent to rebuild working context. |
+| **Task Bus** | Manager-to-Worker bus file (`task.md`). Contains Task Prompts. |
+| **Report Bus** | Worker-to-Manager bus file (`report.md`). Contains Task Reports. |
+| **Handoff Bus** | Outgoing-to-incoming agent bus file (`handoff.md`). Contains the handoff prompt content that instructs the incoming agent to rebuild working context. |
 | **Task Prompt** | Self-contained prompt delivered via Task Bus providing a Worker with everything needed to execute and validate a Task. |
 | **Task Report** | Concise summary delivered via Report Bus by Worker for Manager review. |
 
@@ -107,15 +107,14 @@ The communication system is a file-based bus mechanism in `.apm/bus/`. Each agen
 
 ## 7. Memory
 
-The Memory System resides in `.apm/Memory/` and captures project history for progress tracking and Handoff continuity. Allows the Manager to operate based on execution summaries and maintain the big picture while coordinating multiple Workers.
+Memory resides in `.apm/` and captures project history for progress tracking and Handoff continuity. Allows the Manager to operate based on execution summaries and maintain the big picture while coordinating multiple Workers.
 
 | Term | Definition | Location |
 | ------ | ------------ | ---------- |
-| **Memory System** | File-based repository in `.apm/Memory/` that captures project history, agent progress, and context for Handoff continuity. | `.apm/Memory/` |
-| **Memory Root** | Central project state document containing the Project Tracker (task tracking, agent tracking, version control state), working notes, and stage summaries. | `.apm/Memory/Memory_Root.md` |
-| **Task Memory Log** | Structured log created by Worker after Task completion. Captures outcome, validation, deliverables, and flags. | `.apm/Memory/Stage_<N>_<Slug>/Task_Log_<N>_<M>_<Slug>.md` |
-| **Handoff Memory Log** | Log created during Handoff containing working context not captured elsewhere. | `.apm/Memory/Handoffs/<AgentID>_Handoffs/<AgentID>_Handoff_Log_<N>.md` |
-| **Project Tracker** | Structured section of Memory Root containing task tracking, agent tracking, and version control state. Updated by the Manager throughout the Implementation Phase. Serves as the operational view for dispatch decisions, dependency analysis, and Handoff continuity. | Within `.apm/Memory/Memory_Root.md` |
+| **Tracker** | Live project state document containing task tracking, agent tracking, version control state, and working notes. Updated by the Manager throughout the Implementation Phase as the operational view for dispatch decisions, dependency analysis, and Handoff continuity. | `.apm/tracker.md` |
+| **Index** | Durable project memory containing memory notes (persistent observations and patterns) and stage summaries (appended after each Stage completion). | `.apm/memory/index.md` |
+| **Task Log** | Structured log created by Worker after Task completion. Captures outcome, validation, deliverables, and flags. | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` |
+| **Handoff Log** | Log created during Handoff containing working context not captured elsewhere. | `.apm/memory/handoffs/<agent>/handoff-<NN>.log.md` |
 
 ---
 
@@ -134,18 +133,18 @@ These concepts are not formal capitalized terms but are clearly defined because 
 - *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates either form a chain with only internal dependencies and no external Tasks depending on intermediate results, or are an independent group of same-Worker Tasks all Ready simultaneously. Soft guidance: 3-5 Tasks per batch.
 - *Parallel:* two or more dispatch units (singles or batches) sent to different Workers simultaneously when no unresolved cross-Worker dependencies exist. Requires version control workspace isolation.
 
-**Agent states.** Agents in the Project Tracker are either uninitialized (defined in the Implementation Plan but no session started) or on a specific session (Session N). Session numbers increment on Handoff. A session number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
+**Agent states.** Agents in the Tracker are either uninitialized (defined in the Plan but no session started) or on a specific session (Session N). Session numbers increment on Handoff. A session number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
 
 **Validation approaches.** Each Task specifies validation using one or more approaches: programmatic (automated checks), artifact (output existence and structure), or user (human judgment requiring a pause). Validation follows a fixed order: programmatic, then artifact, then user.
 
-**Cross-agent overrides.** When a Worker Handoff is detected, same-agent dependencies from Tasks whose logs were not loaded by the incoming Worker are reclassified as cross-agent. The Manager maintains an override list in the Project Tracker, recording the specific Tasks affected. During Task Assignment, the Manager checks this list to determine dependency context depth. The Dependency Graph is not modified; overrides are a runtime layer over the static plan.
+**Cross-agent overrides.** When a Worker Handoff is detected, same-agent dependencies from Tasks whose logs were not loaded by the incoming Worker are reclassified as cross-agent. The Manager maintains an override list in the Tracker, recording the specific Tasks affected. During Task Assignment, the Manager checks this list to determine dependency context depth. The Dependency Graph is not modified; overrides are a runtime layer over the static plan.
 
 **Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. Internal authoring structure - section references (§N.M), procedure names, step labels, checkpoint labels, decision categories - is not exposed. Only `TERMINOLOGY.md` terms are used formally; these are the agent's public vocabulary.
 
 **Agent-to-system communication.** Agents write to APM artifacts, memory logs, and bus files using structured formats defined by the relevant skill or guide structural specifications.
 
-**Visible reasoning (chain-of-thought).** Agents present their thinking visibly in chat before committing to file output. This makes decisions auditable and gives the User opportunity to redirect. Two forms exist: 
-  1. **Guided reasoning**, where specific procedures define labeled reasoning frames that structure the analysis (the structure forces thorough analysis and produces better outputs - these frames are intentionally visible and designed for better output quality) 
+**Visible reasoning (chain-of-thought).** Agents present their thinking visibly in chat before committing to file output. This makes decisions auditable and gives the User opportunity to redirect. Two forms exist:
+  1. **Guided reasoning**, where specific procedures define labeled reasoning frames that structure the analysis (the structure forces thorough analysis and produces better outputs - these frames are intentionally visible and designed for better output quality)
   2. **Free-form reasoning**, the baseline for all other decision points - formal and technical, no framework labels or procedure vocabulary as output structure. Guided reasoning frames are defined by the procedures that use them; the communication skill defines the baseline.
 
 ---

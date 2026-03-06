@@ -12,7 +12,7 @@ This document contains development notes, research findings, and implementation 
 
 This applies exclusively to Claude Code and is delivered through the existing conditional placeholder system - a new placeholder (e.g., `{WORKER_TEAM_GUIDANCE}`) resolves to Team Execution Standards for Claude Code and to empty string for all other platforms. No new skill file; the placeholder inserts content into the Task Execution guide as an Operational Standard (§2) and a conditional step (§3.3).
 
-Appropriate for batch assignments with 3+ independent sub-tasks or single complex tasks with multiple independent deliverables touching distinct file groups. Not appropriate for tightly sequential work or where coordination overhead exceeds the benefit. Each teammate operates on a sub-branch off the Worker's branch; the Worker merges teammate branches and resolves conflicts before reporting. All teammates must be shut down and cleaned up before the Worker writes its Memory Log and Report - team resources are ephemeral. APM Workers are independent sessions (not teammates), enabling multi-team coordination (e.g., Frontend Team and Backend Team concurrently) without platform-level nested team support.
+Appropriate for batch assignments with 3+ independent sub-tasks or single complex tasks with multiple independent deliverables touching distinct file groups. Not appropriate for tightly sequential work or where coordination overhead exceeds the benefit. Each teammate operates on a sub-branch off the Worker's branch; the Worker merges teammate branches and resolves conflicts before reporting. All teammates must be shut down and cleaned up before the Worker writes its Task Log and Report - team resources are ephemeral. APM Workers are independent sessions (not teammates), enabling multi-team coordination (e.g., Frontend Team and Backend Team concurrently) without platform-level nested team support.
 
 ### Open Questions
 
@@ -57,17 +57,18 @@ apm continue [-n|--name <name>]
 1. Prompt for archive name (or use `--name` flag, or generate default)
 2. Move coordination artifacts and Memory to `.apm/archives/<name>/`
 3. Clear the bus directory entirely (bus state is ephemeral and session-specific; it is not archived)
-4. Create fresh template artifacts (Implementation Plan, Specifications, Memory Root)
+4. Create fresh template artifacts (Plan, Spec, Tracker, Index)
 5. Output completion message with archive path
 
 **Archive Structure:**
 
 ```markdown
 .apm/archives/<name>/
-├── Implementation_Plan.md
-├── Specifications.md
+├── plan.md
+├── spec.md
+├── tracker.md
 ├── APM_Session_Summary.md    # Only if summarize command was run before continue
-└── Memory/
+└── memory/
 ```
 
 The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session state (Task Bus, Report Bus, Handoff Bus files) that is meaningless outside the session that created it. A new session will have different Workers and a fresh bus layout.
@@ -80,7 +81,7 @@ The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session s
 
 **Output:** `APM_Session_Summary.md` written to `.apm/`. Contains a point-in-time summary of the session: project scope, stages completed, key outcomes, notable findings, and known issues. Explicitly states that it is a snapshot and the codebase may have diverged.
 
-**Usage:** Optional. Run before `apm continue` if the User wants a summary preserved in the archive. If not run, the archive contains the raw artifacts (Implementation Plan, Specifications, Memory) which are sufficient for a future Planner to examine.
+**Usage:** Optional. Run before `apm continue` if the User wants a summary preserved in the archive. If not run, the archive contains the raw artifacts (Plan, Spec, Tracker, Memory) which are sufficient for a future Planner to examine.
 
 ### Component 3: Planner Context Detection
 
@@ -95,7 +96,7 @@ The bus directory (`.apm/bus/`) is not archived. It contains ephemeral session s
 
 **§0.2 Context Retrieval (if User indicates relevance):**
 
-1. Spawn exploration subagent to examine the indicated archive(s) -- read Implementation Plan, Specifications, Session Summary (if present), and Memory Root Stage Summaries
+1. Spawn exploration subagent to examine the indicated archive(s) -- read the Plan, Spec, Session Summary (if present), and Index Stage Summaries
 2. Spawn verification subagent to check archived context against the current codebase -- identify what still holds, what has changed, and what has been invalidated
 3. Integrate verified findings into question rounds as delta-focused questions (what changed since the archived session, not re-asking what was already established)
 

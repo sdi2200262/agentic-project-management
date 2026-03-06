@@ -69,7 +69,7 @@ Commands follow a variable structure based on purpose, with required opening and
 | ------- | ------- |
 | §1 Overview | Handoff purpose, artifacts produced. |
 | §2 Handoff Procedure | Handoff execution actions. |
-| §3+ [Structural Sections] | Handoff Memory Log structure, handoff prompt structure. |
+| §3+ [Structural Sections] | Handoff Log structure, handoff prompt structure. |
 
 ---
 
@@ -220,7 +220,7 @@ field_two: <type or allowed values>
 
 ### 7.3 Placeholder Notation
 
-Value placeholders use `<placeholder>` for values to fill, `[optional]` for conditional content, `...` for pattern continuation, `N`/`M` for numeric values, and `<Slug>` for descriptive identifiers. Cross-reference placeholders (`{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_FILE}`, `{VERSION}`, `{TIMESTAMP}`, `{ARGS}`) are resolved during build.
+Value placeholders use `<placeholder>` for values to fill, `[optional]` for conditional content, `...` for pattern continuation, `<N>`/`<M>` for integer values, and `<NN>`/`<MM>` for zero-padded numeric identifiers. Cross-reference placeholders (`{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_FILE}`, `{VERSION}`, `{TIMESTAMP}`, `{ARGS}`) are resolved during build.
 
 ---
 
@@ -250,6 +250,18 @@ Value placeholders use `<placeholder>` for values to fill, `[optional]` for cond
 | Directory | `skills/<skill-name>/` |
 | File | `SKILL.md` (uppercase) |
 | Skill name | kebab-case, matches directory name |
+
+### 8.4 APM Artifact Files
+
+| Component | Convention |
+| --------- | ---------- |
+| Paths | kebab-case throughout |
+| Logs | `.log.md` suffix for Task Logs and Handoff Logs |
+| Directories | `stage-<NN>/`, `handoffs/<agent>/` |
+
+### 8.5 Task Identifiers
+
+Tasks are identified by Stage number and Task number using the compound `N.M` format (e.g., Task 2.3) in markdown prose. YAML frontmatter uses plain integers (`stage: 1`, `task: 2`) as the natural machine-format data type. File paths use zero-padded numbers (`stage-01/task-01-02.log.md`) for lexicographic sorting so Stages and Tasks sort correctly in the user's file system.
 
 ---
 
