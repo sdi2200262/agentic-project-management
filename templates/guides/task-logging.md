@@ -4,22 +4,22 @@
 
 **Reading Agent:** Worker
 
-This guide defines how Workers log Task outcomes and report results. Task Memory Logs capture task-level context using structured markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
+This guide defines how Workers log Task outcomes and report results. Task Logs capture Task-level context using structured markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
 
 ### 1.1 How to Use This Guide
 
-See §3 Task Logging Procedure - follow §3.1 Task Memory Log Procedure after Task execution. See §2 Operational Standards for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). See §4 Structural Specifications for output formats. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
+See §3 Task Logging Procedure - follow §3.1 Task Log Procedure after Task execution. See §2 Operational Standards for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). See §4 Structural Specifications for output formats. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
 
 ### 1.2 Objectives
 
-- Capture Task outcomes in a structured, reviewable format
-- Enable Manager coordination through consistent log structure
-- Preserve execution context for progress tracking and Handoff continuity
-- Flag important findings and compatibility issues for Manager attention
+- Capture Task outcomes in a structured, reviewable format.
+- Enable Manager coordination through consistent log structure.
+- Preserve execution context for progress tracking and Handoff continuity.
+- Flag important findings and compatibility issues for Manager attention.
 
 ### 1.3 Outputs
 
-**Task Memory Log** → Structured log written after Task execution. Captures outcome, validation results, deliverables, and flags. Location: `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
+**Task Log** → Structured log written after Task execution. Captures outcome, validation results, deliverables, and flags. Location: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`
 
 ---
 
@@ -48,7 +48,7 @@ Use Partial when: validation is ambiguous, important findings emerged that could
 
 ### 2.3 Detail Level Standards
 
-Task Memory Logs serve the Manager's coordination needs, not archival documentation. Ask: does this detail help the Manager understand what was accomplished? Would it affect the Manager's next review decision? Can it be found by reading the referenced artifacts directly?
+Task Logs serve the Manager's coordination needs, not archival documentation. Ask: does this detail help the Manager understand what was accomplished? Would it affect the Manager's next review decision? Can it be found by reading the referenced artifacts directly?
 
 **Default:** Prefer concise but comprehensive summaries with artifact references over verbose inline content.
 
@@ -57,24 +57,26 @@ Task Memory Logs serve the Manager's coordination needs, not archival documentat
 ## 3. Task Logging Procedure
 
 **Procedure:**
-- Task Memory Log Procedure (after Task execution).
+- Task Log Procedure (after Task execution).
 
-### 3.1 Task Memory Log Procedure
+### 3.1 Task Log Procedure
 
-After Task execution, populate the Task Memory Log at the path provided in the Task Prompt (`memory_log_path`).
+After Task execution, populate the Task Log at the path provided in the Task Prompt (`log_path`).
 
 Perform the following actions:
 1. Assess execution outcomes visibly in chat: what was delivered, what issues or important findings arose, and what to flag for the Manager.
-2. Ensure the Stage directory exists at the parent of `memory_log_path`. Create it if it doesn't exist.
+2. Ensure the Stage directory exists at the parent of `log_path`. Create it if it doesn't exist.
 3. Complete YAML frontmatter fields:
+   - Set `stage` to the Stage number from the Task Prompt.
+   - Set `task` to the Task number from the Task Prompt.
+   - Set `title` to the Task title from the Task Prompt.
    - Set `agent` to your agent identifier.
-   - Set `task_id` to the Task reference from the assignment.
    - Set `status` based on Task outcome per §2.2 Outcome Standards.
    - Set `failure_point` based on where failure occurred (`null` if Success) per §2.2 Outcome Standards.
    - Set `important_findings` per §2.1 Flag Assessment Standards.
    - Set `compatibility_issues` per §2.1 Flag Assessment Standards.
 4. Complete markdown body sections:
-   - Always include: Summary, Details, Output, Validation, Issues, Next Steps.
+   - Always include: Summary, Details, Output, Validation, Issues.
    - Include conditional sections only when their corresponding flag is `true`.
    - *Include:* Outcomes, key decisions, blockers, validation results, artifacts produced.
    - *Summarize:* Implementation approach, steps taken, rationale for choices.
@@ -88,22 +90,22 @@ For batch execution, write a batch report to the Report Bus per `{SKILL_PATH:apm
 
 ## 4. Structural Specifications
 
-### 4.1 Task Memory Log Format
+### 4.1 Task Log Format
 
-**Location:** `.apm/Memory/Stage_<StageNum>_<Slug>/Task_Log_<StageNum>_<SequentialNum>_<Slug>.md`
+**Location:** `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`
 
 **Naming Convention:**
-
-- `<StageNum>`: Stage number (zero-padded, e.g., 01, 02)
-- `<SequentialNum>`: Task number from task ID, zero-padded (e.g., Task 2.3 → 03)
-- `<Slug>`: Brief descriptive slug derived from Task title
+- `<NN>`: Stage number, zero-padded (e.g., 01, 02).
+- `<MM>`: Task number within Stage, zero-padded (e.g., 01, 02).
 
 **YAML Frontmatter Schema:**
 
 ```yaml
 ---
-agent: <Agent_ID>
-task_id: <Task_ID>
+stage: <N>
+task: <M>
+title: <Task title from Plan>
+agent: <agent-slug>
 status: Success | Failed | Partial | Blocked
 failure_point: null | Execution | Validation | <description>
 important_findings: true | false
@@ -112,9 +114,10 @@ compatibility_issues: true | false
 ```
 
 **Field Descriptions:**
-
-- `agent`: string, required. Worker identifier.
-- `task_id`: string, required. Task reference from Implementation Plan (e.g., `Task 2.1`).
+- `stage`: integer, required. Stage number.
+- `task`: integer, required. Task number within Stage.
+- `title`: string, required. Human-readable Task title from the Plan.
+- `agent`: string, required. Worker identifier (kebab-case).
 - `status`: enum, required. Task outcome per §2.2 Outcome Standards.
 - `failure_point`: string or null, required. Where/why the Task didn't succeed; `null` for Success.
 - `important_findings`: boolean, required. Whether discoveries have implications beyond current Task scope.
@@ -123,7 +126,7 @@ compatibility_issues: true | false
 **Markdown Body Template:**
 
 ```markdown
-# Task Memory Log: <Task_ID> - <Slug>
+# Task <N>.<M> - <Title>
 
 ## Summary
 [1-2 sentences describing main outcome]
@@ -150,9 +153,6 @@ compatibility_issues: true | false
 ## Important Findings
 [Only include if important_findings: true]
 [Project-relevant discoveries that Manager must know]
-
-## Next Steps
-[Recommendations for follow-up actions, or "None"]
 ```
 
 ---
@@ -161,12 +161,12 @@ compatibility_issues: true | false
 
 ### 5.1 Writing and Output Handling
 
-- Summarize outcomes instead of listing every action taken
-- Focus on key decisions and their rationale
-- Reference artifacts by path rather than including large code blocks
-- Include code snippets only for novel, complex, or critical logic (≤20 lines)
-- For large outputs: save to separate file and reference the path
-- For error messages: include relevant stack traces or diagnostic details
+- Summarize outcomes instead of listing every action taken.
+- Focus on key decisions and their rationale.
+- Reference artifacts by path rather than including large code blocks.
+- Include code snippets only for novel, complex, or critical logic (≤20 lines).
+- For large outputs: save to separate file and reference the path.
+- For error messages: include relevant stack traces or diagnostic details.
 
 ### 5.2 Good vs Poor Logging
 

@@ -12,18 +12,18 @@ See §3 Task Execution Procedure - follow subsections sequentially from Task Pro
 
 ### 1.2 Objectives
 
-- Execute Tasks following Task Prompt instructions
-- Integrate context from dependencies before execution begins
-- Validate execution against provided criteria in correct order
-- Iterate on failures until Success or stop condition
-- Handle User collaboration points
-- Log outcomes and report to Manager via User
+- Execute Tasks following Task Prompt instructions.
+- Integrate context from dependencies before execution begins.
+- Validate execution against provided criteria in correct order.
+- Iterate on failures until Success or stop condition.
+- Handle User collaboration points.
+- Log outcomes and report to Manager via User.
 
 ### 1.3 Outputs
 
 **Completed Task deliverables:** Files, artifacts, or outputs as specified in Expected Output.
 
-**Task Memory Log:** Structured log per `{GUIDE_PATH:task-logging}` §4.1 Task Memory Log Format.
+**Task Log:** Structured log per `{GUIDE_PATH:task-logging}` §4.1 Task Log Format.
 
 **Task Report:** Concise summary written to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
 
@@ -37,7 +37,7 @@ Workers operate with narrow context - only their Task Prompt and accumulated wor
 
 The Task Prompt's Context from Dependencies section reflects how much the Worker knows about the producer's work. Cross-agent dependencies provide detailed integration instructions - specific files to read, artifacts to review, interfaces to understand. Follow completely. Same-agent dependencies provide lighter guidance - recall anchors and file references as additional context.
 
-**Integration issues:** If integration reveals problems - missing files, broken references, conflicts with expectations - the Worker cannot proceed safely. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities → Proceed with best interpretation and note uncertainty; missing expected files → Pause for guidance. **Default:** Do not execute on an unstable foundation.
+**Integration issues:** If integration reveals problems - missing files, broken references, conflicts with expectations - the Worker cannot proceed safely. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities → continue with best interpretation and note uncertainty; missing expected files → Pause for guidance. **Default:** Do not execute on an unstable foundation.
 
 ### 2.2 Validation Standards
 
@@ -76,13 +76,13 @@ Partial means "I need guidance to continue." Failed means "I tried everything wi
 
 **Default:** When stopping without Success, present situation with options rather than unilateral decisions.
 
-### 2.6 Execution Standards Updates
+### 2.6 Rules Updates
 
-When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{AGENTS_FILE}` and request User approval before modifying. Execution Standards are not modified unilaterally - the User decides whether the change is warranted.
+When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{AGENTS_FILE}` and request User approval before modifying. Rules are not modified unilaterally - the User decides whether the change is warranted.
 
-### 2.7 Batch Execution Standards
+### 2.7 Batch Rules
 
-When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus message), execute sequentially. Complete each Task fully - execute, validate, and write the Task Memory Log - before starting the next Task in the batch. Each Task gets its own Task Memory Log at its specified `memory_log_path`.
+When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus message), execute sequentially. Complete each Task fully - execute, validate, and write the Task Log - before starting the next Task in the batch. Each Task gets its own Task Log at its specified `log_path`.
 
 **Fail-fast:** If any Task results in Failed or Blocked status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.15 Batch Report Envelope Format. Do not defer logging to the end of the batch.
 
@@ -101,14 +101,14 @@ When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus mess
 ### 3.1 Task Prompt Receipt
 
 On Task receipt, perform the following actions:
-1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.14 Batch Envelope Format and execute each Task sequentially per §2.7 Batch Execution Standards.
-2. Verify `agent_id` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent_id` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope.
+1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.14 Batch Envelope Format and execute each Task sequentially per §2.7 Batch Rules.
+2. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope.
 3. Parse Task Prompt structure - YAML frontmatter fields and body sections.
 4. Identify execution parameters:
    - `has_dependencies: true` → context integration required
    - Workspace section present → Operate in specified workspace (worktree path or branch)
    - Note validation approaches in Validation Criteria section
-5. If Workspace section present: switch to the specified branch or worktree path before starting work. Note the workspace in your Task Memory Log output section when complete.
+5. If Workspace section present: switch to the specified branch or worktree path before starting work. Note the workspace in your Task Log output section when complete.
 6. Assess Task scope: what the objective requires, how instructions sequence toward it, and what validation will verify.
 7. Continue to context integration, or proceed to §3.3 Task Execution if no dependencies.
 
@@ -126,7 +126,7 @@ Execute when `has_dependencies: true`. Must complete before Task execution begin
 ### 3.3 Task Execution
 
 Perform the following actions:
-1. Execute Detailed Instructions sequentially, applying Guidance and relevant Execution Standards from `{AGENTS_FILE}`, working toward the Objective.
+1. Execute Detailed Instructions sequentially, applying Guidance and relevant Rules from `{AGENTS_FILE}`, working toward the Objective.
 2. For each instruction step:
    - Standard instruction → Execute and continue.
    - Explicit User action required → Communicate what needs User action, why, and what options exist. Await completion, then resume.
@@ -157,8 +157,8 @@ Invoked when validation fails. Perform the following actions:
 Perform the following actions:
 1. Before logging, assess visibly in chat whether all objectives are met and deliverables are ready for review, whether any important findings or compatibility issues arose, and determine the Task's status based on your conclusion per §2.4 Failure Status Standards (Success if all validation passed).
 2. Commit work to the assigned branch per `{SKILL_PATH:apm-version-control}` §5.1 Role Boundaries.
-3. Create Task Memory Log per `{GUIDE_PATH:task-logging}` §3.1 Task Memory Log Procedure at `memory_log_path`.
-4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. If this is the first Task after Handoff initialization, include incoming Worker indication in the Task Report: state session number, list the specific Task Memory Log files loaded, and note that previous-Stage logs were not loaded. Direct User to deliver the report per the communication skill - provide both the targeted command (`/apm-5-check-reports <agent-id>`) and the general command.
+3. Create Task Log per `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure at `log_path`.
+4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. If this is the first Task after Handoff initialization, include incoming Worker indication in the Task Report: state session number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded. Direct User to deliver the report per the communication skill - provide both the targeted command (`/apm-5-check-reports <agent-id>`) and the general command.
 5. Await `/apm-4-check-tasks` or Handoff initiation.
 
 ---
@@ -167,7 +167,7 @@ Perform the following actions:
 
 ### 4.1 Output Format References
 
-**Task Memory Log:** Per `{GUIDE_PATH:task-logging}` §4.1 Task Memory Log Format, at `memory_log_path` from Task Prompt.
+**Task Log:** Per `{GUIDE_PATH:task-logging}` §4.1 Task Log Format, at `log_path` from Task Prompt.
 
 **Task Report:** Per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
 
@@ -177,17 +177,17 @@ Perform the following actions:
 
 ### 5.1 Execution Quality
 
-- Follow instructions precisely as written
-- Apply Execution Standards from `{AGENTS_FILE}` consistently
-- Keep the Objective as the target throughout
-- Document decisions and rationale in work products
+- Follow instructions precisely as written.
+- Apply Rules from `{AGENTS_FILE}` consistently.
+- Keep the Objective as the target throughout.
+- Document decisions and rationale in work products.
 
 ### 5.2 Communication Quality
 
-- Clear status when pausing or stopping
-- Specific issue descriptions (not vague)
-- Actionable options with trade-offs when requesting guidance
-- Concise Task Reports - detail belongs in Task Memory Log
+- Clear status when pausing or stopping.
+- Specific issue descriptions (not vague).
+- Actionable options with trade-offs when requesting guidance.
+- Concise Task Reports - detail belongs in Task Log.
 
 ### 5.3 Common Mistakes
 

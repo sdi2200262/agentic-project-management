@@ -17,24 +17,24 @@ See §2 Agent-to-User Communication for visible reasoning and terminology bounda
 
 ### 1.2 Objectives
 
-- Define clear standards for agent-to-user communication, visible reasoning, and terminology boundaries
-- Enable structured message exchange between agents via the file system
-- Provide clear sending and receiving protocols that agents follow consistently
-- Maintain clean bus state by clearing incoming bus files before writing outgoing
-- Support Worker identity validation through bus file naming
+- Define clear standards for agent-to-user communication, visible reasoning, and terminology boundaries.
+- Enable structured message exchange between agents via the file system.
+- Provide clear sending and receiving protocols that agents follow consistently.
+- Maintain clean bus state by clearing incoming bus files before writing outgoing.
+- Support Worker identity validation through bus file naming.
 
 ### 1.3 Outputs
 
 **Bus directory:** `.apm/bus/` containing per-agent subdirectories with bus files for each communication direction.
 
 **Bus file types:**
-- *Task Bus:* (`apm-task.md`) Manager-to-Worker communication.
-- *Report Bus:* (`apm-report.md`) Worker-to-Manager communication.
-- *Handoff Bus:* (`apm-handoff.md`) Outgoing-to-incoming agent communication.
+- *Task Bus:* (`task.md`) Manager-to-Worker communication.
+- *Report Bus:* (`report.md`) Worker-to-Manager communication.
+- *Handoff Bus:* (`handoff.md`) Outgoing-to-incoming agent communication.
 
 ### 1.4 Non-APM Agent Integration
 
-Agents not managed by APM can participate in bus communication by creating their own agent directory under `.apm/bus/`. See `apm-bus-integration.md` alongside this skill for the integration guide.
+Agents not managed by APM can participate in bus communication by creating their own agent directory under `.apm/bus/`. See `bus-integration.md` alongside this skill for the integration guide.
 
 ---
 
@@ -56,13 +56,13 @@ Guided reasoning frames are defined by the procedures that invoke them. This sec
 
 ### 2.3 Terminology Boundaries
 
-Formal APM terms — consistently capitalized words in APM commands and guides like Task, Stage, Worker, Manager — are part of the agent's public vocabulary. Use them naturally when communicating. All other language is natural prose; standard English capitalization applies but confers no formal status.
+Formal APM terms - consistently capitalized words in APM commands and guides like Task, Stage, Worker, Manager - are part of the agent's public vocabulary. Use them naturally when communicating. All other language is natural prose; standard English capitalization applies but confers no formal status.
 
 The following are internal authoring structure - use them for navigation but never surface them in user-facing output:
-- Section references (§N.M)
-- Procedure names as labels
-- Step labels and checkpoint names
-- Decision categories
+- Section references (§N.M).
+- Procedure names as labels.
+- Step labels and checkpoint names.
+- Decision categories.
 
 Guided reasoning frames are always surfaced as defined by their procedures per §2.2 Visible Reasoning.
 
@@ -70,7 +70,7 @@ Guided reasoning frames are always surfaced as defined by their procedures per �
 
 ## 3. Agent-to-System Communication
 
-When writing to APM artifacts (Specifications, Implementation Plan, Memory Root, Task Memory Logs, bus files), follow the structural format defined by the relevant guide's structural specifications section or the bus protocol in §4. Artifact content is technical, formal, structured, and precise. Internal procedure vocabulary does not appear in artifacts - use natural descriptive language for any free-text fields.
+When writing to APM artifacts (Spec, Plan, Tracker, Task Logs, bus files), follow the structural format defined by the relevant guide's structural specifications section or the bus protocol in §4. Artifact content is technical, formal, structured, and precise. Internal procedure vocabulary does not appear in artifacts - use natural descriptive language for any free-text fields.
 
 ---
 
@@ -80,9 +80,9 @@ Bus files have two states: **empty** (no message present, the cleared/initial st
 
 ### 4.1 Bus Identity Standards
 
-Agent identity is derived from the agent directory name (`.apm/bus/<agent-slug>/`). Workers validate by confirming the directory matches their registered `agent_id`. When using `/apm-4-check-tasks` or `/apm-5-check-reports`, the agent resolves its own bus path from its identity.
+Agent identity is derived from the agent directory name (`.apm/bus/<agent-slug>/`). Workers validate by confirming the directory matches their registered `agent`. When using `/apm-4-check-tasks` or `/apm-5-check-reports`, the agent resolves its own bus path from its identity.
 
-**Validation rule:** If the agent directory does not match the Worker's registered `agent_id`, reject the message and inform the User of the mismatch.
+**Validation rule:** If the agent directory does not match the Worker's registered `agent`, reject the message and inform the User of the mismatch.
 
 ### 4.2 Agent ID Resolution
 
@@ -109,15 +109,15 @@ When dispatching multiple sequential Tasks to the same Worker, the Manager sends
 
 Execute once at the end of the Planning Phase, after all planning documents are approved. Perform the following actions:
 1. Create the `.apm/bus/` directory.
-2. Read the Implementation Plan to identify all Workers defined in the Agents field.
+2. Read the Plan to identify all Workers defined in the Agents field.
 3. For each Worker, derive the agent slug (lowercase, hyphenated name) per §4.13 Agent Slug Format and create the agent directory:
    - Create directory: `.apm/bus/<agent-slug>/`
-   - Create empty Task Bus: `.apm/bus/<agent-slug>/apm-task.md`
-   - Create empty Report Bus: `.apm/bus/<agent-slug>/apm-report.md`
-   - Create empty Handoff Bus: `.apm/bus/<agent-slug>/apm-handoff.md`
+   - Create empty Task Bus: `.apm/bus/<agent-slug>/task.md`
+   - Create empty Report Bus: `.apm/bus/<agent-slug>/report.md`
+   - Create empty Handoff Bus: `.apm/bus/<agent-slug>/handoff.md`
 4. Create the Manager's bus directory:
    - Create directory: `.apm/bus/manager/`
-   - Create empty Handoff Bus: `.apm/bus/manager/apm-handoff.md`
+   - Create empty Handoff Bus: `.apm/bus/manager/handoff.md`
 
 Create all directories and bus files using `mkdir -p` and `touch` in a single terminal command rather than individual file creation calls.
 
@@ -125,7 +125,7 @@ Create all directories and bus files using `mkdir -p` and `touch` in a single te
 
 Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Perform the following actions:
 1. Clear the incoming Report Bus per §4.9 Clear-on-Return. Skip on first Task Prompt when no report exists.
-2. Write the complete Task Prompt content to the Task Bus: `.apm/bus/<agent-slug>/apm-task.md`.
+2. Write the complete Task Prompt content to the Task Bus: `.apm/bus/<agent-slug>/task.md`.
 3. Provide the User with specific action guidance for Worker `<agent-slug>`:
    - If the Worker is not yet initialized → direct the User to start a new session and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
    - If the Worker is already initialized → direct the User to run `/apm-4-check-tasks` in the Worker's session.
@@ -137,7 +137,7 @@ Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Pe
 
 Execute when a Worker sends a Task Report to the Manager. Perform the following actions:
 1. Clear the incoming Task Bus per §4.9 Clear-on-Return.
-2. Write the complete Task Report content to the Report Bus: `.apm/bus/<agent-slug>/apm-report.md`.
+2. Write the complete Task Report content to the Report Bus: `.apm/bus/<agent-slug>/report.md`.
 3. Direct the User to deliver the report to the Manager. Provide both:
    - `/apm-5-check-reports <agent-id>` for targeted retrieval of this Worker's report.
    - `/apm-5-check-reports` (no argument) as an alternative when multiple Workers may have finished.
@@ -155,17 +155,17 @@ Execute when a trigger command is invoked or a User references a bus file. Perfo
 
 Before writing to an outgoing bus file, clear the incoming bus file to prevent stale messages. Perform the following actions:
 1. Identify the incoming bus file:
-   - For Manager: `.apm/bus/<agent-slug>/apm-report.md` (the Worker's Report Bus)
-   - For Worker: `.apm/bus/<agent-slug>/apm-task.md` (the received Task Bus)
+   - For Manager: `.apm/bus/<agent-slug>/report.md` (the Worker's Report Bus)
+   - For Worker: `.apm/bus/<agent-slug>/task.md` (the received Task Bus)
 2. Clear the file contents via terminal (e.g., `truncate -s 0` or shell redirection).
-3. Proceed to write the outgoing message.
+3. Write the outgoing message.
 
 ### 4.10 Handoff Bus Protocol
 
 Execute when an agent performs a Handoff. Perform the following actions:
 1. Determine the Handoff Bus file:
-   - Manager Handoff → `.apm/bus/manager/apm-handoff.md`
-   - Worker Handoff → `.apm/bus/<agent-slug>/apm-handoff.md`
+   - Manager Handoff → `.apm/bus/manager/handoff.md`
+   - Worker Handoff → `.apm/bus/<agent-slug>/handoff.md`
 2. Write the handoff prompt content to the Handoff Bus file.
 3. Inform the User that the handoff prompt is available. Direct the User to start a new session using the appropriate init command - the incoming agent will auto-detect the handoff prompt.
 
@@ -174,48 +174,58 @@ Execute when an agent performs a Handoff. Perform the following actions:
 ```
 .apm/bus/
 ├── <agent-slug>/
-│   ├── apm-task.md
-│   ├── apm-report.md
-│   └── apm-handoff.md
+│   ├── task.md
+│   ├── report.md
+│   └── handoff.md
 └── manager/
-    └── apm-handoff.md
+    └── handoff.md
 ```
 
 ### 4.12 File Naming Convention
 
 | Bus File | Pattern | Direction |
 |----------|---------|-----------|
-| Task Bus | `apm-task.md` | Manager to Worker |
-| Report Bus | `apm-report.md` | Worker to Manager |
-| Handoff Bus | `apm-handoff.md` | Outgoing to incoming agent |
+| Task Bus | `task.md` | Manager to Worker |
+| Report Bus | `report.md` | Worker to Manager |
+| Handoff Bus | `handoff.md` | Outgoing to incoming agent |
 
 ### 4.13 Agent Slug Format
 
-Agent slugs are derived from the agent names listed in the Implementation Plan Agents field by converting to lowercase and replacing spaces with hyphens. Examples: `Frontend Agent` → `frontend-agent`, `Backend Agent` → `backend-agent`. The Manager's own directory uses the slug `manager`.
+Agent slugs are derived from the agent names listed in the Plan Agents field by converting to lowercase and replacing spaces with hyphens. Examples: `Frontend Agent` → `frontend-agent`, `Backend Agent` → `backend-agent`. The Manager's own directory uses the slug `manager`.
 
 ### 4.14 Batch Envelope Format
 
 When sending multiple Tasks to a Worker in a batch, the Task Bus file uses this structure:
 
-**YAML Frontmatter:**
+**YAML Frontmatter Schema:**
 ```yaml
 ---
 batch: true
 batch_size: <N>
 tasks:
-  - task_ref: "<Stage>.<Task>"
-    memory_log_path: "<path>"
-  - task_ref: "<Stage>.<Task>"
-    memory_log_path: "<path>"
+  - stage: 1
+    task: 1
+    log_path: ".apm/memory/stage-01/task-01-01.log.md"
+  - stage: 1
+    task: 2
+    log_path: ".apm/memory/stage-01/task-01-02.log.md"
 ---
 ```
+
+**Field Descriptions:**
+- `batch`: boolean, required. Always `true` for batch envelopes.
+- `batch_size`: number, required. Total Tasks in the batch.
+- `tasks`: list, required. Per-Task metadata for the batch.
+- `tasks[].stage`: integer, required. Stage number.
+- `tasks[].task`: integer, required. Task number within Stage.
+- `tasks[].log_path`: string, required. Pre-constructed path for the Task Log.
 
 **Body:** Individual Task Prompts separated by `---` delimiters. Each Task Prompt retains its full structure (YAML frontmatter and body) as if standalone.
 ```markdown
 ---
-stage: <N>
-task: <M>
-agent_id: <agent-slug>
+stage: 1
+task: 1
+agent: <agent-slug>
 ...
 ---
 # APM Task Assignment: <Title>
@@ -224,16 +234,16 @@ agent_id: <agent-slug>
 ---
 
 ---
-stage: <N>
-task: <M+1>
-agent_id: <agent-slug>
+stage: 1
+task: 2
+agent: <agent-slug>
 ...
 ---
 # APM Task Assignment: <Title>
 ...
 ```
 
-**Worker processing:** Worker parses the batch envelope, executes Tasks sequentially, logs each to its `memory_log_path`, and writes a batch report upon completion or failure. See `{GUIDE_PATH:task-execution}` §2.7 Batch Execution Standards for batch execution and §4.15 Batch Report Envelope Format for batch report structure.
+**Worker processing:** Worker parses the batch envelope, executes Tasks sequentially, logs each to its `log_path`, and writes a batch report upon completion or failure. See `{GUIDE_PATH:task-execution}` §2.7 Batch Rules for batch execution and §4.15 Batch Report Envelope Format for batch report structure.
 
 ### 4.15 Batch Report Envelope Format
 
@@ -247,10 +257,15 @@ batch_size: <N>
 completed: <M>
 stopped_early: true | false
 tasks:
-  - task_ref: "<Stage>.<Task>"
-    status: Success | Partial | Failed | Blocked
-  - task_ref: "<Stage>.<Task>"
-    status: Success | Partial | Failed | Blocked | "Not started"
+  - stage: 1
+    task: 1
+    status: Success
+  - stage: 1
+    task: 2
+    status: Failed
+  - stage: 1
+    task: 3
+    status: "Not started"
 ---
 ```
 
@@ -260,7 +275,8 @@ tasks:
 - `completed`: number, required. Tasks that were executed (excludes unstarted).
 - `stopped_early`: boolean, required. Whether the batch stopped before completing all Tasks.
 - `tasks`: list, required. Per-Task reference and outcome status.
-- `tasks[].task_ref`: string, required. Task reference in `<Stage>.<Task>` format.
+- `tasks[].stage`: integer, required. Stage number.
+- `tasks[].task`: integer, required. Task number within Stage.
 - `tasks[].status`: enum, required. Task outcome per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards, or `"Not started"` for unexecuted Tasks.
 
 **Markdown Body Template:**
@@ -272,13 +288,11 @@ tasks:
 
 ## Task Outcomes
 
-### Task <N.M>: <Title>
+### <Title>
 **Status:** [Success | Partial | Failed | Blocked]
-**Memory Log:** `<memory_log_path>`
+**Task Log:** `<log_path>`
 [1-2 sentence summary of outcome]
 
-### Task <N.M+1>: <Title>
-**Status:** [Status or "Not started (batch stopped)"]
 ...
 
 ## Batch Notes
@@ -292,7 +306,7 @@ tasks:
 - *Writing to the wrong bus file:* Manager writes to Task Bus, Worker writes to Report Bus.
 - *Forgetting to clear:* Always clear the incoming bus file before writing to the outgoing bus file per §4.9 Clear-on-Return.
 - *Referencing bus files by wrong path:* Use the exact path per §4.11 Directory Structure, derived from the agent slug.
-- *Not validating bus identity:* Workers must verify the agent directory matches their `agent_id` per §4.1 Bus Identity Standards.
+- *Not validating bus identity:* Workers must verify the agent directory matches their `agent` per §4.1 Bus Identity Standards.
 
 ---
 

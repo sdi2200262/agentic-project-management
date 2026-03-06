@@ -4,7 +4,7 @@
 
 **Reading Agent:** Planner
 
-This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents (Specifications, Implementation Plan, and Execution Standards) that enable structured project execution.
+This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents (Spec, Plan, and Rules) that enable structured project execution.
 
 ### 1.1 How to Use This Guide
 
@@ -19,11 +19,11 @@ Gather sufficient context across:
 - *Process:* Workflow preferences, quality standards, coordination requirements
 - *Validation:* Success states, acceptance criteria, completion indicators
 
-Context gathering targets three planning documents, each consumed differently during the Implementation Phase - the Manager coordinates using Specifications and the Implementation Plan, while Workers execute using `{AGENTS_FILE}` alone:
+Context gathering targets three planning documents, each consumed differently during the Implementation Phase - the Manager coordinates using the Spec and Plan, while Workers execute using `{AGENTS_FILE}` alone:
 
-- *Specifications* (what is being built): design decisions and constraints: choices made where alternatives existed, the rationale behind them, and constraints that bound what's being built.
-- *Implementation Plan* (how work is organized): work domains, dependency chains, complexity indicators, validation criteria, sequential vs parallel work streams, coordination points.
-- *Execution Standards* (how work is performed): coding conventions, quality requirements, process rules, prohibited patterns, tool constraints. Universal patterns across all Tasks.
+- *Spec* (what is being built): design decisions and constraints: choices made where alternatives existed, the rationale behind them, and constraints that bound what's being built.
+- *Plan* (how work is organized): work domains, dependency chains, complexity indicators, validation criteria, sequential vs parallel work streams, coordination points.
+- *Rules* (how work is performed): coding conventions, quality requirements, process rules, prohibited patterns, tool constraints. Universal patterns across all Tasks.
 
 ### 1.3 Outputs
 
@@ -82,7 +82,7 @@ When User responses reference codebase elements, existing materials, or signal t
 
 **After exploration** → Reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta - what's still missing given the new information. Do not ask about what exploration already revealed.
 
-**Scope assessment** → The key distinction is purpose: research that builds the Planner's understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, checking external systems, resolving technical unknowns. This includes research that informs the current question round, subsequent rounds, or planning document creation. Research that is itself a project deliverable belongs in the Implementation Plan. Only defer when research is a project deliverable or the User explicitly requests deferral. When the project involves existing codebases that Workers will interact with, exploring those codebases to inform the planning documents is Context Gathering work - not a deliverable for the Implementation Plan.
+**Scope assessment** → The key distinction is purpose: research that builds the Planner's understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, checking external systems, resolving technical unknowns. This includes research that informs the current question round, subsequent rounds, or planning document creation. Research that is itself a project deliverable belongs in the Plan. Only defer when research is a project deliverable or the User explicitly requests deferral. When the project involves existing codebases that Workers will interact with, exploring those codebases to inform the planning documents is Context Gathering work - not a deliverable for the Plan.
 
 For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}. Structure the prompt with specific research questions, expected sources, and how findings will be used.
 
@@ -111,7 +111,7 @@ These rules apply across all three question rounds.
 
 Combine related questions naturally in conversation. Adapt depth per §2.3 Questioning Depth. Track what has been answered - ask only for what is missing.
 
-**Validation criteria gathering:** Capture success states and criteria for each requirement. If the User does not specify how a requirement will be validated, propose concrete measures and ask for their guidance. Integrate validation gathering into Rounds 2 and 3 follow-ups. Retain criteria for Implementation Plan Task Validation fields.
+**Validation criteria gathering:** Capture success states and criteria for each requirement. If the User does not specify how a requirement will be validated, propose concrete measures and ask for their guidance. Integrate validation gathering into Rounds 2 and 3 follow-ups. Retain criteria for Plan Task Validation fields.
 
 ### 3.2 Question Round 1: Existing Materials and Vision
 
@@ -167,7 +167,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 
 ### 3.4 Question Round 3: Implementation Approach and Quality
 
-**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, coordination and approval requirements, domain organization, finalizing design decisions and Execution Standards.
+**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, coordination and approval requirements, domain organization, finalizing the Spec and Rules.
 
 **Initial questions** → Select and adapt from these areas:
 
@@ -208,7 +208,7 @@ Perform the following actions:
    - Offer options: modifications needed (describe issues) or approved (proceed to Work Breakdown).
    - If modifications needed → Apply targeted follow-ups, update summary, and repeat step 1.
    - If approved → Continue to step 3.
-3. Output procedure completion stating context gathering is complete. The next step is the Work Breakdown procedure per `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure.
+3. Output procedure completion stating Context Gathering is complete. The next step is the Work Breakdown procedure per `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
 ---
 
