@@ -76,9 +76,10 @@ The initialization command will:
 - **Prompt for AI Assistant** - Select your platform from supported assistants
 - **Download APM Assets** - Fetch the latest commands, guides, and skills
 - **Create APM Directory Structure** - Set up `.apm/` with:
-  - `.apm/Memory/Memory_Root.md` - Central memory file (populated by Manager)
-  - `.apm/Implementation_Plan.md` - Plan template (populated by Planner)
-  - `.apm/Specifications.md` - Specifications template (populated by Planner)
+  - `.apm/spec.md` - Spec template (populated by Planner)
+  - `.apm/plan.md` - Plan template (populated by Planner)
+  - `.apm/tracker.md` - Project state tracker (populated by Manager)
+  - `.apm/memory/index.md` - Project memory index (populated by Manager)
   - `.apm/metadata.json` - Installation metadata
 - **Install Procedural Files** - Create required commands, guides and skills in platform-specific directories (`.cursor/`, `.github/`, `claude/` etc.):
   - `.cursor/commands/` - Agent initiation and handoff commands
@@ -139,11 +140,11 @@ After each round, the Planner iterates on gaps before advancing. After all round
 
 The Planner creates three planning documents:
 
-- **Specifications** - Design decisions and constraints defining what is being built
-- **Implementation Plan** - Stages, Tasks, Worker assignments, and Dependency Graph defining how work is organized
-- **Execution Standards** - Universal execution patterns defining how work is performed
+- **Spec** - Design decisions and constraints defining what is being built
+- **Plan** - Stages, Tasks, Worker assignments, and Dependency Graph defining how work is organized
+- **Rules** - Universal execution patterns defining how work is performed (written as the APM standards block in the platform's agents file)
 
-You'll review and approve each document before the Planner proceeds to the next. After all three approvals, the Planning Phase completes.
+You'll review and approve each document before the Planner proceeds to the next. After all three approvals, the Planner initializes the bus system and the Planning Phase completes.
 
 > For detailed mechanics of Context Gathering and Work Breakdown, see [Workflow Overview](Workflow_Overview.md).
 
@@ -151,7 +152,7 @@ You'll review and approve each document before the Planner proceeds to the next.
 
 ## Step 3: Initiate Manager
 
-The Manager coordinates execution of the Implementation Plan.
+The Manager coordinates execution of the Plan.
 
 ### 1. Create Manager Session
 
@@ -169,9 +170,8 @@ Enter the command:
 
 The Manager will:
 
-- Read the planning documents (Specifications, Implementation Plan, Execution Standards)
-- Initialize the Memory System
-- Initialize the Message Bus for Agent communication
+- Read the planning documents (Spec, Plan, Rules)
+- Populate the Tracker and initialize the Index
 - Initialize version control if a git repository exists
 - Present an understanding summary
 
@@ -190,7 +190,7 @@ The Manager assesses which tasks are ready and creates a Task Prompt with all re
 ### 2. Initialize Worker
 
 1. Open a new chat session for the assigned Worker
-2. Name it using the Agent name from the Implementation Plan (e.g., "Frontend Agent")
+2. Name it using the Agent name from the Plan (e.g., "Frontend Agent")
 3. Select a model as recommended in Prerequisites
 4. Run the initialization command:
 
@@ -204,7 +204,7 @@ Run `/apm-4-check-tasks` in the Worker's session. The Worker reads the Task Prom
 
 ### 4. Worker Executes
 
-The Worker works through the task, validates results, and creates a Task Memory Log documenting the outcome. It then writes a Task Report to the Report Bus and directs you to run `/apm-5-check-reports` in the Manager's session.
+The Worker works through the task, validates results, and creates a Task Log documenting the outcome. It then writes a Task Report to the Report Bus and directs you to run `/apm-5-check-reports` in the Manager's session.
 
 > **Tips:**
 >
@@ -213,13 +213,13 @@ The Worker works through the task, validates results, and creates a Task Memory 
 
 ### 5. Carry Report to Manager
 
-Run `/apm-5-check-reports` in the Manager's session. The Manager reads the Task Report and Task Memory Log, then determines the review outcome:
+Run `/apm-5-check-reports` in the Manager's session. The Manager reads the Task Report and Task Log, then determines the review outcome:
 
 - **Proceed** - Move to next task
 - **Follow-up** - Send refined Task Prompt to retry
 - **Document Modification** - Update planning documents, then proceed or follow up
 
-The Manager updates the Memory System to track progress. This completes one assignment-execution-review cycle.
+The Manager updates the Tracker to track progress. This completes one assignment-execution-review cycle.
 
 > For detailed mechanics of Task Assignment, Task Execution, and Task Review, see [Workflow Overview](Workflow_Overview.md).
 
@@ -231,15 +231,15 @@ The cycle from Step 4 repeats for each task. As you work through the project, yo
 
 ### Follow-up Tasks
 
-When a task needs retry, the Manager creates a follow-up Task Prompt with refined instructions based on what went wrong. The Worker uses the same Memory Log path and overwrites the previous attempt.
+When a task needs retry, the Manager creates a follow-up Task Prompt with refined instructions based on what went wrong. The Worker uses the same Task Log path and overwrites the previous attempt.
 
 ### Document Modifications
 
 When execution reveals issues, the Manager may update planning documents:
 
-- **Specifications** - Design decisions need adjustment
-- **Implementation Plan** - Task definitions or dependencies changed
-- **Execution Standards** - Universal patterns need updating
+- **Spec** - Design decisions need adjustment
+- **Plan** - Task definitions or dependencies changed
+- **Rules** - Universal patterns need updating
 
 The Manager determines whether modifications require your collaboration or fall within its authority.
 
@@ -269,18 +269,17 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
    - `/apm-7-handoff-worker` for Worker
 
 2. **Outgoing Agent Actions** - The Agent creates:
-   - Handoff Memory Log capturing working knowledge not in formal logs (tracked Worker handoffs and VC state for Manager; working context and technical notes for Worker)
-   - Handoff Prompt with context reconstruction instructions
-   - Writes Handoff Prompt to Handoff Bus file
+   - Handoff Log capturing working knowledge not in formal logs (tracked Worker handoffs and VC state for Manager; working context and technical notes for Worker)
+   - Handoff prompt with context reconstruction instructions, written to Handoff Bus
 
 3. **Create New Session** - Open a new session for the same agent role (e.g., "Manager session 2" or "Frontend Worker session 2")
 
-4. **Initialize Incoming Agent** - Enter the same initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`) — the Incoming Agent auto-detects the Handoff Prompt from the Handoff Bus
+4. **Initialize Incoming Agent** - Enter the same initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`) — the incoming Agent auto-detects the handoff prompt from the Handoff Bus
 
-5. **Verify and Resume** - The incoming agent reconstructs context from:
+5. **Verify and Resume** - The incoming Agent reconstructs context from:
    - Planning documents
-   - Handoff Memory Log
-   - Relevant Task Memory Logs (current-Stage for Workers, Stage Summaries and recent logs for Manager)
+   - Handoff Log
+   - Relevant Task Logs (current-Stage for Workers; Tracker, Index, and recent logs for Manager)
 
 ---
 

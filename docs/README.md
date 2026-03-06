@@ -11,7 +11,7 @@ Welcome to the documentation suite for the Agentic Project Management (APM) fram
 
 ## Overview
 
-This documentation suite is currently in transition. Some documents reflect the **current v1.0 preview** (testing branch), while others reflect **v0.5.x** and will be updated for the official v1.0 release.
+This documentation suite is currently in transition. Core docs reflect the **current v1.0 preview** (testing branch, v1.0.0-test-8), while supporting docs reflect **v0.5.x** and will be updated for the official v1.0 release.
 
 **v1.0 Preview Documentation (Current):**
 - [Introduction](Introduction.md)
@@ -27,7 +27,7 @@ This documentation suite is currently in transition. Some documents reflect the 
 - [Troubleshooting Guide](Troubleshooting_Guide.md)
 - [Context and Prompt Engineering](Context_and_Prompt_Engineering.md)
 
-> **Note:** Documentation is under active development. Even v1.0 preview docs may contain errors or inconsistencies as the development branch evolves.
+> **Note:** Documentation is under active development. v1.0 preview docs are aligned with v1.0.0-test-8 templates but may drift as the development branch evolves.
 
 ## Recommended Reading Order
 

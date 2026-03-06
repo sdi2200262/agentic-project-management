@@ -23,7 +23,7 @@ APM addresses context limitations by treating the AI not as a single continuous 
 
 - **Specialization:** Different Agents handle planning, coordination, and implementation. Each operates in its own session with only the context needed for its specific role.
 
-- **Persistence:** Project state lives in structured documents outside Agent sessions. Planning documents define all work. A Memory System tracks the project's progression. A file-based Message Bus enables communication between Agents.
+- **Persistence:** Project state lives in structured documents outside Agent sessions. Planning documents define all work. Memory tracks the project's progression. A file-based bus system enables communication between Agents.
 
 - **Continuity:** When an Agent's context window fills, a Handoff Protocol transfers working knowledge to a fresh instance, which reconstructs context using the project's documents and continues seamlessly.
 
@@ -35,7 +35,7 @@ This architecture mirrors how human teams collaborate: specialized roles, shared
 
 APM coordinates three specialized Agent types that are all capable of using platform-native subagents:
 
-- **Planner** - Operates once at project start. Conducts structured project discovery to gather requirements and constraints, then decomposes the gathered context into three planning documents: Specifications, Implementation Plan, Execution Standards. Acts as the project architect - designs the structure that guides all subsequent work.
+- **Planner** - Operates once at project start. Conducts structured project discovery to gather requirements and constraints, then decomposes the gathered context into three planning documents: Spec, Plan, and Rules. Initializes the bus system for the Implementation Phase. Acts as the project architect - designs the structure that guides all subsequent work.
 
 - **Manager** - Receives the populated planning documents from the Planner and coordinates overall project execution. Assigns tasks to Workers, reviews completed work, manages task dependencies, and maintains the big picture.
 
@@ -52,14 +52,14 @@ APM coordinates three specialized Agent types that are all capable of using plat
 APM maintains project state through structured documents and protocols:
 
 - **Planning Documents** - Design and coordination documents that guide all work
-  - **Specifications** - Define what is being built (design decisions and constraints)
-  - **Implementation Plan** - Define how work is organized (stages, tasks, dependencies)
-  - **Execution Standards** - Define how work is performed (universal execution patterns)
+  - **Spec** - Defines what is being built (design decisions and constraints)
+  - **Plan** - Defines how work is organized (Stages, Tasks, dependencies)
+  - **Rules** - Define how work is performed (universal execution patterns, maintained in the platform's agents file)
 
-- **Memory System** - A hierarchical folder structure containing Memory Logs for each completed task. Workers document their work in these logs. The Manager reads them to track progress without reviewing code directly, maintaining coordination-level focus.
+- **Memory** - A hierarchical structure containing the Tracker (live project state with task tracking, agent tracking, and working notes), the Index (durable project memory with stage summaries), and Task Logs for each completed Task. Workers document their work in Task Logs. The Manager reads them to track progress without reviewing code directly, maintaining coordination-level focus.
 
-- **Message Bus** - A file-based communication system for passing messages between Agent sessions. The Manager writes task assignments to Task Bus files; Workers write completion reports to Report Bus files. The User triggers bus checks using commands (`/apm-4-check-tasks`, `/apm-5-check-reports`), keeping APM platform agnostic while also making communication explicit and auditable.
-- **Handoff Protocol** - When an Agent's context window approaches limits, the User triggers a Handoff. The outgoing Agent creates a Handoff Memory Log capturing working knowledge and a Handoff Prompt with reconstruction instructions. The replacement Agent reads these artifacts and required Memory Logs to reconstruct context and continue work seamlessly.
+- **Bus System** - A file-based communication mechanism for passing messages between Agent sessions. The Manager writes Task Prompts to Task Bus files; Workers write Task Reports to Report Bus files. The User triggers bus checks using commands (`/apm-4-check-tasks`, `/apm-5-check-reports`), keeping APM platform agnostic while making communication explicit and auditable.
+- **Handoff** - When an Agent's context window approaches limits, the User triggers a Handoff. The outgoing Agent creates a Handoff Log capturing working knowledge and writes a handoff prompt to the Handoff Bus with reconstruction instructions. The incoming Agent reads these artifacts and relevant Task Logs to reconstruct context and continue work seamlessly.
 
 ---
 
@@ -67,9 +67,9 @@ APM maintains project state through structured documents and protocols:
 
 APM operates in two distinct phases:
 
-- **Planning Phase** - The Planner conducts structured discovery through question rounds, gathering comprehensive project context. It then performs Work Breakdown, decomposing requirements into a concrete Implementation Plan with defined stages, tasks, worker assignments, and dependencies.
+- **Planning Phase** - The Planner conducts structured discovery through question rounds, gathering comprehensive project context. It then performs Work Breakdown, decomposing requirements into a concrete Plan with defined Stages, Tasks, Worker assignments, and dependencies.
 
-- **Implementation Phase** - The Manager and Workers execute the Implementation Plan through repeating assignment-execution-review cycles:
+- **Implementation Phase** - The Manager and Workers execute the Plan through repeating assignment-execution-review cycles:
 
   1. **Task Assignment** - Manager assesses task readiness, constructs task prompts with required context, delivers via Task Bus
   2. **Task Execution** - Worker receives task assignment via trigger command, executes work, validates results, logs outcomes
