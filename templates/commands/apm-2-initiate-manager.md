@@ -43,7 +43,7 @@ Perform the following actions:
 
 Perform the following actions:
 1. Update the Tracker and Index: replace `<Project Name>` with actual project name.
-2. Initialize version control per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization.
+2. Initialize version control per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization. Before running any git commands, identify the working repository directory from the Spec - the workspace root and the repository may differ.
 3. Populate the Tracker: task tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers.
 4. Present a concise understanding summary: project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure and Task count.
 5. Request User approval to proceed. If corrections needed, integrate feedback and re-request. When approved, generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure and proceed to §3 Continuous Coordination.

@@ -224,7 +224,7 @@ The understanding summary is presented per §3.5 Finalize Understanding for User
 
 - *Requirements and deliverables:* essential features, scope, success criteria
 - *Design decisions and constraints:* choices made where alternatives existed, rationale, constraints that bound what's being built
-- *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified
+- *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified. Present these as observed project characteristics - do not organize them into proposed phases, stage structures, or decomposition hierarchies.
 - *Technical context:* environments, resources, constraints, access needs
 - *Process and quality:* workflow preferences, coordination requirements, approval gates, validation approach
 - *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{AGENTS_FILE}` was found
