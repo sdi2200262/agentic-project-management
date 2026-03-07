@@ -38,6 +38,8 @@ The Manager and Workers transform the Plan into completed deliverables. The Impl
 
 **Continuous coordination** - After each Task Review, the Manager reassesses readiness and dispatches the next Task in the same turn when one is Ready. Review and dispatch happen without waiting for User input. The Manager pauses only when no Tasks are Ready and Workers are active, when a decision requires User collaboration, or when waiting for an outstanding Task to complete will unblock more efficient dispatches.
 
+**Stage ordering** - Stages are sequential coordination units. Stage N+1 begins after Stage N completes. Parallel work across domains uses parallel Task dispatch within a single Stage, not cross-Stage execution.
+
 **Stage completion** - After all Tasks in a Stage complete, the Manager creates a stage summary in the Index capturing Stage-level outcomes, then proceeds to the next Stage.
 
 **Project completion** - After all Stages complete, the Manager presents a project completion summary covering: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
@@ -236,7 +238,7 @@ The Planner decomposes gathered context into planning documents through visible 
 **Sequence:**
 
 1. **Spec Analysis** - Analyze design decisions, write the Spec, present for User approval.
-2. **Plan Analysis** - Identify work domains and Workers, identify all Stages with objectives and Tasks, complete detailed Task breakdown per Stage (objective, output, validation, guidance, dependencies, steps), assess workload distribution, review cross-agent dependencies, generate the dependency graph, present for User approval.
+2. **Plan Analysis** - Identify work domains and Workers, identify all Stages with objectives and Tasks, complete detailed Task breakdown and write each Stage to the Plan before proceeding to the next, assess workload distribution, review cross-agent dependencies, generate the dependency graph, present for User approval.
 3. **Rules Analysis** - Extract universal execution patterns, write the APM standards block, present for User approval.
 
 **Task decomposition principles.** Each Task produces a meaningful deliverable with clear boundaries, scoped to a single Worker's domain, with specified validation criteria (programmatic, artifact, or user-based). Steps within Tasks support failure tracing but have no independent validation. Subagent steps are included when investigation or research is needed. Decomposition granularity adapts to project size and complexity - smaller projects warrant lighter breakdown.
