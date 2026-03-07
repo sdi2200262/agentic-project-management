@@ -43,7 +43,7 @@ These principles apply across all decomposition levels. Apply with judgment adap
 
 **Domains:** Identify logical work domains from Context Gathering. Split when domains involve different expertise or mental models. Combine when domains share tight context and dependencies. When balanced, prefer separation. Integrate User preferences.
 
-**Stages:** Identify milestone groupings. Each Stage delivers coherent value. Split when work streams are unrelated or intermediate deliverables block subsequent work. Combine when separation is artificial. When balanced, prefer fewer Stages with clear milestones.
+**Stages:** Sequential milestone groupings - Stage N+1 begins after Stage N completes. Each Stage delivers coherent value. Split when work streams are unrelated or intermediate deliverables block subsequent work. Combine when separation is artificial. When balanced, prefer fewer Stages with clear milestones. When domains can work in parallel, structure that as parallel Tasks within a single Stage rather than parallel Stages.
 
 **Tasks:** Derive from Stage objectives. Each Task produces a meaningful deliverable, scoped to one agent's domain, with specified validation criteria. Split when a Task spans domains or bundles unrelated deliverables. Combine when micro-tasks create overhead without value. Include subagent steps for investigation or research.
 
@@ -142,7 +142,7 @@ Perform the following actions per §2.3 Plan Standards.
    - *Task overview:* identified Tasks per Stage with brief descriptions.
 2. Update Plan header Stages field.
 
-**Stage Cycles** → For each Stage per **Stage Analysis**, complete detailed Task breakdown. Execute in Stage order per §2.1 Decomposition Principles:
+**Stage Cycles** → For each Stage in order, complete the following cycle before proceeding to the next Stage:
 1. State context for the current Stage: User requirements and constraints influencing it.
 2. For each Task, present reasoning in chat:
    - *Agent assignment:* which agent and why.
@@ -152,7 +152,8 @@ Perform the following actions per §2.3 Plan Standards.
    - *Dependencies:* enumerate every dependency. Same-agent: `Task N.M` format. Cross-agent: **`Task N.M by <Agent>`** (bolded), specifying the deliverable at the boundary.
    - *Steps:* ordered operations with purpose.
    Use more detail for complex Tasks and less for straightforward ones. Include all required dimensions. After reasoning through all Tasks in the Stage, assess whether each Task represents independently validatable work per §2.1 Decomposition Principles - combined scopes that need separate validation indicate further decomposition.
-3. Append the Stage to the Plan per §4.2 Plan Format. Enrich Task details based on chat reasoning. Ensure every cross-agent dependency is bolded at write time - do not defer to **Plan Review**. After reasoning through all Tasks in a Stage, write the Stage to the Plan before proceeding to the next Stage. Do not batch reasoning or writing across Stages.
+3. Write the Stage to the Plan per §4.2 Plan Format. Enrich Task details based on chat reasoning. Ensure every cross-agent dependency is bolded at write time - do not defer to **Plan Review**.
+4. State which Stage was written. If Stages remain, return to step 1 for the next Stage. After the final Stage, continue to **Plan Review**.
 
 **Plan Review** → After completing all Stage Cycles, review the Plan per §2.3 Plan Standards:
 1. *Workload assessment:* Count Tasks per agent. Flag agents with disproportionately large workloads relative to other agents for subdivision review. If subdividing, present reasoning:
@@ -179,7 +180,8 @@ Perform the following actions per §2.4 `{AGENTS_FILE}` Standards:
    - **From the Spec:** execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in the Spec - they reach Workers through Task Prompts.
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan.
-   - **Classification:** which candidates are truly universal vs Task-specific; whether each is self-contained for Workers with no access to the Spec or the Plan. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains?
+   - **Classification:** which candidates are truly universal vs Task-specific; whether each is self-contained for Workers with no access to the Spec or the Plan. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains? Most projects produce few genuinely universal rules beyond the framework rules below. Project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
+   - **Framework rules:** Retain the Framework Rules section from §4.3 APM_STANDARDS Block as-is. Add project-specific standards after it.
    - **Existing standards:** what `{AGENTS_FILE}` already contains; reference rather than duplicate.
 2. Write APM_STANDARDS block to `{AGENTS_FILE}` per §4.3 APM_STANDARDS Block:
    - If file exists: preserve existing content outside block, append APM_STANDARDS block.
@@ -270,7 +272,12 @@ The namespace block structure for `{AGENTS_FILE}`:
 ```text
 APM_STANDARDS {
 
-[APM-managed standards content]
+## Framework Rules
+
+- After context compaction or summarization, re-read the procedural documents referenced in the initiation prompt before continuing work.
+- When iterative debugging consumes disproportionate context without resolution, log partial progress and spawn a debug subagent or escalate rather than exhausting the session.
+
+[Project-specific standards below]
 
 } //APM_STANDARDS
 ```

@@ -42,7 +42,7 @@ The goal is to extract information needed for the next review decision.
 - `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done.
 - `compatibility_issues: true` - Worker observed conflicts with existing systems. Assess whether it indicates Plan, Spec, or Rules issues.
 
-**Content review:** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened and inform the review outcome.
+**Content review:** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened and inform the review outcome. When findings contradict content in the Spec, Plan, or Rules - factual inaccuracies, incorrect assumptions, outdated descriptions - treat the affected document as needing correction per §3.4 regardless of whether the Worker handled the discrepancy.
 
 ### 2.2 Review Outcome Standards
 
@@ -86,9 +86,9 @@ Stage summaries compress Stage execution for future incoming Manager instances (
 
 Notes capture context that falls outside structured tracking but aids coordination and continuity. Two categories serve different purposes:
 
-**Working Notes (Tracker):** Ephemeral coordination context relevant to upcoming decisions. Insert when a review yields context the Manager needs for the next dispatch cycle - pending considerations, User preferences for current work, temporary constraints. Remove when no longer applicable. Working Notes live and die within a coordination window.
+**Working Notes (Tracker):** Ephemeral coordination context relevant to upcoming decisions. Insert when a review yields context the Manager needs for the next dispatch cycle - pending considerations, User preferences for current work, temporary constraints. Remove when no longer applicable. Working Notes live and die within a coordination window. Use a bulleted list - one item per note, each self-contained.
 
-**Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Insert when a review reveals patterns, preferences, or insights with lasting value - recurring Worker behaviors, User workflow preferences, architectural patterns discovered during execution. Memory Notes accumulate as project knowledge.
+**Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Insert when a review reveals patterns, preferences, or insights with lasting value - recurring Worker behaviors, User workflow preferences, architectural patterns discovered during execution. Memory Notes accumulate as project knowledge. Use a bulleted list - one item per note, each self-contained and understandable without surrounding context.
 
 ---
 

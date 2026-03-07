@@ -29,4 +29,4 @@ title: <Project Name>
 
 ## Working Notes
 
-[Ephemeral coordination context. Insert and remove as context evolves.]
+[Bulleted list. One item per note. Insert and remove as context evolves.]

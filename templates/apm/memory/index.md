@@ -6,7 +6,7 @@ title: <Project Name>
 
 ## Memory Notes
 
-[Durable observations and patterns with lasting value.]
+[Bulleted list. One item per note. Durable observations and patterns with lasting value.]
 
 ## Stage Summaries
 
