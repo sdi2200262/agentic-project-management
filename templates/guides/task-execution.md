@@ -62,11 +62,10 @@ When validation fails, the Worker enters a correction loop - correct, re-execute
 ### 2.4 Failure Status Standards
 
 - *Success:* Objective achieved, all validation passed. `failure_point: null`
-- *Partial:* Progress made but incomplete; needs guidance. `failure_point: Execution`, `Validation`, or `<description>`
-- *Failed:* Worker attempted but couldn't succeed; issue within scope but beyond resolution. `failure_point: Execution` or `Validation`
-- *Blocked:* External factors prevent progress; requires coordination-level resolution. `failure_point: <description>`
+- *Partial:* Progress made but incomplete; needs guidance. `failure_point: <description>`
+- *Failed:* Objective not achieved; Worker attempted but could not resolve the issue. `failure_point: <description>`
 
-Partial means "I need guidance to continue." Failed means "I tried everything within my scope." Blocked means "factors outside my control prevent progress." When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
+Partial means "I need guidance to continue." Failed means "I could not achieve the objective." When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
 
 ### 2.5 User Collaboration Standards
 
@@ -84,7 +83,7 @@ When recurring patterns emerge during Task Execution or important findings sugge
 
 When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus message), execute sequentially. Complete each Task fully - execute, validate, and write the Task Log - before starting the next Task in the batch. Each Task gets its own Task Log at its specified `log_path`.
 
-**Fail-fast:** If any Task results in Failed or Blocked status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.15 Batch Report Envelope Format. Do not defer logging to the end of the batch.
+**Fail-fast:** If any Task results in Failed status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.15 Batch Report Envelope Format. Do not defer logging to the end of the batch.
 
 ---
 

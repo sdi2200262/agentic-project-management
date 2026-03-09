@@ -95,7 +95,7 @@ When `/apm-4-check-tasks` or `/apm-5-check-reports` accept an `[agent-id]` argum
 
 ### 4.4 Batch Delivery Standards
 
-When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. The Task Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters per §4.14 Batch Envelope Format. Each Task Prompt retains its full standalone structure. If a Worker encounters a Blocked or Failed Task during batch execution, they stop the batch and report partial completion.
+When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. The Task Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters per §4.14 Batch Envelope Format. Each Task Prompt retains its full standalone structure. If a Worker encounters a Failed Task during batch execution, they stop the batch and report partial completion.
 
 **Procedure:**
 1. Bus Initialization (Planner, end of Planning Phase).
@@ -289,7 +289,7 @@ tasks:
 ## Task Outcomes
 
 ### <Title>
-**Status:** [Success | Partial | Failed | Blocked]
+**Status:** [Success | Partial | Failed]
 **Task Log:** `<log_path>`
 [1-2 sentence summary of outcome]
 
@@ -299,7 +299,7 @@ tasks:
 [Any cross-cutting observations, patterns, or issues affecting multiple Tasks]
 ```
 
-**Fail-fast documentation:** If the batch stopped early due to a Blocked or Failed Task, indicate which Task caused the stop and list remaining Tasks as "Not started (batch stopped)."
+**Fail-fast documentation:** If the batch stopped early due to a Failed Task, indicate which Task caused the stop and list remaining Tasks as "Not started (batch stopped)."
 
 ### 4.16 Common Mistakes
 
