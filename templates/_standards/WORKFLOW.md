@@ -129,7 +129,7 @@ The bus system is a file-based communication mechanism in `.apm/bus/`. The Plann
 
 A bus file is either empty (no message present) or contains a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. This prevents stale messages from accumulating and signals that the previous message was processed.
 
-Workers read their Task Bus when the User runs `/apm-4-check-tasks` in the Worker's session. The Manager reads Report Buses when the User runs `/apm-5-check-reports`. Both commands accept an optional agent identifier argument for targeted delivery.
+Workers read their Task Bus when the User runs `/apm-4-check-tasks` in the Worker's session. The Manager reads Report Buses when the User runs `/apm-5-check-reports`. Both commands accept optional agent identifier arguments for targeted delivery.
 
 When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. Each Task Prompt within the batch retains its full standalone structure.
 
@@ -169,11 +169,11 @@ Memory resides in `.apm/` with this hierarchy:
 
 **Index** (`memory/index.md`) is the project's durable memory. It contains memory notes (persistent observations and patterns with lasting value) and stage summaries (appended after each Stage completion). Memory notes come first — durable knowledge is hit first by incoming Managers.
 
-**Task tracking** (within Tracker) records Task statuses, agent assignments, active branches, and merge state per Stage. The Manager updates it after each Task Review. Tasks progress through lifecycle states per `TERMINOLOGY.md` §4: Waiting, Ready, Active, Done.
+**Task tracking** (within Tracker) records Task statuses, agent assignments, and branch state per Stage. The Manager updates it after each Task Review, batching all changes from a review-dispatch cycle into a single edit. Tasks progress through lifecycle states per `TERMINOLOGY.md` §4: Waiting, Ready, Active, Done. A Task unblocked and dispatched in the same cycle transitions directly from Waiting to Active; Ready is written only when dispatch is deferred.
 
 **Agent tracking** (within Tracker) records agent identifiers, session numbers, and notes. Agents start as uninitialized and transition to Session N when initialized. The Manager updates it when agents are first dispatched to, and when Handoffs are detected. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies.
 
-**Working notes** (within Tracker) are ephemeral coordination context maintained by the Manager and User. Contents include User preferences, coordination insights, and other context not captured in task or agent tracking. Working notes are inserted and removed as context evolves — they are not permanent records.
+**Working notes** (within Tracker) are coordination context maintained by the Manager and User. Contents include User preferences, coordination insights, and durable observations awaiting distillation into memory notes at Stage summary time. Working notes are inserted and removed as context evolves.
 
 **Stage directories** (`memory/stage-<NN>/`) contain Task Logs for each Stage. Workers create the directory when writing their first Task Log for that Stage.
 
@@ -187,7 +187,7 @@ Both the Manager and Workers interact with Memory at various parts of the workfl
 
 1. The Manager populates the Tracker (task tracking with Stage 1 Tasks, agent tracking with all Workers, version control state) and initializes the Index during session 1.
 2. Workers create Task Logs after each Task completion.
-3. The Manager updates the Tracker after each Task Review: completed Tasks, readiness changes, merge state. The Manager assesses whether the review yielded note-worthy context — ephemeral coordination context goes to working notes in the Tracker, durable observations go to memory notes in the Index.
+3. The Manager updates the Tracker after each Task Review: completed Tasks, readiness changes, branch state. Note-worthy context from the review is added to working notes in the Tracker - both ephemeral coordination items and durable observations. Durable observations are distilled into memory notes in the Index at Stage summary time.
 4. The Manager appends a stage summary to the Index after all Tasks in a Stage complete.
 5. Outgoing agents create Handoff Logs during Handoff.
 
@@ -227,7 +227,7 @@ The Planner gathers project requirements through three progressive rounds of que
 
 **Round 3 - Implementation Approach and Quality.** Technical constraints, workflow preferences, quality standards, coordination needs, domain organization, design decisions and constraints, finalizing the Spec and Rules.
 
-Each round follows an iteration cycle: ask initial questions, assess gaps after each response, follow up until understanding is complete, present a round summary, advance. When User responses reference codebase elements, the Planner proactively explores before continuing - subagent usage is encouraged to avoid context bloat. The Planner captures validation criteria for each requirement, proposing concrete measures when the User does not specify them.
+Each round follows an iteration cycle: ask initial questions, assess gaps after each response, follow up until understanding is complete, present a round summary, advance. When User responses reference codebase elements, the Planner proactively explores before continuing - subagent usage is encouraged to avoid context bloat. When subagent findings contribute specific details to planning documents, the Planner verifies key claims through handles the subagent provides; findings that inform general understanding are accepted without verification. The Planner captures validation criteria for each requirement, proposing concrete measures when the User does not specify them.
 
 After all rounds, the Planner presents a consolidated understanding summary for User review. Modifications loop back through targeted follow-ups. User approval triggers transition to Work Breakdown.
 
@@ -261,7 +261,7 @@ The Manager assesses readiness, determines dispatch mode, constructs Task Prompt
 
 **Per-Task analysis** - For each Task, the Manager synthesizes content from three sources into the Task Prompt: dependency context (familiarity classification, producer Task Log content when applicable, integration guidance), relevant Spec content (design decisions and constraints for this Task, extracted inline), and Plan Task fields (objective, steps, guidance, output, validation criteria). Rules are not included in Task Prompts - Workers read `{AGENTS_FILE}` directly and the Task Prompt assumes those standards are in effect. Dependency context depth depends on Worker familiarity with the producer's work. Same-agent dependencies receive light context: recall anchors and file paths. Cross-agent dependencies receive comprehensive context: file reading instructions, output summaries, and integration guidance. After a Worker Handoff, previous-Stage same-agent dependencies become cross-agent because the incoming Worker lacks that working context. The Manager traces dependency chains upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Spec content is extracted inline - the Manager never references the Spec or the Plan by path in Task Prompts.
 
-**Task Prompt construction** - The Manager assembles each Task Prompt as a self-contained document with metadata (Stage, Task, agent identifier, log path, dependency indicator) and a body containing the Task objective, dependency context, detailed instructions, expected output, validation criteria, and reporting instructions. For parallel dispatch, the Task Prompt includes the workspace path where the Worker operates. Workers commit to their assigned branch and note the workspace in their Task Log.
+**Task Prompt construction** - The Manager assembles each Task Prompt as a self-contained document with metadata (Stage, Task, agent identifier, log path, dependency indicator) and a body containing the Task objective, dependency context, detailed instructions, expected output, validation criteria, iteration guidance, logging instructions, and reporting instructions. For parallel dispatch, the Task Prompt includes the workspace path where the Worker operates. Workers commit to their assigned branch and note the workspace in their Task Log.
 
 **Dispatch delivery** - For each dispatch, the Manager writes to the Worker's Task Bus and directs the User to the Worker's session with specific action guidance. For uninitialized Workers, the Manager directs the User to create a new session and initialize with the agent identifier; for initialized Workers, to deliver the Task Prompt. For batch dispatch, the Manager summarizes what the Worker will receive. For parallel dispatch, the Manager lists each Worker session with its required action. Parallel dispatch may contain any combination of single or batch dispatch for multiple Workers concurrently.
 

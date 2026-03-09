@@ -152,7 +152,7 @@ has_dependencies: true
 - `stage`: integer, required. Stage number.
 - `task`: integer, required. Task number within Stage.
 - `agent`: string, required. Worker identifier (kebab-case).
-- `log_path`: string, required. Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. All Tasks in the same Stage share the same Stage directory.
+- `log_path`: string, required. Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. All Tasks in the same Stage share the same Stage directory. The Manager constructs the path; the Worker creates the directory when writing the first Task Log for that Stage.
 - `has_dependencies`: boolean, required. Whether dependency context is present.
 
 **Prompt Body Sections:**
@@ -166,6 +166,7 @@ has_dependencies: true
 - *Workspace:* Branch name for sequential dispatch, worktree path for parallel dispatch per `{SKILL_PATH:apm-version-control}`. Worker operates in the specified workspace, commits there, and notes it in the Task Log. Workers do not merge.
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field with validation approaches (programmatic, artifact, user).
+- *Task Iteration:* After 3 failed attempts on the same issue, spawn a debug subagent for resolution. If unresolved, log partial progress and report Partial rather than exhausting the session.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
 - *Task Report:* Instruction to output a Task Report for User to return to Manager.
 
