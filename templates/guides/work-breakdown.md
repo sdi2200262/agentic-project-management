@@ -275,7 +275,6 @@ APM_STANDARDS {
 ## Framework Rules
 
 - After context compaction or summarization, re-read the procedural documents referenced in the initiation prompt before continuing work.
-- When iterative debugging consumes disproportionate context without resolution, log partial progress and spawn a debug subagent or escalate rather than exhausting the session.
 
 [Project-specific standards below]
 

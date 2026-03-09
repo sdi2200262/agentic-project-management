@@ -28,7 +28,7 @@ See §3 Version Control Procedure for initialization, branch operations, worktre
 
 **Worktrees:** Isolated working directories under `.apm/worktrees/` for parallel dispatch. Each worktree is checked out on its own feature branch.
 
-**Tracker VC entry:** VC state recorded in the Version Control table within the Tracker - base branch, active branches, pending merges.
+**Tracker VC entry:** VC configuration recorded in the Version Control table within the Tracker - base branch and naming convention. Branch state is tracked per-task in the task table.
 
 ---
 
@@ -100,7 +100,7 @@ Execute per dispatch unit when constructing Task Prompts. Perform the following 
 1. Create a feature branch off the base branch using the naming convention established during initialization.
 2. For sequential dispatch: the Worker operates in the main directory on this branch. Include the branch name in the Task Prompt.
 3. For parallel dispatch: proceed to §3.3 Worktree Operations instead.
-4. Update the Tracker Version Control table with the active branch.
+4. Record the branch name in the task row's Branch column when updating the Tracker.
 
 ### 3.3 Worktree Operations
 
@@ -112,7 +112,7 @@ Execute for parallel dispatch when multiple Workers need isolated workspaces. Pe
    ```
 
 2. Include the worktree path as the Worker's workspace in the Task Prompt - all file operations happen in that directory.
-3. Update the Tracker Version Control table with the active branch and worktree path.
+3. Record the branch name and worktree path in the task row's Branch column when updating the Tracker.
 
 ### 3.4 Merge Coordination
 
@@ -121,7 +121,7 @@ Execute after a successful Task Review with no outstanding follow-ups. Perform t
 2. Merge the completed feature branch: `git merge <branch-name>`.
 3. If conflicts arise, resolve per §2.4 Merge Standards.
 4. If this merge unblocks dependent Tasks, note readiness for the next dispatch cycle.
-5. Update the Tracker Version Control table - remove the merged branch from active branches.
+5. Clear the Branch column for the merged task row when updating the Tracker.
 
 **Stage-end merge sweep:** After all Tasks in a Stage complete and are reviewed, verify all Stage feature branches are merged. Merge any that were deferred.
 
@@ -146,7 +146,7 @@ Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived 
 
 ### 4.3 Tracker VC Entry Format
 
-The Manager records VC state in the Version Control table within the Tracker. This table is the source of truth for Handoff continuity - an incoming Manager reads it to rebuild working VC context.
+The Manager records VC configuration in the Version Control table within the Tracker. Branch state is tracked per-task in the task table's Branch column - an incoming Manager reads task rows to rebuild working VC context.
 
 **Format:**
 
@@ -157,8 +157,6 @@ The Manager records VC state in the Version Control table within the Tracker. Th
 |-------|-------|
 | Base Branch | <branch-name> |
 | Branch Convention | <agreed naming convention> |
-| Active Branches | <list of current feature branches, or "none"> |
-| Pending Merges | <branches awaiting merge after review, or "none"> |
 ```
 
 ---
@@ -177,7 +175,7 @@ The Manager records VC state in the Version Control table within the Tracker. Th
 - *Dispatching before merging dependencies:* If Task B depends on Task A's output and A was on a separate branch, A must be merged before B's branch is created.
 - *Accumulating worktrees:* Worktrees are short-lived. Remove promptly after merge.
 - *Assuming base branch name:* Detect the current branch during initialization. Do not assume `main` or `master`.
-- *Forgetting VC state in Handoff:* Ensure the Tracker Version Control table is current before Handoff. Include active branches, worktrees, and pending merges in the Handoff Log.
+- *Forgetting VC state in Handoff:* Ensure task rows reflect current branch state before Handoff. Include active branches, worktrees, and pending merges in the Handoff Log.
 - *Committing build artifacts:* Do not commit generated files (compiled binaries, object files, build output). Create or update `.gitignore` for build directories.
 
 ---

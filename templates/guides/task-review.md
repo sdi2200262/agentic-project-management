@@ -80,15 +80,15 @@ When multiple Workers are active simultaneously, the Manager coordinates asynchr
 
 ### 2.5 Stage Summary Standards
 
-Stage summaries compress Stage execution for future incoming Manager instances (after Handoff) and project retrospectives. **Include:** overall outcome, agents involved, notable findings, compatibility concerns. **Reference:** Individual Task Log files for Task-specific detail. **Exclude:** implementation details, code specifics, routine operations. Keep summaries ≤30 lines.
+Stage summaries compress Stage execution for future incoming Manager instances (after Handoff) and project retrospectives. Write as descriptive prose covering outcome, agents involved, notable findings, and patterns - point to commits and key decisions. Follow with a Task Log reference list. Exclude implementation details, code specifics, and routine operations. Do not duplicate Working Notes or Memory Notes as a separate section. Keep summaries ≤30 lines.
 
 ### 2.6 Note-Taking Standards
 
 Notes capture context that falls outside structured tracking but aids coordination and continuity. Two categories serve different purposes:
 
-**Working Notes (Tracker):** Ephemeral coordination context relevant to upcoming decisions. Insert when a review yields context the Manager needs for the next dispatch cycle - pending considerations, User preferences for current work, temporary constraints. Remove when no longer applicable. Working Notes live and die within a coordination window. Use a bulleted list - one item per note, each self-contained.
+**Working Notes (Tracker):** Coordination context accumulated during the Stage. Working Notes serve two purposes: ephemeral context for upcoming decisions (pending considerations, User preferences, temporary constraints) and durable observations awaiting distillation (patterns, preferences, architectural insights). Insert when a review yields note-worthy context. Remove ephemeral items when no longer applicable. At Stage summary time, distill durable observations into Memory Notes in the Index per §3.5. Use a bulleted list - one item per note, each self-contained.
 
-**Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Insert when a review reveals patterns, preferences, or insights with lasting value - recurring Worker behaviors, User workflow preferences, architectural patterns discovered during execution. Memory Notes accumulate as project knowledge. Use a bulleted list - one item per note, each self-contained and understandable without surrounding context.
+**Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Memory Notes are written during Stage summary creation - the Manager distills accumulated Working Notes into Memory Notes, retaining only observations with lasting value. Use a bulleted list - one item per note, each self-contained and understandable without surrounding context.
 
 ---
 
@@ -132,7 +132,7 @@ Perform the following actions:
    - *No issues:* → Continue to step 4.
    - *Follow-up needed:* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. Continue to step 4.
    - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification (returns to step 4 after completion).
-4. Update the Tracker per §4.1 and §4.2: mark completed Tasks as Done, reassess Waiting Tasks for newly Ready status, update merge state. Execute pending merges per `{SKILL_PATH:apm-version-control}` §3.4 before reassessing readiness. Assess whether the review yielded note-worthy context. Add ephemeral coordination context to Working Notes in the Tracker. Add durable observations to Memory Notes in the Index. Review existing Working Notes and remove any that are no longer applicable.
+4. Update the Tracker: mark completed Tasks as Done, reassess Waiting Tasks for readiness, update branches. Execute pending merges per `{SKILL_PATH:apm-version-control}` §3.4 before reassessing readiness. Assess whether the review yielded note-worthy context and add to Working Notes - both ephemeral coordination items and durable observations for later distillation. Remove stale Working Notes. Batch all changes from this review cycle into a single Tracker edit per §4.1.
 5. Assess next action per §2.4 Parallel Coordination Standards:
    - If all Stage Tasks are Done and merged → Collapse Stage per §4.1 and proceed to §3.5 Stage Summary Creation.
    - If Tasks are Ready → Proceed to `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment in the same turn.
@@ -157,8 +157,9 @@ Execute when all Tasks in a Stage are complete. A Task is complete when the revi
 
 Perform the following actions:
 1. Review all Task Logs for the completed Stage.
-2. Synthesize Stage-level observations: overall outcome, agents involved, notable findings, patterns, compatibility concerns. Assess whether any patterns or insights warrant Memory Notes in the Index.
-3. Append stage summary to the Index per §4.4 Stage Summary Format. Keep ≤30 lines, reference logs rather than duplicating content.
+2. Distill durable observations from Working Notes into Memory Notes in the Index. Remove distilled items from Working Notes in the Tracker.
+3. Synthesize Stage-level observations: outcome, agents involved, notable findings, patterns.
+4. Append stage summary to the Index per §4.4 Stage Summary Format. Reference Task Logs rather than duplicating content.
 
 ---
 
@@ -166,7 +167,7 @@ Perform the following actions:
 
 ### 4.1 Task Tracking Format
 
-The Task Tracking section within the Tracker tracks Task statuses, agent assignments, active branches, and merge state per Stage. Updated by the Manager after each review cycle.
+The Task Tracking section within the Tracker tracks Task statuses, agent assignments, and branch state per Stage. Updated by the Manager after each review cycle.
 
 **Location:** `## Task Tracking` section of `.apm/tracker.md`.
 
@@ -196,9 +197,11 @@ The Task Tracking section within the Tracker tracks Task statuses, agent assignm
 - `Done | branch-name` - reviewed, branch pending merge.
 - `Done` (no branch) - merged.
 
+The Manager writes the end state of each task for the review-dispatch cycle. When a Task is unblocked and dispatched in the same turn, write directly from Waiting to Active. When a Task is unblocked but cannot be dispatched - the assigned Worker has an Active Task or intelligent waiting applies per `{GUIDE_PATH:task-assignment}` §2.4 - write Ready.
+
 **Stage collapse:** When all Tasks in a Stage are Done with no branches remaining: replace all task rows with `**Stage N:** Complete`.
 
-**One table row per task:** Task ID column guarantees edit tool uniqueness. Each status change is a single-row edit.
+**Batch edits:** Task ID column guarantees edit tool uniqueness for targeting individual rows. When multiple rows or Working Notes change in the same review-dispatch cycle, batch all Tracker updates into a single edit.
 
 ### 4.2 Tracker Format
 
@@ -209,7 +212,7 @@ The Task Tracking section within the Tracker tracks Task statuses, agent assignm
 The Tracker contains four sections:
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
 - *`## Agent Tracking`:* Records agent states, session numbers, and coordination notes. The Manager updates agent tracking when agents are first dispatched to and when Handoffs are detected. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
-- *`## Version Control`:* Per `{SKILL_PATH:apm-version-control}` §4.3 Tracker VC Entry Format.
+- *`## Version Control`:* Base branch and naming convention per `{SKILL_PATH:apm-version-control}` §4.3 Tracker VC Entry Format. Static after initialization - branch state is tracked in the task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.6 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
 **Agent Tracking Table:**
@@ -242,17 +245,12 @@ Append to the Index `## Stage Summaries` section after each Stage completion:
 ```markdown
 ### Stage <N> - <Stage Name>
 
-**Outcome:** [Stage results]
-
-**Notes:** [Undocumented context, findings, compatibility issues - omit if none]
-
-**Agents:** [Workers who worked on this Stage]
+[Prose summary: outcome, agents involved, notable findings, patterns, key commits. ≤20 lines.]
 
 **Task Logs:**
-- task-<NN>-<MM>.log.md - [Status]
+- task-<NN>-<MM>.log.md
+- task-<NN>-<MM>.log.md
 ```
-
-Keep ≤30 lines. Reference logs rather than duplicating content.
 
 ### 4.5 Modification Log Format
 
