@@ -24,9 +24,7 @@ title: <Project Name>
 |-------|-------|
 | Base Branch | <base-branch> |
 | Branch Convention | <convention> |
-| Active Branches | none |
-| Pending Merges | none |
 
 ## Working Notes
 
-[Bulleted list. One item per note. Insert and remove as context evolves.]
+[Bulleted list. One item per note. Insert and remove as context evolves. Durable observations accumulate here until distilled into Memory Notes at Stage summary.]

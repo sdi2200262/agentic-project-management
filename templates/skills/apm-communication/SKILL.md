@@ -125,7 +125,7 @@ Create all directories and bus files using `mkdir -p` and `touch` in a single te
 
 Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Perform the following actions:
 1. Clear the incoming Report Bus per §4.9 Clear-on-Return. Skip on first Task Prompt when no report exists.
-2. Write the complete Task Prompt content to the Task Bus: `.apm/bus/<agent-slug>/task.md`.
+2. Read the Task Bus file, then write the complete Task Prompt content to it: `.apm/bus/<agent-slug>/task.md`.
 3. Provide the User with specific action guidance for Worker `<agent-slug>`:
    - If the Worker is not yet initialized → direct the User to start a new session and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
    - If the Worker is already initialized → direct the User to run `/apm-4-check-tasks` in the Worker's session.
@@ -137,7 +137,7 @@ Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Pe
 
 Execute when a Worker sends a Task Report to the Manager. Perform the following actions:
 1. Clear the incoming Task Bus per §4.9 Clear-on-Return.
-2. Write the complete Task Report content to the Report Bus: `.apm/bus/<agent-slug>/report.md`.
+2. Read the Report Bus file, then write the complete Task Report content to it: `.apm/bus/<agent-slug>/report.md`.
 3. Direct the User to deliver the report to the Manager. Provide both:
    - `/apm-5-check-reports <agent-id>` for targeted retrieval of this Worker's report.
    - `/apm-5-check-reports` (no argument) as an alternative when multiple Workers may have finished.
