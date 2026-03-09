@@ -40,9 +40,8 @@ Boolean flags in YAML frontmatter signal conditions requiring Manager attention.
 Status reflects whether the objective was achieved. Select based on end state, not effort expended.
 
 - *Success:* Objective achieved, all validation passed. `failure_point: null`
-- *Partial:* Some progress made but incomplete; Worker needs guidance to continue. `failure_point: Execution`, `Validation`, or `<description>`
-- *Failed:* Worker attempted but could not succeed; issue is within scope but beyond resolution. `failure_point: Execution` or `Validation`
-- *Blocked:* External factors outside Worker scope prevent progress. `failure_point: <description>`
+- *Partial:* Some progress made but incomplete; Worker needs guidance to continue. `failure_point: <description>`
+- *Failed:* Objective not achieved; Worker attempted but could not resolve the issue. `failure_point: <description>`
 
 Use Partial when: validation is ambiguous, important findings emerged that could affect other Tasks, iteration stalled with recurring failures, or approach uncertainty depends on factors outside Worker's scope. Continue iterating (do not log yet) when validation failed but the cause is clear and fixable, no findings require Manager awareness, and progress is being made.
 
@@ -106,8 +105,8 @@ stage: <N>
 task: <M>
 title: <Task title from Plan>
 agent: <agent-slug>
-status: Success | Failed | Partial | Blocked
-failure_point: null | Execution | Validation | <description>
+status: Success | Partial | Failed
+failure_point: null | <description>
 important_findings: true | false
 compatibility_issues: true | false
 ---

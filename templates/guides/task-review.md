@@ -36,7 +36,7 @@ See §3 Task Review Procedure when processing a Task Report from a Worker. See �
 
 The goal is to extract information needed for the next review decision.
 
-**Status interpretation:** Assess whether the status and flags are consistent with the log's body content - inconsistency is a common hallucination indicator. Status values per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (attempted, could not succeed), Blocked (external factors prevent progress).
+**Status interpretation:** Assess whether the status and flags are consistent with the log's body content - inconsistency is a common hallucination indicator. Status values per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (objective not achieved).
 
 **Flag interpretation** → Workers set flags based on scoped observations. The Manager interprets with full project awareness:
 - `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done.

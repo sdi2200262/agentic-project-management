@@ -210,8 +210,7 @@ Task outcome status reflects whether the objective was achieved:
 | ------ | ---------- |
 | Success | Objective achieved, all validation passed |
 | Partial | Some execution or validation succeeded, some failed; the Worker needs guidance to continue |
-| Failed | The Worker attempted but could not succeed; the issue is within scope but beyond resolution |
-| Blocked | External factors outside the Worker's scope or authority prevent progress |
+| Failed | Objective not achieved; the Worker attempted but could not resolve the issue |
 
 ---
 
@@ -275,7 +274,7 @@ The Worker executes Task instructions, validates results, iterates if needed, lo
 
 **Execution flow** - The Worker integrates dependency context if present, executes steps sequentially, then validates per the Task Prompt's validation criteria. Validation follows a fixed order: automated checks first, then output verification, then user approval if specified. When validation fails, the Worker corrects and re-validates until Success or a stop condition is reached. Stop conditions: same error three or more times, fixes causing new issues, or the issue requires external resolution.
 
-**Batch execution** - When receiving a batch of Tasks, the Worker executes them sequentially. After each Task, a Task Log is written immediately before proceeding to the next. If any Task results in a Failed or Blocked status, execution stops. After completing all Tasks (or stopping on failure), the Worker writes a batch Task Report to the Report Bus containing outcomes for each Task.
+**Batch execution** - When receiving a batch of Tasks, the Worker executes them sequentially. After each Task, a Task Log is written immediately before proceeding to the next. If any Task results in a Failed status, execution stops. After completing all Tasks (or stopping on failure), the Worker writes a batch Task Report to the Report Bus containing outcomes for each Task.
 
 **Subagent usage** - When a Task includes subagent steps, the Worker spawns the relevant subagent. Findings are integrated into the Worker's context and reflected during execution.
 

@@ -66,10 +66,9 @@ Task Logs record the execution result:
 | ------ | ------------ |
 | **Success** | Objective achieved, all validation passed. |
 | **Partial** | Some progress made; Worker needs guidance to continue. |
-| **Failed** | Worker attempted but could not succeed within scope. |
-| **Blocked** | External factors outside Worker scope prevent progress. |
+| **Failed** | Objective not achieved; Worker attempted but could not resolve the issue. |
 
-Partial means "I need guidance to continue." Failed means "I tried everything within my scope." Blocked means "factors outside my control prevent progress." The `failure_point` field accompanies non-Success statuses: `null` for Success, `Execution` or `Validation` for Failed/Partial, or a description for Blocked.
+Partial means "I need guidance to continue." Failed means "I could not achieve the objective." The `failure_point` field accompanies non-Success statuses: `null` for Success, or a description for Partial and Failed.
 
 ---
 
