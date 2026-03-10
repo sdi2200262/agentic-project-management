@@ -33,7 +33,7 @@ See §3 Task Execution Procedure - follow subsections sequentially from Task Pro
 
 ### 2.1 Context Integration Standards
 
-Workers operate with narrow context - only their Task Prompt and accumulated working context from prior Tasks in this session.
+Workers operate with narrow context - only their Task Prompt and accumulated working context from prior Tasks since initiation.
 
 The Task Prompt's Context from Dependencies section reflects how much the Worker knows about the producer's work. Cross-agent dependencies provide detailed integration instructions - specific files to read, artifacts to review, interfaces to understand. Follow completely. Same-agent dependencies provide lighter guidance - recall anchors and file references as additional context.
 
@@ -77,7 +77,7 @@ Partial means "I need guidance to continue." Failed means "I could not achieve t
 
 ### 2.6 Rules Updates
 
-When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{AGENTS_FILE}` and request User approval before modifying. Rules are not modified unilaterally - the User decides whether the change is warranted.
+When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{RULES_FILE}` and request User approval before modifying. Rules are not modified unilaterally - the User decides whether the change is warranted.
 
 ### 2.7 Batch Rules
 
@@ -125,7 +125,7 @@ Execute when `has_dependencies: true`. Must complete before Task execution begin
 ### 3.3 Task Execution
 
 Perform the following actions:
-1. Execute Detailed Instructions sequentially, applying Guidance and relevant Rules from `{AGENTS_FILE}`, working toward the Objective.
+1. Execute Detailed Instructions sequentially, applying Guidance and relevant Rules from `{RULES_FILE}`, working toward the Objective.
 2. For each instruction step:
    - Standard instruction → Execute and continue.
    - Explicit User action required → Communicate what needs User action, why, and what options exist. Await completion, then resume.
@@ -157,7 +157,10 @@ Perform the following actions:
 1. Before logging, assess visibly in chat whether all objectives are met and deliverables are ready for review, whether any important findings or compatibility issues arose, and determine the Task's status based on your conclusion per §2.4 Failure Status Standards (Success if all validation passed).
 2. Commit work to the assigned branch per `{SKILL_PATH:apm-version-control}` §5.1 Role Boundaries.
 3. Create Task Log per `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure at `log_path`.
-4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. If this is the first Task after Handoff initialization, include incoming Worker indication in the Task Report: state session number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded. Direct User to deliver the report per the communication skill - provide both the targeted command (`/apm-5-check-reports <agent-id>`) and the general command.
+4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. Include relevant status indications:
+   - *After Handoff:* If this is the first Task after Handoff initialization, include incoming Worker indication: state instance number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded.
+   - *After recovery:* If auto-compaction occurred and recovery was performed via `/apm-9-recover`, note it in the Task Report so the Manager is aware.
+   Direct User to deliver the report per the communication skill - provide both the targeted command (`/apm-5-check-reports <agent-id>`) and the general command.
 5. Await `/apm-4-check-tasks` or Handoff initiation.
 
 ---
@@ -177,7 +180,7 @@ Perform the following actions:
 ### 5.1 Execution Quality
 
 - Follow instructions precisely as written.
-- Apply Rules from `{AGENTS_FILE}` consistently.
+- Apply Rules from `{RULES_FILE}` consistently.
 - Keep the Objective as the target throughout.
 - Document decisions and rationale in work products.
 

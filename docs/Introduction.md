@@ -9,7 +9,7 @@ sidebar_position: 3
 
 **A structured approach to building complex projects with AI Agents**
 
-APM is an open-source framework that helps you manage ambitious software projects using AI assistants like Claude, Cursor, GitHub Copilot and more. Instead of working in a single, increasingly chaotic chat session, APM structures your work into a coordinated system where different AI Agents handle planning, coordination, and execution as a team.
+APM is an open-source framework that helps you manage ambitious software projects using AI assistants like Claude, Cursor, GitHub Copilot and more. Instead of working in a single, increasingly chaotic chat, APM structures your work into a coordinated system where different AI Agents handle planning, coordination, and execution as a team.
 
 ## The Problem: Context Decay
 
@@ -21,9 +21,9 @@ As conversations extend, context degrades. The AI loses track of original requir
 
 APM addresses context limitations by treating the AI not as a single continuous assistant, but as a team of specialized AI Agents, each focused on a specific role with intentionally scoped context. The workload distribution of the framework aims for:
 
-- **Specialization:** Different Agents handle planning, coordination, and implementation. Each operates in its own session with only the context needed for its specific role.
+- **Specialization:** Different Agents handle planning, coordination, and implementation. Each operates in its own context with only the information needed for its specific role.
 
-- **Persistence:** Project state lives in structured documents outside Agent sessions. Planning documents define all work. Memory tracks the project's progression. A file-based bus system enables communication between Agents.
+- **Persistence:** Project state lives in structured documents outside Agent contexts. Planning documents define all work. Memory tracks the project's progression. A file-based bus system enables communication between Agents.
 
 - **Continuity:** When an Agent's context window fills, a Handoff Protocol transfers working knowledge to a fresh instance, which reconstructs context using the project's documents and continues seamlessly. Completed sessions can be archived and preserved for future reference, enabling new sessions to build on prior work.
 
@@ -41,7 +41,7 @@ APM coordinates three specialized Agent types that are all capable of using plat
 
 - **Workers** - Execute specific tasks within defined domains. Each Worker is assigned a specialized area (frontend, backend, API development, etc.) and receives focused task assignments. Workers operate with tightly scoped context - they see their current task and accumulated working context from previous tasks, but not the full project scope.
 
-- **Subagents** - Temporary instances spawned for isolated work such as debugging or research. Solve a specific problem and close, preventing context pollution in the main Agent sessions. Modern AI platforms provide native subagent support that APM leverages.
+- **Subagents** - Temporary instances spawned for isolated work such as debugging or research. Solve a specific problem and close, preventing context pollution in the main Agent contexts. Modern AI platforms provide native subagent support that APM leverages.
 
 > For detailed description on the three APM agent types, see [Agent Types](Agent_Types.md).
 
@@ -58,7 +58,7 @@ APM maintains project state through structured documents and protocols:
 
 - **Memory** - A hierarchical structure containing the Tracker (live project state with task tracking, agent tracking, and working notes), the Index (durable project memory with stage summaries), and Task Logs for each completed Task. Workers document their work in Task Logs. The Manager reads them to track progress without reviewing code directly, maintaining coordination-level focus.
 
-- **Bus System** - A file-based communication mechanism for passing messages between Agent sessions. The Manager writes Task Prompts to Task Bus files; Workers write Task Reports to Report Bus files. The User triggers bus checks using commands (`/apm-4-check-tasks`, `/apm-5-check-reports`), keeping APM platform agnostic while making communication explicit and auditable.
+- **Bus System** - A file-based communication mechanism for passing messages between Agent chats. The Manager writes Task Prompts to Task Bus files; Workers write Task Reports to Report Bus files. The User triggers bus checks using commands (`/apm-4-check-tasks`, `/apm-5-check-reports`), keeping APM platform agnostic while making communication explicit and auditable.
 - **Handoff** - When an Agent's context window approaches limits, the User triggers a Handoff. The outgoing Agent creates a Handoff Log capturing working knowledge and writes a handoff prompt to the Handoff Bus with reconstruction instructions. The incoming Agent reads these artifacts and relevant Task Logs to reconstruct context and continue work seamlessly.
 
 ---

@@ -30,7 +30,7 @@ APM Agents perform best with models that excel at systematic reasoning and conte
 | Agent Type | Recommended Models | Cost-Effective Alternatives | Notes |
 | :--- | :--- | :--- | :--- |
 | **Planner Agent** | Claude Sonnet 4/4.5, Claude Opus 4.5/4.6, | - | Prefer the recommended models for best planning output. Avoid switching models during Planning Phase to prevent context gaps. Use one model throughout. |
-| **Manager Agent** | Claude Sonnet 4/4.5, Claude Opus 4.5/4.6, Gemini 3 Pro | Claude Haiku 4.5, Cursor Auto | Model switching mid-session not recommended though less critical than for Planner. |
+| **Manager Agent** | Claude Sonnet 4/4.5, Claude Opus 4.5/4.6, Gemini 3 Pro | Claude Haiku 4.5, Cursor Auto | Model switching mid-chat not recommended though less critical than for Planner. |
 | **Worker Agents** | Claude Sonnet 4.5, Claude Opus 4.5/4.6, GPT-5.x, GPT-5.x-Codex, Gemini 3 Pro | Claude Haiku 4.5, GPT-5.x-mini, GPT-5.x-Codex-mini, Grok Code, Cursor Composer, Cursor Auto | Context is tightly scoped, making model switching viable for matching task complexity. |
 
 > For guidance on economical model selection, see [Token Consumption Tips](Token_Consumption_Tips.md).
@@ -95,9 +95,9 @@ After initialization completes, you're ready to begin.
 
 The Planning Phase creates the planning documents that guide all subsequent work.
 
-### 1. Create Planner Session
+### 1. Create Planner Chat
 
-1. Open a new chat session in your AI assistant (Agent mode if available)
+1. Open a new chat in your AI assistant (Agent mode if available)
 2. Name it clearly: "Planner" or "APM Planner"
 3. Select a top-tier model as recommended in Prerequisites
 
@@ -155,9 +155,9 @@ You'll review and approve each document before the Planner proceeds to the next.
 
 The Manager coordinates execution of the Plan.
 
-### 1. Create Manager Session
+### 1. Create Manager Chat
 
-1. Open a new chat session in Agent mode
+1. Open a new chat in Agent mode
 2. Name it clearly: "Manager" or "APM Manager 1"
 3. Select a model as recommended in Prerequisites
 
@@ -190,7 +190,7 @@ The Manager assesses which tasks are ready and creates a Task Prompt with all re
 
 ### 2. Initialize Worker
 
-1. Open a new chat session for the assigned Worker
+1. Open a new chat for the assigned Worker
 2. Name it using the Agent name from the Plan (e.g., "Frontend Agent")
 3. Select a model as recommended in Prerequisites
 4. Run the initialization command:
@@ -201,11 +201,11 @@ The Manager assesses which tasks are ready and creates a Task Prompt with all re
 
 ### 3. Deliver Task Assignment
 
-Run `/apm-4-check-tasks` in the Worker's session. The Worker reads the Task Prompt from its Task Bus, registers its identity, and begins execution.
+Run `/apm-4-check-tasks` in the Worker's chat. The Worker reads the Task Prompt from its Task Bus, registers its identity, and begins execution.
 
 ### 4. Worker Executes
 
-The Worker works through the task, validates results, and creates a Task Log documenting the outcome. It then writes a Task Report to the Report Bus and directs you to run `/apm-5-check-reports` in the Manager's session.
+The Worker works through the task, validates results, and creates a Task Log documenting the outcome. It then writes a Task Report to the Report Bus and directs you to run `/apm-5-check-reports` in the Manager's chat.
 
 > **Tips:**
 >
@@ -214,7 +214,7 @@ The Worker works through the task, validates results, and creates a Task Log doc
 
 ### 5. Carry Report to Manager
 
-Run `/apm-5-check-reports` in the Manager's session. The Manager reads the Task Report and Task Log, then determines the review outcome:
+Run `/apm-5-check-reports` in the Manager's chat. The Manager reads the Task Report and Task Log, then determines the review outcome:
 
 - **Proceed** - Move to next task
 - **Follow-up** - Send refined Task Prompt to retry
@@ -250,7 +250,7 @@ For efficiency, the Manager may dispatch multiple tasks:
 
 **Batch Dispatch** - Sequential tasks to the same Worker in a single message. The Worker executes each task, logs immediately, and stops if any task fails. Returns a consolidated Batch Report.
 
-**Parallel Dispatch** - Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist. You manage multiple Worker sessions, carrying messages as each completes in any order. The Manager initializes version control using git worktrees for workspace isolation.
+**Parallel Dispatch** - Tasks to multiple Workers simultaneously when no cross-Worker dependencies exist. You manage multiple Workers, carrying messages as each completes in any order. The Manager initializes version control using git worktrees for workspace isolation.
 
 ---
 
@@ -273,7 +273,7 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
    - Handoff Log capturing working knowledge not in formal logs (tracked Worker handoffs and VC state for Manager; working context and technical notes for Worker)
    - Handoff prompt with context reconstruction instructions, written to Handoff Bus
 
-3. **Create New Session** - Open a new session for the same agent role (e.g., "Manager session 2" or "Frontend Worker session 2")
+3. **Create New Chat** - Open a new chat for the same agent role (e.g., "Manager 2" or "Frontend Agent 2")
 
 4. **Initialize Incoming Agent** - Enter the same initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`) — the incoming Agent auto-detects the handoff prompt from the Handoff Bus
 
@@ -282,15 +282,26 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
    - Handoff Log
    - Relevant Task Logs (current-Stage for Workers; Tracker, Index, and recent logs for Manager)
 
+### Recovery from Auto-Compaction
+
+If the platform auto-compacts an Agent's context window (rather than you proactively triggering Handoff), use the recovery command to reconstruct working context:
+
+```markdown
+/apm-9-recover manager
+/apm-9-recover frontend-agent
+```
+
+Recovery re-reads procedural guides and role-specific state artifacts to rebuild context. Unlike Handoff, recovery does not require creating a new instance — the Agent continues as the same instance with reconstructed context.
+
 ---
 
 ## After Project Completion
 
-When the Manager completes all tasks and stages, it recommends running `/apm-8-summarize-session` in a new session to summarize the completed session.
+When the Manager completes all tasks and stages, it recommends running `/apm-8-summarize-session` in a new chat to summarize the completed APM session.
 
 ### Session Summary and Archival
 
-1. **Open a new session** and run `/apm-8-summarize-session`
+1. **Open a new chat** and run `/apm-8-summarize-session`
 2. The summarization agent reads all `.apm/` artifacts, produces a session summary, and presents it to you
 3. You can then choose to **archive** the session — this moves the current `.apm/` artifacts to `.apm/archives/` and restores fresh templates for a new session
 
@@ -308,13 +319,13 @@ apm archive --continues session-2026-03-04-001
 
 ### Starting a New Session
 
-After archival, `.apm/` contains fresh templates ready for a new Planner session. Previous session archives remain accessible in `.apm/archives/`. When the new Planner runs Context Gathering, it detects existing archives and asks about their relevance — enabling iterative development where each session builds on prior work.
+After archival, `.apm/` contains fresh templates ready for a new APM session. Previous session archives remain accessible in `.apm/archives/`. When the new Planner runs Context Gathering, it detects existing archives and asks about their relevance — enabling iterative development where each session builds on prior work.
 
 > For details on Session Continuation mechanics, see [Workflow Overview](Workflow_Overview.md).
 
 ---
 
-**Congratulations!** You've launched your first APM session. The structured multi-agent approach provides consistent project execution and prevents the chaos typical of single-session AI collaboration.
+**Congratulations!** You've launched your first APM session. The structured multi-agent approach provides consistent project execution and prevents the chaos typical of single-chat AI collaboration.
 
 **Next Steps:**
 

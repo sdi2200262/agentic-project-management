@@ -67,7 +67,7 @@ Bus files contain message content directly. No YAML frontmatter envelope is used
 3. Read the Task Bus file and process the message content.
 4. Clear the incoming Task Bus file.
 5. Write the Task Report to the Report Bus file.
-6. Inform the User that the Task Report is ready. The User runs `/apm-5-check-reports` in the Manager's session.
+6. Inform the User that the Task Report is ready. The User runs `/apm-5-check-reports` in the Manager's chat.
 
 ---
 

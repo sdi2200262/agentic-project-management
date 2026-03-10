@@ -7,7 +7,7 @@ sidebar_position: 7
 
 # Agent Orchestration
 
-APM coordinates multiple Agent Sessions through file-based communication and structured memory. This architecture enables Agents to work together without direct programmatic connection, making the workflow platform-agnostic and all interactions auditable.
+APM coordinates multiple Agent instances through file-based communication and structured memory. This architecture enables Agents to work together without direct programmatic connection, making the workflow platform-agnostic and all interactions auditable.
 
 ---
 
@@ -24,15 +24,15 @@ The framework establishes a coordination hierarchy where Agents interact through
 **Manager ↔ Workers (via User)**
 
 - Manager assigns tasks by writing Task Prompts to Task Bus files
-- User runs `/apm-4-check-tasks` in Worker Sessions to deliver assignments
+- User runs `/apm-4-check-tasks` in Worker chats to deliver assignments
 - Workers execute tasks and write Task Reports to Report Bus files
-- User runs `/apm-5-check-reports` in Manager Session to deliver reports
+- User runs `/apm-5-check-reports` in Manager's chat to deliver reports
 - Manager reviews and determines review outcome
 
 **Outgoing Agent → Incoming Agent (via User)**
 
 - Outgoing Agent creates Handoff Log and handoff prompt
-- User initializes new Session; incoming Agent auto-detects handoff prompt
+- User initializes new chat; incoming Agent auto-detects handoff prompt
 - Incoming Agent reconstructs context and continues work
 
 **All Agents ↔ Planning Documents**
@@ -45,7 +45,7 @@ The framework establishes a coordination hierarchy where Agents interact through
 
 ## Bus System
 
-The bus system in `.apm/bus/` provides file-based communication between Agent Sessions. The Planner initializes it at the end of the Planning Phase, creating agent directories for each Worker defined in the Plan. The Manager has a bus directory containing only a Handoff Bus.
+The bus system in `.apm/bus/` provides file-based communication between Agents. The Planner initializes it at the end of the Planning Phase, creating agent directories for each Worker defined in the Plan. The Manager has a bus directory containing only a Handoff Bus.
 
 ### Bus File Types
 
@@ -80,9 +80,9 @@ Example: Worker clears Task Bus before writing to Report Bus.
 All communication requires User as trigger puller. For example:
 
 1. Manager writes Task Prompt to Worker's Task Bus
-2. User runs `/apm-4-check-tasks` in Worker Session
+2. User runs `/apm-4-check-tasks` in Worker's chat
 3. Worker executes, clears Task Bus, writes Task Report to Report Bus
-4. User runs `/apm-5-check-reports` in Manager Session
+4. User runs `/apm-5-check-reports` in Manager's chat
 5. Manager reads Report, clears Report Bus, determines review outcome
 
 This user-mediated model works universally across platforms without requiring tool-specific integrations.
@@ -100,11 +100,11 @@ Memory resides in `.apm/` and tracks project state and execution history through
 Live project state document containing:
 
 - **Task tracking** - Task statuses per Stage (Waiting, Ready, Active, Done), agent assignments, active branches, merge state; updated by Manager after each Task Review
-- **Agent tracking** - Agent identifiers, session numbers, and notes; updated when agents are dispatched to or Handoffs are detected
+- **Agent tracking** - Agent identifiers, instance numbers, and notes; updated when agents are dispatched to or Handoffs are detected
 - **Version control state** - Base branch, branch convention, active branches, pending merges
 - **Working notes** - Ephemeral coordination notes maintained by Manager and User, inserted and removed as context evolves
 
-The Manager populates the Tracker during Session 1 and updates it after each Task Review.
+The Manager populates the Tracker during the first initialization and updates it after each Task Review.
 
 ### Index
 
@@ -115,7 +115,7 @@ Durable project memory containing:
 - **Memory notes** - Persistent observations and patterns with lasting value, placed first so incoming Managers encounter durable knowledge immediately
 - **Stage summaries** - Stage-level outcomes appended after each Stage completes
 
-The Manager initializes the Index during Session 1 and appends stage summaries as Stages complete.
+The Manager initializes the Index during the first initialization and appends stage summaries as Stages complete.
 
 ### Task Logs
 
@@ -157,7 +157,7 @@ Archived sessions preserved for future reference. Each archive contains the sess
 
 As the project progresses, Memory becomes a comprehensive archive mapping the Plan to execution history. This structured mapping enables:
 
-- **Efficient Handoff** - Incoming Agents reconstruct context from the Tracker and Index (if Manager), Handoff Log, and relevant Task Logs rather than full session history
+- **Efficient Handoff** - Incoming Agents reconstruct context from the Tracker and Index (if Manager), Handoff Log, and relevant Task Logs rather than full conversation history
 - **Cross-Agent Context** - Workers integrate outputs from other Agents by reading specified Task Logs as instructed in Task Prompts
 - **Progress Tracking** - Manager assesses project state by reading stage summaries in the Index and task tracking in the Tracker rather than reviewing all code changes
 
@@ -182,7 +182,7 @@ APM achieves Agent specialization through intentional context boundaries. Each A
 - Bus system (does not exist yet)
 - Implementation Phase activities
 
-Single Session, no Handoff.
+Single instance, no Handoff.
 
 ### Manager
 
@@ -199,7 +199,7 @@ Single Session, no Handoff.
 - Worker's detailed execution context (reads Task Logs instead of code)
 - Task-level implementation details unless investigation requires it or User requests it
 
-Multiple Sessions via Handoff. Each Session continues from where previous left off using Handoff Log and Memory.
+Multiple instances via Handoff. Each instance continues from where previous left off using Handoff Log and Memory.
 
 ### Worker
 
@@ -217,22 +217,22 @@ Multiple Sessions via Handoff. Each Session continues from where previous left o
 - Tracker, Index, or stage summaries
 - Other Workers' working context unless explicitly provided in Task Prompt
 
-Multiple Sessions via Handoff. After Handoff, incoming Worker reads current-Stage Task Logs for their Agent to reconstruct working context.
+Multiple instances via Handoff. After Handoff, incoming Worker reads current-Stage Task Logs for their Agent to reconstruct working context.
 
 ---
 
 ## Handoff Mechanism
 
-When an Agent's context window approaches limits (70-80% capacity), Handoff transfers working context to a fresh instance. This enables sustained project execution beyond single-session capacity.
+When an Agent's context window approaches limits (70-80% capacity), Handoff transfers working context to a fresh instance. This enables sustained project execution beyond single-instance capacity.
 
 ### Why Handoff Works
 
-Traditional session compaction accumulates noise - debugging attempts, trial-and-error, intermediate reasoning. Handoff filters this noise through structured artifacts:
+Traditional context compaction accumulates noise - debugging attempts, trial-and-error, intermediate reasoning. Handoff filters this noise through structured artifacts:
 
 - **Memory** (Tracker, Index, Task Logs) preserves execution outcomes and coordination state
 - **Handoff Log** preserves working knowledge and undocumented insights
 
-The Incoming Agent inherits clean context without session noise, enabling multiple consecutive handoffs without degradation.
+The Incoming Agent inherits clean context without noise, enabling multiple consecutive handoffs without degradation.
 
 ### Handoff Eligibility
 

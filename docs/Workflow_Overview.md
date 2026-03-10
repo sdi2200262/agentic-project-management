@@ -31,7 +31,7 @@ The Planner conducts structured discovery through three Question Rounds, each fo
 
 **Archive Detection**
 
-If archived sessions exist, the Planner presents them to the User and asks about relevance. When indicated archives are relevant, the Planner spawns the `apm-archive-explorer` custom subagent to examine them, then verifies findings against the current codebase before integrating into question rounds. This enables iterative development where each session builds on prior work.
+If archived APM sessions exist, the Planner presents them to the User and asks about relevance. When indicated archives are relevant, the Planner spawns the `apm-archive-explorer` custom subagent to examine them, then verifies findings against the current codebase before integrating into question rounds. This enables iterative development where each session builds on prior work.
 
 **Question Round 1: Existing Materials and Vision**
 
@@ -107,7 +107,7 @@ graph LR
 
 ### Manager Initialization
 
-After the Planning Phase, the User creates a Manager session and runs the initialization command. The Manager:
+After the Planning Phase, the User creates a new chat for the Manager and runs the initialization command. The Manager:
 
 - Reads all planning documents
 - Populates the Tracker and initializes the Index
@@ -130,7 +130,7 @@ The Manager assesses which tasks are ready based on dependency completion and th
 
 3. **Task Prompt Construction** - Assembles a self-contained prompt with task reference, context from dependencies, objective, detailed instructions, expected output, validation criteria, memory logging instructions, and reporting instructions.
 
-4. **Delivery via Task Bus** - Writes the Task Prompt to the Worker's Task Bus file. Directs the User to run `/apm-4-check-tasks` in the Worker's session.
+4. **Delivery via Task Bus** - Writes the Task Prompt to the Worker's Task Bus file. Directs the User to run `/apm-4-check-tasks` in the Worker's chat.
 
 **Dispatch Modes:**
 
@@ -144,7 +144,7 @@ For parallel dispatch, the Manager initializes version control (feature branches
 
 The Worker receives the Task Prompt and executes through this loop:
 
-1. **Registration** - On first Task Prompt, the Worker binds to the agent identity specified in the prompt. This identity persists across the Worker's Session.
+1. **Registration** - On first Task Prompt, the Worker binds to the agent identity specified in the prompt. This identity persists across the Implementation Phase for that Worker instance.
 
 2. **Context Integration** - If cross-agent dependencies exist, the Worker reads specified files to integrate context from prior tasks by other Workers.
 
@@ -158,11 +158,11 @@ The Worker receives the Task Prompt and executes through this loop:
 
 7. **Task Reporting** - Clears the Task Bus, writes Task Report to Report Bus summarizing completion status and key findings.
 
-The Worker directs the User to run `/apm-5-check-reports` in the Manager's session.
+The Worker directs the User to run `/apm-5-check-reports` in the Manager's chat.
 
 **Batch Execution:** When receiving a batch, the Worker executes each task sequentially and writes a Task Log immediately after each. If any task results in Blocked or Failed status, the Worker stops execution (fail-fast) and reports partial completion with unstarted tasks listed as "Not started (batch stopped)."
 
-**Subagent Spawning:** Workers may spawn platform-native subagents (Debug Subagent, Research Subagent) for isolated context-heavy work that would pollute the main session. Findings are integrated into the Worker's context after completion.
+**Subagent Spawning:** Workers may spawn platform-native subagents (Debug Subagent, Research Subagent) for isolated context-heavy work that would pollute the main context. Findings are integrated into the Worker's context after completion.
 
 #### Task Review
 
@@ -187,7 +187,7 @@ The Manager receives the Task Report via Report Bus and reviews the outcome:
 
 Memory resides in `.apm/` and tracks project state and execution history:
 
-- **Tracker** (`tracker.md`) - Live project state containing task tracking (statuses per Stage: Waiting, Ready, Active, Done), agent tracking (session numbers, notes), version control state, and working notes. Updated by the Manager throughout the Implementation Phase.
+- **Tracker** (`tracker.md`) - Live project state containing task tracking (statuses per Stage: Waiting, Ready, Active, Done), agent tracking (instance numbers, notes), version control state, and working notes. Updated by the Manager throughout the Implementation Phase.
 
 - **Index** (`memory/index.md`) - Durable project memory containing memory notes (persistent observations and patterns) and stage summaries (appended after each Stage completion).
 
@@ -199,7 +199,7 @@ Memory resides in `.apm/` and tracks project state and execution history:
 
 ### Bus System
 
-The bus system in `.apm/bus/` enables file-based communication between Agent Sessions. The Planner initializes it at the end of the Planning Phase. Each Worker has a bus directory containing three bus files:
+The bus system in `.apm/bus/` enables file-based communication between Agents. The Planner initializes it at the end of the Planning Phase. Each Worker has a bus directory containing three bus files:
 
 - **Task Bus** (`task.md`) - Manager-to-Worker communication containing Task Prompts
 - **Report Bus** (`report.md`) - Worker-to-Manager communication containing Task Reports
@@ -211,12 +211,12 @@ The User triggers bus checks using commands (`/apm-4-check-tasks`, `/apm-5-check
 
 ## Handoff
 
-When an Agent's context window approaches limits (70-80% capacity), a Handoff transfers context to a fresh instance of the same Agent. Handoff applies to Manager and Workers only - the Planner operates in a single Session.
+When an Agent's context window approaches limits (70-80% capacity), a Handoff transfers context to a fresh instance of the same Agent. Handoff applies to Manager and Workers only - the Planner operates in a single instance.
 
 ```mermaid
 graph LR
     A[Context Limits<br/>Approaching] --> B[Outgoing Agent<br/>Creates Artifacts]
-    B --> C[User Opens<br/>New Session]
+    B --> C[User Opens<br/>New Chat]
     C --> D[Incoming Agent<br/>Reconstructs Context]
     D --> E{Understanding<br/>Verified?}
     E -->|No| F[Clarify]
@@ -238,11 +238,11 @@ graph LR
 
 1. Creates Handoff Log capturing working context not recorded elsewhere (effective patterns, User preferences, undocumented insights, current execution context if mid-task, version control state if applicable)
 2. Writes handoff prompt to Handoff Bus instructing the incoming Agent on context reconstruction
-3. Directs User to start a new session using the initialization command — the incoming Agent auto-detects the handoff prompt
+3. Directs User to start a new chat and run the initialization command — the incoming Agent auto-detects the handoff prompt
 
 **Incoming Agent**
 
-1. User creates new session for the same agent role (e.g., "Manager session 2" or "Frontend Worker session 2")
+1. User creates a new chat for the same agent role (e.g., "Manager 2" or "Frontend Agent 2")
 2. User runs initialization command (`/apm-2-initiate-manager` or `/apm-3-initiate-worker`)
 3. Agent auto-detects handoff prompt from Handoff Bus, follows instructions to read Handoff Log and relevant Task Logs
 4. Agent reconstructs working context and presents understanding summary
@@ -279,7 +279,7 @@ Archived sessions reside in `.apm/archives/`. Each archive is a directory named 
 
 ### Workflow
 
-1. **Summarize** - After project completion, run `/apm-8-summarize-session` in a new session. The summarization agent reads `.apm/` artifacts, produces a session summary, and offers to archive.
+1. **Summarize** - After project completion, run `/apm-8-summarize-session` in a new chat. The summarization agent reads `.apm/` artifacts, produces a session summary, and offers to archive.
 
 2. **Archive** - Archival moves current `.apm/` artifacts to `.apm/archives/session-YYYY-MM-DD-NNN/`, restores fresh templates, and updates `.apm/archives/index.md`. Can also be triggered directly via `apm archive` CLI command.
 

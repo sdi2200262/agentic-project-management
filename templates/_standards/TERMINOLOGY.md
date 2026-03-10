@@ -10,9 +10,9 @@ Formal terms are always capitalized and carry defined meaning. All other languag
 
 | Term | Definition |
 | ------ | ------------ |
-| **Planner** | Gathers requirements and decomposes them into planning documents. Single instance, single session. |
-| **Manager** | Coordinates and orchestrates the Implementation Phase - assigns Tasks, reviews results, maintains planning documents and memory. Single instance, multiple sessions via Handoff. |
-| **Worker** | Executes Tasks assigned by the Manager. Multiple instances (one per domain), multiple sessions each via Handoff. |
+| **Planner** | Gathers requirements and decomposes them into planning documents. Single instance, no Handoff. |
+| **Manager** | Coordinates and orchestrates the Implementation Phase - assigns Tasks, reviews results, maintains planning documents and memory. Single role, multiple instances via Handoff. |
+| **Worker** | Executes Tasks assigned by the Manager. Multiple roles (one per domain), multiple instances each via Handoff. |
 
 ---
 
@@ -33,7 +33,7 @@ Three documents form a waterfall: Spec (what to build) → Plan (how work is org
 | ------ | ------------ | ---------- |
 | **Spec** | Project-specific design decisions and constraints that inform the Plan. The Manager may update it during the Implementation Phase. | `.apm/spec.md` |
 | **Plan** | Stage and Task breakdown with agent assignments, Dependency Graph, and validation criteria. The Manager may update it during the Implementation Phase. | `.apm/plan.md` |
-| **Rules** | Universal execution rules maintained as the APM standards block within `{AGENTS_FILE}`. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | `{AGENTS_FILE}` at workspace root |
+| **Rules** | Universal execution rules maintained as the APM standards block within `{RULES_FILE}`. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | `{RULES_FILE}` at workspace root |
 | **Dependency Graph** | Mermaid diagram in the Plan header that visualizes Task dependencies, agent assignments, and execution flow. Enables the Manager to identify batch candidates, parallel dispatch opportunities, and critical path bottlenecks. | Within `.apm/plan.md` |
 
 ---
@@ -86,7 +86,7 @@ Partial means "I need guidance to continue." Failed means "I could not achieve t
 | **Task Execution** | Worker receives a Task Prompt, executes instructions, validates results, iterates if needed, and logs the outcome to memory. |
 | **Task Review** | Manager reviews Task Reports and Task Logs, determines review outcome, modifies planning documents when findings warrant it, and updates the Tracker. |
 | **Task Logging** | Worker writes a structured Task Log capturing outcome, validation, deliverables, and flags. |
-| **Handoff** | Context transfer between sessions of the same agent when context window limits approach. Applies to Manager and Worker only. |
+| **Handoff** | Context transfer between successive instances of the same agent role when context window limits approach. Applies to Manager and Worker only. |
 
 ---
 
@@ -132,7 +132,19 @@ These concepts are not formal capitalized terms but are clearly defined because 
 - *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates either form a chain with only internal dependencies and no external Tasks depending on intermediate results, or are an independent group of same-Worker Tasks all Ready simultaneously. Soft guidance: 3-5 Tasks per batch.
 - *Parallel:* two or more dispatch units (singles or batches) sent to different Workers simultaneously when no unresolved cross-Worker dependencies exist. Requires version control workspace isolation.
 
-**Agent states.** Agents in the Tracker are either uninitialized (defined in the Plan but no session started) or on a specific session (Session N). Session numbers increment on Handoff. A session number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
+**Agent instances.** Each agent role is numbered sequentially. Manager 1 is the first Manager; Manager 2 takes over after Handoff. Workers follow the same pattern (e.g., Frontend Agent 1, Frontend Agent 2). Instance numbers are tracked in the Tracker's agent tracking table. Auto-compaction recovery does not increment the instance number — the recovered agent continues as the same instance. Instance number increments via Handoff.
+
+**Agent states.** Agents in the Tracker are either uninitialized (defined in the Plan but no instance started) or on a specific instance (Instance N). An instance number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
+
+**Recovery.** Context reconstruction after platform auto-compaction within an agent instance. The recovered agent re-reads procedural guides and role-specific state artifacts to rebuild working context. Recovery does not increment the instance number or constitute a Handoff. The agent notes the recovery in its next communication (Task Report for Workers, Tracker for the Manager) and in its eventual Handoff Log.
+
+**APM session.** One complete workflow cycle operating on a single set of `.apm/` artifacts. Multiple agent instances participate across Handoffs, and the artifact set remains continuous until archival. An APM session spans at least three chat conversations (Planner, Manager, and one or more Workers); a chat conversation hosts one agent instance at a time.
+
+**Session continuation.** Archiving the current session's artifacts and restoring fresh templates for a new session. The summarization command produces an optional session summary, then the `apm archive` CLI command moves artifacts into `.apm/archives/`. A new session can begin with fresh templates while retaining read access to archived context.
+
+**Session archive.** A snapshot of a session's artifacts stored as a dated directory in `.apm/archives/` (`session-YYYY-MM-DD-NNN`). Contains planning documents, Tracker, Memory, and an optional session summary. The snapshot captures whatever state the session was in at archival time — completed, partial, or in-progress. The `metadata.json` file is the canonical archive marker; it may include a `continues` key referencing a previous archive for session lineage.
+
+**Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command — not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
 
 **Validation approaches.** Each Task specifies validation using one or more approaches: programmatic (automated checks), artifact (output existence and structure), or user (human judgment requiring a pause). Validation follows a fixed order: programmatic, then artifact, then user.
 

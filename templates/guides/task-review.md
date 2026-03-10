@@ -108,9 +108,10 @@ Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or 
 Perform the following actions:
 1. Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`).
 2. If batch report (`batch: true` in frontmatter), process each Task's outcome individually through §3.2 and §3.3. Unstarted Tasks re-enter the dispatch pool.
-3. Check for Handoff indication - an incoming Worker (post-Handoff) includes a statement that it is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update agent tracking in the Tracker: increment the session number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
-4. Update dispatch tracking: mark this Worker as available, note completed Task(s) for readiness assessment.
-5. Merge completed branch per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination if dependent Tasks need it.
+3. Check for Handoff indication - an incoming Worker (post-Handoff) includes a statement that it is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update agent tracking in the Tracker: increment the instance number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
+4. Check for auto-compaction indication - a Worker that recovered from auto-compaction notes it in the Task Report. If detected, update agent tracking Notes in the Tracker (e.g., "auto-compacted, recovered"). No dependency reclassification — the Worker continues as the same instance. Provide slightly more comprehensive dependency context in future Task Prompts for this Worker.
+5. Update dispatch tracking: mark this Worker as available, note completed Task(s) for readiness assessment.
+6. Merge completed branch per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination if dependent Tasks need it.
 
 ### 3.2 Task Log Review
 
@@ -211,14 +212,14 @@ The Manager writes the end state of each task for the review-dispatch cycle. Whe
 
 The Tracker contains four sections:
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
-- *`## Agent Tracking`:* Records agent states, session numbers, and coordination notes. The Manager updates agent tracking when agents are first dispatched to and when Handoffs are detected. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
+- *`## Agent Tracking`:* Records agent states, instance numbers, and coordination notes. The Manager updates agent tracking when agents are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
 - *`## Version Control`:* Base branch and naming convention per `{SKILL_PATH:apm-version-control}` §4.3 Tracker VC Entry Format. Static after initialization - branch state is tracked in the task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.6 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
 **Agent Tracking Table:**
 ```markdown
-| Agent | Session | Notes |
-|-------|---------|-------|
+| Agent | Instance | Notes |
+|-------|----------|-------|
 | frontend-agent | 2 | Handoff after Stage 1 |
 | backend-agent | 1 | |
 ```
