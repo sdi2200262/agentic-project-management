@@ -21,11 +21,11 @@ See §3 Work Breakdown Procedure - execute sequentially. See §2 Operational Sta
 
 - *Spec:* Design decisions and constraints that define what is being built. Free-form structure determined by project needs.
 - *Plan:* Stage and Task breakdown with agent assignments, validation criteria, dependency chains, and Dependency Graph.
-- *`{AGENTS_FILE}`:* Universal execution-level Rules applied during Task execution.
+- *`{RULES_FILE}`:* Universal execution-level Rules applied during Task execution.
 
 **Artifact visibility - design for the consumer:**
 - *Spec and Plan:* Manager reads directly. Workers do not reference these files - the Manager extracts relevant content into Task Prompts, making them self-contained, and uses the Plan for dispatch and progress tracking. Write for coordination needs - organization, cross-referencing, and extraction efficiency.
-- *`{AGENTS_FILE}`:* Workers access directly during Task execution. Write standards so they are self-contained and actionable without Spec or Plan context.
+- *`{RULES_FILE}`:* Workers access directly during Task execution. Write standards so they are self-contained and actionable without Spec or Plan context.
 
 **Completeness:** All context gathered during Context Gathering must be captured across these three artifacts. Design decisions that shape the project go to the Spec. Implementation details, constraints, domain-specific patterns, and validation specifics go to Task guidance fields in the Plan. Universal execution patterns go to Rules. If gathered context would be lost between artifacts, it is missing from Task guidance.
 
@@ -77,15 +77,15 @@ Guidance may reference authoritative sources by path - the Manager reads those s
 
 All three patterns are valid. Structure the Plan to create natural opportunities across all of them rather than forcing one pattern.
 
-### 2.4 `{AGENTS_FILE}` Standards
+### 2.4 `{RULES_FILE}` Standards
 
-`{AGENTS_FILE}` defines how work is performed - universal execution patterns across all Tasks. Workers access it directly during Task execution.
+`{RULES_FILE}` defines how work is performed - universal execution patterns across all Tasks. Workers access it directly during Task execution.
 
 The test for each candidate: does it describe how work is performed, or what is being built? Output formats, response strings, data schemas, and interface contracts define what is being built - they belong in the Spec even when multiple Workers need them. For candidates that pass as execution patterns: does the pattern apply to every Worker regardless of domain? All Workers read the same file - if the pattern only applies to one domain, it does not belong here.
 
 When uncertain whether something qualifies, prefer placing it in Task guidance - easier to promote later than to demote.
 
-**Self-containedness:** Workers' working context is intentionally scoped to their Task Prompt and `{AGENTS_FILE}` - the Spec, Plan, and external design artifacts are omitted by design. Standards referencing those documents undermine that scoping. Embed content directly.
+**Self-containedness:** Workers' working context is intentionally scoped to their Task Prompt and `{RULES_FILE}` - the Spec, Plan, and external design artifacts are omitted by design. Standards referencing those documents undermine that scoping. Embed content directly.
 
 ---
 
@@ -175,20 +175,20 @@ Perform the following actions per §2.3 Plan Standards.
 
 ### 3.3 Rules Analysis
 
-Perform the following actions per §2.4 `{AGENTS_FILE}` Standards:
+Perform the following actions per §2.4 `{RULES_FILE}` Standards:
 1. Analyze for universal execution patterns across all planning sources. Present reasoning:
    - **From the Spec:** execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in the Spec - they reach Workers through Task Prompts.
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan.
    - **Classification:** which candidates are truly universal vs Task-specific; whether each is self-contained for Workers with no access to the Spec or the Plan. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains? Most projects produce few genuinely universal rules beyond the framework rules below. Project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
    - **Framework rules:** Retain the Framework Rules section from §4.3 APM_STANDARDS Block as-is. Add project-specific standards after it.
-   - **Existing standards:** what `{AGENTS_FILE}` already contains; reference rather than duplicate.
-2. Write APM_STANDARDS block to `{AGENTS_FILE}` per §4.3 APM_STANDARDS Block:
+   - **Existing standards:** what `{RULES_FILE}` already contains; reference rather than duplicate.
+2. Write APM_STANDARDS block to `{RULES_FILE}` per §4.3 APM_STANDARDS Block:
    - If file exists: preserve existing content outside block, append APM_STANDARDS block.
    - If creating new: create file with APM_STANDARDS block only.
 3. Pause for User review:
    - State Rules are complete.
-   - Ask User to review `{AGENTS_FILE}` for accuracy.
+   - Ask User to review `{RULES_FILE}` for accuracy.
    - If modifications needed → Apply and repeat step 3.
    - If approved → State Work Breakdown is complete and all planning documents are created. Proceed to `{COMMAND_PATH:apm-1-initiate-planner}` §4 Planning Phase Completion.
 
@@ -267,14 +267,10 @@ Dispatch patterns visible from the graph per §2.3 Plan Standards:
 
 ### 4.3 APM_STANDARDS Block
 
-The namespace block structure for `{AGENTS_FILE}`:
+The namespace block structure for `{RULES_FILE}`:
 
 ```text
 APM_STANDARDS {
-
-## Framework Rules
-
-- After context compaction or summarization, re-read the procedural documents referenced in the initiation prompt before continuing work.
 
 [Project-specific standards below]
 
@@ -295,7 +291,7 @@ APM_STANDARDS {
 
 **Plan:** Each Task is understandable without external reference. Use specific language - not "implement properly" but the specific pattern to follow. All fields populated. Consistent naming and terminology.
 
-**`{AGENTS_FILE}`:** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{AGENTS_FILE}` already exists, preserve its content and append the APM_STANDARDS block rather than duplicating existing standards.
+**`{RULES_FILE}`:** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_STANDARDS block rather than duplicating existing standards.
 
 ### 5.2 Common Mistakes
 
@@ -307,9 +303,9 @@ APM_STANDARDS {
 - *Missing dependencies:* Tasks requiring prior work not marked - trace prerequisites.
 - *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph (`-->` vs `-.->`) - classify at write time by checking whether producer and consumer share the same agent per §3.2 Plan Analysis. Verify during plan review.
 - *Duplicating source documents:* Restating requirements from User documents (PRD, specifications) instead of referencing the source. The Spec captures design decisions layered on existing requirements.
-- *Non-universal standards:* Task-specific patterns elevated to `{AGENTS_FILE}` - if it only applies to some Tasks, it's Task guidance.
-- *Output specifications as standards:* Elevating response formats, error strings, or interface contracts to `{AGENTS_FILE}`. These define what is being built and belong in the Spec - universality across Workers does not make them execution patterns.
-- *Standards referencing external documents:* The Spec, Plan, and design artifacts are intentionally omitted from Workers' context - referencing them from `{AGENTS_FILE}` undermines that scoping. See §2.4 `{AGENTS_FILE}` Standards.
+- *Non-universal standards:* Task-specific patterns elevated to `{RULES_FILE}` - if it only applies to some Tasks, it's Task guidance.
+- *Output specifications as standards:* Elevating response formats, error strings, or interface contracts to `{RULES_FILE}`. These define what is being built and belong in the Spec - universality across Workers does not make them execution patterns.
+- *Standards referencing external documents:* The Spec, Plan, and design artifacts are intentionally omitted from Workers' context - referencing them from `{RULES_FILE}` undermines that scoping. See §2.4 `{RULES_FILE}` Standards.
 
 ---
 

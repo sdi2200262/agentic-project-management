@@ -169,7 +169,7 @@ Supported placeholders:
 - `{SKILL_PATH:path}` - Full skill path
 - `{COMMAND_PATH:filename}` - Full command path
 - `{ARGS}` - Platform-specific args syntax
-- `{AGENTS_FILE}` - Platform-specific filename
+- `{RULES_FILE}` - Platform-specific filename
 - `{SKILLS_DIR}` - Platform-specific skills directory
 
 ## Archive Generation

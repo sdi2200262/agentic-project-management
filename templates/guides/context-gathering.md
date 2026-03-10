@@ -19,7 +19,7 @@ Gather sufficient context across:
 - *Process:* Workflow preferences, quality standards, coordination requirements
 - *Validation:* Success states, acceptance criteria, completion indicators
 
-Context gathering targets three planning documents, each consumed differently during the Implementation Phase - the Manager coordinates using the Spec and Plan, while Workers execute using `{AGENTS_FILE}` alone:
+Context gathering targets three planning documents, each consumed differently during the Implementation Phase - the Manager coordinates using the Spec and Plan, while Workers execute using `{RULES_FILE}` alone:
 
 - *Spec* (what is being built): design decisions and constraints: choices made where alternatives existed, the rationale behind them, and constraints that bound what's being built.
 - *Plan* (how work is organized): work domains, dependency chains, complexity indicators, validation criteria, sequential vs parallel work streams, coordination points.
@@ -36,7 +36,7 @@ Context gathering targets three planning documents, each consumed differently du
 ### 2.1 Guiding Principles
 
 - *Clarity over exhaustion:* Aim for sufficient understanding, not exhaustive interrogation.
-- *Leverage existing material:* Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{AGENTS_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions.
+- *Leverage existing material:* Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{RULES_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions.
 - *Explore on signal:* When User responses reference codebase elements or documentation, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
 - *Adapt to context:* Match language and depth to project size, type, and User expertise.
 - *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition - Stages, Tasks, and agent assignments wait for Work Breakdown.
@@ -49,7 +49,6 @@ When processing User responses, assess what was explicitly stated, what can be r
 **Extraction lens:** Before flagging a gap, assess whether the technical formalization can be derived from what was described naturally. The standard for gap identification is whether responses are sufficient to formalize into planning document language - not whether the User stated requirements in technical terms. Raise a follow-up only when what was gathered is genuinely insufficient to formalize.
 
 **Ambiguous responses:**
-
 - *Vague:* Rephrase with concrete interpretations.
 - *Incomplete:* Acknowledge the covered part and ask for the remainder.
 - *Contradictory:* Surface the contradiction neutrally.
@@ -58,7 +57,6 @@ When processing User responses, assess what was explicitly stated, what can be r
 **Gap assessment:** A gap exists when information needed for planning documents is missing, ambiguous, or lacks validation criteria. After each User response, assess what gaps remain and what follow-ups would resolve them. Gaps are resolved by asking directly (missing info), rephrasing and confirming (ambiguity), or proposing concrete criteria (validation).
 
 **Round advancement** → Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect planning document accuracy. Before advancing, present a round completion summary in chat covering:
-
 - *Context gathered:* key findings from this round.
 - *Planning document relevance:* which planning documents the findings inform and what type of content they contribute (design decisions, work structure signals, execution patterns).
 - *Gaps assessed:* what gaps were identified, how resolved, and any acceptable gaps carried forward.
@@ -140,7 +138,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 6. What is your current plan or vision?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
 
-**Agent configuration** → If `{AGENTS_FILE}` was not found during the workspace scan (per §2.1 Guiding Principles), include: "I didn't find an existing `{AGENTS_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration.
+**Agent configuration** → If `{RULES_FILE}` was not found during the workspace scan (per §2.1 Guiding Principles), include: "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration.
 
 **Round completion** → Before proceeding to Round 2, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 
@@ -241,7 +239,7 @@ The understanding summary is presented per §3.6 Finalize Understanding for User
 - *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified. Present these as observed project characteristics - do not organize them into proposed phases, stage structures, or decomposition hierarchies.
 - *Technical context:* environments, resources, constraints, access needs
 - *Process and quality:* workflow preferences, coordination requirements, approval gates, validation approach
-- *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{AGENTS_FILE}` was found
+- *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found
 
 The understanding summary captures signals that inform Work Breakdown - domains, dependencies, constraints. Concrete decomposition into Stages, Tasks, and agent assignments happens after reading `{GUIDE_PATH:work-breakdown}` and applying its reasoning framework.
 

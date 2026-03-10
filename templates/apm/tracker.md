@@ -15,8 +15,8 @@ title: <Project Name>
 
 ## Agent Tracking
 
-| Agent | Session | Notes |
-|-------|---------|-------|
+| Agent | Instance | Notes |
+|-------|----------|-------|
 
 ## Version Control
 

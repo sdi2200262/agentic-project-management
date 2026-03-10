@@ -1,11 +1,11 @@
 ---
 command_name: check-reports
-description: Signals the Manager to check Report Buses for pending Task Reports.
+description: Deliver a Task Report to an APM Manager.
 ---
 
 # APM {VERSION} - Manager Check Reports Command
 
-This command signals the Manager to check Report Bus(es) for pending Task Reports. It replaces manual file referencing - the Manager scans bus directories or checks a specific Worker's Report Bus.
+This command signals the Manager to check Report Bus(es) for pending Task Reports. If you are a Planner, Worker, or non-APM agent, concisely decline and take no action. It replaces manual file referencing - the Manager scans bus directories or checks a specific Worker's Report Bus.
 
 Accepts optional `[agent-id ...]` arguments. With arguments, checks those Workers' Report Buses. Without arguments, checks Workers with active dispatches plus a health check for unexpected content.
 

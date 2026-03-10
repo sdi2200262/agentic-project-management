@@ -19,7 +19,7 @@ import path from 'path';
  * - {COMMAND_PATH:name}: Full path to command file (resolves extension per target)
  * - {AGENT_PATH:name}: Full path to agent file (<name>.md, Copilot: <name>.agent.md)
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
- * - {AGENTS_FILE}: Platform-specific agents file name
+ * - {RULES_FILE}: Platform-specific agents file name
  * - {SKILLS_DIR}: Platform-specific skills directory
  * - {AGENTS_DIR}: Platform-specific agents directory
  * - {PLANNER_SUBAGENT_GUIDANCE}: Platform-specific subagent exploration guidance for Planner
@@ -76,9 +76,9 @@ export function replacePlaceholders(content, context) {
   const argsPlaceholder = format === 'toml' ? '{{args}}' : '$ARGUMENTS';
   replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
 
-  // Replace AGENTS_FILE placeholder
-  const agentsFileName = id === 'claude' ? 'CLAUDE.md' : 'AGENTS.md';
-  replaced = replaced.replace(/{AGENTS_FILE}/g, agentsFileName);
+  // Replace RULES_FILE placeholder
+  const rulesFileName = id === 'claude' ? 'CLAUDE.md' : 'AGENTS.md';
+  replaced = replaced.replace(/{RULES_FILE}/g, rulesFileName);
 
   // Replace SKILLS_DIR placeholder
   replaced = replaced.replace(/{SKILLS_DIR}/g, directories.skills);

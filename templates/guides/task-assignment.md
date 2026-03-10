@@ -100,7 +100,7 @@ Execute for each Task in the dispatch plan.
 
 Perform the following actions:
 1. Read the Task's Dependencies field from the Plan. If "None," skip dependency context steps.
-2. For each dependency, determine context depth per §2.1 Dependency Context Standards - check Worker Handoff state, classify as same-agent or cross-agent, check cross-agent overrides in the Tracker, and trace upstream when ancestors are relevant.
+2. For each dependency, determine context depth per §2.1 Dependency Context Standards - check Worker Handoff state and auto-compaction notes in the Tracker, classify as same-agent or cross-agent, check cross-agent overrides, and trace upstream when ancestors are relevant. For Workers that recovered from auto-compaction, provide slightly more comprehensive same-agent dependency context (closer to cross-agent depth) since reconstructed context may lack working nuance.
 3. For cross-agent dependencies, read the producer's Task Log and note key outputs, file paths, and integration details.
 4. Review the Spec for content relevant to this Task per §2.2 Spec Extraction Standards. Note relevant content for integration.
 5. Extract Task definition fields from the Plan: Objective, Steps, Guidance, Output, Validation. Transform steps into actionable instructions, incorporating Guidance and relevant Spec content.
@@ -115,7 +115,7 @@ Perform the following actions:
 3. Include workspace context per `{SKILL_PATH:apm-version-control}` - branch name for sequential dispatch, worktree path for parallel dispatch.
 4. Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery. For batches, per `{SKILL_PATH:apm-communication}` §4.14 Batch Envelope Format.
 5. For parallel dispatch, write to each Worker's Task Bus.
-6. Direct the User to the respective Worker session(s) per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery - differentiate between uninitialized Workers (initialization required) and initialized Workers.
+6. Direct the User to the respective Worker(s) per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery - differentiate between uninitialized Workers (initialization required) and initialized Workers.
 
 ### 3.4 Follow-Up Task Prompt Construction
 
@@ -127,7 +127,7 @@ Perform the following actions:
 3. Refine all content sections - Objective, Instructions, Output, Validation - based on what went wrong. Include a follow-up context section explaining the issue and required refinement.
 4. Construct the follow-up prompt per §4.2 Follow-Up Format. Same `log_path` as the original.
 5. Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery.
-6. Direct the User to the Worker session per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery.
+6. Direct the User to the Worker per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery.
 
 ---
 
@@ -166,7 +166,7 @@ has_dependencies: true
 - *Workspace:* Branch name for sequential dispatch, worktree path for parallel dispatch per `{SKILL_PATH:apm-version-control}`. Worker operates in the specified workspace, commits there, and notes it in the Task Log. Workers do not merge.
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field with validation approaches (programmatic, artifact, user).
-- *Task Iteration:* After 3 failed attempts on the same issue, spawn a debug subagent for resolution. If unresolved, log partial progress and report Partial rather than exhausting the session.
+- *Task Iteration:* After 3 failed attempts on the same issue, spawn a debug subagent for resolution. If unresolved, log partial progress and report Partial rather than exhausting the context window.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
 - *Task Report:* Instruction to output a Task Report for User to return to Manager.
 
