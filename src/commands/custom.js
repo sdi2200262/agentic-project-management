@@ -6,14 +6,16 @@
  * @module src/commands/custom
  */
 
-import { CLI_VERSION } from '../core/constants.js';
+import { CLI_VERSION, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, isInitialized, readMetadata } from '../core/metadata.js';
 import { getCustomRepos, addCustomRepo, getRepoSettings, updateRepoSettings } from '../core/config.js';
 import { fetchCustomReleases, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
+import { countArchives } from '../services/archive.js';
 import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmSecurityDisclaimer } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
+import path from 'path';
 
 /**
  * Executes the custom command.
@@ -38,8 +40,13 @@ export async function customCommand(options = {}) {
 
   // Check if already initialized
   if (!force && await isInitialized()) {
-    logger.warn('APM is already initialized in this directory.');
-    const proceed = await confirmAction('Re-initialize and overwrite existing installation?');
+    const archiveCount = await countArchives(path.join(process.cwd(), ARCHIVES_DIR));
+    if (archiveCount > 0) {
+      logger.warn(`APM has already been initialized here (${archiveCount} archived session(s) — archives will be preserved).`);
+    } else {
+      logger.warn('APM has already been initialized here.');
+    }
+    const proceed = await confirmAction('Re-initialize?');
     if (!proceed) {
       logger.info('Aborted.');
       return;
@@ -182,7 +189,7 @@ export async function customCommand(options = {}) {
   });
   await writeMetadata(metadata);
 
-  logger.success(`APM initialized with ${allAssistantIds.length} assistant(s) from ${repoString}!`);
+  logger.success(`APM set up with ${allAssistantIds.length} assistant(s) from ${repoString}!`);
 
   // Offer to save repo
   if (!repoSettings) {

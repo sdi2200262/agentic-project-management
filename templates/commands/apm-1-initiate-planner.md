@@ -1,6 +1,6 @@
 ---
 command_name: initiate-planner
-description: Initializes a Planner session and starts the Planning Phase of an APM project.
+description: Initializes a Planner session and starts the Planning Phase of an APM session.
 ---
 
 # APM {VERSION} - Planner Initiation Command

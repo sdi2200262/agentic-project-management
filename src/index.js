@@ -14,6 +14,7 @@ import { initCommand } from './commands/init.js';
 import { customCommand } from './commands/custom.js';
 import { updateCommand } from './commands/update.js';
 import { configCommand } from './commands/config.js';
+import { archiveCommand } from './commands/archive.js';
 import { CLI_VERSION } from './core/constants.js';
 import { CLIError } from './core/errors.js';
 import logger from './ui/logger.js';
@@ -32,6 +33,7 @@ function displayHelp() {
   console.log(`  ${chalk.bold('init')}              Initialize APM with official releases`);
   console.log(`  ${chalk.bold('custom')}            Install from a custom repository`);
   console.log(`  ${chalk.bold('update')}            Update installed assistant releases`);
+  console.log(`  ${chalk.bold('archive')}           Archive current session and restore fresh templates`);
   console.log(`  ${chalk.bold('config')}            Manage saved custom repositories`);
   console.log('');
   console.log(chalk.cyan.bold('Options (init/custom):'));
@@ -117,6 +119,19 @@ program
   .action(async (options) => {
     try {
       await updateCommand(options);
+    } catch (err) {
+      handleError(err);
+    }
+  });
+
+program
+  .command('archive')
+  .description('Archive current session and restore fresh templates')
+  .option('-c, --continues <name>', 'Previous archive this session continues from')
+  .option('-f, --force', 'Skip confirmation prompt')
+  .action(async (options) => {
+    try {
+      await archiveCommand(options);
     } catch (err) {
       handleError(err);
     }

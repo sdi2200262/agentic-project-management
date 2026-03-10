@@ -126,7 +126,7 @@ Decision rules define criteria for choosing between outcomes. Each condition map
 
 Agent communication standards - including agent-to-user communication, visible reasoning, and terminology boundaries - are defined in the communication skill and implemented through guide and command instructions. This section governs how template authors write those instructions.
 
-**Reasoning frames.** When writing reasoning frames (labeled aspect lists), use italic labels per `STRUCTURE.md` §5.1. These are guided reasoning - intentionally visible to Users. The label text should describe the analytical aspect, not use framework vocabulary.
+**Reasoning frames.** When writing reasoning frames (labeled aspect lists), use italic labels per `STRUCTURE.md` §6.1. These are guided reasoning - intentionally visible to Users. The label text should describe the analytical aspect, not use framework vocabulary.
 
 **Procedure transitions.** When writing procedure transitions, use natural sequential flow ("Continue to the next step") rather than section-targeted navigation with procedure names ("Proceed to §3.2 Plan Analysis") where possible. Include §N.M references only where non-sequential jumps require them.
 
