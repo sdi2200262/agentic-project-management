@@ -14,7 +14,8 @@
       "directories": {
         "commands": ".github/prompts",
         "skills": ".github/skills",
-        "guides": ".github/apm-guides"
+        "guides": ".github/apm-guides",
+        "agents": ".github/agents"
       },
       "contextAttachSyntax": "Reference the file using `#file` and select the file from the picker.",
       "subagentGuidance": {
@@ -33,7 +34,8 @@
       "directories": {
         "commands": ".claude/commands",
         "skills": ".claude/skills",
-        "guides": ".claude/apm-guides"
+        "guides": ".claude/apm-guides",
+        "agents": ".claude/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
       "subagentGuidance": {
@@ -52,7 +54,8 @@
       "directories": {
         "commands": ".gemini/commands",
         "skills": ".gemini/skills",
-        "guides": ".gemini/apm-guides"
+        "guides": ".gemini/apm-guides",
+        "agents": ".gemini/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
       "subagentGuidance": {
@@ -71,7 +74,8 @@
       "directories": {
         "commands": ".cursor/commands",
         "skills": ".cursor/skills",
-        "guides": ".cursor/apm-guides"
+        "guides": ".cursor/apm-guides",
+        "agents": ".cursor/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` and search for the file name.",
       "subagentGuidance": {
@@ -90,7 +94,8 @@
       "directories": {
         "commands": ".opencode/command",
         "skills": ".opencode/skills",
-        "guides": ".opencode/apm-guides"
+        "guides": ".opencode/apm-guides",
+        "agents": ".opencode/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file name.",
       "subagentGuidance": {

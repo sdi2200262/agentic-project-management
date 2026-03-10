@@ -147,6 +147,12 @@ Logs created during Handoff capturing working context not recorded elsewhere:
 
 Incoming Agents read the Handoff Log during context reconstruction to resume seamlessly.
 
+### Session Archives
+
+**Location:** `.apm/archives/`
+
+Archived sessions preserved for future reference. Each archive contains the session's planning documents, Tracker, Memory, and an optional session summary. Archives accumulate across sessions and are accessible to future Planners during Context Gathering via the `apm-archive-explorer` custom subagent.
+
 ### Memory as Context Archive
 
 As the project progresses, Memory becomes a comprehensive archive mapping the Plan to execution history. This structured mapping enables:
@@ -168,10 +174,11 @@ APM achieves Agent specialization through intentional context boundaries. Each A
 - User-provided requirements and existing documentation
 - Codebase if applicable
 - Full project vision during Planning Phase
+- Session archives (`.apm/archives/`) when present — explored via `apm-archive-explorer` custom subagent
 
 **Does not access:**
 
-- Memory (does not exist yet)
+- Memory (does not exist yet for current session)
 - Bus system (does not exist yet)
 - Implementation Phase activities
 

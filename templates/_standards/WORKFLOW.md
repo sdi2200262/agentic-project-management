@@ -313,6 +313,43 @@ Handoff transfers context between sessions of the same agent when context window
 
 **Context rebuilding** - An incoming Manager reads the Handoff Log, the Tracker, the Index (stage summaries and memory notes), and relevant recent Task Logs to reconstruct working context. An incoming Worker reads the Handoff Log and current-Stage Task Logs only. The Manager accounts for this limited context in future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent.
 
+### 6.7 Session Continuation
+
+Session Continuation archives a completed session's artifacts and restores fresh templates for a new session while preserving access to previous session context.
+
+**Archive structure** — Archived sessions reside in `.apm/archives/`. Each archive is a directory named `session-YYYY-MM-DD-NNN` (zero-padded daily counter) containing the session's planning documents, Tracker, and Memory. The bus directory is not archived — bus state is ephemeral and session-specific.
+
+```text
+.apm/archives/
+├── index.md
+├── session-2026-03-04-001/
+│   ├── metadata.json
+│   ├── plan.md
+│   ├── spec.md
+│   ├── tracker.md
+│   ├── session-summary.md     # optional
+│   └── memory/
+│       ├── index.md
+│       ├── stage-01/
+│       └── handoffs/
+└── session-2026-03-05-001/
+    └── ...
+```
+
+**Archive marker** — `metadata.json` within each archive directory is the canonical archive marker. Its presence identifies a valid archive. It contains the original installation metadata plus an optional `continues` key referencing a previous archive name when the session was a continuation.
+
+**Session summary** — An optional pre-archival artifact (`session-summary.md`) produced by the summarization command. When present, it provides a point-in-time summary of the session: project scope, stages completed, key outcomes, notable findings, and known issues. When absent, the archive contains raw artifacts sufficient for future Planners to examine.
+
+**Archive index** — `.apm/archives/index.md` is a table listing all archived sessions with date, scope, stages, tasks, and continuation links. The summarization command updates it; if absent or malformed, it is recreated.
+
+**Planner archive detection** — During Context Gathering (§6.1), the Planner checks for `.apm/archives/`. If archives exist, the Planner presents them to the User and asks about relevance. If the User indicates archives are relevant, the Planner uses the `apm-archive-explorer` custom subagent to examine indicated archives, then verifies findings against the current codebase before integrating into question rounds.
+
+**Manager completion recommendation** — After project completion (§2.2), the Manager recommends running the summarization command in a new session to summarize and optionally archive the completed session.
+
+**`apm-archive-explorer` subagent** — A custom subagent shipped with APM bundles. It understands archive structure and efficiently extracts relevant context from archived sessions. The Planner spawns it during Context Gathering when archived sessions are relevant.
+
+**No secondary archival** — Archives accumulate in `.apm/archives/`. There is no mechanism to archive archives. Users manage cleanup manually.
+
 ---
 
 ## 7. Subagent Usage
@@ -342,6 +379,7 @@ Debug subagents are appropriate when a bug resists initial fix attempts, spans m
 | §6.4 Task Execution | `guides/task-execution.md` |
 | §6.5 Task Review | `guides/task-review.md` |
 | §6.6 Handoff | `commands/apm-6-handoff-manager.md`, `commands/apm-7-handoff-worker.md` |
+| §6.7 Session Continuation | `commands/apm-8-summarize-session.md`, `agents/apm-archive-explorer.md`, `guides/context-gathering.md` (§3.1) |
 | §7 Subagent Usage | Platform-specific (build pipeline placeholders) |
 
 ---

@@ -49,6 +49,11 @@ export async function extractBundle(zipBuffer, destPath, options = {}) {
         continue;
       }
 
+      // Never overwrite archives during extraction
+      if (entryPath.startsWith('.apm/archives/')) {
+        continue;
+      }
+
       const fullPath = path.join(destPath, entryPath);
       await fs.ensureDir(path.dirname(fullPath));
       await fs.writeFile(fullPath, entry.getData());

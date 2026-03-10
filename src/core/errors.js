@@ -30,7 +30,11 @@ export const CLIErrorCode = {
 
   // Extraction errors
   EXTRACTION_FAILED: 'EXTRACTION_FAILED',
-  DOWNLOAD_FAILED: 'DOWNLOAD_FAILED'
+  DOWNLOAD_FAILED: 'DOWNLOAD_FAILED',
+
+  // Archive errors
+  ARCHIVE_FAILED: 'ARCHIVE_FAILED',
+  INVALID_CONTINUES: 'INVALID_CONTINUES'
 };
 
 /**
@@ -145,7 +149,7 @@ export class CLIError extends Error {
    */
   static notInitialized() {
     return new CLIError(
-      'APM is not initialized in this directory. Run "apm init" first.',
+      'APM has not been initialized here. Run "apm init" first.',
       CLIErrorCode.NOT_INITIALIZED
     );
   }
@@ -177,6 +181,34 @@ export class CLIError extends Error {
       `Failed to extract ${file}: ${reason}`,
       CLIErrorCode.EXTRACTION_FAILED,
       { file, reason }
+    );
+  }
+
+  /**
+   * Creates an archive failed error.
+   *
+   * @param {string} reason - Failure reason.
+   * @returns {CLIError} Formatted error instance.
+   */
+  static archiveFailed(reason) {
+    return new CLIError(
+      `Failed to archive session: ${reason}`,
+      CLIErrorCode.ARCHIVE_FAILED,
+      { reason }
+    );
+  }
+
+  /**
+   * Creates an invalid continues reference error.
+   *
+   * @param {string} name - Archive name that was referenced.
+   * @returns {CLIError} Formatted error instance.
+   */
+  static invalidContinues(name) {
+    return new CLIError(
+      `Archive '${name}' not found. Use 'apm archive' without --continues to see available archives.`,
+      CLIErrorCode.INVALID_CONTINUES,
+      { name }
     );
   }
 }
