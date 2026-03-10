@@ -8,9 +8,9 @@ Terms used here are defined in `TERMINOLOGY.md`. Writing conventions follow `WRI
 
 ## 1. Design
 
-APM is a multi-agent project management framework that coordinates agent sessions through file-based communication and structured planning documents.
+APM is a multi-agent project management framework that coordinates agents through file-based communication and structured planning documents.
 
-**User-mediated coordination** - The User initiates sessions, triggers bus checks, approves key decisions, and triggers Handoffs. All inter-agent communication passes through the file system; agents never communicate directly. The User decides when messages are delivered by running trigger commands in the appropriate session.
+**User-mediated coordination** - The User initiates agents, triggers bus checks, approves key decisions, and triggers Handoffs. All inter-agent communication passes through the file system; agents never communicate directly. The User decides when messages are delivered by running trigger commands in the appropriate agent's chat.
 
 **Platform agnosticism** - Core concepts (the bus system, Memory, planning documents) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
 
@@ -30,9 +30,9 @@ The Planner transforms User requirements into planning documents through two seq
 
 ### 2.2 Implementation Phase
 
-The Manager and Workers transform the Plan into completed deliverables. The Implementation Phase begins when the User initiates the Manager session.
+The Manager and Workers transform the Plan into completed deliverables. The Implementation Phase begins when the User initiates the first Manager.
 
-**Manager initialization** - During its first session, the Manager reads all planning documents, initializes version control (if not already implemented), populates the Tracker (task tracking with the first Stage's Tasks, agent tracking with all Workers, version control state), initializes the Index, presents an understanding summary, and requests User approval before dispatching work.
+**Manager initialization** - As Manager 1, the Manager reads all planning documents, initializes version control (if not already done), populates the Tracker (task tracking with the first Stage's Tasks, agent tracking with all Workers, version control state), initializes the Index, presents an understanding summary, and requests User approval before dispatching work.
 
 **Task cycle** - Each Task progresses through three procedures: Task Assignment (Manager assesses readiness, constructs a Task Prompt, delivers it via Task Bus) → Task Execution (Worker executes, validates, iterates if needed, writes a Task Log and Task Report) → Task Review (Manager reviews the report and log, determines outcome and next steps). This cycle repeats per Task. When multiple Tasks are dispatched as a batch or in parallel, each maintains its own cycle.
 
@@ -46,7 +46,7 @@ The Manager and Workers transform the Plan into completed deliverables. The Impl
 
 **Version control** - Version control provides workspace isolation during parallel dispatch. Each dispatch unit operates on its own branch, and the Manager coordinates all merges. Workers commit to their assigned branch but do not create branches, manage worktrees, or merge.
 
-**Handoff** - Handoff transfers context between sessions of the same agent when context window limits approach. The Planner does not Handoff (single session).
+**Handoff** - Handoff transfers context between successive instances of the same agent role when context window limits approach. The Planner does not Handoff (single instance).
 
 ---
 
@@ -56,7 +56,7 @@ The Manager and Workers transform the Plan into completed deliverables. The Impl
 | -------- | ------- | -------- | ------ |
 | Spec | Define what is being built | `.apm/spec.md` | Manager reads directly; relevant content extracted into Task Prompts by Manager |
 | Plan | Define how work is organized | `.apm/plan.md` | Manager reads directly; Task definitions extracted into Task Prompts by Manager |
-| Rules | Define how work is performed | `{AGENTS_FILE}` at workspace root | All agents |
+| Rules | Define how work is performed | `{RULES_FILE}` at workspace root | All agents |
 
 ### 3.1 Spec
 
@@ -76,7 +76,7 @@ Workers do not reference the Plan directly. The Manager extracts Task content in
 
 ### 3.3 Rules
 
-Rules define how work is performed - universal execution patterns applied during Task Execution. They are stored within the APM standards block in `{AGENTS_FILE}` at the workspace root. Content outside this block is user-managed and preserved. When relevant standards already exist outside the block, the APM standards block references them rather than duplicating.
+Rules define how work is performed - universal execution patterns applied during Task Execution. They are stored within the APM standards block in `{RULES_FILE}` at the workspace root. Content outside this block is user-managed and preserved. When relevant standards already exist outside the block, the APM standards block references them rather than duplicating.
 
 All agents have direct access to this file. Both the Manager and Workers may update Rules during the Implementation Phase.
 
@@ -109,7 +109,7 @@ The Spec and Plan have bidirectional influence - changes to one may require adju
 
 Agent communication follows three models based on audience:
 
-**Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. No framework vocabulary - section references (§N.M), procedure step names, checkpoint labels, decision categories - is exposed. Only terms defined in `TERMINOLOGY.md` are used formally. When describing decisions, agents explain what happened, what was decided, and what happens next - not which procedure branch was taken. When directing Users to perform actions, agents provide specific actionable guidance: which command, in which session, with what arguments.
+**Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. No framework vocabulary - section references (§N.M), procedure step names, checkpoint labels, decision categories - is exposed. Only terms defined in `TERMINOLOGY.md` are used formally. When describing decisions, agents explain what happened, what was decided, and what happens next - not which procedure branch was taken. When directing Users to perform actions, agents provide specific actionable guidance: which command, in which agent's chat, with what arguments.
 
  **Visible reasoning.** Agents present analytical thinking visibly in chat to make decisions auditable and give the User opportunity to redirect and steer. Two forms exist: guided reasoning, where specific procedures define labeled reasoning frames that structure the analysis (the structure forces thorough analysis and produces better outputs - these frames are intentionally visible); and free-form reasoning, the baseline for all other decision points - formal and technical, but presented naturally without framework labels or procedure vocabulary. Guided reasoning frames are defined by the procedures that use them; the communication skill defines the baseline for everything else.
 
@@ -129,16 +129,16 @@ The bus system is a file-based communication mechanism in `.apm/bus/`. The Plann
 
 A bus file is either empty (no message present) or contains a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. This prevents stale messages from accumulating and signals that the previous message was processed.
 
-Workers read their Task Bus when the User runs `/apm-4-check-tasks` in the Worker's session. The Manager reads Report Buses when the User runs `/apm-5-check-reports`. Both commands accept optional agent identifier arguments for targeted delivery.
+Workers read their Task Bus when the User runs `/apm-4-check-tasks` in the Worker's chat. The Manager reads Report Buses when the User runs `/apm-5-check-reports`. Both commands accept optional agent identifier arguments for targeted delivery.
 
 When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. Each Task Prompt within the batch retains its full standalone structure.
 
 ### 4.3 Communication Flow
 
-1. Manager writes a Task Prompt to a Worker's Task Bus and provides the User with specific action guidance - which command to run, in which session, and whether the Worker needs initialization first.
-2. User runs the indicated command(s) in the Worker's session.
+1. Manager writes a Task Prompt to a Worker's Task Bus and provides the User with specific action guidance - which command to run, in which agent's chat, and whether the Worker needs initialization first.
+2. User runs the indicated command(s) in the Worker's context.
 3. Worker executes the Task, writes a Task Log, writes a Task Report to the Report Bus, and directs the User to deliver the report - including the agent identifier for targeted retrieval.
-4. User runs `/apm-5-check-reports` in the Manager's session.
+4. User runs `/apm-5-check-reports` in the Manager's chat.
 5. Manager reviews the report and log, determines next steps.
 
 The User is the trigger puller at every boundary - there is no direct agent-to-agent communication. Each agent provides concise, actionable guidance covering only their end of the exchange.
@@ -171,7 +171,7 @@ Memory resides in `.apm/` with this hierarchy:
 
 **Task tracking** (within Tracker) records Task statuses, agent assignments, and branch state per Stage. The Manager updates it after each Task Review, batching all changes from a review-dispatch cycle into a single edit. Tasks progress through lifecycle states per `TERMINOLOGY.md` §4: Waiting, Ready, Active, Done. A Task unblocked and dispatched in the same cycle transitions directly from Waiting to Active; Ready is written only when dispatch is deferred.
 
-**Agent tracking** (within Tracker) records agent identifiers, session numbers, and notes. Agents start as uninitialized and transition to Session N when initialized. The Manager updates it when agents are first dispatched to, and when Handoffs are detected. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies.
+**Agent tracking** (within Tracker) records agent identifiers, instance numbers, and notes. Agents start as uninitialized and transition to Instance N when initialized. The Manager updates it when agents are first dispatched to, and when Handoffs are detected. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies.
 
 **Working notes** (within Tracker) are coordination context maintained by the Manager and User. Contents include User preferences, coordination insights, and durable observations awaiting distillation into memory notes at Stage summary time. Working notes are inserted and removed as context evolves.
 
@@ -185,7 +185,7 @@ Memory resides in `.apm/` with this hierarchy:
 
 Both the Manager and Workers interact with Memory at various parts of the workflow:
 
-1. The Manager populates the Tracker (task tracking with Stage 1 Tasks, agent tracking with all Workers, version control state) and initializes the Index during session 1.
+1. The Manager populates the Tracker (task tracking with Stage 1 Tasks, agent tracking with all Workers, version control state) and initializes the Index as Manager 1.
 2. Workers create Task Logs after each Task completion.
 3. The Manager updates the Tracker after each Task Review: completed Tasks, readiness changes, branch state. Note-worthy context from the review is added to working notes in the Tracker - both ephemeral coordination items and durable observations. Durable observations are distilled into memory notes in the Index at Stage summary time.
 4. The Manager appends a stage summary to the Index after all Tasks in a Stage complete.
@@ -258,11 +258,11 @@ The Manager assesses readiness, determines dispatch mode, constructs Task Prompt
 
 **Wait state** - When no Tasks are Ready but Workers are active, the Manager communicates what was processed, what is pending, and what the User should do next.
 
-**Per-Task analysis** - For each Task, the Manager synthesizes content from three sources into the Task Prompt: dependency context (familiarity classification, producer Task Log content when applicable, integration guidance), relevant Spec content (design decisions and constraints for this Task, extracted inline), and Plan Task fields (objective, steps, guidance, output, validation criteria). Rules are not included in Task Prompts - Workers read `{AGENTS_FILE}` directly and the Task Prompt assumes those standards are in effect. Dependency context depth depends on Worker familiarity with the producer's work. Same-agent dependencies receive light context: recall anchors and file paths. Cross-agent dependencies receive comprehensive context: file reading instructions, output summaries, and integration guidance. After a Worker Handoff, previous-Stage same-agent dependencies become cross-agent because the incoming Worker lacks that working context. The Manager traces dependency chains upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Spec content is extracted inline - the Manager never references the Spec or the Plan by path in Task Prompts.
+**Per-Task analysis** - For each Task, the Manager synthesizes content from three sources into the Task Prompt: dependency context (familiarity classification, producer Task Log content when applicable, integration guidance), relevant Spec content (design decisions and constraints for this Task, extracted inline), and Plan Task fields (objective, steps, guidance, output, validation criteria). Rules are not included in Task Prompts - Workers read `{RULES_FILE}` directly and the Task Prompt assumes those standards are in effect. Dependency context depth depends on Worker familiarity with the producer's work. Same-agent dependencies receive light context: recall anchors and file paths. Cross-agent dependencies receive comprehensive context: file reading instructions, output summaries, and integration guidance. After a Worker Handoff, previous-Stage same-agent dependencies become cross-agent because the incoming Worker lacks that working context. The Manager traces dependency chains upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Spec content is extracted inline - the Manager never references the Spec or the Plan by path in Task Prompts.
 
 **Task Prompt construction** - The Manager assembles each Task Prompt as a self-contained document with metadata (Stage, Task, agent identifier, log path, dependency indicator) and a body containing the Task objective, dependency context, detailed instructions, expected output, validation criteria, iteration guidance, logging instructions, and reporting instructions. For parallel dispatch, the Task Prompt includes the workspace path where the Worker operates. Workers commit to their assigned branch and note the workspace in their Task Log.
 
-**Dispatch delivery** - For each dispatch, the Manager writes to the Worker's Task Bus and directs the User to the Worker's session with specific action guidance. For uninitialized Workers, the Manager directs the User to create a new session and initialize with the agent identifier; for initialized Workers, to deliver the Task Prompt. For batch dispatch, the Manager summarizes what the Worker will receive. For parallel dispatch, the Manager lists each Worker session with its required action. Parallel dispatch may contain any combination of single or batch dispatch for multiple Workers concurrently.
+**Dispatch delivery** - For each dispatch, the Manager writes to the Worker's Task Bus and directs the User to the Worker's chat with specific action guidance. For uninitialized Workers, the Manager directs the User to create a new chat and initialize with the agent identifier; for initialized Workers, to deliver the Task Prompt. For batch dispatch, the Manager summarizes what the Worker will receive. For parallel dispatch, the Manager lists each Worker chat with its required action. Parallel dispatch may contain any combination of single or batch dispatch for multiple Workers concurrently.
 
 **Follow-up Task Prompts** - When a Task Review determines retry is needed, the Manager issues a follow-up. The follow-up is a new Task Prompt with objective, instructions, output, and validation refined based on what went wrong. It uses the same log path as the original (the Worker overwrites the previous log) and includes context explaining the issue and required refinement.
 
@@ -270,7 +270,7 @@ The Manager assesses readiness, determines dispatch mode, constructs Task Prompt
 
 The Worker executes Task instructions, validates results, iterates if needed, logs the outcome, and reports back.
 
-**Worker registration** - A Worker binds to an agent identity during session initiation by resolving the provided agent identifier against `.apm/bus/` directory names. This identity persists across the session. The Task Prompt's agent identifier field is used for cross-validation, not identity binding.
+**Worker registration** - A Worker binds to an agent identity during initiation by resolving the provided agent identifier against `.apm/bus/` directory names. This identity persists for the duration of the Implementation Phase for this Worker instance. The Task Prompt's agent identifier field is used for cross-validation, not identity binding.
 
 **Execution flow** - The Worker integrates dependency context if present, executes steps sequentially, then validates per the Task Prompt's validation criteria. Validation follows a fixed order: automated checks first, then output verification, then user approval if specified. When validation fails, the Worker corrects and re-validates until Success or a stop condition is reached. Stop conditions: same error three or more times, fixes causing new issues, or the issue requires external resolution.
 
@@ -298,7 +298,7 @@ The Manager reviews Worker results, determines review outcomes, modifies plannin
 
 ### 6.6 Handoff
 
-Handoff transfers context between sessions of the same agent when context window limits approach. It applies to the Manager and Workers only - the Planner operates in a single session. Handoff is User-initiated: the User provides the command when they observe context pressure or the agent signals it.
+Handoff transfers context between successive instances of the same agent role when context window limits approach. It applies to the Manager and Workers only - the Planner operates as a single instance. Handoff is User-initiated: the User provides the command when they observe context pressure or the agent signals it.
 
 **Eligibility** - An agent can Handoff at any point (mid-Task, between Tasks, while awaiting reports) as long as the handoff prompt captures comprehensive current state.
 
@@ -313,9 +313,11 @@ Handoff transfers context between sessions of the same agent when context window
 
 **Context rebuilding** - An incoming Manager reads the Handoff Log, the Tracker, the Index (stage summaries and memory notes), and relevant recent Task Logs to reconstruct working context. An incoming Worker reads the Handoff Log and current-Stage Task Logs only. The Manager accounts for this limited context in future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent.
 
+**Recovery** - When the platform auto-compacts an agent's context window (outside of a deliberate Handoff), the User can invoke the recovery command to help the agent reconstruct working context. Recovery re-reads the initiation command and all referenced procedural guides, then reads role-specific state artifacts (Tracker and Index for the Manager, recent Task Logs and bus for Workers). Recovery does not increment the instance number — the agent continues as the same instance. The agent notes the recovery event in its next communication (Task Report for Workers, Tracker for the Manager) and in its eventual Handoff Log, where it describes which portions of working context are reconstructed rather than first-hand.
+
 ### 6.7 Session Continuation
 
-Session Continuation archives a completed session's artifacts and restores fresh templates for a new session while preserving access to previous session context.
+Session continuation archives the current session's artifacts and restores fresh templates for a new session while preserving access to previous session context.
 
 **Archive structure** — Archived sessions reside in `.apm/archives/`. Each archive is a directory named `session-YYYY-MM-DD-NNN` (zero-padded daily counter) containing the session's planning documents, Tracker, and Memory. The bus directory is not archived — bus state is ephemeral and session-specific.
 
@@ -338,13 +340,13 @@ Session Continuation archives a completed session's artifacts and restores fresh
 
 **Archive marker** — `metadata.json` within each archive directory is the canonical archive marker. Its presence identifies a valid archive. It contains the original installation metadata plus an optional `continues` key referencing a previous archive name when the session was a continuation.
 
-**Session summary** — An optional pre-archival artifact (`session-summary.md`) produced by the summarization command. When present, it provides a point-in-time summary of the session: project scope, stages completed, key outcomes, notable findings, and known issues. When absent, the archive contains raw artifacts sufficient for future Planners to examine.
+**Session summary** — An optional artifact (`session-summary.md`) produced by a standalone agent via the summarization command. When present, it provides a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to `.apm/` artifacts. Can be produced at any point during a session, not only after completion. When absent, the archive contains raw artifacts sufficient for future Planners to examine.
 
 **Archive index** — `.apm/archives/index.md` is a table listing all archived sessions with date, scope, stages, tasks, and continuation links. The summarization command updates it; if absent or malformed, it is recreated.
 
 **Planner archive detection** — During Context Gathering (§6.1), the Planner checks for `.apm/archives/`. If archives exist, the Planner presents them to the User and asks about relevance. If the User indicates archives are relevant, the Planner uses the `apm-archive-explorer` custom subagent to examine indicated archives, then verifies findings against the current codebase before integrating into question rounds.
 
-**Manager completion recommendation** — After project completion (§2.2), the Manager recommends running the summarization command in a new session to summarize and optionally archive the completed session.
+**Manager completion recommendation** — After project completion (§2.2), the Manager recommends running the summarization command in a new chat to summarize and optionally archive the completed APM session.
 
 **`apm-archive-explorer` subagent** — A custom subagent shipped with APM bundles. It understands archive structure and efficiently extracts relevant context from archived sessions. The Planner spawns it during Context Gathering when archived sessions are relevant.
 
@@ -378,7 +380,7 @@ Debug subagents are appropriate when a bug resists initial fix attempts, spans m
 | §6.3 Task Assignment | `guides/task-assignment.md` |
 | §6.4 Task Execution | `guides/task-execution.md` |
 | §6.5 Task Review | `guides/task-review.md` |
-| §6.6 Handoff | `commands/apm-6-handoff-manager.md`, `commands/apm-7-handoff-worker.md` |
+| §6.6 Handoff | `commands/apm-6-handoff-manager.md`, `commands/apm-7-handoff-worker.md`, `commands/apm-9-recover.md` (recovery) |
 | §6.7 Session Continuation | `commands/apm-8-summarize-session.md`, `agents/apm-archive-explorer.md`, `guides/context-gathering.md` (§3.1) |
 | §7 Subagent Usage | Platform-specific (build pipeline placeholders) |
 

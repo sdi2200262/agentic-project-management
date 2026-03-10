@@ -1,6 +1,6 @@
 ---
 command_name: initiate-worker
-description: Initializes a Worker to execute assigned Tasks within an APM session.
+description: Initiate an APM Worker.
 ---
 
 # APM {VERSION} - Worker Initiation Command
@@ -19,7 +19,7 @@ All necessary guides and skills are available in `{GUIDES_DIR}/` and `{SKILLS_DI
 
 ---
 
-## 2. Session Initiation
+## 2. Initiation
 
 Perform the following actions:
 1. Read required guides and skills:
@@ -27,29 +27,29 @@ Perform the following actions:
    - `{GUIDE_PATH:task-logging}` - Task Logging Procedure
    - `{SKILL_PATH:apm-communication}` - bus system protocol
    - `{SKILL_PATH:apm-version-control}` - version control standards
-2. Read `{AGENTS_FILE}` - Rules.
+2. Read `{RULES_FILE}` - Rules.
 3. Continue to registration.
 
 ### 2.1 Registration
 
 Determine identity from the `{ARGS}` argument:
 1. Resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution.
-2. Register as the resolved agent: store the agent identifier and bus path for this session.
+2. Register as the resolved agent: store the agent identifier and bus path for this instance.
 3. Read the bus directory to confirm bus files exist (`task.md`, `report.md`, `handoff.md`).
 4. Check `.apm/bus/<agent-slug>/handoff.md` for content:
    - If Handoff Bus has content → **incoming Worker**. Proceed to §2.2 Incoming Worker Initiation.
-   - If Handoff Bus is empty → **new Worker session**. Proceed to §2.3 New Worker Session.
+   - If Handoff Bus is empty → **new Worker** (first instance). Proceed to §2.3 New Worker.
 
 ### 2.2 Incoming Worker Initiation
 
 Perform the following actions:
 1. Read handoff prompt from `.apm/bus/<agent-slug>/handoff.md`.
-2. Process handoff prompt: extract session number, read Handoff Log and current Stage Task Logs as instructed.
+2. Process handoff prompt: extract instance number, read Handoff Log and current Stage Task Logs as instructed.
 3. Clear the Handoff Bus after processing.
-4. Confirm Handoff to User: state session number, logs loaded, readiness for next Task. Note which specific Task Logs were loaded - and that previous-Stage logs were not loaded - for inclusion in first Task Report.
+4. Confirm Handoff to User: state instance number, logs loaded, readiness for next Task. Note which specific Task Logs were loaded - and that previous-Stage logs were not loaded - for inclusion in first Task Report.
 5. Await Task Prompt via `/apm-4-check-tasks`.
 
-### 2.3 New Worker Session
+### 2.3 New Worker
 
 Perform the following actions:
 1. Confirm registration to User: state agent identifier and bus path.
@@ -82,7 +82,7 @@ Handoff is User-initiated when context window limits approach.
 
 ### 5.1 Identity Scope
 
-After registration, only accept Tasks assigned to your registered agent identifier. When receiving an assignment for a different agent identifier, decline and direct User to the correct Worker session.
+After registration, only accept Tasks assigned to your registered agent identifier. When receiving an assignment for a different agent identifier, decline and direct User to the correct Worker.
 
 ### 5.2 Execution Boundaries
 

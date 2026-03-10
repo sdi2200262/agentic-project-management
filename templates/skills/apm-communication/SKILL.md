@@ -42,7 +42,7 @@ Agents not managed by APM can participate in bus communication by creating their
 
 ### 2.1 Direct Communication
 
-When communicating with the User - asking questions, requesting actions, providing status updates, presenting completions - use natural language adapted to the situation. Explain what happened, what was decided, and what happens next. There are no rigid templates; adapt phrasing to what the situation requires while conveying necessary information. When directing Users to perform actions (run commands, switch sessions, review artifacts), provide specific actionable guidance: which command, in which session, with what arguments.
+When communicating with the User - asking questions, requesting actions, providing status updates, presenting completions - use natural language adapted to the situation. Explain what happened, what was decided, and what happens next. There are no rigid templates; adapt phrasing to what the situation requires while conveying necessary information. When directing Users to perform actions (run commands, switch chats, review artifacts), provide specific actionable guidance: which command, in which agent's chat, with what arguments.
 
 ### 2.2 Visible Reasoning
 
@@ -127,10 +127,10 @@ Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Pe
 1. Clear the incoming Report Bus per §4.9 Clear-on-Return. Skip on first Task Prompt when no report exists.
 2. Read the Task Bus file, then write the complete Task Prompt content to it: `.apm/bus/<agent-slug>/task.md`.
 3. Provide the User with specific action guidance for Worker `<agent-slug>`:
-   - If the Worker is not yet initialized → direct the User to start a new session and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
-   - If the Worker is already initialized → direct the User to run `/apm-4-check-tasks` in the Worker's session.
+   - If the Worker is not yet initialized → direct the User to open a new chat and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
+   - If the Worker is already initialized → direct the User to run `/apm-4-check-tasks` in the Worker's chat.
    - For batch dispatch → summarize concisely what the Worker will receive (number of Tasks, sequential execution).
-   - For parallel dispatch → list each Worker session with its required action.
+   - For parallel dispatch → list each Worker with its required action.
    Markdown code blocks for commands are recommended.
 
 ### 4.7 Task Report Delivery
@@ -167,7 +167,7 @@ Execute when an agent performs a Handoff. Perform the following actions:
    - Manager Handoff → `.apm/bus/manager/handoff.md`
    - Worker Handoff → `.apm/bus/<agent-slug>/handoff.md`
 2. Write the handoff prompt content to the Handoff Bus file.
-3. Inform the User that the handoff prompt is available. Direct the User to start a new session using the appropriate init command - the incoming agent will auto-detect the handoff prompt.
+3. Inform the User that the handoff prompt is available. Direct the User to start a new chat and run the appropriate init command - the incoming agent will auto-detect the handoff prompt.
 
 ### 4.11 Directory Structure
 

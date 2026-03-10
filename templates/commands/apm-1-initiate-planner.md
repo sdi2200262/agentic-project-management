@@ -1,6 +1,6 @@
 ---
 command_name: initiate-planner
-description: Initializes a Planner session and starts the Planning Phase of an APM session.
+description: Initiate an APM Planner.
 ---
 
 # APM {VERSION} - Planner Initiation Command
@@ -19,12 +19,16 @@ Read the following skill:
 - `{SKILL_PATH:apm-communication}` - agent communication standards
 
 The following artifact files exist with header templates ready to be populated:
-- `.apm/plan.md` (filled during Work Breakdown)
-- `.apm/spec.md` (filled during Work Breakdown)
-- `.apm/tracker.md` (filled by Manager during session 1)
-- `.apm/memory/index.md` (filled by Manager during session 1)
+- `.apm/plan.md` (populated during Work Breakdown by the Planner)
+- `.apm/spec.md` (populated during Work Breakdown by the Planner)
+- `.apm/tracker.md` (populated by Manager 1)
+- `.apm/memory/index.md` (populated by Manager 1)
 
-You will also create or update `{AGENTS_FILE}` at workspace root with Rules during Work Breakdown.
+You will also create or update `{RULES_FILE}` at workspace root with Rules during Work Breakdown.
+
+**Initiation context from User:** {ARGS}
+
+If the line above contains text, the User has front-loaded project context. Incorporate it before starting Context Gathering — it may focus discovery and reduce question rounds. Do not skip Context Gathering. If empty, ignore and proceed normally.
 
 ---
 
@@ -54,7 +58,7 @@ Perform the following actions:
 
 Perform the following actions:
 1. Initialize bus system per `{SKILL_PATH:apm-communication}` §4.5 Bus Initialization.
-2. State the Planning Phase is complete: planning documents created, bus system initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new session.
+2. State the Planning Phase is complete: planning documents created, bus system initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
 
 ---
 
@@ -72,7 +76,7 @@ Communication with the User and visible reasoning follow `{SKILL_PATH:apm-commun
 
 ### 5.3 Exploration and Research
 
-You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.4 Exploration and Research Standards. The Planner operates in a single session - prefer subagents for cross-codebase research to preserve context for Work Breakdown.
+You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.4 Exploration and Research Standards. The Planner operates as a single instance with no Handoff - prefer subagents for cross-codebase research to preserve context for Work Breakdown.
 
 ---
 

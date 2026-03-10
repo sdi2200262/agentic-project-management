@@ -29,7 +29,7 @@ APM provides each Agent with different views of the project:
 
 ## Quick Agent Comparison
 
-| Agent Type | Role | Context Scope | Sessions | Active Phase |
+| Agent Type | Role | Context Scope | Instances | Active Phase |
 | :--- | :--- | :--- | :--- | :--- |
 | **Planner** | Architect | Full project vision and requirements | 1 | Planning Phase |
 | **Manager** | Coordinator | Planning documents and Memory | Multiple (via Handoff) | Implementation Phase |
@@ -42,7 +42,7 @@ APM provides each Agent with different views of the project:
 
 The Planner operates once at project start to transform User requirements into planning documents. It conducts structured discovery and decomposes gathered context into the documents that guide all subsequent work.
 
-**Operational Context:** Fresh session with no prior project history. Has access to User-provided requirements, existing documentation, and codebase if applicable.
+**Operational Context:** Fresh instance with no prior project history. Has access to User-provided requirements, existing documentation, and codebase if applicable.
 
 **Core Responsibilities:**
 
@@ -77,9 +77,9 @@ The Manager coordinates execution of the Plan. It operates throughout the projec
 
 - **Version Control Coordination** - Initializes and manages feature branches and worktrees for parallel task execution. Performs merge sweeps at Stage boundaries to ensure all work is integrated before advancing.
 
-- **Completion Recommendation** - After all Stages complete, recommends running `/apm-8-summarize-session` in a new session to summarize and optionally archive the completed session for future reference.
+- **Completion Recommendation** - After all Stages complete, recommends running `/apm-8-summarize-session` in a new chat to summarize and optionally archive the completed APM session for future reference.
 
-The Manager operates through multiple Sessions via Handoff when context limits approach. Each Session continues from where the previous left off using Handoff Logs and the Tracker and Index.
+The Manager operates through multiple instances via Handoff when context limits approach. Each instance continues from where the previous left off using Handoff Logs and the Tracker and Index.
 
 ---
 
@@ -99,9 +99,8 @@ Workers execute Tasks assigned by the Manager. Each Worker is defined in the Pla
 
 - **Rules Updates** - Updates Rules when discovering universal patterns or conflicts during execution. Changes apply across all agents.
 
-- **Subagent Spawning** - Spawns platform-native subagents (Debug Subagent, Research Subagent etc) for isolated context-heavy work that would pollute the main session. Waits for subagent findings or works in parallel and integrates results to continue task execution.
-
-Workers operate through multiple Sessions via Handoff when context limits approach. After Handoff, previous-Stage same-agent dependencies are treated as cross-agent dependencies requiring explicit file reading.
+- **Subagent Spawning** - Spawns platform-native subagents (Debug Subagent, Research Subagent etc) for isolated context-heavy work that would pollute the main context. Waits for subagent findings or works in parallel and integrates results to continue task execution.
+Workers operate through multiple instances via Handoff when context limits approach. After Handoff, previous-Stage same-agent dependencies are treated as cross-agent dependencies requiring explicit file reading.
 
 ---
 
@@ -109,17 +108,17 @@ Workers operate through multiple Sessions via Handoff when context limits approa
 
 Subagents are platform-native temporary agents spawned for isolated, focused work. APM defines behavioral expectations - the platform handles lifecycle and tool access. Subagents execute autonomously and return findings to the spawning Agent.
 
-**Operational Context:** Sees only the specific context provided for their isolated task. No access to broader project state unless explicitly given. Executes in isolated session that closes after completion.
+**Operational Context:** Sees only the specific context provided for their isolated task. No access to broader project state unless explicitly given. Executes in isolated scope that closes after completion.
 
 **Common Types and Responsibilities:**
 
-- **Debug Subagent** - Isolates and resolves complex bugs. Expected access: full (edit, terminal). Spawned when debugging would require extensive context (reading many library files, analyzing complex error logs) that would pollute the Worker's session. Returns findings with solution or diagnostic results.
+- **Debug Subagent** - Isolates and resolves complex bugs. Expected access: full (edit, terminal). Spawned when debugging would require extensive work (reading many library files, analyzing complex error logs) that would pollute the Worker's context. Returns findings with solution or diagnostic results.
 
 - **Research Subagent** - Investigates knowledge gaps using current sources. Expected access: read-only, web. Spawned when research requires reading extensive documentation, exploring unfamiliar libraries, or gathering information from external sources. Returns findings with recommendations or answers.
 
 APM also ships custom agent configurations (e.g., `apm-archive-explorer` for archive exploration) that platforms load as predefined subagents. These are installed in the platform's agents directory alongside commands and skills.
 
-Subagents prevent context pollution in long-running Agent sessions by handling context-intensive work in disposable instances. Workers and Managers can spawn subagents when execution requires isolated investigation.
+Subagents prevent context pollution in long-running Agents by handling context-intensive work in disposable instances. Workers and Managers can spawn subagents when execution requires isolated investigation.
 
 ---
 

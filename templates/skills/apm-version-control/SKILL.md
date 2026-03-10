@@ -17,7 +17,7 @@ See §3 Version Control Procedure for initialization, branch operations, worktre
 
 ### 1.2 Objectives
 
-- Initialize version control during Manager session 1 when a git repository is present.
+- Initialize version control as Manager 1 when a git repository is present.
 - Provide workspace isolation through feature branches and worktrees for parallel dispatch.
 - Coordinate merges as a dispatch prerequisite - merge completed branches before dispatching dependent Tasks.
 - Track VC state in the Tracker for Handoff continuity.
@@ -36,11 +36,11 @@ See §3 Version Control Procedure for initialization, branch operations, worktre
 
 ### 2.1 Repository Detection Standards
 
-The Manager detects existing repository state during session 1 initialization. Detection is passive - read what exists rather than imposing configuration.
+The Manager detects existing repository state during first initialization. Detection is passive - read what exists rather than imposing configuration.
 
 **Detection checks:** Which directory is the working repository? (check the Spec for workspace structure - navigate there before other checks). Is git initialized? (if not, initialize and inform User). What is the current branch? (becomes base branch unless User specifies otherwise). Where is `.apm/` relative to repository root? (both paths recorded for worktree path construction). Is `.apm/worktrees/` in `.gitignore`? (if `.apm/` is inside the repository, add it if absent; if `.apm/` is outside the repository, no `.gitignore` modification needed).
 
-**Stale state recovery:** If leftover worktrees or branches from a prior session exist (e.g., crash recovery), detect and clean during initialization - remove worktrees and delete orphaned feature branches.
+**Stale state recovery:** If leftover worktrees or branches from a prior instance exist (e.g., crash recovery), detect and clean during initialization - remove worktrees and delete orphaned feature branches.
 
 ### 2.2 Branch Standards
 
@@ -75,7 +75,7 @@ The Manager respects the User's existing repository setup. The base branch is wh
 ## 3. Version Control Procedure
 
 **Procedure:**
-1. VC Initialization (Manager session 1).
+1. VC Initialization (Manager 1).
 2. Branch Operations (per dispatch).
 3. Worktree Operations (parallel dispatch only).
 4. Merge Coordination (after Task Review).
@@ -83,7 +83,7 @@ The Manager respects the User's existing repository setup. The base branch is wh
 
 ### 3.1 VC Initialization
 
-Execute once during Manager session 1 initiation, after Memory initialization. Perform the following actions:
+Execute once during Manager 1 initiation, after Memory initialization. Perform the following actions:
 1. Check the Spec for workspace structure - identify which directory is the working repository. If the Spec specifies a repository directory, navigate there before proceeding.
 2. Check if git is initialized in the working repository directory. If not, run `git init` and inform the User.
 3. Detect the current branch - record as base branch.
@@ -91,7 +91,7 @@ Execute once during Manager session 1 initiation, after Memory initialization. P
 5. Check planning documents (Rules, Spec, Plan) for VC-relevant guidance - commit conventions, branching strategies, PR workflows. Incorporate findings.
 6. Detect branch naming conventions from existing branches, planning document guidance, or establish with User. Record in the Tracker Version Control table.
 7. Check `.gitignore` for `.apm/worktrees/`. If `.apm/` is inside the repository directory, add it if absent. If `.apm/` is outside the repository, `.gitignore` modification is not needed.
-8. Check for stale worktrees or orphaned feature branches from prior sessions. Clean if found.
+8. Check for stale worktrees or orphaned feature branches from prior instances. Clean if found.
 9. Write VC state to the Version Control table in the Tracker per §4.3 Tracker VC Entry Format.
 
 ### 3.2 Branch Operations
