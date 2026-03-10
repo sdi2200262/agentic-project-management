@@ -27,7 +27,11 @@ graph LR
 
 ### Context Gathering
 
-The Planner conducts structured discovery through three Question Rounds, each focused on progressive refinement:
+The Planner conducts structured discovery through three Question Rounds, each focused on progressive refinement. Before starting question rounds, the Planner checks for archived sessions in `.apm/archives/`.
+
+**Archive Detection**
+
+If archived sessions exist, the Planner presents them to the User and asks about relevance. When indicated archives are relevant, the Planner spawns the `apm-archive-explorer` custom subagent to examine them, then verifies findings against the current codebase before integrating into question rounds. This enables iterative development where each session builds on prior work.
 
 **Question Round 1: Existing Materials and Vision**
 
@@ -191,6 +195,8 @@ Memory resides in `.apm/` and tracks project state and execution history:
 
 - **Handoff Logs** (`memory/handoffs/<agent>/handoff-<NN>.log.md`) - Logs created during Handoff containing working context not captured elsewhere.
 
+- **Archives** (`.apm/archives/`) - Archived session artifacts preserved for future reference. Each archive is a directory named `session-YYYY-MM-DD-NNN` containing the session's planning documents, Tracker, and Memory. An optional `session-summary.md` provides a pre-built overview. Archives accumulate across sessions and are accessible to future Planners during Context Gathering.
+
 ### Bus System
 
 The bus system in `.apm/bus/` enables file-based communication between Agent Sessions. The Planner initializes it at the end of the Planning Phase. Each Worker has a bus directory containing three bus files:
@@ -246,6 +252,40 @@ graph LR
 
 - Incoming Manager reads the Handoff Log, Tracker, Index (stage summaries and memory notes), and relevant recent Task Logs
 - Incoming Worker reads the Handoff Log and current-Stage Task Logs for their agent. Previous-Stage logs are not loaded for efficiency - the Manager accounts for this when constructing future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent dependencies.
+
+---
+
+## Session Continuation
+
+After a session completes, Session Continuation archives the current session's artifacts and restores fresh templates for a new session while preserving access to previous work.
+
+### Archive Structure
+
+Archived sessions reside in `.apm/archives/`. Each archive is a directory named `session-YYYY-MM-DD-NNN` (zero-padded daily counter) containing the session's planning documents, Tracker, and Memory. The bus directory is not archived — bus state is ephemeral and session-specific.
+
+```text
+.apm/archives/
+├── index.md
+├── session-2026-03-04-001/
+│   ├── metadata.json
+│   ├── plan.md
+│   ├── spec.md
+│   ├── tracker.md
+│   ├── session-summary.md     # optional
+│   └── memory/
+└── session-2026-03-05-001/
+    └── ...
+```
+
+### Workflow
+
+1. **Summarize** - After project completion, run `/apm-8-summarize-session` in a new session. The summarization agent reads `.apm/` artifacts, produces a session summary, and offers to archive.
+
+2. **Archive** - Archival moves current `.apm/` artifacts to `.apm/archives/session-YYYY-MM-DD-NNN/`, restores fresh templates, and updates `.apm/archives/index.md`. Can also be triggered directly via `apm archive` CLI command.
+
+3. **Continue** - When a new Planner starts, Context Gathering detects existing archives and offers to explore them using the `apm-archive-explorer` custom subagent, integrating relevant findings into question rounds.
+
+Archives can optionally reference a previous archive via a `continues` key in `metadata.json`, establishing session lineage for multi-session projects.
 
 ---
 

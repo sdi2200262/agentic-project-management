@@ -25,7 +25,7 @@ APM addresses context limitations by treating the AI not as a single continuous 
 
 - **Persistence:** Project state lives in structured documents outside Agent sessions. Planning documents define all work. Memory tracks the project's progression. A file-based bus system enables communication between Agents.
 
-- **Continuity:** When an Agent's context window fills, a Handoff Protocol transfers working knowledge to a fresh instance, which reconstructs context using the project's documents and continues seamlessly.
+- **Continuity:** When an Agent's context window fills, a Handoff Protocol transfers working knowledge to a fresh instance, which reconstructs context using the project's documents and continues seamlessly. Completed sessions can be archived and preserved for future reference, enabling new sessions to build on prior work.
 
 This architecture mirrors how human teams collaborate: specialized roles, shared documentation, and explicit communication protocols ensure consistent progress regardless of individual capacity limits.
 
@@ -76,6 +76,8 @@ APM operates in two distinct phases:
   3. **Task Review** - Manager reviews completion logs via trigger command, determines review outcome
 
   The cycle repeats until all tasks complete. The Manager can dispatch multiple tasks in parallel when dependencies allow, or send batches of sequential tasks to the same Worker for efficiency.
+
+- **Session Continuation** - After a session completes, it can be archived and a fresh session started in its place. Archived sessions are preserved in `.apm/archives/` and accessible to future Planners during Context Gathering, enabling iterative development across multiple sessions.
 
 ---
 

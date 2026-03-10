@@ -17,6 +17,7 @@ Different document types have different structural needs. This matrix defines th
 | **Handoff commands** (`apm-6`, `apm-7`) | Lightweight structure. Procedure, structural specs for artifacts. |
 | **Guides** | Strict 5-section pattern (§1 Overview through §5 Content Guidelines) by default. Sections may be merged only when there is a clear, justified reduction in cross-referencing overhead - not for cosmetic reasons. |
 | **Skills** | Free-form structure. Required: §1 Overview (reading agents, objectives, outputs) and end marker. Internal organization adapts to the skill's nature - skills may contain standards, procedures, reference content, or any combination. |
+| **Agents** | Free-form structure. Required: §1 Overview (spawning agents, purpose, outputs) and end marker. Internal organization adapts to the agent's purpose. |
 
 ---
 
@@ -129,9 +130,33 @@ Skills require §1 Overview (including reading agents, objectives, and outputs) 
 
 ---
 
-## 5. Section Formatting Rules
+## 5. Agent Structure
 
-### 5.1 Heading Levels
+Agents are custom subagent configuration files shipped with APM bundles. Each agent file begins with YAML frontmatter.
+
+### 5.1 YAML Frontmatter
+
+**Schema:**
+
+```yaml
+---
+name: <agent-name>
+description: <one or two sentence description of agent purpose>
+---
+```
+
+- `name` (required, kebab-case): Agent identifier. Matches filename stem.
+- `description` (required, one or two sentences): Brief statement of agent purpose.
+
+### 5.2 Section Structure
+
+Agents require §1 Overview (including spawning agents, purpose, and outputs) and an end marker. Beyond §1, agents organize content freely to match their purpose.
+
+---
+
+## 6. Section Formatting Rules
+
+### 6.1 Heading Levels
 
 | Level | Markdown | Usage |
 | ----- | -------- | ----- |
@@ -143,7 +168,7 @@ Skills require §1 Overview (including reading agents, objectives, and outputs) 
 
 Deeper hierarchy within subsections uses **bold** to introduce sub-topics and *italic* to label items within lists. See `WRITING.md` §7.1 for formatting patterns.
 
-### 5.2 Section Numbering
+### 6.2 Section Numbering
 
 | Format | Usage |
 | ------ | ----- |
@@ -152,15 +177,15 @@ Deeper hierarchy within subsections uses **bold** to introduce sub-topics and *i
 
 Section numbers in text references use the § symbol with section title: "See §3.2 Dependency Context."
 
-### 5.3 Horizontal Rules
+### 6.3 Horizontal Rules
 
 Horizontal rules (`---`) separate major sections (## headings) only. Horizontal rules are not used within sections or between subsections.
 
 ---
 
-## 6. YAML Frontmatter Rules
+## 7. YAML Frontmatter Rules
 
-### 6.1 General Rules
+### 7.1 General Rules
 
 | Rule | Description |
 | ---- | ----------- |
@@ -169,7 +194,7 @@ Horizontal rules (`---`) separate major sections (## headings) only. Horizontal 
 | Indentation | No indentation for top-level fields. |
 | Quotes | Strings containing special characters are quoted. |
 
-### 6.2 Field Naming
+### 7.2 Field Naming
 
 | Rule | Description |
 | ---- | ----------- |
@@ -177,7 +202,7 @@ Horizontal rules (`---`) separate major sections (## headings) only. Horizontal 
 | Clarity | Field names are descriptive. |
 | Consistency | Field names are consistent across all files of the same type. |
 
-### 6.3 Field Values
+### 7.3 Field Values
 
 | Type | Format |
 | ---- | ------ |
@@ -188,15 +213,15 @@ Horizontal rules (`---`) separate major sections (## headings) only. Horizontal 
 
 ---
 
-## 7. Structural Specifications Rules
+## 8. Structural Specifications Rules
 
 These rules govern output format definitions in structural specifications sections of skills and guides. Tables are the appropriate format for structural specifications, schemas, format definitions, and enumerated field descriptions. Prose remains preferred for explanatory and instructional content per `WRITING.md` §1.3.
 
-### 7.1 Format Definition Structure
+### 8.1 Format Definition Structure
 
 Each format definition includes: location (file path pattern with placeholders), naming convention (explanation of path components), schema (YAML frontmatter and/or markdown body structure), and field descriptions (type, required status, allowed values, purpose).
 
-### 7.2 Schema Representation
+### 8.2 Schema Representation
 
 **YAML Schemas:** Use fenced code blocks with `yaml` language tag:
 
@@ -218,15 +243,15 @@ field_two: <type or allowed values>
 
 **Markdown Body Templates:** Use fenced code blocks with `markdown` language tag.
 
-### 7.3 Placeholder Notation
+### 8.3 Placeholder Notation
 
-Value placeholders use `<placeholder>` for values to fill, `[optional]` for conditional content, `...` for pattern continuation, `<N>`/`<M>` for integer values, and `<NN>`/`<MM>` for zero-padded numeric identifiers. Cross-reference placeholders (`{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_FILE}`, `{VERSION}`, `{TIMESTAMP}`, `{ARGS}`) are resolved during build.
+Value placeholders use `<placeholder>` for values to fill, `[optional]` for conditional content, `...` for pattern continuation, `<N>`/`<M>` for integer values, and `<NN>`/`<MM>` for zero-padded numeric identifiers. Cross-reference placeholders (`{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{AGENT_PATH:name}`, `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_DIR}`, `{AGENTS_FILE}`, `{VERSION}`, `{TIMESTAMP}`, `{ARGS}`) are resolved during build.
 
 ---
 
-## 8. File Naming Conventions
+## 9. File Naming Conventions
 
-### 8.1 Command Files
+### 9.1 Command Files
 
 | Component | Convention |
 | --------- | ---------- |
@@ -235,7 +260,7 @@ Value placeholders use `<placeholder>` for values to fill, `[optional]` for cond
 | Prefix | `apm-<N>-` where N is sort order |
 | Names | kebab-case throughout |
 
-### 8.2 Guide Files
+### 9.2 Guide Files
 
 | Component | Convention |
 | --------- | ---------- |
@@ -243,7 +268,7 @@ Value placeholders use `<placeholder>` for values to fill, `[optional]` for cond
 | File | `<guide-name>.md` |
 | Guide name | kebab-case |
 
-### 8.3 Skill Files
+### 9.3 Skill Files
 
 | Component | Convention |
 | --------- | ---------- |
@@ -251,7 +276,7 @@ Value placeholders use `<placeholder>` for values to fill, `[optional]` for cond
 | File | `SKILL.md` (uppercase) |
 | Skill name | kebab-case, matches directory name |
 
-### 8.4 APM Artifact Files
+### 9.4 APM Artifact Files
 
 | Component | Convention |
 | --------- | ---------- |
@@ -259,15 +284,23 @@ Value placeholders use `<placeholder>` for values to fill, `[optional]` for cond
 | Logs | `.log.md` suffix for Task Logs and Handoff Logs |
 | Directories | `stage-<NN>/`, `handoffs/<agent>/` |
 
-### 8.5 Task Identifiers
+### 9.5 Task Identifiers
 
 Tasks are identified by Stage number and Task number using the compound `N.M` format (e.g., Task 2.3) in markdown prose. YAML frontmatter uses plain integers (`stage: 1`, `task: 2`) as the natural machine-format data type. File paths use zero-padded numbers (`stage-01/task-01-02.log.md`) for lexicographic sorting so Stages and Tasks sort correctly in the user's file system.
 
+### 9.6 Agent Files
+
+| Component | Convention |
+| --------- | ---------- |
+| Directory | `agents/` |
+| File | `<agent-name>.md` |
+| Agent name | kebab-case, matches filename stem |
+
 ---
 
-## 9. End Markers
+## 10. End Markers
 
-Every command, guide, and skill file ends with an end marker followed by a blank line.
+Every command, guide, skill, and agent file ends with an end marker followed by a blank line.
 
 **Commands:**
 
@@ -293,6 +326,15 @@ Every command, guide, and skill file ends with an end marker followed by a blank
 ---
 
 **End of Skill**
+
+```
+
+**Agents:**
+
+```text
+---
+
+**End of Agent**
 
 ```
 

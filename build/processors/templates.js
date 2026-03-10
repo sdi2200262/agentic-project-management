@@ -42,6 +42,18 @@ function isGuideTemplate(templatePath, sourceDir) {
 }
 
 /**
+ * Determines if a template file is an agent based on its source directory.
+ *
+ * @param {string} templatePath - Path to template file.
+ * @param {string} sourceDir - Source templates directory.
+ * @returns {boolean} True if file is in agents/ directory.
+ */
+function isAgentTemplate(templatePath, sourceDir) {
+  const relativePath = path.relative(sourceDir, templatePath);
+  return relativePath.startsWith('agents' + path.sep);
+}
+
+/**
  * Processes a single template file.
  *
  * @param {string} templatePath - Path to template file.
@@ -49,13 +61,14 @@ function isGuideTemplate(templatePath, sourceDir) {
  * @returns {Promise<void>}
  */
 async function processTemplate(templatePath, options) {
-  const { target, version, commandsDir, skillsDir, guidesDir, targetBuildDir, sourceDir } = options;
+  const { target, version, commandsDir, skillsDir, guidesDir, agentsDir, targetBuildDir, sourceDir } = options;
 
   const content = await fs.readFile(templatePath, 'utf8');
 
   const isCommand = isCommandTemplate(templatePath, sourceDir);
   const isGuide = isGuideTemplate(templatePath, sourceDir);
-  const category = isCommand ? 'command' : (isGuide ? 'guide' : 'skill');
+  const isAgent = isAgentTemplate(templatePath, sourceDir);
+  const category = isCommand ? 'command' : (isGuide ? 'guide' : (isAgent ? 'agent' : 'skill'));
 
   const context = { version, target };
   const basename = path.basename(templatePath, '.md');
@@ -81,6 +94,11 @@ async function processTemplate(templatePath, options) {
         finalContent = processedFull;
       }
       outputPath = path.join(commandsDir, `${basename}${ext}`);
+    } else if (isAgent) {
+      // Agents: flat files (agents/<agent-name>.md, Copilot: <agent-name>.agent.md)
+      finalContent = processedFull;
+      const agentExt = target.id === 'copilot' ? '.agent.md' : '.md';
+      outputPath = path.join(agentsDir, `${basename}${agentExt}`);
     } else {
       // Skills: directory-based structure (skills/<skill-name>/SKILL.md + optional files)
       finalContent = processedFull;
@@ -132,12 +150,14 @@ async function buildTarget(target, config, version) {
   const commandsDir = path.join(targetBuildDir, target.directories.commands);
   const skillsDir = path.join(targetBuildDir, target.directories.skills);
   const guidesDir = path.join(targetBuildDir, target.directories.guides);
+  const agentsDir = path.join(targetBuildDir, target.directories.agents);
 
   logger.info(`\nProcessing target: ${target.name} (${target.id})`);
 
   await fs.ensureDir(commandsDir);
   await fs.ensureDir(skillsDir);
   await fs.ensureDir(guidesDir);
+  await fs.ensureDir(agentsDir);
 
   // Copy apm/ → .apm/ (common to all targets)
   await copyApmDirectory(sourceDir, targetBuildDir);
@@ -154,6 +174,7 @@ async function buildTarget(target, config, version) {
       commandsDir,
       skillsDir,
       guidesDir,
+      agentsDir,
       targetBuildDir,
       sourceDir
     });

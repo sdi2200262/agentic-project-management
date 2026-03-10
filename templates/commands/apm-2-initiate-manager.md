@@ -84,6 +84,7 @@ When all Tasks in a Stage are complete, create a stage summary per `{GUIDE_PATH:
 When all Stages are complete:
 1. Review all stage summaries for overall project outcome.
 2. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
+3. Recommend running `/apm-8-summarize-session` in a new session to summarize the completed session and optionally archive it for future reference.
 
 ---
 

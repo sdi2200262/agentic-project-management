@@ -17,12 +17,15 @@ import path from 'path';
  * - {SKILL_PATH:name}: Full path to skill file (<name>/SKILL.md)
  * - {GUIDE_PATH:name}: Full path to guide file (<name>.md) - flat structure, no frontmatter
  * - {COMMAND_PATH:name}: Full path to command file (resolves extension per target)
+ * - {AGENT_PATH:name}: Full path to agent file (<name>.md, Copilot: <name>.agent.md)
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
  * - {AGENTS_FILE}: Platform-specific agents file name
  * - {SKILLS_DIR}: Platform-specific skills directory
+ * - {AGENTS_DIR}: Platform-specific agents directory
  * - {PLANNER_SUBAGENT_GUIDANCE}: Platform-specific subagent exploration guidance for Planner
  * - {MANAGER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Manager investigation
  * - {WORKER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Worker context integration
+ * - {ARCHIVE_EXPLORER_GUIDANCE}: Platform-specific guidance for spawning the apm-archive-explorer custom agent
  * - {CONTEXT_ATTACH_SYNTAX}: Platform-specific instructions for how Users reference files in chat
  *
  * @param {string} content - Template content with placeholders.
@@ -56,6 +59,12 @@ export function replacePlaceholders(content, context) {
     return path.join(directories.guides, `${guideName}.md`);
   });
 
+  // Replace AGENT_PATH placeholder (agents are flat files: <name>.md, Copilot: <name>.agent.md)
+  const agentExt = id === 'copilot' ? '.agent.md' : '.md';
+  replaced = replaced.replace(/{AGENT_PATH:([^}]+)}/g, (_match, agentName) => {
+    return path.join(directories.agents, `${agentName}${agentExt}`);
+  });
+
   // Replace COMMAND_PATH placeholder (resolves to full path with target-specific extension)
   const commandExt = getOutputExtension(target);
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, commandName) => {
@@ -74,6 +83,12 @@ export function replacePlaceholders(content, context) {
   // Replace SKILLS_DIR placeholder
   replaced = replaced.replace(/{SKILLS_DIR}/g, directories.skills);
 
+  // Replace GUIDES_DIR placeholder
+  replaced = replaced.replace(/{GUIDES_DIR}/g, directories.guides);
+
+  // Replace AGENTS_DIR placeholder
+  replaced = replaced.replace(/{AGENTS_DIR}/g, directories.agents);
+
   // Replace PLANNER_SUBAGENT_GUIDANCE placeholder
   const configNote = subagentGuidance.configNote
     ? ` ${subagentGuidance.configNote}.`
@@ -88,6 +103,11 @@ export function replacePlaceholders(content, context) {
   // Replace WORKER_SUBAGENT_GUIDANCE placeholder
   const workerGuidanceText = `For complex cross-agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`.`;
   replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
+
+  // Replace ARCHIVE_EXPLORER_GUIDANCE placeholder
+  const archiveExplorerPath = path.join(directories.agents, `apm-archive-explorer${agentExt}`);
+  const archiveExplorerText = `spawn a subagent with the \`${archiveExplorerPath}\` agent configuration and pass it the archive path(s) to explore`;
+  replaced = replaced.replace(/{ARCHIVE_EXPLORER_GUIDANCE}/g, archiveExplorerText);
 
   // Replace CONTEXT_ATTACH_SYNTAX placeholder
   replaced = replaced.replace(/{CONTEXT_ATTACH_SYNTAX}/g, target.contextAttachSyntax || 'Reference the file path in your message.');

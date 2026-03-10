@@ -81,10 +81,11 @@ The initialization command will:
   - `.apm/tracker.md` - Project state tracker (populated by Manager)
   - `.apm/memory/index.md` - Project memory index (populated by Manager)
   - `.apm/metadata.json` - Installation metadata
-- **Install Procedural Files** - Create required commands, guides and skills in platform-specific directories (`.cursor/`, `.github/`, `claude/` etc.):
-  - `.cursor/commands/` - Agent initiation and handoff commands
-  - `.cursor/guides/` - Procedure guides for Agents
+- **Install Procedural Files** - Create required commands, guides, skills, and agents in platform-specific directories (`.cursor/`, `.github/`, `.claude/`, etc.):
+  - `.cursor/commands/` - Agent initiation, handoff, and utility commands
+  - `.cursor/apm-guides/` - Procedure guides for Agents
   - `.cursor/skills/` - Shared procedural skills
+  - `.cursor/agents/` - Custom subagent configurations
 
 After initialization completes, you're ready to begin.
 
@@ -283,10 +284,41 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
 
 ---
 
+## After Project Completion
+
+When the Manager completes all tasks and stages, it recommends running `/apm-8-summarize-session` in a new session to summarize the completed session.
+
+### Session Summary and Archival
+
+1. **Open a new session** and run `/apm-8-summarize-session`
+2. The summarization agent reads all `.apm/` artifacts, produces a session summary, and presents it to you
+3. You can then choose to **archive** the session — this moves the current `.apm/` artifacts to `.apm/archives/` and restores fresh templates for a new session
+
+You can also archive directly via the CLI:
+
+```bash
+apm archive
+```
+
+If the new session continues from a previous one, use the `--continues` flag:
+
+```bash
+apm archive --continues session-2026-03-04-001
+```
+
+### Starting a New Session
+
+After archival, `.apm/` contains fresh templates ready for a new Planner session. Previous session archives remain accessible in `.apm/archives/`. When the new Planner runs Context Gathering, it detects existing archives and asks about their relevance — enabling iterative development where each session builds on prior work.
+
+> For details on Session Continuation mechanics, see [Workflow Overview](Workflow_Overview.md).
+
+---
+
 **Congratulations!** You've launched your first APM session. The structured multi-agent approach provides consistent project execution and prevents the chaos typical of single-session AI collaboration.
 
 **Next Steps:**
 
 - [Token Consumption Tips](Token_Consumption_Tips.md) - Optimize model usage and costs
 - [Agent Orchestration](Agent_Orchestration.md) - Understand Agent communication and memory architecture
+- [CLI Guide](CLI.md) - Session management, archival, and custom installations
 - [Modifying APM](Modifying_APM.md) - Customize APM for your specific needs

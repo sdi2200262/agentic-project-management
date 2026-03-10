@@ -46,7 +46,7 @@ The Planner operates once at project start to transform User requirements into p
 
 **Core Responsibilities:**
 
-- **Context Gathering** - Conducts structured discovery through three Question Rounds focused on project vision, technical requirements, and implementation approach. Produces an Understanding Summary for User review and approval.
+- **Context Gathering** - Conducts structured discovery through three Question Rounds focused on project vision, technical requirements, and implementation approach. When archived sessions exist (`.apm/archives/`), detects them and asks about their relevance before starting question rounds, using the `apm-archive-explorer` custom subagent to efficiently extract context from indicated archives. Produces an Understanding Summary for User review and approval.
 
 - **Work Breakdown** - Decomposes gathered context into three planning documents:
   - **Spec** - Project-specific design decisions and constraints defining what is being built
@@ -76,6 +76,8 @@ The Manager coordinates execution of the Plan. It operates throughout the projec
 - **Memory Maintenance** - Updates the Tracker after each Task Review to track task statuses (Ready, Active, Done, Waiting), agent assignments, active branches, and merge state. Appends stage summaries to the Index after Stage completion. Maintains working notes in the Tracker for ephemeral coordination context.
 
 - **Version Control Coordination** - Initializes and manages feature branches and worktrees for parallel task execution. Performs merge sweeps at Stage boundaries to ensure all work is integrated before advancing.
+
+- **Completion Recommendation** - After all Stages complete, recommends running `/apm-8-summarize-session` in a new session to summarize and optionally archive the completed session for future reference.
 
 The Manager operates through multiple Sessions via Handoff when context limits approach. Each Session continues from where the previous left off using Handoff Logs and the Tracker and Index.
 
@@ -114,6 +116,8 @@ Subagents are platform-native temporary agents spawned for isolated, focused wor
 - **Debug Subagent** - Isolates and resolves complex bugs. Expected access: full (edit, terminal). Spawned when debugging would require extensive context (reading many library files, analyzing complex error logs) that would pollute the Worker's session. Returns findings with solution or diagnostic results.
 
 - **Research Subagent** - Investigates knowledge gaps using current sources. Expected access: read-only, web. Spawned when research requires reading extensive documentation, exploring unfamiliar libraries, or gathering information from external sources. Returns findings with recommendations or answers.
+
+APM also ships custom agent configurations (e.g., `apm-archive-explorer` for archive exploration) that platforms load as predefined subagents. These are installed in the platform's agents directory alongside commands and skills.
 
 Subagents prevent context pollution in long-running Agent sessions by handling context-intensive work in disposable instances. Workers and Managers can spawn subagents when execution requires isolated investigation.
 

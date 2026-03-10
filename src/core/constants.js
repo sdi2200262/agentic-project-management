@@ -56,6 +56,11 @@ export const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 export const METADATA_FILE = '.apm/metadata.json';
 
 /**
+ * Archives directory path within .apm/.
+ */
+export const ARCHIVES_DIR = '.apm/archives';
+
+/**
  * Release manifest filename.
  */
 export const RELEASE_MANIFEST = 'apm-release.json';
