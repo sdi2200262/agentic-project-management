@@ -11,10 +11,10 @@ Accepts optional `[agent-id ...]` arguments. With arguments, checks those Worker
 
 **Procedure:**
 1. Determine scan scope:
-   - If `{ARGS}` provided → Resolve each agent-id per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. Check `.apm/bus/<agent-slug>/report.md` for each. Continue to step 3.
+   - If `{ARGS}` provided → Resolve each agent-id per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. Batch-read all targeted Report Buses in a single terminal invocation, e.g., `cat .apm/bus/<slug-1>/report.md .apm/bus/<slug-2>/report.md` (or platform equivalent). Continue to step 3.
    - If no argument → Continue to step 2.
 
-2. Scan Report Buses: read Report Buses for Workers with active dispatches. Before reading, list `.apm/bus/` directory contents and check file sizes - if any unexpected bus has content (beyond the actively dispatched Workers), include it in the scan and inform the User. If no buses have content → Inform User that no pending reports are available. Await next invocation. If one or more have content → Continue to step 3 for each.
+2. Scan Report Buses: scan and read all Report Buses in a single terminal invocation, e.g., `for f in .apm/bus/*/report.md; do [ -s "$f" ] && echo "=== $f ===" && cat "$f"; done` (or platform equivalent). This discovers non-empty buses, reads their content, and includes path markers for cross-referencing against active dispatches. If any unexpected bus has content (beyond the actively dispatched Workers), include it and inform the User. If no buses have content → Inform User that no pending reports are available. Await next invocation. If one or more have content → Continue to step 3 for each.
 
 3. Process report(s): for each Report Bus with content, process per `{GUIDE_PATH:task-review}` §3 Task Review Procedure.
 

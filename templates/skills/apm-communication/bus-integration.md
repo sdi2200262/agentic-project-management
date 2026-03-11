@@ -16,6 +16,11 @@ This guide explains how non-APM agents can interact with an APM session through 
 - Enable non-APM agents to participate in bus communication.
 - Provide clear setup and messaging protocols for external integration.
 
+### 1.2 Outputs
+
+- A bus directory in `.apm/bus/` with bus files for the non-APM agent.
+- Properly formatted bus messages for communication with APM-managed agents.
+
 ---
 
 ## 2. Creating a Bus Directory

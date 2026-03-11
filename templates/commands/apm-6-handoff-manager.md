@@ -27,7 +27,7 @@ Perform the following actions:
    - Coordination overview: Stages managed, Tasks reviewed, dispatch cycles completed.
    - Tracked Worker Handoffs (which Workers, from which Stage) - most critical for dependency context treatment.
    - If auto-compaction occurred during this instance, note it and describe which portions of working context are reconstructed rather than first-hand from the summary.
-   - VC state from the Tracker: active branches, worktrees, pending merges.
+   - VC state extracted from the Tracker in context: active branches, worktrees, pending merges.
    - User preferences and communication patterns.
    - Coordination insights, decisions made, approaches tried.
 

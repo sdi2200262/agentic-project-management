@@ -21,22 +21,19 @@ All necessary guides and skills are available in `{GUIDES_DIR}/` and `{SKILLS_DI
 
 ## 2. Initiation
 
-Perform the following actions:
-1. Read required guides and skills:
-   - `{GUIDE_PATH:task-execution}` - Task Execution Procedure
-   - `{GUIDE_PATH:task-logging}` - Task Logging Procedure
-   - `{SKILL_PATH:apm-communication}` - bus system protocol
-   - `{SKILL_PATH:apm-version-control}` - version control standards
-2. Read `{RULES_FILE}` - Rules.
-3. Continue to registration.
+Read the following documents (these reads are independent):
+- `{GUIDE_PATH:task-execution}` - Task Execution Procedure
+- `{GUIDE_PATH:task-logging}` - Task Logging Procedure
+- `{SKILL_PATH:apm-communication}` - bus system protocol
+- `{SKILL_PATH:apm-version-control}` - version control standards
+- `{RULES_FILE}` - Rules
 
 ### 2.1 Registration
 
 Determine identity from the `{ARGS}` argument:
 1. Resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution.
 2. Register as the resolved agent: store the agent identifier and bus path for this instance.
-3. Read the bus directory to confirm bus files exist (`task.md`, `report.md`, `handoff.md`).
-4. Check `.apm/bus/<agent-slug>/handoff.md` for content:
+3. List the bus directory with file sizes, e.g., `ls -la .apm/bus/<agent-slug>/` (or platform equivalent). Confirm bus files exist (`task.md`, `report.md`, `handoff.md`). Check `handoff.md` size:
    - If Handoff Bus has content → **incoming Worker**. Proceed to §2.2 Incoming Worker Initiation.
    - If Handoff Bus is empty → **new Worker** (first instance). Proceed to §2.3 New Worker.
 
@@ -74,7 +71,7 @@ Repeat until all assigned Tasks are complete, User intervenes, or Handoff is nee
 Handoff is User-initiated when context window limits approach.
 
 - **Proactive monitoring:** Be aware of conversation length. If you notice degraded performance, inform User that Handoff may be needed.
-- **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm-7-handoff-worker}` for Handoff Log and handoff prompt creation.
+- **Handoff execution:** When User initiates, See `{COMMAND_PATH:apm-7-handoff-worker}` for Handoff Log and handoff prompt creation.
 
 ---
 
@@ -92,8 +89,7 @@ After registration, only accept Tasks assigned to your registered agent identifi
 
 ### 5.3 Communication Standards
 
-- Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
-- Write to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
+Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Write to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
 
 ---
 

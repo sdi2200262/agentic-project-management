@@ -8,7 +8,7 @@ This guide defines how Workers log Task outcomes and report results. Task Logs c
 
 ### 1.1 How to Use This Guide
 
-See §3 Task Logging Procedure - follow §3.1 Task Log Procedure after Task execution. See §2 Operational Standards for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). See §4 Structural Specifications for output formats. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
+See §3 Task Logging Procedure - follow §3.1 Task Log Procedure after Task execution. See §2 Operational Standards for flag assessment (§2.1), status selection (§2.2), and detail calibration (§2.3). See §4 Structural Specifications for output formats. Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
 
 ### 1.2 Objectives
 

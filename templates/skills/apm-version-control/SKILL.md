@@ -40,7 +40,7 @@ The Manager detects existing repository state during first initialization. Detec
 
 **Detection checks:** Which directory is the working repository? (check the Spec for workspace structure - navigate there before other checks). Is git initialized? (if not, initialize and inform User). What is the current branch? (becomes base branch unless User specifies otherwise). Where is `.apm/` relative to repository root? (both paths recorded for worktree path construction). Is `.apm/worktrees/` in `.gitignore`? (if `.apm/` is inside the repository, add it if absent; if `.apm/` is outside the repository, no `.gitignore` modification needed).
 
-**Stale state recovery:** If leftover worktrees or branches from a prior instance exist (e.g., crash recovery), detect and clean during initialization - remove worktrees and delete orphaned feature branches.
+**Stale state recovery:** If leftover worktrees or branches from a prior instance exist (e.g., crash recovery), detect and clean during initialization. Run `git worktree list && git branch` in a single invocation for complete VC ground truth - all worktrees (including dangling) and all branches (including orphaned). Remove stale worktrees and delete orphaned feature branches.
 
 ### 2.2 Branch Standards
 
@@ -131,6 +131,8 @@ Execute after a successful merge. Perform the following actions:
 1. If a worktree exists for the merged branch: `git worktree remove .apm/worktrees/<branch-slug>`.
 2. Delete the merged feature branch: `git branch -d <branch-name>`.
 3. Verify clean state - no dangling worktrees or branches for completed Tasks.
+
+During Stage-end merge sweeps with multiple branches, batch all removals and deletions into a single terminal invocation, then verify once, e.g., `git worktree remove <path1> && git worktree remove <path2> && git branch -d <b1> && git branch -d <b2> && git worktree list && git branch`.
 
 ---
 
