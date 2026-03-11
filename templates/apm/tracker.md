@@ -27,4 +27,4 @@ title: <Project Name>
 
 ## Working Notes
 
-[Bulleted list. One item per note. Insert and remove as context evolves. Durable observations accumulate here until distilled into Memory Notes at Stage summary.]
+[Bulleted list. One item per note. Insert and remove as context evolves. Durable observations accumulate here until distilled into Memory notes at Stage summary.]

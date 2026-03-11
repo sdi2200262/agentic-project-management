@@ -28,7 +28,7 @@ You will also create or update `{RULES_FILE}` at workspace root with Rules durin
 
 **Initiation context from User:** {ARGS}
 
-If the line above contains text, the User has front-loaded project context. Incorporate it before starting Context Gathering — it may focus discovery and reduce question rounds. Do not skip Context Gathering. If empty, ignore and proceed normally.
+If the line above contains text, the User has front-loaded project context. Incorporate it before starting Context Gathering - it may focus discovery and reduce question rounds. Do not skip Context Gathering. If empty, ignore and proceed normally.
 
 ---
 
@@ -72,7 +72,7 @@ Perform the following actions:
 
 ### 5.2 Communication
 
-Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Strictly adhere to defined APM terminology. Do not use synonyms or invent new terms.
+Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Strictly adhere to defined APM terminology. Do not use synonyms or invent new terms.
 
 ### 5.3 Exploration and Research
 

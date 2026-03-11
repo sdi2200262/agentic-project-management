@@ -8,7 +8,7 @@ This guide defines the process for Context Gathering - gathering sufficient cont
 
 ### 1.1 How to Use This Guide
 
-See §3 Context Gathering Procedure - execute sequentially through all question rounds. See §2 Operational Standards when interpreting responses, assessing gaps, or deciding on exploration. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Round summaries and exploration context are visible to the User; internal categorization is not.
+See §3 Context Gathering Procedure - execute sequentially through all question rounds. See §2 Operational Standards when interpreting responses, assessing gaps, or deciding on exploration. Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Round summaries and exploration context are visible to the User; internal categorization is not.
 
 ### 1.2 Objectives
 
@@ -109,7 +109,7 @@ Before beginning question rounds, check for previous session archives.
    - If the User indicates none are relevant → Skip to §3.2 Round Iteration.
 4. For each indicated archive, {ARCHIVE_EXPLORER_GUIDANCE}. Integrate findings when the agent returns.
 5. Verify archived findings against the current codebase: {PLANNER_SUBAGENT_GUIDANCE} with targeted verification questions using the handles the archive explorer provided. Identify what still holds, what has changed, and what has been invalidated.
-6. Integrate verified context into question rounds as a baseline — focus subsequent questions on delta (what changed, what is new) rather than re-establishing what was already known.
+6. Integrate verified context into question rounds as a baseline - focus subsequent questions on delta (what changed, what is new) rather than re-establishing what was already known.
 
 ### 3.2 Round Iteration
 
@@ -206,7 +206,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 - Is there anything that's definitely in or out of scope?
 - Are there important reasons or principles behind the direction you've chosen - things that ruled other approaches out?
 
-**Round completion** → Before proceeding to §3.5, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
+**Round completion** → Before proceeding to §3.6 Finalize Understanding, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
 
 ### 3.6 Finalize Understanding
 

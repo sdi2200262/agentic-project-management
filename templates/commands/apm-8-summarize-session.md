@@ -5,17 +5,17 @@ description: Summarize and optionally archive an APM session.
 
 # APM {VERSION} - Summarize Session Command
 
-This command summarizes the current APM session and optionally archives it. You are a standalone agent — not a Planner, Manager, or Worker. If you are one of those roles, concisely decline and take no action.
+This command summarizes the current APM session and optionally archives it. You are a standalone agent - not a Planner, Manager, or Worker. If you are one of those roles, concisely decline and take no action.
 
 **Procedure:**
-1. Read the following artifacts to build a complete picture of the session:
-   - `.apm/spec.md` — design decisions and constraints
-   - `.apm/plan.md` — Stages, Tasks, agent assignments
-   - `.apm/tracker.md` — task statuses, agent states, working notes
-   - `.apm/memory/index.md` — memory notes and stage summaries
-2. For each Stage, review the stage summary in the Index. Where verification is needed, {PLANNER_SUBAGENT_GUIDANCE} to confirm key deliverables exist and match expectations.
-3. Assess the current codebase state — identify how deliverables relate to the `.apm/` artifacts (Tasks reflected in code, pending work visible in file state, gaps between plan and implementation).
-4. Write `.apm/session-summary.md` per the session summary structure below. The summary is a point-in-time snapshot — state this explicitly.
+1. Read the following artifacts (these reads are independent) to build a complete picture of the session:
+   - `.apm/spec.md` - design decisions and constraints
+   - `.apm/plan.md` - Stages, Tasks, agent assignments
+   - `.apm/tracker.md` - Task statuses, agent states, working notes
+   - `.apm/memory/index.md` - Memory notes and Stage summaries
+2. Extract per-Stage summaries from the Index loaded in step 1. Where deliverable verification is needed, batch all checks into a single {SUBAGENT_GUIDANCE} invocation with a consolidated checklist across all Stages rather than per-Stage spawning.
+3. Assess the current codebase state - identify how deliverables relate to the `.apm/` artifacts (Tasks reflected in code, pending work visible in file state, gaps between plan and implementation).
+4. Write `.apm/session-summary.md` per the session summary structure below. The summary is a point-in-time snapshot - state this explicitly.
 5. Present the summary to the User.
 6. Ask: "Would you like me to archive this session? If so, does this session continue from a previous one?"
    - If the User declines → Done.
@@ -54,13 +54,13 @@ outcome: <Success | Partial | Incomplete>
 
 *Body sections* (order as listed):
 
-- *Project Scope* — What was being built and why, from the Spec.
-- *Stages and Outcomes* — Per-Stage summary: objective, Tasks completed, notable results.
-- *Key Deliverables* — Primary outputs with file paths or descriptions.
-- *Codebase State* — How deliverables relate to `.apm/` artifacts: Tasks reflected in code, pending work, gaps between plan and implementation.
-- *Notable Findings* — Patterns, issues, or insights from memory notes and working notes.
-- *Known Issues* — Unresolved problems, open questions, or caveats.
-- *Snapshot Notice* — "This summary reflects the session state as of `<date>`. The codebase may have diverged since this summary was created."
+- *Project Scope:* What was being built and why, from the Spec.
+- *Stages and Outcomes* → Per-Stage summary: objective, Tasks completed, notable results.
+- *Key Deliverables:* Primary outputs with file paths or descriptions.
+- *Codebase State* → How deliverables relate to `.apm/` artifacts: Tasks reflected in code, pending work, gaps between plan and implementation.
+- *Notable Findings:* Patterns, issues, or insights from Memory notes and working notes.
+- *Known Issues:* Unresolved problems, open questions, or caveats.
+- *Snapshot Notice:* "This summary reflects the session state as of `<date>`. The codebase may have diverged since this summary was created."
 
 **Archive index format:**
 
@@ -80,7 +80,7 @@ outcome: <Success | Partial | Incomplete>
 - *Scope:* brief project description (from session summary or Spec title).
 - *Stages:* number of completed Stages.
 - *Tasks:* total Tasks.
-- *Continues:* previous archive name if continuation, otherwise `—`.
+- *Continues:* previous archive name if continuation, otherwise `-`.
 
 Newest entries go at the top of the table.
 

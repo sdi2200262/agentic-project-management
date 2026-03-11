@@ -8,7 +8,7 @@ This guide defines the process for Work Breakdown, which transforms gathered con
 
 ### 1.1 How to Use This Guide
 
-See §3 Work Breakdown Procedure - execute sequentially. See §2 Operational Standards for decomposition decisions, specification reasoning, plan assessment, and standards extraction. Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
+See §3 Work Breakdown Procedure - execute sequentially. See §2 Operational Standards for decomposition decisions, specification reasoning, plan assessment, and standards extraction. Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
 
 ### 1.2 Objectives
 

@@ -1,28 +1,22 @@
 ---
 command_name: recover
-description: Recover an APM Manager's or Worker's procedural instructions.
+description: Recover an APM agent's working context after auto-compaction.
 ---
 
 # APM {VERSION} - Recover Command
 
 This command reconstructs working context after platform auto-compaction. It applies to the Manager and Workers only. If you are a Planner or non-APM agent, concisely decline and take no action.
 
-Accepts a required `[role]` argument: `manager` or an agent identifier (e.g., `frontend-agent`).
+Accepts an optional `[role]` argument: `manager` or a Worker agent identifier (e.g., `frontend-agent`).
 
 **Procedure:**
-1. Determine role from `{ARGS}`:
-   - If `manager` → Manager scope. Continue to step 2.
-   - If any other value → Worker scope. Resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. Continue to step 2.
-   - If no argument → Infer role from the platform's compaction summary. If uncertain, ask the User.
-2. Re-read procedural documents:
-   - **Manager:** Read `{COMMAND_PATH:apm-2-initiate-manager}` and all documents listed in its §2 step 1 (planning documents) and step 2 (guides and skills).
-   - **Worker:** Read `{COMMAND_PATH:apm-3-initiate-worker}` and all documents listed in its §2 step 1 (guides and skills) and step 2 (Rules).
-3. Read role-specific state artifacts:
-   - **Manager:** `.apm/tracker.md`, `.apm/memory/index.md`, `.apm/plan.md`, `.apm/spec.md`, and `{RULES_FILE}`. Check `.apm/bus/` for active Workers and pending reports.
-   - **Worker:** Task Bus at `.apm/bus/<agent-slug>/task.md`, Task Logs in the current Stage directory, and `{RULES_FILE}`.
-4. Present a concise summary of reconstructed context to the User: role, current project state, what was in progress, and readiness to continue.
-5. Note the recovery event: Manager adds a working note to the Tracker; Worker includes it in the next Task Report. When eventually performing Handoff, note which portions of working context are reconstructed rather than first-hand.
-6. Continue with duties.
+1. Determine role from `{ARGS}`: `manager` for the Manager, any other value for a Worker resolved per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. If no argument, infer from the platform's compaction summary or ask the User.
+2. Re-read your initiation command and all documents it references:
+   - Manager → `{COMMAND_PATH:apm-2-initiate-manager}`
+   - Worker → `{COMMAND_PATH:apm-3-initiate-worker}`
+   Follow the document loading instructions to rebuild procedural knowledge and project state. You are recovering, not initializing.
+3. Note the recovery event: Manager adds a working note to the Tracker; Worker includes it in the next Task Report. When eventually performing Handoff, note which portions of working context are reconstructed rather than first-hand.
+4. Continue with duties.
 
 ---
 
