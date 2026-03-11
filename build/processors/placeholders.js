@@ -25,6 +25,7 @@ import path from 'path';
  * - {PLANNER_SUBAGENT_GUIDANCE}: Platform-specific subagent exploration guidance for Planner
  * - {MANAGER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Manager investigation
  * - {WORKER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Worker context integration
+ * - {SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for non-role agents (standalone commands)
  * - {ARCHIVE_EXPLORER_GUIDANCE}: Platform-specific guidance for spawning the apm-archive-explorer custom agent
  * - {CONTEXT_ATTACH_SYNTAX}: Platform-specific instructions for how Users reference files in chat
  *
@@ -103,6 +104,10 @@ export function replacePlaceholders(content, context) {
   // Replace WORKER_SUBAGENT_GUIDANCE placeholder
   const workerGuidanceText = `For complex cross-agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`.`;
   replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
+
+  // Replace SUBAGENT_GUIDANCE placeholder (generic, for non-role agents)
+  const subagentGuidanceText = `Use the ${subagentGuidance.explorerName} subagent: \`${subagentGuidance.toolSyntax}\`.`;
+  replaced = replaced.replace(/{SUBAGENT_GUIDANCE}/g, subagentGuidanceText);
 
   // Replace ARCHIVE_EXPLORER_GUIDANCE placeholder
   const archiveExplorerPath = path.join(directories.agents, `apm-archive-explorer${agentExt}`);

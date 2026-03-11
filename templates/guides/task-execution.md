@@ -8,7 +8,7 @@ This guide defines how Workers execute Tasks assigned by the Manager via Task Pr
 
 ### 1.1 How to Use This Guide
 
-See §3 Task Execution Procedure - follow subsections sequentially from Task Prompt receipt through completion. See §2 Operational Standards when reasoning about iteration, pauses, failures, or complexity. Communication and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
+See §3 Task Execution Procedure - follow subsections sequentially from Task Prompt receipt through completion. See §2 Operational Standards when reasoning about iteration, pauses, failures, or complexity. Communication and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
 
 ### 1.2 Objectives
 
@@ -61,11 +61,7 @@ When validation fails, the Worker enters a correction loop - correct, re-execute
 
 ### 2.4 Failure Status Standards
 
-- *Success:* Objective achieved, all validation passed. `failure_point: null`
-- *Partial:* Progress made but incomplete; needs guidance. `failure_point: <description>`
-- *Failed:* Objective not achieved; Worker attempted but could not resolve the issue. `failure_point: <description>`
-
-Partial means "I need guidance to continue." Failed means "I could not achieve the objective." When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
+Outcome statuses and `failure_point` values per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards. When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
 
 ### 2.5 User Collaboration Standards
 

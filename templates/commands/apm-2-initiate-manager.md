@@ -22,19 +22,18 @@ All necessary guides and skills are available in `{GUIDES_DIR}/` and `{SKILLS_DI
 ## 2. Initiation
 
 Perform the following actions:
-1. Read the following documents:
+1. Read the following documents (these reads are independent):
    - `.apm/tracker.md` - project state
-   - `.apm/memory/index.md` - memory notes and stage summaries
+   - `.apm/memory/index.md` - Memory notes and Stage summaries
    - `.apm/plan.md` - project structure, Stages, Tasks, agents
    - `.apm/spec.md` - design decisions and constraints
    - `{RULES_FILE}` - Rules
-   If the Spec references external User documents as authoritative sources, read those documents as well - the Manager extracts content from them into Task Prompts.
-2. Read all required guides and skills:
    - `{GUIDE_PATH:task-assignment}` - Task Prompt construction
    - `{GUIDE_PATH:task-review}` - Task Review, review outcomes, planning document modifications
    - `{SKILL_PATH:apm-communication}` - bus system protocol
    - `{SKILL_PATH:apm-version-control}` - version control coordination
-3. Determine your role:
+   If the Spec references external User documents as authoritative sources, read those documents as well - the Manager extracts content from them into Task Prompts.
+2. Determine your role:
    - Check if the Tracker is in template state (contains `<Project Name>` placeholder).
    - If template state → **Manager 1** (first instance). Proceed to §2.1 First Manager Initiation.
    - If populated → **incoming Manager** (instance N). Proceed to §2.2 Incoming Manager Initiation.
@@ -43,15 +42,15 @@ Perform the following actions:
 
 Perform the following actions:
 1. Update the Tracker and Index: replace `<Project Name>` with actual project name.
-2. Initialize version control per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization. Before running any git commands, identify the working repository directory from the Spec - the workspace root and the repository may differ.
-3. Populate the Tracker: task tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (Instance 1).
+2. Check whether version control is already initialized; if not, initialize per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization. Before running any git commands, identify the working repository directory from the Spec - the workspace root and the repository may differ.
+3. Populate the Tracker: task tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (uninitialized).
 4. Present a concise understanding summary: project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure and Task count.
 5. Request User approval to proceed. If corrections needed, integrate feedback and re-request. When approved, generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure and proceed to §3 Continuous Coordination.
 
 ### 2.2 Incoming Manager Initiation
 
 Perform the following actions:
-1. Present current state from the Tracker and Index: completed Stages, current Stage progress, noted issues, working notes, memory notes.
+1. Extract current state from the Tracker and Index already in context: completed Stages, current Stage progress, noted issues, working notes, Memory notes. Present to User.
 2. Read handoff prompt from `.apm/bus/manager/handoff.md`.
 3. Process handoff prompt: extract instance number, read Handoff Log and relevant Task Logs as instructed.
 4. Clear the Handoff Bus after processing.
@@ -75,14 +74,14 @@ After each review, reassess readiness and continue to dispatch in the same turn 
 
 ## 4. Stage Completion
 
-When all Tasks in a Stage are complete, create a stage summary per `{GUIDE_PATH:task-review}` §3.5 before dispatching the next Stage. If all Stages complete → §5 Project Completion.
+When all Tasks in a Stage are complete, create a Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation before dispatching the next Stage. If all Stages complete → §5 Project Completion.
 
 ---
 
 ## 5. Project Completion
 
 When all Stages are complete:
-1. Review all stage summaries for overall project outcome.
+1. Review all Stage summaries for overall project outcome.
 2. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
 3. Recommend running `/apm-8-summarize-session` in a new chat to summarize the completed APM session and optionally archive it for future reference.
 
@@ -93,7 +92,7 @@ When all Stages are complete:
 Handoff is User-initiated when context window limits approach.
 
 - **Proactive monitoring:** Be aware of conversation length. If you notice degraded performance, inform User that Handoff may be needed.
-- **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm-6-handoff-manager}` for Handoff Log and handoff prompt creation.
+- **Handoff execution:** When User initiates, See `{COMMAND_PATH:apm-6-handoff-manager}` for Handoff Log and handoff prompt creation.
 
 ---
 
@@ -104,7 +103,7 @@ Handoff is User-initiated when context window limits approach.
 - **Primary role:** Coordination and orchestration - not implementation.
 - **Default behavior:** Review Task Logs rather than raw source code, unless investigation requires it.
 - **User override:** If User explicitly requests execution work, comply.
-- **Authority thresholds:** See `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
+**Authority thresholds:** See `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
 
 ### 7.2 Worker Awareness
 
@@ -116,8 +115,7 @@ Workers are defined in the Plan. Each Worker operates in a separate context scop
 
 ### 7.3 Communication Standards
 
-- Communication with the User and visible reasoning follow `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication.
-- Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery.
+Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery.
 
 ---
 

@@ -91,11 +91,11 @@ When `/apm-4-check-tasks` or `/apm-5-check-reports` accept an `[agent-id]` argum
 ### 4.3 Edge Case Standards
 
 - *Empty bus:* When an agent reads a bus file and finds it empty, inform the User that no message is present and await direction.
-- *Wrong file referenced:* When a User references a bus file intended for a different agent, the receiving agent detects the mismatch per §4.1 and rejects it.
+- *Wrong file referenced:* When a User references a bus file intended for a different agent, the receiving agent detects the mismatch per §4.1 Bus Identity Standards and rejects it.
 
 ### 4.4 Batch Delivery Standards
 
-When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. The Task Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters per §4.14 Batch Envelope Format. Each Task Prompt retains its full standalone structure. If a Worker encounters a Failed Task during batch execution, they stop the batch and report partial completion.
+When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. The Task Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters per §4.14 Batch Envelope Format. Each Task Prompt retains its full standalone structure. Batch execution behavior (sequential execution, fail-fast on Failed) per `{GUIDE_PATH:task-execution}` §2.7 Batch Rules.
 
 **Procedure:**
 1. Bus Initialization (Planner, end of Planning Phase).
