@@ -132,9 +132,9 @@ export function banner() {
     '                        ' + colorA('██║  ██║') + colorP('██║     ') + colorM('██║ ╚═╝ ██║'),
     '                        ' + colorA('╚═╝  ╚═╝') + colorP('╚═╝     ') + colorM('╚═╝     ╚═╝'),
     '',
-    chalk.gray('Manage complex projects with a team of AI assistants, smoothly and efficiently.'),
+    ' ' + chalk.gray('Manage complex projects with a team of AI assistants, smoothly and efficiently.'),
     '',
-    chalk.gray('─'.repeat(80)),
+    ' ' + chalk.gray('─'.repeat(80)),
     ''
   ];
 

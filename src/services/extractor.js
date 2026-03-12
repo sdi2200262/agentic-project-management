@@ -29,11 +29,13 @@ export async function downloadBundle(url) {
  * @param {string} destPath - Destination directory.
  * @param {Object} [options={}] - Extraction options.
  * @param {boolean} [options.skipApm=false] - Skip .apm/ directory during extraction.
- * @returns {Promise<void>}
+ * @param {boolean} [options.onlyApm=false] - Extract only .apm/ directory.
+ * @returns {Promise<string[]>} Array of written file paths (relative to destPath).
  * @throws {CLIError} On extraction failure.
  */
 export async function extractBundle(zipBuffer, destPath, options = {}) {
-  const { skipApm = false } = options;
+  const { skipApm = false, onlyApm = false } = options;
+  const writtenFiles = [];
 
   try {
     const zip = new AdmZip(zipBuffer);
@@ -44,21 +46,22 @@ export async function extractBundle(zipBuffer, destPath, options = {}) {
 
       const entryPath = entry.entryName;
 
-      // Skip .apm/ directory if requested
-      if (skipApm && entryPath.startsWith('.apm/')) {
-        continue;
-      }
+      // Filter by extraction mode
+      if (skipApm && entryPath.startsWith('.apm/')) continue;
+      if (onlyApm && !entryPath.startsWith('.apm/')) continue;
 
       // Never overwrite archives during extraction
-      if (entryPath.startsWith('.apm/archives/')) {
-        continue;
-      }
+      if (entryPath.startsWith('.apm/archives/')) continue;
 
       const fullPath = path.join(destPath, entryPath);
       await fs.ensureDir(path.dirname(fullPath));
       await fs.writeFile(fullPath, entry.getData());
+      writtenFiles.push(entryPath);
     }
+
+    return writtenFiles;
   } catch (err) {
+    if (err instanceof CLIError) throw err;
     throw CLIError.extractionFailed('bundle', err.message);
   }
 }
@@ -69,11 +72,11 @@ export async function extractBundle(zipBuffer, destPath, options = {}) {
  * @param {string} url - Download URL.
  * @param {string} destPath - Destination directory.
  * @param {Object} [options={}] - Extraction options.
- * @returns {Promise<void>}
+ * @returns {Promise<string[]>} Array of written file paths.
  */
 export async function downloadAndExtract(url, destPath, options = {}) {
   const buffer = await downloadBundle(url);
-  await extractBundle(buffer, destPath, options);
+  return extractBundle(buffer, destPath, options);
 }
 
 export default {

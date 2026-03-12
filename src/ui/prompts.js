@@ -6,9 +6,32 @@
  * @module src/ui/prompts
  */
 
-import { select, input, confirm } from '@inquirer/prompts';
+import { select, input, confirm, Separator } from '@inquirer/prompts';
 import chalk from 'chalk';
 import logger from './logger.js';
+
+/**
+ * Shared theme for select prompts — disables default hint.
+ */
+const SELECT_THEME = { helpMode: 'never' };
+
+/**
+ * Number of extra lines appended by withSelectHint().
+ */
+const HINT_LINES = 4;
+
+/**
+ * Appends a separator and navigation hint to a choices array.
+ */
+function withSelectHint(choices) {
+  return [
+    ...choices,
+    new Separator(' '),
+    new Separator(chalk.gray('─'.repeat(80))),
+    new Separator(' '),
+    new Separator(chalk.dim('  ↑↓ navigate • Enter select • Ctrl+C cancel'))
+  ];
+}
 
 /**
  * Prompts user to select an assistant from a list.
@@ -28,8 +51,10 @@ export async function selectAssistant(assistants) {
 
   return select({
     message: 'Select an assistant:',
-    choices,
-    clearPromptOnDone: true
+    choices: withSelectHint(choices),
+    pageSize: choices.length + HINT_LINES,
+    clearPromptOnDone: true,
+    theme: SELECT_THEME
   });
 }
 
@@ -50,8 +75,10 @@ export async function selectRelease(releases) {
 
   return select({
     message: 'Select a release:',
-    choices,
-    clearPromptOnDone: true
+    choices: withSelectHint(choices),
+    pageSize: choices.length + HINT_LINES,
+    clearPromptOnDone: true,
+    theme: SELECT_THEME
   });
 }
 
@@ -74,8 +101,10 @@ export async function selectCustomRepo(savedRepos) {
 
   return select({
     message: 'Select a repository:',
-    choices,
-    clearPromptOnDone: true
+    choices: withSelectHint(choices),
+    pageSize: choices.length + HINT_LINES,
+    clearPromptOnDone: true,
+    theme: SELECT_THEME
   });
 }
 
@@ -85,6 +114,7 @@ export async function selectCustomRepo(savedRepos) {
  * @returns {Promise<string>} Repository in owner/repo format.
  */
 export async function inputRepository() {
+  logger.clearAndBanner();
   return input({
     message: 'Enter repository (owner/repo):',
     validate: value => {
@@ -104,26 +134,10 @@ export async function inputRepository() {
  * @returns {Promise<boolean>} User's confirmation.
  */
 export async function confirmAction(message, defaultValue = false) {
+  logger.clearAndBanner();
   return confirm({
     message,
     default: defaultValue
-  });
-}
-
-/**
- * Prompts user to select update source for custom installations.
- *
- * @returns {Promise<string>} Selected source ('official' or 'custom').
- */
-export async function selectUpdateSource() {
-  logger.clearAndBanner();
-  return select({
-    message: 'Update from:',
-    choices: [
-      { name: 'Official APM releases', value: 'official' },
-      { name: 'Current custom repository', value: 'custom' }
-    ],
-    clearPromptOnDone: true
   });
 }
 
@@ -134,6 +148,7 @@ export async function selectUpdateSource() {
  * @returns {Promise<string|null>} Selected archive name or null if skipped.
  */
 export async function selectArchive(archives) {
+  logger.clearAndBanner();
   const choices = [
     { name: 'No continuation (fresh session)', value: null },
     ...archives.map(a => ({
@@ -144,8 +159,10 @@ export async function selectArchive(archives) {
 
   return select({
     message: 'Does this session continue from a previous archive?',
-    choices,
-    clearPromptOnDone: true
+    choices: withSelectHint(choices),
+    pageSize: choices.length + HINT_LINES,
+    clearPromptOnDone: true,
+    theme: SELECT_THEME
   });
 }
 
@@ -156,15 +173,59 @@ export async function selectArchive(archives) {
  */
 export async function confirmSecurityDisclaimer() {
   logger.clearAndBanner();
-  console.log(chalk.yellow.bold('--- Security Disclaimer ---'));
-  console.log('');
-  console.log(chalk.white('Custom repositories are ') + chalk.red.bold('not verified') + chalk.white(' by APM.'));
-  console.log(chalk.white('Only install from sources you ') + chalk.green.bold('trust') + chalk.white('.'));
-  console.log('');
+  logger.warn('Security Disclaimer');
+  logger.blank();
+  logger.warn('Custom repositories are NOT verified by APM.');
+  logger.warn('Only install from sources you trust.');
+  logger.blank();
 
   return confirm({
     message: 'Do you understand and accept the risks?',
     default: false
+  });
+}
+
+/**
+ * Confirms a destructive action by listing what will happen.
+ *
+ * @param {string[]} actions - List of actions that will be performed.
+ * @param {string} [confirmMessage='Proceed?'] - Confirmation prompt message.
+ * @returns {Promise<boolean>} User's confirmation.
+ */
+export async function confirmDestructiveAction(actions, confirmMessage = 'Proceed?') {
+  logger.clearAndBanner();
+  console.log(chalk.yellow.bold('This will:'));
+  for (const action of actions) {
+    console.log(chalk.yellow(`  \u2022 ${action}`));
+  }
+  console.log('');
+
+  return confirm({
+    message: confirmMessage,
+    default: false
+  });
+}
+
+/**
+ * Generic select prompt wrapper.
+ *
+ * @param {Object} options - Prompt options.
+ * @param {string} options.message - Prompt message.
+ * @param {Object[]} options.choices - Array of { name, value } choices.
+ * @param {boolean} [options.clearScreen=true] - Whether to clear screen first.
+ * @returns {Promise<*>} Selected value.
+ */
+export async function selectPrompt({ message, choices, clearScreen = true }) {
+  if (clearScreen) {
+    logger.clearAndBanner();
+  }
+
+  return select({
+    message,
+    choices: withSelectHint(choices),
+    pageSize: choices.length + HINT_LINES,
+    clearPromptOnDone: true,
+    theme: SELECT_THEME
   });
 }
 
@@ -175,6 +236,7 @@ export default {
   selectArchive,
   inputRepository,
   confirmAction,
-  selectUpdateSource,
-  confirmSecurityDisclaimer
+  confirmSecurityDisclaimer,
+  confirmDestructiveAction,
+  selectPrompt
 };

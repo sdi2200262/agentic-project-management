@@ -2,54 +2,45 @@
  * Init Command Module
  *
  * Handles 'apm init' command for official installation.
+ * Fresh installs only — shows info and exits for existing installations.
  *
  * @module src/commands/init
  */
 
-import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, ARCHIVES_DIR } from '../core/constants.js';
+import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
-import { createMetadata, writeMetadata, isInitialized, readMetadata } from '../core/metadata.js';
+import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
 import { fetchOfficialReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { countArchives } from '../services/archive.js';
-import { selectAssistant, confirmAction } from '../ui/prompts.js';
+import { selectAssistant } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
-import path from 'path';
 
 /**
  * Executes the init command.
  *
  * @param {Object} [options={}] - Command options.
  * @param {string} [options.tag] - Specific release tag to install.
- * @param {string} [options.assistant] - Assistant ID to install.
- * @param {boolean} [options.force] - Skip confirmation prompt.
+ * @param {string[]} [options.assistant] - Assistant ID(s) to install.
  * @returns {Promise<void>}
  */
 export async function initCommand(options = {}) {
-  const { tag, assistant: assistantArg, force = false } = options;
+  const { tag, assistant: assistantArgs } = options;
 
   logger.clearAndBanner();
 
-  // Check if already initialized
-  if (!force && await isInitialized()) {
-    const archiveCount = await countArchives(path.join(process.cwd(), ARCHIVES_DIR));
-    if (archiveCount > 0) {
-      logger.warn(`APM has already been initialized here (${archiveCount} archived session(s) — archives will be preserved).`);
-    } else {
-      logger.warn('APM has already been initialized here.');
-    }
-    const proceed = await confirmAction('Re-initialize?');
-    if (!proceed) {
-      logger.info('Aborted.');
-      return;
-    }
+  // Fresh only — show info for existing installations
+  const existing = await readMetadata();
+  if (existing) {
+    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${existing.assistants.length} assistant(s)).`);
+    logger.blank();
+    logger.info('Use "apm add" to add assistants, "apm update" to update, or "apm archive" to start fresh.');
+    return;
   }
 
   logger.info('Fetching releases from official repository...');
 
   // Fetch and filter releases
   const releases = await fetchOfficialReleases();
-
   if (!releases.length) {
     throw CLIError.releaseNotFound(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`);
   }
@@ -66,8 +57,12 @@ export async function initCommand(options = {}) {
     release = getLatestRelease(releases);
     if (!release) {
       logger.error(`No stable releases found for CLI v${CLI_MAJOR_VERSION}.x`);
-      const availableTags = releases.map(r => r.tag_name).slice(0, 5);
-      logger.info(`Available pre-release versions: ${availableTags.join(', ')}`);
+      logger.blank();
+      logger.info('Available pre-release versions:');
+      for (const r of releases) {
+        logger.info(`  ${r.tag_name}`, { indent: true });
+      }
+      logger.blank();
       logger.info('To install a pre-release, use: apm init --tag <tag>');
       return;
     }
@@ -79,82 +74,75 @@ export async function initCommand(options = {}) {
   const manifest = await fetchReleaseManifest(release);
   logger.info(`Found ${manifest.assistants.length} assistant(s)`);
 
-  // Select assistant
-  let assistantId;
-  let hadInteractivePrompt = false;
-  if (assistantArg) {
-    const found = manifest.assistants.find(a => a.id === assistantArg);
-    if (!found) {
-      const available = manifest.assistants.map(a => a.id).join(', ');
-      throw CLIError.releaseNotFound(`Assistant '${assistantArg}' not found. Available: ${available}`);
+  // Determine assistants to install
+  const assistantList = assistantArgs && assistantArgs.length > 0 ? assistantArgs : null;
+  let assistantIds;
+
+  if (assistantList) {
+    // Validate all requested assistants
+    assistantIds = [];
+    for (const arg of assistantList) {
+      const found = manifest.assistants.find(a => a.id === arg);
+      if (!found) {
+        const available = manifest.assistants.map(a => a.id).join(', ');
+        logger.error(`Assistant '${arg}' not found. Available: ${available}`);
+        continue;
+      }
+      assistantIds.push(arg);
     }
-    assistantId = assistantArg;
-    logger.info(`Using assistant: ${found.name}`);
+    if (!assistantIds.length) {
+      return;
+    }
+    logger.info(`Installing: ${assistantIds.join(', ')}`);
   } else {
-    hadInteractivePrompt = true;
-    assistantId = await selectAssistant(manifest.assistants);
-  }
-  const assistant = manifest.assistants.find(a => a.id === assistantId);
+    const selected = await selectAssistant(manifest.assistants);
+    assistantIds = [selected];
 
-  // Find bundle asset for new assistant
-  const bundleAsset = findBundleAsset(release, assistant.bundle);
-
-  if (!bundleAsset) {
-    throw CLIError.bundleNotFound(assistant.bundle, release.tag_name);
-  }
-
-  // Check for existing installation to update existing assistants
-  const existingMetadata = await readMetadata();
-  const existingAssistants = existingMetadata?.assistants || [];
-
-  // Combine assistants (new + existing, avoiding duplicates)
-  const allAssistantIds = [...new Set([assistantId, ...existingAssistants])];
-
-  // Clear and show final progress (only if we had interactive prompts)
-  if (hadInteractivePrompt) {
+    const assistant = manifest.assistants.find(a => a.id === selected);
     logger.clearAndBanner();
     logger.info(`Release: ${release.tag_name}`);
     logger.info(`Assistant: ${assistant.name}`);
-    if (existingAssistants.length > 0 && !existingAssistants.includes(assistantId)) {
-      logger.info(`Updating existing: ${existingAssistants.join(', ')}`);
-    }
     logger.blank();
   }
 
-  // Download and update all assistants to the same release version
-  let apmExtracted = await isInitialized();
-  for (const aid of allAssistantIds) {
-    const assistantInfo = manifest.assistants.find(a => a.id === aid);
-    if (!assistantInfo) {
-      logger.warn(`Assistant '${aid}' not found in release, skipping`);
+  // Download and extract each assistant
+  const installedFiles = {};
+  let apmExtracted = false;
+
+  for (const id of assistantIds) {
+    const assistant = manifest.assistants.find(a => a.id === id);
+    const bundleAsset = findBundleAsset(release, assistant.bundle);
+
+    if (!bundleAsset) {
+      logger.error(`Bundle '${assistant.bundle}' not found in release, skipping.`);
       continue;
     }
 
-    const asset = findBundleAsset(release, assistantInfo.bundle);
-    if (!asset) {
-      logger.warn(`Bundle '${assistantInfo.bundle}' not found in release, skipping`);
-      continue;
-    }
-
-    const isNew = aid === assistantId;
-    logger.info(`${isNew ? 'Downloading' : 'Updating'} ${assistantInfo.bundle}...`);
-    await downloadAndExtract(asset.browser_download_url, process.cwd(), { skipApm: apmExtracted });
-    apmExtracted = true; // After first extraction, skip .apm/ for subsequent ones
-    logger.success(`${isNew ? 'Installed' : 'Updated'} ${assistantInfo.name}`);
+    logger.info(`Downloading ${assistant.bundle}...`);
+    const writtenFiles = await downloadAndExtract(
+      bundleAsset.browser_download_url,
+      process.cwd(),
+      { skipApm: apmExtracted }
+    );
+    // Track only assistant files, not .apm/ infrastructure
+    installedFiles[id] = writtenFiles.filter(f => !f.startsWith('.apm/'));
+    apmExtracted = true;
+    logger.success(`Installed ${assistant.name}`);
   }
 
-  // Write metadata with all assistants
+  // Write metadata
   const metadata = createMetadata({
     source: 'official',
     repository: `${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`,
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION,
-    assistants: allAssistantIds
+    assistants: assistantIds,
+    installedFiles
   });
   await writeMetadata(metadata);
 
-  logger.success(`APM set up with ${allAssistantIds.length} assistant(s)!`);
-  logger.info('Run "apm update" to check for updates.');
+  logger.success('APM initialized!');
+  logger.info('Run "apm add" to add more assistants, or "apm update" to check for updates.');
 }
 
 export default initCommand;
