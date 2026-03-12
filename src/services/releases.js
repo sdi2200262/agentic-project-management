@@ -16,17 +16,31 @@ import { validateReleaseManifest } from '../schemas/release.js';
  * Supports pre-release suffixes (e.g., 'v1.0.0-test-1').
  *
  * @param {string} tag - Version tag (e.g., 'v1.2.3' or 'v1.2.3-beta-1').
- * @returns {Object|null} Parsed version { major, minor, patch, prerelease } or null.
+ * @returns {Object|null} Parsed version or null.
  */
-function parseVersion(tag) {
+export function parseVersion(tag) {
   const match = tag.match(/^v?(\d+)\.(\d+)\.(\d+)(?:-(.+))?$/);
   if (!match) return null;
+
+  let prereleaseLabel = null;
+  let prereleaseNum = null;
+
+  if (match[4]) {
+    const prMatch = match[4].match(/^(.+?)-(\d+)$/);
+    if (prMatch) {
+      prereleaseLabel = prMatch[1];
+      prereleaseNum = parseInt(prMatch[2], 10);
+    } else {
+      prereleaseLabel = match[4];
+    }
+  }
 
   return {
     major: parseInt(match[1], 10),
     minor: parseInt(match[2], 10),
     patch: parseInt(match[3], 10),
-    prerelease: match[4] || null
+    prereleaseLabel,
+    prereleaseNum
   };
 }
 
@@ -36,9 +50,9 @@ function parseVersion(tag) {
  * @param {Object} release - Release object from GitHub API.
  * @returns {boolean} True if stable release.
  */
-function isStableRelease(release) {
+export function isStableRelease(release) {
   const version = parseVersion(release.tag_name);
-  return version && !version.prerelease;
+  return version && !version.prereleaseLabel;
 }
 
 /**
@@ -50,6 +64,18 @@ function isStableRelease(release) {
 export async function fetchReleases(repo) {
   const path = `/repos/${repo.owner}/${repo.repo}/releases`;
   return fetchJSON(path);
+}
+
+/**
+ * Fetches a single release by tag from a repository.
+ *
+ * @param {string} repoString - Repository in 'owner/repo' format.
+ * @param {string} tag - Release tag name.
+ * @returns {Promise<Object>} Release object.
+ */
+export async function fetchReleaseByTag(repoString, tag) {
+  const [owner, repo] = repoString.split('/');
+  return fetchJSON(`/repos/${owner}/${repo}/releases/tags/${tag}`);
 }
 
 /**
@@ -159,7 +185,10 @@ export async function fetchCustomReleases(repoString) {
 }
 
 export default {
+  parseVersion,
+  isStableRelease,
   fetchReleases,
+  fetchReleaseByTag,
   filterByMajorVersion,
   getLatestRelease,
   fetchReleaseManifest,

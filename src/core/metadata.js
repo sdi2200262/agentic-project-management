@@ -78,6 +78,16 @@ export async function getInstalledAssistants(cwd = process.cwd()) {
 }
 
 /**
+ * Gets the installed files map from metadata.
+ *
+ * @param {Object} metadata - Metadata object.
+ * @returns {Object} Map of assistantId to file paths.
+ */
+export function getInstalledFiles(metadata) {
+  return metadata?.installedFiles || {};
+}
+
+/**
  * Creates initial metadata for a new installation.
  *
  * @param {Object} options - Installation options.
@@ -86,18 +96,18 @@ export async function getInstalledAssistants(cwd = process.cwd()) {
  * @param {string} options.releaseVersion - Release tag.
  * @param {string[]} options.assistants - Array of assistant IDs.
  * @param {string} options.cliVersion - CLI version that performed the installation.
+ * @param {Object} [options.installedFiles={}] - Map of assistantId to file paths.
  * @returns {Object} Metadata object.
  */
-export function createMetadata({ source, repository, releaseVersion, assistants, cliVersion }) {
-  const now = new Date().toISOString();
+export function createMetadata({ source, repository, releaseVersion, assistants, cliVersion, installedFiles = {} }) {
   return {
     source,
     repository,
     releaseVersion,
     cliVersion,
     assistants,
-    installedAt: now,
-    lastUpdated: now
+    installedFiles,
+    installedAt: new Date().toISOString()
   };
 }
 
@@ -111,8 +121,7 @@ export function createMetadata({ source, repository, releaseVersion, assistants,
 export function updateMetadataFields(existing, updates) {
   return {
     ...existing,
-    ...updates,
-    lastUpdated: new Date().toISOString()
+    ...updates
   };
 }
 
@@ -122,6 +131,7 @@ export default {
   isInitialized,
   isOfficialSource,
   getInstalledAssistants,
+  getInstalledFiles,
   createMetadata,
   updateMetadataFields
 };

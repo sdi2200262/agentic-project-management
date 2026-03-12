@@ -13,11 +13,25 @@ import { Command } from 'commander';
 import { initCommand } from './commands/init.js';
 import { customCommand } from './commands/custom.js';
 import { updateCommand } from './commands/update.js';
-import { configCommand } from './commands/config.js';
 import { archiveCommand } from './commands/archive.js';
+import { addCommand } from './commands/add.js';
+import { removeCommand } from './commands/remove.js';
+import { statusCommand } from './commands/status.js';
 import { CLI_VERSION } from './core/constants.js';
 import { CLIError } from './core/errors.js';
 import logger from './ui/logger.js';
+
+/**
+ * Checks for stray positional arguments and suggests using -a.
+ */
+function checkStrayArgs(extras, commandName) {
+  if (extras.length > 0) {
+    logger.clearAndBanner();
+    logger.error(`Unexpected arguments: ${extras.join(' ')}`);
+    logger.info(`Did you mean: apm ${commandName} -a ${extras.join(' ')}`);
+    process.exit(1);
+  }
+}
 
 /**
  * Displays custom formatted help output.
@@ -33,24 +47,29 @@ function displayHelp() {
   console.log(`  ${chalk.bold('init')}              Initialize APM with official releases`);
   console.log(`  ${chalk.bold('custom')}            Install from a custom repository`);
   console.log(`  ${chalk.bold('update')}            Update installed assistant releases`);
-  console.log(`  ${chalk.bold('archive')}           Archive current session and restore fresh templates`);
-  console.log(`  ${chalk.bold('config')}            Manage saved custom repositories`);
+  console.log(`  ${chalk.bold('archive')}           Archive current session or list archives`);
+  console.log(`  ${chalk.bold('add')}               Add assistant(s) to existing installation`);
+  console.log(`  ${chalk.bold('remove')}            Remove assistant(s) from installation`);
+  console.log(`  ${chalk.bold('status')}            Show installation status`);
   console.log('');
-  console.log(chalk.cyan.bold('Options (init/custom):'));
-  console.log(`  ${chalk.bold('-r, --repo <repo>')}    Repository in owner/repo format (custom only)`);
-  console.log(`  ${chalk.bold('-t, --tag <tag>')}      Install specific release version`);
-  console.log(`  ${chalk.bold('-a, --assistant <id>')} Assistant to install (e.g., claude, copilot)`);
-  console.log(`  ${chalk.bold('-f, --force')}          Skip confirmation prompts`);
+  console.log(chalk.cyan.bold('Shared Options:'));
+  console.log(`  ${chalk.bold('-a, --assistant <id...>')}   Target assistant(s) ${chalk.dim('(init, custom, add, remove)')}`);
+  console.log(`  ${chalk.bold('-t, --tag <tag>')}           Specific release version ${chalk.dim('(init, custom)')}`);
+  console.log(`  ${chalk.bold('-f, --force')}               Skip confirmation prompts ${chalk.dim('(update, archive)')}`);
   console.log('');
-  console.log(chalk.cyan.bold('Options (config):'));
-  console.log(`  ${chalk.bold('-a, --add <repo>')}     Add a custom repository (owner/repo)`);
-  console.log(`  ${chalk.bold('-r, --remove <repo>')}  Remove a custom repository`);
-  console.log(`  ${chalk.bold('-l, --list')}           List saved custom repositories`);
-  console.log(`  ${chalk.bold('--clear')}              Clear all saved custom repositories`);
+  console.log(chalk.cyan.bold('Custom Repository:'));
+  console.log(`  ${chalk.bold('-r, --repo <repo>')}         Repository in owner/repo format`);
+  console.log(`  ${chalk.bold('--add-repo <repos...>')}     Save custom repository(ies)`);
+  console.log(`  ${chalk.bold('--remove-repo <repos...>')}  Remove saved repository(ies)`);
+  console.log(`  ${chalk.bold('--list')}                    List saved custom repositories`);
+  console.log(`  ${chalk.bold('--clear')}                   Clear all saved custom repositories`);
   console.log('');
-  console.log(chalk.cyan.bold('Global Options:'));
-  console.log(`  ${chalk.bold('-v, -V, --version')}    Show version number`);
-  console.log(`  ${chalk.bold('-h, --help')}           Show help`);
+  console.log(chalk.cyan.bold('Archive:'));
+  console.log(`  ${chalk.bold('-l, --list')}                List archived sessions`);
+  console.log('');
+  console.log(chalk.cyan.bold('Global:'));
+  console.log(`  ${chalk.bold('-v, -V, --version')}         Show version number`);
+  console.log(`  ${chalk.bold('-h, --help')}                Show help`);
   console.log('');
   console.log(chalk.cyan.bold('Versioning:'));
   console.log(`  ${chalk.bold('agentic-pm CLI')} (v${CLI_VERSION}):`);
@@ -78,19 +97,26 @@ program
     }
   });
 
-// Default action (no command)
+// Default action (no command or unknown command)
 program.action(() => {
   logger.clearAndBanner();
-  logger.dim('Use --help to see available commands.\n');
+  const positionalArgs = program.args;
+  if (positionalArgs.length > 0) {
+    logger.error(`Unknown command: ${positionalArgs[0]}`);
+    logger.info('Run "apm --help" for available commands.');
+    process.exit(1);
+  }
+  logger.info('Use "apm --help" for available commands.');
 });
 
 program
   .command('init')
   .description('Initialize APM with official releases')
+  .argument('[extras...]')
   .option('-t, --tag <tag>', 'Install specific release version')
-  .option('-a, --assistant <id>', 'Assistant to install (e.g., claude, copilot)')
-  .option('-f, --force', 'Skip confirmation prompt')
-  .action(async (options) => {
+  .option('-a, --assistant <ids...>', 'Assistant(s) to install')
+  .action(async (extras, options) => {
+    checkStrayArgs(extras, 'init');
     try {
       await initCommand(options);
     } catch (err) {
@@ -100,12 +126,17 @@ program
 
 program
   .command('custom')
-  .description('Initialize APM from a custom repository')
+  .description('Install from a custom repository')
+  .argument('[extras...]')
   .option('-r, --repo <repo>', 'Repository in owner/repo format')
   .option('-t, --tag <tag>', 'Install specific release version (requires --repo)')
-  .option('-a, --assistant <id>', 'Assistant to install (e.g., claude, copilot)')
-  .option('-f, --force', 'Skip confirmation prompt')
-  .action(async (options) => {
+  .option('-a, --assistant <ids...>', 'Assistant(s) to install')
+  .option('--add-repo <repos...>', 'Save custom repository(ies)')
+  .option('--remove-repo <repos...>', 'Remove saved repository(ies)')
+  .option('--list', 'List saved custom repositories')
+  .option('--clear', 'Clear all saved custom repositories')
+  .action(async (extras, options) => {
+    checkStrayArgs(extras, 'custom');
     try {
       await customCommand(options);
     } catch (err) {
@@ -116,6 +147,7 @@ program
 program
   .command('update')
   .description('Update installed assistant templates')
+  .option('-f, --force', 'Skip confirmation prompt')
   .action(async (options) => {
     try {
       await updateCommand(options);
@@ -126,8 +158,8 @@ program
 
 program
   .command('archive')
-  .description('Archive current session and restore fresh templates')
-  .option('-c, --continues <name>', 'Previous archive this session continues from')
+  .description('Archive current session or list archives')
+  .option('-l, --list', 'List archived sessions')
   .option('-f, --force', 'Skip confirmation prompt')
   .action(async (options) => {
     try {
@@ -138,15 +170,39 @@ program
   });
 
 program
-  .command('config')
-  .description('Manage CLI configuration and saved repositories')
-  .option('-a, --add <repo>', 'Add a custom repository (owner/repo)')
-  .option('-r, --remove <repo>', 'Remove a custom repository')
-  .option('-l, --list', 'List saved custom repositories')
-  .option('--clear', 'Clear all saved custom repositories')
-  .action(async (options) => {
+  .command('add')
+  .description('Add assistant(s) to existing installation')
+  .argument('[extras...]')
+  .option('-a, --assistant <ids...>', 'Assistant(s) to add')
+  .action(async (extras, options) => {
+    checkStrayArgs(extras, 'add');
     try {
-      await configCommand(options);
+      await addCommand(options);
+    } catch (err) {
+      handleError(err);
+    }
+  });
+
+program
+  .command('remove')
+  .description('Remove assistant(s) from installation')
+  .argument('[extras...]')
+  .option('-a, --assistant <ids...>', 'Assistant(s) to remove')
+  .action(async (extras, options) => {
+    checkStrayArgs(extras, 'remove');
+    try {
+      await removeCommand(options);
+    } catch (err) {
+      handleError(err);
+    }
+  });
+
+program
+  .command('status')
+  .description('Show installation status')
+  .action(async () => {
+    try {
+      await statusCommand();
     } catch (err) {
       handleError(err);
     }
@@ -158,13 +214,20 @@ program
  * @param {Error} err - Error to handle.
  */
 function handleError(err) {
+  // Handle Ctrl+C during prompts
+  if (err?.name === 'ExitPromptError') {
+    process.exit(0);
+  }
+
   if (err instanceof CLIError) {
     logger.error(err.message);
     process.exit(1);
   }
 
-  logger.error('An unexpected error occurred');
-  logger.error(err.message, { error: err });
+  logger.error(`Unexpected error: ${err.message}`);
+  if (process.env.DEBUG === 'true') {
+    console.error(err.stack);
+  }
   process.exit(1);
 }
 
