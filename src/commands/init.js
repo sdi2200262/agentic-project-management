@@ -146,6 +146,10 @@ export async function initCommand(options = {}) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (installedFiles[id]) logger.success(`Installed ${assistant.name}`);
   }
+  for (const id of assistantIds) {
+    const assistant = manifest.assistants.find(a => a.id === id);
+    if (assistant?.postInstallNote) logger.warn(assistant.postInstallNote);
+  }
   logger.success('APM initialized!');
   logger.info('Run "apm add" to add more assistants, or "apm update" to check for updates.');
 }

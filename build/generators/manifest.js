@@ -14,13 +14,19 @@
  * @returns {Object} Release manifest object.
  */
 export function generateReleaseManifest(config, version) {
-  const assistants = config.targets.map(target => ({
-    id: target.id,
-    name: target.name,
-    bundle: target.bundleName,
-    description: `Optimized for ${target.name}`,
-    configDir: target.configDir
-  }));
+  const assistants = config.targets.map(target => {
+    const entry = {
+      id: target.id,
+      name: target.name,
+      bundle: target.bundleName,
+      description: `Optimized for ${target.name}`,
+      configDir: target.configDir
+    };
+    if (target.postInstallNote) {
+      entry.postInstallNote = target.postInstallNote;
+    }
+    return entry;
+  });
 
   return {
     version,

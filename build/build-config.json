@@ -20,10 +20,11 @@
       "contextAttachSyntax": "Reference the file using `#file` and select the file from the picker.",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "#runSubagent with exploration focus",
+        "toolSyntax": "#runSubagent",
         "explorerName": "exploration subagent",
         "configNote": null
-      }
+      },
+      "postInstallNote": null
     },
     {
       "id": "claude",
@@ -40,10 +41,11 @@
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "Task(subagent_type=\"Explore\", prompt=\"...\")",
+        "toolSyntax": "Agent(subagent_type=\"Explore\", prompt=\"...\")",
         "explorerName": "Explore",
         "configNote": null
-      }
+      },
+      "postInstallNote": null
     },
     {
       "id": "gemini",
@@ -60,10 +62,11 @@
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "codebase_investigator(query=\"...\")",
+        "toolSyntax": "@codebase_investigator <natural language query>",
         "explorerName": "codebase_investigator",
-        "configNote": "Requires `enableAgents: true` in ~/.gemini/settings.json"
-      }
+        "configNote": "Requires `experimental.enableAgents: true` in ~/.gemini/settings.json"
+      },
+      "postInstallNote": "Gemini CLI requires `experimental.enableAgents: true` in ~/.gemini/settings.json for subagent features."
     },
     {
       "id": "cursor",
@@ -83,7 +86,8 @@
         "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
         "explorerName": "explore",
         "configNote": null
-      }
+      },
+      "postInstallNote": null
     },
     {
       "id": "opencode",
@@ -92,7 +96,7 @@
       "format": "markdown",
       "configDir": ".opencode",
       "directories": {
-        "commands": ".opencode/command",
+        "commands": ".opencode/commands",
         "skills": ".opencode/skills",
         "guides": ".opencode/apm-guides",
         "agents": ".opencode/agents"
@@ -100,10 +104,11 @@
       "contextAttachSyntax": "Reference the file using `@` followed by the file name.",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "task(subagent_type=\"explore\", prompt=\"...\")",
+        "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
         "explorerName": "explore",
         "configNote": null
-      }
+      },
+      "postInstallNote": null
     }
   ]
 }
