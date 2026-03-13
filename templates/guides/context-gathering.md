@@ -39,7 +39,7 @@ Context gathering targets three planning documents, each consumed differently du
 - *Leverage existing material:* Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{RULES_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions.
 - *Explore on signal:* When User responses reference codebase elements or documentation, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
 - *Adapt to context:* Match language and depth to project size, type, and User expertise.
-- *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition - Stages, Tasks, and agent assignments wait for Work Breakdown.
+- *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition until Context Gathering is complete and you are proceeding to Work Breakdown. Do not use planning vocabulary - Stages, Tasks, Workers, agent names or assignments, tracks, phases, task sizing or workload distribution - in questions, summaries, or exploration prompts. Mapping signals to work units happens exclusively during Work Breakdown.
 - *Iterate within rounds:* Fill gaps in the current round through follow-ups - do not defer to later rounds.
 
 ### 2.2 Response and Gap Assessment
@@ -56,13 +56,13 @@ When processing User responses, assess what was explicitly stated, what can be r
 
 **Gap assessment:** A gap exists when information needed for planning documents is missing, ambiguous, or lacks validation criteria. After each User response, assess what gaps remain and what follow-ups would resolve them. Gaps are resolved by asking directly (missing info), rephrasing and confirming (ambiguity), or proposing concrete criteria (validation).
 
-**Round advancement** → Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect planning document accuracy. Before advancing, present a round completion summary in chat covering:
+**Round advancement** → Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect planning document accuracy. Each question round requires at least one interactive exchange with the User (questions asked, response received, gaps assessed) before advancement. Retroactive round summaries - summarizing rounds not actually conducted as separate exchanges - are prohibited. When a round's focus areas remain partially unaddressed, continue with uncovered areas before advancing. "Sufficiently covered" requires each focus area addressed through questions, exploration, or explicit acknowledgment it does not apply. Before advancing, present a round completion summary in chat covering:
 - *Context gathered:* key findings from this round.
 - *Planning document relevance:* which planning documents the findings inform and what type of content they contribute (design decisions, work structure signals, execution patterns).
 - *Gaps assessed:* what gaps were identified, how resolved, and any acceptable gaps carried forward.
 - *Advancement reasoning:* why this round is complete and what the next round builds on.
 
-Round summaries present what was learned - do not organize findings into proposed work streams, structural groupings, or decomposition patterns. Describe signals and constraints; work organization happens strictly during Work Breakdown.
+Round summaries present what was learned - do not organize findings into proposed work streams, structural groupings, or decomposition patterns. Decomposition vocabulary restrictions per §2.1 Guiding Principles apply to all round summaries and questions.
 
 After Round 1 and 2 summaries, immediately begin the next round. After Round 3, continue to the understanding summary.
 
@@ -72,13 +72,13 @@ Adapt questioning depth to the project and User signals:
 
 - *Go deeper:* For large/multi-domain projects, revealed dependencies or risks, unclear domain boundaries, indicated complexity.
 - *Stay light:* For small/single-domain projects, clear and complete responses, straightforward requirements, demonstrated expertise.
-- Brief answers warrant completeness verification. Extensive elaboration warrants following the thread. When the User references existing materials or codebase artifacts, read them before asking redundant questions.
+- Brief answers warrant completeness verification. Extensive elaboration warrants following the thread. When the User references existing materials, leverage them per §2.1 Guiding Principles.
 
 ### 2.4 Exploration and Research Standards
 
-When User responses reference codebase elements, existing materials, or signal that relevant context exists, explore proactively. Do not wait for permission.
+When User responses or existing material reference codebase elements, or signal that relevant context exists, explore proactively. Do not wait for permission. Dispatch subagents autonomously to build deeper context, not only when User responses signal existing context. When subagent exploration answers some focus area questions but not others, ask the remaining unanswered ones. Ask reassurance and preference questions about big decisions or significant context gathered through exploration.
 
-**After exploration** → Reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta - what's still missing given the new information. Do not ask about what exploration already revealed.
+**After exploration** → Reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta - what is still missing given the new information. Do not ask about what exploration already revealed but present for confirmation and reassurance if critical.
 
 **Scope assessment** → The key distinction is purpose: research that builds the Planner's understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, checking external systems, resolving technical unknowns. This includes research that informs the current question round, subsequent rounds, or planning document creation. Research that is itself a project deliverable belongs in the Plan. Only defer when research is a project deliverable or the User explicitly requests deferral. When the project involves existing codebases that Workers will interact with, exploring those codebases to inform the planning documents is Context Gathering work - not a deliverable for the Plan.
 
@@ -119,7 +119,8 @@ These rules apply across all three question rounds.
 1. Ask the initial questions defined for the round.
 2. After each User response, assess gaps per §2.2 Response and Gap Assessment.
 3. Follow up on gaps or advance per §2.2 Response and Gap Assessment.
-4. Repeat until the round's focus areas are sufficiently covered.
+4. After subagent results return, verify findings per §2.4 Exploration and Research Standards. If critical gaps remain, dispatch a follow-up before continuing.
+5. Repeat until the round's focus areas are sufficiently covered.
 
 Combine related questions naturally in conversation. Adapt depth per §2.3 Questioning Depth. Track what has been answered - ask only for what is missing.
 
@@ -179,7 +180,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 
 ### 3.5 Question Round 3: Implementation Approach and Quality
 
-**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, coordination and approval requirements, domain organization, finalizing the Spec and Rules.
+**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, project-level coordination and approval requirements (external reviews or validation, stakeholder sign-offs, approval gates), domain organization, finalizing the Spec and Rules.
 
 **Initial questions** → Select and adapt from these areas:
 
@@ -236,14 +237,12 @@ The understanding summary is presented per §3.6 Finalize Understanding for User
 
 - *Requirements and deliverables:* essential features, scope, success criteria
 - *Design decisions and constraints:* choices made where alternatives existed, rationale, constraints that bound what's being built
-- *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified. Present these as observed project characteristics - do not organize them into proposed phases, stage structures, or decomposition hierarchies.
+- *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified. Present as observed project characteristics per §2.1 Guiding Principles.
 - *Technical context:* environments, resources, constraints, access needs
 - *Process and quality:* workflow preferences, coordination requirements, approval gates, validation approach
 - *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found
 
-The understanding summary captures signals that inform Work Breakdown - domains, dependencies, constraints. Concrete decomposition into Stages, Tasks, and agent assignments happens after reading `{GUIDE_PATH:work-breakdown}` and applying its reasoning framework.
-
-Prioritize clarity and completeness. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
+The understanding summary captures signals that inform Work Breakdown - domains, dependencies, constraints. Decomposition happens after reading `{GUIDE_PATH:work-breakdown}`. Prioritize clarity and completeness. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
 
 ---
 
@@ -262,10 +261,11 @@ Prioritize clarity and completeness. Use diagrams for relationships, tables for 
 - *Over-questioning:* Excessive detail on minor aspects while missing critical gaps.
 - *Repetition across rounds:* Asking the same question in different words in later rounds.
 - *Skipping validation:* Accepting requirements without understanding success criteria.
-- *Ignoring existing materials:* Asking questions already answered in provided documentation.
-- *Deferring exploration:* Waiting to research when signals indicate relevant context exists now.
-- *Premature decomposition:* Discussing or deciding decomposition structures (Stages, Tasks, agent assignments) during Context Gathering - these wait for Work Breakdown per §2.1 Guiding Principles.
-- *Technical elicitation:* Asking Users to define schemas, interfaces, or technical specifications in precise terms rather than gathering requirements conversationally and performing the technical formalization during Work Breakdown.
+- *Ignoring existing materials:* Asking questions already answered per §2.1 Guiding Principles ("Leverage existing material").
+- *Deferring exploration:* Waiting to research while signals indicate relevant context exists per §2.1 Guiding Principles and §2.4 Exploration and Research Standards.
+- *Premature decomposition:* Using decomposition vocabulary or organizing findings into work structures per §2.1 Guiding Principles (e.g., "Track A/B/C" hierarchies, "separate Workers," "task sizing").
+- *Agent coordination questions:* Asking about Worker blocker handling, dispatch strategy, or escalation protocols - these are framework-defined, not project context. Round 3 coordination focuses on project-level needs (external reviews, approval gates), not agent coordination.
+- *Technical elicitation:* Asking Users to produce technical specifications directly per §5.1 Communication Quality ("Extraction over elicitation").
 
 ---
 

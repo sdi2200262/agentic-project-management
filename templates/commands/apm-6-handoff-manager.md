@@ -7,7 +7,7 @@ description: Perform a Handoff with an APM Manager.
 
 ## 1. Overview
 
-This command initiates the Handoff procedure for a Manager approaching context window limits. The outgoing Manager creates two artifacts:
+This command initiates the Handoff procedure for a Manager approaching context window limits. You create two artifacts:
 - **Handoff Log:** Working context not captured in planning documents or Task Logs, stored in `.apm/memory/handoffs/manager/`.
 - **Handoff prompt:** Written to the Handoff Bus, instructing the incoming Manager to reconstruct context procedurally.
 
@@ -74,7 +74,7 @@ stage: <N>
 - `agent`: string, required. Always `manager`.
 - `outgoing`: integer, required. Current instance number.
 - `incoming`: integer, required. Next instance number.
-- `handoff`: integer, required. Handoff sequence number.
+- `handoff`: integer, required. Handoff sequence number (equals the outgoing instance number).
 - `stage`: integer, required. Current Stage number.
 
 **Body:**

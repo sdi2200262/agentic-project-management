@@ -1,6 +1,6 @@
 # APM Writing Standards
 
-This document defines how to write content within APM skills and commands. It establishes tone, instruction patterns, output guidance, and terminology usage rules. This is a development-time specification: agents do not read this file during runtime. Every rule here takes effect only through the templates that implement it — template authors embed these rules contextually in commands, guides, and skills.
+This document defines how to write content within APM skills and commands. It establishes tone, instruction patterns, output guidance, and terminology usage rules. This is a development-time specification: agents do not read this file during runtime. Every rule here takes effect only through the templates that implement it - template authors embed these rules contextually in commands, guides, and skills.
 
 All terms used in this document are defined in `TERMINOLOGY.md`. All structural patterns follow `STRUCTURE.md`.
 
@@ -59,7 +59,11 @@ Neutral, direct language. No hedging: "Consider..." not "You might want to consi
 
 ### 2.2 Voice Standards
 
-Active voice ("The Manager creates..." not "is created"). Second person for procedures ("Perform the following..."). Third person for descriptions ("The Worker executes..."). No anthropomorphization - agents execute and perform, they do not want, feel, or think.
+Active voice ("The Manager creates..." not "is created"). No anthropomorphization - agents execute and perform, they do not want, feel, or think.
+
+**Standards files** (`_standards/`): Third person throughout. Standards describe how agents behave and how the workflow operates - they do not instruct a runtime reader. "The Manager assesses cascade implications" not "Assess cascade implications." "Workers iterate on failure" not "Iterate on failure." Instructional language directed at template maintainers is acceptable ("Prefer X over Y", "Use X format") because standards address maintainers, not runtime agents.
+
+**Runtime files** (commands, guides, skills): Second person and imperative mood when addressing the reading agent. "Perform the following actions" not "The Worker performs the following actions." "You operate with narrow context" not "Workers operate with narrow context." Third person for OTHER agents - a guide read by the Manager uses third person for Workers ("Workers do not reference the Plan") and second person for the Manager ("Extract relevant Spec content"). Skills read by multiple agent roles use third person when distinguishing specific roles ("The Manager coordinates merges; Workers commit to their branch") since no single reader is the exclusive audience.
 
 ### 2.3 Neutrality
 
@@ -130,7 +134,7 @@ Agent communication standards - including agent-to-user communication, visible r
 
 **Procedure transitions.** When writing procedure transitions, use natural sequential flow ("Continue to the next step") rather than section-targeted navigation with procedure names ("Proceed to §3.2 Plan Analysis") where possible. Include §N.M references only where non-sequential jumps require them.
 
-**Terminology distinction.** `TERMINOLOGY.md` terms are the only formal APM terms. All other labels — procedural step names, decision categories, section names — are natural language. Standard English capitalization applies in context but confers no formal status. Formatting (bold/italic) establishes hierarchy within content per §7.1, not term formality.
+**Terminology distinction.** `TERMINOLOGY.md` terms are the only formal APM terms. All other labels - procedural step names, decision categories, section names - are natural language. Standard English capitalization applies in context but confers no formal status. Formatting (bold/italic) establishes hierarchy within content per §7.1, not term formality.
 
 ---
 
@@ -152,9 +156,9 @@ References use "See" or "per" exclusively. References appear inline within prose
 
 ## 6. Terminology Usage
 
-Terms are used exactly as defined in `TERMINOLOGY.md`. Synonyms are not used. `TERMINOLOGY.md` terms are always capitalized and carry formal defined meaning — they are the APM vocabulary. All other language is natural: standard English capitalization applies (headings, procedural labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language.
+Terms are used exactly as defined in `TERMINOLOGY.md`. Synonyms are not used. `TERMINOLOGY.md` terms are always capitalized and carry formal defined meaning - they are the APM vocabulary. All other language is natural: standard English capitalization applies (headings, procedural labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language.
 
-Defined concepts (same-agent/cross-agent dependencies, dispatch modes) are explained through their implications in natural prose — not elevated through naming conventions. Singular form is used when referring to the concept; plural when referring to multiple instances.
+Defined concepts (same-agent/cross-agent dependencies, dispatch modes) are explained through their implications in natural prose - not elevated through naming conventions. Singular form is used when referring to the concept; plural when referring to multiple instances.
 
 ---
 

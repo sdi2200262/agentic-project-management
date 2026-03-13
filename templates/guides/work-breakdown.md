@@ -65,7 +65,7 @@ The Plan defines how work is organized - Stages, Tasks, agent assignments, depen
 
 **What belongs:** Task-level coordination - objectives, deliverables, agent assignments, validation criteria, dependencies, step-by-step guidance. **What does not:** Design decisions across Tasks (Spec), universal execution patterns (Rules).
 
-**Task self-sufficiency:** Each Task must contain enough context for a Worker to execute from a Task Prompt alone. Workers do not reference the full Plan or Spec directly - the Manager extracts relevant content during Task Assignment.
+**Task self-sufficiency:** Each Task must contain enough context for a Worker to execute from a Task Prompt alone per §1.3 Outputs.
 
 Guidance may reference authoritative sources by path - the Manager reads those sources and integrates relevant content into the Task Prompt. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and Guidance.
 
@@ -136,26 +136,26 @@ Perform the following actions per §2.3 Plan Standards.
    - *Agent mapping:* how domains map to Workers with proposed names and responsibilities.
 2. Update Plan header Agents field.
 
-**Stage Analysis** → Identify all Stages and their Tasks upfront per §2.1 Decomposition Principles - see **Stage Cycles** for detailed Task breakdown:
+**Stage Analysis** → Identify all Stages and their Tasks upfront per §2.1 Decomposition Principles:
 1. Present stage structure reasoning in chat:
    - *Stage objectives:* what each Stage delivers and its boundary rationale.
    - *Task overview:* identified Tasks per Stage with brief descriptions.
 2. Update Plan header Stages field.
 
-**Stage Cycles** → For each Stage in order, complete the following cycle before proceeding to the next Stage:
-1. State context for the current Stage: User requirements and constraints influencing it.
-2. For each Task, present reasoning in chat:
+**Per-Stage Task Analysis** → For each Stage in order:
+1. State context: User requirements and constraints influencing this Stage.
+2. For each Task, reason through:
    - *Agent assignment:* which agent and why.
-   - *Task Scope:* what is the Task's scope?
+   - *Task Scope:* what is the Task's scope? Is the User involved in any of the Task's steps?
    - *Task Guidance:* what implementation context does this Worker need? Domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis.
    - *Task Validation:* approaches selected from programmatic, artifact, and user (per §4.2 Plan Format), with rationale for inclusion or exclusion. Validation criteria co-define the Task with Guidance.
    - *Dependencies:* enumerate every dependency. Same-agent: `Task N.M` format. Cross-agent: **`Task N.M by <Agent>`** (bolded), specifying the deliverable at the boundary.
-   - *Steps:* ordered operations with purpose.
+   - *Steps:* ordered operations with purpose building towards Task completion.
    Use more detail for complex Tasks and less for straightforward ones. Include all required dimensions. After reasoning through all Tasks in the Stage, assess whether each Task represents independently validatable work per §2.1 Decomposition Principles - combined scopes that need separate validation indicate further decomposition.
-3. Write the Stage to the Plan per §4.2 Plan Format. Enrich Task details based on chat reasoning. Ensure every cross-agent dependency is bolded at write time - do not defer to **Plan Review**.
-4. State which Stage was written. If Stages remain, return to step 1 for the next Stage. After the final Stage, continue to **Plan Review**.
 
-**Plan Review** → After completing all Stage Cycles, review the Plan per §2.3 Plan Standards:
+**Plan Write** → Write the full Plan per §4.2 Plan Format. Enrich Task details from reasoning. Ensure every cross-agent dependency is bolded at write time. After the write, continue to **Plan Review**.
+
+**Plan Review** → After writing the Plan to file, do an additional review of the final document per §2.3 Plan Standards:
 1. *Workload assessment:* Count Tasks per agent. Flag agents with disproportionately large workloads relative to other agents for subdivision review. If subdividing, present reasoning:
    - Sub-domain boundaries - where to split and why.
    - Agent coherence - how sub-agents maintain clear, focused domains.
@@ -203,6 +203,12 @@ Spec content follows the YAML frontmatter in `.apm/spec.md`. Structure is free-f
 **Content rules:** Use markdown headings (`##`) to organize decision groups. Each specification must be concrete and actionable. Structure for extraction - the Manager distills relevant content into individual Task Prompts, so decisions should be locatable and separable. Reference existing User documents rather than duplicating - include file paths and specific sections so the Manager can locate source material during Task Assignment. Use tables for enumerated values, mermaid diagrams for relationships, code blocks for schemas, prose for rationale.
 
 ### 4.2 Plan Format
+
+**Plan Header Format** → The Plan header precedes all Stages:
+- *Project name:* from the Spec title.
+- *Agents table:* `| Agent ID | Domain | Description |` - one row per agent.
+- *Stages table:* `| Stage | Name | Tasks | Agents |` - one row per Stage.
+- *Dependency Graph:* per **Dependency Graph Format** below.
 
 **Stage Format** → Each Stage in the Plan:
 - *Header:* `## Stage N: [Name]`

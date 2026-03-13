@@ -282,16 +282,16 @@ When an Agent's context window approaches limits, perform a Handoff to transfer 
    - Handoff Log
    - Relevant Task Logs (current-Stage for Workers; Tracker, Index, and recent logs for Manager)
 
-### Recovery from Auto-Compaction
+### Recovery
 
-If the platform auto-compacts an Agent's context window (rather than you proactively triggering Handoff), use the recovery command to reconstruct working context:
+If the platform auto-compacts an Agent's context window, or an initiated Agent needs to resume after a cleared session, use the recovery command to reconstruct working context:
 
 ```markdown
 /apm-9-recover manager
 /apm-9-recover frontend-agent
 ```
 
-Recovery re-reads procedural guides and role-specific state artifacts to rebuild context. Unlike Handoff, recovery does not require creating a new instance — the Agent continues as the same instance with reconstructed context.
+Recovery determines the Agent's role from the command argument, conversation context, or by asking the User. It re-reads procedural guides and explores project artifacts (Tracker, bus files, Task Logs) to rebuild operational state. Unlike Handoff, recovery does not require creating a new instance — the Agent continues as the same instance with reconstructed context.
 
 ---
 

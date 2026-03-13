@@ -61,7 +61,7 @@ Then write your message to the outgoing file.
 
 ## 5. Message Format
 
-Bus files contain message content directly. No YAML frontmatter envelope is used. Write the message content (Task Report, etc.) as the entire file content.
+For simple single-Task communication, write the message content directly as the entire file content. When participating in batch operations (multiple Tasks in one dispatch), the Manager uses YAML frontmatter envelopes per the APM communication skill's batch protocol.
 
 ---
 
