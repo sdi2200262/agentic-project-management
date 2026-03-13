@@ -55,7 +55,9 @@ function displayHelp() {
   console.log(chalk.cyan.bold('Shared Options:'));
   console.log(`  ${chalk.bold('-a, --assistant <id...>')}   Target assistant(s) ${chalk.dim('(init, custom, add, remove)')}`);
   console.log(`  ${chalk.bold('-t, --tag <tag>')}           Specific release version ${chalk.dim('(init, custom)')}`);
-  console.log(`  ${chalk.bold('-f, --force')}               Skip confirmation prompts ${chalk.dim('(update, archive)')}`);
+  console.log(`  ${chalk.bold('-n, --name <name>')}         Custom archive name ${chalk.dim('(update, archive)')}`);
+  console.log(`  ${chalk.bold('-f, --force')}               Skip destructive action confirmations`);
+  console.log(`                              ${chalk.dim('(update, archive, remove, custom --remove-repo/--clear)')}`);
   console.log('');
   console.log(chalk.cyan.bold('Custom Repository:'));
   console.log(`  ${chalk.bold('-r, --repo <repo>')}         Repository in owner/repo format`);
@@ -66,6 +68,8 @@ function displayHelp() {
   console.log('');
   console.log(chalk.cyan.bold('Archive:'));
   console.log(`  ${chalk.bold('-l, --list')}                List archived sessions`);
+  console.log(`  ${chalk.bold('--delete <name>')}           Delete a specific archive`);
+  console.log(`  ${chalk.bold('--clear')}                   Delete all archives`);
   console.log('');
   console.log(chalk.cyan.bold('Global:'));
   console.log(`  ${chalk.bold('-v, -V, --version')}         Show version number`);
@@ -90,6 +94,7 @@ program
   .name('apm')
   .description('Agentic Project Management CLI')
   .version(CLI_VERSION, '-v, -V, --version')
+  .allowUnknownOption(true)
   .configureHelp({
     formatHelp: () => {
       displayHelp();
@@ -97,13 +102,22 @@ program
     }
   });
 
+// Known command names for typo suggestions
+const KNOWN_COMMANDS = ['init', 'custom', 'update', 'archive', 'add', 'remove', 'status'];
+
 // Default action (no command or unknown command)
 program.action(() => {
   logger.clearAndBanner();
   const positionalArgs = program.args;
   if (positionalArgs.length > 0) {
-    logger.error(`Unknown command: ${positionalArgs[0]}`);
-    logger.info('Run "apm --help" for available commands.');
+    const unknown = positionalArgs[0];
+    const suggestion = KNOWN_COMMANDS.find(c => c !== unknown && (unknown.startsWith(c) || c.startsWith(unknown)));
+    logger.error(`Unknown command: ${unknown}`);
+    if (suggestion) {
+      logger.info(`Did you mean: apm ${suggestion}`);
+    } else {
+      logger.info('Run "apm --help" for available commands.');
+    }
     process.exit(1);
   }
   logger.info('Use "apm --help" for available commands.');
@@ -135,6 +149,7 @@ program
   .option('--remove-repo <repos...>', 'Remove saved repository(ies)')
   .option('--list', 'List saved custom repositories')
   .option('--clear', 'Clear all saved custom repositories')
+  .option('-f, --force', 'Skip destructive action confirmations')
   .action(async (extras, options) => {
     checkStrayArgs(extras, 'custom');
     try {
@@ -147,7 +162,8 @@ program
 program
   .command('update')
   .description('Update installed assistant templates')
-  .option('-f, --force', 'Skip confirmation prompt')
+  .option('-f, --force', 'Skip destructive action confirmations')
+  .option('-n, --name <name>', 'Custom archive name')
   .action(async (options) => {
     try {
       await updateCommand(options);
@@ -160,7 +176,10 @@ program
   .command('archive')
   .description('Archive current session or list archives')
   .option('-l, --list', 'List archived sessions')
-  .option('-f, --force', 'Skip confirmation prompt')
+  .option('-f, --force', 'Skip destructive action confirmations')
+  .option('-n, --name <name>', 'Custom archive name')
+  .option('--delete <name>', 'Delete a specific archive')
+  .option('--clear', 'Delete all archives')
   .action(async (options) => {
     try {
       await archiveCommand(options);
@@ -188,6 +207,7 @@ program
   .description('Remove assistant(s) from installation')
   .argument('[extras...]')
   .option('-a, --assistant <ids...>', 'Assistant(s) to remove')
+  .option('-f, --force', 'Skip destructive action confirmations')
   .action(async (extras, options) => {
     checkStrayArgs(extras, 'remove');
     try {

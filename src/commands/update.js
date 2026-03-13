@@ -7,15 +7,15 @@
  * @module src/commands/update
  */
 
-import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION } from '../core/constants.js';
+import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, createMetadata, getInstalledFiles } from '../core/metadata.js';
-import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion } from '../services/releases.js';
+import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion, isStableRelease } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { createArchive } from '../services/archive.js';
+import { createArchive, generateArchiveName } from '../services/archive.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
-import { confirmDestructiveAction, selectRelease, confirmSecurityDisclaimer } from '../ui/prompts.js';
-import { getRepoSettings } from '../core/config.js';
+import { confirmDestructiveAction, confirmAction, selectRelease, selectPrompt, confirmSecurityDisclaimer } from '../ui/prompts.js';
+import { getRepoSettings, addCustomRepo, updateRepoSettings } from '../core/config.js';
 import logger from '../ui/logger.js';
 import path from 'path';
 
@@ -27,7 +27,7 @@ import path from 'path';
  * @returns {Promise<void>}
  */
 export async function updateCommand(options = {}) {
-  const { force = false } = options;
+  const { force = false, name: archiveName } = options;
 
   logger.clearAndBanner();
 
@@ -37,9 +37,6 @@ export async function updateCommand(options = {}) {
   if (!metadata) {
     throw CLIError.notInitialized();
   }
-
-  logger.info(`Current: ${metadata.releaseVersion} from ${metadata.repository}`);
-  logger.info(`Assistants: ${metadata.assistants.join(', ')}`);
 
   let release;
 
@@ -51,14 +48,44 @@ export async function updateCommand(options = {}) {
 
   if (!release) return;
 
+  // Fetch manifest early to validate assistants before confirmation
+  let stop = logger.progress('Fetching release manifest');
+  const manifest = await fetchReleaseManifest(release);
+  stop();
+
+  // Check if any current assistants exist in the target release
+  const survivingAssistants = metadata.assistants.filter(id =>
+    manifest.assistants.some(a => a.id === id)
+  );
+  if (!survivingAssistants.length) {
+    const available = manifest.assistants.map(a => a.id).join(', ');
+    logger.error(`None of your assistants (${metadata.assistants.join(', ')}) are available in ${release.tag_name}.`);
+    logger.info(`Available in ${release.tag_name}: ${available}`);
+    logger.info('Use "apm archive" then "apm init" to install with different assistants.');
+    return;
+  }
+
+  // Pre-compute archive name for confirmation message
+  const archivesDir = path.join(cwd, ARCHIVES_DIR);
+  const resolvedName = archiveName || await generateArchiveName(archivesDir);
+
   // Confirm destructive action
   if (!force) {
+    const currentList = metadata.assistants.join(', ');
+    const survivingList = survivingAssistants.join(', ');
+    const droppedAssistants = metadata.assistants.filter(id => !survivingAssistants.includes(id));
+
+    const bullets = [
+      `Snapshot all .apm/ artifacts into .apm/archives/${resolvedName}`,
+      `Delete all APM-installed files for: ${currentList}`,
+      `Download and install ${release.tag_name} for: ${survivingList}`
+    ];
+    if (droppedAssistants.length > 0) {
+      bullets.push(`Drop unsupported assistant(s): ${droppedAssistants.join(', ')}`);
+    }
+
     const proceed = await confirmDestructiveAction(
-      [
-        'Archive current APM session',
-        'Remove all installed assistant files',
-        `Download and install ${release.tag_name}`
-      ],
+      bullets,
       `Update to ${release.tag_name}?`
     );
     if (!proceed) {
@@ -67,24 +94,14 @@ export async function updateCommand(options = {}) {
     }
   }
 
-  // Fetch manifest
-  logger.info('Fetching release manifest...');
-  const manifest = await fetchReleaseManifest(release);
-
   // Archive current state
-  logger.info('Archiving current session...');
-  const archivePath = await createArchive(cwd, { reason: 'update' });
-  logger.info(`Archived to ${path.relative(cwd, archivePath)}`);
+  let archiveStop = logger.progress('Archiving current session');
+  const { archivePath } = await createArchive(cwd, { reason: 'update', name: resolvedName });
+  archiveStop();
 
   // Clean all tracked files
   const installedFiles = getInstalledFiles(metadata);
   const { removed, keptDirs } = await removeInstalledFiles(cwd, installedFiles);
-  if (removed > 0) {
-    logger.info(`Cleaned ${removed} tracked file(s)`);
-  }
-  for (const dir of keptDirs) {
-    logger.info(`Kept ${dir}/ — contains non-APM files`);
-  }
 
   // Download new bundles for all assistants
   const newInstalledFiles = {};
@@ -94,32 +111,34 @@ export async function updateCommand(options = {}) {
   for (const assistantId of metadata.assistants) {
     const assistant = manifest.assistants.find(a => a.id === assistantId);
     if (!assistant) {
-      logger.warn(`Assistant '${assistantId}' not found in ${release.tag_name}, dropping.`);
       skippedAssistants.push(assistantId);
       continue;
     }
 
     const bundleAsset = findBundleAsset(release, assistant.bundle);
     if (!bundleAsset) {
-      logger.warn(`Bundle '${assistant.bundle}' not found, dropping.`);
       skippedAssistants.push(assistantId);
       continue;
     }
 
-    logger.info(`Downloading ${assistant.bundle}...`);
+    stop = logger.progress(`Downloading ${assistant.bundle}`);
     const writtenFiles = await downloadAndExtract(
       bundleAsset.browser_download_url,
       cwd,
       { skipApm: apmExtracted }
     );
-    // Track only assistant files, not .apm/ infrastructure
+    stop();
     newInstalledFiles[assistantId] = writtenFiles.filter(f => !f.startsWith('.apm/'));
+    if (!apmExtracted) {
+      newInstalledFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
+    }
     apmExtracted = true;
-    logger.success(`Updated ${assistant.name}`);
   }
 
-  // Write fresh metadata — only include assistants that were actually updated
-  const updatedAssistants = Object.keys(newInstalledFiles);
+  // Compute surviving assistant list
+  const updatedAssistants = metadata.assistants.filter(id => !skippedAssistants.includes(id));
+
+  // Write fresh metadata
   const newMetadata = createMetadata({
     source: metadata.source,
     repository: metadata.repository,
@@ -130,8 +149,32 @@ export async function updateCommand(options = {}) {
   });
   await writeMetadata(newMetadata, cwd);
 
+  // Offer to save custom repo if not already saved
+  if (metadata.source === 'custom') {
+    const repoSettings = await getRepoSettings(metadata.repository);
+    if (!repoSettings) {
+      const saveRepo = await confirmAction('Save this repository for future use?', {
+        header: `Updated to ${release.tag_name} — repository ${metadata.repository} is not in your saved list`
+      });
+      if (saveRepo) {
+        await addCustomRepo(metadata.repository);
+        const skipDisclaimer = await confirmAction('Skip security disclaimer for this repo in the future?', {
+          header: `Saved repositories can skip the security disclaimer on future use`
+        });
+        if (skipDisclaimer) {
+          await updateRepoSettings(metadata.repository, { skipDisclaimer: true });
+        }
+      }
+    }
+  }
+
+  // Clear content for final output
+  logger.clearAndBanner();
   if (skippedAssistants.length > 0) {
     logger.warn(`Dropped ${skippedAssistants.length} assistant(s) not in ${release.tag_name}: ${skippedAssistants.join(', ')}`);
+  }
+  for (const id of updatedAssistants) {
+    logger.success(`Updated ${manifest.assistants.find(a => a.id === id)?.name || id}`);
   }
   logger.success(`Updated to ${release.tag_name} (${updatedAssistants.length} assistant(s))!`);
 }
@@ -142,46 +185,100 @@ export async function updateCommand(options = {}) {
  * if currently on one and no stable update exists.
  */
 async function findOfficialUpdate(metadata) {
-  logger.info('Fetching releases from official repository...');
+  const stop = logger.progress('Fetching releases');
   const releases = await fetchOfficialReleases();
+  stop();
 
   if (!releases.length) {
     throw CLIError.releaseNotFound(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`);
   }
 
+  const currentRelease = releases.find(r => r.tag_name === metadata.releaseVersion);
+  const currentDate = currentRelease?.published_at || currentRelease?.created_at || '';
   const currentVersion = parseVersion(metadata.releaseVersion);
-
-  // Check for stable update first
   const latest = getLatestRelease(releases);
-  if (latest && latest.tag_name !== metadata.releaseVersion) {
-    const latestVersion = parseVersion(latest.tag_name);
-    if (isNewer(latestVersion, currentVersion)) {
-      logger.info(`New version available: ${latest.tag_name}`);
-      return latest;
+
+  const onPrerelease = !!currentVersion?.prereleaseLabel;
+
+  // Check for stable update
+  const newerStable = (latest && latest.tag_name !== metadata.releaseVersion &&
+    (latest.published_at || latest.created_at || '') > currentDate) ? latest : null;
+
+  // If on a pre-release, prompt before switching to anything
+  if (onPrerelease) {
+    const newerPrereleases = releases
+      .filter(r => !isStableRelease(r) && r.tag_name !== metadata.releaseVersion)
+      .filter(r => (r.published_at || r.created_at || '') > currentDate);
+
+    const newestPrerelease = newerPrereleases.length
+      ? newerPrereleases.reduce((a, b) =>
+          (b.published_at || b.created_at || '') > (a.published_at || a.created_at || '') ? b : a
+        )
+      : null;
+
+    // Nothing available
+    if (!newerStable && !newestPrerelease) {
+      logger.success('Already on the latest pre-release!');
+      if (!latest) {
+        logger.info(`No stable release available yet for v${CLI_MAJOR_VERSION}.x.`);
+      }
+      return null;
     }
+
+    const currentHeader = `Currently on ${metadata.releaseVersion} (pre-release)`;
+
+    // Only one option — use a simple confirm
+    if (newerStable && !newestPrerelease) {
+      const proceed = await confirmAction(`Update to stable release ${newerStable.tag_name}?`, {
+        header: currentHeader
+      });
+      return proceed ? newerStable : null;
+    }
+    if (!newerStable && newestPrerelease) {
+      const proceed = await confirmAction(`Update to pre-release ${newestPrerelease.tag_name}?`, {
+        header: currentHeader
+      });
+      return proceed ? newestPrerelease : null;
+    }
+
+    // Both available — let user pick
+    const stableDate = newerStable.published_at || newerStable.created_at || '';
+    const prereleaseDate = newestPrerelease.published_at || newestPrerelease.created_at || '';
+    const stableIsNewer = stableDate >= prereleaseDate;
+
+    const choices = [
+      {
+        name: `${newerStable.tag_name} (stable)${stableIsNewer ? ' — newest' : ''}`,
+        value: newerStable.tag_name
+      },
+      {
+        name: `${newestPrerelease.tag_name} (pre-release)${!stableIsNewer ? ' — newest' : ''}`,
+        value: newestPrerelease.tag_name
+      },
+      {
+        name: 'Cancel',
+        value: null
+      }
+    ];
+
+    const selected = await selectPrompt({
+      message: 'Select a version:',
+      choices,
+      header: currentHeader
+    });
+    if (!selected) return null;
+    return selected === newerStable.tag_name ? newerStable : newestPrerelease;
   }
 
-  // If on a pre-release and no stable update, check for newer pre-release
-  if (currentVersion?.prereleaseLabel) {
-    const newerPrerelease = findNewerPrerelease(releases, currentVersion);
-    if (newerPrerelease) {
-      logger.info(`New pre-release available: ${newerPrerelease.tag_name}`);
-      return newerPrerelease;
-    }
+  // On stable
+  if (newerStable) {
+    return newerStable;
   }
 
-  // No updates available
-  if (!latest) {
-    logger.error(`No stable releases found for CLI v${CLI_MAJOR_VERSION}.x`);
-    logger.blank();
-    logger.info('Available pre-release versions:');
-    for (const r of releases) {
-      logger.info(`  ${r.tag_name}`, { indent: true });
-    }
-    logger.blank();
-    logger.info('Use "apm init --tag <tag>" to install a specific pre-release.');
-  } else {
+  if (latest) {
     logger.success('Already on the latest version!');
+  } else {
+    logger.info(`No stable releases found for v${CLI_MAJOR_VERSION}.x.`);
   }
 
   return null;
@@ -201,55 +298,32 @@ async function findCustomUpdate(metadata) {
     }
   }
 
-  logger.info(`Fetching releases from ${metadata.repository}...`);
-  const releases = await fetchCustomReleases(metadata.repository);
+  const stop = logger.progress(`Fetching releases from ${metadata.repository}`);
+  const allReleases = await fetchCustomReleases(metadata.repository);
+  stop();
 
-  if (!releases.length) {
+  if (!allReleases.length) {
     throw CLIError.releaseNotFound(metadata.repository);
   }
 
-  const selectedTag = await selectRelease(releases);
-  if (selectedTag === metadata.releaseVersion) {
-    logger.info('Selected the same version — no update needed.');
+  // Filter to only releases published after the current one
+  const currentRelease = allReleases.find(r => r.tag_name === metadata.releaseVersion);
+  const currentDate = currentRelease?.published_at || currentRelease?.created_at || '';
+  const newerReleases = currentDate
+    ? allReleases.filter(r => {
+        const releaseDate = r.published_at || r.created_at || '';
+        return releaseDate > currentDate;
+      })
+    : allReleases.filter(r => r.tag_name !== metadata.releaseVersion);
+
+  if (!newerReleases.length) {
+    logger.success('Already on the latest version!');
     return null;
   }
 
-  return releases.find(r => r.tag_name === selectedTag);
-}
-
-/**
- * Finds a newer pre-release with the same label and base version.
- */
-function findNewerPrerelease(releases, currentVersion) {
-  let best = null;
-  let bestNum = currentVersion.prereleaseNum ?? -1;
-
-  for (const release of releases) {
-    const v = parseVersion(release.tag_name);
-    if (!v || !v.prereleaseLabel) continue;
-    if (v.major !== currentVersion.major || v.minor !== currentVersion.minor || v.patch !== currentVersion.patch) continue;
-    if (v.prereleaseLabel !== currentVersion.prereleaseLabel) continue;
-    if (v.prereleaseNum != null && v.prereleaseNum > bestNum) {
-      best = release;
-      bestNum = v.prereleaseNum;
-    }
-  }
-
-  return best;
-}
-
-/**
- * Checks if version a is newer than version b.
- * A stable release is newer than a pre-release at the same version.
- */
-function isNewer(a, b) {
-  if (!a || !b) return false;
-  if (a.major !== b.major) return a.major > b.major;
-  if (a.minor !== b.minor) return a.minor > b.minor;
-  if (a.patch !== b.patch) return a.patch > b.patch;
-  // Same major.minor.patch: stable > pre-release
-  if (b.prereleaseLabel && !a.prereleaseLabel) return true;
-  return false;
+  const header = `Found ${newerReleases.length} release(s) from ${metadata.repository} newer than ${metadata.releaseVersion}`;
+  const selectedTag = await selectRelease(newerReleases, { header });
+  return newerReleases.find(r => r.tag_name === selectedTag);
 }
 
 export default updateCommand;

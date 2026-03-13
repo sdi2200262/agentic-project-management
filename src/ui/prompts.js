@@ -29,7 +29,7 @@ function withSelectHint(choices) {
     new Separator(' '),
     new Separator(chalk.gray('─'.repeat(80))),
     new Separator(' '),
-    new Separator(chalk.dim('  ↑↓ navigate • Enter select • Ctrl+C cancel'))
+    new Separator(chalk.dim(' ↑↓ to navigate • Enter to select • Ctrl+C to cancel'))
   ];
 }
 
@@ -42,20 +42,26 @@ function withSelectHint(choices) {
  * @param {string} assistants[].description - Description text.
  * @returns {Promise<string>} Selected assistant ID.
  */
-export async function selectAssistant(assistants) {
+export async function selectAssistant(assistants, { header } = {}) {
   logger.clearAndBanner();
+  if (header) {
+    console.log('  ' + chalk.dim(header));
+    console.log('');
+  }
   const choices = assistants.map(a => ({
     name: `${a.name} - ${a.description}`,
     value: a.id
   }));
 
-  return select({
+  const result = await select({
     message: 'Select an assistant:',
     choices: withSelectHint(choices),
     pageSize: choices.length + HINT_LINES,
     clearPromptOnDone: true,
     theme: SELECT_THEME
   });
+  logger.clearAndBanner();
+  return result;
 }
 
 /**
@@ -66,20 +72,26 @@ export async function selectAssistant(assistants) {
  * @param {string} releases[].name - Release name.
  * @returns {Promise<string>} Selected release tag name.
  */
-export async function selectRelease(releases) {
+export async function selectRelease(releases, { header } = {}) {
   logger.clearAndBanner();
+  if (header) {
+    console.log('  ' + chalk.dim(header));
+    console.log('');
+  }
   const choices = releases.map(r => ({
     name: r.name || r.tag_name,
     value: r.tag_name
   }));
 
-  return select({
+  const result = await select({
     message: 'Select a release:',
     choices: withSelectHint(choices),
     pageSize: choices.length + HINT_LINES,
     clearPromptOnDone: true,
     theme: SELECT_THEME
   });
+  logger.clearAndBanner();
+  return result;
 }
 
 /**
@@ -89,8 +101,12 @@ export async function selectRelease(releases) {
  * @param {string} savedRepos[].repo - Repository in owner/repo format.
  * @returns {Promise<string|null>} Selected repo or null for new repo entry.
  */
-export async function selectCustomRepo(savedRepos) {
+export async function selectCustomRepo(savedRepos, { header } = {}) {
   logger.clearAndBanner();
+  if (header) {
+    console.log('  ' + chalk.dim(header));
+    console.log('');
+  }
   const choices = [
     { name: 'Enter a new repository', value: null },
     ...savedRepos.map(r => ({
@@ -99,13 +115,15 @@ export async function selectCustomRepo(savedRepos) {
     }))
   ];
 
-  return select({
+  const result = await select({
     message: 'Select a repository:',
     choices: withSelectHint(choices),
     pageSize: choices.length + HINT_LINES,
     clearPromptOnDone: true,
     theme: SELECT_THEME
   });
+  logger.clearAndBanner();
+  return result;
 }
 
 /**
@@ -115,8 +133,13 @@ export async function selectCustomRepo(savedRepos) {
  */
 export async function inputRepository() {
   logger.clearAndBanner();
-  return input({
-    message: 'Enter repository (owner/repo):',
+  console.log('  ' + chalk.dim('Enter a custom APM repository in owner/repo format'));
+  console.log('  ' + chalk.dim('Example: my-org/my-custom-apm-repo'));
+  console.log('');
+  console.log('  ' + chalk.dim('Enter to submit • Ctrl+C to cancel'));
+  console.log('');
+  const result = await input({
+    message: 'Repository:',
     validate: value => {
       if (!value.includes('/')) {
         return 'Please enter in owner/repo format';
@@ -124,21 +147,31 @@ export async function inputRepository() {
       return true;
     }
   });
+  logger.clearAndBanner();
+  return result;
 }
 
 /**
  * Prompts user to confirm an action.
  *
  * @param {string} message - Confirmation message.
- * @param {boolean} [defaultValue=false] - Default value.
+ * @param {Object} [options={}] - Options.
+ * @param {boolean} [options.defaultValue=false] - Default value.
+ * @param {string} [options.header] - Header hint text.
  * @returns {Promise<boolean>} User's confirmation.
  */
-export async function confirmAction(message, defaultValue = false) {
+export async function confirmAction(message, { defaultValue = false, header } = {}) {
   logger.clearAndBanner();
-  return confirm({
+  if (header) {
+    console.log('  ' + chalk.dim(header));
+    console.log('');
+  }
+  const result = await confirm({
     message,
     default: defaultValue
   });
+  logger.clearAndBanner();
+  return result;
 }
 
 /**
@@ -148,16 +181,18 @@ export async function confirmAction(message, defaultValue = false) {
  */
 export async function confirmSecurityDisclaimer() {
   logger.clearAndBanner();
-  logger.warn('Security Disclaimer');
-  logger.blank();
-  logger.warn('Custom repositories are NOT verified by APM.');
-  logger.warn('Only install from sources you trust.');
-  logger.blank();
+  console.log('  ' + chalk.yellow.bold('Security Disclaimer'));
+  console.log('');
+  console.log('  ' + chalk.yellow('Custom repositories are NOT verified by APM.'));
+  console.log('  ' + chalk.yellow('Only install from sources you trust.'));
+  console.log('');
 
-  return confirm({
+  const result = await confirm({
     message: 'Do you understand and accept the risks?',
     default: false
   });
+  logger.clearAndBanner();
+  return result;
 }
 
 /**
@@ -175,10 +210,12 @@ export async function confirmDestructiveAction(actions, confirmMessage = 'Procee
   }
   console.log('');
 
-  return confirm({
+  const result = await confirm({
     message: confirmMessage,
     default: false
   });
+  logger.clearAndBanner();
+  return result;
 }
 
 /**
@@ -188,20 +225,27 @@ export async function confirmDestructiveAction(actions, confirmMessage = 'Procee
  * @param {string} options.message - Prompt message.
  * @param {Object[]} options.choices - Array of { name, value } choices.
  * @param {boolean} [options.clearScreen=true] - Whether to clear screen first.
+ * @param {string} [options.header] - Header hint text.
  * @returns {Promise<*>} Selected value.
  */
-export async function selectPrompt({ message, choices, clearScreen = true }) {
+export async function selectPrompt({ message, choices, clearScreen = true, header }) {
   if (clearScreen) {
     logger.clearAndBanner();
   }
+  if (header) {
+    console.log('  ' + chalk.dim(header));
+    console.log('');
+  }
 
-  return select({
+  const result = await select({
     message,
     choices: withSelectHint(choices),
     pageSize: choices.length + HINT_LINES,
     clearPromptOnDone: true,
     theme: SELECT_THEME
   });
+  logger.clearAndBanner();
+  return result;
 }
 
 export default {

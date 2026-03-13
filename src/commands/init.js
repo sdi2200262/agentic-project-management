@@ -37,10 +37,10 @@ export async function initCommand(options = {}) {
     return;
   }
 
-  logger.info('Fetching releases from official repository...');
-
   // Fetch and filter releases
+  let stop = logger.progress('Fetching releases');
   const releases = await fetchOfficialReleases();
+  stop();
   if (!releases.length) {
     throw CLIError.releaseNotFound(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`);
   }
@@ -52,7 +52,6 @@ export async function initCommand(options = {}) {
     if (!release) {
       throw CLIError.releaseNotFound(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo} (tag: ${tag})`);
     }
-    logger.info(`Using release: ${release.tag_name}`);
   } else {
     release = getLatestRelease(releases);
     if (!release) {
@@ -66,17 +65,18 @@ export async function initCommand(options = {}) {
       logger.info('To install a pre-release, use: apm init --tag <tag>');
       return;
     }
-    logger.info(`Latest release: ${release.tag_name}`);
   }
 
   // Fetch and validate manifest
-  logger.info('Fetching release manifest...');
+  stop = logger.progress('Fetching release manifest');
   const manifest = await fetchReleaseManifest(release);
-  logger.info(`Found ${manifest.assistants.length} assistant(s)`);
+  stop();
 
   // Determine assistants to install
   const assistantList = assistantArgs && assistantArgs.length > 0 ? assistantArgs : null;
   let assistantIds;
+
+  const warnings = [];
 
   if (assistantList) {
     // Validate all requested assistants
@@ -85,24 +85,20 @@ export async function initCommand(options = {}) {
       const found = manifest.assistants.find(a => a.id === arg);
       if (!found) {
         const available = manifest.assistants.map(a => a.id).join(', ');
-        logger.error(`Assistant '${arg}' not found. Available: ${available}`);
+        warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
         continue;
       }
       assistantIds.push(arg);
     }
     if (!assistantIds.length) {
+      logger.clearAndBanner();
+      for (const w of warnings) logger[w.level](w.msg);
       return;
     }
-    logger.info(`Installing: ${assistantIds.join(', ')}`);
   } else {
-    const selected = await selectAssistant(manifest.assistants);
+    const header = `Found ${manifest.assistants.length} assistant(s) available in ${release.tag_name}`;
+    const selected = await selectAssistant(manifest.assistants, { header });
     assistantIds = [selected];
-
-    const assistant = manifest.assistants.find(a => a.id === selected);
-    logger.clearAndBanner();
-    logger.info(`Release: ${release.tag_name}`);
-    logger.info(`Assistant: ${assistant.name}`);
-    logger.blank();
   }
 
   // Download and extract each assistant
@@ -114,20 +110,22 @@ export async function initCommand(options = {}) {
     const bundleAsset = findBundleAsset(release, assistant.bundle);
 
     if (!bundleAsset) {
-      logger.error(`Bundle '${assistant.bundle}' not found in release, skipping.`);
+      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' not found in release, skipping.` });
       continue;
     }
 
-    logger.info(`Downloading ${assistant.bundle}...`);
+    stop = logger.progress(`Downloading ${assistant.bundle}`);
     const writtenFiles = await downloadAndExtract(
       bundleAsset.browser_download_url,
       process.cwd(),
       { skipApm: apmExtracted }
     );
-    // Track only assistant files, not .apm/ infrastructure
+    stop();
     installedFiles[id] = writtenFiles.filter(f => !f.startsWith('.apm/'));
+    if (!apmExtracted) {
+      installedFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
+    }
     apmExtracted = true;
-    logger.success(`Installed ${assistant.name}`);
   }
 
   // Write metadata
@@ -141,6 +139,13 @@ export async function initCommand(options = {}) {
   });
   await writeMetadata(metadata);
 
+  // Clear content for final output
+  logger.clearAndBanner();
+  for (const w of warnings) logger[w.level](w.msg);
+  for (const id of assistantIds) {
+    const assistant = manifest.assistants.find(a => a.id === id);
+    if (installedFiles[id]) logger.success(`Installed ${assistant.name}`);
+  }
   logger.success('APM initialized!');
   logger.info('Run "apm add" to add more assistants, or "apm update" to check for updates.');
 }
