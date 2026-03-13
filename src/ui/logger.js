@@ -113,6 +113,9 @@ export function blank() {
   console.log('');
 }
 
+// Number of lines the banner occupies (set after first render)
+let bannerHeight = 0;
+
 /**
  * Displays the APM ASCII banner with separator line.
  */
@@ -139,15 +142,22 @@ export function banner() {
   ];
 
   lines.forEach(line => console.log(line));
+  bannerHeight = lines.length;
 }
 
 /**
- * Clears the terminal and re-renders the banner.
- * Used to refresh content area below the banner.
+ * Clears content below the banner and repositions cursor.
+ * On first call, clears the screen and renders the banner.
+ * On subsequent calls, only clears the content area — the banner stays put.
  */
 export function clearAndBanner() {
-  console.clear();
-  banner();
+  if (bannerHeight === 0) {
+    console.clear();
+    banner();
+  } else {
+    // Move cursor to line after banner, clear everything below
+    process.stdout.write(`\x1b[${bannerHeight + 1};1H\x1b[J`);
+  }
 }
 
 /**
@@ -157,6 +167,31 @@ export function clearAndBanner() {
  */
 export function line(length = 50) {
   console.log(chalk.gray('-'.repeat(length)));
+}
+
+/**
+ * Clears screen, shows banner, and displays an animated progress message.
+ * Returns a stop function. Designed to be naturally wiped by the next
+ * prompt's clearAndBanner(), but stop() should be called to clean up.
+ *
+ * @param {string} message - Progress message to display.
+ * @returns {Function} Stop function to clear the animation.
+ */
+export function progress(message) {
+  const frames = ['.', '..', '...'];
+  let i = 0;
+  process.stdout.write('  ' + chalk.dim(message + frames[0]));
+  const timer = setInterval(() => {
+    i = (i + 1) % frames.length;
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(0);
+    process.stdout.write('  ' + chalk.dim(message + frames[i]));
+  }, 300);
+  return () => {
+    clearInterval(timer);
+    process.stdout.clearLine(0);
+    process.stdout.cursorTo(0);
+  };
 }
 
 export default {
@@ -170,5 +205,6 @@ export default {
   line,
   banner,
   clearAndBanner,
+  progress,
   chalk
 };

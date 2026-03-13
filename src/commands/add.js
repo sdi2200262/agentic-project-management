@@ -32,12 +32,11 @@ export async function addCommand(options = {}) {
     throw CLIError.notInitialized();
   }
 
-  logger.info(`Current: ${metadata.releaseVersion} (${metadata.assistants.join(', ')})`);
-
   // Fetch the same release
-  logger.info('Fetching release manifest...');
+  const stop = logger.progress('Fetching release manifest');
   const release = await fetchReleaseByTag(metadata.repository, metadata.releaseVersion);
   const manifest = await fetchReleaseManifest(release);
+  stop();
 
   // Filter to uninstalled assistants
   const uninstalled = manifest.assistants.filter(a => !metadata.assistants.includes(a.id));
@@ -48,48 +47,54 @@ export async function addCommand(options = {}) {
   }
 
   // Determine which assistants to add
+  const warnings = [];
   let assistantIds;
   if (assistantArgs && assistantArgs.length > 0) {
     assistantIds = [];
     for (const arg of assistantArgs) {
       if (metadata.assistants.includes(arg)) {
-        logger.warn(`Assistant '${arg}' is already installed, skipping.`);
+        warnings.push({ level: 'warn', msg: `Assistant '${arg}' is already installed, skipping.` });
         continue;
       }
       const found = uninstalled.find(a => a.id === arg);
       if (!found) {
         const available = uninstalled.map(a => a.id).join(', ');
-        logger.error(`Assistant '${arg}' not found. Available: ${available}`);
+        warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
         continue;
       }
       assistantIds.push(arg);
     }
     if (!assistantIds.length) {
+      logger.clearAndBanner();
+      for (const w of warnings) logger[w.level](w.msg);
       return;
     }
   } else {
-    const selected = await selectAssistant(uninstalled);
+    const header = `Found ${uninstalled.length} uninstalled assistant(s) in ${metadata.releaseVersion}`;
+    const selected = await selectAssistant(uninstalled, { header });
     assistantIds = [selected];
   }
 
   // Download and install each assistant
   const installedFiles = getInstalledFiles(metadata);
   const newAssistants = [...metadata.assistants];
+  const added = [];
 
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
     const bundleAsset = findBundleAsset(release, assistant.bundle);
 
     if (!bundleAsset) {
-      logger.error(`Bundle '${assistant.bundle}' not found in release, skipping.`);
+      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' not found in release, skipping.` });
       continue;
     }
 
-    logger.info(`Downloading ${assistant.bundle}...`);
+    const dlStop = logger.progress(`Downloading ${assistant.bundle}`);
     const writtenFiles = await downloadAndExtract(bundleAsset.browser_download_url, process.cwd(), { skipApm: true });
+    dlStop();
     installedFiles[id] = writtenFiles.filter(f => !f.startsWith('.apm/'));
     newAssistants.push(id);
-    logger.success(`Installed ${assistant.name}`);
+    added.push(assistant.name);
   }
 
   // Update metadata
@@ -98,11 +103,13 @@ export async function addCommand(options = {}) {
   metadata.cliVersion = CLI_VERSION;
   await writeMetadata(metadata);
 
-  if (assistantIds.length === 1) {
-    const name = manifest.assistants.find(a => a.id === assistantIds[0])?.name;
-    logger.success(`Added ${name} to installation.`);
-  } else {
-    logger.success(`Added ${assistantIds.length} assistants to installation.`);
+  // Clear content for final output
+  logger.clearAndBanner();
+  for (const w of warnings) logger[w.level](w.msg);
+  if (added.length === 1) {
+    logger.success(`Added ${added[0]} to installation.`);
+  } else if (added.length > 1) {
+    logger.success(`Added ${added.length} assistants to installation.`);
   }
 }
 
