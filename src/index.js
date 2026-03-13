@@ -251,4 +251,10 @@ function handleError(err) {
   process.exit(1);
 }
 
+// Handle --version before Commander (allowUnknownOption prevents automatic interception)
+if (process.argv.includes('--version') || process.argv.includes('-v') || process.argv.includes('-V')) {
+  console.log(CLI_VERSION);
+  process.exit(0);
+}
+
 program.parse();

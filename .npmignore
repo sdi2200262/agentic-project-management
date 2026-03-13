@@ -1,6 +1,7 @@
 # Build and test (exclude from NPM package)
 build/
 scripts/
+test/
 *.test.js
 dist/
 tmp/
