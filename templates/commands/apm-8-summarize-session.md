@@ -17,16 +17,13 @@ This command summarizes the current APM session and optionally archives it. You 
 3. Assess the current codebase state - identify how deliverables relate to the `.apm/` artifacts (Tasks reflected in code, pending work visible in file state, gaps between plan and implementation).
 4. Write `.apm/session-summary.md` per the session summary structure below. The summary is a point-in-time snapshot - state this explicitly.
 5. Present the summary to the User.
-6. Ask: "Would you like me to archive this session? If so, does this session continue from a previous one?"
+6. Ask: "Would you like me to archive this session?"
    - If the User declines → Done.
    - If the User approves → Continue to step 7.
-7. Determine the `apm archive` command arguments:
-   - If the User indicated this continues a previous session, identify the archive name and use `--continues <name>`.
-   - Always use `--force` to skip the confirmation prompt (the User already confirmed).
-8. Run `apm archive [--continues <name>] --force`.
-9. Read `.apm/archives/index.md`. If it does not exist or is malformed, create it per the archive index format below.
-10. Append an entry for the newly archived session to the index table.
-11. Confirm to the User that archival is complete and fresh templates are ready.
+7. Run `apm archive --force`.
+8. Read `.apm/archives/index.md`. If it does not exist or is malformed, create it per the archive index format below.
+9. Append an entry for the newly archived session to the index table.
+10. Confirm to the User that archival is complete and direct them to run `apm init` to reinitialize with fresh templates.
 
 **Session summary structure:**
 
@@ -69,8 +66,8 @@ outcome: <Success | Partial | Incomplete>
 ```markdown
 # APM Archive Index
 
-| Archive | Date | Scope | Stages | Tasks | Continues |
-|---------|------|-------|--------|-------|-----------|
+| Archive | Date | Scope | Stages | Tasks |
+|---------|------|-------|--------|-------|
 ```
 
 *Field descriptions:*
@@ -80,7 +77,6 @@ outcome: <Success | Partial | Incomplete>
 - *Scope:* brief project description (from session summary or Spec title).
 - *Stages:* number of completed Stages.
 - *Tasks:* total Tasks.
-- *Continues:* previous archive name if continuation, otherwise `-`.
 
 Newest entries go at the top of the table.
 

@@ -257,7 +257,7 @@ graph LR
 
 ## Session Continuation
 
-After a session completes, Session Continuation archives the current session's artifacts and restores fresh templates for a new session while preserving access to previous work.
+After a session completes, Session Continuation archives the current session's artifacts for future reference. After archival, run `apm init` to begin a new session with fresh templates while preserving access to previous work.
 
 ### Archive Structure
 
@@ -281,11 +281,9 @@ Archived sessions reside in `.apm/archives/`. Each archive is a directory named 
 
 1. **Summarize** - After project completion, run `/apm-8-summarize-session` in a new chat. The summarization agent reads `.apm/` artifacts, produces a session summary, and offers to archive.
 
-2. **Archive** - Archival moves current `.apm/` artifacts to `.apm/archives/session-YYYY-MM-DD-NNN/`, restores fresh templates, and updates `.apm/archives/index.md`. Can also be triggered directly via `apm archive` CLI command.
+2. **Archive** - Archival moves current `.apm/` artifacts to `.apm/archives/session-YYYY-MM-DD-NNN/`, removes installed assistant files and metadata, and updates `.apm/archives/index.md`. Can also be triggered directly via `apm archive` CLI command. After archival, run `apm init` to begin a new session with fresh templates.
 
 3. **Continue** - When a new Planner starts, Context Gathering detects existing archives and offers to explore them using the `apm-archive-explorer` custom subagent, integrating relevant findings into question rounds.
-
-Archives can optionally reference a previous archive via a `continues` key in `metadata.json`, establishing session lineage for multi-session projects.
 
 ---
 

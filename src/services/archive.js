@@ -40,19 +40,6 @@ export async function generateArchiveName(archivesDir) {
 }
 
 /**
- * Validates that a continues reference points to a valid archive.
- *
- * @param {string} archivesDir - Absolute path to archives directory.
- * @param {string} name - Archive directory name to validate.
- * @returns {Promise<boolean>} True if valid archive exists.
- */
-export async function validateContinues(archivesDir, name) {
-  const archivePath = path.join(archivesDir, name);
-  const metadataPath = path.join(archivePath, 'metadata.json');
-  return fs.pathExists(metadataPath);
-}
-
-/**
  * Lists archives with their metadata.
  *
  * @param {string} cwd - Working directory.
@@ -102,7 +89,6 @@ export async function countArchives(cwd) {
  * @param {string} cwd - Working directory.
  * @param {Object} [options={}] - Archive options.
  * @param {string} [options.name] - Custom archive name (auto-generated if omitted).
- * @param {string} [options.continues] - Previous archive name this continues from.
  * @param {string} [options.reason] - Reason for archival (e.g., 'update', 'archive').
  * @returns {Promise<string>} Absolute path to created archive.
  */
@@ -129,9 +115,6 @@ export async function createArchive(cwd, options = {}) {
   if (await fs.pathExists(metadataSrc)) {
     const metadata = await fs.readJson(metadataSrc);
     metadata.archivedAt = new Date().toISOString();
-    if (options.continues) {
-      metadata.continues = options.continues;
-    }
     if (options.reason) {
       metadata.reason = options.reason;
     }
@@ -149,7 +132,6 @@ export async function createArchive(cwd, options = {}) {
 
 export default {
   generateArchiveName,
-  validateContinues,
   listArchivesWithInfo,
   countArchives,
   createArchive

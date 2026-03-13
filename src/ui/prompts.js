@@ -142,31 +142,6 @@ export async function confirmAction(message, defaultValue = false) {
 }
 
 /**
- * Prompts user to select a previous archive for continuation, or skip.
- *
- * @param {string[]} archives - Array of archive directory names.
- * @returns {Promise<string|null>} Selected archive name or null if skipped.
- */
-export async function selectArchive(archives) {
-  logger.clearAndBanner();
-  const choices = [
-    { name: 'No continuation (fresh session)', value: null },
-    ...archives.map(a => ({
-      name: a,
-      value: a
-    }))
-  ];
-
-  return select({
-    message: 'Does this session continue from a previous archive?',
-    choices: withSelectHint(choices),
-    pageSize: choices.length + HINT_LINES,
-    clearPromptOnDone: true,
-    theme: SELECT_THEME
-  });
-}
-
-/**
  * Displays security disclaimer for custom repos and prompts for confirmation.
  *
  * @returns {Promise<boolean>} Whether user accepted the disclaimer.
@@ -233,7 +208,6 @@ export default {
   selectAssistant,
   selectRelease,
   selectCustomRepo,
-  selectArchive,
   inputRepository,
   confirmAction,
   confirmSecurityDisclaimer,
