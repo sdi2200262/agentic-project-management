@@ -4,7 +4,7 @@
 
 **Reading Agent:** Worker
 
-This guide defines how Workers log Task outcomes and report results. Task Logs capture Task-level context using structured markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
+This guide defines how you log Task outcomes and report results. Task Logs capture Task-level context using structured markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
 
 ### 1.1 How to Use This Guide
 
@@ -56,7 +56,7 @@ Task Logs serve the Manager's coordination needs, not archival documentation. As
 ## 3. Task Logging Procedure
 
 **Procedure:**
-- Task Log Procedure (after Task execution).
+1. Task Log Procedure (after Task execution).
 
 ### 3.1 Task Log Procedure
 
@@ -81,7 +81,7 @@ Perform the following actions:
    - *Summarize:* Implementation approach, steps taken, rationale for choices.
    - *Reference (do not reproduce):* Code blocks over 20 lines, full file contents, verbose outputs.
    - *Exclude:* Routine operations, trivial details, information recoverable from artifacts.
-5. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. Direct User to deliver the report per the communication skill - provide the targeted command with agent identifier and the general command. Keep post-amble minimal.
+5. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. Keep post-amble minimal.
 
 For batch execution, write a batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.15 Batch Report Envelope Format.
 

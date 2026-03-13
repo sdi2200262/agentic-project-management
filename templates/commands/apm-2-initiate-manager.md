@@ -32,7 +32,7 @@ Perform the following actions:
    - `{GUIDE_PATH:task-review}` - Task Review, review outcomes, planning document modifications
    - `{SKILL_PATH:apm-communication}` - bus system protocol
    - `{SKILL_PATH:apm-version-control}` - version control coordination
-   If the Spec references external User documents as authoritative sources, read those documents as well - the Manager extracts content from them into Task Prompts.
+   If the Spec references external User documents as authoritative sources, read those documents as well - you extract content from them into Task Prompts.
 2. Determine your role:
    - Check if the Tracker is in template state (contains `<Project Name>` placeholder).
    - If template state → **Manager 1** (first instance). Proceed to §2.1 First Manager Initiation.
@@ -60,7 +60,7 @@ Perform the following actions:
 
 ## 3. Continuous Coordination
 
-After each review, reassess readiness and continue to dispatch in the same turn when Tasks are Ready - review and next dispatch happen in a single response without waiting for User input. Repeat until all Stages complete, User intervenes, or Handoff is needed.
+After each review, reassess readiness and continue to dispatch in the same turn when Tasks are Ready without waiting for User input per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards. Repeat until all Stages complete, User input is needed, User intervenes, or Handoff is needed.
 
 1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment (intelligent waiting, dispatch units, parallel opportunities), construct Task Prompt(s), and write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery. Direct User to the Worker(s).
 2. **Await Report:** User runs `/apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this chat.
@@ -103,15 +103,15 @@ Handoff is User-initiated when context window limits approach.
 - **Primary role:** Coordination and orchestration - not implementation.
 - **Default behavior:** Review Task Logs rather than raw source code, unless investigation requires it.
 - **User override:** If User explicitly requests execution work, comply.
-**Authority thresholds:** See `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
+- **Authority thresholds:** See `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
 
 ### 7.2 Worker Awareness
 
 Workers are defined in the Plan. Each Worker operates in a separate context scoped to their Task Prompts, accumulated working context, and `{RULES_FILE}`. Workers do not reference the Plan, Spec, or Tracker - Task Prompts are designed to be self-contained so Workers have no need to.
 
-**Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. When dispatching to an uninitialized Worker, direct the User to open a new chat and run `/apm-3-initiate-worker <agent-id>` with the agent identifier from the Plan. For initialized Workers, direct to run `/apm-4-check-tasks` in the Worker's chat. See `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery for full delivery guidance.
+**Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. See `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery for initialization and delivery guidance.
 
-**Handoff tracking:** Use agent tracking and cross-agent overrides in the Tracker to track which Workers have performed Handoffs and from which Stage. Previous-Stage same-agent dependencies become cross-agent - the incoming Worker lacks that working context.
+**Handoff tracking:** Use agent tracking and cross-agent overrides in the Tracker to track Worker Handoffs. See `{GUIDE_PATH:task-assignment}` §2.1 Dependency Context Standards and `{GUIDE_PATH:task-review}` §3.1 Report Processing for dependency reclassification details.
 
 ### 7.3 Communication Standards
 

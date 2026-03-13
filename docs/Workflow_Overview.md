@@ -251,7 +251,18 @@ graph LR
 **Context Reconstruction Scope**
 
 - Incoming Manager reads the Handoff Log, Tracker, Index (stage summaries and memory notes), and relevant recent Task Logs
-- Incoming Worker reads the Handoff Log and current-Stage Task Logs for their agent. Previous-Stage logs are not loaded for efficiency - the Manager accounts for this when constructing future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent dependencies.
+- Incoming Worker reads the Handoff Log and current-Stage Task Logs for their agent. Previous-Stage logs are not loaded for efficiency — the Manager accounts for this when constructing future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent dependencies. These **cross-agent overrides** are recorded in the Tracker so the Manager can look them up during future Task Assignments and provide comprehensive dependency context where a light recall anchor would otherwise be insufficient.
+
+### Recovery
+
+Recovery reconstructs working context without creating a new instance — the Agent continues as the same instance. It applies after auto-compaction or when an initiated Agent needs to resume after a cleared session. The Agent determines its role from the command argument, conversation context, or by asking the User, then re-reads its initiation command and explores project artifacts (Tracker, bus files, Task Logs) to reconstruct operational state. When gaps remain, the Agent asks the User for brief context.
+
+```markdown
+/apm-9-recover manager
+/apm-9-recover frontend-agent
+```
+
+Unlike Handoff, recovery does not increment the instance number and does not produce Handoff artifacts.
 
 ---
 

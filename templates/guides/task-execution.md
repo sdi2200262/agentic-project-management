@@ -4,7 +4,7 @@
 
 **Reading Agent:** Worker
 
-This guide defines how Workers execute Tasks assigned by the Manager via Task Prompts. Task execution transforms Task Prompts into completed deliverables through context integration, execution, validation, and iteration.
+This guide defines how you execute Tasks assigned by the Manager via Task Prompts. Task execution transforms Task Prompts into completed deliverables through context integration, execution, validation, and iteration.
 
 ### 1.1 How to Use This Guide
 
@@ -33,19 +33,19 @@ See §3 Task Execution Procedure - follow subsections sequentially from Task Pro
 
 ### 2.1 Context Integration Standards
 
-Workers operate with narrow context - only their Task Prompt and accumulated working context from prior Tasks since initiation.
+You operate with narrow context - only your Task Prompt and accumulated working context from prior Tasks since initiation.
 
 The Task Prompt's Context from Dependencies section reflects how much the Worker knows about the producer's work. Cross-agent dependencies provide detailed integration instructions - specific files to read, artifacts to review, interfaces to understand. Follow completely. Same-agent dependencies provide lighter guidance - recall anchors and file references as additional context.
 
-**Integration issues:** If integration reveals problems - missing files, broken references, conflicts with expectations - the Worker cannot proceed safely. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities → continue with best interpretation and note uncertainty; missing expected files → Pause for guidance. **Default:** Do not execute on an unstable foundation.
+**Integration issues:** If integration reveals problems - missing files, broken references, conflicts with expectations - you cannot proceed safely. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities → continue with best interpretation and note uncertainty; missing expected files → Pause for guidance. **Default:** Do not execute on an unstable foundation.
 
 ### 2.2 Validation Standards
 
 Validate automated checks first, then output verification, then user approval if needed. Do not waste User time on work that fails automated checks.
 
-- *Programmatic:* Automated verification - tests pass, builds succeed, scripts execute correctly. Worker assesses autonomously.
-- *Artifact:* Output existence and structural verification - files exist with required sections, configs valid, outputs match patterns. Worker verifies autonomously.
-- *User:* Human judgment required - design approval, content quality, architectural decisions. Worker pauses for User review. Always performed last.
+- *Programmatic:* Automated verification - tests pass, builds succeed, scripts execute correctly. Assess autonomously.
+- *Artifact:* Output existence and structural verification - files exist with required sections, configs valid, outputs match patterns. Verify autonomously.
+- *User:* Human judgment required - design approval, content quality, architectural decisions. Pause for User review. Always performed last.
 
 Validation criteria define the required verification level. When criteria require resources not currently available, request them from the User rather than substituting a lower verification level.
 
@@ -53,9 +53,9 @@ Validation criteria define the required verification level. When criteria requir
 
 ### 2.3 Iteration Standards
 
-When validation fails, the Worker enters a correction loop - correct, re-execute, re-validate.
+When validation fails, you enter a correction loop - correct, re-execute, re-validate.
 
-**Continue when:** cause identified, fix within scope, measurable progress toward resolution. **Stop when:** same error 3+ times, fixes causing new issues, requires external resolution, or iterative debugging consumes disproportionate context relative to the Task scope (5+ attempts on the same issue). A recurring identical error across multiple attempts indicates a pattern that iteration alone won't resolve. When a stop condition is reached: spawn a debug subagent to attempt resolution with fresh context. If the subagent resolves the issue, apply findings and resume. If the subagent cannot resolve or subagent tools are unavailable, prefer reporting back with Partial status over exhausting context - the Manager can restructure or reassign. Apply §2.4 Failure Status Standards and proceed to §3.6 Task Completion.
+**Continue when:** cause identified, fix within scope, measurable progress toward resolution. **Stop when:** fixes causing new issues, requires external resolution, or persistent debugging produces diagnostic progress without resolution - understanding the problem better without fixing it. When a stop condition is reached, spawn a debug subagent for fresh-context resolution rather than exhausting context. When execution suggests Task Prompt instructions may be inaccurate (unexpected behavior, wrong parameters, mismatched patterns), dispatch an exploration subagent to validate assumptions before persisting with potentially incorrect instructions. If a subagent resolves the issue, apply findings and resume. If unresolved, prefer reporting back with Partial status over exhausting context - the Manager can restructure or reassign. Apply §2.4 Failure Status Standards and proceed to §3.6 Task Completion.
 
 **Default:** When uncertain, pause and present situation to User with options.
 
@@ -65,7 +65,7 @@ Outcome statuses and `failure_point` values per `{GUIDE_PATH:task-logging}` §2.
 
 ### 2.5 User Collaboration Standards
 
-**Required:** User validation (Worker cannot self-approve subjective quality), explicit User actions (Worker cannot act outside development environment), environment resources needed for validation (credentials, configuration, access), and iteration pauses (Worker needs guidance).
+**Required:** User validation (you cannot self-approve subjective quality), explicit User actions (you cannot act outside the development environment), environment resources needed for validation (credentials, configuration, access), and iteration pauses (you need guidance).
 
 **Autonomous:** programmatic/artifact validation, continuing iteration when cause is clear and fix is within scope, standard instruction execution.
 
@@ -144,7 +144,7 @@ Invoked when validation fails. Perform the following actions:
 1. Assess the failure - what specifically failed, what is the likely cause, is it correctable?
 2. Apply decision rules from §2.3 Iteration Standards.
 3. If continuing: correct the issue, re-execute affected portions, proceed to §3.4 Task Validation.
-4. If stopping (stop condition reached per §2.3 Iteration Standards): first attempt a debug subagent for resolution with fresh context. If unresolved, present situation to User explaining what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Await guidance.
+4. If stopping (stop condition reached per §2.3 Iteration Standards): spawn a debug subagent for fresh-context resolution, or an exploration subagent if the issue suggests Task Prompt inaccuracies. If unresolved, present situation to User explaining what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Await guidance.
 5. Upon User guidance: if new direction given, integrate and proceed to the appropriate procedure step; if stopping confirmed, apply §2.4 Failure Status Standards and continue to completion.
 
 ### 3.6 Task Completion
@@ -156,7 +156,7 @@ Perform the following actions:
 4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. Include relevant status indications:
    - *After Handoff:* If this is the first Task after Handoff initialization, include incoming Worker indication: state instance number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded.
    - *After recovery:* If auto-compaction occurred and recovery was performed via `/apm-9-recover`, note it in the Task Report so the Manager is aware.
-   Direct User to deliver the report per the communication skill - provide both the targeted command (`/apm-5-check-reports <agent-id>`) and the general command.
+   Direct User to deliver the report per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
 5. Await `/apm-4-check-tasks` or Handoff initiation.
 
 ---

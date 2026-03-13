@@ -7,7 +7,7 @@ description: Perform a Handoff with an APM Worker.
 
 ## 1. Overview
 
-This command initiates the Handoff procedure for a Worker approaching context window limits. The outgoing Worker creates two artifacts:
+This command initiates the Handoff procedure for a Worker approaching context window limits. You create two artifacts:
 - **Handoff Log:** Working context from the current instance, stored in `.apm/memory/handoffs/<agent>/`.
 - **Handoff prompt:** Written to the Handoff Bus, instructing the incoming Worker to reconstruct context.
 
@@ -39,7 +39,7 @@ Perform the following actions:
 Perform the following actions:
 1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what IS happening.
 2. Apply Worker Handoff asymmetry:
-   - *Mid-Task:* "Read the Task from `task.md`, I completed steps 1-4, resume from step 5." Reference Task Bus content from context (read at task receipt, unchanged). Include execution progress detail.
+   - *Mid-Task:* "Read the Task from `task.md`, I completed steps 1-4, resume from step 5." Direct the incoming Worker to read the Task Bus file directly (intact since task receipt). Include execution progress detail.
    - *Between-Tasks:* "No active Task, await `/apm-4-check-tasks`." State context and readiness.
 3. Include: takeover statement, Handoff Log path, instructions to read current Stage Task Logs, reminder to indicate incoming Worker status in first Task Report (listing specific Task Log files loaded and noting that previous-Stage logs were not loaded), and continuation guidance.
 
@@ -75,7 +75,7 @@ stage: <N>
 - `agent`: string, required. Worker identifier (kebab-case).
 - `outgoing`: integer, required. Current instance number.
 - `incoming`: integer, required. Next instance number.
-- `handoff`: integer, required. Handoff sequence number.
+- `handoff`: integer, required. Handoff sequence number (equals the outgoing instance number).
 - `stage`: integer, required. Current Stage number.
 
 **Body:**

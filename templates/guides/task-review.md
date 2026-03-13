@@ -4,7 +4,7 @@
 
 **Reading Agent:** Manager
 
-This guide defines how the Manager reviews Task results, determines review outcomes, modifies planning documents when findings warrant it, and maintains the Tracker.
+This guide defines how you review Task results, determine review outcomes, modify planning documents when findings warrant it, and maintain the Tracker.
 
 ### 1.1 How to Use This Guide
 
@@ -38,7 +38,7 @@ The goal is to extract information needed for the next review decision.
 
 **Status interpretation:** Assess whether the status and flags are consistent with the log's body content - inconsistency is a common hallucination indicator. Status values per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (objective not achieved).
 
-**Flag interpretation** → Workers set flags based on scoped observations. The Manager interprets with full project awareness:
+**Flag interpretation** → Workers set flags based on scoped observations. Interpret with full project awareness:
 - `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done.
 - `compatibility_issues: true` - Worker observed conflicts with existing systems. Assess whether it indicates Plan, Spec, or Rules issues.
 
@@ -46,7 +46,7 @@ The goal is to extract information needed for the next review decision.
 
 ### 2.2 Review Outcome Standards
 
-After reviewing a Task Log, the Manager determines the review outcome.
+After reviewing a Task Log, determine the review outcome.
 
 **Review the log:** If everything looks good - Success status with no flags, log content supports the status - proceed to task tracking updates. If something needs attention - flags raised, non-Success status, or inconsistencies - investigate before proceeding.
 
@@ -56,7 +56,7 @@ After reviewing a Task Log, the Manager determines the review outcome.
 - *No issues:* (false positives, nothing actionable) → Continue to next Task(s).
 - *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction.
 - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification.
-- *Previously-Done work deficient:* (investigation of a later Task reveals issues with already-Done work) → Create a new Task through plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; the new Task references it, includes the discovery context, and specifies what needs correction.
+- *Previously-Done work deficient:* (investigation of a later Task reveals issues with already-Done work) → Create a new Task through plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; reference it from the new Task, include the discovery context, and specify what needs correction.
 
 Within-authority actions (follow-ups for small contained issues, minor planning document corrections) are executed immediately during the review cycle. Present findings to the User for awareness after acting. Only changes exceeding Manager authority per §2.3 Planning Document Modification Standards pause for User approval.
 
@@ -88,7 +88,7 @@ Notes capture context that falls outside structured tracking but aids coordinati
 
 **Working Notes (Tracker):** Coordination context accumulated during the Stage. Working notes serve two purposes: ephemeral context for upcoming decisions (pending considerations, User preferences, temporary constraints) and durable observations awaiting distillation (patterns, preferences, architectural insights). Insert when a review yields note-worthy context. Remove ephemeral items when no longer applicable. At Stage summary time, distill durable observations into Memory notes in the Index per §3.5. Use a bulleted list - one item per note, each self-contained.
 
-**Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Memory notes are written during Stage summary creation - the Manager distills accumulated working notes into Memory notes, retaining only observations with lasting value. Use a bulleted list - one item per note, each self-contained and understandable without surrounding context.
+**Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Memory notes are written during Stage summary creation - the Manager distills accumulated working notes into Memory notes, retaining only observations with lasting value. Not all working notes become Memory notes. Ephemeral items - pending considerations, temporary constraints, status updates, routine observations - are discarded during distillation. Only durable observations that would help a future agent (patterns, User preferences, architectural insights, integration lessons) persist. Some working notes might be ephemeral but still need to be kept in the Tracker after a Stage summary is written because they will be needed in the next Stage. Do not confuse these types of working notes with durable and persistent Memory notes that belong in the Index and serve all or most future Stages. Use a bulleted list - one item per note, each self-contained and understandable without surrounding context.
 
 ---
 
@@ -108,7 +108,7 @@ Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or 
 Perform the following actions:
 1. Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`).
 2. If batch report (`batch: true` in frontmatter), process each Task's outcome individually through §3.2 Task Log Review and §3.3 Review Outcome. Unstarted Tasks re-enter the dispatch pool.
-3. Check for Handoff indication - an incoming Worker (post-Handoff) includes a statement that it is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update agent tracking in the Tracker: increment the instance number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
+3. Check for Handoff indication - look for a statement that the Worker is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update agent tracking in the Tracker: increment the instance number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
 4. Check for auto-compaction indication - a Worker that recovered from auto-compaction notes it in the Task Report. If detected, update agent tracking Notes in the Tracker (e.g., "auto-compacted, recovered"). No dependency reclassification - the Worker continues as the same instance. Provide slightly more comprehensive dependency context in future Task Prompts for this Worker.
 5. Update dispatch tracking: mark this Worker as available, note completed Task(s) for readiness assessment.
 6. Merge completed branch per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination if dependent Tasks need it.
@@ -158,7 +158,7 @@ Execute when all Tasks in a Stage are complete. A Task is complete when the revi
 
 Perform the following actions:
 1. Enumerate Task Logs for the completed Stage using a directory listing, e.g., `ls .apm/memory/stage-<NN>/` (or platform equivalent). Synthesize from logs already reviewed during individual Task Reviews throughout the Stage - re-reading is not needed when logs are unchanged and still in context.
-2. Distill durable observations from working notes into Memory notes in the Index. Remove distilled items from working notes in the Tracker.
+2. Filter working notes before distilling - remove ephemeral items, distill only durable observations into Memory notes in the Index. Remove distilled items from working notes in the Tracker. Keep ephemeral working notes that might be needed for the next Stage in the Tracker. When this review immediately triggers Stage summary (last Task in Stage), durable observations from this review can be written directly to Memory notes rather than first passing through working notes.
 3. Synthesize Stage-level observations: outcome, agents involved, notable findings, patterns.
 4. Append Stage summary to the Index per §4.4 Stage Summary Format. Reference Task Logs rather than duplicating content. The Index structure (Memory notes above Stage summaries) enables steps 2 and 4 as a single contiguous edit matching from `## Memory Notes` through end of file.
 
@@ -168,7 +168,7 @@ Perform the following actions:
 
 ### 4.1 Task Tracking Format
 
-The Task Tracking section within the Tracker tracks Task statuses, agent assignments, and branch state per Stage. Updated by the Manager after each review cycle.
+The Task Tracking section within the Tracker tracks Task statuses, agent assignments, and branch state per Stage. Update after each review cycle.
 
 **Location:** `## Task Tracking` section of `.apm/tracker.md`.
 
@@ -198,7 +198,7 @@ The Task Tracking section within the Tracker tracks Task statuses, agent assignm
 - `Done | branch-name` - reviewed, branch pending merge.
 - `Done` (no branch) - merged.
 
-The Manager writes the end state of each Task for the review-dispatch cycle. When a Task is unblocked and dispatched in the same turn, write directly from Waiting to Active. When a Task is unblocked but cannot be dispatched - the assigned Worker has an Active Task or intelligent waiting applies per `{GUIDE_PATH:task-assignment}` §2.4 Dispatch Standards - write Ready.
+Write the end state of each Task for the review-dispatch cycle. When a Task is unblocked and dispatched in the same turn, write directly from Waiting to Active. When a Task is unblocked but cannot be dispatched - the assigned Worker has an Active Task or intelligent waiting applies per `{GUIDE_PATH:task-assignment}` §2.4 Dispatch Standards - write Ready.
 
 **Stage collapse:** When all Tasks in a Stage are Done with no branches remaining: replace all task rows with `**Stage N:** Complete`.
 
@@ -212,7 +212,7 @@ The Manager writes the end state of each Task for the review-dispatch cycle. Whe
 
 The Tracker contains four sections:
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
-- *`## Agent Tracking`:* Records agent states, instance numbers, and coordination notes. The Manager updates agent tracking when agents are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
+- *`## Agent Tracking`:* Records agent states, instance numbers, and coordination notes. Update agent tracking when agents are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
 - *`## Version Control`:* Base branch and naming convention per `{SKILL_PATH:apm-version-control}` §4.3 Tracker VC Entry Format. Static after initialization - branch state is tracked in the task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.6 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
