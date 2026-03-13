@@ -42,6 +42,11 @@ function validateAssistant(assistant, index) {
     errors.push(`${prefix}.description: must be a string if provided`);
   }
 
+  // postInstallNote is optional
+  if (assistant.postInstallNote !== undefined && typeof assistant.postInstallNote !== 'string') {
+    errors.push(`${prefix}.postInstallNote: must be a string if provided`);
+  }
+
   return errors;
 }
 

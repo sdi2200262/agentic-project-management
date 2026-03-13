@@ -38,7 +38,7 @@ export function getToken() {
 function createClient() {
   const token = getToken();
   const headers = {
-    Accept: 'application/vnd.github.v3+json',
+    Accept: 'application/vnd.github+json',
     'User-Agent': 'apm-cli'
   };
 

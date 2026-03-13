@@ -111,6 +111,10 @@ export async function addCommand(options = {}) {
   } else if (added.length > 1) {
     logger.success(`Added ${added.length} assistants to installation.`);
   }
+  for (const id of assistantIds) {
+    const assistant = manifest.assistants.find(a => a.id === id);
+    if (assistant?.postInstallNote) logger.warn(assistant.postInstallNote);
+  }
 }
 
 export default addCommand;

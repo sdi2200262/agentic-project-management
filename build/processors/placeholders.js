@@ -74,11 +74,11 @@ export function replacePlaceholders(content, context) {
   });
 
   // Replace ARGS placeholder based on format
-  const argsPlaceholder = format === 'toml' ? '{{args}}' : '$ARGUMENTS';
+  const argsPlaceholder = format === 'toml' ? '{{args}}' : id === 'copilot' ? '${input:args}' : '$ARGUMENTS';
   replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
 
   // Replace RULES_FILE placeholder
-  const rulesFileName = id === 'claude' ? 'CLAUDE.md' : 'AGENTS.md';
+  const rulesFileName = id === 'claude' ? 'CLAUDE.md' : id === 'gemini' ? 'GEMINI.md' : 'AGENTS.md';
   replaced = replaced.replace(/{RULES_FILE}/g, rulesFileName);
 
   // Replace SKILLS_DIR placeholder
