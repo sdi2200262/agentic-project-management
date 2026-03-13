@@ -176,6 +176,10 @@ export async function updateCommand(options = {}) {
   for (const id of updatedAssistants) {
     logger.success(`Updated ${manifest.assistants.find(a => a.id === id)?.name || id}`);
   }
+  for (const id of updatedAssistants) {
+    const assistant = manifest.assistants.find(a => a.id === id);
+    if (assistant?.postInstallNote) logger.warn(assistant.postInstallNote);
+  }
   logger.success(`Updated to ${release.tag_name} (${updatedAssistants.length} assistant(s))!`);
 }
 
