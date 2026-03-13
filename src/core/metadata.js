@@ -45,39 +45,6 @@ export async function writeMetadata(metadata, cwd = process.cwd()) {
 }
 
 /**
- * Checks if the workspace is initialized with APM.
- *
- * @param {string} [cwd=process.cwd()] - Working directory.
- * @returns {Promise<boolean>} True if initialized.
- */
-export async function isInitialized(cwd = process.cwd()) {
-  const metadata = await readMetadata(cwd);
-  return metadata !== null;
-}
-
-/**
- * Checks if the installation is from the official source.
- *
- * @param {string} [cwd=process.cwd()] - Working directory.
- * @returns {Promise<boolean>} True if official source.
- */
-export async function isOfficialSource(cwd = process.cwd()) {
-  const metadata = await readMetadata(cwd);
-  return metadata?.source === 'official';
-}
-
-/**
- * Gets the list of installed assistants.
- *
- * @param {string} [cwd=process.cwd()] - Working directory.
- * @returns {Promise<string[]>} Array of installed assistant IDs.
- */
-export async function getInstalledAssistants(cwd = process.cwd()) {
-  const metadata = await readMetadata(cwd);
-  return metadata?.assistants || [];
-}
-
-/**
  * Gets the installed files map from metadata.
  *
  * @param {Object} metadata - Metadata object.
@@ -111,27 +78,9 @@ export function createMetadata({ source, repository, releaseVersion, assistants,
   };
 }
 
-/**
- * Updates metadata with new installation info.
- *
- * @param {Object} existing - Existing metadata object.
- * @param {Object} updates - Updates to apply.
- * @returns {Object} Updated metadata object.
- */
-export function updateMetadataFields(existing, updates) {
-  return {
-    ...existing,
-    ...updates
-  };
-}
-
 export default {
   readMetadata,
   writeMetadata,
-  isInitialized,
-  isOfficialSource,
-  getInstalledAssistants,
   getInstalledFiles,
-  createMetadata,
-  updateMetadataFields
+  createMetadata
 };

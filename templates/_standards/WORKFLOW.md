@@ -317,7 +317,7 @@ Handoff transfers context between successive instances of the same agent role wh
 
 ### 6.7 Session Continuation
 
-Session continuation archives the current session's artifacts and restores fresh templates for a new session while preserving access to previous session context.
+Session continuation archives the current session's artifacts for future reference. After archival, the user reinitializes APM to begin a new session with fresh templates while retaining read access to previous session context.
 
 **Archive structure** - Archived sessions reside in `.apm/archives/`. Each archive is a directory named `session-YYYY-MM-DD-NNN` (zero-padded daily counter) containing the session's planning documents, Tracker, and Memory. The bus directory is not archived - bus state is ephemeral and session-specific.
 
@@ -338,11 +338,11 @@ Session continuation archives the current session's artifacts and restores fresh
     └── ...
 ```
 
-**Archive marker** - `metadata.json` within each archive directory is the canonical archive marker. Its presence identifies a valid archive. It contains the original installation metadata plus an optional `continues` key referencing a previous archive name when the session was a continuation.
+**Archive marker** - `metadata.json` within each archive directory is the canonical archive marker. Its presence identifies a valid archive. It contains the original installation metadata with archival timestamp.
 
 **Session summary** - An optional artifact (`session-summary.md`) produced by a standalone agent via the summarization command. When present, it provides a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to `.apm/` artifacts. Can be produced at any point during a session, not only after completion. When absent, the archive contains raw artifacts sufficient for future Planners to examine.
 
-**Archive index** - `.apm/archives/index.md` is a table listing all archived sessions with date, scope, stages, tasks, and continuation links. The summarization command updates it; if absent or malformed, it is recreated.
+**Archive index** - `.apm/archives/index.md` is a table listing all archived sessions with date, scope, stages, and tasks. The summarization command updates it; if absent or malformed, it is recreated.
 
 **Planner archive detection** - During Context Gathering (§6.1), the Planner checks for `.apm/archives/`. If archives exist, the Planner presents them to the User and asks about relevance. If the User indicates archives are relevant, the Planner uses the `apm-archive-explorer` custom subagent to examine indicated archives, then verifies findings against the current codebase before integrating into question rounds.
 

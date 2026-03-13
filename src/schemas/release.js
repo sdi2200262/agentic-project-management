@@ -80,18 +80,6 @@ export function validateReleaseManifest(manifest) {
   };
 }
 
-/**
- * Finds an assistant by ID in a manifest.
- *
- * @param {Object} manifest - Validated manifest object.
- * @param {string} id - Assistant ID to find.
- * @returns {Object|null} Assistant object or null if not found.
- */
-export function findAssistant(manifest, id) {
-  return manifest.assistants.find(a => a.id === id) || null;
-}
-
 export default {
-  validateReleaseManifest,
-  findAssistant
+  validateReleaseManifest
 };

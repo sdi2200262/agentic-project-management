@@ -33,8 +33,7 @@ export const CLIErrorCode = {
   DOWNLOAD_FAILED: 'DOWNLOAD_FAILED',
 
   // Archive errors
-  ARCHIVE_FAILED: 'ARCHIVE_FAILED',
-  INVALID_CONTINUES: 'INVALID_CONTINUES'
+  ARCHIVE_FAILED: 'ARCHIVE_FAILED'
 };
 
 /**
@@ -198,19 +197,6 @@ export class CLIError extends Error {
     );
   }
 
-  /**
-   * Creates an invalid continues reference error.
-   *
-   * @param {string} name - Archive name that was referenced.
-   * @returns {CLIError} Formatted error instance.
-   */
-  static invalidContinues(name) {
-    return new CLIError(
-      `Archive '${name}' not found. Use 'apm archive' without --continues to see available archives.`,
-      CLIErrorCode.INVALID_CONTINUES,
-      { name }
-    );
-  }
 }
 
 export default CLIError;

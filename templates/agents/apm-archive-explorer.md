@@ -28,7 +28,7 @@ Each archive directory contains the session's planning and memory artifacts:
 | `plan.md` | Stage and Task breakdown, dependency graph | High - informs what was planned |
 | `tracker.md` | Final Task statuses, agent states, working notes | Medium - informs what happened |
 | `memory/index.md` | Memory notes and Stage summaries | Medium - informs patterns and outcomes |
-| `metadata.json` | Installation metadata, optional `continues` key | Low - informs session lineage |
+| `metadata.json` | Installation metadata and archival timestamp | Low - informs installation context |
 
 ---
 
@@ -41,14 +41,13 @@ When spawned with an archive path or list of archive paths:
    - If no summary exists or deeper detail is needed, read `spec.md` and `plan.md` for design decisions and work structure.
    - Read `memory/index.md` for Memory notes and Stage summaries when patterns or outcomes are needed.
    - Read `tracker.md` only when specific Task statuses or agent states matter.
-   - Check `metadata.json` for `continues` key to identify session lineage.
+   - Check `metadata.json` for archival date and installation context.
 
 2. Synthesize findings into structured output:
    - *Project scope:* what was being built.
    - *Design decisions:* key choices and constraints that may still apply.
    - *Completed work:* what was delivered, at what stage.
    - *Known issues:* unresolved problems or caveats noted in the archive.
-   - *Continuation context:* if `continues` is set, note the chain.
    - *Verification handles:* file paths, specific code locations, or commands that the Planner can use to verify findings against the current codebase.
 
 3. Flag stale context explicitly. Archives are snapshots - note when findings reference specific implementations, versions, or states that may have changed.
