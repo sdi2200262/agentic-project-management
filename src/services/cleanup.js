@@ -29,7 +29,8 @@ import path from 'path';
 export async function removeInstalledFiles(cwd, installedFiles, assistantIds = null) {
   if (!installedFiles || typeof installedFiles !== 'object') return 0;
 
-  const ids = assistantIds || Object.keys(installedFiles);
+  // _apm files are handled by the archive service, not by cleanup
+  const ids = (assistantIds || Object.keys(installedFiles)).filter(id => id !== '_apm');
   let removed = 0;
 
   // Collect every intermediate directory from our installed file paths.
