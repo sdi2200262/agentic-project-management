@@ -98,9 +98,12 @@ async function createMode(force) {
 
   // Clean tracked files
   const installedFiles = getInstalledFiles(metadata);
-  const removed = await removeInstalledFiles(cwd, installedFiles);
+  const { removed, keptDirs } = await removeInstalledFiles(cwd, installedFiles);
   if (removed > 0) {
     logger.info(`Removed ${removed} tracked file(s)`);
+  }
+  for (const dir of keptDirs) {
+    logger.info(`Kept ${dir}/ — contains non-APM files`);
   }
 
   // Delete metadata

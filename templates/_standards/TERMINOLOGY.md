@@ -2,7 +2,7 @@
 
 This document defines the formal vocabulary of the APM workflow. This is a development-time specification: agents do not read this file or any `_standards/` document during runtime. The vocabulary defined here takes effect through the commands, guides, and skills that use these terms consistently. Template authors use terms exactly as defined here; agents inherit correct terminology through the templates they read.
 
-Formal terms are always capitalized and carry defined meaning. All other language is natural — standard English capitalization applies (headings, labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language. Workflow definitions follow `WORKFLOW.md`.
+Formal terms are always capitalized and carry defined meaning. All other language is natural - standard English capitalization applies (headings, labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language. Workflow definitions follow `WORKFLOW.md`.
 
 ---
 
@@ -56,7 +56,7 @@ Tasks in the Tracker progress through these states:
 | **Active** | Dispatched to a Worker; execution in progress. |
 | **Done** | Coordination decision finalized - terminal state. |
 
-Outcome statuses are inputs to the Manager's coordination decision — the Manager reviews the outcome, investigates if needed, and then decides the lifecycle transition. A Task becomes Done when the Manager makes a terminal coordination decision - proceeding after Success, accepting a non-Success outcome, or restructuring work. A Task remains Active during investigation, while a follow-up is pending, or while the Manager is deciding how to proceed. Done is terminal; if completed work needs revisiting due to later findings, the Manager creates a new Task through plan modification rather than reopening the original. The original remains Done as a historical coordination decision; the new Task references it and captures what specifically needs correction. When all Tasks in a Stage are Done with no pending merges, the Stage collapses to complete.
+Outcome statuses are inputs to the Manager's coordination decision - the Manager reviews the outcome, investigates if needed, and then decides the lifecycle transition. A Task becomes Done when the Manager makes a terminal coordination decision - proceeding after Success, accepting a non-Success outcome, or restructuring work. A Task remains Active during investigation, while a follow-up is pending, or while the Manager is deciding how to proceed. Done is terminal; if completed work needs revisiting due to later findings, the Manager creates a new Task through plan modification rather than reopening the original. The original remains Done as a historical coordination decision; the new Task references it and captures what specifically needs correction. When all Tasks in a Stage are Done with no pending merges, the Stage collapses to complete.
 
 ### Task Outcome Statuses
 
@@ -133,7 +133,7 @@ These concepts are not formal capitalized terms but are clearly defined because 
 - *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates either form a chain with only internal dependencies, or are an independent group of same-Worker Tasks all Ready simultaneously. When forming chains, the Manager weighs whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
 - *Parallel:* two or more dispatch units (singles or batches) sent to different Workers simultaneously when no unresolved cross-Worker dependencies exist. Requires version control workspace isolation.
 
-**Agent instances.** Each agent role is numbered sequentially. Manager 1 is the first Manager; Manager 2 takes over after Handoff. Workers follow the same pattern (e.g., Frontend Agent 1, Frontend Agent 2). Instance numbers are tracked in the Tracker's agent tracking table. Auto-compaction recovery does not increment the instance number — the recovered agent continues as the same instance. Instance number increments via Handoff.
+**Agent instances.** Each agent role is numbered sequentially. Manager 1 is the first Manager; Manager 2 takes over after Handoff. Workers follow the same pattern (e.g., Frontend Agent 1, Frontend Agent 2). Instance numbers are tracked in the Tracker's agent tracking table. Auto-compaction recovery does not increment the instance number - the recovered agent continues as the same instance. Instance number increments via Handoff.
 
 **Agent states.** Agents in the Tracker are either uninitialized (defined in the Plan but no instance started) or on a specific instance (Instance N). An instance number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
 
@@ -143,9 +143,9 @@ These concepts are not formal capitalized terms but are clearly defined because 
 
 **Session continuation.** Archiving the current session's artifacts and reinitializing for a new session. The summarization command produces an optional session summary, then the `apm archive` CLI command moves artifacts into `.apm/archives/` and removes the current installation. The user runs `apm init` (or `apm custom`) to begin a new session with fresh templates while retaining read access to archived context.
 
-**Session archive.** A snapshot of a session's artifacts stored as a dated directory in `.apm/archives/` (`session-YYYY-MM-DD-NNN`). Contains planning documents, Tracker, Memory, and an optional session summary. The snapshot captures whatever state the session was in at archival time — completed, partial, or in-progress. The `metadata.json` file is the canonical archive marker.
+**Session archive.** A snapshot of a session's artifacts stored as a dated directory in `.apm/archives/` (`session-YYYY-MM-DD-NNN`). Contains planning documents, Tracker, Memory, and an optional session summary. The snapshot captures whatever state the session was in at archival time - completed, partial, or in-progress. The `metadata.json` file is the canonical archive marker.
 
-**Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command — not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
+**Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command - not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
 
 **Validation approaches.** Each Task specifies validation using one or more approaches: programmatic (automated checks), artifact (output existence and structure), or user (human judgment requiring a pause). Validation follows a fixed order: programmatic, then artifact, then user.
 

@@ -37,7 +37,7 @@ date: <YYYY-MM-DD>
 project: <project name>
 stages_completed: <number>
 total_tasks: <number>
-outcome: <Success | Partial | Incomplete>
+outcome: <complete | partial | incomplete>
 ---
 ```
 
@@ -47,7 +47,7 @@ outcome: <Success | Partial | Incomplete>
 - `project`: string, required, project name from the Spec.
 - `stages_completed`: integer, required, number of completed Stages.
 - `total_tasks`: integer, required, total Tasks across all Stages.
-- `outcome`: enum, required, session state at summary time. `Success` when all Stages completed and deliverables verified. `Partial` when some Stages completed but work remains. `Incomplete` when significant work remains unfinished.
+- `outcome`: enum, required, session state at summary time. `complete` when all Stages completed and deliverables verified. `partial` when some Stages completed but work remains. `incomplete` when significant work remains unfinished.
 
 *Body sections* (order as listed):
 

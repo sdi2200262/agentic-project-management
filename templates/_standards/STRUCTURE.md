@@ -1,6 +1,6 @@
 # APM Structure Standards
 
-This document defines the organizational structure for APM commands, guides, and skills — required sections, ordering, and document-level formatting. This is a development-time specification: agents do not read this file during runtime. The structural patterns defined here are implemented by template authors in commands, guides, and skills. Content presentation and writing conventions follow [`WRITING.md`](./WRITING.md). All terms are defined in [`TERMINOLOGY.md`](./TERMINOLOGY.md).
+This document defines the organizational structure for APM commands, guides, and skills - required sections, ordering, and document-level formatting. This is a development-time specification: agents do not read this file during runtime. The structural patterns defined here are implemented by template authors in commands, guides, and skills. Content presentation and writing conventions follow [`WRITING.md`](./WRITING.md). All terms are defined in [`TERMINOLOGY.md`](./TERMINOLOGY.md).
 
 ---
 
@@ -63,7 +63,7 @@ Commands follow a variable structure based on purpose, with required opening and
 | §3+ [Core Procedures] | Main procedures for this agent type. |
 | §N Operating Rules | Boundaries, communication, subagent usage. |
 
-**Utility and troubleshooting commands** (lightweight profile): One-liner purpose with applicability guard and argument handling. Flat procedure steps handle core logic. No formal sections — title, description paragraph, procedure, end marker.
+**Utility and troubleshooting commands** (lightweight profile): One-liner purpose with applicability guard and argument handling. Flat procedure steps handle core logic. No formal sections - title, description paragraph, procedure, end marker.
 
 **Handoff commands** (lightweight profile):
 

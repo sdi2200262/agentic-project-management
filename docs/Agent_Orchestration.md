@@ -277,7 +277,11 @@ The Incoming Agent inherits clean context without noise, enabling multiple conse
 - Current-Stage Task Logs for their agent
 - Handoff Log
 
-Previous-Stage logs are not loaded for efficiency - the Manager accounts for this by treating previous-Stage same-agent dependencies as cross-agent dependencies (providing file reading instructions in Task Prompts).
+Previous-Stage logs are not loaded for efficiency — the Manager accounts for this by treating previous-Stage same-agent dependencies as cross-agent dependencies (providing file reading instructions in Task Prompts). These cross-agent overrides are recorded in the Tracker so the Manager can reference them during future Task Assignments.
+
+### Recovery
+
+Recovery reconstructs working context without creating a new instance. It applies after auto-compaction or when an initiated Agent needs to resume after a cleared session. The Agent determines its role from the command argument, conversation context, or by asking the User, then re-reads its initiation command and explores project artifacts to reconstruct operational state. Unlike Handoff, recovery does not increment the instance number and does not produce Handoff artifacts.
 
 ---
 

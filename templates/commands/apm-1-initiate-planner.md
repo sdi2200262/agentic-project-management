@@ -19,8 +19,8 @@ Read the following skill:
 - `{SKILL_PATH:apm-communication}` - agent communication standards
 
 The following artifact files exist with header templates ready to be populated:
-- `.apm/plan.md` (populated during Work Breakdown by the Planner)
-- `.apm/spec.md` (populated during Work Breakdown by the Planner)
+- `.apm/plan.md` (populated by you during Work Breakdown)
+- `.apm/spec.md` (populated by you during Work Breakdown)
 - `.apm/tracker.md` (populated by Manager 1)
 - `.apm/memory/index.md` (populated by Manager 1)
 

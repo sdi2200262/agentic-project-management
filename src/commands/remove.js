@@ -65,9 +65,12 @@ export async function removeCommand(options = {}) {
 
   // Clean tracked files for removed assistants
   const installedFiles = getInstalledFiles(metadata);
-  const removed = await removeInstalledFiles(process.cwd(), installedFiles, assistantIds);
+  const { removed, keptDirs } = await removeInstalledFiles(process.cwd(), installedFiles, assistantIds);
   if (removed > 0) {
     logger.info(`Removed ${removed} file(s)`);
+  }
+  for (const dir of keptDirs) {
+    logger.info(`Kept ${dir}/ — contains non-APM files`);
   }
 
   // Update metadata

@@ -4,7 +4,7 @@
 
 **Reading Agent:** Manager
 
-This guide defines how the Manager constructs Task Prompts for Workers. Task Prompts are self-contained - Workers receive everything needed to execute a Task. Workers do not reference the Spec or Plan directly; all necessary context is extracted and embedded by the Manager.
+This guide defines how the Manager constructs Task Prompts for Workers. Task Prompts are self-contained - Workers receive everything needed to execute a Task. Workers do not reference the Spec or Plan directly; all necessary context is extracted and embedded by you.
 
 ### 1.1 How to Use This Guide
 
@@ -43,13 +43,13 @@ Tasks may depend on outputs from previous Tasks. The context you include depends
 
 ### 2.2 Spec Extraction Standards
 
-Task Prompts must be self-contained. The Manager extracts relevant Spec content and integrates it directly into the prompt - never reference the Spec by path. Workers should not need to look beyond their Task Prompt. When the Spec references external User documents for specific content, follow those references and extract the relevant content directly - the Task Prompt remains self-contained regardless of where the source content resides.
+Task Prompts must be self-contained. Extract relevant Spec content and integrate it directly into the prompt - never reference the Spec by path. Workers should not need to look beyond their Task Prompt. When the Spec references external User documents for specific content, follow those references and extract the relevant content directly - the Task Prompt remains self-contained regardless of where the source content resides.
 
 **Include** content that defines interfaces, schemas, or contracts the Task must implement; establishes constraints on approach or patterns; or clarifies design decisions affecting deliverables. **Exclude** content relating to other domains, providing background without actionable requirements, or already captured in the Task's Guidance field. Preserve specificity with exact constraints, not summaries.
 
 ### 2.3 Follow-Up Standards
 
-Follow-up Task Prompts occur when the review outcome determines retry after investigation. The Manager arrives with: original Task Log findings, investigation results, understanding of what went wrong, and potentially modified planning documents.
+Follow-up Task Prompts occur when the review outcome determines retry after investigation. You arrive with: original Task Log findings, investigation results, understanding of what went wrong, and potentially modified planning documents.
 
 **Content principle:** The follow-up is a new prompt - Objective, Instructions, Output, and Validation are refined based on what went wrong. Do not copy the previous prompt.
 
@@ -57,7 +57,7 @@ Follow-up Task Prompts occur when the review outcome determines retry after inve
 
 ### 2.4 Dispatch Standards
 
-Before constructing individual Task Prompts, the Manager assesses dispatch opportunities across Ready Tasks.
+Before constructing individual Task Prompts, assess dispatch opportunities across Ready Tasks.
 
 **Task readiness:** A Task is Ready when all its dependencies are complete. Read the Tracker for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
 
@@ -152,7 +152,7 @@ has_dependencies: true
 - `stage`: integer, required. Stage number.
 - `task`: integer, required. Task number within Stage.
 - `agent`: string, required. Worker identifier (kebab-case).
-- `log_path`: string, required. Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. All Tasks in the same Stage share the same Stage directory. The Manager constructs the path; the Worker creates the directory when writing the first Task Log for that Stage.
+- `log_path`: string, required. Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. All Tasks in the same Stage share the same Stage directory. You construct the path; the Worker creates the directory when writing the first Task Log for that Stage.
 - `has_dependencies`: boolean, required. Whether dependency context is present.
 
 **Prompt Body Sections:**
@@ -166,7 +166,7 @@ has_dependencies: true
 - *Workspace:* Branch name for sequential dispatch, worktree path for parallel dispatch per `{SKILL_PATH:apm-version-control}`. Worker operates in the specified workspace, commits there, and notes it in the Task Log. Workers do not merge.
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field with validation approaches (programmatic, artifact, user).
-- *Task Iteration:* After 3 failed attempts on the same issue, spawn a debug subagent for resolution. If unresolved, log partial progress and report Partial rather than exhausting the context window.
+- *Task Iteration:* When facing persistent issues that resist direct fixing, spawn a debug subagent for fresh-context resolution rather than exhausting the context window. When execution reveals discrepancies with these instructions, use exploration subagents to validate assumptions before persisting. If unresolved, log to memory and report with Partial status.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
 - *Task Report:* Instruction to output a Task Report for User to return to Manager.
 
