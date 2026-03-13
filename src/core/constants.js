@@ -6,7 +6,6 @@
  * @module src/core/constants
  */
 
-import path from 'path';
 import os from 'os';
 import { readFileSync } from 'fs';
 import { dirname, join } from 'path';
@@ -43,12 +42,12 @@ export const CLI_MAJOR_VERSION = parseInt(CLI_VERSION.split('.')[0], 10);
 /**
  * Global config directory path (~/.apm/).
  */
-export const CONFIG_DIR = path.join(os.homedir(), '.apm');
+export const CONFIG_DIR = join(os.homedir(), '.apm');
 
 /**
  * Global config file path (~/.apm/config.json).
  */
-export const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
+export const CONFIG_FILE = join(CONFIG_DIR, 'config.json');
 
 /**
  * Workspace metadata file path (.apm/metadata.json).

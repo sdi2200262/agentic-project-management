@@ -87,7 +87,7 @@ export async function addCommand(options = {}) {
 
     logger.info(`Downloading ${assistant.bundle}...`);
     const writtenFiles = await downloadAndExtract(bundleAsset.browser_download_url, process.cwd(), { skipApm: true });
-    installedFiles[id] = writtenFiles;
+    installedFiles[id] = writtenFiles.filter(f => !f.startsWith('.apm/'));
     newAssistants.push(id);
     logger.success(`Installed ${assistant.name}`);
   }

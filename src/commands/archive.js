@@ -61,9 +61,6 @@ async function listMode() {
     if (metadata.reason) {
       console.log(`  Reason:      ${metadata.reason}`);
     }
-    if (metadata.continues) {
-      console.log(`  Continues:   ${metadata.continues}`);
-    }
     console.log('');
   }
 }
