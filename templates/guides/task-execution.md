@@ -25,7 +25,7 @@ See §3 Task Execution Procedure - follow subsections sequentially from Task Pro
 
 **Task Log:** Structured log per `{GUIDE_PATH:task-logging}` §4.1 Task Log Format.
 
-**Task Report:** Concise summary written to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
+**Task Report:** Concise summary written to Report Bus per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.
 
 ---
 
@@ -75,11 +75,17 @@ Outcome statuses and `failure_point` values per `{GUIDE_PATH:task-logging}` §2.
 
 When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{RULES_FILE}` and request User approval before modifying. Rules are not modified unilaterally - the User decides whether the change is warranted.
 
-### 2.7 Batch Rules
+### 2.7 Version Control Standards
+
+Operate in the workspace provided by the Task Prompt - main working directory on the assigned branch for sequential dispatch, or worktree path for parallel dispatch. Commit work to the assigned branch and note the workspace in the Task Log. Do not create branches, manage worktrees, or merge - the Manager coordinates all version control operations.
+
+**Commit content:** APM terminology - Task IDs, Stage numbers, agent identifiers, framework vocabulary - does not appear in commit messages, branch references, or source code comments. Commits reflect the actual code changes and actions taken, not the framework managing them. Write commit messages as if no project management framework existed.
+
+### 2.8 Batch Rules
 
 When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus message), execute sequentially. Complete each Task fully - execute, validate, and write the Task Log - before starting the next Task in the batch. Each Task gets its own Task Log at its specified `log_path`.
 
-**Fail-fast:** If any Task results in Failed status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.15 Batch Report Envelope Format. Do not defer logging to the end of the batch.
+**Fail-fast:** If any Task results in Failed status, stop the batch. Do not proceed to remaining Tasks. After completing all Tasks (or stopping on failure), write a single batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.6 Batch Report Envelope Format. Do not defer logging to the end of the batch.
 
 ---
 
@@ -96,7 +102,7 @@ When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus mess
 ### 3.1 Task Prompt Receipt
 
 On Task receipt, perform the following actions:
-1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.14 Batch Envelope Format and execute each Task sequentially per §2.7 Batch Rules.
+1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format and execute each Task sequentially per §2.8 Batch Rules.
 2. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope.
 3. Parse Task Prompt structure - YAML frontmatter fields and body sections.
 4. Identify execution parameters:
@@ -151,12 +157,11 @@ Invoked when validation fails. Perform the following actions:
 
 Perform the following actions:
 1. Before logging, assess visibly in chat whether all objectives are met and deliverables are ready for review, whether any important findings or compatibility issues arose, and determine the Task's status based on your conclusion per §2.4 Failure Status Standards (Success if all validation passed).
-2. Commit work to the assigned branch per `{SKILL_PATH:apm-version-control}` §5.1 Role Boundaries.
+2. Commit work to the assigned branch per §2.7 Version Control Standards.
 3. Create Task Log per `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure at `log_path`.
-4. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. Include relevant status indications:
+4. Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery. Include relevant status indications:
    - *After Handoff:* If this is the first Task after Handoff initialization, include incoming Worker indication: state instance number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded.
    - *After recovery:* If auto-compaction occurred and recovery was performed via `/apm-9-recover`, note it in the Task Report so the Manager is aware.
-   Direct User to deliver the report per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
 5. Await `/apm-4-check-tasks` or Handoff initiation.
 
 ---
@@ -167,7 +172,7 @@ Perform the following actions:
 
 **Task Log:** Per `{GUIDE_PATH:task-logging}` §4.1 Task Log Format, at `log_path` from Task Prompt.
 
-**Task Report:** Per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
+**Task Report:** Per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.
 
 ---
 

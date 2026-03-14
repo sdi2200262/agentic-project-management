@@ -10,7 +10,7 @@ This command reconstructs working context after platform auto-compaction or when
 The command argument - if provided - will be listed here: `{ARGS}`. If empty, then no argument was provided.
 
 **Procedure:**
-1. Determine role: from the command argument if provided (`manager` for the Manager, any other value for a Worker resolved per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution). If no argument, infer from conversation context (compaction summary or the initiation just performed). If conversation context does not reveal your role, ask the User.
+1. Determine role: from the command argument if provided (`manager` for the Manager, any other value for a Worker). If no argument, infer from conversation context (compaction summary or the initiation just performed). If conversation context does not reveal your role, ask the User.
 2. Re-read your initiation command and all documents it references:
    - Manager → `{COMMAND_PATH:apm-2-initiate-manager}`
    - Worker → `{COMMAND_PATH:apm-3-initiate-worker}`

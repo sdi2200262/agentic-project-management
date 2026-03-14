@@ -69,11 +69,11 @@ The Plan defines how work is organized - Stages, Tasks, agent assignments, depen
 
 Guidance may reference authoritative sources by path - the Manager reads those sources and integrates relevant content into the Task Prompt. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and Guidance.
 
-**Dispatch-aware structuring** → When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities. Three dispatch modes exist per `{GUIDE_PATH:task-assignment}` §2.4 Dispatch Standards:
+**Dispatch-aware structuring** → When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities. Three dispatch modes exist:
 
-- *Batch candidates:* same-agent Task groups dispatchable together (sequential chains or independent groups).
-- *Parallel candidates:* independent dispatch units for different agents, dispatchable simultaneously.
-- *Single dispatch:* a lone Ready Task with no batch or parallel partners.
+- *Batch:* same-agent Task groups dispatchable together (sequential chains or independent groups).
+- *Parallel:* independent dispatch units for different agents, dispatchable simultaneously.
+- *Single:* a lone Ready Task with no batch or parallel partners.
 
 All three patterns are valid. Structure the Plan to create natural opportunities across all of them rather than forcing one pattern.
 

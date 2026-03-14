@@ -1,6 +1,6 @@
 ---
 name: apm-communication
-description: Agent communication standards and file-based bus system for structured inter-agent messaging.
+description: Agent communication standards and file-based bus system protocol for structured inter-agent messaging.
 ---
 
 # APM {VERSION} - Communication Skill
@@ -9,18 +9,16 @@ description: Agent communication standards and file-based bus system for structu
 
 **Reading Agent:** Planner, Manager, Worker
 
-This skill defines agent communication standards and the file-based bus system for structured inter-agent messaging.
+This skill defines agent communication standards and the file-based bus system protocol. It covers communication models, bus identity, and shared message formats. Agent-specific delivery and reporting procedures are defined in each agent's guides.
 
 ### 1.1 How to Use This Skill
 
-See §2 Agent-to-User Communication for visible reasoning and terminology boundaries. See §3 Agent-to-System Communication for artifact writing standards. See §4 Agent-to-Agent Communication for bus system protocol, including initialization, sending, receiving, and clearing.
+See §2 Agent-to-User Communication for visible reasoning and terminology boundaries. See §3 Agent-to-System Communication for artifact writing standards. See §4 Bus System Protocol for bus identity, resolution, and shared message formats.
 
 ### 1.2 Objectives
 
 - Define clear standards for agent-to-user communication, visible reasoning, and terminology boundaries.
-- Enable structured message exchange between agents via the file system.
-- Provide clear sending and receiving protocols that agents follow consistently.
-- Maintain clean bus state by clearing incoming bus files before writing outgoing.
+- Provide the bus system protocol: identity standards, agent resolution, and shared message formats.
 - Support Worker identity validation through bus file naming.
 
 ### 1.3 Outputs
@@ -74,7 +72,7 @@ When writing to APM artifacts (Spec, Plan, Tracker, Task Logs, bus files), follo
 
 ---
 
-## 4. Agent-to-Agent Communication
+## 4. Bus System Protocol
 
 Bus files have two states: **empty** (no message present, the cleared/initial state) and **has content** (a message is present and awaiting delivery). There is no intermediate state - the file either contains a message or it does not. The file content is the message itself.
 
@@ -93,107 +91,11 @@ When `/apm-4-check-tasks` or `/apm-5-check-reports` accept an `[agent-id]` argum
 - *Empty bus:* When an agent reads a bus file and finds it empty, inform the User that no message is present and await direction.
 - *Wrong file referenced:* When a User references a bus file intended for a different agent, the receiving agent detects the mismatch per §4.1 Bus Identity Standards and rejects it.
 
-### 4.4 Batch Delivery Standards
-
-When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. The Task Bus file contains YAML frontmatter with batch metadata, followed by individual Task Prompts separated by `---` delimiters per §4.14 Batch Envelope Format. Each Task Prompt retains its full standalone structure. Batch execution behavior (sequential execution, fail-fast on Failed) per `{GUIDE_PATH:task-execution}` §2.7 Batch Rules.
-
-**Procedure:**
-1. Bus Initialization (Planner, end of Planning Phase).
-2. Task Prompt Delivery (Manager writes Task Prompt to Task Bus).
-3. Task Report Delivery (Worker writes Task Report to Report Bus).
-4. Receiving Protocol (read message from bus file).
-5. Clear-on-Return (clear incoming bus file before writing outgoing).
-6. Handoff Bus Protocol (write handoff prompt to Handoff Bus).
-
-### 4.5 Bus Initialization
-
-Execute once at the end of the Planning Phase, after all planning documents are approved. Perform the following actions:
-1. Create the `.apm/bus/` directory.
-2. Read the Plan to identify all Workers defined in the Agents field.
-3. For each Worker, derive the agent slug (lowercase, hyphenated name) per §4.13 Agent Slug Format and create the agent directory:
-   - Create directory: `.apm/bus/<agent-slug>/`
-   - Create empty Task Bus: `.apm/bus/<agent-slug>/task.md`
-   - Create empty Report Bus: `.apm/bus/<agent-slug>/report.md`
-   - Create empty Handoff Bus: `.apm/bus/<agent-slug>/handoff.md`
-4. Create the Manager's bus directory:
-   - Create directory: `.apm/bus/manager/`
-   - Create empty Handoff Bus: `.apm/bus/manager/handoff.md`
-
-Create all directories and bus files using `mkdir -p` and `touch` in a single terminal command rather than individual file creation calls.
-
-### 4.6 Task Prompt Delivery
-
-Execute when the Manager sends a Task Prompt or follow-up prompt to a Worker. Perform the following actions:
-1. Clear the incoming Report Bus per §4.9 Clear-on-Return. Skip on first Task Prompt when no report exists.
-2. Read the Task Bus file, then write the complete Task Prompt content to it: `.apm/bus/<agent-slug>/task.md`.
-3. Provide the User with specific action guidance for Worker `<agent-slug>`:
-   - If the Worker is not yet initialized → direct the User to open a new chat and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
-   - If the Worker is already initialized → direct the User to run `/apm-4-check-tasks` in the Worker's chat.
-   - For batch dispatch → summarize concisely what the Worker will receive (number of Tasks, sequential execution).
-   - For parallel dispatch → list each Worker with its required action.
-   Markdown code blocks for commands are recommended.
-
-### 4.7 Task Report Delivery
-
-Execute when a Worker sends a Task Report to the Manager. Perform the following actions:
-1. Clear the incoming Task Bus per §4.9 Clear-on-Return.
-2. Read the Report Bus file, then write the complete Task Report content to it: `.apm/bus/<agent-slug>/report.md`.
-3. Direct the User to deliver the report to the Manager. Provide both:
-   - `/apm-5-check-reports <agent-id>` for targeted retrieval of this Worker's report.
-   - `/apm-5-check-reports` (no argument) as an alternative when multiple Workers may have finished.
-   Markdown code blocks for commands are recommended. Workers operate asynchronously - cover only this Worker's end.
-
-### 4.8 Receiving Protocol
-
-Execute when a trigger command is invoked or a User references a bus file. Perform the following actions:
-1. Read the bus file (resolved from agent identity for trigger commands, or directly referenced by User).
-2. Validate that the file contains content. If empty → inform the User that no message is present.
-3. For Workers: validate bus identity per §4.1 Bus Identity Standards.
-4. Process the message content according to the relevant procedure.
-
-### 4.9 Clear-on-Return
-
-Before writing to an outgoing bus file, clear the incoming bus file to prevent stale messages. Perform the following actions:
-1. Identify the incoming bus file:
-   - For Manager: `.apm/bus/<agent-slug>/report.md` (the Worker's Report Bus)
-   - For Worker: `.apm/bus/<agent-slug>/task.md` (the received Task Bus)
-2. Clear the file contents via terminal (e.g., `truncate -s 0` or shell redirection).
-3. Write the outgoing message.
-
-### 4.10 Handoff Bus Protocol
-
-Execute when an agent performs a Handoff. Perform the following actions:
-1. Determine the Handoff Bus file:
-   - Manager Handoff → `.apm/bus/manager/handoff.md`
-   - Worker Handoff → `.apm/bus/<agent-slug>/handoff.md`
-2. Write the handoff prompt content to the Handoff Bus file.
-3. Inform the User that the handoff prompt is available. Direct the User to start a new chat and run the appropriate init command - the incoming agent will auto-detect the handoff prompt.
-
-### 4.11 Directory Structure
-
-```
-.apm/bus/
-├── <agent-slug>/
-│   ├── task.md
-│   ├── report.md
-│   └── handoff.md
-└── manager/
-    └── handoff.md
-```
-
-### 4.12 File Naming Convention
-
-| Bus File | Pattern | Direction |
-|----------|---------|-----------|
-| Task Bus | `task.md` | Manager to Worker |
-| Report Bus | `report.md` | Worker to Manager |
-| Handoff Bus | `handoff.md` | Outgoing to incoming agent |
-
-### 4.13 Agent Slug Format
+### 4.4 Agent Slug Format
 
 Agent slugs are derived from the agent names listed in the Plan Agents field by converting to lowercase and replacing spaces with hyphens. Examples: `Frontend Agent` → `frontend-agent`, `Backend Agent` → `backend-agent`. The Manager's own directory uses the slug `manager`.
 
-### 4.14 Batch Envelope Format
+### 4.5 Batch Envelope Format
 
 When sending multiple Tasks to a Worker in a batch, the Task Bus file uses this structure:
 
@@ -243,9 +145,7 @@ agent: <agent-slug>
 ...
 ```
 
-**Worker processing:** Worker parses the batch envelope, executes Tasks sequentially, logs each to its `log_path`, and writes a batch report upon completion or failure. See `{GUIDE_PATH:task-execution}` §2.7 Batch Rules for batch execution and §4.15 Batch Report Envelope Format for batch report structure.
-
-### 4.15 Batch Report Envelope Format
+### 4.6 Batch Report Envelope Format
 
 When a Worker completes a batch of Tasks (or stops early on failure), the Report Bus file uses this structure:
 
@@ -277,7 +177,7 @@ tasks:
 - `tasks`: list, required. Per-Task reference and outcome status.
 - `tasks[].stage`: integer, required. Stage number.
 - `tasks[].task`: integer, required. Task number within Stage.
-- `tasks[].status`: enum, required. Task outcome per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards, or `"Not started"` for unexecuted Tasks.
+- `tasks[].status`: enum, required. `Success`, `Partial`, `Failed` (per Task outcome), or `"Not started"` for unexecuted Tasks.
 
 **Markdown Body Template:**
 ```markdown
@@ -300,13 +200,6 @@ tasks:
 ```
 
 **Fail-fast documentation:** If the batch stopped early due to a Failed Task, indicate which Task caused the stop and list remaining Tasks as "Not started (batch stopped)."
-
-### 4.16 Common Mistakes
-
-- *Writing to the wrong bus file:* Manager writes to Task Bus, Worker writes to Report Bus.
-- *Forgetting to clear:* Always clear the incoming bus file before writing to the outgoing bus file per §4.9 Clear-on-Return.
-- *Referencing bus files by wrong path:* Use the exact path per §4.11 Directory Structure, derived from the agent slug.
-- *Not validating bus identity:* Workers must verify the agent directory matches their `agent` per §4.1 Bus Identity Standards.
 
 ---
 

@@ -48,7 +48,7 @@ Perform the following actions:
 ### 2.3 User Review and Finalization
 
 Perform the following actions:
-1. Write handoff prompt to Handoff Bus per `{SKILL_PATH:apm-communication}` §4.10 Handoff Bus Protocol.
+1. Write handoff prompt to the Handoff Bus: `.apm/bus/<agent-slug>/handoff.md`.
 2. Present both artifacts to User: Handoff Log (file path) and handoff prompt (bus path). Request review and direct User to start a new chat and run `/apm-3-initiate-worker <agent-id>` - the incoming Worker will auto-detect the handoff prompt.
 3. If modifications requested, update accordingly. This completes the outgoing Worker's duties.
 

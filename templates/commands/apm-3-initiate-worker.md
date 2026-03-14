@@ -25,7 +25,6 @@ Read the following documents (these reads are independent):
 - `{GUIDE_PATH:task-execution}` - Task Execution Procedure
 - `{GUIDE_PATH:task-logging}` - Task Logging Procedure
 - `{SKILL_PATH:apm-communication}` - bus system protocol
-- `{SKILL_PATH:apm-version-control}` - version control standards
 - `{RULES_FILE}` - Rules
 
 ### 2.1 Registration
@@ -59,7 +58,7 @@ Perform the following actions:
 When a Task Prompt arrives (via `/apm-4-check-tasks`):
 1. **Execute:** See `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure. The guide controls validation, execution, and completion.
 2. **Log:** Create Task Log per `{GUIDE_PATH:task-logging}` §3 Task Logging Procedure.
-3. **Report:** Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
+3. **Report:** Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.
 4. **Await:** Wait for next Task Prompt or User instruction.
 
 Repeat until all assigned Tasks are complete, User intervenes, or Handoff is needed.
@@ -89,7 +88,11 @@ After registration, only accept Tasks assigned to your registered agent identifi
 
 ### 5.3 Communication Standards
 
-Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Write to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery.
+Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Deliver Task Reports per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.
+
+### 5.4 Context Scope
+
+Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.
 
 ---
 

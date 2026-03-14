@@ -31,7 +31,6 @@ Perform the following actions:
    - `{GUIDE_PATH:task-assignment}` - Task Prompt construction
    - `{GUIDE_PATH:task-review}` - Task Review, review outcomes, planning document modifications
    - `{SKILL_PATH:apm-communication}` - bus system protocol
-   - `{SKILL_PATH:apm-version-control}` - version control coordination
    If the Spec references external User documents as authoritative sources, read those documents as well - you extract content from them into Task Prompts.
 2. Determine your role:
    - Check if the Tracker is in template state (contains `<Project Name>` placeholder).
@@ -42,10 +41,10 @@ Perform the following actions:
 
 Perform the following actions:
 1. Update the Tracker and Index: replace `<Project Name>` with actual project name.
-2. Check whether version control is already initialized; if not, initialize per `{SKILL_PATH:apm-version-control}` §3.1 VC Initialization. Before running any git commands, identify the working repository directory from the Spec - the workspace root and the repository may differ.
+2. Check whether version control is already initialized; if not, initialize per `{GUIDE_PATH:task-assignment}` §3.1 VC Initialization. Before running any git commands, identify the working repository directory from the Spec - the workspace root and the repository may differ.
 3. Populate the Tracker: task tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (uninitialized).
 4. Present a concise understanding summary: project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure and Task count.
-5. Request User approval to proceed. If corrections needed, integrate feedback and re-request. When approved, generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3 Task Assignment Procedure and proceed to §3 Continuous Coordination.
+5. Request User approval to proceed. If corrections needed, integrate feedback and re-request. When approved, generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment and proceed to §3 Continuous Coordination.
 
 ### 2.2 Incoming Manager Initiation
 
@@ -62,12 +61,12 @@ Perform the following actions:
 
 After each review, reassess readiness and continue to dispatch in the same turn when Tasks are Ready without waiting for User input per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards. Repeat until all Stages complete, User input is needed, User intervenes, or Handoff is needed.
 
-1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment (intelligent waiting, dispatch units, parallel opportunities), construct Task Prompt(s), and write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery. Direct User to the Worker(s).
+1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment (intelligent waiting, dispatch units, parallel opportunities), construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction. Direct User to the Worker(s).
 2. **Await Report:** User runs `/apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this chat.
 3. **Review and Continue** → Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Log, investigate further if needed and determine review outcome, modify planning documents if needed, update the Tracker. Then in the same turn:
    - *Tasks Ready* → Continue to step 1.
    - *No Tasks Ready, Workers active* → Communicate wait state per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
-   - *Follow-up needed* → Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction (repeat step 2).
+   - *Follow-up needed* → Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction (repeat step 2).
    - *Stage complete* → Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation, then Continue to step 1 for next Stage.
 
 ---
@@ -109,13 +108,17 @@ Handoff is User-initiated when context window limits approach.
 
 Workers are defined in the Plan. Each Worker operates in a separate context scoped to their Task Prompts, accumulated working context, and `{RULES_FILE}`. Workers do not reference the Plan, Spec, or Tracker - Task Prompts are designed to be self-contained so Workers have no need to.
 
-**Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. See `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery for initialization and delivery guidance.
+**Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. See `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction step 7 for initialization and delivery guidance.
 
 **Handoff tracking:** Use agent tracking and cross-agent overrides in the Tracker to track Worker Handoffs. See `{GUIDE_PATH:task-assignment}` §2.1 Dependency Context Standards and `{GUIDE_PATH:task-review}` §3.1 Report Processing for dependency reclassification details.
 
 ### 7.3 Communication Standards
 
-Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery.
+Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Deliver Task Prompts per `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction.
+
+### 7.4 Context Scope
+
+Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.
 
 ---
 

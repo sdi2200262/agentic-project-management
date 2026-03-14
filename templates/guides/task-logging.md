@@ -81,9 +81,19 @@ Perform the following actions:
    - *Summarize:* Implementation approach, steps taken, rationale for choices.
    - *Reference (do not reproduce):* Code blocks over 20 lines, full file contents, verbose outputs.
    - *Exclude:* Routine operations, trivial details, information recoverable from artifacts.
-5. Write Task Report to Report Bus per `{SKILL_PATH:apm-communication}` §4.7 Task Report Delivery. Keep post-amble minimal.
+5. Continue to §3.2 Task Report Delivery.
 
-For batch execution, write a batch report to the Report Bus per `{SKILL_PATH:apm-communication}` §4.15 Batch Report Envelope Format.
+### 3.2 Task Report Delivery
+
+Execute after writing the Task Log. Perform the following actions:
+1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).
+2. Write the Task Report to the Report Bus: `.apm/bus/<agent-slug>/report.md`. The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log. Keep post-amble minimal.
+3. Direct the User to deliver the report to the Manager:
+   - `/apm-5-check-reports <agent-id>` for targeted retrieval of this Worker's report.
+   - `/apm-5-check-reports` (no argument) as an alternative when multiple Workers may have finished.
+   Markdown code blocks for commands are recommended. Workers operate asynchronously - cover only this Worker's end.
+
+For batch execution, write a single batch report per `{SKILL_PATH:apm-communication}` §4.6 Batch Report Envelope Format after completing all Tasks (or stopping on failure).
 
 ---
 
