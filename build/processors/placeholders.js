@@ -94,19 +94,19 @@ export function replacePlaceholders(content, context) {
   const configNote = subagentGuidance.configNote
     ? ` ${subagentGuidance.configNote}.`
     : '';
-  const plannerGuidanceText = `Use the ${subagentGuidance.explorerName} subagent: \`${subagentGuidance.toolSyntax}\`. Integrate findings into the current Question Round.${configNote}`;
+  const plannerGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent for substantial research - it runs in its own context window, preserving yours for planning: \`${subagentGuidance.toolSyntax}\`. Structure the prompt with specific research questions and expected sources. Integrate findings into the current Question Round.${configNote}`;
   replaced = replaced.replace(/{PLANNER_SUBAGENT_GUIDANCE}/g, plannerGuidanceText);
 
   // Replace MANAGER_SUBAGENT_GUIDANCE placeholder
-  const managerGuidanceText = `Use the ${subagentGuidance.explorerName} subagent to explore files, verify deliverables, and gather context: \`${subagentGuidance.toolSyntax}\`.`;
+  const managerGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent for investigation - it runs in its own context window, preserving yours for coordination: \`${subagentGuidance.toolSyntax}\`. Structure the prompt with the investigation goal, files to examine, and what to report back.`;
   replaced = replaced.replace(/{MANAGER_SUBAGENT_GUIDANCE}/g, managerGuidanceText);
 
   // Replace WORKER_SUBAGENT_GUIDANCE placeholder
-  const workerGuidanceText = `For complex cross-agent dependencies with multiple files or unfamiliar patterns, use the ${subagentGuidance.explorerName} subagent to explore and understand the producer's work: \`${subagentGuidance.toolSyntax}\`.`;
+  const workerGuidanceText = `For complex cross-agent dependencies or multi-file exploration, spawn a dedicated ${subagentGuidance.explorerName} subagent rather than inline searching - it runs in its own context window and returns consolidated findings: \`${subagentGuidance.toolSyntax}\`. Structure the prompt with specific files to read and questions to answer.`;
   replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
 
   // Replace SUBAGENT_GUIDANCE placeholder (generic, for non-role agents)
-  const subagentGuidanceText = `Use the ${subagentGuidance.explorerName} subagent: \`${subagentGuidance.toolSyntax}\`.`;
+  const subagentGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent - it runs in its own context window and returns findings when complete: \`${subagentGuidance.toolSyntax}\`.`;
   replaced = replaced.replace(/{SUBAGENT_GUIDANCE}/g, subagentGuidanceText);
 
   // Replace ARCHIVE_EXPLORER_GUIDANCE placeholder
