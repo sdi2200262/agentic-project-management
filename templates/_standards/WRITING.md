@@ -144,7 +144,7 @@ References use "See" or "per" exclusively. References appear inline within prose
 
 **Same-Document:** "See §N.M Section Title" or "per §N.M Section Title." Example: "See §2.1 Context Integration Standards."
 
-**Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title." Example: "Write to Task Bus per `{SKILL_PATH:apm-communication}` §4.6 Task Prompt Delivery."
+**Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title." Example: "Validate bus identity per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards."
 
 **Cross-Guide:** "See `{GUIDE_PATH:guide-name}` §N.M Section Title." Example: "See `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure."
 

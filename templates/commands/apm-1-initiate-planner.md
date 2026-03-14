@@ -57,7 +57,12 @@ Perform the following actions:
 **Prerequisite:** Work Breakdown Procedure must be complete with all planning documents approved.
 
 Perform the following actions:
-1. Initialize bus system per `{SKILL_PATH:apm-communication}` §4.5 Bus Initialization.
+1. Initialize the bus system. Read the Plan to identify all Workers defined in the Agents field. For each Worker, derive the agent slug (lowercase, hyphenated name) per `{SKILL_PATH:apm-communication}` §4.4 Agent Slug Format and create the agent directory:
+   - Create directory: `.apm/bus/<agent-slug>/`
+   - Create empty Task Bus: `.apm/bus/<agent-slug>/task.md`
+   - Create empty Report Bus: `.apm/bus/<agent-slug>/report.md`
+   - Create empty Handoff Bus: `.apm/bus/<agent-slug>/handoff.md`
+   Create the Manager's bus directory: `.apm/bus/manager/` with empty Handoff Bus `.apm/bus/manager/handoff.md`. Create all directories and bus files using `mkdir -p` and `touch` in a single terminal command.
 2. State the Planning Phase is complete: planning documents created, bus system initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
 
 ---
@@ -74,7 +79,11 @@ Perform the following actions:
 
 Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Strictly adhere to defined APM terminology. Do not use synonyms or invent new terms.
 
-### 5.3 Exploration and Research
+### 5.3 Context Scope
+
+Read only the APM documents listed in this command. Do not read other agents' guides, commands, or APM procedural documents beyond those referenced here and their internal cross-references.
+
+### 5.4 Exploration and Research
 
 You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.4 Exploration and Research Standards. The Planner operates as a single instance with no Handoff - prefer subagents for cross-codebase research to preserve context for Work Breakdown.
 

@@ -36,7 +36,7 @@ See §3 Task Review Procedure when processing a Task Report from a Worker. See �
 
 The goal is to extract information needed for the next review decision.
 
-**Status interpretation:** Assess whether the status and flags are consistent with the log's body content - inconsistency is a common hallucination indicator. Status values per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (objective not achieved).
+**Status interpretation:** Assess whether the status and flags are consistent with the log's body content - inconsistency is a common hallucination indicator. Status values: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (objective not achieved).
 
 **Flag interpretation** → Workers set flags based on scoped observations. Interpret with full project awareness:
 - `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done.
@@ -54,7 +54,7 @@ After reviewing a Task Log, determine the review outcome.
 
 **Post-investigation outcome:**
 - *No issues:* (false positives, nothing actionable) → Continue to next Task(s).
-- *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction.
+- *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction.
 - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification.
 - *Previously-Done work deficient:* (investigation of a later Task reveals issues with already-Done work) → Create a new Task through plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; reference it from the new Task, include the discovery context, and specify what needs correction.
 
@@ -74,9 +74,23 @@ When multiple Workers are active simultaneously, the Manager coordinates asynchr
 
 **Async report handling:** Reports arrive in any order. Process each as it comes: complete the review, merge if needed, reassess readiness, dispatch newly Ready Tasks. Each report-to-dispatch cycle is continuous.
 
-**Merge coordination:** After successful review during parallel dispatch, merge the completed Task's branch per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination before dispatching dependent Tasks. At Stage end, perform a merge sweep per the VC skill.
+**Merge coordination:** After successful review during parallel dispatch, merge the completed Task's branch per §2.7 Merge Standards before dispatching dependent Tasks. At Stage end, perform a merge sweep per §2.7 Merge Standards.
 
 **Wait state:** When no Tasks are Ready but Workers are active, communicate what was processed, what is pending, and which report(s) the User should return next. Apply intelligent waiting per `{GUIDE_PATH:task-assignment}` §2.4 Dispatch Standards - if a pending report would unlock a better dispatch combination, recommend the User prioritize that report.
+
+### 2.7 Merge Standards
+
+Merge state is a dispatch prerequisite. You merge completed feature branches into the base branch at specific coordination points.
+
+**Merge timing:** After successful Task Review, merge the completed branch. Before dependent dispatch, merge if the dependent Task needs the completed Task's output. At Stage end, all current-Stage feature branches must be merged.
+
+**Merge execution:** Clean merges require no User intervention. Perform merges autonomously: switch to the base branch (`git checkout <base-branch>`), merge the completed branch (`git merge <branch-name>`), then verify.
+
+**Conflict resolution:** Resolve using coordination-level context - knowledge of both Tasks' objectives, project design, and the Spec. For complex conflicts, spawn a debug subagent or escalate to the User.
+
+**Branch protection adaptation:** If the base branch has protection rules preventing direct merges, adapt (create a PR, merge into an intermediate branch, or ask the User). Discovered reactively and noted in working notes.
+
+**Cleanup:** After a successful merge, remove the worktree if one exists (`git worktree remove .apm/worktrees/<branch-slug>`) and delete the merged feature branch (`git branch -d <branch-name>`). During Stage-end merge sweeps with multiple branches, batch all removals and deletions into a single terminal invocation, then verify once.
 
 ### 2.5 Stage Summary Standards
 
@@ -111,7 +125,7 @@ Perform the following actions:
 3. Check for Handoff indication - look for a statement that the Worker is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update agent tracking in the Tracker: increment the instance number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
 4. Check for auto-compaction indication - a Worker that recovered from auto-compaction notes it in the Task Report. If detected, update agent tracking Notes in the Tracker (e.g., "auto-compacted, recovered"). No dependency reclassification - the Worker continues as the same instance. Provide slightly more comprehensive dependency context in future Task Prompts for this Worker.
 5. Update dispatch tracking: mark this Worker as available, note completed Task(s) for readiness assessment.
-6. Merge completed branch per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination if dependent Tasks need it.
+6. Merge completed branch per §2.7 Merge Standards if dependent Tasks need it.
 
 ### 3.2 Task Log Review
 
@@ -131,12 +145,12 @@ Perform the following actions:
 2. Determine investigation scope per §2.2 Review Outcome Standards: small scope → self-investigate, large scope → subagent.
 3. Investigate and determine outcome per §2.2 Review Outcome Standards:
    - *No issues:* → Continue to step 4.
-   - *Follow-up needed:* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. Continue to step 4.
+   - *Follow-up needed:* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction. Continue to step 4.
    - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification (returns to step 4 after completion).
-4. Update the Tracker: mark completed Tasks as Done, reassess Waiting Tasks for readiness, update branches. Execute pending merges per `{SKILL_PATH:apm-version-control}` §3.4 Merge Coordination before reassessing readiness. Assess whether the review yielded note-worthy context and add to working notes - both ephemeral coordination items and durable observations for later distillation. Remove stale working notes. Batch all changes from this review cycle into a single Tracker edit per §4.1 Task Tracking Format.
+4. Update the Tracker: mark completed Tasks as Done, reassess Waiting Tasks for readiness, update branches. Execute pending merges per §2.7 Merge Standards before reassessing readiness. Assess whether the review yielded note-worthy context and add to working notes - both ephemeral coordination items and durable observations for later distillation. Remove stale working notes. Batch all changes from this review cycle into a single Tracker edit per §4.1 Task Tracking Format.
 5. Assess next action per §2.4 Parallel Coordination Standards:
    - If all Stage Tasks are Done and merged → Collapse Stage per §4.1 Task Tracking Format and proceed to §3.5 Stage Summary Creation.
-   - If Tasks are Ready → Proceed to `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment in the same turn.
+   - If Tasks are Ready → Proceed to `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment in the same turn.
    - If no Tasks are Ready but Workers are active → Communicate wait state per §2.4 Parallel Coordination Standards and direct User to return the next report.
 
 ### 3.4 Planning Document Modification
@@ -200,6 +214,8 @@ The Task Tracking section within the Tracker tracks Task statuses, agent assignm
 
 Write the end state of each Task for the review-dispatch cycle. When a Task is unblocked and dispatched in the same turn, write directly from Waiting to Active. When a Task is unblocked but cannot be dispatched - the assigned Worker has an Active Task or intelligent waiting applies per `{GUIDE_PATH:task-assignment}` §2.4 Dispatch Standards - write Ready.
 
+**Branch cleanup:** After merging a completed branch per §2.7 Merge Standards, clear the Branch column for that task row.
+
 **Stage collapse:** When all Tasks in a Stage are Done with no branches remaining: replace all task rows with `**Stage N:** Complete`.
 
 **Batch edits:** Task ID column guarantees edit tool uniqueness for targeting individual rows. When multiple rows or working notes change in the same review-dispatch cycle, batch all Tracker updates into a single edit.
@@ -213,7 +229,7 @@ Write the end state of each Task for the review-dispatch cycle. When a Task is u
 The Tracker contains four sections:
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
 - *`## Agent Tracking`:* Records agent states, instance numbers, and coordination notes. Update agent tracking when agents are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
-- *`## Version Control`:* Base branch and naming convention per `{SKILL_PATH:apm-version-control}` §4.3 Tracker VC Entry Format. Static after initialization - branch state is tracked in the task table's Branch column.
+- *`## Version Control`:* Base branch and naming convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Static after initialization - branch state is tracked in the task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.6 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
 **Agent Tracking Table:**

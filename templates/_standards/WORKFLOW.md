@@ -14,7 +14,7 @@ APM is a multi-agent project management framework that coordinates agents throug
 
 **Platform agnosticism** - Core concepts (the bus system, Memory, planning documents) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
 
-**Context scoping** - Each agent operates within intentionally limited context. Workers are scoped to their Task Prompts, Rules, and accumulated working context. This scoping is architectural discipline, not programmatic enforcement - Workers are normal agent instances capable of reading any file. Task Prompts are designed to be fully self-contained so Workers have no reason to look beyond them. The Manager holds coordination-level context: planning documents, Memory, and the full project picture. The Planner holds initial project context during the Planning Phase but does not participate during implementation. This scoping prevents context overload and keeps agents focused on their role.
+**Context scoping** - Each agent operates within intentionally limited context. Workers are scoped to their Task Prompts, Rules, and accumulated working context. This scoping is architectural discipline, not programmatic enforcement - Workers are normal agent instances capable of reading any file. Task Prompts are designed to be fully self-contained so Workers have no reason to look beyond them. The Manager holds coordination-level context: planning documents, Memory, and the full project picture. The Planner holds initial project context during the Planning Phase but does not participate during implementation. This scoping prevents context overload and keeps agents focused on their role. Each agent's initiation command specifies the APM documents that define its procedures. Agents read only those listed documents; other agents' guides and procedural content are outside their scope.
 
 **Structured memory** - Memory captures project history in a hierarchical file structure that enables Handoff continuity and efficient progress tracking. The Manager operates on execution summaries rather than raw implementation detail, enabling coordination of multiple Workers without context overload.
 
@@ -373,7 +373,7 @@ Debug subagents are appropriate when a bug resists initial fix attempts, spans m
 | §2.1 Planning Phase | `commands/apm-1-initiate-planner.md`, `guides/context-gathering.md`, `guides/work-breakdown.md` |
 | §2.2 Implementation Phase | `commands/apm-2-initiate-manager.md`, `commands/apm-3-initiate-worker.md` |
 | §3 Planning Documents | `apm/spec.md`, `apm/plan.md` |
-| §4 Communication System | `skills/apm-communication/SKILL.md` (§4.1 communication models, §4.2-§4.3 bus system), `commands/apm-4-check-tasks.md`, `commands/apm-5-check-reports.md` |
+| §4 Communication System | `skills/apm-communication/SKILL.md` (bus protocol, formats, identity), `guides/task-assignment.md` (delivery), `guides/task-logging.md` (reporting), `commands/apm-4-check-tasks.md`, `commands/apm-5-check-reports.md` |
 | §5 Memory | `apm/tracker.md`, `apm/memory/index.md`, `guides/task-logging.md` |
 | §6.1 Context Gathering | `guides/context-gathering.md` |
 | §6.2 Work Breakdown | `guides/work-breakdown.md` |
