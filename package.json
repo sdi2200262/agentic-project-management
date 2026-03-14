@@ -3,13 +3,10 @@
   "version": "1.0.0-test-2",
   "description": "Agentic Project Management CLI",
   "scripts": {
-    "build": "npm run build:release && npm run build:website",
+    "build": "npm run build:release",
     "build:release": "node build/index.js",
-    "build:website": "cd website && npm run build",
-    "start:website": "cd website && npm run start",
     "test": "vitest run --reporter=basic",
-    "test:watch": "vitest",
-    "deploy:website": "cd website && npm run deploy"
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
