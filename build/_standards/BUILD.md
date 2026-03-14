@@ -103,7 +103,9 @@ Source templates in `templates/` (no dot prefixes):
 templates/
   apm/              # Copied to .apm/ in bundles
   commands/         # Processed per target
+  guides/           # Processed per target
   skills/           # Processed per target
+  agents/           # Processed per target
   _standards/       # Not copied (build-time only)
 ```
 
@@ -114,23 +116,31 @@ Each bundle contains (with dot prefixes):
 ```
 {id}.zip/
   .apm/
-    Implementation_Plan.md
-    Specifications.md
-    Memory/
-      Memory_Root.md
+    plan.md
+    spec.md
+    tracker.md
+    memory/
+      index.md
   {configDir}/
     commands/
       apm-1-initiate-planner.md
       ...
+    guides/
+      context-gathering.md
+      ...
     skills/
-      task-execution/
+      apm-communication/
         SKILL.md
-      memory-logging/
+        bus-integration.md
+      apm-version-control/
         SKILL.md
+      ...
+    agents/
+      apm-archive-explorer.md
       ...
 ```
 
-Skills output as `<skill-name>/SKILL.md` directories, not flat files.
+Skills output as `<skill-name>/SKILL.md` directories (may contain additional files). Guides are flat files. Agents are flat files.
 
 ### Command Naming
 
@@ -166,11 +176,13 @@ Supported placeholders:
 
 - `{VERSION}` - Package version
 - `{TIMESTAMP}` - ISO timestamp
-- `{SKILL_PATH:path}` - Full skill path
-- `{COMMAND_PATH:filename}` - Full command path
-- `{ARGS}` - Platform-specific args syntax
-- `{RULES_FILE}` - Platform-specific filename
-- `{SKILLS_DIR}` - Platform-specific skills directory
+- `{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{AGENT_PATH:name}` - Cross-reference paths
+- `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_DIR}` - Platform-specific directory paths
+- `{ARGS}` - `$ARGUMENTS` (Markdown), `{{args}}` (TOML), `${input:args}` (Copilot)
+- `{RULES_FILE}` - `CLAUDE.md` (Claude), `GEMINI.md` (Gemini), `AGENTS.md` (others)
+- `{PLANNER_SUBAGENT_GUIDANCE}`, `{MANAGER_SUBAGENT_GUIDANCE}`, `{WORKER_SUBAGENT_GUIDANCE}`, `{SUBAGENT_GUIDANCE}` - Role-specific subagent syntax
+- `{ARCHIVE_EXPLORER_GUIDANCE}` - Subagent spawn syntax for archive explorer agent
+- `{CONTEXT_ATTACH_SYNTAX}` - Platform-specific file reference instructions
 
 ## Archive Generation
 
@@ -195,11 +207,14 @@ await createZipArchive(targetBuildDir, zipPath);
       "name": "Claude Code",
       "bundle": "claude.zip",
       "description": "Optimized for Claude Code",
-      "configDir": ".claude"
+      "configDir": ".claude",
+      "postInstallNote": "..."
     }
   ]
 }
 ```
+
+`postInstallNote` is optional (only Gemini currently uses it).
 
 ## Logging
 
@@ -229,8 +244,18 @@ Required fields per target:
   "configDir": ".claude",
   "directories": {
     "commands": ".claude/commands",
-    "skills": ".claude/skills"
-  }
+    "skills": ".claude/skills",
+    "guides": ".claude/apm-guides",
+    "agents": ".claude/agents"
+  },
+  "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
+  "subagentGuidance": {
+    "hasSubagents": true,
+    "toolSyntax": "Agent(subagent_type=\"Explore\", prompt=\"...\")",
+    "explorerName": "Explore",
+    "configNote": null
+  },
+  "postInstallNote": null
 }
 ```
 

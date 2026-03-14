@@ -18,6 +18,9 @@ throw CLIError.manifestMissing(tag);
 throw CLIError.manifestInvalid(tag, errors);
 throw CLIError.bundleNotFound(bundleName, tag);
 throw CLIError.notInitialized();
+throw CLIError.downloadFailed(url, reason);
+throw CLIError.extractionFailed(reason);
+throw CLIError.archiveFailed(reason);
 ```
 
 ### Fail Fast
@@ -41,6 +44,13 @@ Use semantic codes from `CLIErrorCode`:
 - `MANIFEST_INVALID` - Schema validation failures
 - `BUNDLE_NOT_FOUND` - Missing bundle asset
 - `NOT_INITIALIZED` - No .apm/metadata.json
+- `CONFIG_READ_FAILED` - Failed to read global config
+- `CONFIG_WRITE_FAILED` - Failed to write global config
+- `METADATA_READ_FAILED` - Failed to read workspace metadata
+- `METADATA_WRITE_FAILED` - Failed to write workspace metadata
+- `EXTRACTION_FAILED` - ZIP extraction failure
+- `DOWNLOAD_FAILED` - Asset download failure
+- `ARCHIVE_FAILED` - Session archive failure
 
 ## Module Structure
 
@@ -55,11 +65,18 @@ Each module handles one concern:
 - `services/github.js` - GitHub API access
 - `services/releases.js` - Release operations
 - `services/extractor.js` - ZIP extraction
+- `services/archive.js` - Session archival (.apm/archives/)
+- `services/cleanup.js` - Installed file removal and directory cleanup
+- `schemas/release.js` - Release manifest validation
 - `ui/logger.js` - Terminal output
 - `ui/prompts.js` - User interactions
 - `commands/init.js` - Init command
 - `commands/custom.js` - Custom command
 - `commands/update.js` - Update command
+- `commands/archive.js` - Archive command
+- `commands/add.js` - Add command
+- `commands/remove.js` - Remove command
+- `commands/status.js` - Status command
 
 ### Export Patterns
 
@@ -134,7 +151,7 @@ const proceed = await confirmAction('Continue?', true);
 - Use `logger.success()` for completion messages
 - Use `logger.warn()` for non-fatal issues
 - Use `logger.error()` only for failures
-- No emojis or ASCII in output
+- No emojis in output (ASCII banner is the exception)
 
 ## Data Schemas
 
@@ -163,9 +180,13 @@ Workspace installation state:
   "source": "official",
   "repository": "owner/repo",
   "releaseVersion": "v1.0.0",
+  "cliVersion": "1.0.0",
   "assistants": ["claude"],
-  "installedAt": "2024-01-01T00:00:00.000Z",
-  "lastUpdated": "2024-01-01T00:00:00.000Z"
+  "installedFiles": {
+    "_apm": [".apm/plan.md", ".apm/spec.md"],
+    "claude": [".claude/commands/apm-1-initiate-planner.md"]
+  },
+  "installedAt": "2024-01-01T00:00:00.000Z"
 }
 ```
 
@@ -182,11 +203,14 @@ Release manifest schema:
       "name": "Claude Code",
       "bundle": "claude.zip",
       "description": "Optimized for Claude Code",
-      "configDir": ".claude"
+      "configDir": ".claude",
+      "postInstallNote": "..."
     }
   ]
 }
 ```
+
+`postInstallNote` is optional (only Gemini currently uses it).
 
 ## Version Filtering
 
