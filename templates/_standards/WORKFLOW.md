@@ -42,7 +42,7 @@ The Manager and Workers transform the Plan into completed deliverables. The Impl
 
 **Stage completion** - After all Tasks in a Stage complete, the Manager creates a Stage summary in the Index capturing Stage-level outcomes, then proceeds to the next Stage.
 
-**Project completion** - After all Stages complete, the Manager presents a project completion summary covering: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
+**Project completion** - After all Stages complete, the Manager sets `status: complete` in the Tracker's YAML frontmatter and presents a project completion summary covering: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
 
 **Version control** - Version control provides workspace isolation during parallel dispatch. Each dispatch unit operates on its own branch, and the Manager coordinates all merges. Workers commit to their assigned branch but do not create branches, manage worktrees, or merge.
 
@@ -109,7 +109,7 @@ The Spec and Plan have bidirectional influence - changes to one may require adju
 
 Agent communication follows three models based on audience:
 
-**Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. No framework vocabulary - section references (§N.M), procedure step names, checkpoint labels, decision categories - is exposed. Only terms defined in `TERMINOLOGY.md` are used formally. When describing decisions, agents explain what happened, what was decided, and what happens next - not which procedure branch was taken. When directing Users to perform actions, agents provide specific actionable guidance: which command, in which agent's chat, with what arguments.
+**Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. No framework vocabulary - section references (§N.M), procedure step names, checkpoint labels, decision categories - is exposed. Only terms defined in `TERMINOLOGY.md` are used formally. When describing decisions, agents explain what happened, what was decided, and what happens next - not which procedure branch was taken. When directing Users to take action - whether workflow navigation or any action requiring User involvement outside the conversation - agents present them as action directives: visually distinct from regular communication using a blockquote format, with each action step on its own line for easy reference and copying. The communication skill defines the format and includes platform-specific new-chat guidance.
 
  **Visible reasoning.** Agents present analytical thinking visibly in chat to make decisions auditable and give the User opportunity to redirect and steer. Two forms exist: guided reasoning, where specific procedures define labeled reasoning frames that structure the analysis (the structure forces thorough analysis and produces better outputs - these frames are intentionally visible); and free-form reasoning, the baseline for all other decision points - formal and technical, but presented naturally without framework labels or procedure vocabulary. Guided reasoning frames are defined by the procedures that use them; the communication skill defines the baseline for everything else.
 
@@ -175,7 +175,7 @@ Project persistence resides in `.apm/` with this hierarchy:
 
 **Working notes** (within Tracker) are coordination context maintained by the Manager and User. Contents include User preferences, coordination insights, and durable observations awaiting distillation into Memory notes at Stage summary time. Working notes are inserted and removed as context evolves.
 
-**Stage directories** (`memory/stage-<NN>/`) contain Task Logs for each Stage. Workers create the directory when writing their first Task Log for that Stage.
+**Stage directories** (`memory/stage-<NN>/`) contain Task Logs for each Stage. Workers write Task Logs directly to the specified `log_path`; the file write operation creates parent directories as needed.
 
 **Task Logs** are structured logs written by Workers after Task completion. They capture outcome status, validation results, deliverables, and flags.
 
@@ -226,6 +226,8 @@ The Planner gathers project requirements through three progressive rounds of que
 
 **Round 3 - Implementation Approach and Quality.** Technical constraints, workflow preferences, quality standards, coordination needs, domain organization, design decisions and constraints, finalizing the Spec and Rules.
 
+Each round's final exchange includes an open-ended elicitation question folded into the last follow-up or round summary - never standalone. The question is generated dynamically from gaps in the round's theme, giving the User opportunity to surface context that the targeted questions did not cover.
+
 Each round follows an iteration cycle: ask initial questions, assess gaps after each response, follow up until understanding is complete, present a round summary, advance. When User responses reference codebase elements, the Planner proactively explores before continuing - subagent usage is encouraged to avoid context bloat. When subagent findings contribute specific details to planning documents, the Planner verifies key claims through handles the subagent provides; findings that inform general understanding are accepted without verification. The Planner captures validation criteria for each requirement, proposing concrete measures when the User does not specify them. Context Gathering produces signals and constraints about the project - never decomposition structures, agent assignments, or planning vocabulary (Stages, Tasks, Workers, tracks, phases, task sizing).
 
 After all rounds, the Planner presents a consolidated understanding summary for User review. Modifications loop back through targeted follow-ups. User approval triggers transition to Work Breakdown.
@@ -275,6 +277,8 @@ The Worker executes Task instructions, validates results, iterates if needed, lo
 **Execution flow** - The Worker integrates dependency context if present, executes steps sequentially, then validates per the Task Prompt's validation criteria. Validation follows a fixed order: automated checks first, then output verification, then user approval if specified. When validation fails, the Worker corrects and re-validates until Success or a stop condition is reached. Stop conditions: fixes causing new issues, the issue requires external resolution, or debugging produces diagnostic progress without resolution - understanding the problem better without fixing it. When a stop condition is reached, the Worker spawns a debug subagent for fresh-context resolution. When execution suggests Task Prompt instructions may be inaccurate, the Worker uses exploration subagents to validate assumptions before persisting.
 
 **Batch execution** - When receiving a batch of Tasks, the Worker executes them sequentially. After each Task, a Task Log is written immediately before proceeding to the next. If any Task results in a Failed status, execution stops. After completing all Tasks (or stopping on failure), the Worker writes a batch Task Report to the Report Bus containing outcomes for each Task.
+
+**User corrections and Rules integration** - When the User provides a correction or directive during execution, the Worker complies immediately and continues without interruption. At Task completion, the correction is noted in the Task Log as an important finding - the Manager sees it during Task Review regardless. After logging, reporting, and directing the User, the Worker asks at the end of its turn whether the correction should become a Rule for all Workers. If approved, the Worker updates Rules and the Task Log. If not, the Manager still has visibility through the important findings flag.
 
 **Subagent usage** - When a Task includes subagent steps, the Worker spawns the relevant subagent. Findings are integrated into the Worker's context and reflected during execution.
 

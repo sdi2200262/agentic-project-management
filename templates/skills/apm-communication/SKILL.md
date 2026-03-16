@@ -40,7 +40,26 @@ Agents not managed by APM can participate in bus communication by creating their
 
 ### 2.1 Direct Communication
 
-When communicating with the User - asking questions, requesting actions, providing status updates, presenting completions - use natural language adapted to the situation. Explain what happened, what was decided, and what happens next. There are no rigid templates; adapt phrasing to what the situation requires while conveying necessary information. When directing Users to perform actions (run commands, switch chats, review artifacts), provide specific actionable guidance: which command, in which agent's chat, with what arguments.
+When communicating with the User - asking questions, requesting actions, providing status updates, presenting completions - use natural language adapted to the situation. Explain what happened, what was decided, and what happens next. There are no rigid templates; adapt phrasing to what the situation requires while conveying necessary information.
+
+**Action directives** → When directing Users to take action - whether APM workflow navigation or any other action requiring User involvement outside the conversation - present as an action directive: a blockquote with the action described in natural language. Each step on its own line for easy reference and copying. When the action requires a new chat, include the platform guidance: {NEW_CHAT_GUIDANCE}. Commands are presented in code format for easy copying.
+
+Single action:
+
+> **Next:** Run `/apm-5-check-reports` in this chat.
+
+Multiple actions:
+
+> **Next:**
+> 1. {NEW_CHAT_GUIDANCE}
+> 2. Run `/apm-3-initiate-worker frontend-agent`
+> 3. Run `/apm-4-check-tasks`
+
+Non-APM action:
+
+> **Action needed:** Enable billing in the cloud console and confirm when done so I can proceed with the deployment configuration.
+
+Adapt the label and content to the situation - `Next:` for workflow progression, `Action needed:` for external actions, or any label that fits. The pattern is the blockquote with clear steps; use it whenever the User needs to do something, not only for APM-specific moments.
 
 ### 2.2 Visible Reasoning
 

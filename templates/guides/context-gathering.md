@@ -124,6 +124,8 @@ These rules apply across all three question rounds.
 
 Combine related questions naturally in conversation. Adapt depth per §2.3 Questioning Depth. Track what has been answered - ask only for what is missing.
 
+**Open elicitation** → Before each round's completion summary, fold a broad open-ended question into the final exchange for that round - never as a standalone question. The question must be generated dynamically from what has not yet been covered: review what was gathered, identify categories within the round's theme that received no attention, and ask about those gaps specifically. Do not use a fixed set of example topics - the value is in surfacing what the targeted questions missed, which varies entirely by project. When the open-ended question accompanies a round completion summary in the same response, note to the User that they can address it together with the next round's questions if they prefer - it should not block round advancement.
+
 **Validation criteria gathering:** Capture success states and criteria for each requirement. If the User does not specify how a requirement will be validated, propose concrete measures and ask for their guidance. Integrate validation gathering into Rounds 2 and 3 follow-ups. Retain criteria for Plan Task Validation fields.
 
 ### 3.3 Question Round 1: Existing Materials and Vision

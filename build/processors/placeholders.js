@@ -28,6 +28,7 @@ import path from 'path';
  * - {SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for non-role agents (standalone commands)
  * - {ARCHIVE_EXPLORER_GUIDANCE}: Platform-specific guidance for spawning the apm-archive-explorer custom agent
  * - {CONTEXT_ATTACH_SYNTAX}: Platform-specific instructions for how Users reference files in chat
+ * - {NEW_CHAT_GUIDANCE}: Platform-specific natural language clause for starting a new chat
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
@@ -116,6 +117,9 @@ export function replacePlaceholders(content, context) {
 
   // Replace CONTEXT_ATTACH_SYNTAX placeholder
   replaced = replaced.replace(/{CONTEXT_ATTACH_SYNTAX}/g, target.contextAttachSyntax || 'Reference the file path in your message.');
+
+  // Replace NEW_CHAT_GUIDANCE placeholder
+  replaced = replaced.replace(/{NEW_CHAT_GUIDANCE}/g, target.newChatGuidance || 'Start a new chat');
 
   return replaced;
 }

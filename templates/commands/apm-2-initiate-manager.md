@@ -80,9 +80,10 @@ When all Tasks in a Stage are complete, create a Stage summary per `{GUIDE_PATH:
 ## 5. Project Completion
 
 When all Stages are complete:
-1. Review all Stage summaries for overall project outcome.
-2. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
-3. Recommend running `/apm-8-summarize-session` in a new chat to summarize the completed APM session and optionally archive it for future reference.
+1. Set `status: complete` in the Tracker's YAML frontmatter.
+2. Review all Stage summaries for overall project outcome.
+3. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
+4. Recommend running `/apm-8-summarize-session` in a new chat to summarize the completed APM session and optionally archive it for future reference.
 
 ---
 
