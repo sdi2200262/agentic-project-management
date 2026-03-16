@@ -18,6 +18,7 @@
         "agents": ".github/agents"
       },
       "contextAttachSyntax": "Reference the file using `#file` and select the file from the picker.",
+      "newChatGuidance": "Start a new Copilot Chat",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "#runSubagent",
@@ -39,6 +40,7 @@
         "agents": ".claude/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
+      "newChatGuidance": "Open a new terminal and start Claude Code",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "Agent(subagent_type=\"Explore\", prompt=\"...\")",
@@ -60,6 +62,7 @@
         "agents": ".gemini/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
+      "newChatGuidance": "Open a new terminal and start Gemini CLI",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "@codebase_investigator <natural language query>",
@@ -81,6 +84,7 @@
         "agents": ".cursor/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` and search for the file name.",
+      "newChatGuidance": "Start a new Cursor Agent chat",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
@@ -102,6 +106,7 @@
         "agents": ".opencode/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file name.",
+      "newChatGuidance": "Open a new terminal and start OpenCode",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",

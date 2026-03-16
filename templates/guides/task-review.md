@@ -39,7 +39,7 @@ The goal is to extract information needed for the next review decision.
 **Status interpretation:** Assess whether the status and flags are consistent with the log's body content - inconsistency is a common hallucination indicator. Status values: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (objective not achieved).
 
 **Flag interpretation** → Workers set flags based on scoped observations. Interpret with full project awareness:
-- `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done.
+- `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done. Important findings may also include User corrections noted as potential Rules entries - assess whether they warrant a Rules addition per §2.3 Planning Document Modification Standards.
 - `compatibility_issues: true` - Worker observed conflicts with existing systems. Assess whether it indicates Plan, Spec, or Rules issues.
 
 **Content review:** Beyond flags and status, review the log body sections (Summary, Details, Output, Validation, Issues) to understand what happened and inform the review outcome. When findings contradict content in the Spec, Plan, or Rules - factual inaccuracies, incorrect assumptions, outdated descriptions - treat the affected document as needing correction per §3.4 Planning Document Modification regardless of whether the Worker handled the discrepancy.
@@ -224,7 +224,7 @@ Write the end state of each Task for the review-dispatch cycle. When a Task is u
 
 **Location:** `.apm/tracker.md`
 
-**Title:** `# APM Tracker`. YAML `title` field contains the project name.
+**Title:** `# APM Tracker`. YAML `title` field contains the project name. An optional `status` field is set to `complete` by the Manager at project completion - its absence means in-progress.
 
 The Tracker contains four sections:
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.

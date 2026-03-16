@@ -150,17 +150,16 @@ Assemble the Task Prompt and deliver via the bus system.
 
 Perform the following actions:
 1. Construct YAML frontmatter per §4.1 Task Prompt Format.
-2. Construct prompt body: Task Reference, Context from Dependencies (if applicable), Objective, Detailed Instructions, Workspace, Expected Output, Validation Criteria, Task Iteration, Task Logging instructions, Reporting Instructions.
+2. Construct prompt body: Task Reference, Context from Dependencies (if applicable), Objective, Detailed Instructions, Workspace, Expected Output, Validation Criteria, Instruction Accuracy, Task Iteration, Task Logging instructions, Reporting Instructions.
 3. Create a feature branch off the base branch per §2.5 Version Control Standards. For parallel dispatch, create a worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`. Include the branch name (sequential) or worktree path (parallel) in the Workspace section.
 4. Record the branch name in the task row's Branch column when updating the Tracker.
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
 6. Write the Task Prompt to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`. For batches, use `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format.
-7. Direct the User to the Worker's chat:
-   - If the Worker is not yet initialized → direct the User to open a new chat and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
+7. Direct the User to the Worker's chat using an action directive per `{SKILL_PATH:apm-communication}` §2.1:
+   - If the Worker is not yet initialized → direct the User to start a new chat and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
    - If the Worker is already initialized → direct the User to run `/apm-4-check-tasks` in the Worker's chat.
    - For batch dispatch → summarize what the Worker will receive (number of Tasks, sequential execution).
    - For parallel dispatch → list each Worker with its required action.
-   Markdown code blocks for commands are recommended.
 
 ### 3.5 Follow-Up Task Prompt Construction
 
@@ -198,7 +197,7 @@ has_dependencies: true
 - `stage`: integer, required. Stage number.
 - `task`: integer, required. Task number within Stage.
 - `agent`: string, required. Worker identifier (kebab-case).
-- `log_path`: string, required. Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. All Tasks in the same Stage share the same Stage directory. You construct the path; the Worker creates the directory when writing the first Task Log for that Stage.
+- `log_path`: string, required. Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. All Tasks in the same Stage share the same Stage directory. You construct the path; the Worker writes directly to it (the file write operation creates parent directories as needed).
 - `has_dependencies`: boolean, required. Whether dependency context is present.
 
 **Prompt Body Sections:**
@@ -212,6 +211,7 @@ has_dependencies: true
 - *Workspace:* Branch name for sequential dispatch, worktree path for parallel dispatch. Worker operates in the specified workspace, commits there, and notes it in the Task Log. Workers do not merge.
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field with validation approaches (programmatic, artifact, user).
+- *Instruction Accuracy:* The objective and expected output are authoritative - deliver those. However, the detailed instructions and steps were constructed from planning documents and may contain inaccurate details, missed prerequisites, or outdated assumptions about the codebase. When a specific instruction contradicts what the codebase actually shows, validate the actual state rather than persisting with the instruction as written.
 - *Task Iteration:* When facing persistent issues that resist direct fixing, spawn a debug subagent for fresh-context resolution rather than exhausting the context window. When execution reveals discrepancies with these instructions, use exploration subagents to validate assumptions before persisting. If unresolved, log to memory and report with Partial status.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
 - *Task Report:* Instruction to output a Task Report for User to return to Manager.

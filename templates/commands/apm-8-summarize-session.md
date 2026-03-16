@@ -33,7 +33,7 @@ This command summarizes the current APM session and optionally archives it. You 
 
 ```yaml
 ---
-date: <YYYY-MM-DD>
+date: <YYYY-MM-DDTHH:MM:SSZ>
 project: <project name>
 stages_completed: <number>
 total_tasks: <number>
@@ -43,11 +43,11 @@ outcome: <complete | partial | incomplete>
 
 *Field descriptions:*
 
-- `date`: string, required, ISO date of summary creation.
+- `date`: string, required, ISO 8601 datetime of summary creation (includes date and time).
 - `project`: string, required, project name from the Spec.
 - `stages_completed`: integer, required, number of completed Stages.
 - `total_tasks`: integer, required, total Tasks across all Stages.
-- `outcome`: enum, required, session state at summary time. `complete` when all Stages completed and deliverables verified. `partial` when some Stages completed but work remains. `incomplete` when significant work remains unfinished.
+- `outcome`: enum, required, session state at summary time. When the Tracker's YAML frontmatter contains `status: complete`, use `complete` - the Manager has authoritatively confirmed project completion. Otherwise, assess from artifact state: `partial` when some Stages completed but work remains, `incomplete` when significant work remains unfinished.
 
 *Body sections* (order as listed):
 
@@ -57,7 +57,7 @@ outcome: <complete | partial | incomplete>
 - *Codebase State* → How deliverables relate to `.apm/` artifacts: Tasks reflected in code, pending work, gaps between plan and implementation.
 - *Notable Findings:* Patterns, issues, or insights from Memory notes and working notes.
 - *Known Issues:* Unresolved problems, open questions, or caveats.
-- *Snapshot Notice:* "This summary reflects the session state as of `<date>`. The codebase may have diverged since this summary was created."
+- *Snapshot Notice:* "This summary reflects the session state as of `<datetime>`. The codebase may have diverged since this summary was created."
 
 **Archive index format:**
 

@@ -64,8 +64,7 @@ After Task execution, populate the Task Log at the path provided in the Task Pro
 
 Perform the following actions:
 1. Assess execution outcomes visibly in chat: what was delivered, what issues or important findings arose, and what to flag for the Manager.
-2. Ensure the Stage directory exists at the parent of `log_path`. Create it if it doesn't exist.
-3. Complete YAML frontmatter fields:
+2. Complete YAML frontmatter fields:
    - Set `stage` to the Stage number from the Task Prompt.
    - Set `task` to the Task number from the Task Prompt.
    - Set `title` to the Task title from the Task Prompt.
@@ -74,13 +73,14 @@ Perform the following actions:
    - Set `failure_point` based on where failure occurred (`null` if Success) per §2.2 Outcome Standards.
    - Set `important_findings` per §2.1 Flag Assessment Standards.
    - Set `compatibility_issues` per §2.1 Flag Assessment Standards.
-4. Complete markdown body sections:
+3. Complete markdown body sections:
    - Always include: Summary, Details, Output, Validation, Issues.
    - Include conditional sections only when their corresponding flag is `true`.
    - *Include:* Outcomes, key decisions, blockers, validation results, artifacts produced.
    - *Summarize:* Implementation approach, steps taken, rationale for choices.
    - *Reference (do not reproduce):* Code blocks over 20 lines, full file contents, verbose outputs.
    - *Exclude:* Routine operations, trivial details, information recoverable from artifacts.
+4. Write the Task Log to `log_path`. The file write operation creates parent directories as needed - no explicit directory creation step is required.
 5. Continue to §3.2 Task Report Delivery.
 
 ### 3.2 Task Report Delivery
@@ -88,10 +88,10 @@ Perform the following actions:
 Execute after writing the Task Log. Perform the following actions:
 1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).
 2. Write the Task Report to the Report Bus: `.apm/bus/<agent-slug>/report.md`. The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log. Keep post-amble minimal.
-3. Direct the User to deliver the report to the Manager:
+3. Direct the User to deliver the report to the Manager using an action directive per `{SKILL_PATH:apm-communication}` §2.1:
    - `/apm-5-check-reports <agent-id>` for targeted retrieval of this Worker's report.
    - `/apm-5-check-reports` (no argument) as an alternative when multiple Workers may have finished.
-   Markdown code blocks for commands are recommended. Workers operate asynchronously - cover only this Worker's end.
+   Workers operate asynchronously - cover only this Worker's end.
 
 For batch execution, write a single batch report per `{SKILL_PATH:apm-communication}` §4.6 Batch Report Envelope Format after completing all Tasks (or stopping on failure).
 
