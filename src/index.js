@@ -17,6 +17,7 @@ import { archiveCommand } from './commands/archive.js';
 import { addCommand } from './commands/add.js';
 import { removeCommand } from './commands/remove.js';
 import { statusCommand } from './commands/status.js';
+import { migrateCommand } from './commands/migrate.js';
 import { CLI_VERSION } from './core/constants.js';
 import { CLIError } from './core/errors.js';
 import logger from './ui/logger.js';
@@ -50,6 +51,7 @@ function displayHelp() {
   console.log(`  ${chalk.bold('archive')}           Archive current session or list archives`);
   console.log(`  ${chalk.bold('add')}               Add assistant(s) to existing installation`);
   console.log(`  ${chalk.bold('remove')}            Remove assistant(s) from installation`);
+  console.log(`  ${chalk.bold('migrate')}           Migrate v0.5.x project to v1`);
   console.log(`  ${chalk.bold('status')}            Show installation status`);
   console.log('');
   console.log(chalk.cyan.bold('Shared Options:'));
@@ -103,7 +105,7 @@ program
   });
 
 // Known command names for typo suggestions
-const KNOWN_COMMANDS = ['init', 'custom', 'update', 'archive', 'add', 'remove', 'status'];
+const KNOWN_COMMANDS = ['init', 'custom', 'update', 'archive', 'add', 'remove', 'status', 'migrate'];
 
 // Default action (no command or unknown command)
 program.action(() => {
@@ -223,6 +225,22 @@ program
   .action(async () => {
     try {
       await statusCommand();
+    } catch (err) {
+      handleError(err);
+    }
+  });
+
+program
+  .command('migrate')
+  .description('Migrate v0.5.x project to v1')
+  .argument('[extras...]')
+  .option('-f, --force', 'Skip destructive action confirmations')
+  .option('-a, --assistant <ids...>', 'Assistant(s) to install')
+  .option('-t, --tag <tag>', 'Specific release version')
+  .action(async (extras, options) => {
+    checkStrayArgs(extras, 'migrate');
+    try {
+      await migrateCommand(options);
     } catch (err) {
       handleError(err);
     }

@@ -33,7 +33,10 @@ export const CLIErrorCode = {
   DOWNLOAD_FAILED: 'DOWNLOAD_FAILED',
 
   // Archive errors
-  ARCHIVE_FAILED: 'ARCHIVE_FAILED'
+  ARCHIVE_FAILED: 'ARCHIVE_FAILED',
+
+  // Migration errors
+  MIGRATION_FAILED: 'MIGRATION_FAILED'
 };
 
 /**
@@ -193,6 +196,20 @@ export class CLIError extends Error {
     return new CLIError(
       `Failed to archive session: ${reason}`,
       CLIErrorCode.ARCHIVE_FAILED,
+      { reason }
+    );
+  }
+
+  /**
+   * Creates a migration failed error.
+   *
+   * @param {string} reason - Failure reason.
+   * @returns {CLIError} Formatted error instance.
+   */
+  static migrationFailed(reason) {
+    return new CLIError(
+      `Failed to migrate project: ${reason}`,
+      CLIErrorCode.MIGRATION_FAILED,
       { reason }
     );
   }
