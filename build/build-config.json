@@ -25,6 +25,9 @@
         "explorerName": "exploration subagent",
         "configNote": null
       },
+      "workerDispatchGuidance": "Spawn the Worker as a subagent using `#runSubagent` with the `apm-worker` agent. Pass the complete Task Prompt as the subagent's instructions. The Worker executes in its own context and returns results when complete.",
+      "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions separated by `---` delimiters. The subagent returns results directly - no bus clearing or file writing needed.",
+      "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
       "postInstallNote": null
     },
     {
@@ -48,6 +51,9 @@
         "explorerName": "Explore",
         "configNote": null
       },
+      "workerDispatchGuidance": "Spawn the Worker as a subagent using `Agent(subagent_type=\"apm-worker\", prompt=\"...\")`. Control the model per Task: `model=\"sonnet\"` for standard work, `model=\"opus\"` for complex tasks. For parallel dispatch, add `isolation=\"worktree\"` to give each Worker an isolated workspace. The Worker executes in its own context and returns results when complete.",
+      "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions separated by `---` delimiters. The subagent returns results directly - no bus clearing or file writing needed.",
+      "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
       "postInstallNote": null
     },
     {
@@ -70,6 +76,9 @@
         "explorerName": "codebase_investigator",
         "configNote": "Requires `experimental.enableAgents: true` in ~/.gemini/settings.json"
       },
+      "workerDispatchGuidance": "Spawn the Worker as a subagent using `@apm-worker` followed by the Task Prompt content. The Worker executes in its own context and returns results when complete. Alternatively, the main agent can invoke it automatically when the `apm-worker` agent description matches the task.",
+      "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions. The subagent returns results directly - no bus clearing or file writing needed.",
+      "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
       "postInstallNote": "Gemini CLI requires `experimental.enableAgents: true` in ~/.gemini/settings.json for subagent features."
     },
     {
@@ -92,6 +101,9 @@
         "explorerName": "explore",
         "configNote": null
       },
+      "workerDispatchGuidance": "Write the Task Prompt to the Worker's Task Bus at `.apm/bus/<agent-slug>/task.md`. Direct the User to the Worker session to run `/check-tasks`. If the Worker is not yet initialized, direct the User to start a new chat and run `/initiate-worker <agent-id>` first.",
+      "workerDeliveryStandards": "Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists.\n\nWhen dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format.",
+      "workerReportIntake": "Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`). The User delivers the report by running `/check-reports` in this chat.",
       "postInstallNote": null
     },
     {
@@ -114,6 +126,9 @@
         "explorerName": "explore",
         "configNote": null
       },
+      "workerDispatchGuidance": "Write the Task Prompt to the Worker's Task Bus at `.apm/bus/<agent-slug>/task.md`. Direct the User to the Worker session to run `/check-tasks`. If the Worker is not yet initialized, direct the User to start a new chat and run `/initiate-worker <agent-id>` first.",
+      "workerDeliveryStandards": "Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists.\n\nWhen dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format.",
+      "workerReportIntake": "Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`). The User delivers the report by running `/check-reports` in this chat.",
       "postInstallNote": null
     }
   ]

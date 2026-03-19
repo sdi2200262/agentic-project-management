@@ -117,10 +117,10 @@ Notes capture context that falls outside structured tracking but aids coordinati
 
 ### 3.1 Report Processing
 
-Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or batch report) from a Worker.
+Execute when a Worker returns results (directly as a subagent response, or via the Report Bus when using bus-based delivery).
 
 Perform the following actions:
-1. Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`).
+1. {WORKER_REPORT_INTAKE}
 2. If batch report (`batch: true` in frontmatter), process each Task's outcome individually through §3.2 Task Log Review and §3.3 Review Outcome. Unstarted Tasks re-enter the dispatch pool.
 3. Check for Handoff indication - look for a statement that the Worker is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update agent tracking in the Tracker: increment the instance number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
 4. Check for auto-compaction indication - a Worker that recovered from auto-compaction notes it in the Task Report. If detected, update agent tracking Notes in the Tracker (e.g., "auto-compacted, recovered"). No dependency reclassification - the Worker continues as the same instance. Provide slightly more comprehensive dependency context in future Task Prompts for this Worker.

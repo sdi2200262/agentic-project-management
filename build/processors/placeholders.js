@@ -115,6 +115,18 @@ export function replacePlaceholders(content, context) {
   const archiveExplorerText = `spawn a subagent with the \`${archiveExplorerPath}\` agent configuration and pass it the archive path(s) to explore`;
   replaced = replaced.replace(/{ARCHIVE_EXPLORER_GUIDANCE}/g, archiveExplorerText);
 
+  // Replace WORKER_DISPATCH_GUIDANCE placeholder
+  const workerDispatchText = target.workerDispatchGuidance || 'Write the Task Prompt to the Worker Task Bus and direct the User to deliver it.';
+  replaced = replaced.replace(/{WORKER_DISPATCH_GUIDANCE}/g, workerDispatchText);
+
+  // Replace WORKER_DELIVERY_STANDARDS placeholder
+  const workerDeliveryText = target.workerDeliveryStandards || 'Deliver the Task Prompt to the Worker via the bus system.';
+  replaced = replaced.replace(/{WORKER_DELIVERY_STANDARDS}/g, workerDeliveryText);
+
+  // Replace WORKER_REPORT_INTAKE placeholder
+  const workerReportText = target.workerReportIntake || 'Read the report from the Worker.';
+  replaced = replaced.replace(/{WORKER_REPORT_INTAKE}/g, workerReportText);
+
   // Replace CONTEXT_ATTACH_SYNTAX placeholder
   replaced = replaced.replace(/{CONTEXT_ATTACH_SYNTAX}/g, target.contextAttachSyntax || 'Reference the file path in your message.');
 

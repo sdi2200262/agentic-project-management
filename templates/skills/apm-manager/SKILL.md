@@ -93,43 +93,9 @@ For each Task to dispatch, per `{GUIDE_PATH:task-assignment}` S3:
 
 ### 2.3 Worker Dispatch
 
-Spawn Workers as subagents using the Agent tool:
+{WORKER_DISPATCH_GUIDANCE}
 
-**Sequential dispatch (default):**
-```
-Agent(
-  subagent_type="apm-worker",
-  model="sonnet",
-  prompt="<Task Prompt content>"
-)
-```
-
-**Complex task dispatch:**
-```
-Agent(
-  subagent_type="apm-worker",
-  model="opus",
-  prompt="<Task Prompt content>"
-)
-```
-
-**Parallel dispatch (multiple Workers, isolated workspaces):**
-```
-Agent(
-  subagent_type="apm-worker",
-  model="sonnet",
-  isolation="worktree",
-  prompt="<Task Prompt for Worker A>"
-)
-Agent(
-  subagent_type="apm-worker",
-  model="sonnet",
-  isolation="worktree",
-  prompt="<Task Prompt for Worker B>"
-)
-```
-
-After spawning, update the Tracker: mark Tasks as Active.
+After dispatching, update the Tracker: mark Tasks as Active.
 
 ### 2.4 Review
 
