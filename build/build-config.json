@@ -10,6 +10,22 @@
       "name": "GitHub Copilot",
       "bundleName": "copilot.zip",
       "format": "markdown",
+      "enhancedSkills": true,
+      "promoteToAgent": ["apm-manager", "apm-recover", "apm-summarize-session"],
+      "modelMapping": {
+        "sonnet": "claude-sonnet-4-6",
+        "opus": "claude-opus-4-6",
+        "opusplan": null
+      },
+      "toolMapping": {
+        "Read": "read",
+        "Write": "edit",
+        "Edit": "edit",
+        "Bash": "execute",
+        "Grep": "search",
+        "Glob": "search",
+        "Agent": "agent"
+      },
       "configDir": ".github",
       "directories": {
         "commands": ".github/prompts",
@@ -25,6 +41,7 @@
         "explorerName": "exploration subagent",
         "configNote": null
       },
+      "planModeGuidance": "Use Plan Mode (`/plan` or Shift+Tab) for analysis. The Plan agent enforces read-only exploration. A separate model can be configured for planning vs implementation (`chat.planAgent.defaultModel`). Approve the plan to transition to execution.",
       "workerDispatchGuidance": "Spawn the Worker as a subagent using `#runSubagent` with the `apm-worker` agent. Pass the complete Task Prompt as the subagent's instructions. The Worker executes in its own context and returns results when complete.",
       "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions separated by `---` delimiters. The subagent returns results directly - no bus clearing or file writing needed.",
       "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
@@ -54,6 +71,7 @@
         "explorerName": "Explore",
         "configNote": null
       },
+      "planModeGuidance": "Use Plan Mode for analysis: read-only exploration switches to Opus for reasoning, then exit Plan Mode to write with Sonnet. This is enforced by the `opusplan` model setting.",
       "workerDispatchGuidance": "Spawn the Worker as a subagent using `Agent(subagent_type=\"apm-worker\", prompt=\"...\")`. Control the model per Task: `model=\"sonnet\"` for standard work, `model=\"opus\"` for complex tasks. For parallel dispatch, add `isolation=\"worktree\"` to give each Worker an isolated workspace. The Worker executes in its own context and returns results when complete.",
       "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions separated by `---` delimiters. The subagent returns results directly - no bus clearing or file writing needed.",
       "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
@@ -67,6 +85,22 @@
       "name": "Gemini CLI",
       "bundleName": "gemini.zip",
       "format": "toml",
+      "enhancedSkills": true,
+      "promoteToAgent": ["apm-manager", "apm-recover", "apm-summarize-session"],
+      "modelMapping": {
+        "sonnet": "auto",
+        "opus": "gemini-2.5-pro",
+        "opusplan": null
+      },
+      "toolMapping": {
+        "Read": "read_file",
+        "Write": "write_file",
+        "Edit": "edit_file",
+        "Bash": "run_shell_command",
+        "Grep": "grep_search",
+        "Glob": "glob_tool",
+        "Agent": null
+      },
       "configDir": ".gemini",
       "directories": {
         "commands": ".gemini/commands",
@@ -82,6 +116,7 @@
         "explorerName": "codebase_investigator",
         "configNote": "Requires `experimental.enableAgents: true` in ~/.gemini/settings.json"
       },
+      "planModeGuidance": "Use Plan Mode (`/plan`, Shift+Tab, or call `enter_plan_mode`) for analysis. The policy engine enforces read-only access. With the `auto` model, Pro handles planning and Flash handles implementation automatically. Approve the plan to exit and start execution.",
       "workerDispatchGuidance": "Spawn the Worker as a subagent using `@apm-worker` followed by the Task Prompt content. The Worker executes in its own context and returns results when complete. Alternatively, the main agent can invoke it automatically when the `apm-worker` agent description matches the task.",
       "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions. The subagent returns results directly - no bus clearing or file writing needed.",
       "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
@@ -110,6 +145,7 @@
         "explorerName": "explore",
         "configNote": null
       },
+      "planModeGuidance": "Use Plan Mode (select from the chat mode dropdown or Cmd+.) to generate an implementation plan before execution. Note: Plan Mode tool restrictions are prompt-based, not enforced - treat planning as a discipline. Approve the plan and click Build to transition to Agent mode for execution.",
       "workerDispatchGuidance": "Write the Task Prompt to the Worker's Task Bus at `.apm/bus/<agent-slug>/task.md`. Direct the User to the Worker session to run `/check-tasks`. If the Worker is not yet initialized, direct the User to start a new chat and run `/initiate-worker <agent-id>` first.",
       "workerDeliveryStandards": "Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists.\n\nWhen dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format.",
       "workerReportIntake": "Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`). The User delivers the report by running `/check-reports` in this chat.",
@@ -138,6 +174,7 @@
         "explorerName": "explore",
         "configNote": null
       },
+      "planModeGuidance": "Use the Plan agent (Tab to switch) for read-only analysis. Edit, write, and patch tools are denied by agent permissions. Configure a separate model for the Plan agent via `agent.plan.model` in the config. Tab to the Build agent to execute.",
       "workerDispatchGuidance": "Write the Task Prompt to the Worker's Task Bus at `.apm/bus/<agent-slug>/task.md`. Direct the User to the Worker session to run `/check-tasks`. If the Worker is not yet initialized, direct the User to start a new chat and run `/initiate-worker <agent-id>` first.",
       "workerDeliveryStandards": "Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists.\n\nWhen dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format.",
       "workerReportIntake": "Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`). The User delivers the report by running `/check-reports` in this chat.",

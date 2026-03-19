@@ -10,7 +10,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import logger from '../utils/logger.js';
 import { findMdFiles } from '../utils/files.js';
-import { parseFrontmatter, stripEnhancedFields, rebuildWithFrontmatter } from './frontmatter.js';
+import { parseFrontmatter, stripEnhancedFields, rebuildWithFrontmatter, translateFrontmatter } from './frontmatter.js';
 import { replacePlaceholders, getOutputExtension } from './placeholders.js';
 import { generateReleaseManifest } from '../generators/manifest.js';
 import { createZipArchive } from '../generators/archive.js';
@@ -116,12 +116,22 @@ async function processTemplate(templatePath, options) {
     const processedBody = replacePlaceholders(body, context);
     const processedFull = replacePlaceholders(content, context);
 
-    // Strip enhanced frontmatter fields for platforms that don't support them
-    const useEnhanced = target.enhancedSkills && (isAgent || (!isCommand && !isGuide));
-    const outputFrontmatter = useEnhanced ? frontmatter : stripEnhancedFields(frontmatter);
-    const strippedContent = (useEnhanced || isCommand)
-      ? processedFull
-      : rebuildWithFrontmatter(outputFrontmatter, processedBody);
+    // Determine if this skill should be promoted to agent on this target
+    const promoteList = target.promoteToAgent || [];
+    const isSkill = !isCommand && !isGuide && !isAgent;
+    let promoted = false;
+    let skillName = null;
+    if (isSkill) {
+      const relativePath = path.relative(sourceDir, templatePath);
+      const pathParts = relativePath.split(path.sep);
+      skillName = pathParts[1];
+      promoted = promoteList.includes(skillName);
+    }
+
+    // Enhanced: use full frontmatter (with translation). Non-enhanced: strip.
+    const useEnhanced = target.enhancedSkills && (isAgent || promoted || isSkill);
+    const translatedFrontmatter = useEnhanced ? translateFrontmatter(frontmatter, target) : frontmatter;
+    const outputFrontmatter = useEnhanced ? translatedFrontmatter : stripEnhancedFields(frontmatter);
 
     if (isCommand) {
       if (target.format === 'toml') {
@@ -131,18 +141,24 @@ async function processTemplate(templatePath, options) {
         finalContent = processedFull;
       }
       outputPath = path.join(commandsDir, `${basename}${ext}`);
-    } else if (isAgent) {
-      // Agents: flat files (agents/<agent-name>.md, Copilot: <agent-name>.agent.md)
-      finalContent = useEnhanced ? processedFull : strippedContent;
+    } else if (isAgent || promoted) {
+      // Agents (and promoted skills): flat files in agents directory
+      finalContent = useEnhanced
+        ? rebuildWithFrontmatter(translatedFrontmatter, processedBody)
+        : rebuildWithFrontmatter(outputFrontmatter, processedBody);
       const agentExt = target.id === 'copilot' ? '.agent.md' : '.md';
-      outputPath = path.join(agentsDir, `${basename}${agentExt}`);
+      const agentBasename = promoted ? skillName : basename;
+      outputPath = path.join(agentsDir, `${agentBasename}${agentExt}`);
+      if (promoted) {
+        logger.info(`Promoted skill ${skillName} to agent for ${target.name}`);
+      }
     } else {
       // Skills: directory-based structure (skills/<skill-name>/SKILL.md + optional files)
-      finalContent = useEnhanced ? processedFull : strippedContent;
+      finalContent = useEnhanced
+        ? rebuildWithFrontmatter(translatedFrontmatter, processedBody)
+        : rebuildWithFrontmatter(outputFrontmatter, processedBody);
       const relativePath = path.relative(sourceDir, templatePath);
       const pathParts = relativePath.split(path.sep);
-      // pathParts: ['skills', '<skill-name>', '<file>.md']
-      const skillName = pathParts[1];
       const fileName = pathParts[pathParts.length - 1];
       const skillDir = path.join(skillsDir, skillName);
       await fs.ensureDir(skillDir);

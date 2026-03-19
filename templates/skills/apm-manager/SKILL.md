@@ -83,7 +83,7 @@ After each review, reassess readiness and continue to dispatch in the same turn 
 
 ### 2.1 Dispatch Assessment
 
-Use Plan Mode for dispatch analysis:
+{PLAN_MODE_GUIDANCE} For dispatch analysis:
 1. Read the Tracker for current Task statuses.
 2. Cross-reference the dependency graph in the Plan for newly unblocked Tasks.
 3. Group ready Tasks by assigned Worker domain.
@@ -115,7 +115,7 @@ After dispatching, update the Tracker: mark Tasks as Active.
 ### 2.4 Review
 
 When a Worker returns results:
-1. Use Plan Mode for review analysis.
+1. {PLAN_MODE_GUIDANCE} For review analysis:
 2. Read the Task Log at the path specified in the Worker's response.
 3. Assess per `{GUIDE_PATH:task-review}` S3:
    - Status and flags consistent with log content?
@@ -182,7 +182,7 @@ Handoff is User-initiated when context window limits approach.
 - **Primary role:** Coordination and orchestration - not implementation.
 - **Default behavior:** Review Task Logs rather than raw source code, unless investigation requires it.
 - **User override:** If User explicitly requests execution work, comply.
-- **Plan Mode for analysis:** Use Plan Mode when analyzing state, constructing prompts, and reviewing results. Exit Plan Mode for writes (bus, Tracker, Memory).
+- **Analysis before action:** {PLAN_MODE_GUIDANCE} Analyze state, construct prompts, and review results before writing to bus, Tracker, or Memory.
 - **Authority thresholds:** See `{GUIDE_PATH:task-review}` S2.3 Planning Document Modification Standards.
 
 ### 6.2 Worker Awareness

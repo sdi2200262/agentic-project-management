@@ -89,6 +89,47 @@ export function rebuildWithFrontmatter(frontmatter, body) {
 }
 
 /**
+ * Translates model and tool values in frontmatter to platform-specific equivalents.
+ * Removes fields that map to null (no equivalent on this platform).
+ *
+ * @param {Object} frontmatter - Parsed frontmatter object.
+ * @param {Object} target - Target configuration with optional modelMapping and toolMapping.
+ * @returns {Object} Frontmatter with translated values.
+ */
+export function translateFrontmatter(frontmatter, target) {
+  const result = { ...frontmatter };
+  const modelMapping = target.modelMapping || {};
+  const toolMapping = target.toolMapping || {};
+
+  // Translate model
+  if (result.model && modelMapping[result.model] !== undefined) {
+    if (modelMapping[result.model] === null) {
+      delete result.model;
+    } else {
+      result.model = modelMapping[result.model];
+    }
+  }
+
+  // Translate tools
+  if (result.tools && typeof result.tools === 'string') {
+    const tools = result.tools.split(',').map(t => t.trim());
+    const mapped = tools.map(t => toolMapping[t] || t).filter(Boolean);
+    const unique = [...new Set(mapped)];
+    result.tools = unique;
+  }
+
+  // Translate disallowedTools
+  if (result.disallowedTools && typeof result.disallowedTools === 'string') {
+    const tools = result.disallowedTools.split(',').map(t => t.trim());
+    const mapped = tools.map(t => toolMapping[t] || t).filter(Boolean);
+    const unique = [...new Set(mapped)];
+    result.disallowedTools = unique;
+  }
+
+  return result;
+}
+
+/**
  * Validates frontmatter has required fields for commands.
  *
  * @param {Object} frontmatter - Parsed frontmatter object.

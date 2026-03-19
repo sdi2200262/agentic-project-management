@@ -115,6 +115,10 @@ export function replacePlaceholders(content, context) {
   const archiveExplorerText = `spawn a subagent with the \`${archiveExplorerPath}\` agent configuration and pass it the archive path(s) to explore`;
   replaced = replaced.replace(/{ARCHIVE_EXPLORER_GUIDANCE}/g, archiveExplorerText);
 
+  // Replace PLAN_MODE_GUIDANCE placeholder
+  const planModeText = target.planModeGuidance || 'Perform analysis in read-only mode before making changes.';
+  replaced = replaced.replace(/{PLAN_MODE_GUIDANCE}/g, planModeText);
+
   // Replace WORKER_DISPATCH_GUIDANCE placeholder
   const workerDispatchText = target.workerDispatchGuidance || 'Write the Task Prompt to the Worker Task Bus and direct the User to deliver it.';
   replaced = replaced.replace(/{WORKER_DISPATCH_GUIDANCE}/g, workerDispatchText);
