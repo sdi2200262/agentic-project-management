@@ -149,6 +149,21 @@ export function replacePlaceholders(content, context) {
   // Replace NEW_CHAT_GUIDANCE placeholder
   replaced = replaced.replace(/{NEW_CHAT_GUIDANCE}/g, target.newChatGuidance || 'Start a new chat');
 
+  // Second pass: resolve any placeholders introduced by injected config values
+  // (e.g., {SKILL_PATH:...} inside workerDeliveryStandards)
+  if (/{[A-Z_]+(?::[^}]+)?}/.test(replaced)) {
+    replaced = replaced.replace(/{SKILL_PATH:([^}]+)}/g, (_match, skillName) => {
+      return path.join(directories.skills, skillName, 'SKILL.md');
+    });
+    replaced = replaced.replace(/{GUIDE_PATH:([^}]+)}/g, (_match, guideName) => {
+      return path.join(directories.guides, `${guideName}.md`);
+    });
+    replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, commandName) => {
+      const base = path.basename(commandName, path.extname(commandName));
+      return path.join(directories.commands, `${base}${commandExt}`);
+    });
+  }
+
   return replaced;
 }
 

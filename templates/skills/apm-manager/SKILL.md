@@ -6,6 +6,9 @@ description: >
   maintains project state. Use when starting or resuming an
   APM Implementation Phase.
 model: opusplan
+tools: Read, Write, Edit, Bash, Grep, Glob, Agent
+agents:
+  - apm-worker
 replaces: initiate-manager
 argument-hint: "[context]"
 hooks:

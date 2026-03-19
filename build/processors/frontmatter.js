@@ -51,7 +51,7 @@ export function parseFrontmatter(content) {
  */
 const ENHANCED_FIELDS = [
   'model', 'tools', 'disallowedTools', 'context',
-  'replaces', 'argument-hint', 'hooks',
+  'replaces', 'argument-hint', 'hooks', 'agents',
   'disable-model-invocation', 'user-invocable'
 ];
 
