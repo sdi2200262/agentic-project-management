@@ -28,6 +28,9 @@
       "workerDispatchGuidance": "Spawn the Worker as a subagent using `#runSubagent` with the `apm-worker` agent. Pass the complete Task Prompt as the subagent's instructions. The Worker executes in its own context and returns results when complete.",
       "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions separated by `---` delimiters. The subagent returns results directly - no bus clearing or file writing needed.",
       "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
+      "workerTaskReceipt": "The Task Prompt is provided directly as your instructions from the Manager. Check for batch envelope: if `batch: true` in frontmatter, execute each Task sequentially per §2.8 Batch Rules. Verify the `agent` field in YAML frontmatter matches your expected identity.",
+      "workerReportDelivery": "Return your Task Report directly to the Manager as your completion response. Include status, log path, and any flags. For batch execution, return a single batch report after completing all Tasks (or stopping on failure).",
+      "workerTaskAwait": "Your execution is complete. The Manager will spawn a new Worker subagent for the next Task if needed.",
       "postInstallNote": null
     },
     {
@@ -54,6 +57,9 @@
       "workerDispatchGuidance": "Spawn the Worker as a subagent using `Agent(subagent_type=\"apm-worker\", prompt=\"...\")`. Control the model per Task: `model=\"sonnet\"` for standard work, `model=\"opus\"` for complex tasks. For parallel dispatch, add `isolation=\"worktree\"` to give each Worker an isolated workspace. The Worker executes in its own context and returns results when complete.",
       "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions separated by `---` delimiters. The subagent returns results directly - no bus clearing or file writing needed.",
       "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
+      "workerTaskReceipt": "The Task Prompt is provided directly as your instructions from the Manager. Check for batch envelope: if `batch: true` in frontmatter, execute each Task sequentially per §2.8 Batch Rules. Verify the `agent` field in YAML frontmatter matches your expected identity.",
+      "workerReportDelivery": "Return your Task Report directly to the Manager as your completion response. Include status, log path, and any flags. For batch execution, return a single batch report after completing all Tasks (or stopping on failure).",
+      "workerTaskAwait": "Your execution is complete. The Manager will spawn a new Worker subagent for the next Task if needed.",
       "postInstallNote": null
     },
     {
@@ -79,6 +85,9 @@
       "workerDispatchGuidance": "Spawn the Worker as a subagent using `@apm-worker` followed by the Task Prompt content. The Worker executes in its own context and returns results when complete. Alternatively, the main agent can invoke it automatically when the `apm-worker` agent description matches the task.",
       "workerDeliveryStandards": "Spawn the Worker subagent with the Task Prompt as its instructions per §2.4 Dispatch Standards. For batch dispatch, include all Task Prompts in the subagent's instructions. The subagent returns results directly - no bus clearing or file writing needed.",
       "workerReportIntake": "The Worker subagent returns its report directly as its completion response. Parse the status, log path, and findings from the response.",
+      "workerTaskReceipt": "The Task Prompt is provided directly as your instructions from the Manager. Check for batch envelope: if `batch: true` in frontmatter, execute each Task sequentially per §2.8 Batch Rules. Verify the `agent` field in YAML frontmatter matches your expected identity.",
+      "workerReportDelivery": "Return your Task Report directly to the Manager as your completion response. Include status, log path, and any flags. For batch execution, return a single batch report after completing all Tasks (or stopping on failure).",
+      "workerTaskAwait": "Your execution is complete. The Manager will spawn a new Worker subagent for the next Task if needed.",
       "postInstallNote": "Gemini CLI requires `experimental.enableAgents: true` in ~/.gemini/settings.json for subagent features."
     },
     {
@@ -104,6 +113,9 @@
       "workerDispatchGuidance": "Write the Task Prompt to the Worker's Task Bus at `.apm/bus/<agent-slug>/task.md`. Direct the User to the Worker session to run `/check-tasks`. If the Worker is not yet initialized, direct the User to start a new chat and run `/initiate-worker <agent-id>` first.",
       "workerDeliveryStandards": "Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists.\n\nWhen dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format.",
       "workerReportIntake": "Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`). The User delivers the report by running `/check-reports` in this chat.",
+      "workerTaskReceipt": "Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format and execute each Task sequentially per §2.8 Batch Rules. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards.",
+      "workerReportDelivery": "Perform the following actions:\n1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).\n2. Write the Task Report to the Report Bus: `.apm/bus/<agent-slug>/report.md`.\n3. Direct the User to deliver the report to the Manager using an action directive per `{SKILL_PATH:apm-communication}` §2.1:\n   - `/check-reports <agent-id>` for targeted retrieval.\n   - `/check-reports` (no argument) as an alternative.\n\nFor batch execution, write a single batch report per `{SKILL_PATH:apm-communication}` §4.6 Batch Report Envelope Format after completing all Tasks (or stopping on failure).",
+      "workerTaskAwait": "Await `/check-tasks` or Handoff initiation.",
       "postInstallNote": null
     },
     {
@@ -129,6 +141,9 @@
       "workerDispatchGuidance": "Write the Task Prompt to the Worker's Task Bus at `.apm/bus/<agent-slug>/task.md`. Direct the User to the Worker session to run `/check-tasks`. If the Worker is not yet initialized, direct the User to start a new chat and run `/initiate-worker <agent-id>` first.",
       "workerDeliveryStandards": "Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists.\n\nWhen dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format.",
       "workerReportIntake": "Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`). The User delivers the report by running `/check-reports` in this chat.",
+      "workerTaskReceipt": "Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format and execute each Task sequentially per §2.8 Batch Rules. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards.",
+      "workerReportDelivery": "Perform the following actions:\n1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).\n2. Write the Task Report to the Report Bus: `.apm/bus/<agent-slug>/report.md`.\n3. Direct the User to deliver the report to the Manager using an action directive per `{SKILL_PATH:apm-communication}` §2.1:\n   - `/check-reports <agent-id>` for targeted retrieval.\n   - `/check-reports` (no argument) as an alternative.\n\nFor batch execution, write a single batch report per `{SKILL_PATH:apm-communication}` §4.6 Batch Report Envelope Format after completing all Tasks (or stopping on failure).",
+      "workerTaskAwait": "Await `/check-tasks` or Handoff initiation.",
       "postInstallNote": null
     }
   ]

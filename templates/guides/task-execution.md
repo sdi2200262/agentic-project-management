@@ -104,9 +104,8 @@ When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus mess
 ### 3.1 Task Prompt Receipt
 
 On Task receipt, perform the following actions:
-1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, parse per `{SKILL_PATH:apm-communication}` §4.5 Batch Envelope Format and execute each Task sequentially per §2.8 Batch Rules.
-2. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope.
-3. Parse Task Prompt structure - YAML frontmatter fields and body sections.
+1. {WORKER_TASK_RECEIPT}
+2. Parse Task Prompt structure - YAML frontmatter fields and body sections.
 4. Identify execution parameters:
    - `has_dependencies: true` → context integration required
    - Workspace section present → Operate in specified workspace (worktree path or branch)
@@ -164,7 +163,7 @@ Perform the following actions:
 4. Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery. Include relevant status indications:
    - *After Handoff:* If this is the first Task after Handoff initialization, include incoming Worker indication: state instance number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded.
    - *After recovery:* If auto-compaction occurred and recovery was performed via `/apm-9-recover`, note it in the Task Report so the Manager is aware.
-5. Await `/apm-4-check-tasks` or Handoff initiation.
+5. {WORKER_TASK_AWAIT}
 
 ---
 

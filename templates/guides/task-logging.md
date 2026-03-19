@@ -85,15 +85,11 @@ Perform the following actions:
 
 ### 3.2 Task Report Delivery
 
-Execute after writing the Task Log. Perform the following actions:
-1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).
-2. Write the Task Report to the Report Bus: `.apm/bus/<agent-slug>/report.md`. The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log. Keep post-amble minimal.
-3. Direct the User to deliver the report to the Manager using an action directive per `{SKILL_PATH:apm-communication}` §2.1:
-   - `/apm-5-check-reports <agent-id>` for targeted retrieval of this Worker's report.
-   - `/apm-5-check-reports` (no argument) as an alternative when multiple Workers may have finished.
-   Workers operate asynchronously - cover only this Worker's end.
+Execute after writing the Task Log.
 
-For batch execution, write a single batch report per `{SKILL_PATH:apm-communication}` §4.6 Batch Report Envelope Format after completing all Tasks (or stopping on failure).
+{WORKER_REPORT_DELIVERY}
+
+The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log. Keep post-amble minimal.
 
 ---
 

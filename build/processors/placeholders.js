@@ -127,6 +127,18 @@ export function replacePlaceholders(content, context) {
   const workerReportText = target.workerReportIntake || 'Read the report from the Worker.';
   replaced = replaced.replace(/{WORKER_REPORT_INTAKE}/g, workerReportText);
 
+  // Replace WORKER_TASK_RECEIPT placeholder (Worker-side: how Tasks are received)
+  const workerTaskReceiptText = target.workerTaskReceipt || 'Read the Task Prompt from the Task Bus.';
+  replaced = replaced.replace(/{WORKER_TASK_RECEIPT}/g, workerTaskReceiptText);
+
+  // Replace WORKER_REPORT_DELIVERY placeholder (Worker-side: how results are returned)
+  const workerReportDeliveryText = target.workerReportDelivery || 'Write the Task Report for the Manager.';
+  replaced = replaced.replace(/{WORKER_REPORT_DELIVERY}/g, workerReportDeliveryText);
+
+  // Replace WORKER_TASK_AWAIT placeholder (Worker-side: what to do after completion)
+  const workerTaskAwaitText = target.workerTaskAwait || 'Await next Task or Handoff.';
+  replaced = replaced.replace(/{WORKER_TASK_AWAIT}/g, workerTaskAwaitText);
+
   // Replace CONTEXT_ATTACH_SYNTAX placeholder
   replaced = replaced.replace(/{CONTEXT_ATTACH_SYNTAX}/g, target.contextAttachSyntax || 'Reference the file path in your message.');
 
