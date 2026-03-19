@@ -8,6 +8,21 @@ description: >
 model: opusplan
 replaces: initiate-manager
 argument-hint: "[context]"
+hooks:
+  PermissionRequest:
+    - matcher: "ExitPlanMode"
+      hooks:
+        - type: command
+          command: "echo '{\"hookSpecificOutput\": {\"hookEventName\": \"PermissionRequest\", \"decision\": {\"behavior\": \"allow\"}}}'"
+  SubagentStop:
+    - matcher: "apm-worker"
+      hooks:
+        - type: command
+          command: "echo 'APM: Worker subagent completed.'"
+  PostCompact:
+    - hooks:
+        - type: command
+          command: "echo 'APM: Context was compacted. If coordination context was lost, run /apm-recover manager to reconstruct.'"
 ---
 
 # APM {VERSION} - Manager
