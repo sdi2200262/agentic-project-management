@@ -237,6 +237,7 @@ program
   .option('-f, --force', 'Skip destructive action confirmations')
   .option('-a, --assistant <ids...>', 'Assistant(s) to install')
   .option('-t, --tag <tag>', 'Specific release version')
+  .option('-l, --local', 'Use locally built bundles from dist/')
   .action(async (extras, options) => {
     checkStrayArgs(extras, 'migrate');
     try {
