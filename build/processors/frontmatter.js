@@ -46,6 +46,49 @@ export function parseFrontmatter(content) {
 }
 
 /**
+ * Enhanced frontmatter fields only supported by platforms with enhancedSkills.
+ * Stripped from output for platforms that do not support them.
+ */
+const ENHANCED_FIELDS = [
+  'model', 'tools', 'disallowedTools', 'context',
+  'replaces', 'argument-hint', 'hooks',
+  'disable-model-invocation', 'user-invocable'
+];
+
+/**
+ * Strips enhanced frontmatter fields not supported by the target platform.
+ * Returns new frontmatter object without modifying the original.
+ *
+ * @param {Object} frontmatter - Parsed frontmatter object.
+ * @returns {Object} Frontmatter with enhanced fields removed.
+ */
+export function stripEnhancedFields(frontmatter) {
+  const result = { ...frontmatter };
+  for (const field of ENHANCED_FIELDS) {
+    delete result[field];
+  }
+  return result;
+}
+
+/**
+ * Rebuilds markdown content with modified frontmatter.
+ *
+ * @param {Object} frontmatter - Frontmatter object to serialize.
+ * @param {string} body - Markdown body content.
+ * @returns {string} Complete markdown with YAML frontmatter.
+ */
+export function rebuildWithFrontmatter(frontmatter, body) {
+  const yamlStr = Object.entries(frontmatter)
+    .map(([key, value]) => {
+      if (value === null) return `${key}: null`;
+      if (typeof value === 'string') return `${key}: ${value}`;
+      return `${key}: ${JSON.stringify(value)}`;
+    })
+    .join('\n');
+  return `---\n${yamlStr}\n---\n${body}`;
+}
+
+/**
  * Validates frontmatter has required fields for commands.
  *
  * @param {Object} frontmatter - Parsed frontmatter object.

@@ -32,6 +32,7 @@
       "name": "Claude Code",
       "bundleName": "claude.zip",
       "format": "markdown",
+      "enhancedSkills": true,
       "configDir": ".claude",
       "directories": {
         "commands": ".claude/commands",

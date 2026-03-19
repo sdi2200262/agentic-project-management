@@ -10,7 +10,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import logger from '../utils/logger.js';
 import { findMdFiles } from '../utils/files.js';
-import { parseFrontmatter } from './frontmatter.js';
+import { parseFrontmatter, stripEnhancedFields, rebuildWithFrontmatter } from './frontmatter.js';
 import { replacePlaceholders, getOutputExtension } from './placeholders.js';
 import { generateReleaseManifest } from '../generators/manifest.js';
 import { createZipArchive } from '../generators/archive.js';
@@ -54,6 +54,36 @@ function isAgentTemplate(templatePath, sourceDir) {
 }
 
 /**
+ * Collects command names that are replaced by enhanced skills or agents.
+ * Only applies when the target supports enhanced skills.
+ *
+ * @param {string[]} templateFiles - Array of template file paths.
+ * @param {string} sourceDir - Source templates directory.
+ * @param {Object} target - Target configuration.
+ * @returns {Promise<Set<string>>} Set of command_name values to exclude.
+ */
+async function collectReplacedCommands(templateFiles, sourceDir, target) {
+  const replaced = new Set();
+  if (!target.enhancedSkills) return replaced;
+
+  for (const filePath of templateFiles) {
+    const relativePath = path.relative(sourceDir, filePath);
+    const isSkill = relativePath.startsWith('skills' + path.sep);
+    const isAgent = relativePath.startsWith('agents' + path.sep);
+    if (!isSkill && !isAgent) continue;
+
+    const content = await fs.readFile(filePath, 'utf8');
+    const { frontmatter } = parseFrontmatter(content);
+    if (frontmatter.replaces) {
+      replaced.add(frontmatter.replaces);
+      const type = isSkill ? 'Skill' : 'Agent';
+      logger.info(`${type} ${frontmatter.name || relativePath} replaces command: ${frontmatter.replaces}`);
+    }
+  }
+  return replaced;
+}
+
+/**
  * Processes a single template file.
  *
  * @param {string} templatePath - Path to template file.
@@ -86,6 +116,13 @@ async function processTemplate(templatePath, options) {
     const processedBody = replacePlaceholders(body, context);
     const processedFull = replacePlaceholders(content, context);
 
+    // Strip enhanced frontmatter fields for platforms that don't support them
+    const useEnhanced = target.enhancedSkills && (isAgent || (!isCommand && !isGuide));
+    const outputFrontmatter = useEnhanced ? frontmatter : stripEnhancedFields(frontmatter);
+    const strippedContent = (useEnhanced || isCommand)
+      ? processedFull
+      : rebuildWithFrontmatter(outputFrontmatter, processedBody);
+
     if (isCommand) {
       if (target.format === 'toml') {
         const description = frontmatter.description || 'APM command';
@@ -96,12 +133,12 @@ async function processTemplate(templatePath, options) {
       outputPath = path.join(commandsDir, `${basename}${ext}`);
     } else if (isAgent) {
       // Agents: flat files (agents/<agent-name>.md, Copilot: <agent-name>.agent.md)
-      finalContent = processedFull;
+      finalContent = useEnhanced ? processedFull : strippedContent;
       const agentExt = target.id === 'copilot' ? '.agent.md' : '.md';
       outputPath = path.join(agentsDir, `${basename}${agentExt}`);
     } else {
       // Skills: directory-based structure (skills/<skill-name>/SKILL.md + optional files)
-      finalContent = processedFull;
+      finalContent = useEnhanced ? processedFull : strippedContent;
       const relativePath = path.relative(sourceDir, templatePath);
       const pathParts = relativePath.split(path.sep);
       // pathParts: ['skills', '<skill-name>', '<file>.md']
@@ -166,8 +203,21 @@ async function buildTarget(target, config, version) {
   const templateFiles = await findMdFiles(sourceDir);
   logger.info(`Found ${templateFiles.length} template files`);
 
+  // Collect commands replaced by enhanced skills for this target
+  const replacedCommands = await collectReplacedCommands(templateFiles, sourceDir, target);
+
   // Process all templates
   for (const templatePath of templateFiles) {
+    // Skip commands that are replaced by enhanced skills on this target
+    if (isCommandTemplate(templatePath, sourceDir) && replacedCommands.size > 0) {
+      const content = await fs.readFile(templatePath, 'utf8');
+      const { frontmatter } = parseFrontmatter(content);
+      if (replacedCommands.has(frontmatter.command_name)) {
+        logger.info(`Skipped command: ${path.basename(templatePath)} (replaced by skill on ${target.name})`);
+        continue;
+      }
+    }
+
     await processTemplate(templatePath, {
       target,
       version,
