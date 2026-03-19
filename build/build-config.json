@@ -12,9 +12,10 @@
       "format": "markdown",
       "enhancedSkills": true,
       "promoteToAgent": ["apm-manager", "apm-recover", "apm-summarize-session"],
+      "allowedAgentFields": ["name", "description", "tools", "model", "agents", "target", "user-invocable", "disable-model-invocation", "handoffs", "hooks", "mcp-servers", "metadata", "argument-hint"],
       "modelMapping": {
-        "sonnet": "claude-sonnet-4-6",
-        "opus": "claude-opus-4-6",
+        "sonnet": "Claude Sonnet 4.6",
+        "opus": "Claude Opus 4.6",
         "opusplan": null
       },
       "toolMapping": {
@@ -87,6 +88,7 @@
       "format": "toml",
       "enhancedSkills": true,
       "promoteToAgent": ["apm-manager", "apm-recover", "apm-summarize-session"],
+      "allowedAgentFields": ["name", "description", "tools", "model", "temperature", "max_turns", "timeout_mins", "kind"],
       "modelMapping": {
         "sonnet": "auto",
         "opus": "gemini-2.5-pro",
@@ -95,10 +97,10 @@
       "toolMapping": {
         "Read": "read_file",
         "Write": "write_file",
-        "Edit": "edit_file",
+        "Edit": "replace",
         "Bash": "run_shell_command",
         "Grep": "grep_search",
-        "Glob": "glob_tool",
+        "Glob": "glob",
         "Agent": null
       },
       "configDir": ".gemini",

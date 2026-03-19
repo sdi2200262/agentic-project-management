@@ -72,20 +72,38 @@ export function stripEnhancedFields(frontmatter) {
 
 /**
  * Rebuilds markdown content with modified frontmatter.
+ * Uses js-yaml for proper serialization (arrays, nested objects).
  *
  * @param {Object} frontmatter - Frontmatter object to serialize.
  * @param {string} body - Markdown body content.
  * @returns {string} Complete markdown with YAML frontmatter.
  */
 export function rebuildWithFrontmatter(frontmatter, body) {
-  const yamlStr = Object.entries(frontmatter)
-    .map(([key, value]) => {
-      if (value === null) return `${key}: null`;
-      if (typeof value === 'string') return `${key}: ${value}`;
-      return `${key}: ${JSON.stringify(value)}`;
-    })
-    .join('\n');
+  const yamlStr = yaml.dump(frontmatter, {
+    lineWidth: -1,
+    noRefs: true,
+    quotingType: "'",
+    forceQuotes: false
+  }).trimEnd();
   return `---\n${yamlStr}\n---\n${body}`;
+}
+
+/**
+ * Filters frontmatter to only include fields allowed by the target platform.
+ * Used for platforms with strict schema validation (e.g., Gemini CLI).
+ *
+ * @param {Object} frontmatter - Frontmatter object to filter.
+ * @param {string[]} allowedFields - List of field names to keep.
+ * @returns {Object} Filtered frontmatter with only allowed fields.
+ */
+export function filterAllowedFields(frontmatter, allowedFields) {
+  const result = {};
+  for (const field of allowedFields) {
+    if (frontmatter[field] !== undefined) {
+      result[field] = frontmatter[field];
+    }
+  }
+  return result;
 }
 
 /**
@@ -110,20 +128,40 @@ export function translateFrontmatter(frontmatter, target) {
     }
   }
 
-  // Translate tools
+  // Translate tools (string → array, with mapping; null removes the tool)
   if (result.tools && typeof result.tools === 'string') {
     const tools = result.tools.split(',').map(t => t.trim());
-    const mapped = tools.map(t => toolMapping[t] || t).filter(Boolean);
-    const unique = [...new Set(mapped)];
-    result.tools = unique;
+    const mapped = tools.map(t => {
+      if (toolMapping[t] === null) return null;
+      return toolMapping[t] || t;
+    }).filter(Boolean);
+    result.tools = [...new Set(mapped)];
   }
 
-  // Translate disallowedTools
+  // Translate disallowedTools (same logic; remove field if target doesn't support it)
   if (result.disallowedTools && typeof result.disallowedTools === 'string') {
     const tools = result.disallowedTools.split(',').map(t => t.trim());
-    const mapped = tools.map(t => toolMapping[t] || t).filter(Boolean);
-    const unique = [...new Set(mapped)];
-    result.disallowedTools = unique;
+    const mapped = tools.map(t => {
+      if (toolMapping[t] === null) return null;
+      return toolMapping[t] || t;
+    }).filter(Boolean);
+    if (mapped.length > 0) {
+      result.disallowedTools = [...new Set(mapped)];
+    } else {
+      delete result.disallowedTools;
+    }
+  }
+
+  // Filter to allowed fields if the target specifies them (strict schema platforms)
+  const allowedFields = target.allowedAgentFields;
+  if (allowedFields) {
+    const filtered = {};
+    for (const field of allowedFields) {
+      if (result[field] !== undefined) {
+        filtered[field] = result[field];
+      }
+    }
+    return filtered;
   }
 
   return result;
