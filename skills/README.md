@@ -6,9 +6,10 @@ Unlike the skills bundled with APM (installed by `apm init`), standalone skills 
 
 ## Available Skills
 
-| Skill | Description |
-| :--- | :--- |
-| [apm-migration](apm-migration/) | Guides migration from an older APM version to the current release, preserving session artifacts as archives |
+| Skill | Description | Installation |
+| :--- | :--- | :--- |
+| [apm-migration](apm-migration/) | Guides migration from an older APM version to the current release, preserving session artifacts as archives | Manual (curl) |
+| [apm-customization](apm-customization/) | Guides customization of APM templates within a forked or templated repository | Included in the repo |
 
 ## Installation
 
