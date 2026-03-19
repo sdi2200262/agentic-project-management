@@ -111,7 +111,7 @@ export async function buildMigrationReport(cwd) {
     counts.adhoc = true;
   }
 
-  // Handovers
+  // Handovers → handoff logs
   const handoversDir = path.join(memoryDir, 'Handovers');
   if (await fs.pathExists(handoversDir)) {
     const agentFolders = (await fs.readdir(handoversDir, { withFileTypes: true }))
@@ -120,9 +120,9 @@ export async function buildMigrationReport(cwd) {
       const files = await fs.readdir(path.join(handoversDir, folder.name));
       const handoverFiles = files.filter(f => f.endsWith('.md'));
       if (handoverFiles.length > 0) {
-        counts.handovers++;
+        counts.handovers += handoverFiles.length;
         const slug = deriveAgentSlug(folder.name);
-        actions.push(`Last handover from ${folder.name} → bus/${slug}/handoff.md`);
+        actions.push(`Migrate ${handoverFiles.length} handover(s) from ${folder.name} → memory/handoffs/${slug}/`);
       }
     }
   }
@@ -165,7 +165,7 @@ export async function executeMigration(cwd) {
     await migrateMemoryRoot(apmDir, stagingDir);
     await migrateTaskLogs(apmDir, stagingDir);
     await migrateAdHoc(apmDir, stagingDir);
-    await migrateHandovers(apmDir);
+    await migrateHandovers(apmDir, stagingDir);
     await cleanLegacy(cwd);
 
     // Move staged memory/ to final location (safe now that Memory/ is gone)
@@ -310,9 +310,10 @@ async function migrateAdHoc(apmDir, stagingDir) {
 }
 
 /**
- * Migrates the last handover per agent folder to bus/<slug>/handoff.md.
+ * Migrates all handover files to memory/handoffs/<slug>/ with v1 naming (staged).
+ * The bus is left empty — the user can write a handoff prompt manually if needed.
  */
-async function migrateHandovers(apmDir) {
+async function migrateHandovers(apmDir, stagingDir) {
   const handoversDir = path.join(apmDir, 'Memory', 'Handovers');
   if (!await fs.pathExists(handoversDir)) return;
 
@@ -327,15 +328,15 @@ async function migrateHandovers(apmDir) {
 
     if (files.length === 0) continue;
 
-    const lastHandover = files[files.length - 1];
     const slug = deriveAgentSlug(folder.name);
-    const busDir = path.join(apmDir, 'bus', slug);
-    await fs.ensureDir(busDir);
+    const destDir = path.join(stagingDir, 'memory', 'handoffs', slug);
+    await fs.ensureDir(destDir);
 
-    await fs.copy(
-      path.join(folderPath, lastHandover),
-      path.join(busDir, 'handoff.md')
-    );
+    for (const file of files) {
+      const num = extractHandoverNumber(file);
+      const newName = `handoff-${String(num).padStart(2, '0')}.log.md`;
+      await fs.copy(path.join(folderPath, file), path.join(destDir, newName));
+    }
   }
 }
 

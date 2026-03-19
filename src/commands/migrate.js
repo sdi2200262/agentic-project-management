@@ -17,6 +17,7 @@ import { detectLegacyVersion, buildMigrationReport, executeMigration, snapshotFo
 import { generateArchiveName } from '../services/archive.js';
 import { fetchOfficialReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract, extractBundle } from '../services/extractor.js';
+import { confirm, editor } from '@inquirer/prompts';
 import { confirmDestructiveAction, selectAssistant } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
 
@@ -156,6 +157,9 @@ async function localMigration({ cwd, metadata, legacyVersion, report, force, ass
   // Install reformat command
   await installReformatCommand(cwd, manifest, assistantIds);
 
+  // Prompt for handoff bus content
+  await promptHandoffBus(cwd);
+
   logger.clearAndBanner();
   logger.success(`Migrated from ${legacyVersion} using local build (v${manifest.version})`);
   for (const id of assistantIds) {
@@ -280,6 +284,9 @@ async function remoteMigration({ cwd, metadata, legacyVersion, report, force, as
   // Install reformat command
   await installReformatCommand(cwd, manifest, assistantIds);
 
+  // Prompt for handoff bus content
+  await promptHandoffBus(cwd);
+
   logger.clearAndBanner();
   logger.success(`Migrated from ${legacyVersion} to ${release.tag_name}`);
   for (const id of assistantIds) {
@@ -339,6 +346,52 @@ async function resolveAssistants(manifest, legacyMetadata, assistantArgs) {
   const header = 'Select assistant(s) to install';
   const selected = await selectAssistant(manifest.assistants, { header });
   return [selected];
+}
+
+/**
+ * Prompts the user to optionally write handoff initiation prompts to the bus.
+ * For each agent that has handoff logs in memory/handoffs/, asks if the user
+ * has the v0.5.4 initiation prompt and writes it to the bus if provided.
+ *
+ * @param {string} cwd - Working directory.
+ */
+async function promptHandoffBus(cwd) {
+  const handoffsDir = path.join(cwd, '.apm', 'memory', 'handoffs');
+  if (!await fs.pathExists(handoffsDir)) return;
+
+  const agentDirs = (await fs.readdir(handoffsDir, { withFileTypes: true }))
+    .filter(e => e.isDirectory());
+
+  if (agentDirs.length === 0) return;
+
+  logger.blank();
+  logger.info('Handoff logs migrated to memory/handoffs/.');
+  logger.info('To resume an agent session, the bus needs a handoff initiation prompt.');
+  logger.blank();
+
+  for (const dir of agentDirs) {
+    const slug = dir.name;
+    const hasPrompt = await confirm({
+      message: `Do you have the handoff initiation prompt for "${slug}"?`,
+      default: false
+    });
+
+    if (hasPrompt) {
+      const content = await editor({
+        message: `Paste the handoff prompt for "${slug}" (save and close editor when done):`,
+        postfix: '.md'
+      });
+
+      if (content && content.trim()) {
+        const busDir = path.join(cwd, '.apm', 'bus', slug);
+        await fs.ensureDir(busDir);
+        await fs.writeFile(path.join(busDir, 'handoff.md'), content.trim() + '\n');
+        logger.success(`Handoff prompt written to bus/${slug}/handoff.md`);
+      }
+    } else {
+      logger.warn(`No handoff prompt for "${slug}". Write one manually to .apm/bus/${slug}/handoff.md if needed.`);
+    }
+  }
 }
 
 /**
