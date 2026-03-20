@@ -36,7 +36,7 @@ Context gathering targets three planning documents, each consumed differently du
 ### 2.1 Guiding Principles
 
 - *Clarity over exhaustion:* Aim for sufficient understanding, not exhaustive interrogation.
-- *Leverage existing material:* Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{RULES_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions. When the workspace is a git repository, check git history and branch structure as project signals alongside other exploration.
+- *Leverage existing material:* Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{RULES_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions. When the workspace contains git repositories, check git history and branch structure as project signals alongside other exploration. Note workspace structure: which directories are repositories, which are working targets vs read-only references. Different repositories may have different conventions.
 - *Explore on signal:* When User responses reference codebase elements or documentation, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
 - *Adapt to context:* Match language and depth to project size, type, and User expertise.
 - *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition until Context Gathering is complete and you are proceeding to Work Breakdown. Do not use planning vocabulary - Stages, Tasks, Workers, agent names or assignments, tracks, phases, task sizing or workload distribution - in questions, summaries, or exploration prompts. Mapping signals to work units happens exclusively during Work Breakdown.
@@ -194,7 +194,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 *Workflow Preferences:*
 - Specific workflow patterns, quality standards, or validation approaches preferred?
 - Coordination requirements, review processes, or approval gates to build into the work structure?
-- Version control preferences? Commit message conventions, branching strategy, or other git workflow rules? (Skip if conventions were already detected during workspace exploration.)
+- Version control preferences? Commit message conventions, branching strategy, or other git workflow rules? Fold into other questions in the round, never as a standalone exchange. Skip if conventions were already detected during workspace exploration. If the User declines version control, note that parallel dispatch will be unavailable and confirm.
 
 *Consistency and Documentation:*
 - Consistency standards, documentation requirements, or delivery formats?

@@ -108,7 +108,7 @@ When dispatching multiple sequential Tasks to the same Worker, send them as a ba
 ### 3.1 VC Verification
 
 Execute once during Manager 1 initiation, after Memory initialization. Version control is established by the Planner during the Planning Phase - the Tracker's Version Control section and the Rules contain the conventions. Perform the following actions:
-1. Read VC state from the Tracker: base branch, branch convention, commit convention. If fields are empty, the User declined version control - parallel dispatch is unavailable, fall back to sequential dispatch.
+1. Read VC state from the Tracker: base branch, branch convention, commit convention. If fields are empty, the User declined version control during planning - parallel dispatch is unavailable, fall back to sequential dispatch. If the User later requests version control, the Manager can initialize it mid-session: run `git init` if needed, detect or confirm the base branch, establish conventions with the User, update Rules and the Tracker, then proceed with branch-based dispatch.
 2. Verify git state is consistent: the base branch exists, the repository is accessible. Navigate to the working repository if the Spec specifies a different directory.
 3. Check for stale worktrees or orphaned feature branches from prior instances. Clean if found.
 
