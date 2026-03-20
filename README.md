@@ -10,9 +10,9 @@
 
 APM is an open-source framework for managing ambitious software projects with AI assistants. Instead of working in a single, increasingly chaotic chat, APM structures your work into a coordinated system where different AI agents handle planning, coordination, and execution as a team.
 
-**The problem:** As conversations grow, AI context degrades. The assistant loses track of requirements, produces bad code, and hallucinates details. For substantial projects, this makes sustained progress nearly impossible.
+As conversations grow, AI context degrades. The assistant loses track of requirements, produces bad code, and hallucinates details. For substantial projects, this makes sustained progress nearly impossible.
 
-**The solution:** APM coordinates three specialized agent types, each operating in its own context with only the information it needs:
+APM coordinates three specialized agent types, each operating in its own context with only the information it needs:
 
 - **Planner** - Conducts structured project discovery and decomposes requirements into three planning documents: a Spec (what to build), a Plan (how work is organized), and Rules (how work is performed).
 - **Manager** - Coordinates execution by assigning Tasks to Workers, reviewing completed work, and maintaining project state. Operates on execution summaries rather than raw code.
@@ -21,6 +21,10 @@ APM is an open-source framework for managing ambitious software projects with AI
 Project state lives in structured files outside any agent's context. When a conversation ends or an agent reaches its limits, a Handoff transfers working knowledge to a fresh instance. Completed sessions can be archived and carried forward to new ones.
 
 You mediate every exchange between agents, keeping the workflow platform-agnostic and every interaction visible. Each agent guides you through the workflow at every step, telling you exactly which command to run, in which conversation, and what to do next.
+
+<p align="center">
+  <img src="assets/apm-social-card.png" alt="Agentic Project Management" width="800"/>
+</p>
 
 ## Supported Assistants
 
