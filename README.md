@@ -71,6 +71,7 @@ Full documentation is available at [agentic-project-management.dev](https://agen
 - **[Agent Types](https://agentic-project-management.dev/docs/agent-types)** - How Planner, Manager, and Worker roles work
 - **[Agent Orchestration](https://agentic-project-management.dev/docs/agent-orchestration)** - Communication, Memory, dispatch, and Handoff mechanics
 - **[Workflow Overview](https://agentic-project-management.dev/docs/workflow-overview)** - Every procedure in detail
+
 The site also covers advanced topics like how APM's prompt and context engineering works under the hood, design principles behind the multi-agent coordination, tips and tricks for model selection and cost optimization, troubleshooting, and customization.
 
 ## CLI Commands
