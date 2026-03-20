@@ -1,142 +1,113 @@
 # Agentic Project Management (APM)
 
-[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![agentic-pm CLI version](https://img.shields.io/badge/agentic--pm_CLI-v1.0.0-blue)](https://www.npmjs.com/package/agentic-pm) [![APM Releases](https://img.shields.io/badge/APM_Releases-v1.0.0-blue)](https://github.com/sdi2200262/agentic-project-management/releases) [![Website](https://img.shields.io/badge/website-agentic--project--management.dev-blue)](https://agentic-project-management.dev)
+[![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![npm](https://img.shields.io/npm/v/agentic-pm)](https://www.npmjs.com/package/agentic-pm) [![GitHub Release](https://img.shields.io/github/v/release/sdi2200262/agentic-project-management)](https://github.com/sdi2200262/agentic-project-management/releases)
 
-*Manage complex projects with a team of AI assistants, smoothly and efficiently.*
+> **Note:** APM v1 is currently in testing preview. The content below reflects the stable v1 release. For testing updates, see [Issue #79](https://github.com/sdi2200262/agentic-project-management/issues/79).
+
+*Manage complex projects with a team of AI agents, smoothly and efficiently.*
 
 ## What is APM?
 
-**Agentic Project Management (APM)** is a AI workflow framework that brings real-world project management principles into your AI-assisted workflows. It addresses a fundamental challenge of LLMs: **context window limitations**. 
+APM is an open-source framework for managing ambitious software projects with AI assistants. Instead of working in a single, increasingly chaotic chat, APM structures your work into a coordinated system where different AI agents handle planning, coordination, and execution as a team.
 
-APM uses various prompt and context engineering techniques, coordinating a team of specialized AI agents in a structured way so that you can maintain productive AI-assisted work for longer periods before facing model hallucinations and needing to start over. When context window does fill up, APM ensures a smooth transition to a "fresh" chat session without important context loss.
+**The problem:** As conversations grow, AI context degrades. The assistant loses track of requirements, produces bad code, and hallucinates details. For substantial projects, this makes sustained progress nearly impossible.
 
-Think of it like having a project planner, manager, developers, and ad-hoc specialists all powered by AI and working together under your guidance.
+**The solution:** APM coordinates three specialized agent types, each operating in its own context with only the information it needs:
 
-<p align="center">
-  <img src="assets/apm-banner.png" alt="apm-banner" style="border-radius: 16px; display: block; margin-left: auto; margin-right: auto;" />
-</p>
+- **Planner** - Conducts structured project discovery and decomposes requirements into three planning documents: a Spec (what to build), a Plan (how work is organized), and Rules (how work is performed).
+- **Manager** - Coordinates execution by assigning Tasks to Workers, reviewing completed work, and maintaining project state. Operates on execution summaries rather than raw code.
+- **Workers** - Execute specific Tasks with tightly scoped context. Each Worker receives a self-contained Task Prompt with everything it needs, executes, validates, and reports back.
 
-## Installation
+Project state lives in structured files outside any agent's context. When a conversation ends or an agent reaches its limits, a Handoff transfers working knowledge to a fresh instance. Completed sessions can be archived and carried forward to new ones.
 
-Install APM CLI globally via NPM:
+You mediate every exchange between agents, keeping the workflow platform-agnostic and every interaction visible. Each agent guides you through the workflow at every step, telling you exactly which command to run, in which conversation, and what to do next.
+
+## Supported Assistants
+
+| Assistant | Type | Format |
+|-----------|------|--------|
+| Claude Code | CLI | Markdown |
+| Cursor | IDE | Markdown |
+| GitHub Copilot | IDE | Markdown |
+| Gemini CLI | CLI | TOML |
+| OpenCode | CLI | Markdown |
+
+## Quick Start
+
+Install the CLI globally:
 
 ```bash
 npm install -g agentic-pm
 ```
 
-Or install locally in your project:
+Navigate to your project directory and initialize:
 
 ```bash
-npm install agentic-pm
+apm init
 ```
 
-<details>
-<summary><strong>Supported AI Assistants</strong></summary>
+Select your AI assistant when prompted. APM installs commands, guides, skills, and project artifact templates into your workspace.
 
-APM supports the following AI assistants and IDEs:
+Open your AI assistant (start Claude Code in a terminal, open a new Cursor Agent chat, etc.) and run:
 
-| Assistant           | Type                    | Format   | Command Directory      |
-|---------------------|-------------------------|----------|------------------------|
-| Cursor              | IDE & CLI               | Markdown | `.cursor/commands`     |
-| Claude Code         | IDE & CLI               | Markdown | `.claude/commands`     |
-| GitHub Copilot      | IDE                     | Markdown | `.github/prompts`      |
-| Gemini CLI          | CLI                     | TOML     | `.gemini/commands`     |
-| OpenCode            | CLI                     | Markdown | `.opencode/command`    |
+```
+/apm-1-initiate-planner I want you to build Claude Opus 5. Make no mistakes.
+```
 
-When you run `apm init`, simply select your AI assistant from the list, and APM will automatically configure the appropriate command structure for your environment.
+The Planner guides you through project discovery and creates planning documents. Once approved, it tells you to open a new conversation and run `/apm-2-initiate-manager` to begin coordinated execution. From there, each agent directs you through the workflow step by step.
 
-> **Note:** Unofficial community-maintained extensions may be available for other assistants. See [CONTRIBUTING.md](CONTRIBUTING.md#community-extensions) for details.
-
-</details>
-
-## Getting Started
-
-Follow these simple steps to start using APM in your project:
-
-1. **Navigate to your project directory** in your terminal.
-
-2. **Run the APM initialization command:**
-   ```bash
-   apm init
-   ```
-   
-   By default, `apm init` automatically finds and installs the latest template version compatible with your current CLI version. To install a specific template version (e.g., for rollbacks or testing), you can use the `--tag` option:
-   ```bash
-   apm init --tag v0.5.0+templates.1
-   ```
-
-3. **Select your AI assistant** when prompted (e.g., Cursor, Copilot, Claude Code, etc.).
-
-4. **APM automatically installs:**
-   - `.apm/` directory with APM guides and initial assets
-   - APM slash commands in your AI assistant's command directory
-   - Necessary installation meta-data
-
-5. **Open your AI assistant chat** and enter the slash command:
-   ```
-   /apm-1-initiate-planner
-   ```
-
-6. **Follow the established APM workflow:** <br/>
-Planning Phase (Project Discovery & Planning) → Implementation Phase (Plan Execution)
-
-For step-by-step guidance with video coverage, see the **[Getting Started Guide](https://agentic-project-management.dev/docs/getting-started)**. For detailed CLI behavior and policies, see the **[CLI Guide](https://agentic-project-management.dev/docs/cli)**.
-
-## Customization
-
-APM supports two customization approaches:
-- **Local edits:** Modify files in `.apm/` after running `apm init`
-- **Custom repositories:** Use `apm custom` to install templates from your own or third-party custom repositories
-
-See [Modifying APM](https://agentic-project-management.dev/docs/modifying-apm) for detailed customization guidance.
+For the full walkthrough, see the [Getting Started](https://agentic-project-management.dev/docs/getting-started) guide.
 
 ## Documentation
 
-Full documentation is available at [agentic-project-management.dev](https://agentic-project-management.dev).
+Full documentation is available at [agentic-project-management.dev](https://agentic-project-management.dev):
 
-**Essential reading:**
-- **[Getting Started](https://agentic-project-management.dev/docs/getting-started)** - Step-by-step setup and first session guide
-- **[Workflow Overview](https://agentic-project-management.dev/docs/workflow-overview)** - Complete workflow walkthrough with process diagrams
-- **[CLI Guide](https://agentic-project-management.dev/docs/cli)** - Detailed CLI usage and commands
+- **[Introduction](https://agentic-project-management.dev/docs/introduction)** - What APM is and how it works
+- **[Getting Started](https://agentic-project-management.dev/docs/getting-started)** - Installation through first task cycle
+- **[Agent Types](https://agentic-project-management.dev/docs/agent-types)** - How Planner, Manager, and Worker roles work
+- **[Agent Orchestration](https://agentic-project-management.dev/docs/agent-orchestration)** - Communication, Memory, dispatch, and Handoff mechanics
+- **[Workflow Overview](https://agentic-project-management.dev/docs/workflow-overview)** - Every procedure in detail
+The site also covers advanced topics like how APM's prompt and context engineering works under the hood, design principles behind the multi-agent coordination, tips and tricks for model selection and cost optimization, troubleshooting, and customization.
 
-For a complete documentation index, visit the **[Documentation Hub](https://agentic-project-management.dev/docs)**.
+## CLI Commands
+
+See the [CLI Guide](https://agentic-project-management.dev/docs/cli) for full details.
+
+| Command | Description |
+|---------|-------------|
+| `apm init` | Initialize with official releases |
+| `apm custom` | Install from custom repositories |
+| `apm update` | Update to latest compatible version |
+| `apm archive` | Archive current session or manage archives |
+| `apm add` | Add assistant(s) to existing installation |
+| `apm remove` | Remove assistant(s) from installation |
+| `apm status` | Show installation state |
+
+## Customization
+
+APM supports custom repositories for teams that want to modify the workflow. Fork the repo or use it as a template, adjust templates, build, release, and install with `apm custom -r owner/repo`. A [customization skill](skills/apm-customization/) is included in the repo to guide AI agents through the process.
+
+See the [Customization Guide](https://agentic-project-management.dev/docs/customization-guide) for details.
+
+## Migrating from v0.5.x
+
+A standalone [migration skill](skills/apm-migration/) guides an AI agent through migrating from older APM versions. It archives your existing artifacts, cleans up old files, and leaves the project ready for `apm init`. The new Planner detects archived sessions during Context Gathering and carries context forward.
+
+See the [standalone skills README](skills/) for per-platform installation instructions.
 
 ## Contributing
 
-APM is an open-source project, and your contributions are welcome! Whether it's improving prompts, enhancing documentation, suggesting new features, or reporting bugs, please feel free to open an issue or submit a pull request.
-
-**Ways to contribute:**
-- **Report bugs or workflow issues**
-- **Suggest features or improvements**
-- **Improve documentation**
-- **Share customizations/adaptations** for specific domains or use-cases
-- **Extend support** for new AI assistants
-
-**Areas particularly seeking contributions:**
-
-- **Assistant Support:** Help expand APM support for additional AI assistants beyond the ones currently supported.
-- **Delegation Skills:** The framework includes Debug and Research Delegation Skills, but there's opportunity to create specialized Delegation Skills for other context-intensive tasks such as testing automation, security analysis, data extraction and more.
-- **Workflow Optimizations:** Share improvements to agent procedures or memory system enhancements.
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on the code of conduct and contribution process.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Report bugs or suggest features via [GitHub Issues](https://github.com/sdi2200262/agentic-project-management/issues). Reach out on Discord: `cobuter_man`.
 
 ## Versioning
 
-APM uses a decoupled versioning system where the CLI and templates version independently but share the same major version number. The CLI follows Semantic Versioning on NPM, while templates are released via GitHub Releases. See [VERSIONING.md](VERSIONING.md) for details.
-
-## Security
-
-When using custom template repositories with `apm custom`, security warnings are displayed to inform users about potential risks. APM validates template manifests (`apm-release.json`) before installation. See [SECURITY.md](SECURITY.md) for our security policy.
+CLI and template releases version independently but share major version for compatibility. See [VERSIONING.md](VERSIONING.md) for details.
 
 ## License
 
-This project is licensed under the **Mozilla Public License 2.0** - see the [LICENSE](LICENSE) file for full details.
+Licensed under the **Mozilla Public License 2.0 (MPL-2.0)**. APM is free for all uses including commercial. Improvements to core APM files must be shared back with the community. See [LICENSE](LICENSE) for full details.
 
-### License Update: MIT → MPL-2.0
-
-As APM has matured from an experimental framework into a comprehensive multi-agent coordination system with growing commercial interest, its license has been upgraded from MIT to **Mozilla Public License 2.0 (MPL-2.0)**. This change helps protect the Open Source Software community while maintaining full commercial compatibility.
-
-**What this means:** APM remains completely free and Open Source for all uses (personal, commercial, enterprise). You can build proprietary products using APM, integrate it into commercial IDEs, and create paid services around it. The only requirements are that improvements to core APM files must be shared back with the community, and that you attribute the creators and the APM project as required by the MPL 2.0 license. Make sure to read the [LICENSE](LICENSE) file for full details.
+Versions prior to v0.4.0 were released under the MIT license. The license was updated to MPL-2.0 starting with v0.4.0.
 
 <p align="center">
   <a href="https://github.com/sdi2200262" target="_blank">

@@ -9,114 +9,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [1.0.0] - Unreleased
 
+v1.0.0 is a complete redesign of the APM workflow. The scope of changes across both the codebase and the workflow itself is too large to cover exhaustively here. This is a concise summary of the most significant changes. For the full specification, see the [documentation](https://github.com/sdi2200262/apm-website/tree/main/docs).
+
 ### Breaking Changes
 
-* **Platform Support Reduced:** APM v1.0.0 officially supports only the following assistants: Cursor, Claude Code, GitHub Copilot, Gemini CLI, and OpenCode. Support for Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity, and Qwen Code has been removed. Community-maintained extensions may be available separately.
+* **Workflow redesigned.** Two-phase workflow: Planning Phase (Context Gathering + Work Breakdown) produces three planning documents (Spec, Plan, Rules). Implementation Phase cycles through Task Assignment, Task Execution, Task Logging, and Task Review, with support for batch and parallel dispatch across multiple Workers. All coordination is User-mediated through a file-based Message Bus, with Agents guiding the User at every step, providing clear action directives for which command to run, in which conversation, and what to do next.
 
-* **Delegate Command Removed:** The `apm-4-initiate-delegate` command has been removed. Delegates are now spawned as subagents by the Planner, Managers and Workers using the platform's native subagent tool. Custom subagent definitions (`delegate-research`, `delegate-debug`) are shipped with APM and installed to each platform's agents directory.
+* **Agent roles changed.** Setup Agent → Planner. Implementation Agent → Worker. Ad-Hoc Agents removed (subagents are now spawned natively by Planner, Manager, and Workers). Manager unchanged.
 
-* **Agent Terminology Overhaul:**
-  * Setup Agent → **Planner Agent**
-  * Implementation Agent → **Worker Agent**
-  * Ad-Hoc Agent → **Delegate Agent** (now spawned as subagent, not separate session)
-  * Manager Agent (unchanged)
+* **9 commands** (up from 5): `apm-1-initiate-planner`, `apm-2-initiate-manager`, `apm-3-initiate-worker`, `apm-4-check-tasks`, `apm-5-check-reports`, `apm-6-handoff-manager`, `apm-7-handoff-worker`, `apm-8-summarize-session`, `apm-9-recover`.
 
-* **Command Renaming:** Commands have been renamed to reflect new terminology (5 commands, down from 6):
-  * `apm-1-initiate-planner` (was `apm-1-initiate-setup`)
-  * `apm-2-initiate-manager`
-  * `apm-3-initiate-worker` (was `apm-3-initiate-implementation`)
-  * `apm-5-handoff-manager` (was `apm-5-handover-manager`)
-  * `apm-6-handoff-worker` (was `apm-6-handover-implementation`)
+* **New artifact structure.** Spec (`.apm/spec.md`), Plan with dependency graphs (`.apm/plan.md`), Rules (platform rules file), Tracker (`.apm/tracker.md`), Memory hierarchy (`.apm/memory/` with Index, Task Logs, Handoff Logs). Replaces Implementation Plan and Memory Root.
 
-* **Guides Restructured into Skills:** The `templates/guides/` directory has been reorganized into a modular Agent Skills system at `templates/skills/`.
+* **Platform support narrowed** to assistants with native subagent capabilities: Claude Code, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
 
-* **Decoupled Versioning:** CLI and templates now version independently but share the same major version number. Template releases now use standard SemVer (e.g., `v1.0.0`, `v1.1.0`) instead of build metadata format (`v0.5.0+templates.N`). See [VERSIONING.md](VERSIONING.md) for details.
+* **Template file structure changed.** Commands in `templates/commands/`, guides in `templates/guides/`, skills in `templates/skills/`, agents in `templates/agents/`. Governed by `templates/_standards/` (WORKFLOW.md, TERMINOLOGY.md, STRUCTURE.md, WRITING.md).
 
-* **Modular Architecture and Build System Changes:** The CLI source files and build pipeline have been reorganized into a fully modular architecture. Source files now follow a dedicated module structure (see new directories in `src/` and `build/`). The build system entry point has moved from `scripts/build.js` to `build/index.js`, and the build command is now `npm run build:release` (replacing `npm run build:cli`).
+* **CLI redesigned.** New commands: `apm archive`, `apm add`, `apm remove`, `apm status`, `apm custom`. `apm init` is fresh-install only. Per-file install tracking via `installedFiles` in metadata.
 
-* **Metadata Schema Updated:** New fields added (`source`, `repository`, `cliVersion`) for tracking installation provenance.
+* **Decoupled versioning.** CLI and templates version independently. Template releases use standard SemVer. See [VERSIONING.md](VERSIONING.md).
 
 ### Added
 
-* **Custom Repository Support:** New `apm custom` command enables using custom template repositories with security disclaimers.
-  * Support for saved custom repositories in global `~apm/` user config
-  * `--repo <owner/repo>` flag to specify repository directly
-  * Security disclaimer prompt for untrusted sources
-
-* **Manifest-Driven Architecture:** Build system now generates `apm-release.json` manifest with release metadata for template validation.
-
-* **Security Documentation:** New `SECURITY.md` covering custom repository risks and mitigation strategies.
-
-* **Modular CLI Architecture:** Completely restructured CLI into dedicated modules:
-  * `src/commands/` - Separate command modules (`init.js`, `custom.js`, `update.js`)
-  * `src/core/` - Core modules (`config.js`, `constants.js`, `errors.js`, `metadata.js`)
-  * `src/services/` - Service modules (`extractor.js`, `github.js`, `releases.js`)
-  * `src/ui/` - User interface modules (`logger.js`, `prompts.js`)
-  * `src/schemas/` - Schema validation (`release.js`)
-
-* **Modular Build System:** Restructured build system from `scripts/` to `build/`:
-  * `build/core/` - Build configuration and error handling
-  * `build/generators/` - Archive and manifest generation
-  * `build/processors/` - Template, frontmatter, and placeholder processing
-  * `build/utils/` - File utilities and logging
-
-* **Skills System:** New `templates/skills/` directory with 9 modular skill files:
-  * `artifact-maintenance.md` - Artifact management procedures
-  * `context-gathering.md` - Context synthesis procedures
-  * `delegate-debug.md` - Debug delegation procedures
-  * `delegate-research.md` - Research delegation procedures
-  * `memory-logging.md` - Memory logging procedures
-  * `memory-maintenance.md` - Memory system maintenance
-  * `task-assignment.md` - Task assignment procedures
-  * `task-execution.md` - Task execution procedures
-  * `work-breakdown.md` - Work breakdown procedures
-
-* **Template Standards System:** New `templates/_standards/` directory:
-  * `TERMINOLOGY.md` - Standardized terminology reference
-  * `STRUCTURE.md` - Template structure guidelines
-  * `WRITING.md` - Writing style guidelines
-
-* **Build Standards Documentation:** `build/_standards/BUILD.md`
-
-* **CLI Standards Documentation:** `src/_standards/CLI.md`
-
-* **New APM Artifacts:**
-  * `Specifications.md` - New coordination artifact for project specifications
-  * Updated `Implementation_Plan.md` template
-  * Updated `Memory/Memory_Root.md` template
-
-### Changed
-
-* **VERSIONING.md Overhaul:** Completely rewritten to document new decoupled versioning strategy with independent CLI and template releases.
-
-* **Release Workflow:** `.github/workflows/release-templates.yml` updated with auto-increment patch version from latest stable release and pre-release detection.
-
-* **Terminology Standardization:** Consistent terminology across all templates.
+* **Message Bus** (`.apm/bus/`): file-based Agent communication with Task Bus, Report Bus, and Handoff Bus per Worker.
+* **Session continuation:** archive completed sessions, start fresh with archived context carried forward via Planner detection.
+* **Recovery command** (`/apm-9-recover`): reconstructs working context after platform auto-compaction.
+* **Handoff system:** structured context transfer between Agent instances with Handoff Log (persistent) and Handoff Prompt (ephemeral).
+* **Standalone skills** (`skills/`): independently installable skills for migration and customization.
+* **Custom repository support** (`apm custom`): install templates from forked or third-party repositories.
+* **Build pipeline** (`build/`): processes templates into platform-specific bundles with placeholder system, TOML conversion for Gemini, and `apm-release.json` manifest.
+* **Modular CLI architecture** (`src/`): commands, services, core, UI, and schemas modules.
 
 ### Removed
 
-* **Old Template Structure:**
-  * `templates/Implementation_Agent/` directory
-  * `templates/Manager_Agent/` directory
-  * `templates/Setup_Agent/` directory
-  * `templates/ad-hoc/` directory
-  * `templates/guides/` directory
-  * `templates/README.md`
-
-* **Legacy Source Files:**
-  * `src/downloader.js` - Replaced by `src/services/` modules
-  * `src/utils.js` - Functionality distributed to new modules
-
-* **Old Build System:**
-  * `scripts/build.js` - Replaced by modular `build/` system
-  * `scripts/tests/build.test.js` - Build test file
-
-### Security
-
-* **Custom Repository Security Model:**
-  * Security disclaimer required before first install from untrusted sources
-  * Option to skip disclaimer for trusted repositories
-  * Clear documentation of what custom repositories can and cannot do during installation
+* Ad-Hoc Agents and Delegate commands.
+* Implementation Plan, Memory Root, and `guides/` directory format.
+* Support for Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity, and Qwen Code.
+* Legacy build system (`scripts/build.js`).
 
 ---
 
