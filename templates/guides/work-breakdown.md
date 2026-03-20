@@ -181,11 +181,11 @@ Perform the following actions per §2.4 `{RULES_FILE}` Standards:
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan.
    - **Classification:** which candidates are truly universal vs Task-specific; whether each is self-contained for Workers with no access to the Spec or the Plan. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains? Most projects produce few genuinely universal rules beyond the framework rules below. Project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
-   - **Framework rules:** Retain the Framework Rules section from §4.3 APM_STANDARDS Block as-is. Add project-specific standards after it.
+   - **Framework rules:** Retain the Framework Rules section from §4.3 APM_RULES Block as-is. Add project-specific standards after it.
    - **Existing standards:** what `{RULES_FILE}` already contains; reference rather than duplicate.
-2. Write APM_STANDARDS block to `{RULES_FILE}` per §4.3 APM_STANDARDS Block:
-   - If file exists: preserve existing content outside block, append APM_STANDARDS block.
-   - If creating new: create file with APM_STANDARDS block only.
+2. Write APM_RULES block to `{RULES_FILE}` per §4.3 APM_RULES Block:
+   - If file exists: preserve existing content outside block, append APM_RULES block.
+   - If creating new: create file with APM_RULES block only.
 3. Pause for User review:
    - State Rules are complete.
    - Ask User to review `{RULES_FILE}` for accuracy.
@@ -271,19 +271,19 @@ Dispatch patterns visible from the graph per §2.3 Plan Standards:
 
 *Styling:* Assign each agent a consistent fill color across all its Task nodes. Apply colors via `style T<S>_<T> fill:<color>` statements after all subgraphs, ordered by agent appearance in the Plan Agents field. Use text color #000 and select fill colors with sufficient contrast for readability.
 
-### 4.3 APM_STANDARDS Block
+### 4.3 APM_RULES Block
 
 The namespace block structure for `{RULES_FILE}`:
 
 ```text
-APM_STANDARDS {
+APM_RULES {
 
 [Project-specific standards below]
 
-} //APM_STANDARDS
+} //APM_RULES
 ```
 
-**Content rules:** No content outside the APM_STANDARDS block unless explicitly requested. Use markdown headings (`##`) for categories. Each standard must be concrete and actionable. Only universal execution-level patterns - not architecture decisions, Task-specific guidance, or coordination decisions. Reference existing standards outside the block rather than duplicating.
+**Content rules:** No content outside the APM_RULES block unless explicitly requested. Use markdown headings (`##`) for categories. Each standard must be concrete and actionable. Only universal execution-level patterns - not architecture decisions, Task-specific guidance, or coordination decisions. Reference existing standards outside the block rather than duplicating.
 
 **Format selection:** Tables for pattern comparisons, code blocks for syntax examples, bulleted lists for rules, numbered lists for sequential steps, prose for context.
 
@@ -297,7 +297,7 @@ APM_STANDARDS {
 
 **Plan:** Each Task is understandable without external reference. Use specific language - not "implement properly" but the specific pattern to follow. All fields populated. Consistent naming and terminology.
 
-**`{RULES_FILE}`:** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_STANDARDS block rather than duplicating existing standards.
+**`{RULES_FILE}`:** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_RULES block rather than duplicating existing standards.
 
 ### 5.2 Common Mistakes
 

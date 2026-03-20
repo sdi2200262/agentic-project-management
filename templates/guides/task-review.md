@@ -285,7 +285,7 @@ modified: Task 2.3 scope clarified based on task-02-02.log.md findings. Modified
 - *Modifying Tasks:* Preserve existing structure, update only affected fields.
 - *Removing Tasks:* Delete the Task section AND update any other Tasks that referenced it as a dependency.
 
-**Rules:** Modifications stay within the `APM_STANDARDS {}` block. Use `##` headings for categories. Only add genuinely universal patterns.
+**Rules:** Modifications stay within the `APM_RULES {}` block. Use `##` headings for categories. Only add genuinely universal patterns.
 
 **Dependency Graph:** When Task dependencies change, regenerate the relevant graph section. Same-agent dependencies use `-->`, cross-agent use `-.->`. Update node styles if agents change.
 
