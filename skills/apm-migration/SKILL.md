@@ -31,16 +31,16 @@ This skill guides the migration of a project from an older APM version to the cu
 
 Before proposing a migration, research what the current version of APM looks like. The official documentation is available at:
 
-- **Documentation site:** https://agentic-project-management.dev/docs/introduction
+- **Documentation (v1 preview):** https://github.com/sdi2200262/apm-website/tree/main/docs
 - **Repository:** https://github.com/sdi2200262/agentic-project-management
 
-Fetch and read the following pages to understand the current workflow, file structure, and CLI:
+Fetch and read the following doc files from the documentation repository to understand the current workflow, file structure, and CLI:
 
-- **Introduction** - What APM is and how it works
-- **Getting Started** - Installation, initialization, and first session walkthrough
-- **CLI Guide** - All CLI commands, directory structure, metadata format, and versioning
+- **Introduction.md** - What APM is and how it works
+- **Getting_Started.md** - Installation, initialization, and first session walkthrough
+- **CLI.md** - All CLI commands, directory structure, metadata format, and versioning
 
-These pages are the source of truth for what the current release expects. Compare what they describe against what exists in the User's workspace to identify the differences.
+These pages are the source of truth for what the current release expects. Compare what they describe against what exists in the User's workspace to identify the differences. Note: the documentation site at `agentic-project-management.dev` may not yet reflect v1 content. Use the repository links above for current v1 documentation.
 
 ---
 
@@ -98,7 +98,7 @@ Perform the following actions:
      | session-YYYY-MM-DD-001 | YYYY-MM-DD | Migration archive from APM vX.X.X | N/A | N/A |
      ```
 
-   When creating the archive, convert the old `metadata.json` to the current schema so that `apm archive --list` and `apm status` display it correctly. The current archive metadata schema is documented in the [CLI Guide](https://agentic-project-management.dev/docs/cli). Map old fields to current equivalents (e.g. `templateVersion` → `releaseVersion`, full assistant names → short IDs), add `archivedAt` with the current timestamp, and set `reason` to `"migration"`. Fetch the CLI Guide if needed to confirm the current schema.
+   When creating the archive, convert the old `metadata.json` to the current schema so that `apm archive --list` and `apm status` display it correctly. The current archive metadata schema is documented in the [CLI Guide](https://github.com/sdi2200262/apm-website/blob/main/docs/CLI.md). Map old fields to current equivalents (e.g. `templateVersion` → `releaseVersion`, full assistant names → short IDs), add `archivedAt` with the current timestamp, and set `reason` to `"migration"`. Fetch the CLI Guide if needed to confirm the current schema.
 
    Inform the User of the archive directory name and ask if they would like to rename it to something more descriptive.
 
@@ -157,6 +157,7 @@ Perform the following actions:
 - If the User's assistant is no longer officially supported in the current release, inform them and suggest the closest supported alternative.
 - Assistant directories often contain non-APM content (IDE rules, custom commands, project configurations). Only remove files that are clearly APM-installed. When in doubt, ask the User.
 - Always fetch the current documentation rather than relying solely on the landmarks in §3. APM evolves between releases and the docs are the source of truth.
+- **Reverting the migration.** If the User migrates and decides the current release is not for them, the old artifacts are preserved in the archive created during Step 1. To revert: restore the archived `.apm/` contents, downgrade the CLI to the previously installed version (`npm install -g agentic-pm@<version>`), and run `apm init` to reinstall the old assistant files. Recommend the User commits or stashes their workspace before migrating for extra safety.
 
 ---
 
