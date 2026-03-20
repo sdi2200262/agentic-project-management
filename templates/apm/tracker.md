@@ -24,6 +24,7 @@ title: <Project Name>
 |-------|-------|
 | Base Branch | <base-branch> |
 | Branch Convention | <convention> |
+| Commit Convention | <convention> |
 
 ## Working Notes
 
