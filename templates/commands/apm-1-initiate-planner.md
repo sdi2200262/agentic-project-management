@@ -57,7 +57,7 @@ Perform the following actions:
 **Prerequisite:** Work Breakdown Procedure must be complete with all planning documents approved.
 
 Perform the following actions:
-1. Initialize the bus system. Read the Plan to identify all Workers defined in the Agents field. For each Worker, derive the agent slug (lowercase, hyphenated name) per `{SKILL_PATH:apm-communication}` §4.4 Agent Slug Format and create the agent directory:
+1. Initialize the Message Bus. Read the Plan to identify all Workers defined in the Agents field. For each Worker, derive the agent slug (lowercase, hyphenated name) per `{SKILL_PATH:apm-communication}` §4.4 Agent Slug Format and create the agent directory:
    - Create directory: `.apm/bus/<agent-slug>/`
    - Create empty Task Bus: `.apm/bus/<agent-slug>/task.md`
    - Create empty Report Bus: `.apm/bus/<agent-slug>/report.md`
@@ -68,7 +68,7 @@ Perform the following actions:
    - Detect the current branch and record as base branch.
    - If `.apm/` is inside the repository directory, check `.gitignore` for `.apm/worktrees/` and add if absent.
    - Write version control state to the Tracker: set Base Branch, Branch Convention, and Commit Convention fields. If Rules contain version control conventions, use those values. If the User declined version control during Work Breakdown, leave the fields empty.
-3. State the Planning Phase is complete: planning documents created, bus system and version control initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
+3. State the Planning Phase is complete: planning documents created, Message Bus and version control initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
 
 ---
 

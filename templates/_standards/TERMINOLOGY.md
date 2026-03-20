@@ -92,10 +92,11 @@ Partial means "I need guidance to continue." Failed means "I could not achieve t
 
 ## 6. Communication
 
-The communication system is a file-based bus mechanism in `.apm/bus/`. Each agent has a directory containing its bus files. Before writing to an outgoing bus file, the agent clears its incoming bus file to prevent stale messages.
+The communication system is a file-based Message Bus in `.apm/bus/`. Each agent has a directory containing its bus files. Before writing to an outgoing bus file, the agent clears its incoming bus file to prevent stale messages.
 
 | Term | Definition |
 | ------ | ------------ |
+| **Message Bus** | The file-based communication system in `.apm/bus/` through which agents exchange Task Prompts, Task Reports, and Handoff content. The User mediates every exchange. |
 | **Task Bus** | Manager-to-Worker bus file (`task.md`). Contains Task Prompts. |
 | **Report Bus** | Worker-to-Manager bus file (`report.md`). Contains Task Reports. |
 | **Handoff Bus** | Outgoing-to-incoming agent bus file (`handoff.md`). Contains the handoff prompt content that instructs the incoming agent to rebuild working context. |

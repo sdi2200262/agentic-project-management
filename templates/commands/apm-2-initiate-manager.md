@@ -30,7 +30,7 @@ Perform the following actions:
    - `{RULES_FILE}` - Rules
    - `{GUIDE_PATH:task-assignment}` - Task Prompt construction
    - `{GUIDE_PATH:task-review}` - Task Review, review outcomes, planning document modifications
-   - `{SKILL_PATH:apm-communication}` - bus system protocol
+   - `{SKILL_PATH:apm-communication}` - Message Bus protocol
    If the Spec references external User documents as authoritative sources, read those documents as well - you extract content from them into Task Prompts.
 2. Determine your role:
    - Check if the Tracker is in template state (contains `<Project Name>` placeholder).
