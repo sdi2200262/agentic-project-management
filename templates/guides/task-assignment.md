@@ -84,13 +84,9 @@ Before constructing individual Task Prompts, assess dispatch opportunities acros
 
 Version control provides workspace isolation during parallel dispatch. Each dispatch unit operates on its own feature branch, and you coordinate all merges during Task Review.
 
-**Repository detection** → Detect existing repository state during VC initialization. Detection is passive - read what exists rather than imposing configuration. Checks: which directory is the working repository (from the Spec), is git initialized, what is the current branch (becomes base branch), where is `.apm/` relative to repository root, and is `.apm/worktrees/` in `.gitignore`. If leftover worktrees or branches from a prior instance exist, detect and clean during initialization via `git worktree list && git branch`.
-
-**Branch standards** → Every dispatch unit gets its own feature branch off the base branch per §4.3 Branch Naming. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
+**Branch standards** → Every dispatch unit gets its own feature branch off the base branch per the branch convention in the Tracker. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
 
 **Worktree standards** → Worktrees are created only for parallel dispatch - when multiple Workers need physically separate directories simultaneously. For sequential dispatch, the Worker operates in the main working directory on their feature branch. Layout per §4.4 Worktree Directory Layout. Concurrency limit: maximum 3-4 concurrent worktrees. Lifecycle: short-lived - created before dispatch, removed after merge. Worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
-
-**User preferences** → Respect the User's existing repository setup. The base branch is whatever the User is currently on. Conventions are detected from the project or established with the User during initialization, then noted in working notes. The Planner may have captured VC-relevant preferences during Context Gathering - check Rules, Spec, and Plan guidance fields during initialization.
 
 ### 2.6 Delivery Standards
 
@@ -109,18 +105,12 @@ When dispatching multiple sequential Tasks to the same Worker, send them as a ba
 4. Task Prompt Construction - assemble, deliver, and direct User.
 5. Follow-Up Task Prompt Construction - when review outcome requires retry.
 
-### 3.1 VC Initialization
+### 3.1 VC Verification
 
-Execute once during Manager 1 initiation, after Memory initialization. Perform the following actions:
-1. Check the Spec for workspace structure - identify which directory is the working repository. If specified, navigate there before proceeding.
-2. Check if git is initialized. If not, run `git init` and inform the User.
-3. Detect the current branch - record as base branch.
-4. Record the repository root path and `.apm/` path (they may differ).
-5. Check planning documents (Rules, Spec, Plan) for VC-relevant guidance - commit conventions, branching strategies, PR workflows. Incorporate findings.
-6. Detect branch naming conventions from existing branches, planning document guidance, or establish with User.
-7. If `.apm/` is inside the repository directory, check `.gitignore` for `.apm/worktrees/` and add if absent.
-8. Check for stale worktrees or orphaned feature branches from prior instances. Clean if found.
-9. Write VC state to the Tracker per §4.5 Tracker VC Entry Format.
+Execute once during Manager 1 initiation, after Memory initialization. Version control is established by the Planner during the Planning Phase - the Tracker's Version Control section and the Rules contain the conventions. Perform the following actions:
+1. Read VC state from the Tracker: base branch, branch convention, commit convention. If fields are empty, the User declined version control - parallel dispatch is unavailable, fall back to sequential dispatch.
+2. Verify git state is consistent: the base branch exists, the repository is accessible. Navigate to the working repository if the Spec specifies a different directory.
+3. Check for stale worktrees or orphaned feature branches from prior instances. Clean if found.
 
 ### 3.2 Dispatch Assessment
 
@@ -226,7 +216,7 @@ Follow-up Task Prompts use the same structure as §4.1 Task Prompt Format with t
 
 ### 4.3 Branch Naming
 
-Branch naming follows the project's existing conventions or is established with the User during VC initialization. The agreed convention is recorded in the Tracker Version Control table. Branch names are descriptive; for batches, the name reflects the batch scope.
+Branch naming follows the convention recorded in the Tracker Version Control table (established by the Planner during the Planning Phase). Branch names are descriptive of the actual work; for batches, the name reflects the batch scope.
 
 ### 4.4 Worktree Directory Layout
 
@@ -234,7 +224,7 @@ Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived 
 
 ### 4.5 Tracker VC Entry Format
 
-VC configuration recorded in the Version Control table within the Tracker. Branch state is tracked per-task in the task table's Branch column - an incoming Manager reads task rows to rebuild working VC context.
+VC configuration recorded in the Version Control table within the Tracker. The Planner populates this during Planning Phase Completion. Branch state is tracked per-task in the task table's Branch column - an incoming Manager reads task rows to rebuild working VC context.
 
 **Format:**
 
@@ -244,7 +234,8 @@ VC configuration recorded in the Version Control table within the Tracker. Branc
 | Field | Value |
 |-------|-------|
 | Base Branch | <branch-name> |
-| Branch Convention | <agreed naming convention> |
+| Branch Convention | <convention> |
+| Commit Convention | <convention> |
 ```
 
 ---
@@ -273,7 +264,7 @@ VC configuration recorded in the Version Control table within the Tracker. Branc
 - *Wrong log_path on follow-up:* Follow-up Task Prompts must use the same path as the original.
 - *Dispatching before merging dependencies:* If Task B depends on Task A's output and A was on a separate branch, A must be merged before B's branch is created.
 - *Accumulating worktrees:* Worktrees are short-lived. Remove promptly after merge.
-- *Assuming base branch name:* Detect the current branch during initialization. Do not assume `main` or `master`.
+- *Assuming base branch name:* Read the base branch from the Tracker. Do not assume `main` or `master`.
 - *Forgetting VC state in Handoff:* Ensure task rows reflect current branch state before Handoff. Include active branches, worktrees, and pending merges in the Handoff Log.
 - *Committing build artifacts:* Do not commit generated files. Create or update `.gitignore` for build directories.
 

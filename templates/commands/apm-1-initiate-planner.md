@@ -21,7 +21,7 @@ Read the following skill:
 The following artifact files exist with header templates ready to be populated:
 - `.apm/plan.md` (populated by you during Work Breakdown)
 - `.apm/spec.md` (populated by you during Work Breakdown)
-- `.apm/tracker.md` (populated by Manager 1)
+- `.apm/tracker.md` (version control state populated by you during Planning Phase Completion; task and agent tracking populated by Manager 1)
 - `.apm/memory/index.md` (populated by Manager 1)
 
 You will also create or update `{RULES_FILE}` at workspace root with Rules during Work Breakdown.
@@ -63,7 +63,12 @@ Perform the following actions:
    - Create empty Report Bus: `.apm/bus/<agent-slug>/report.md`
    - Create empty Handoff Bus: `.apm/bus/<agent-slug>/handoff.md`
    Create the Manager's bus directory: `.apm/bus/manager/` with empty Handoff Bus `.apm/bus/manager/handoff.md`. Create all directories and bus files using `mkdir -p` and `touch` in a single terminal command.
-2. State the Planning Phase is complete: planning documents created, bus system initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
+2. Initialize version control. Identify the working target from the Spec (workspace root and repository may differ). Navigate to the working repository if specified.
+   - If git is not initialized → run `git init` and inform the User.
+   - Detect the current branch and record as base branch.
+   - If `.apm/` is inside the repository directory, check `.gitignore` for `.apm/worktrees/` and add if absent.
+   - Write version control state to the Tracker: set Base Branch, Branch Convention, and Commit Convention fields. If Rules contain version control conventions, use those values. If the User declined version control during Work Breakdown, leave the fields empty.
+3. State the Planning Phase is complete: planning documents created, bus system and version control initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
 
 ---
 

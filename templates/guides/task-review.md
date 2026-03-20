@@ -54,7 +54,7 @@ After reviewing a Task Log, determine the review outcome.
 
 **Post-investigation outcome:**
 - *No issues:* (false positives, nothing actionable) → Continue to next Task(s).
-- *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction.
+- *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction. If the Worker also left changes uncommitted, note this in the follow-up instructions.
 - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification.
 - *Previously-Done work deficient:* (investigation of a later Task reveals issues with already-Done work) → Create a new Task through plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; reference it from the new Task, include the discovery context, and specify what needs correction.
 
@@ -141,7 +141,7 @@ Perform the following actions:
 Execute after Task Log review.
 
 Perform the following actions:
-1. Review findings from the Task Log per §2.2 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If everything looks good → skip to step 4. If something needs attention → continue to step 2.
+1. Review findings from the Task Log per §2.2 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If version control is active and the Task was successful but changes remain uncommitted on the task branch, commit on behalf following the conventions from Rules - no follow-up needed. If everything looks good → skip to step 4. If something needs attention → continue to step 2.
 2. Determine investigation scope per §2.2 Review Outcome Standards: small scope → self-investigate, large scope → subagent.
 3. Investigate and determine outcome per §2.2 Review Outcome Standards:
    - *No issues:* → Continue to step 4.
@@ -229,7 +229,7 @@ Write the end state of each Task for the review-dispatch cycle. When a Task is u
 The Tracker contains four sections:
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
 - *`## Agent Tracking`:* Records agent states, instance numbers, and coordination notes. Update agent tracking when agents are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
-- *`## Version Control`:* Base branch and naming convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Static after initialization - branch state is tracked in the task table's Branch column.
+- *`## Version Control`:* Base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Populated by the Planner during Planning Phase Completion - branch state is tracked in the task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.6 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
 **Agent Tracking Table:**
