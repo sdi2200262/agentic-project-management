@@ -33,7 +33,7 @@ Three documents form a waterfall: Spec (what to build) → Plan (how work is org
 | ------ | ------------ | ---------- |
 | **Spec** | Project-specific design decisions and constraints that inform the Plan. The Manager may update it during the Implementation Phase. | `.apm/spec.md` |
 | **Plan** | Stage and Task breakdown with agent assignments, Dependency Graph, and validation criteria. The Manager may update it during the Implementation Phase. | `.apm/plan.md` |
-| **Rules** | Universal execution rules maintained as the APM standards block within `{RULES_FILE}`. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | `{RULES_FILE}` at workspace root |
+| **Rules** | Universal execution rules maintained as the APM Rules block within `{RULES_FILE}`. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | `{RULES_FILE}` at workspace root |
 | **Dependency Graph** | Mermaid diagram in the Plan header that visualizes Task dependencies, agent assignments, and execution flow. Enables the Manager to identify batch candidates, parallel dispatch opportunities, and critical path bottlenecks. | Within `.apm/plan.md` |
 
 ---

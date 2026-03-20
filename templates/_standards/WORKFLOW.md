@@ -34,7 +34,7 @@ The Manager and Workers transform the Plan into completed deliverables. The Impl
 
 **Manager initialization** - As Manager 1, the Manager reads all planning documents, initializes version control (if not already done), populates the Tracker (task tracking with the first Stage's Tasks, agent tracking with all Workers, version control state), initializes the Index, presents an understanding summary, and requests User approval before dispatching work.
 
-**Task cycle** - Each Task progresses through three procedures: Task Assignment (Manager assesses readiness, constructs a Task Prompt, delivers it via Task Bus) → Task Execution (Worker executes, validates, iterates if needed, writes a Task Log and Task Report) → Task Review (Manager reviews the report and log, determines outcome and next steps). This cycle repeats per Task. When multiple Tasks are dispatched as a batch or in parallel, each maintains its own cycle.
+**Task cycle** - Each Task progresses through four procedures: Task Assignment (Manager assesses readiness, constructs a Task Prompt, delivers it via Task Bus) → Task Execution (Worker executes, validates, iterates if needed) → Task Logging (Worker writes a Task Log and Task Report) → Task Review (Manager reviews the report and log, determines outcome and next steps). This cycle repeats per Task. When multiple Tasks are dispatched as a batch or in parallel, each maintains its own cycle.
 
 **Continuous coordination** - After each Task Review, the Manager reassesses readiness and dispatches the next Task in the same turn when one is Ready. Review and dispatch happen without waiting for User input. The Manager pauses only when no Tasks are Ready and Workers are active, when a decision requires User collaboration, or when waiting for an outstanding Task to complete will unblock more efficient dispatches.
 
@@ -76,7 +76,7 @@ Workers do not reference the Plan directly. The Manager extracts Task content in
 
 ### 3.3 Rules
 
-Rules define how work is performed - universal execution patterns applied during Task Execution. They are stored within the APM standards block in `{RULES_FILE}` at the workspace root. Content outside this block is user-managed and preserved. When relevant standards already exist outside the block, the APM standards block references them rather than duplicating.
+Rules define how work is performed - universal execution patterns applied during Task Execution. They are stored within the APM Rules block in `{RULES_FILE}` at the workspace root. Content outside this block is user-managed and preserved. When relevant standards already exist outside the block, the APM Rules block references them rather than duplicating.
 
 All agents have direct access to this file. Both the Manager and Workers may update Rules during the Implementation Phase.
 
@@ -240,7 +240,7 @@ The Planner decomposes gathered context into planning documents through visible 
 
 1. **Spec Analysis** - The Planner analyzes design decisions, writes the Spec, and presents it for User approval.
 2. **Plan Analysis** - The Planner identifies work domains and Workers, identifies all Stages with objectives and Tasks, reasons through all Stages and Tasks in a single analysis pass with per-Stage depth, writes the full Plan, then performs a separate review pass assessing workload distribution, cross-agent dependencies, and generating the dependency graph, and presents it for User approval.
-3. **Rules Analysis** - The Planner extracts universal execution patterns, writes the APM standards block, and presents it for User approval.
+3. **Rules Analysis** - The Planner extracts universal execution patterns, writes the APM Rules block, and presents it for User approval.
 
 **Task decomposition principles.** Each Task produces a meaningful deliverable with clear boundaries, scoped to a single Worker's domain, with specified validation criteria (programmatic, artifact, or user-based). Steps within Tasks support failure tracing but have no independent validation. Subagent steps are included when investigation or research is needed. Decomposition granularity adapts to project size and complexity - smaller projects warrant lighter breakdown.
 
