@@ -12,7 +12,7 @@ APM is a multi-agent project management framework that coordinates agents throug
 
 **User-mediated coordination** - The User initiates agents, triggers bus checks, approves key decisions, and triggers Handoffs. All inter-agent communication passes through the file system; agents never communicate directly. The User decides when messages are delivered by running trigger commands in the appropriate agent's chat.
 
-**Platform agnosticism** - Core concepts (the bus system, Memory, planning documents) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
+**Platform agnosticism** - Core concepts (the Message Bus, Memory, planning documents) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
 
 **Context scoping** - Each agent operates within intentionally limited context. Workers are scoped to their Task Prompts, Rules, and accumulated working context. This scoping is architectural discipline, not programmatic enforcement - Workers are normal agent instances capable of reading any file. Task Prompts are designed to be fully self-contained so Workers have no reason to look beyond them. The Manager holds coordination-level context: planning documents, Memory, and the full project picture. The Planner holds initial project context during the Planning Phase but does not participate during implementation. This scoping prevents context overload and keeps agents focused on their role. Each agent's initiation command specifies the APM documents that define its procedures. Agents read only those listed documents; other agents' guides and procedural content are outside their scope.
 
@@ -26,7 +26,7 @@ APM is a multi-agent project management framework that coordinates agents throug
 
 ### 2.1 Planning Phase
 
-The Planner transforms User requirements into planning documents through two sequential procedures: Context Gathering, then Work Breakdown. After the User approves all three planning documents, the Planner initializes the bus system and version control, then directs the User to start the Implementation Phase by initiating the Manager.
+The Planner transforms User requirements into planning documents through two sequential procedures: Context Gathering, then Work Breakdown. After the User approves all three planning documents, the Planner initializes the Message Bus and version control, then directs the User to start the Implementation Phase by initiating the Manager.
 
 ### 2.2 Implementation Phase
 
@@ -119,9 +119,9 @@ Agent communication follows three models based on audience:
 
 **Terminology boundary.** Only terms defined in `TERMINOLOGY.md` are part of the agent's public vocabulary. Section references (§N.M), procedure names, step labels, checkpoint labels, and decision categories are internal authoring structure - agents use them for navigation and internal decision making but never surface them in user-facing output. Guided reasoning frame labels are the exception - they are surfaced as defined by their procedures because the labeled structure is the output.
 
-### 4.2 Bus System
+### 4.2 Message Bus
 
-The bus system is a file-based communication mechanism in `.apm/bus/`. The Planner initializes it at the end of the Planning Phase. Each Worker has a bus directory containing three bus files. The Manager has a bus directory containing only a Handoff Bus.
+The Message Bus is a file-based communication mechanism in `.apm/bus/`. The Planner initializes it at the end of the Planning Phase. Each Worker has a bus directory containing three bus files. The Manager has a bus directory containing only a Handoff Bus.
 
 | Bus File | File Name | Direction | Contains |
 | -------- | --------- | --------- | -------- |

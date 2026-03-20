@@ -17,7 +17,7 @@ See §3 Task Assignment Procedure - execute sequentially to initialize version c
 - Extract and include relevant Spec content for Task execution.
 - Assess dispatch opportunities (batch, parallel, single) and manage version control workspace isolation.
 - Initialize and maintain version control state throughout the Implementation Phase.
-- Deliver Task Prompts via the bus system and direct the User to the appropriate Worker.
+- Deliver Task Prompts via the Message Bus and direct the User to the appropriate Worker.
 
 ### 1.3 Outputs
 
@@ -136,7 +136,7 @@ Perform the following actions:
 
 ### 3.4 Task Prompt Construction
 
-Assemble the Task Prompt and deliver via the bus system.
+Assemble the Task Prompt and deliver via the Message Bus.
 
 Perform the following actions:
 1. Construct YAML frontmatter per §4.1 Task Prompt Format.

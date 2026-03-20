@@ -1,6 +1,6 @@
 ---
 name: apm-communication
-description: Agent communication standards and file-based bus system protocol for structured inter-agent messaging.
+description: Agent communication standards and file-based Message Bus protocol for structured inter-agent messaging.
 ---
 
 # APM {VERSION} - Communication Skill
@@ -9,7 +9,7 @@ description: Agent communication standards and file-based bus system protocol fo
 
 **Reading Agent:** Planner, Manager, Worker
 
-This skill defines agent communication standards and the file-based bus system protocol. It covers communication models, bus identity, and shared message formats. Agent-specific delivery and reporting procedures are defined in each agent's guides.
+This skill defines agent communication standards and the file-based Message Bus protocol. It covers communication models, bus identity, and shared message formats. Agent-specific delivery and reporting procedures are defined in each agent's guides.
 
 ### 1.1 How to Use This Skill
 
@@ -18,7 +18,7 @@ See §2 Agent-to-User Communication for visible reasoning and terminology bounda
 ### 1.2 Objectives
 
 - Define clear standards for agent-to-user communication, visible reasoning, and terminology boundaries.
-- Provide the bus system protocol: identity standards, agent resolution, and shared message formats.
+- Provide the Message Bus protocol: identity standards, agent resolution, and shared message formats.
 - Support Worker identity validation through bus file naming.
 
 ### 1.3 Outputs
@@ -103,7 +103,7 @@ Agent identity is derived from the agent directory name (`.apm/bus/<agent-slug>/
 
 ### 4.2 Agent ID Resolution
 
-When `/apm-4-check-tasks` or `/apm-5-check-reports` accept an `[agent-id]` argument, resolve by matching against `.apm/bus/` directory names: exact match first, then prefix match (minimum 2 characters), then substring match. Ambiguous matches → list candidates and ask User. No match → inform User; if no bus directories exist, inform that the bus system is not initialized.
+When `/apm-4-check-tasks` or `/apm-5-check-reports` accept an `[agent-id]` argument, resolve by matching against `.apm/bus/` directory names: exact match first, then prefix match (minimum 2 characters), then substring match. Ambiguous matches → list candidates and ask User. No match → inform User; if no bus directories exist, inform that the Message Bus is not initialized.
 
 ### 4.3 Edge Case Standards
 

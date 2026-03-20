@@ -9,7 +9,7 @@ description: Standalone bus integration guide for agents operating outside APM's
 
 **Reading Agent:** Any non-APM agent
 
-This guide explains how non-APM agents can interact with an APM session through the bus system. If you are a standalone agent (not managed by APM's Manager) and need to communicate with APM-managed Workers or the Manager, follow this guide to create your own bus directory.
+This guide explains how non-APM agents can interact with an APM session through the Message Bus. If you are a standalone agent (not managed by APM's Manager) and need to communicate with APM-managed Workers or the Manager, follow this guide to create your own bus directory.
 
 ### 1.1 Objectives
 
