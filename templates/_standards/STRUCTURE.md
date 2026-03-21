@@ -103,7 +103,7 @@ Guides follow a consistent structure with §1 Overview, §2 Operational Standard
 
 **§4 Structural Specifications:** Define formats for all outputs. Specify file path patterns. Provide schemas with field descriptions. Omit type and required annotations for self-documenting fields.
 
-**§5 Content Guidelines:** Common Mistakes is the primary subsection - include only patterns not already derivable as inversions of §2 Operational Standards. Additional quality or communication subsections are omitted when they restate §2 or the communication skill.
+**§5 Content Guidelines:** Common Mistakes is the primary content - include only patterns not already derivable as inversions of §2 Operational Standards. Additional quality or communication subsections are omitted when they restate §2 or the communication skill. When multiple subsections exist, use `###` headings. When only Common Mistakes remains, elevate it to the `##` heading: `## 5. Common Mistakes`.
 
 ---
 

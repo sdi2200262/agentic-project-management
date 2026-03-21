@@ -25,25 +25,21 @@ Execute when User initiates Handoff.
 
 Perform the following actions:
 1. Determine instance numbers: your current instance number and incoming Worker instance number (yours + 1).
-2. Create Handoff Log per §3 Handoff Log Structure, capturing **past actions** - what WAS done:
+2. Create Handoff Log per §3 Handoff Log Structure, capturing **past actions** - what was done, tried, and observed. Content is strictly past tense; current state belongs in the handoff prompt.
    - Tasks completed and Stage progress this instance.
    - Working context, patterns, and approaches established during this instance.
    - Technical notes not captured in Task Logs.
    - If mid-Task, include execution progress framed as past work (steps completed, approaches tried).
    - If auto-compaction occurred during this instance, note it and describe which portions of working context are reconstructed rather than first-hand from the summary.
 
-**Content focus:** Strictly past tense. What was done, what was tried, what was observed. No current state - current state belongs in the handoff prompt.
-
 ### 2.2 Handoff Prompt Creation
 
 Perform the following actions:
-1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what IS happening.
+1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what is happening now. Content is actionable and present-tense; past actions belong in the Handoff Log.
 2. Apply Worker Handoff asymmetry:
    - *Mid-Task:* "Read the Task from `task.md`, I completed steps 1-4, resume from step 5." Direct the incoming Worker to read the Task Bus file directly (intact since task receipt). Include execution progress detail.
    - *Between-Tasks:* "No active Task, await `/apm-4-check-tasks`." State context and readiness.
-3. Include: takeover statement, Handoff Log path, instructions to read current Stage Task Logs, reminder to indicate incoming Worker status in first Task Report (listing specific Task Log files loaded and noting that previous-Stage logs were not loaded), and continuation guidance.
-
-**Content focus:** Actionable, present-tense, one-time. The incoming Worker processes this prompt during auto-detection in the init command. The prompt is cleared after processing.
+3. Include: Handoff Log path, instructions to read current Stage Task Logs, reminder to indicate incoming Worker status in first Task Report (listing specific Task Log files loaded and noting that previous-Stage logs were not loaded), and continuation guidance.
 
 ### 2.3 User Review and Finalization
 
@@ -72,11 +68,11 @@ stage: <N>
 ```
 
 **Field Descriptions:**
-- `agent`: string, required. Worker identifier (kebab-case).
-- `outgoing`: integer, required. Current instance number.
-- `incoming`: integer, required. Next instance number.
-- `handoff`: integer, required. Handoff sequence number (equals the outgoing instance number).
-- `stage`: integer, required. Current Stage number.
+- `agent`: Worker identifier (kebab-case).
+- `outgoing`: Current instance number.
+- `incoming`: Next instance number.
+- `handoff`: Handoff sequence number (equals the outgoing instance number).
+- `stage`: Current Stage number.
 
 **Body:**
 - *Title:* `# <Display Name> Handoff <N> (<Display Name> <N> → <Display Name> <N+1>)`. Each section uses `##` heading. The display name is the Title Case form of the agent identifier (e.g., `frontend-agent` → `Frontend Agent`).
@@ -89,12 +85,10 @@ stage: <N>
 
 ## 4. Handoff Prompt Structure
 
-The handoff prompt instructs the incoming Worker to reconstruct context. Written to `.apm/bus/<agent-slug>/handoff.md`.
-
-The incoming Worker processes this prompt during auto-detection in the init command. The prompt is cleared after processing.
+Written to `.apm/bus/<agent-slug>/handoff.md`. The incoming Worker processes this prompt during auto-detection in the init command.
 
 **Required content:**
-- *Takeover statement:* "You are taking over from [Display Name] [N] as [Display Name] [N+1]."
+- *Identity:* Outgoing and incoming instance numbers.
 - *Rebuilding context:*
   1. Read Handoff Log - note working context, technical notes, continuation guidance.
   2. Read current Stage Task Logs (this Worker's logs only).

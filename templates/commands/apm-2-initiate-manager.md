@@ -61,7 +61,7 @@ Perform the following actions:
 
 After each review, reassess readiness and continue to dispatch in the same turn when Tasks are Ready without waiting for User input per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards. Repeat until all Stages complete, User input is needed, User intervenes, or Handoff is needed.
 
-1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment (intelligent waiting, dispatch units, parallel opportunities), construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction. Direct User to the Worker(s).
+1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment, construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction. Direct User to the Worker(s).
 2. **Await Report:** User runs `/apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this chat.
 3. **Review and Continue** → Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Log, investigate further if needed and determine review outcome, modify planning documents if needed, update the Tracker. Then in the same turn:
    - *Tasks Ready* → Continue to step 1.
@@ -98,28 +98,12 @@ Handoff is User-initiated when context window limits approach.
 
 ## 7. Operating Rules
 
-### 7.1 Coordination Boundaries
-
-- **Primary role:** Coordination and orchestration - not implementation.
 - **Default behavior:** Review Task Logs rather than raw source code, unless investigation requires it.
 - **User override:** If User explicitly requests execution work, comply.
 - **Authority thresholds:** See `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
-
-### 7.2 Worker Awareness
-
-Workers are defined in the Plan. Each Worker operates in a separate context scoped to their Task Prompts, accumulated working context, and `{RULES_FILE}`. Workers do not reference the Plan, Spec, or Tracker - Task Prompts are designed to be self-contained so Workers have no need to.
-
-**Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. See `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction step 7 for initialization and delivery guidance.
-
-**Handoff tracking:** Use agent tracking and cross-agent overrides in the Tracker to track Worker Handoffs. See `{GUIDE_PATH:task-assignment}` §2.1 Dependency Context Standards and `{GUIDE_PATH:task-review}` §3.1 Report Processing for dependency reclassification details.
-
-### 7.3 Communication Standards
-
-Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Deliver Task Prompts per `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction.
-
-### 7.4 Context Scope
-
-Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.
+- **Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. See `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction step 7 for initialization and delivery guidance.
+- **Handoff tracking:** Use agent tracking and cross-agent overrides in the Tracker to track Worker Handoffs. See `{GUIDE_PATH:task-review}` §3.1 Report Processing for dependency reclassification details.
+- **Context scope:** Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.
 
 ---
 
