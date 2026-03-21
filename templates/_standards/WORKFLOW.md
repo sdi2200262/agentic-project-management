@@ -18,6 +18,8 @@ APM is a multi-agent project management framework that coordinates agents throug
 
 **Structured memory** - Memory captures project history in a hierarchical file structure that enables Handoff continuity and efficient progress tracking.
 
+**Subagent usage** - Agents spawn platform-native subagents for isolated, focused work: debug subagents (full access) for complex bugs, and research subagents (read-only) for knowledge gaps. These are behavioral expectations, not a closed set. The build pipeline replaces subagent guidance placeholders with platform-specific invocations at build time. Findings are integrated into the spawning agent's context; Workers log subagent usage in their Task Log.
+
 ---
 
 ## 2. Phases
@@ -28,23 +30,7 @@ The Planner transforms User requirements into planning documents through two seq
 
 ### 2.2 Implementation Phase
 
-The Manager and Workers transform the Plan into completed deliverables. The Implementation Phase begins when the User initiates the first Manager.
-
-**Manager initialization** - As Manager 1, the Manager reads all planning documents, verifies version control state (established by the Planner), populates the Tracker (task tracking with the first Stage's Tasks, agent tracking with all Workers), initializes the Index, presents an understanding summary, and requests User approval before dispatching work.
-
-**Task cycle** - Each Task progresses through four procedures: Task Assignment (Manager assesses readiness, constructs a Task Prompt, delivers it via Task Bus) → Task Execution (Worker executes, validates, iterates if needed) → Task Logging (Worker writes a Task Log and Task Report) → Task Review (Manager reviews the report and log, determines outcome and next steps). This cycle repeats per Task. When multiple Tasks are dispatched as a batch or in parallel, each maintains its own cycle.
-
-**Continuous coordination** - After each Task Review, the Manager reassesses readiness and dispatches the next Task in the same turn when one is Ready. Review and dispatch happen without waiting for User input. The Manager pauses only when no Tasks are Ready and Workers are active, when a decision requires User collaboration, or when waiting for an outstanding Task to complete will unblock more efficient dispatches.
-
-**Stage ordering** - Stages are sequential coordination units. Stage N+1 begins after Stage N completes. Parallel work across domains uses parallel Task dispatch within a single Stage, not cross-Stage execution.
-
-**Stage completion** - After all Tasks in a Stage complete, the Manager creates a Stage summary in the Index capturing Stage-level outcomes, then proceeds to the next Stage.
-
-**Project completion** - After all Stages complete, the Manager sets `status: complete` in the Tracker's YAML frontmatter and presents a project completion summary covering: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
-
-**Version control** - APM uses git for branch isolation and structured commits. The Planner establishes version control during the Planning Phase, capturing conventions in Rules and recording state in the Tracker. The Manager coordinates all branch and merge operations during implementation; Workers commit to their assigned branches but do not create branches, push, or merge. APM does not push to remotes by default. If the User declines version control, parallel dispatch is unavailable.
-
-**Handoff** - Handoff transfers context between successive instances of the same agent role when context window limits approach. The Planner does not Handoff (single instance).
+The Manager and Workers transform the Plan into completed deliverables. The Implementation Phase begins when the User initiates the first Manager. The Manager reads planning documents, verifies version control, initializes the Tracker and Index, then enters a continuous coordination loop of dispatching Tasks, reviewing results, and maintaining project state. Each Task progresses through: Task Assignment → Task Execution → Task Logging → Task Review. Stages execute sequentially; Tasks within a Stage can be dispatched individually, in batches, or in parallel when version control provides workspace isolation. After all Stages complete, the Manager presents a project completion summary. When agent context window limits approach, Handoff transfers context to a successor instance.
 
 ---
 
@@ -104,6 +90,8 @@ The Spec and Plan have bidirectional influence - changes to one may require adju
 ---
 
 ## 4. Communication System
+
+**Runtime:** `skills/apm-communication/SKILL.md`, `skills/apm-communication/bus-integration.md`
 
 ### 4.1 Communication Models
 
@@ -202,9 +190,11 @@ Task outcome status reflects whether the objective was achieved:
 
 ---
 
-## 6. Procedures
+## 6. Planning Phase
 
 ### 6.1 Context Gathering
+
+**Runtime:** `commands/apm-1-initiate-planner.md` (§2), `guides/context-gathering.md`
 
 The Planner gathers project requirements through three progressive rounds of questions, deriving technical formalization from natural User responses rather than asking Users to produce technical content directly.
 
@@ -222,6 +212,8 @@ After all rounds, the Planner presents a consolidated understanding summary for 
 
 ### 6.2 Work Breakdown
 
+**Runtime:** `commands/apm-1-initiate-planner.md` (§3-4), `guides/work-breakdown.md`
+
 The Planner decomposes gathered context into planning documents through visible reasoning - thinking is presented in chat before file output. The User sees decomposition decisions and can redirect before artifacts are written.
 
 **Sequence:**
@@ -232,7 +224,13 @@ The Planner decomposes gathered context into planning documents through visible 
 
 **Task decomposition principles.** Each Task produces a meaningful deliverable with clear boundaries, scoped to a single Worker's domain, with specified validation criteria (programmatic, artifact, or user-based). Steps within Tasks support failure tracing but have no independent validation. Subagent steps are included when investigation or research is needed. Decomposition granularity adapts to project size and complexity - smaller projects warrant lighter breakdown.
 
-### 6.3 Task Assignment
+---
+
+## 7. Implementation Phase
+
+### 7.1 Task Assignment
+
+**Runtime:** `guides/task-assignment.md`, `commands/apm-4-check-tasks.md`
 
 The Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them via the Task Bus.
 
@@ -252,7 +250,9 @@ Before dispatching, the Manager checks whether a pending report would unlock Tas
 
 **Follow-up Task Prompts** - When a Task Review determines retry is needed, the Manager issues a follow-up. The follow-up is a new Task Prompt with objective, instructions, output, and validation refined based on what went wrong. It uses the same log path as the original (the Worker overwrites the previous log) and includes context explaining the issue and required refinement.
 
-### 6.4 Task Execution
+### 7.2 Task Execution
+
+**Runtime:** `commands/apm-3-initiate-worker.md`, `guides/task-execution.md`, `guides/task-logging.md`
 
 The Worker executes Task instructions, validates results, iterates if needed, logs the outcome, and reports back.
 
@@ -266,7 +266,9 @@ The Worker executes Task instructions, validates results, iterates if needed, lo
 
 **Completion** - After execution, the Worker commits work to the assigned branch following conventions from Rules (if version control is active), writes a Task Log, clears the incoming bus file, writes a Task Report to the Report Bus, and directs the User to deliver the report - providing both the targeted command with agent identifier and the general command, since multiple Workers may finish concurrently. For large Tasks, Workers may commit at logical intermediate points during execution rather than only at completion - each commit follows the conventions from Rules and represents a coherent unit of change.
 
-### 6.5 Task Review
+### 7.3 Task Review
+
+**Runtime:** `guides/task-review.md`, `commands/apm-5-check-reports.md`
 
 The Manager reviews Worker results, determines review outcomes, modifies planning documents when needed, and updates the Tracker.
 
@@ -280,7 +282,13 @@ The Manager reviews Worker results, determines review outcomes, modifies plannin
 
 **Stage summary** - After all Tasks in a Stage complete, the Manager reviews the Stage's Task Logs and appends a Stage summary to the Index capturing Stage-level outcomes, agents involved, notable findings, and references to individual logs.
 
-### 6.6 Handoff
+---
+
+## 8. Handoff and Continuity
+
+### 8.1 Handoff
+
+**Runtime:** `commands/apm-6-handoff-manager.md`, `commands/apm-7-handoff-worker.md`
 
 Handoff transfers context between successive instances of the same agent role when context window limits approach. It applies to the Manager and Workers only - the Planner operates as a single instance. Handoff is User-initiated and can occur at any point (mid-Task, between Tasks, while awaiting reports) as long as the handoff prompt captures comprehensive current state.
 
@@ -295,9 +303,15 @@ Handoff transfers context between successive instances of the same agent role wh
 
 **Context rebuilding** - An incoming Manager reads the Handoff Log, the Tracker, the Index (Stage summaries and Memory notes), and relevant recent Task Logs to reconstruct working context. An incoming Worker reads the Handoff Log and their own current-Stage Task Logs only. The Manager accounts for this limited context in future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent.
 
-**Recovery** - Recovery reconstructs context after platform auto-compaction, manual compaction, or a lost conversation. The User invokes the recovery command with the agent's role. The agent re-reads its initiation command and follows its document loading instructions to rebuild procedural knowledge, then explores project artifacts and the codebase to reconstruct operational state. Recovery does not increment the instance number. The agent notes the recovery event in subsequent communications and in its eventual Handoff Log.
+### 8.2 Recovery
 
-### 6.7 Session Continuation
+**Runtime:** `commands/apm-9-recover.md`
+
+Recovery reconstructs context after platform auto-compaction, manual compaction, or a lost conversation. The User invokes the recovery command with the agent's role. The agent re-reads its initiation command and follows its document loading instructions to rebuild procedural knowledge, then explores project artifacts and the codebase to reconstruct operational state. Recovery does not increment the instance number. The agent notes the recovery event in subsequent communications and in its eventual Handoff Log.
+
+### 8.3 Session Continuation
+
+**Runtime:** `commands/apm-8-summarize-session.md`, `agents/apm-archive-explorer.md`, `guides/context-gathering.md` (§3.1)
 
 Session continuation archives the current session's artifacts for future reference. After archival, the user reinitializes APM to begin a new session with fresh templates while retaining read access to previous session context.
 
@@ -333,38 +347,6 @@ Session continuation archives the current session's artifacts for future referen
 **`apm-archive-explorer` subagent** - A custom subagent shipped with APM bundles. It understands archive structure and efficiently extracts relevant context from archived sessions. The Planner spawns it during Context Gathering when archived sessions are relevant.
 
 **No secondary archival** - Archives accumulate in `.apm/archives/`. There is no mechanism to archive archives. Users manage cleanup manually.
-
----
-
-## 7. Subagent Usage
-
-Subagents are platform-native spawned agents used for isolated, focused work. APM defines behavioral expectations; the platform handles subagent lifecycle and tool access. Users may also use their own custom subagent configurations.
-
-Two common behavioral types exist: debug subagents (full access - editing, terminal) for isolating and resolving complex bugs, and research subagents (read-only, with web access) for investigating knowledge gaps. These are expectations, not a closed set - platforms and Users may provide additional types.
-
-Subagents are spawned through platform-native tools. The build pipeline's placeholder system replaces subagent guidance placeholders with platform-specific invocations at build time, keeping templates platform-agnostic. The spawning agent structures a Task description and passes it to the platform's subagent mechanism.
-
-Debug subagents are appropriate when a bug resists initial fix attempts, spans multiple components, or debugging would consume significant agent context. Research subagents are appropriate when current knowledge is outdated, documentation needs verification, or codebase exploration is needed. Findings are integrated into the spawning agent's context. Workers log subagent usage in their Task Log.
-
----
-
-## 8. Implementation Reference
-
-| Spec Section | Implementation Files |
-| ------------- | --------------------- |
-| §2.1 Planning Phase | `commands/apm-1-initiate-planner.md`, `guides/context-gathering.md`, `guides/work-breakdown.md` |
-| §2.2 Implementation Phase | `commands/apm-2-initiate-manager.md`, `commands/apm-3-initiate-worker.md` |
-| §3 Planning Documents | `apm/spec.md`, `apm/plan.md` |
-| §4 Communication System | `skills/apm-communication/SKILL.md` (bus protocol, formats, identity), `guides/task-assignment.md` (delivery), `guides/task-logging.md` (reporting), `commands/apm-4-check-tasks.md`, `commands/apm-5-check-reports.md` |
-| §5 Memory | `apm/tracker.md`, `apm/memory/index.md`, `guides/task-logging.md` |
-| §6.1 Context Gathering | `guides/context-gathering.md` |
-| §6.2 Work Breakdown | `guides/work-breakdown.md` |
-| §6.3 Task Assignment | `guides/task-assignment.md` |
-| §6.4 Task Execution | `guides/task-execution.md` |
-| §6.5 Task Review | `guides/task-review.md` |
-| §6.6 Handoff | `commands/apm-6-handoff-manager.md`, `commands/apm-7-handoff-worker.md`, `commands/apm-9-recover.md` (recovery) |
-| §6.7 Session Continuation | `commands/apm-8-summarize-session.md`, `agents/apm-archive-explorer.md`, `guides/context-gathering.md` (§3.1) |
-| §7 Subagent Usage | Platform-specific (build pipeline placeholders) |
 
 ---
 
