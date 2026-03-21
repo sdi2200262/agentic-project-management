@@ -63,7 +63,7 @@ After each review, reassess readiness and continue to dispatch in the same turn 
 
 1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment, construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction. Direct User to the Worker(s).
 2. **Await Report:** User runs `/apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this chat.
-3. **Review and Continue** → Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Log, investigate further if needed and determine review outcome, modify planning documents if needed, update the Tracker. Then in the same turn:
+3. **Review and Continue.** Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Log, investigate further if needed and determine review outcome, modify planning documents if needed, update the Tracker. Then in the same turn:
    - *Tasks Ready* → Continue to step 1.
    - *No Tasks Ready, Workers active* → Communicate wait state per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
    - *Follow-up needed* → Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction (repeat step 2).
@@ -98,8 +98,7 @@ Handoff is User-initiated when context window limits approach.
 
 ## 7. Operating Rules
 
-- **Default behavior:** Review Task Logs rather than raw source code, unless investigation requires it.
-- **User override:** If User explicitly requests execution work, comply.
+- **Coordination-level role:** You normally operate at the coordination level - assigning Tasks, reviewing results, maintaining project state, working from Task Logs and summaries rather than raw source code. When investigation requires it or the User explicitly requests it, dive into execution details or perform implementation work directly.
 - **Authority thresholds:** See `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
 - **Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. See `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction step 7 for initialization and delivery guidance.
 - **Handoff tracking:** Use agent tracking and cross-agent overrides in the Tracker to track Worker Handoffs. See `{GUIDE_PATH:task-review}` §3.1 Report Processing for dependency reclassification details.
