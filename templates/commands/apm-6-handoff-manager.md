@@ -23,7 +23,7 @@ Execute when User initiates Handoff.
 
 Perform the following actions:
 1. Determine instance numbers: your current instance number and incoming Manager instance number (yours + 1).
-2. Create Handoff Log per §3 Handoff Log Structure, capturing **past actions** - what WAS done:
+2. Create Handoff Log per §3 Handoff Log Structure, capturing **past actions** - what was done, decided, and observed. Content is strictly past tense; current state belongs in the handoff prompt.
    - Coordination overview: Stages managed, Tasks reviewed, dispatch cycles completed.
    - Tracked Worker Handoffs (which Workers, from which Stage) - most critical for dependency context treatment.
    - If auto-compaction occurred during this instance, note it and describe which portions of working context are reconstructed rather than first-hand from the summary.
@@ -31,18 +31,14 @@ Perform the following actions:
    - User preferences and communication patterns.
    - Coordination insights, decisions made, approaches tried.
 
-**Content focus:** Strictly past tense. What was done, what was decided, what was observed. No current state - current state belongs in the handoff prompt.
-
 ### 2.2 Handoff Prompt Creation
 
 Perform the following actions:
-1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what IS happening:
+1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what is happening now. Content is actionable and present-tense; past actions belong in the Handoff Log.
    - Outstanding Tasks in full: objectives, expected outputs, detailed instructions, review criteria, relevant Spec sections, dependency context, workspace information.
    - Mid-review progress and pending review outcomes.
    - Active Workers and their dispatch state.
    - Pointers to Task Logs and files for the incoming Manager to read.
-
-**Content focus:** Actionable, present-tense, one-time. The incoming Manager processes this prompt during auto-detection in the init command. The prompt is cleared after processing.
 
 ### 2.3 User Review and Finalization
 
@@ -71,11 +67,10 @@ stage: <N>
 ```
 
 **Field Descriptions:**
-- `agent`: string, required. Always `manager`.
-- `outgoing`: integer, required. Current instance number.
-- `incoming`: integer, required. Next instance number.
-- `handoff`: integer, required. Handoff sequence number (equals the outgoing instance number).
-- `stage`: integer, required. Current Stage number.
+- `outgoing`: Current instance number.
+- `incoming`: Next instance number.
+- `handoff`: Handoff sequence number (equals the outgoing instance number).
+- `stage`: Current Stage number.
 
 **Body:**
 - *Title:* `# Manager Handoff <N> (Manager <N> → Manager <N+1>)`. Each section uses `##` heading.
@@ -87,12 +82,10 @@ stage: <N>
 
 ## 4. Handoff Prompt Structure
 
-The handoff prompt instructs the incoming Manager to reconstruct context procedurally. Written to `.apm/bus/manager/handoff.md`.
-
-The incoming Manager processes this prompt during auto-detection in the init command. The prompt is cleared after processing.
+Written to `.apm/bus/manager/handoff.md`. The incoming Manager processes this prompt during auto-detection in the init command.
 
 **Required content:**
-- *Takeover statement:* "You are taking over from Manager [N] as Manager [N+1]."
+- *Identity:* Outgoing and incoming instance numbers.
 - *Rebuilding context:*
   1. Read Handoff Log - note tracked Worker Handoffs and VC state.
   2. Read current-Stage Task Logs (all agents).

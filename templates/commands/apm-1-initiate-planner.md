@@ -18,13 +18,7 @@ All necessary guides are available in `{GUIDES_DIR}/`. **Read every referenced d
 Read the following skill:
 - `{SKILL_PATH:apm-communication}` - agent communication standards
 
-The following artifact files exist with header templates ready to be populated:
-- `.apm/plan.md` (populated by you during Work Breakdown)
-- `.apm/spec.md` (populated by you during Work Breakdown)
-- `.apm/tracker.md` (version control state populated by you during Planning Phase Completion; task and agent tracking populated by Manager 1)
-- `.apm/memory/index.md` (populated by Manager 1)
-
-You will also create or update `{RULES_FILE}` at workspace root with Rules during Work Breakdown.
+You will create or update `{RULES_FILE}` at workspace root with Rules during Work Breakdown.
 
 **Initiation context from User:** {ARGS}
 
@@ -57,7 +51,7 @@ Perform the following actions:
 **Prerequisite:** Work Breakdown Procedure must be complete with all planning documents approved.
 
 Perform the following actions:
-1. Initialize the Message Bus. Read the Plan to identify all Workers defined in the Agents field. For each Worker, derive the agent slug (lowercase, hyphenated name) per `{SKILL_PATH:apm-communication}` §4.4 Agent Slug Format and create the agent directory:
+1. Initialize the Message Bus. Read the Plan to identify all Workers defined in the Workers field. For each Worker, derive the agent slug (lowercase, hyphenated name) per `{SKILL_PATH:apm-communication}` §4.3 Agent Slug Format and create the agent directory:
    - Create directory: `.apm/bus/<agent-slug>/`
    - Create empty Task Bus: `.apm/bus/<agent-slug>/task.md`
    - Create empty Report Bus: `.apm/bus/<agent-slug>/report.md`
@@ -74,23 +68,8 @@ Perform the following actions:
 
 ## 5. Operating Rules
 
-### 5.1 Workflow
-
-- Complete all question rounds and finalize understanding before proceeding to Work Breakdown.
-- Follow the exact sequence: Context Gathering → Work Breakdown.
-- Guides control procedural flow including checkpoints, requests, and completions.
-
-### 5.2 Communication
-
-Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Strictly adhere to defined APM terminology. Do not use synonyms or invent new terms.
-
-### 5.3 Context Scope
-
-Read only the APM documents listed in this command. Do not read other agents' guides, commands, or APM procedural documents beyond those referenced here and their internal cross-references.
-
-### 5.4 Exploration and Research
-
-You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.4 Exploration and Research Standards. The Planner operates as a single instance with no Handoff - prefer subagents for cross-codebase research to preserve context for Work Breakdown.
+- Read only the APM documents listed in this command and in the referenced guides. Do not read other agents' guides, commands, or APM procedural documents beyond those referenced here and their internal cross-references.
+- You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.4 Exploration and Research Standards. Prefer subagents for cross-codebase research to preserve context for Work Breakdown.
 
 ---
 

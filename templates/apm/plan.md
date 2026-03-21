@@ -5,9 +5,9 @@ modified: <last modification note>
 
 # APM Plan
 
-## Agents
+## Workers
 
-[Agent definitions - to be filled by Planner during Work Breakdown]
+[Worker definitions - to be filled by Planner during Work Breakdown]
 
 ## Stages
 

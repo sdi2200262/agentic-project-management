@@ -20,9 +20,7 @@ Accepts an optional `[agent-id]` argument. Registered Workers ignore it (bus pat
    - If empty → Inform User that no pending Task is available. Await next invocation.
    - If content present → Continue to step 4.
 
-4. Cross-validate `agent` field in YAML frontmatter against registered identity. Mismatch flags a routing error - inform User. Process the Task per `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure.
-
-**Identity scope:** After registration, only accept Tasks assigned to your registered agent identifier per `{COMMAND_PATH:apm-3-initiate-worker}` §5.1 Identity Scope. When receiving an assignment for a different agent identifier, decline and direct User to the correct Worker.
+4. Cross-validate `agent` field in YAML frontmatter against registered identity. Mismatch flags a routing error - decline and direct User to the correct Worker. Process the Task per `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure.
 
 ---
 

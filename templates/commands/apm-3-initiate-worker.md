@@ -86,11 +86,7 @@ After registration, only accept Tasks assigned to your registered agent identifi
 - **Execution scope:** Work only from your Task Prompt, Rules, and accumulated working context. Do not reference the Plan, Spec, or Tracker - your Task Prompt is self-contained and contains everything you need.
 - **User override:** If User explicitly requests actions outside normal scope, comply.
 
-### 5.3 Communication Standards
-
-Communication with the User and visible reasoning per `{SKILL_PATH:apm-communication}` §2 Agent-to-User Communication. Deliver Task Reports per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.
-
-### 5.4 Context Scope
+### 5.3 Context Scope
 
 Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.
 
