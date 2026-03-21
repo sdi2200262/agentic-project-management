@@ -29,7 +29,7 @@ Tasks may depend on outputs from previous Tasks. The context you include depends
 
 **Dependency identification:** Check the Task's Dependencies field in the Plan. Cross-agent dependencies are bolded. "None" indicates no dependencies.
 
-**Chain reasoning:** Dependencies may have their own dependencies. Trace upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Stop tracing when an intermediate node fully abstracts what came before.
+**Chain reasoning:** Dependencies may have their own dependencies. Trace upstream when ancestors established patterns, schemas, or contracts the current Task must follow. Stop tracing when an intermediate node fully abstracts what came before. When uncertain whether an ancestor is relevant, include rather than risk missing critical context.
 
 ### 2.2 Spec Extraction Standards
 
@@ -51,7 +51,7 @@ Before constructing individual Task Prompts, assess dispatch opportunities acros
 
 **Task readiness:** A Task is Ready when all its dependencies are complete. Read the Tracker for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
 
-**Dispatch modes** - Assess all Ready Tasks, group by Worker, and form dispatch units:
+**Dispatch modes.** Assess all Ready Tasks, group by Worker, and form dispatch units:
 - *Batch:* multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
 - *Single:* one Ready Task for a Worker.
 - *Parallel:* two or more dispatch units (any mix) with no unresolved cross-agent dependencies among them, dispatched simultaneously. Requires version control workspace isolation.
@@ -66,9 +66,9 @@ Before dispatching a ready unit, check whether a pending report would unlock Tas
 
 Version control provides workspace isolation during parallel dispatch. Each dispatch unit operates on its own feature branch, and you coordinate all merges during Task Review.
 
-**Branch standards** - Every dispatch unit gets its own feature branch off the base branch per the branch convention in the Tracker. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
+**Branch standards:** Every dispatch unit gets its own feature branch off the base branch per the branch convention in the Tracker. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
 
-**Worktree standards** - Worktrees are created only for parallel dispatch - when multiple Workers need physically separate directories simultaneously. For sequential dispatch, the Worker operates in the main working directory on their feature branch. Layout per §4.2 Worktree Directory Layout. Concurrency limit: maximum 3-4 concurrent worktrees. Lifecycle: short-lived - created before dispatch, removed after merge. Worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
+**Worktree standards:** Worktrees are created only for parallel dispatch - when multiple Workers need physically separate directories simultaneously. For sequential dispatch, the Worker operates in the main working directory on their feature branch. Layout per §4.2 Worktree Directory Layout. Concurrency limit: maximum 3-4 concurrent worktrees. Lifecycle: short-lived - created before dispatch, removed after merge. Worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
 
 ### 2.6 Delivery Standards
 

@@ -34,13 +34,15 @@ When validation fails, you enter a correction loop - correct, re-execute, re-val
 
 Continue when the cause is identified and progress is being made. Stop when fixes are causing new issues, the issue requires external resolution, or debugging is not converging. When execution suggests Task Prompt instructions may be inaccurate, this is also a stop condition. When a stop condition is reached, spawn a subagent for fresh-context resolution rather than exhausting context. If the subagent resolves the issue, apply findings and resume. If unresolved, prefer reporting back with Partial status - the Manager can restructure or reassign. When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
 
-**Default:** When uncertain, pause and present situation to User with options.
+**User collaboration:** Pause when User validation is required (you cannot self-approve subjective quality), when explicit User actions are needed (outside the development environment), when environment resources are needed for validation, or when iteration stalls and you need guidance. Continue autonomously for programmatic and artifact validation, and when the cause of failure is clear and the fix is within scope.
+
+**Default:** When uncertain or when stopping without Success, pause and present situation to User with options rather than making unilateral decisions.
 
 ### 2.4 Rules Updates
 
 When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{RULES_FILE}` and request User approval before modifying. Rules are not modified unilaterally - the User decides whether the change is warranted.
 
-**User corrections** - When the User provides a correction or directive during execution, comply immediately and continue. Do not pause to discuss Rules at this point. At Task completion, note the correction in the Task Log under Important Findings with `important_findings: true` - the Manager will see it during Task Review regardless of what happens next. After logging, reporting, and directing the User to deliver the report, ask at the end of your turn whether the correction should become a Rule - frame it naturally based on what was said and why it might apply beyond this Task. Make it clear the User can ignore this and proceed with delivering the report - it should not feel like a gate. If the User approves, update `{RULES_FILE}` and update the Task Log to note that the correction was entered as a Rule. If the User declines, defers, or ignores, no further action - the Manager already has visibility through the important findings flag.
+**User corrections:** When the User provides a correction or directive during execution, comply immediately and continue. Do not pause to discuss Rules at this point. At Task completion, note the correction in the Task Log under Important Findings with `important_findings: true` - the Manager will see it during Task Review regardless of what happens next. After logging, reporting, and directing the User to deliver the report, ask at the end of your turn whether the correction should become a Rule - frame it naturally based on what was said and why it might apply beyond this Task. Make it clear the User can ignore this and proceed with delivering the report - it should not feel like a gate. If the User approves, update `{RULES_FILE}` and update the Task Log to note that the correction was entered as a Rule. If the User declines, defers, or ignores, no further action - the Manager already has visibility through the important findings flag.
 
 ### 2.5 Version Control Standards
 
@@ -79,7 +81,11 @@ Perform the following actions:
 
 ### 3.3 Task Execution
 
-Execute Detailed Instructions sequentially, applying Guidance and relevant Rules from `{RULES_FILE}`. Pause for User action when required. Spawn subagents per Task Prompt instructions. {WORKER_SUBAGENT_GUIDANCE}
+Perform the following actions:
+1. Execute Detailed Instructions sequentially, applying Guidance and relevant Rules from `{RULES_FILE}`, working toward the Objective.
+2. When an instruction requires explicit User action, communicate what needs doing, why, and what options exist. Await completion, then resume.
+3. When an instruction includes a subagent step, spawn the relevant subagent with a structured task description. Integrate findings and continue. {WORKER_SUBAGENT_GUIDANCE}
+4. When all instructions complete, continue to §3.4 Task Validation.
 
 ### 3.4 Task Validation
 
@@ -97,20 +103,22 @@ Assess the failure per §2.3 Iteration Standards. If continuing: correct the iss
 ### 3.6 Task Completion
 
 Perform the following actions:
-1. Commit work to the assigned branch per §2.5 Version Control Standards.
-2. Create Task Log per `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure at `log_path`.
-3. Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery. Include relevant status indications:
+1. Assess visibly in chat: whether all objectives are met and deliverables are ready, whether any important findings or compatibility issues arose, and determine the Task's outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards.
+2. Commit work to the assigned branch per §2.5 Version Control Standards.
+3. Create Task Log per `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure at `log_path`.
+4. Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery. Include relevant status indications:
    - *After Handoff:* If this is the first Task after Handoff initialization, include incoming Worker indication: state instance number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded.
    - *After recovery:* If auto-compaction occurred and recovery was performed via `/apm-9-recover`, note it in the Task Report so the Manager is aware.
-4. Await `/apm-4-check-tasks` or Handoff initiation.
+5. Await `/apm-4-check-tasks` or Handoff initiation.
 
 ---
 
-## 5. Common Mistakes
+## 4. Common Mistakes
 
 - *Task Prompt metadata in code:* Step numbers, Task IDs, and APM terminology do not belong in project source files, comments, or commit messages.
 - *Missing Handoff indication:* Not indicating incoming Worker status after Handoff.
 - *Incomplete cross-agent integration:* Proceeding without fully reading and understanding cross-agent dependency context.
+- *Premature Partial:* Partial is for pausing to seek guidance, not for giving up early. Continue iterating when validation failed but the cause is clear and fixable.
 
 ---
 

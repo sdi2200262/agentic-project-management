@@ -170,12 +170,9 @@ Document-level structure (heading levels, section numbering, horizontal rules) i
 
 Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctuation after labels determines content structure.
 
-**Label punctuation:**
+**Label punctuation:** Labels use colon (`:`) to introduce content. No arrows or hyphens as label separators.
 
-- *Colon (`Label:`)* - Content follows directly (list or inline prose)
-- *Arrow (`Label →`)* - Prose follows; use when prose ends with colon to avoid two colons on one line
-
-**Colon rule:** Avoid two colons on one line. When prose after a label ends with colon, the label uses arrow.
+**Double-colon rule.** A line must not contain two colons. When prose after a label would end with a colon (introducing a sub-list), rephrase the prose to eliminate the trailing colon, or restructure so the label stands alone and the prose begins on the next line.
 
 **Examples:**
 
@@ -186,18 +183,17 @@ Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctu
 
 **Topic:** Inline content here.         # Inline prose follows
 
-**Topic** → Prose introducing list:     # Prose-to-list bridge (avoids two colons)
+**Topic.** Prose introducing list:      # Period avoids double-colon
 - Item one
 - Item two
 
 *Subtopic:*                             # Italic direct list
 - Item one
 
-*Subtopic* → Prose introducing list:    # Italic prose-to-list bridge
-- Item one
-
 - *Option:* Description → Action.       # Italic list item label
 ```
+
+Note: arrows (`→`) in list items indicate conditional flow (e.g., `*Option:* Description → Action`), not label punctuation.
 
 ### 7.2 Spacing
 
