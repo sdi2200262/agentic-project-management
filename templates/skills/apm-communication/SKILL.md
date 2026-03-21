@@ -21,7 +21,7 @@ Agents not managed by APM can participate in bus communication by creating their
 
 When communicating with the User - asking questions, requesting actions, providing status updates, presenting completions - use natural language adapted to the situation. Explain what happened, what was decided, and what happens next. There are no rigid templates; adapt phrasing to what the situation requires while conveying necessary information.
 
-**Action directives.** When directing Users to take action - whether APM workflow navigation or any other action requiring User involvement outside the conversation - present as an action directive: a blockquote with the action described in natural language. Each step on its own line for easy reference and copying. When the action requires a new chat, include the platform guidance: {NEW_CHAT_GUIDANCE}. Commands are presented in code format for easy copying.
+**Action directives.** When directing Users to take action - whether APM workflow navigation or any other action requiring User involvement outside the conversation - present as an action directive. Use a blockquote with the action described in natural language. Each step on its own line for easy reference and copying. When the action requires a new chat, include the platform guidance per {NEW_CHAT_GUIDANCE}. Commands are presented in code format for easy copying.
 
 Single action:
 

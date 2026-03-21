@@ -52,11 +52,11 @@ Before constructing individual Task Prompts, assess dispatch opportunities acros
 **Task readiness:** A Task is Ready when all its dependencies are complete. Read the Tracker for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
 
 **Dispatch modes.** Assess all Ready Tasks, group by Worker, and form dispatch units:
-- *Batch:* multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
+- *Batch.* Multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
 - *Single:* one Ready Task for a Worker.
 - *Parallel:* two or more dispatch units (any mix) with no unresolved cross-agent dependencies among them, dispatched simultaneously. Requires version control workspace isolation.
 
-**Parallel prerequisites:** Parallel dispatch requires version control to be initialized (per §3.1 VC Verification, normally done during Manager 1 initiation). Recommend configuring Worker permissions to minimize approval wait times. If the User declines VC setup, fall back to sequential dispatch.
+**Parallel prerequisites:** Parallel dispatch requires version control to be initialized (per §3.1 VC Verification, normally done during Manager 1 initiation). Recommend the User configure platform tool approvals for Workers to minimize interactive wait times during execution. If the User declines VC setup, fall back to sequential dispatch.
 
 Before dispatching a ready unit, check whether a pending report would unlock Tasks that combine well with the current unit. If it is the only outstanding report, waiting costs little. If multiple reports are pending or no plausible combination exists, dispatch immediately.
 
@@ -85,7 +85,7 @@ VC Verification runs once during Manager 1 initiation. The remaining steps form 
 ### 3.1 VC Verification
 
 Execute once during Manager 1 initiation, after Memory initialization. Version control is established by the Planner during the Planning Phase - the Tracker's Version Control section and the Rules contain the conventions. Perform the following actions:
-1. Read VC state from the Tracker: base branch, branch convention, commit convention. If fields are empty, the User declined version control during planning - parallel dispatch is unavailable, fall back to sequential dispatch. If the User later requests version control, the Manager can initialize it mid-session: run `git init` if needed, detect or confirm the base branch, establish conventions with the User, update Rules and the Tracker, then proceed with branch-based dispatch.
+1. Read VC state from the Tracker: base branch, branch convention, commit convention. If fields are empty, the User declined version control during planning - parallel dispatch is unavailable, fall back to sequential dispatch. If the User later requests version control, the Manager can initialize it mid-session by running `git init` if needed, detect or confirm the base branch, establish conventions with the User, update Rules and the Tracker, then proceed with branch-based dispatch.
 2. Verify git state is consistent: the base branch exists, the repository is accessible. Navigate to the working repository if the Spec specifies a different directory.
 3. Check for stale worktrees or orphaned feature branches from prior instances. Clean if found.
 
@@ -119,7 +119,7 @@ Perform the following actions:
 1. Construct YAML frontmatter per §4.1 Task Prompt Format.
 2. Construct prompt body: Task Reference, Context from Dependencies (if applicable), Objective, Detailed Instructions, Workspace, Expected Output, Validation Criteria, Instruction Accuracy, Task Iteration, Task Logging instructions, Reporting Instructions.
 3. Create a feature branch off the base branch per §2.5 Version Control Standards. For parallel dispatch, create a worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`. Include the branch name (sequential) or worktree path (parallel) in the Workspace section.
-4. Record the branch name in the task row's Branch column when updating the Tracker.
+4. Record the branch name in the Task row's Branch column when updating the Tracker.
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
 6. Write the Task Prompt to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`. For batches, use `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
 7. Direct the User to the Worker's chat using an action directive per `{SKILL_PATH:apm-communication}` §2.1:
@@ -170,16 +170,16 @@ has_dependencies: true
 **Prompt Body Sections:**
 - **Title:** `#` heading using Task ID and title. Each section uses `##` heading:
 - *Task Reference:* Task ID and assigned agent.
-- *Context from Dependencies:* Included when `has_dependencies: true`. Format depends on dependency type per §2.1 Dependency Context Standards:
-  - *Same-agent:* "Building on your previous work:" intro - `**From Task <N>.<M>:**` with key outputs and recall points - `**Integration Approach:**` with brief guidance.
-  - *Cross-agent:* "This Task depends on work completed by [Producer Agent]:" intro - `**Integration Steps:**` numbered file reading instructions - `**Producer Output Summary:**` key features, files, interfaces, constraints - `**Upstream Context:**` for relevant ancestors.
+- *Context from Dependencies.* Included when `has_dependencies: true`. Format depends on dependency type per §2.1 Dependency Context Standards.
+  - *Same-agent.* "Building on your previous work:" intro - `**From Task <N>.<M>:**` with key outputs and recall points - `**Integration Approach:**` with brief guidance.
+  - *Cross-agent.* "This Task depends on work completed by [Producer Agent]:" intro - `**Integration Steps:**` numbered file reading instructions - `**Producer Output Summary:**` key features, files, interfaces, constraints - `**Upstream Context:**` for relevant ancestors.
 - *Objective:* Single-sentence Task goal, optionally enhanced with coordination-level context.
 - *Detailed Instructions:* Plan steps transformed into actionable instructions with integrated Spec content and guidance.
 - *Workspace:* Branch name for sequential dispatch, worktree path for parallel dispatch. Worker operates in the specified workspace, commits there, and notes it in the Task Log. Workers do not merge.
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field with validation approaches (programmatic, artifact, user).
 - *Instruction Accuracy:* The objective and expected output are authoritative - deliver those. However, the detailed instructions and steps were constructed from planning documents and may contain inaccurate details, missed prerequisites, or outdated assumptions about the codebase. When a specific instruction contradicts what the codebase actually shows, validate the actual state rather than persisting with the instruction as written.
-- *Task Iteration:* When facing persistent issues that resist direct fixing, spawn a subagent for fresh-context resolution rather than exhausting the context window. If unresolved, log to memory and report with Partial status.
+- *Task Iteration:* When facing persistent issues that resist direct fixing, spawn a subagent for fresh-context resolution rather than exhausting the context window. If unresolved, log to Memory and report with Partial status.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
 - *Task Report:* Instruction to output a Task Report for User to return to Manager.
 
@@ -201,7 +201,7 @@ Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived 
 
 ### 4.5 Tracker VC Entry Format
 
-VC configuration recorded in the Version Control table within the Tracker. Branch state is tracked per-task in the task table's Branch column - an incoming Manager reads task rows to rebuild working VC context.
+VC configuration recorded in the Version Control table within the Tracker. Branch state is tracked per-Task in the Task table's Branch column - an incoming Manager reads Task rows to rebuild working VC context.
 
 **Format:**
 
@@ -235,7 +235,7 @@ VC configuration recorded in the Version Control table within the Tracker. Branc
 - *Dispatching before merging dependencies:* If Task B depends on Task A's output and A was on a separate branch, A must be merged before B's branch is created.
 - *Accumulating worktrees:* Worktrees are short-lived. Remove promptly after merge.
 - *Assuming base branch name:* Read the base branch from the Tracker. Do not assume `main` or `master`.
-- *Forgetting VC state in Handoff:* Ensure task rows reflect current branch state before Handoff. Include active branches, worktrees, and pending merges in the Handoff Log.
+- *Forgetting VC state in Handoff:* Ensure Task rows reflect current branch state before Handoff. Include active branches, worktrees, and pending merges in the Handoff Log.
 - *Committing build artifacts:* Do not commit generated files. Create or update `.gitignore` for build directories.
 
 ---

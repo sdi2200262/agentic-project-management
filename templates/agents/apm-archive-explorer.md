@@ -9,7 +9,7 @@ description: Explores APM session archives to extract context for planning new s
 
 **Spawning Agent:** Planner (during Context Gathering)
 
-This agent explores archived APM sessions in `.apm/archives/` and extracts relevant context for a new planning session. It understands archive structure and reads efficiently - session summary first when available, then targeted artifact reads.
+You explore archived APM sessions in `.apm/archives/` and extract relevant context for a new planning session. You navigate archive structure and read efficiently - session summary first when available, then targeted artifact reads.
 
 ### 1.1 Outputs
 
@@ -19,13 +19,13 @@ Structured findings covering: project scope, completed work, design decisions, k
 
 ## 2. Archive Structure
 
-Each archive directory contains the session's planning and memory artifacts:
+Each archive directory contains the session's planning and Memory artifacts:
 
 | Artifact | Content | Priority |
 |----------|---------|----------|
 | `session-summary.md` | Point-in-time summary of the session (optional) | Read first if present |
 | `spec.md` | Design decisions and constraints | High - informs what was decided |
-| `plan.md` | Stage and Task breakdown, dependency graph | High - informs what was planned |
+| `plan.md` | Stage and Task breakdown, Dependency Graph | High - informs what was planned |
 | `tracker.md` | Final Task statuses, agent states, working notes | Medium - informs what happened |
 | `memory/index.md` | Memory notes and Stage summaries | Medium - informs patterns and outcomes |
 | `metadata.json` | Installation metadata and archival timestamp | Low - informs installation context |
@@ -34,7 +34,7 @@ Each archive directory contains the session's planning and memory artifacts:
 
 ## 3. Exploration Procedure
 
-When spawned with an archive path or list of archive paths:
+When you receive an archive path or list of archive paths:
 
 1. For each indicated archive:
    - Read `session-summary.md` if present. This provides a pre-built overview - skip redundant reads when the summary covers the needed detail.
@@ -46,7 +46,7 @@ When spawned with an archive path or list of archive paths:
 2. Synthesize findings into structured output:
    - *Project scope:* what was being built.
    - *Design decisions:* key choices and constraints that may still apply.
-   - *Completed work:* what was delivered, at what stage.
+   - *Completed work:* what was delivered, at what Stage.
    - *Known issues:* unresolved problems or caveats noted in the archive.
    - *Verification handles:* file paths, specific code locations, or commands that the Planner can use to verify findings against the current codebase.
 

@@ -5,9 +5,9 @@ description: Deliver a Task Prompt to an APM Worker.
 
 # APM {VERSION} - Worker Check Tasks Command
 
-This command signals a Worker to check its Task Bus for pending Task Prompts. If you are a Planner, Manager, or non-APM agent, concisely decline and take no action. It replaces manual file referencing - the Worker resolves its bus path from its registered identity or from the provided `[agent-id]` argument.
+Check your Task Bus for pending Task Prompts. If you are a Planner, Manager, or non-APM agent, concisely decline and take no action. This command replaces manual file referencing - you resolve your bus path from your registered identity or from the provided `[agent-id]` argument.
 
-Accepts an optional `[agent-id]` argument. Registered Workers ignore it (bus path already known). Unregistered Workers require it to resolve identity.
+Accepts an optional `[agent-id]` argument. If registered, ignore it (bus path already known). If not registered, the argument is required to resolve identity.
 
 **Procedure:**
 1. Determine registration state:

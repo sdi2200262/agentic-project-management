@@ -172,7 +172,7 @@ Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctu
 
 **Label punctuation:** Labels use colon (`:`) to introduce content. No arrows or hyphens as label separators.
 
-**Double-colon rule.** A line must not contain two colons. When prose after a label would end with a colon (introducing a sub-list), rephrase the prose to eliminate the trailing colon, or restructure so the label stands alone and the prose begins on the next line.
+**Double-colon rule.** A label colon must not appear on the same line as a second prose colon that introduces further content (a sub-list or clause). Colons inside inline code, quoted strings, or examples do not count. When prose after a label would end with a colon introducing a sub-list, use a period on the label instead, or rephrase the prose to eliminate the trailing colon.
 
 **Examples:**
 
