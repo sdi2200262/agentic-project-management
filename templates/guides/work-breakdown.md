@@ -114,7 +114,8 @@ Perform the following actions per §2.2 Spec Standards.
    - *Boundary calls:* for each candidate, determine its primary location: Spec (project-level design decisions), Task guidance (Task-scoped details, validation approach, single-domain constraints), or Rules (universal execution patterns). Each item belongs in one primary location. Items are placed during the Plan and Rules Analysis phases.
    - *Decision relationships:* decisions that cascade, constrain, or cluster naturally together.
    - *Structure rationale:* how to organize decisions so the Manager can extract relevant content per Task.
-2. Add specification content per §4.1 Spec Format. Let structure follow the decisions identified.
+   - *Workspace overview:* from the workspace assessment during Context Gathering, document the project environment: directory structure, working repositories (with their version control conventions if they differ), reference repositories, authoritative document locations, existing `{RULES_FILE}` content that was found. This gives the Manager a complete picture of the workspace without requiring its own exploration.
+2. Add specification content per §4.1 Spec Format. Let structure follow the decisions identified. Include the workspace overview as a section in the Spec.
 3. Pause for User review:
    - State the Spec is complete and the artifact is created.
    - Ask User to review for accuracy.

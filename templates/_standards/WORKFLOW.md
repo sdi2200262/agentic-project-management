@@ -44,7 +44,7 @@ The Manager and Workers transform the Plan into completed deliverables. The Impl
 
 **Project completion** - After all Stages complete, the Manager sets `status: complete` in the Tracker's YAML frontmatter and presents a project completion summary covering: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
 
-**Version control** - APM uses git for branch isolation, structured commits, and merge coordination throughout the Implementation Phase. The Planner establishes version control during the Planning Phase: detecting or initializing a git repository, capturing commit and branch conventions in Rules, and recording version control state in the Tracker. The Manager coordinates all version control operations during implementation: creating feature branches per conventions, merging completed branches, and cleaning up after merges. Workers commit to their assigned branch following conventions from Rules but do not create branches, manage worktrees, push, or merge. When a Worker completes a Task successfully but omits the commit, the Manager commits on behalf during review. APM does not push to remotes by default; the User manages push and PR workflows externally unless otherwise specified in Rules. If the User declines version control, parallel dispatch is unavailable and all Tasks are dispatched sequentially.
+**Version control** - APM uses git for branch isolation, structured commits, and merge coordination throughout the Implementation Phase. The Planner establishes version control during the Planning Phase: detecting or initializing a git repository, capturing commit and branch conventions in Rules, and recording version control state in the Tracker. When `.apm/` resides inside the repository, the default is to gitignore the entire `.apm/` directory; the Planner asks the User if they want to track any `.apm/` artifacts in git. The Manager coordinates all version control operations during implementation: creating feature branches per conventions, merging completed branches, and cleaning up after merges. Workers commit to their assigned branch following conventions from Rules but do not create branches, manage worktrees, push, or merge. When a Worker completes a Task successfully but omits the commit, the Manager commits on behalf during review. APM does not push to remotes by default; the User manages push and PR workflows externally unless otherwise specified in Rules. If the User declines version control, parallel dispatch is unavailable and all Tasks are dispatched sequentially.
 
 **Handoff** - Handoff transfers context between successive instances of the same agent role when context window limits approach. The Planner does not Handoff (single instance).
 
@@ -220,7 +220,9 @@ Task outcome status reflects whether the objective was achieved:
 
 ### 6.1 Context Gathering
 
-The Planner gathers project requirements through three progressive rounds of questions, deriving technical formalization from natural User responses rather than asking Users to produce technical content directly:
+The Planner gathers project requirements through three progressive rounds of questions, deriving technical formalization from natural User responses rather than asking Users to produce technical content directly.
+
+**Workspace assessment** - Before question rounds begin, the Planner scans the workspace to map its structure: which directories exist, which are git repositories, which contain existing documentation or project materials, whether `{RULES_FILE}` exists and what it contains. For git repositories, the Planner checks commit history and branch structure as project signals. The workspace assessment produces an initial understanding of the project environment that informs question rounds and feeds into the Spec's workspace overview during Work Breakdown.
 
 **Round 1 - Existing Materials and Vision.** Project type, problem, scope, skills, existing documentation, current vision.
 
@@ -240,7 +242,7 @@ The Planner decomposes gathered context into planning documents through visible 
 
 **Sequence:**
 
-1. **Spec Analysis** - The Planner analyzes design decisions, writes the Spec, and presents it for User approval.
+1. **Spec Analysis** - The Planner analyzes design decisions, writes the Spec (including a workspace overview capturing the project environment: directory structure, working repositories, reference repositories, authoritative documents, existing Rules file content, and version control state), and presents it for User approval. The workspace overview gives the Manager a complete picture of the workspace structure without requiring its own exploration.
 2. **Plan Analysis** - The Planner identifies work domains and Workers, identifies all Stages with objectives and Tasks, reasons through all Stages and Tasks in a single analysis pass with per-Stage depth, writes the full Plan, then performs a separate review pass assessing workload distribution, cross-agent dependencies, and generating the dependency graph, and presents it for User approval.
 3. **Rules Analysis** - The Planner extracts universal execution patterns (including version control conventions), writes the APM Rules block, and presents it for User approval. If no commit or branch conventions were detected during Context Gathering or specified by the User, the Planner proposes lightweight defaults: `type: description` commits (feat, fix, refactor, docs, test, chore) and `type/short-description` branches. APM does not push to remotes by default; the Planner notes this and asks if the User wants otherwise. If the User declines version control entirely, the Planner flags that parallel dispatch will be unavailable and records the decision in Rules.
 
@@ -284,7 +286,7 @@ The Worker executes Task instructions, validates results, iterates if needed, lo
 
 **Subagent usage** - When a Task includes subagent steps, the Worker spawns the relevant subagent. Findings are integrated into the Worker's context and reflected during execution.
 
-**Completion** - After execution, the Worker commits work to the assigned branch following conventions from Rules (if version control is active), writes a Task Log, clears the incoming bus file, writes a Task Report to the Report Bus, and directs the User to deliver the report - providing both the targeted command with agent identifier and the general command, since multiple Workers may finish concurrently.
+**Completion** - After execution, the Worker commits work to the assigned branch following conventions from Rules (if version control is active), writes a Task Log, clears the incoming bus file, writes a Task Report to the Report Bus, and directs the User to deliver the report - providing both the targeted command with agent identifier and the general command, since multiple Workers may finish concurrently. For large Tasks, Workers may commit at logical intermediate points during execution rather than only at completion - each commit follows the conventions from Rules and represents a coherent unit of change.
 
 ### 6.5 Task Review
 

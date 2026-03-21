@@ -27,7 +27,7 @@ Context gathering targets three planning documents, each consumed differently du
 
 ### 1.3 Outputs
 
-**Understanding summary:** Consolidated presentation of all gathered context for User review before Work Breakdown. Presented per §3.6 Finalize Understanding, structured per §4.1 Understanding Summary Guidelines.
+**Understanding summary:** Consolidated presentation of all gathered context for User review before Work Breakdown. Presented per §3.7 Finalize Understanding, structured per §4.1 Understanding Summary Guidelines.
 
 ---
 
@@ -92,26 +92,40 @@ Complete each step before proceeding to the next.
 
 **Procedure:**
 1. Archive Context - detect and optionally leverage previous session archives.
-2. Round Iteration - governs iteration within each round.
-3. Question Round 1 - Existing Materials and Vision.
-4. Question Round 2 - Technical Requirements.
-5. Question Round 3 - Implementation Approach and Quality.
-6. Finalize Understanding - understanding summary, User review, procedure completion.
+2. Workspace Assessment - scan workspace structure, existing materials, and project environment.
+3. Round Iteration - governs iteration within each round.
+4. Question Round 1 - Existing Materials and Vision.
+5. Question Round 2 - Technical Requirements.
+6. Question Round 3 - Implementation Approach and Quality.
+7. Finalize Understanding - understanding summary, User review, procedure completion.
 
 ### 3.1 Archive Context
 
 Before beginning question rounds, check for previous session archives.
 
 1. Check if `.apm/archives/` exists.
-   - If it does not exist or is empty → Skip to §3.2 Round Iteration.
+   - If it does not exist or is empty → Skip to §3.3 Round Iteration.
 2. Read `.apm/archives/index.md` if present. Otherwise, list archive directories in `.apm/archives/`.
 3. Present the available archives to the User with basic info (name, date, scope). Ask: "Are any of these previous sessions relevant to the current project? If so, which ones?"
-   - If the User indicates none are relevant → Skip to §3.2 Round Iteration.
+   - If the User indicates none are relevant → Skip to §3.3 Round Iteration.
 4. For each indicated archive, {ARCHIVE_EXPLORER_GUIDANCE}. Integrate findings when the agent returns.
 5. Verify archived findings against the current codebase: {PLANNER_SUBAGENT_GUIDANCE} with targeted verification questions using the handles the archive explorer provided. Identify what still holds, what has changed, and what has been invalidated.
 6. Integrate verified context into question rounds as a baseline - focus subsequent questions on delta (what changed, what is new) rather than re-establishing what was already known.
 
-### 3.2 Round Iteration
+### 3.2 Workspace Assessment
+
+Before question rounds begin, scan the workspace to map the project environment per §2.1 Guiding Principles ("Leverage existing material").
+
+Perform the following actions:
+1. List the workspace root to understand the directory structure.
+2. Identify git repositories: check which directories are git-initialized. For each repository found, check `git log --oneline -15` for commit patterns and `git branch` for branch structure.
+3. Check for existing materials: README, PRD, requirements documents, specs, architecture docs. Note locations.
+4. Check if `{RULES_FILE}` exists. If found, read its contents and present them to the User. Ask whether the existing content is current and relevant to this session, explaining that during Work Breakdown an APM_RULES block will be added to the file where APM-specific standards will go, and that existing content outside the block will be preserved. Ask if the User wants to consider any modifications to the existing content alongside the APM Rules block during Work Breakdown. Note findings for integration. If not found, note its absence for the Agent configuration step in Round 1.
+5. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's workspace overview during Work Breakdown.
+
+Present a brief summary of what was found to the User before starting question rounds. Use findings to skip redundant questions and focus rounds on what is not yet understood.
+
+### 3.3 Round Iteration
 
 These rules apply across all three question rounds.
 
@@ -128,7 +142,7 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 
 **Validation criteria gathering:** Capture success states and criteria for each requirement. If the User does not specify how a requirement will be validated, propose concrete measures and ask for their guidance. Integrate validation gathering into Rounds 2 and 3 follow-ups. Retain criteria for Plan Task Validation fields.
 
-### 3.3 Question Round 1: Existing Materials and Vision
+### 3.4 Question Round 1: Existing Materials and Vision
 
 **Focus areas:** Project type and deliverables, problem and purpose, essential features and scope, required skills and expertise, existing documentation and materials, current plan or vision, previous work and codebase context.
 
@@ -141,11 +155,11 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 6. What is your current plan or vision?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
 
-**Agent configuration** → If `{RULES_FILE}` was not found during the workspace scan (per §2.1 Guiding Principles), include: "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration.
+**Agent configuration** → If `{RULES_FILE}` was not found during the workspace assessment (§3.2): "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
 
 **Round completion** → Before proceeding to Round 2, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 
-### 3.4 Question Round 2: Technical Requirements
+### 3.5 Question Round 2: Technical Requirements
 
 **Focus areas:** Design decisions and constraints, work structure and dependencies, technical and resource requirements, complexity and risk assessment, validation criteria.
 
@@ -176,11 +190,11 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 - What has already been decided about technical direction, tools, or approaches - and what remains open?
 - Are there things that are definitely in or out of scope?
 
-**Planning document mapping:** As requirements emerge, track how information maps to planning documents per §1.2 Objectives. Gather validation criteria per §3.2 Round Iteration.
+**Planning document mapping:** As requirements emerge, track how information maps to planning documents per §1.2 Objectives. Gather validation criteria per §3.3 Round Iteration.
 
 **Round completion** → Before proceeding to Round 3, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: design decisions and constraints, work structure and dependencies, technical requirements, complexity and risk factors, and validation criteria for core requirements.
 
-### 3.5 Question Round 3: Implementation Approach and Quality
+### 3.6 Question Round 3: Implementation Approach and Quality
 
 **Focus areas:** Technical constraints and preferences, workflow preferences (including version control conventions if not already detected during exploration), quality standards, project-level coordination and approval requirements (external reviews or validation, stakeholder sign-offs, approval gates), domain organization, finalizing the Spec and Rules.
 
@@ -210,9 +224,9 @@ Combine related questions naturally in conversation. Adapt depth per §2.3 Quest
 - Is there anything that's definitely in or out of scope?
 - Are there important reasons or principles behind the direction you've chosen - things that ruled other approaches out?
 
-**Round completion** → Before proceeding to §3.6 Finalize Understanding, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
+**Round completion** → Before proceeding to §3.7 Finalize Understanding, present a round completion summary per §2.2 Response and Gap Assessment. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
 
-### 3.6 Finalize Understanding
+### 3.7 Finalize Understanding
 
 After completing the three question rounds, present gathered context for User review.
 
@@ -232,7 +246,7 @@ Perform the following actions:
 
 ### 4.1 Understanding Summary Guidelines
 
-The understanding summary is presented per §3.6 Finalize Understanding for User review. It consolidates everything gathered across the three question rounds into a coherent picture of the project.
+The understanding summary is presented per §3.7 Finalize Understanding for User review. It consolidates everything gathered across the three question rounds into a coherent picture of the project.
 
 **Structure:** Use free-form markdown. Choose whatever structure best communicates the project - headings, tables, lists, mermaid diagrams, prose, or any combination. Adapt the format to the project's nature and complexity.
 
