@@ -85,25 +85,25 @@ Guides follow a consistent structure with §1 Overview, §2 Operational Standard
 
 | Section | Number | Purpose |
 | ------- | ------ | ------- |
-| Overview | §1 | Introduce purpose, usage instructions, objectives, and outputs (if applicable). |
+| Overview | §1 | Introduce purpose and reading agent. Subsections for objectives and outputs are optional - include when they convey non-obvious information not already clear from the guide title. |
 | Operational Standards | §2 | Define reasoning approaches and decision rules for the procedure. |
 | [Procedure Section] | §3 | Define the procedure and its activities. |
-| Structural Specifications | §4 | Define output formats and schemas. |
-| Content Guidelines | §5 | Define quality standards and common mistakes. |
+| Structural Specifications | §4 | Define output formats and schemas. Omit when the guide produces no artifacts or only references formats defined elsewhere. |
+| Content Guidelines | §5 | Common Mistakes for genuinely non-obvious error patterns. Omit quality standards subsections that restate §2 Operational Standards. |
 
-**Procedure section structure:** Each guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. Subsections (§3.1, §3.2...) are the procedure's activities.
+**Procedure section structure:** Each guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. Subsections (§3.1, §3.2...) are the procedure's activities. Procedure outlines (numbered lists of subsection names before the subsections themselves) are omitted - subsection headers serve as the outline.
 
 ### 3.2 Section Requirements
 
-**§1 Overview:** Must include usage guidance, objectives (bulleted outcomes), and outputs (conditional - omit if no artifacts are produced).
+**§1 Overview:** Introduce the guide's purpose and reading agent. Subsections for navigation, objectives, and outputs are optional and should be omitted when they would restate the guide title or preview content defined in later sections.
 
-**§2 Operational Standards:** One subsection per standards area. Cover all reasoning and decision areas for the procedure. Include decision rules with conditions and actions. Include default behavior statements where ambiguity is possible.
+**§2 Operational Standards:** One subsection per standards area. Cover reasoning and decision areas for the procedure. Include default behavior statements where ambiguity is possible.
 
-**§3 Procedure:** Single procedure with subsection activities. Follows the "Perform the following actions:" format. Cross-references §2 standards when decisions apply. Includes conditional branching where applicable.
+**§3 Procedure:** Single procedure with subsection activities. Cross-references §2 standards when decisions apply. Includes conditional branching where applicable.
 
-**§4 Structural Specifications:** Define formats for all outputs. Specify file path patterns. Provide schemas with field descriptions.
+**§4 Structural Specifications:** Define formats for all outputs. Specify file path patterns. Provide schemas with field descriptions. Omit type and required annotations for self-documenting fields.
 
-**§5 Content Guidelines:** Quality standards specific to outputs. Always includes Common Mistakes as final subsection.
+**§5 Content Guidelines:** Common Mistakes is the primary subsection - include only patterns not already derivable as inversions of §2 Operational Standards. Additional quality or communication subsections are omitted when they restate §2 or the communication skill.
 
 ---
 
@@ -127,7 +127,7 @@ description: <one or two sentence description of skill purpose>
 
 ### 4.2 Section Structure
 
-Skills require §1 Overview (including reading agents, objectives, and outputs) and an end marker. Beyond §1, skills organize content freely to match their nature. Skills may contain operational standards, procedures, structural specifications, content guidelines, or any combination - section naming and ordering adapts to the skill's purpose.
+Skills require §1 Overview (including reading agents) and an end marker. Subsections for objectives and outputs within §1 are optional - include when they convey non-obvious information. Beyond §1, skills organize content freely to match their nature. Skills may contain operational standards, procedures, structural specifications, content guidelines, or any combination - section naming and ordering adapts to the skill's purpose.
 
 ---
 

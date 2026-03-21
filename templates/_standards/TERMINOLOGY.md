@@ -152,14 +152,6 @@ These concepts are not formal capitalized terms but are clearly defined because 
 
 **Cross-agent overrides.** When a Worker Handoff is detected, same-agent dependencies from Tasks whose logs were not loaded by the incoming Worker are reclassified as cross-agent. The Manager maintains an override list in the Tracker, recording the specific Tasks affected. During Task Assignment, the Manager checks this list to determine dependency context depth. The Dependency Graph is not modified; overrides are a runtime layer over the static plan.
 
-**Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. Internal authoring structure - section references (§N.M), procedure names, step labels, checkpoint labels, decision categories - is not exposed. Only `TERMINOLOGY.md` terms are used formally; these are the agent's public vocabulary.
-
-**Agent-to-system communication.** Agents write to APM artifacts, memory logs, and bus files using structured formats defined by the relevant skill or guide structural specifications.
-
-**Visible reasoning (chain-of-thought).** Agents present their thinking visibly in chat before committing to file output. This makes decisions auditable and gives the User opportunity to redirect. Two forms exist:
-  1. **Guided reasoning**, where specific procedures define labeled reasoning frames that structure the analysis (the structure forces thorough analysis and produces better outputs - these frames are intentionally visible and designed for better output quality)
-  2. **Free-form reasoning**, the baseline for all other decision points - formal and technical, no framework labels or procedure vocabulary as output structure. Guided reasoning frames are defined by the procedures that use them; the communication skill defines the baseline.
-
 ---
 
 **End of Terminology**

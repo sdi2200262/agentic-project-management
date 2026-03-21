@@ -47,7 +47,7 @@ Skills and commands are written for capable models that reason well from clear, 
 
 ### 1.6 De-Duplication Rule
 
-Each concept has one primary explanation in one location, with brief references elsewhere. Other files should reference it ("per [location]" or "see [location]") instead of repeating full explanations.
+Each concept has one primary explanation in one location, with brief references elsewhere. Other files should reference it ("per [location]" or "see [location]") instead of repeating full explanations. Content Guidelines sections (§5) in guides should not restate Operational Standards (§2). Common Mistakes entries should cover patterns not already derivable as inversions of §2 rules.
 
 ---
 
