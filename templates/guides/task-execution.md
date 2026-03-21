@@ -14,7 +14,7 @@ This guide defines how you execute Tasks assigned by the Manager via Task Prompt
 
 Follow cross-agent integration steps completely - read files, review artifacts, understand interfaces. Use same-agent guidance as recall anchors - review referenced paths to refresh context if needed.
 
-**Integration issues:** For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities - continue with best interpretation and note uncertainty; missing expected files - pause for guidance. **Default:** Do not execute on an unstable foundation.
+**Integration issues.** For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities - continue with best interpretation and note uncertainty; missing expected files - pause for guidance. **Default:** Do not execute on an unstable foundation.
 
 ### 2.2 Validation Standards
 
@@ -40,9 +40,7 @@ Continue when the cause is identified and progress is being made. Stop when fixe
 
 ### 2.4 Rules Updates
 
-When recurring patterns emerge during Task Execution or important findings suggest a universal standard would benefit later Tasks and other Workers, pause before logging and present the observation to the User. Propose the specific update to `{RULES_FILE}` and request User approval before modifying. Rules are not modified unilaterally - the User decides whether the change is warranted.
-
-**User corrections:** When the User provides a correction or directive during execution, comply immediately and continue. Do not pause to discuss Rules at this point. At Task completion, note the correction in the Task Log under Important Findings with `important_findings: true` - the Manager will see it during Task Review regardless of what happens next. After logging, reporting, and directing the User to deliver the report, ask at the end of your turn whether the correction should become a Rule - frame it naturally based on what was said and why it might apply beyond this Task. Make it clear the User can ignore this and proceed with delivering the report - it should not feel like a gate. If the User approves, update `{RULES_FILE}` and update the Task Log to note that the correction was entered as a Rule. If the User declines, defers, or ignores, no further action - the Manager already has visibility through the important findings flag.
+When the User provides a correction or directive during execution, comply immediately and continue. Do not pause to discuss Rules at this point. At Task completion, note the correction in the Task Log under Important Findings with `important_findings: true` - the Manager will see it during Task Review regardless of what happens next. After logging, reporting, and directing the User to deliver the report, ask at the end of your turn whether the correction should become a Rule for all Workers - frame it naturally based on what was said and why it might apply beyond this Task. Make it clear the User can ignore this and proceed with delivering the report - it should not feel like a gate. If the User approves, update `{RULES_FILE}` and update the Task Log to note that the correction was entered as a Rule. If the User declines, defers, or ignores, no further action - the Manager already has visibility through the important findings flag.
 
 ### 2.5 Version Control Standards
 
@@ -98,7 +96,7 @@ Perform the following actions:
 
 ### 3.5 Correction Loop
 
-Assess the failure per §2.3 Iteration Standards. If continuing: correct the issue, re-execute affected portions, and return to §3.4 Task Validation. If stopped: spawn a subagent for fresh-context resolution, or present the situation to the User with what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Upon User guidance: integrate the new direction and proceed to the appropriate procedure step, or apply outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and continue to §3.6 Task Completion.
+Assess the failure per §2.3 Iteration Standards. If continuing: correct the issue, re-execute affected portions, and return to §3.4 Task Validation. If stopped: spawn a subagent for fresh-context resolution. If the subagent resolves the issue, apply findings and resume. If unresolved, present the situation to the User with what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Upon User guidance: integrate the new direction and proceed to the appropriate procedure step, or apply outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and continue to §3.6 Task Completion.
 
 ### 3.6 Task Completion
 
@@ -107,7 +105,7 @@ Perform the following actions:
 2. Commit work to the assigned branch per §2.5 Version Control Standards.
 3. Create Task Log per `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure at `log_path`.
 4. Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery. Include relevant status indications:
-   - *After Handoff:* If this is the first Task after Handoff initialization, include incoming Worker indication: state instance number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded.
+   - *After Handoff.* If this is the first Task after Handoff initialization, include incoming Worker indication: state instance number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded.
    - *After recovery:* If auto-compaction occurred and recovery was performed via `/apm-9-recover`, note it in the Task Report so the Manager is aware.
 5. Await `/apm-4-check-tasks` or Handoff initiation.
 

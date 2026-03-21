@@ -14,7 +14,7 @@ This command summarizes the current APM session and optionally archives it. You 
    - `.apm/tracker.md` - Task statuses, agent states, working notes
    - `.apm/memory/index.md` - Memory notes and Stage summaries
 2. Extract per-Stage summaries from the Index loaded in step 1. Where deliverable verification is needed, batch all checks into a single {SUBAGENT_GUIDANCE} invocation with a consolidated checklist across all Stages rather than per-Stage spawning.
-3. Assess the current codebase state - identify how deliverables relate to the `.apm/` artifacts (Tasks reflected in code, pending work visible in file state, gaps between plan and implementation).
+3. Assess the current codebase state - identify how deliverables relate to the `.apm/` artifacts (Tasks reflected in code, pending work visible in file state, gaps between Plan and implementation).
 4. Write `.apm/session-summary.md` per the session summary structure below. The summary is a point-in-time snapshot - state this explicitly.
 5. Present the summary to the User.
 6. Ask: "Would you like me to archive this session?"
@@ -23,7 +23,7 @@ This command summarizes the current APM session and optionally archives it. You 
 7. Run `apm archive --force`.
 8. Read `.apm/archives/index.md`. If it does not exist or is malformed, create it per the archive index format below.
 9. Append an entry for the newly archived session to the index table.
-10. Confirm to the User that archival is complete and direct them to run `apm init` to reinitialize with fresh templates.
+10. Confirm to the User that archival is complete and direct them to run `apm init` (or `apm custom`) to reinitialize with fresh templates.
 
 **Session summary structure:**
 
@@ -52,9 +52,9 @@ outcome: <complete | partial | incomplete>
 *Body sections* (order as listed):
 
 - *Project Scope:* What was being built and why, from the Spec.
-- *Stages and Outcomes* → Per-Stage summary: objective, Tasks completed, notable results.
+- *Stages and Outcomes.* Per-Stage summary: objective, Tasks completed, notable results.
 - *Key Deliverables:* Primary outputs with file paths or descriptions.
-- *Codebase State* → How deliverables relate to `.apm/` artifacts: Tasks reflected in code, pending work, gaps between plan and implementation.
+- *Codebase State.* How deliverables relate to `.apm/` artifacts: Tasks reflected in code, pending work, gaps between Plan and implementation.
 - *Notable Findings:* Patterns, issues, or insights from Memory notes and working notes.
 - *Known Issues:* Unresolved problems, open questions, or caveats.
 - *Snapshot Notice:* "This summary reflects the session state as of `<datetime>`. The codebase may have diverged since this summary was created."

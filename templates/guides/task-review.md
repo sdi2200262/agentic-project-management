@@ -20,7 +20,7 @@ This guide defines how you review Task results, determine review outcomes, modif
 
 The goal is to extract information needed for the next review decision.
 
-**Status interpretation:** Assess whether the status and flags are consistent with the log's body content - inconsistency is a hallucination indicator. Status values: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (objective not achieved).
+**Status interpretation.** Assess whether the status and flags are consistent with the log's body content - inconsistency is a hallucination indicator. Status values: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (objective not achieved).
 
 **Flag interpretation.** Workers set flags based on scoped observations. Interpret with full project awareness:
 - `important_findings: true` - Worker observed something potentially beyond Task scope. Assess whether it affects planning documents or other Tasks. When findings indicate that validation criteria from the Task Prompt were not fully exercised, this warrants investigation before marking Done. Important findings may also include User corrections noted as potential Rules entries - assess whether they warrant a Rules addition per §2.3 Planning Document Modification Standards.
@@ -40,7 +40,7 @@ After reviewing a Task Log, determine the review outcome.
 - *No issues:* (false positives, nothing actionable) → Continue to next Task(s).
 - *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction. If the Worker also left changes uncommitted, note this in the follow-up instructions.
 - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification.
-- *Previously-Done work deficient:* (investigation of a later Task reveals issues with already-Done work) → Create a new Task through plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; reference it from the new Task, include the discovery context, and specify what needs correction.
+- *Previously-Done work deficient:* (investigation of a later Task reveals issues with already-Done work) → Create a new Task through Plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; reference it from the new Task, include the discovery context, and specify what needs correction.
 
 Within-authority actions (follow-ups for small contained issues, minor planning document corrections) are executed immediately during the review cycle. Present findings to the User for awareness after acting. Only changes exceeding Manager authority per §2.3 Planning Document Modification Standards pause for User approval.
 
@@ -48,7 +48,7 @@ Within-authority actions (follow-ups for small contained issues, minor planning 
 
 **Cascade reasoning:** Spec and Plan have bidirectional influence - changes to one may require adjustments in the other. Rules are generally isolated. When modifying any document, assess cascade implications before executing. Distinguish execution adjustments within design intent (no cascade) from design assumptions that proved incorrect (cascade warranted). When uncertain, assess the related document rather than assuming isolation.
 
-**Modification authority:** Small contained changes are Manager authority: single Task clarification or correction, adding a missing dependency, isolated Spec addition, minor Rules adjustment. Significant changes require User collaboration: multiple Tasks affected, design direction change, scope expansion or reduction, new Stage or major restructure. Multiple small modifications that together represent significant change require User collaboration. When authority is unclear, prefer User collaboration.
+**Modification authority.** Small contained changes are Manager authority: single Task clarification or correction, adding a missing dependency, isolated Spec addition, minor Rules adjustment. Significant changes require User collaboration: multiple Tasks affected, design direction change, scope expansion or reduction, new Stage or major restructure. Multiple small modifications that together represent significant change require User collaboration. When authority is unclear, prefer User collaboration.
 
 ### 2.4 Parallel Coordination Standards
 
@@ -56,7 +56,7 @@ When multiple Workers are active simultaneously, coordinate asynchronously.
 
 **Immediate reassessment:** After processing each report, reassess readiness and continue to dispatch assessment in the same turn - review and next dispatch happen in a single response without waiting for User input. The only reasons to pause are when no Tasks are Ready (wait state) or when a modification requires User collaboration per §2.2 Review Outcome Standards.
 
-**Async report handling:** Reports arrive in any order. Process each as it comes: complete the review, merge if needed, reassess readiness, dispatch newly Ready Tasks. Each report-to-dispatch cycle is continuous.
+**Async report handling.** Reports arrive in any order. Process each as it comes: complete the review, merge if needed, reassess readiness, dispatch newly Ready Tasks. Each report-to-dispatch cycle is continuous.
 
 **Merge coordination:** After successful review during parallel dispatch, merge the completed Task's branch per §2.5 Merge Standards before dispatching dependent Tasks. At Stage end, perform a merge sweep per §2.5 Merge Standards.
 
@@ -68,7 +68,7 @@ Merge state is a dispatch prerequisite. Merge completed feature branches into th
 
 **Merge timing:** After successful Task Review, merge the completed branch. Before dependent dispatch, merge if the dependent Task needs the completed Task's output. At Stage end, all current-Stage feature branches must be merged.
 
-**Merge execution:** Clean merges require no User intervention. Perform merges autonomously: switch to the base branch (`git checkout <base-branch>`), merge the completed branch (`git merge <branch-name>`), then verify.
+**Merge execution.** Clean merges require no User intervention. Perform merges autonomously: switch to the base branch (`git checkout <base-branch>`), merge the completed branch (`git merge <branch-name>`), then verify.
 
 **Conflict resolution:** Resolve using coordination-level context - knowledge of both Tasks' objectives, project design, and the Spec. For complex conflicts, spawn a debug subagent or escalate to the User.
 
@@ -84,7 +84,7 @@ Stage summaries compress Stage execution for future incoming Manager instances (
 
 Notes capture context that falls outside structured tracking but aids coordination and continuity. Two categories serve different purposes:
 
-**Working Notes (Tracker):** Coordination context accumulated during the Stage. Working notes serve two purposes: ephemeral context for upcoming decisions (pending considerations, User preferences, temporary constraints) and durable observations awaiting distillation (patterns, preferences, architectural insights). Insert when a review yields note-worthy context. Remove ephemeral items when no longer applicable. At Stage summary time, distill durable observations into Memory notes in the Index per §3.5.
+**Working Notes (Tracker).** Coordination context accumulated during the Stage. Working notes serve two purposes: ephemeral context for upcoming decisions (pending considerations, User preferences, temporary constraints) and durable observations awaiting distillation (patterns, preferences, architectural insights). Insert when a review yields note-worthy context. Remove ephemeral items when no longer applicable. At Stage summary time, distill durable observations into Memory notes in the Index per §3.5.
 
 **Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Memory notes are written during Stage summary creation - distill accumulated working notes into Memory notes, retaining only observations with lasting value. Not all working notes become Memory notes. Ephemeral items - pending considerations, temporary constraints, status updates, routine observations - are discarded during distillation. Only durable observations that would help a future agent (patterns, User preferences, architectural insights, integration lessons) persist.
 
@@ -122,7 +122,7 @@ Perform the following actions:
 Execute after Task Log review.
 
 Perform the following actions:
-1. Review findings from the Task Log per §2.2 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If version control is active and the Task was successful but changes remain uncommitted on the task branch, commit on behalf following the conventions from Rules - no follow-up needed. If everything looks good → skip to step 3. If something needs attention → continue to step 2.
+1. Review findings from the Task Log per §2.2 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If version control is active and the Task was successful but changes remain uncommitted on the Task branch, commit on behalf following the conventions from Rules - no follow-up needed. If everything looks good → skip to step 3. If something needs attention → continue to step 2.
 2. Investigate and determine outcome per §2.2 Review Outcome Standards:
    - *No issues:* → Continue to step 3.
    - *Follow-up needed:* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction. Continue to step 3.
@@ -144,7 +144,7 @@ Perform the following actions:
 4. Execute modifications following existing document patterns per §4.6 Planning Document Modification Guidelines. Verify consistency: reference integrity across documents (same data descriptions match), terminology consistency, scope alignment between the Spec and Plan. When correcting the Spec, check whether the Plan references the same content and update accordingly.
 5. When modifying Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph per §4.6 Planning Document Modification Guidelines.
 6. Document: update `modified` field in Spec and/or Plan YAML frontmatter per §4.5 Modification Log Format.
-7. Proceed to §3.3 Review Outcome step 4 to update tracking. Reassess readiness against the updated plan and proceed accordingly.
+7. Proceed to §3.3 Review Outcome step 4 to update tracking. Reassess readiness against the updated Plan and proceed accordingly.
 
 ### 3.5 Stage Summary Creation
 
@@ -193,9 +193,9 @@ The Task Tracking section within the Tracker tracks Task statuses, agent assignm
 
 Write the end state of each Task for the review-dispatch cycle. When a Task is unblocked and dispatched in the same turn, write directly from Waiting to Active. When a Task is unblocked but cannot be dispatched - the assigned Worker has an Active Task or a pending report would unlock a better dispatch per `{GUIDE_PATH:task-assignment}` §2.4 Dispatch Standards - write Ready.
 
-**Branch cleanup:** After merging a completed branch per §2.5 Merge Standards, clear the Branch column for that task row.
+**Branch cleanup:** After merging a completed branch per §2.5 Merge Standards, clear the Branch column for that Task row.
 
-**Stage collapse:** When all Tasks in a Stage are Done with no branches remaining: replace all task rows with `**Stage N:** Complete`.
+**Stage collapse.** When all Tasks in a Stage are Done with no branches remaining: replace all Task rows with `**Stage N:** Complete`.
 
 **Batch edits:** Task ID column guarantees edit tool uniqueness for targeting individual rows. When multiple rows or working notes change in the same review-dispatch cycle, batch all Tracker updates into a single edit.
 
@@ -208,7 +208,7 @@ Write the end state of each Task for the review-dispatch cycle. When a Task is u
 The Tracker contains four sections:
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
 - *`## Agent Tracking`:* Records agent states, instance numbers, and coordination notes. Update agent tracking when agents are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
-- *`## Version Control`:* Base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Populated by the Planner during Planning Phase Completion - branch state is tracked in the task table's Branch column.
+- *`## Version Control`:* Base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Populated by the Planner during Planning Phase Completion - branch state is tracked in the Task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.7 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
 **Agent Tracking Table:**

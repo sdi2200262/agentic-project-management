@@ -42,7 +42,7 @@ Perform the following actions:
 Perform the following actions:
 1. Update the Tracker and Index: replace `<Project Name>` with actual project name.
 2. Verify version control state: read the Tracker's Version Control section (populated by the Planner). Confirm git state is consistent - the base branch exists, the repository is accessible. Check for stale worktrees or orphaned feature branches from prior instances and clean if found. If the Tracker shows no version control (User declined), note that parallel dispatch is unavailable.
-3. Populate the Tracker: task tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (uninitialized).
+3. Populate the Tracker: Task tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (uninitialized).
 4. Present a concise understanding summary: project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure and Task count.
 5. Request User approval to proceed. If corrections needed, integrate feedback and re-request. When approved, generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment and proceed to §3 Continuous Coordination.
 
@@ -64,10 +64,10 @@ After each review, reassess readiness and continue to dispatch in the same turn 
 1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment, construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction. Direct User to the Worker(s).
 2. **Await Report:** User runs `/apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this chat.
 3. **Review and Continue.** Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Log, investigate further if needed and determine review outcome, modify planning documents if needed, update the Tracker. Then in the same turn:
-   - *Tasks Ready* → Continue to step 1.
-   - *No Tasks Ready, Workers active* → Communicate wait state per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
-   - *Follow-up needed* → Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction (repeat step 2).
-   - *Stage complete* → Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation, then Continue to step 1 for next Stage.
+   - *Tasks Ready:* Continue to step 1.
+   - *No Tasks Ready, Workers active:* Communicate wait state per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
+   - *Follow-up needed:* Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction (repeat step 2).
+   - *Stage complete:* Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation, then continue to step 1 for next Stage.
 
 ---
 
@@ -91,15 +91,14 @@ When all Stages are complete:
 
 Handoff is User-initiated when context window limits approach.
 
-- **Proactive monitoring:** Be aware of conversation length. If you notice degraded performance, inform User that Handoff may be needed.
-- **Handoff execution:** When User initiates, See `{COMMAND_PATH:apm-6-handoff-manager}` for Handoff Log and handoff prompt creation.
+- **Proactive monitoring:** Monitor conversation length. If performance degrades, inform User that Handoff may be needed.
+- **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm-6-handoff-manager}` for Handoff Log and handoff prompt creation.
 
 ---
 
 ## 7. Operating Rules
 
-- **Coordination-level role:** You normally operate at the coordination level - assigning Tasks, reviewing results, maintaining project state, working from Task Logs and summaries rather than raw source code. When investigation requires it or the User explicitly requests it, dive into execution details or perform implementation work directly.
-- **Authority thresholds:** See `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
+- **Coordination-level role:** You normally operate at the coordination level - assigning Tasks, reviewing results, maintaining project state, working from Task Logs and summaries rather than raw source code. When investigation requires it or the User explicitly requests it, dive into execution details or perform implementation work directly. Authority thresholds for planning document modifications per `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
 - **Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. See `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction step 7 for initialization and delivery guidance.
 - **Handoff tracking:** Use agent tracking and cross-agent overrides in the Tracker to track Worker Handoffs. See `{GUIDE_PATH:task-review}` §3.1 Report Processing for dependency reclassification details.
 - **Context scope:** Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.

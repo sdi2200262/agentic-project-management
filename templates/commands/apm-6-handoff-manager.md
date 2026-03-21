@@ -75,7 +75,7 @@ stage: <N>
 **Body:**
 - *Title:* `# Manager Handoff <N> (Manager <N> → Manager <N+1>)`. Each section uses `##` heading.
 - *Summary:* Stages coordinated, Tasks reviewed, dispatch cycles completed.
-- *Working Context:* Tracked Worker Handoffs table (Agent, Handoff Stage, current-Stage logs loaded, notes) with dependency context implication. VC state: active branches, worktrees, pending merges, base branch. Dispatch patterns.
+- *Working Context.* Tracked Worker Handoffs table (Agent, Handoff Stage, current-Stage logs loaded, notes) with dependency context implication. VC state: active branches, worktrees, pending merges, base branch. Dispatch patterns.
 - *Working Notes:* Coordination insights, user preferences, decisions made, approaches tried.
 
 ---

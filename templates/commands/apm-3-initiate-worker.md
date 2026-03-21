@@ -69,8 +69,8 @@ Repeat until all assigned Tasks are complete, User intervenes, or Handoff is nee
 
 Handoff is User-initiated when context window limits approach.
 
-- **Proactive monitoring:** Be aware of conversation length. If you notice degraded performance, inform User that Handoff may be needed.
-- **Handoff execution:** When User initiates, See `{COMMAND_PATH:apm-7-handoff-worker}` for Handoff Log and handoff prompt creation.
+- **Proactive monitoring:** Monitor conversation length. If performance degrades, inform User that Handoff may be needed.
+- **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm-7-handoff-worker}` for Handoff Log and handoff prompt creation.
 
 ---
 

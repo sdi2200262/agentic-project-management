@@ -85,7 +85,8 @@ Before question rounds begin, scan the workspace to map the project environment 
 Perform the following actions:
 1. Scan the workspace: list directory structure, identify git repositories (check recent commit history and branch structure), locate existing materials (README, PRD, requirements docs, architecture docs).
 2. Check if `{RULES_FILE}` exists. If found, read its contents and present them to the User. Ask whether the existing content is current and relevant to this session, explaining that during Work Breakdown an APM_RULES block will be added to the file where APM-specific standards will go, and that existing content outside the block will be preserved. Ask if the User wants to consider any modifications to the existing content alongside the APM Rules block during Work Breakdown. Note findings for integration. If not found, note its absence for the Agent configuration step in Round 1.
-3. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's workspace overview during Work Breakdown.
+3. If `.apm/` resides inside a repository, note that the default is to gitignore the entire `.apm/` directory. Ask the User if they want to track any `.apm/` artifacts (planning documents, Memory) in git. If `.apm/` is not inside a repository, no action needed.
+4. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's workspace overview during Work Breakdown.
 
 Present a brief summary of what was found to the User before starting question rounds. Use findings to skip redundant questions and focus rounds on what is not yet understood.
 
