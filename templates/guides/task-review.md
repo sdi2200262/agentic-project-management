@@ -203,9 +203,15 @@ Write the end state of each Task for the review-dispatch cycle. When a Task is u
 
 **Location:** `.apm/tracker.md`
 
-**Title:** `# APM Tracker`. YAML `title` field contains the project name. An optional `status` field is set to `complete` by the Manager at project completion - its absence means in-progress.
+**YAML Frontmatter Schema:**
+```yaml
+---
+title: <project name>
+status: complete  # optional, set by Manager at project completion - absence means in-progress
+---
+```
 
-The Tracker contains four sections:
+**Tracker sections:**
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
 - *`## Agent Tracking`:* Records agent states, instance numbers, and coordination notes. Update agent tracking when agents are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
 - *`## Version Control`:* Base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Populated by the Planner during Planning Phase Completion - branch state is tracked in the Task table's Branch column.
@@ -229,9 +235,14 @@ The Tracker contains four sections:
 
 **Location:** `.apm/memory/index.md`
 
-**Title:** `# APM Memory Index`. YAML `title` field contains the project name.
+**YAML Frontmatter Schema:**
+```yaml
+---
+title: <project name>
+---
+```
 
-The Index contains two sections:
+**Index sections:**
 - *`## Memory Notes`:* Durable observations per §2.7 Note-Taking Standards. Patterns, preferences, and insights that persist across Handoffs.
 - *`## Stage Summaries`:* Appended after each Stage completion per §4.4 Stage Summary Format.
 

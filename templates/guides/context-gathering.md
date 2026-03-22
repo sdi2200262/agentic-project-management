@@ -4,11 +4,7 @@
 
 **Reading Agent:** Planner
 
-This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents (Spec, Plan, and Rules) that enable structured project execution. The Manager coordinates using the Spec and Plan, while Workers execute using `{RULES_FILE}` alone. Context gathering targets all three:
-
-- *Spec* (what is being built): design decisions, constraints, rationale.
-- *Plan* (how work is organized): work domains, dependencies, complexity, validation criteria, work streams.
-- *Rules* (how work is performed): coding conventions, quality requirements, process rules, prohibited patterns. Universal across all Tasks.
+This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. After the User approves the understanding summary at the end of this procedure, you proceed to the Work Breakdown procedure where the gathered context is formalized into three planning documents (Spec, Plan, and Rules).
 
 ---
 
@@ -27,7 +23,7 @@ This guide defines the process for Context Gathering - gathering sufficient cont
 
 When processing User responses, assess what was explicitly stated, what can be reasonably inferred, and what assumptions you are making. Explicit statements are high-confidence. Inferences on critical points should be verified. Assumptions should be flagged for clarification.
 
-**Extraction lens:** Before flagging a gap, assess whether the technical formalization can be derived from what was described naturally. The standard for gap identification is whether responses are sufficient to formalize into planning document language - not whether the User stated requirements in technical terms. Raise a follow-up only when what was gathered is genuinely insufficient to formalize.
+**Extraction lens:** Before flagging a gap, assess whether the technical formalization can be derived from what was described naturally. The standard for gap identification is whether responses are sufficient to inform planning - not whether the User stated requirements in technical terms. Raise a follow-up only when what was gathered is genuinely insufficient.
 
 **Ambiguous responses:**
 - *Vague:* Rephrase with concrete interpretations.
@@ -43,7 +39,7 @@ Advance when the current round's focus areas are sufficiently covered and furthe
 
 Before advancing, present a round completion summary in chat covering:
 - *Context gathered:* key findings from this round.
-- *Planning document relevance:* which planning documents the findings inform and what type of content they contribute (design decisions, work structure signals, execution patterns).
+- *Planning relevance:* how the findings inform subsequent planning - what type of context they contribute (design decisions, work structure signals, execution patterns).
 - *Gaps assessed:* what gaps were identified, how resolved, and any acceptable gaps carried forward.
 - *Advancement reasoning:* why this round is complete and what the next round builds on.
 
@@ -86,7 +82,7 @@ Perform the following actions:
 1. Scan the workspace: list directory structure, identify git repositories (check recent commit history and branch structure), locate existing materials (README, PRD, requirements docs, architecture docs).
 2. Check if `{RULES_FILE}` exists. If found, read its contents and present them to the User. Ask whether the existing content is current and relevant to this session, explaining that during Work Breakdown an APM_RULES block will be added to the file where APM-specific standards will go, and that existing content outside the block will be preserved. Ask if the User wants to consider any modifications to the existing content alongside the APM Rules block during Work Breakdown. Note findings for integration. If not found, note its absence for the Agent configuration step in Round 1.
 3. If `.apm/` resides inside a repository, note that the default is to gitignore the entire `.apm/` directory. Ask the User if they want to track any `.apm/` artifacts (planning documents, Memory) in git. If `.apm/` is not inside a repository, no action needed.
-4. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's workspace overview during Work Breakdown.
+4. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's Workspace section during Work Breakdown.
 
 Present a brief summary of what was found to the User before starting question rounds. Use findings to skip redundant questions and focus rounds on what is not yet understood.
 
@@ -105,7 +101,7 @@ Combine related questions naturally in conversation. Track what has been answere
 
 **Open elicitation.** Before each round's completion summary, include a broad open-ended question targeting what the focused questions may have missed. Generate it dynamically from what has not been covered: review what was gathered, identify categories within the round's theme that received no attention, and ask about those gaps specifically. Do not use a fixed set of example topics. The open-ended question should not block round advancement - the User can address it together with the next round's questions if they prefer.
 
-**Validation criteria gathering:** Capture success states and criteria for each requirement. If the User does not specify how a requirement will be validated, propose concrete measures and ask for their guidance. Integrate validation gathering into Rounds 2 and 3 follow-ups. Retain criteria for Plan Task Validation fields.
+**Validation criteria gathering:** Capture success states and criteria for each requirement. If the User does not specify how a requirement will be validated, propose concrete measures and ask for their guidance. Integrate validation gathering into Rounds 2 and 3 follow-ups.
 
 ### 3.4 Question Round 1: Existing Materials and Vision
 
@@ -194,7 +190,7 @@ Combine related questions naturally in conversation. Track what has been answere
 After completing the three question rounds, present gathered context for User review.
 
 Perform the following actions:
-1. Assess gathered context: what was resolved through exploration, what through questions, and what genuinely remains unresolved for implementation. Present an understanding summary consolidating all gathered context per §4 Understanding Summary Format.
+1. Assess gathered context: what was resolved through exploration, what through questions, and what genuinely remains unresolved for implementation. Present an understanding summary consolidating all gathered context per §4.1 Understanding Summary Format.
 2. Pause for User review. Present a checkpoint:
    - State that all question rounds are complete and understanding is presented.
    - Ask the User to review carefully before planning document generation.
@@ -205,7 +201,9 @@ Perform the following actions:
 
 ---
 
-## 4. Understanding Summary Format
+## 4. Structural Specifications
+
+### 4.1 Understanding Summary Format
 
 The understanding summary is presented per §3.7 Finalize Understanding for User review. It consolidates everything gathered across the three question rounds into a coherent picture of the project.
 
@@ -220,7 +218,7 @@ The understanding summary is presented per §3.7 Finalize Understanding for User
 - *Process and quality:* workflow preferences, coordination requirements, approval gates, validation approach
 - *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found; version control conventions detected or established
 
-The understanding summary captures signals that inform Work Breakdown - domains, dependencies, constraints. Decomposition happens after reading `{GUIDE_PATH:work-breakdown}`. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
+The understanding summary captures what was gathered - not how it will be decomposed. Decomposition happens in the next procedure. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
 
 ---
 
@@ -228,7 +226,7 @@ The understanding summary captures signals that inform Work Breakdown - domains,
 
 ### 5.1 Communication Quality
 
-Distinguish User requirements (constraints) from preferences (guidance). Requirements are non-negotiable; preferences allow judgment during Work Breakdown.
+Distinguish User requirements (constraints) from preferences (guidance). Requirements are non-negotiable; preferences allow judgment during planning.
 
 ### 5.2 Common Mistakes
 

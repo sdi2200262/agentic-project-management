@@ -7,8 +7,7 @@ modified: <last modification note>
 
 ## Overview
 
-[Project overview - to be filled by Planner during Work Breakdown]
+## Workspace
 
 ---
 
-[Content sections determined by project needs - to be filled by Planner]

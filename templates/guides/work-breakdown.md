@@ -96,8 +96,8 @@ Perform the following actions per §2.2 Spec Standards.
    - *Boundary calls.* For each candidate, determine its primary location: Spec (project-level design decisions), Task guidance (Task-scoped details, single-domain constraints), or Rules (universal execution patterns). Each item belongs in one primary location.
    - *Decision relationships:* decisions that cascade, constrain, or cluster naturally together.
    - *Structure rationale:* how to organize decisions so the Manager can extract relevant content per Task.
-   - *Workspace overview.* From the workspace assessment during Context Gathering, document the project environment: directory structure, working repositories (with their version control conventions if they differ), reference repositories, authoritative document locations, existing `{RULES_FILE}` content that was found. This gives the Manager a complete picture of the workspace without requiring its own exploration.
-2. Add specification content per §4.1 Spec Format. Let structure follow the decisions identified. Include the workspace overview as a section in the Spec.
+   - *Workspace.* From the workspace assessment during Context Gathering, document the project environment: directory structure, working repositories (with their version control conventions if they differ), reference repositories, authoritative document locations, existing `{RULES_FILE}` content that was found. This gives the Manager a complete picture of the workspace without requiring its own exploration.
+2. Add specification content per §4.1 Spec Format. Let structure follow the decisions identified. Include the workspace section in the Spec.
 3. Pause for User review:
    - State the Spec is complete and the artifact is created.
    - Ask User to review for accuracy.
@@ -180,17 +180,35 @@ Perform the following actions per §2.4 `{RULES_FILE}` Standards:
 
 ### 4.1 Spec Format
 
-Spec content follows the YAML frontmatter in `.apm/spec.md`. Structure is free-form - organize around the decisions themselves, not predefined categories or conventional headings. Let the project's actual design landscape shape the document: decisions that cluster naturally share a section, decisions that stand alone get their own. Different projects produce differently structured Specs. Do not pattern-match to common templates (e.g., "Architecture," "Data Model," "API Design") when the project's decisions do not naturally group that way.
+**Location:** `.apm/spec.md`
+
+**YAML Frontmatter Schema:**
+```yaml
+---
+title: <project name>
+modified: <last modification note>
+---
+```
+
+Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, and authoritative document locations). A horizontal rule separates the header from the design decision content below.
+
+**Content structure.** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. The Spec should read as a coherent description of what is being built and why, shaped by the project's unique requirements.
 
 **Content rules:** Use markdown headings (`##`) to organize decision groups. Each specification must be concrete and actionable. Structure for extraction - the Manager distills relevant content into individual Task Prompts, so decisions should be locatable and separable. Reference existing User documents rather than duplicating - include file paths and specific sections so the Manager can locate source material during Task Assignment. Use tables for enumerated values, mermaid diagrams for relationships, code blocks for schemas, prose for rationale.
 
 ### 4.2 Plan Format
 
-**Plan Header Format.** The Plan header precedes all Stages:
-- *Project name:* from the Spec title.
-- *Workers table:* `| Worker | Domain | Description |` - one row per Worker.
-- *Stages table:* `| Stage | Name | Tasks | Agents |` - one row per Stage.
-- *Dependency Graph:* per **Dependency Graph Format** below.
+**Location:** `.apm/plan.md`
+
+**YAML Frontmatter Schema:**
+```yaml
+---
+title: <project name>
+modified: <last modification note>
+---
+```
+
+Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). A horizontal rule separates the header from Stage sections below.
 
 **Stage Format.** Each Stage in the Plan:
 - *Header:* `## Stage N: [Name]`

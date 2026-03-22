@@ -98,6 +98,10 @@ compatibility_issues: true | false
 ```
 
 **Field Descriptions:**
+- `stage`: Stage number from the Task Prompt.
+- `task`: Task number from the Task Prompt.
+- `title`: Task title from the Task Prompt.
+- `agent`: Your agent identifier.
 - `status`: Task outcome per §2.2 Outcome Standards. `Success`, `Partial`, or `Failed`.
 - `failure_point`: `null` for Success; description of where/why the Task didn't succeed for Partial and Failed.
 - `important_findings`: Whether discoveries have implications beyond current Task scope per §2.1.

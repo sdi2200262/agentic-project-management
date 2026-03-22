@@ -99,7 +99,12 @@ tasks:
 ---
 ```
 
-`tasks[].log_path` is the pre-constructed path for the Task Log, following the same pattern as single Task Prompts.
+**Field Descriptions:**
+- `batch`: Always `true` for batch envelopes.
+- `batch_size`: Total Tasks in the batch.
+- `tasks[].stage`: Stage number.
+- `tasks[].task`: Task number within Stage.
+- `tasks[].log_path`: Pre-constructed path for the Task Log, following the same pattern as single Task Prompts.
 
 **Body:** Individual Task Prompts separated by `---` delimiters. Each Task Prompt retains its full structure (YAML frontmatter and body) as if standalone.
 ```markdown
@@ -148,8 +153,13 @@ tasks:
 ---
 ```
 
+**Field Descriptions:**
+- `batch`: Always `true` for batch reports.
+- `batch_size`: Total Tasks in the batch.
 - `completed`: Tasks that were executed (excludes unstarted).
 - `stopped_early`: Whether the batch stopped before completing all Tasks.
+- `tasks[].stage`: Stage number.
+- `tasks[].task`: Task number within Stage.
 - `tasks[].status`: `Success`, `Partial`, `Failed`, or `"Not started"` for unexecuted Tasks.
 
 **Markdown Body Template:**

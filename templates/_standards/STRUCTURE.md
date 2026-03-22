@@ -88,8 +88,12 @@ Guides follow a consistent structure with §1 Overview, §2 Operational Standard
 | Overview | §1 | Introduce purpose and reading agent. Subsections for objectives and outputs are optional - include when they convey non-obvious information not already clear from the guide title. |
 | Operational Standards | §2 | Define reasoning approaches and decision rules for the procedure. |
 | [Procedure Section] | §3 | Define the procedure and its activities. |
-| Structural Specifications | §4 | Define output formats and schemas. Omit when the guide produces no artifacts or only references formats defined elsewhere. When omitted, §5 renumbers to §4. |
-| Content Guidelines | §5 (or §4 if above omitted) | Common Mistakes for genuinely non-obvious error patterns. Omit quality standards subsections that restate §2 Operational Standards. |
+| Structural Specifications | §4 | Define output formats and schemas. Omit when the guide produces no artifacts or only references formats defined elsewhere. |
+| Content Guidelines | §5 | Common Mistakes for genuinely non-obvious error patterns. Omit quality standards subsections that restate §2 Operational Standards. |
+
+**Section omission and renumbering:** When a section is omitted, subsequent sections renumber sequentially. For example, if §4 is omitted, §5 becomes §4.
+
+**§5 Content Guidelines elevation:** When Content Guidelines contains only Common Mistakes (no additional quality subsections), the heading becomes `## 5. Common Mistakes` - dropping the "Content Guidelines" container. This elevation applies only to this section, and the section number follows the renumbering rule above.
 
 **Procedure section structure:** Each guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. Subsections (§3.1, §3.2...) are the procedure's activities. Procedure outlines (numbered lists of subsection names before the subsections themselves) are omitted - subsection headers serve as the outline.
 
@@ -103,7 +107,7 @@ Guides follow a consistent structure with §1 Overview, §2 Operational Standard
 
 **§4 Structural Specifications:** Define formats for all outputs. Specify file path patterns. Provide schemas with field descriptions. Omit type and required annotations for self-documenting fields.
 
-**§5 Content Guidelines:** Common Mistakes is the primary content - include only patterns not already derivable as inversions of §2 Operational Standards. Additional quality or communication subsections are omitted when they restate §2 or the communication skill. When multiple subsections exist, use `###` headings. When only Common Mistakes remains, elevate it to the `##` heading. Section numbering is always sequential - when §4 is omitted, Content Guidelines becomes `## 4. Common Mistakes`.
+**§5 Content Guidelines:** Common Mistakes is the primary content - include only patterns not already derivable as inversions of §2 Operational Standards. Additional quality or communication subsections are omitted when they restate §2 or the communication skill. When multiple subsections exist, use `###` headings. When only Common Mistakes remains, the heading becomes `## 5. Common Mistakes` (or the renumbered equivalent if §4 was omitted).
 
 ---
 

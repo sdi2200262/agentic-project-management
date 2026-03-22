@@ -67,6 +67,7 @@ stage: <N>
 ```
 
 **Field Descriptions:**
+- `agent`: Always `manager`.
 - `outgoing`: Current instance number.
 - `incoming`: Next instance number.
 - `handoff`: Handoff sequence number (equals the outgoing instance number).
