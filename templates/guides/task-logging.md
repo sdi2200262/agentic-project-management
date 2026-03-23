@@ -66,7 +66,7 @@ Perform the following actions:
 Perform the following actions:
 1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).
 2. Write the Task Report to the Report Bus: `.apm/bus/<agent-slug>/report.md`. The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log.
-3. Direct the User to deliver the report to the Manager using an action directive per `{SKILL_PATH:apm-communication}` §2.1 - provide `/apm-5-check-reports <agent-id>` for targeted retrieval.
+3. Direct the User to deliver the report to the Manager per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication - provide `/apm-5-check-reports <agent-id>` for targeted retrieval.
 
 For batch execution, write a single batch report per `{SKILL_PATH:apm-communication}` §4.5 Batch Report Envelope Format after completing all Tasks (or stopping on failure).
 

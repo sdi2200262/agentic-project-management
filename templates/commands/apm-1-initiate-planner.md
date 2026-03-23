@@ -57,12 +57,13 @@ Perform the following actions:
    - Create empty Report Bus: `.apm/bus/<agent-slug>/report.md`
    - Create empty Handoff Bus: `.apm/bus/<agent-slug>/handoff.md`
    Create the Manager's bus directory: `.apm/bus/manager/` with empty Handoff Bus `.apm/bus/manager/handoff.md`. Create all directories and bus files using `mkdir -p` and `touch` in a single terminal command.
-2. Initialize version control. Identify the working target from the Spec (workspace root and repository may differ). Navigate to the working repository if specified.
+2. Record version control state. Identify the working target from the Spec (workspace root and repository may differ). Navigate to the working repository if specified.
    - If git is not initialized → run `git init` and inform the User.
    - Detect the current branch and record as base branch.
    - If `.apm/` is inside the repository directory: add `.apm/` to `.gitignore` by default. Ask the User if they want to track any `.apm/` artifacts in git (planning documents, Memory). If yes, adjust the gitignore entries accordingly (e.g. ignore only `.apm/bus/`, `.apm/worktrees/`, `.apm/metadata.json` while tracking the rest).
-   - Write version control state to the Tracker: set Base Branch, Branch Convention, and Commit Convention fields. If Rules contain version control conventions, use those values. If the User declined version control during Work Breakdown, leave the fields empty.
-3. State the Planning Phase is complete: planning documents created, Message Bus and version control initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
+   - Write version control state to the Tracker: set Base Branch, Branch Convention, and Commit Convention fields. If Rules contain commit conventions, use those values. If the User declined version control during Work Breakdown, leave the fields empty.
+   - Do not populate Task Tracking, Agent Tracking, or Working Notes - these are initialized by Manager 1.
+3. State the Planning Phase is complete: planning documents created, Message Bus initialized, version control state recorded, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
 
 ---
 

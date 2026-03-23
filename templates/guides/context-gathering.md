@@ -4,7 +4,9 @@
 
 **Reading Agent:** Planner
 
-This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. After the User approves the understanding summary at the end of this procedure, you proceed to the Work Breakdown procedure where the gathered context is formalized into three planning documents (Spec, Plan, and Rules).
+This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. Your goal here is to exhaust requirements, constraints, and project context until you have sufficient understanding for the User to approve. Only after the User approves the understanding summary and you read the Work Breakdown guide do you begin decomposing work into planning documents, assigning Workers, or thinking about project structure.
+
+During the Implementation Phase, a Manager coordinates multiple Workers, each focused on a specific domain. Workers may receive multiple Tasks over time, building accumulated working context as they progress. The Manager uses the Spec and Plan to construct self-contained Task assignments, and Workers see only their current Task assignment and Rules. When parallel work is needed, the Manager handles workspace isolation through branches and worktrees. This means context gathered here should distinguish between project-level design decisions, domain-specific implementation details, and universal execution patterns that apply to all Workers.
 
 ---
 
@@ -37,7 +39,7 @@ When processing User responses, assess what was explicitly stated, what can be r
 
 Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect planning document accuracy. Each question round requires at least one interactive exchange with the User before advancement. Retroactive round summaries - summarizing rounds not actually conducted - are prohibited. "Sufficiently covered" requires each focus area addressed through questions, exploration, or explicit acknowledgment it does not apply.
 
-Before advancing, present a round completion summary in chat covering:
+Before advancing, present a round completion summary in chat under the header **Round N Summary:** (where N is the round number) covering:
 - *Context gathered:* key findings from this round.
 - *Planning relevance:* how the findings inform subsequent planning - what type of context they contribute (design decisions, work structure signals, execution patterns).
 - *Gaps assessed:* what gaps were identified, how resolved, and any acceptable gaps carried forward.
@@ -51,9 +53,13 @@ When User responses or existing material reference codebase elements, or signal 
 
 **After exploration.** Reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta. Present critical findings for confirmation.
 
-**Scope assessment:** Research that builds the Planner's understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, resolving technical unknowns. Research that is itself a project deliverable belongs in the Plan. Only defer when research is a project deliverable or the User explicitly requests deferral. When the project involves existing codebases that Workers will interact with, exploring those codebases to inform planning documents is Context Gathering work.
+**Scope assessment:** Research that builds your understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, resolving technical unknowns. Research that is itself a project deliverable belongs in the Plan. Only defer when research is a project deliverable or the User explicitly requests deferral. When the project involves existing codebases that Workers will interact with, exploring those codebases to inform planning documents is Context Gathering work.
 
-**Self-explore vs subagent:** For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}. Structure the prompt with specific research questions, expected sources, and how findings will be used. Direct the subagent to include verification handles - file paths, commands, or specific locations - alongside findings. After subagent results return, assess whether findings resolve the research questions posed. If critical gaps remain, dispatch a follow-up subagent with targeted questions before continuing. When findings contribute specific details to planning documents, spot-check key claims through the handles provided. When findings inform general understanding - codebase structure, conventions, broad context - accept and synthesize without verification.
+**Self-explore vs subagent:** For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}
+
+**After subagent results return.** Verify the findings against the actual codebase by reading referenced files or running referenced commands to confirm key claims. Then present a concise summary of research findings to the User: what was found, what it means for the project, and any alternatives or tradeoffs discovered. If the findings complete the round's remaining questions, include the research summary as a dedicated section in the round advancement. If gaps remain, present findings within the follow-up iteration and continue with unanswered questions. If gaps remain after verification, or significant findings warrant more targeted research, dispatch a follow-up subagent.
+
+**Decision authority.** When gathered context, whether from research, User input, codebase exploration, or your own understanding, reveals multiple viable approaches to an architectural or design question, present the alternatives with tradeoffs and a recommendation with justifiable reasoning. The User decides which approach to take. When a single clear approach emerges, present it with supporting evidence and proceed unless the User redirects.
 
 ---
 
@@ -71,7 +77,7 @@ Before beginning question rounds, check for previous session archives.
 3. Present the available archives to the User with basic info (name, date, scope). Ask: "Are any of these previous sessions relevant to the current project? If so, which ones?"
    - If the User indicates none are relevant → Skip to §3.3 Round Iteration.
 4. For each indicated archive, {ARCHIVE_EXPLORER_GUIDANCE}. Integrate findings when the agent returns.
-5. Verify archived findings against the current codebase: {PLANNER_SUBAGENT_GUIDANCE} with targeted verification questions using the handles the archive explorer provided. Identify what still holds, what has changed, and what has been invalidated.
+5. Verify archived findings against the current codebase. {PLANNER_SUBAGENT_GUIDANCE} Use targeted verification questions based on the handles the archive explorer provided. Identify what still holds, what has changed, and what has been invalidated.
 6. Integrate verified context into question rounds as a baseline - focus subsequent questions on delta (what changed, what is new) rather than re-establishing what was already known.
 
 ### 3.2 Workspace Assessment
@@ -79,7 +85,7 @@ Before beginning question rounds, check for previous session archives.
 Before question rounds begin, scan the workspace to map the project environment per §2.1 Guiding Principles.
 
 Perform the following actions:
-1. Scan the workspace: list directory structure, identify git repositories (check recent commit history and branch structure), locate existing materials (README, PRD, requirements docs, architecture docs).
+1. Scan the workspace: list root directory structure, identify git repositories (check recent commit history and branch structure), locate existing materials (README, PRD, requirements docs, architecture docs). Present discovered materials to the User. If the initiation context referenced specific documents, treat those as current and authoritative. For other discovered documents, confirm with the User that they are current and relevant before using them as a basis for exploration.
 2. Check if `{RULES_FILE}` exists. If found, read its contents and present them to the User. Ask whether the existing content is current and relevant to this session, explaining that during Work Breakdown an APM_RULES block will be added to the file where APM-specific standards will go, and that existing content outside the block will be preserved. Ask if the User wants to consider any modifications to the existing content alongside the APM Rules block during Work Breakdown. Note findings for integration. If not found, note its absence for the Agent configuration step in Round 1.
 3. If `.apm/` resides inside a repository, note that the default is to gitignore the entire `.apm/` directory. Ask the User if they want to track any `.apm/` artifacts (planning documents, Memory) in git. If `.apm/` is not inside a repository, no action needed.
 4. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's Workspace section during Work Breakdown.
@@ -167,7 +173,7 @@ Combine related questions naturally in conversation. Track what has been answere
 *Workflow Preferences:*
 - Specific workflow patterns, quality standards, or validation approaches preferred?
 - Coordination requirements, review processes, or approval gates to build into the work structure?
-- Version control preferences? Commit message conventions, branching strategy, or other git workflow rules? Skip if conventions were already detected during workspace exploration. If the User declines version control, note that parallel dispatch will be unavailable and confirm.
+- Version control commit conventions? If conventions were detected during workspace exploration, propose them as defaults rather than asking. If parallel work streams were identified in earlier rounds, note that version control with branches and worktrees is required for workspace isolation and is handled by the Manager during the Implementation Phase. If the User declines version control, note that parallel dispatch will be unavailable and confirm.
 
 *Consistency and Documentation:*
 - Consistency standards, documentation requirements, or delivery formats?

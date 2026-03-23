@@ -21,28 +21,15 @@ Agents not managed by APM can participate in bus communication by creating their
 
 When communicating with the User - asking questions, requesting actions, providing status updates, presenting completions - use natural language adapted to the situation. Explain what happened, what was decided, and what happens next. There are no rigid templates; adapt phrasing to what the situation requires while conveying necessary information.
 
-**Action directives.** When directing Users to take action - whether APM workflow navigation or any other action requiring User involvement outside the conversation - present as an action directive. Use a blockquote with the action described in natural language. Each step on its own line for easy reference and copying. When the action requires a new chat, include the platform guidance per {NEW_CHAT_GUIDANCE}. Commands are presented in code format for easy copying.
+When directing Users to perform actions (run commands, switch chats, review artifacts), provide specific actionable guidance naturally: which command, in which agent's chat, with what arguments. Present commands, file paths, and values the User needs in inline code or code blocks, visually separated from surrounding prose so they are easy to identify and copy. When multiple actions are needed (open a new chat, run initiation, check tasks), list them clearly with enough spacing to distinguish each step. When the action requires a new chat, include the platform guidance per {NEW_CHAT_GUIDANCE}.
 
-Single action:
-
-> **Next:** Run `/apm-5-check-reports` in this chat.
-
-Multiple actions:
-
-> **Next:**
-> 1. {NEW_CHAT_GUIDANCE}
-> 2. Run `/apm-3-initiate-worker frontend-agent`
-> 3. Run `/apm-4-check-tasks`
-
-Non-APM action:
-
-> **Action needed:** Enable billing in the cloud console and confirm when done so I can proceed with the deployment configuration.
-
-Adapt the label and content to the situation - `Next:` for workflow progression, `Action needed:` for external actions, or any label that fits. The pattern is the blockquote with clear steps; use it whenever the User needs to do something, not only for APM-specific moments.
+Communication at workflow transitions should orient the User: what was just completed, what comes next, and what action is needed. Adapt naturally to the moment rather than following a fixed format.
 
 ### 2.2 Visible Reasoning
 
-At procedural decision points, present analytical thinking visibly in chat before acting. This makes decisions auditable and gives the User opportunity to redirect. Reasoning quality correlates with output quality. When a procedure provides a labeled reasoning frame, follow it - the structure forces thorough analysis. Present findings naturally under each label. Otherwise, reason analytically: what you are assessing, key considerations, and your conclusion. Do not use framework labels, procedure vocabulary, or structural headings from the guides as output structure.
+At procedural decision points, present analytical thinking visibly in chat before acting. This makes decisions auditable and gives the User opportunity to redirect. Reasoning quality correlates with output quality.
+
+When a procedure provides a reasoning frame with labeled aspects and a header, present the header visibly and address each aspect as natural analytical prose beneath it. The aspects guide what to analyze; the output reads as coherent reasoning the User can follow and audit, not as responses to a checklist. Some procedures define hierarchical frames with sub-headers for distinct phases. When no reasoning frame is provided, reason analytically: what you are assessing, key considerations, and your conclusion. Do not use framework labels, procedure vocabulary, or structural headings from the guides as output structure.
 
 ### 2.3 Terminology Boundaries
 
@@ -54,13 +41,13 @@ The following are internal authoring structure - use them for navigation but nev
 - Step labels and checkpoint names.
 - Decision categories.
 
-Guided reasoning frames are always surfaced as defined by their procedures per §2.2 Visible Reasoning.
+Reasoning frame headers and their labeled aspects are always surfaced as defined by the procedure per §2.2 Visible Reasoning.
 
 ---
 
 ## 3. Agent-to-System Communication
 
-When writing to APM artifacts (Spec, Plan, Tracker, Task Logs, bus files), follow the structural format defined by the relevant guide's structural specifications section or the bus protocol in §4. Artifact content is technical, formal, structured, and precise. Internal procedure vocabulary does not appear in artifacts - use natural descriptive language for any free-text fields.
+When writing to APM artifacts (Spec, Plan, Tracker, Task Logs, bus files), follow the structural format defined by the relevant guide's structural specifications section or the bus protocol in §4 Message Bus Protocol. Artifact content is technical, formal, structured, and precise. Internal procedure vocabulary does not appear in artifacts - use natural descriptive language for any free-text fields.
 
 ---
 

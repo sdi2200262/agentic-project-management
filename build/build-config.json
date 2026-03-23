@@ -22,7 +22,7 @@
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "#runSubagent",
-        "explorerName": "exploration subagent",
+        "explorerName": "exploration",
         "configNote": null
       },
       "postInstallNote": null

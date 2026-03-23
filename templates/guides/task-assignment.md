@@ -91,7 +91,7 @@ Execute once during Manager 1 initiation, after Memory initialization. Version c
 
 ### 3.2 Dispatch Assessment
 
-Assess dispatch opportunities from current project state per §2.4 Dispatch Standards. Before each dispatch decision, assess the current project state visibly in chat: which Tasks are Ready, what dependency relationships exist among them, and what dispatch mode best serves progress and efficiency. Each dispatch cycle is a fresh assessment.
+Assess dispatch opportunities from current project state per §2.4 Dispatch Standards. Before each dispatch decision, assess the current project state visibly in chat under the header **Dispatch Assessment:** covering which Tasks are Ready, what dependency relationships exist among them, and what dispatch mode best serves progress and efficiency. Each dispatch cycle is a fresh assessment.
 
 Perform the following actions:
 1. Identify Ready Tasks from the Tracker. Cross-reference the Dependency Graph for newly unblocked Tasks.
@@ -122,7 +122,7 @@ Perform the following actions:
 4. Record the branch name in the Task row's Branch column when updating the Tracker.
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
 6. Write the Task Prompt to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`. For batches, use `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
-7. Direct the User to the Worker's chat using an action directive per `{SKILL_PATH:apm-communication}` §2.1:
+7. Direct the User to the Worker's chat per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication:
    - If the Worker is not yet initialized - direct the User to start a new chat and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
    - If the Worker is already initialized - direct the User to run `/apm-4-check-tasks` in the Worker's chat.
    - For batch dispatch - summarize what the Worker will receive (number of Tasks, sequential execution).

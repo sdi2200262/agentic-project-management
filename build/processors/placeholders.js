@@ -95,7 +95,7 @@ export function replacePlaceholders(content, context) {
   const configNote = subagentGuidance.configNote
     ? ` ${subagentGuidance.configNote}.`
     : '';
-  const plannerGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent for substantial research - it runs in its own context window, preserving yours for planning: \`${subagentGuidance.toolSyntax}\`. Structure the prompt with specific research questions and expected sources. Integrate findings into the current Question Round.${configNote}`;
+  const plannerGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent for substantial research - it runs in its own context window, preserving yours for planning: \`${subagentGuidance.toolSyntax}\`. Structure the prompt with specific research questions and expected sources. Verify findings against the codebase, then present a summary to the User before incorporating into round reasoning.${configNote}`;
   replaced = replaced.replace(/{PLANNER_SUBAGENT_GUIDANCE}/g, plannerGuidanceText);
 
   // Replace MANAGER_SUBAGENT_GUIDANCE placeholder
