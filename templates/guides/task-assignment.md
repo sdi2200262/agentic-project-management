@@ -91,7 +91,7 @@ VC Verification runs once during Manager 1 initiation. The remaining steps form 
 ### 3.1 VC Verification
 
 Execute once during Manager 1 initiation, after Memory initialization. Version control is established by the Planner during the Planning Phase - the Tracker's Version Control section and the Rules contain the conventions. Perform the following actions:
-1. Read VC state from the Tracker: base branch, branch convention, commit convention. If fields are empty, the User declined version control during planning - parallel dispatch is unavailable, fall back to sequential dispatch. If the User later requests version control, the Manager can initialize it mid-session by running `git init` if needed, detect or confirm the base branch, establish conventions with the User, update Rules and the Tracker, then proceed with branch-based dispatch.
+1. Read VC state from the Tracker's Version Control table: each row defines a repository's base branch, branch convention, and commit convention. If the table is empty, the User declined version control during planning - parallel dispatch is unavailable, fall back to sequential dispatch. When multiple repositories are listed, identify which repository each Task operates in from the Spec's Workspace section. If the User later requests version control, the Manager can initialize it mid-session by running `git init` if needed, detect or confirm the base branch, establish conventions with the User, update Rules and the Tracker, then proceed with branch-based dispatch.
 2. Verify git state is consistent: the base branch exists, the repository is accessible. Navigate to the working repository if the Spec specifies a different directory.
 3. Check for stale worktrees or orphaned feature branches from prior instances. Clean if found.
 
@@ -124,7 +124,7 @@ Assemble the Task Prompt and deliver via the Message Bus.
 Perform the following actions:
 1. Construct YAML frontmatter per §4.1 Task Prompt Format.
 2. Construct prompt body: Task Reference, Context from Dependencies (if applicable), Objective, Detailed Instructions, Workspace, Expected Output, Validation Criteria, Instruction Accuracy, Task Iteration, Task Logging instructions, Reporting Instructions.
-3. Create a feature branch off the base branch per §2.5 Version Control Standards. For parallel dispatch, create a worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`. Include the branch name (sequential) or worktree path (parallel) in the Workspace section.
+3. Create a feature branch off the repository's base branch per §2.5 Version Control Standards. For parallel dispatch, create a worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`. Include the branch name (sequential) or worktree path (parallel) in the Workspace section.
 4. Record the branch name in the Task row's Branch column when updating the Tracker.
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
 6. Write the Task Prompt to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`. For batches, use `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
@@ -207,18 +207,16 @@ Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived 
 
 ### 4.5 Tracker VC Entry Format
 
-VC configuration recorded in the Version Control table within the Tracker. Branch state is tracked per-Task in the Task table's Branch column - an incoming Manager reads Task rows to rebuild working VC context.
+VC configuration recorded in the Version Control table within the Tracker, with one row per repository. Branch state is tracked per-Task in the Task table's Branch column - an incoming Manager reads Task rows to rebuild working VC context.
 
 **Format:**
 
 ```markdown
 ## Version Control
 
-| Field | Value |
-|-------|-------|
-| Base Branch | <branch-name> |
-| Branch Convention | <convention> |
-| Commit Convention | <convention> |
+| Repository | Base Branch | Branch Convention | Commit Convention |
+|-----------|-------------|-------------------|-------------------|
+| <repo-name> | <branch-name> | <convention> | <convention> |
 ```
 
 ---
@@ -240,7 +238,7 @@ VC configuration recorded in the Version Control table within the Tracker. Branc
 - *Vague instructions:* "Implement the feature properly" vs "Implement POST /api/users with email validation using express-validator, returning 201 on success."
 - *Dispatching before merging dependencies:* If Task B depends on Task A's output and A was on a separate branch, A must be merged before B's branch is created.
 - *Accumulating worktrees:* Worktrees are short-lived. Remove promptly after merge.
-- *Assuming base branch name:* Read the base branch from the Tracker. Do not assume `main` or `master`.
+- *Assuming base branch name:* Read the base branch from the Tracker's Version Control table for the relevant repository. Do not assume `main` or `master`.
 - *Forgetting VC state in Handoff:* Ensure Task rows reflect current branch state before Handoff. Include active branches, worktrees, and pending merges in the Handoff Log.
 - *Committing build artifacts:* Do not commit generated files. Create or update `.gitignore` for build directories.
 

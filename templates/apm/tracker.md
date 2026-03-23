@@ -6,8 +6,6 @@ title: <Project Name>
 
 ## Task Tracking
 
-**Base:** <base-branch>
-
 **Stage 1:**
 
 | Task | Status | Agent | Branch |
@@ -20,11 +18,8 @@ title: <Project Name>
 
 ## Version Control
 
-| Field | Value |
-|-------|-------|
-| Base Branch | <base-branch> |
-| Branch Convention | <convention> |
-| Commit Convention | <convention> |
+| Repository | Base Branch | Branch Convention | Commit Convention |
+|-----------|-------------|-------------------|-------------------|
 
 ## Working Notes
 
