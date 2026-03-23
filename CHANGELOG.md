@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning (SemVer)](https://semver.org/spec/v2.0.0.html) for the **core CLI package** published on NPM.
 
-> **Note:** APM uses a dual versioning system. Updates to the **agent templates** (prompts and guides) might be released more frequently via GitHub Releases using build metadata appended to the current CLI version (e.g., `v0.5.0+templates.1`). This changelog primarily tracks changes related to the SemVer-managed CLI package, but major template releases or changes may also be noted. See [VERSIONING.md](VERSIONING.md) for full details.
+> **Note:** APM uses a decoupled versioning system. The CLI (`agentic-pm` on NPM) and template releases (GitHub Releases) version independently but share major version for compatibility. This changelog primarily tracks CLI changes, but major template releases may also be noted. See [VERSIONING.md](VERSIONING.md) for full details.
 
 ---
 
@@ -13,7 +13,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 ### Breaking Changes
 
-* **Workflow redesigned.** Two-phase workflow: Planning Phase (Context Gathering + Work Breakdown) produces three planning documents (Spec, Plan, Rules). Implementation Phase cycles through Task Assignment, Task Execution, Task Logging, and Task Review, with support for batch and parallel dispatch across multiple Workers. All coordination is User-mediated through a file-based Message Bus, with Agents guiding the User at every step, providing clear action directives for which command to run, in which conversation, and what to do next.
+* **Workflow redesigned.** Two-phase workflow: Planning Phase (Context Gathering + Work Breakdown) produces three planning documents (Spec, Plan, Rules). Implementation Phase cycles through Task Assignment, Task Execution, Task Logging, and Task Review, with support for batch and parallel dispatch across multiple Workers. All coordination is User-mediated through a file-based Message Bus, with Agents guiding the User at every step.
 
 * **Agent roles changed.** Setup Agent → Planner. Implementation Agent → Worker. Ad-Hoc Agents removed (subagents are now spawned natively by Planner, Manager, and Workers). Manager unchanged.
 

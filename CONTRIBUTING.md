@@ -1,7 +1,5 @@
 # Contributing to Agentic Project Management (APM)
 
-> **Note:** APM v1 is currently in testing preview. The content below reflects the stable v1 release. For testing updates, see [Issue #79](https://github.com/sdi2200262/agentic-project-management/issues/79).
-
 Thank you for considering contributing to APM! Your contributions help build a better framework for AI-assisted project management.
 
 ## Ways to Contribute
@@ -127,10 +125,6 @@ APM uses Mozilla Public License 2.0 (MPL-2.0). By contributing, you agree that:
 - Your contributions will be licensed under MPL-2.0
 - Improvements to core APM files will remain open source
 - Proper attribution is maintained
-
-## Code of Conduct
-
-This project follows our [Code of Conduct](CODE_OF_CONDUCT.md). All participants are expected to uphold these standards in all project interactions.
 
 ## Questions & Discussion
 

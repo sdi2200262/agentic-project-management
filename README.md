@@ -2,7 +2,7 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![npm](https://img.shields.io/npm/v/agentic-pm)](https://www.npmjs.com/package/agentic-pm) [![GitHub Release](https://img.shields.io/github/v/release/sdi2200262/agentic-project-management)](https://github.com/sdi2200262/agentic-project-management/releases)
 
-> **Note:** APM v1 is currently in testing preview. The content below reflects the stable v1 release. For testing updates, see [Issue #79](https://github.com/sdi2200262/agentic-project-management/issues/79).
+> **Note:** APM v1 is currently in testing preview. For testing updates, see [Issue #79](https://github.com/sdi2200262/agentic-project-management/issues/79).
 
 *Manage complex projects with a team of AI agents, smoothly and efficiently.*
 
@@ -26,19 +26,9 @@ You mediate every exchange between agents, keeping the workflow platform-agnosti
   <img src="assets/apm-social-card.png" alt="Agentic Project Management" width="800"/>
 </p>
 
-## Supported Assistants
-
-| Assistant | Type | Format |
-|-----------|------|--------|
-| Claude Code | CLI | Markdown |
-| Cursor | IDE | Markdown |
-| GitHub Copilot | IDE | Markdown |
-| Gemini CLI | CLI | TOML |
-| OpenCode | CLI | Markdown |
-
 ## Quick Start
 
-Install the CLI globally:
+Supports Claude Code, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
 
 ```bash
 npm install -g agentic-pm
@@ -52,7 +42,7 @@ apm init
 
 Select your AI assistant when prompted. APM installs commands, guides, skills, and project artifact templates into your workspace.
 
-Open your AI assistant (start Claude Code in a terminal, open a new Cursor Agent chat, etc.) and run:
+Open your AI assistant and run:
 
 ```
 /apm-1-initiate-planner I want you to build Claude Opus 5. Make no mistakes.
@@ -68,15 +58,13 @@ Full documentation is available at [agentic-project-management.dev](https://agen
 
 - **[Introduction](https://agentic-project-management.dev/docs/introduction)** - What APM is and how it works
 - **[Getting Started](https://agentic-project-management.dev/docs/getting-started)** - Installation through first task cycle
-- **[Agent Types](https://agentic-project-management.dev/docs/agent-types)** - How Planner, Manager, and Worker roles work
-- **[Agent Orchestration](https://agentic-project-management.dev/docs/agent-orchestration)** - Communication, Memory, dispatch, and Handoff mechanics
+- **[Agent Types](https://agentic-project-management.dev/docs/agent-types)** - Planner, Manager, and Worker roles
+- **[Agent Orchestration](https://agentic-project-management.dev/docs/agent-orchestration)** - Communication, coordination, Memory, and Handoff mechanics
 - **[Workflow Overview](https://agentic-project-management.dev/docs/workflow-overview)** - Every procedure in detail
 
 The site also covers advanced topics like how APM's prompt and context engineering works under the hood, design principles behind the multi-agent coordination, tips and tricks for model selection and cost optimization, troubleshooting, and customization.
 
-## CLI Commands
-
-See the [CLI Guide](https://agentic-project-management.dev/docs/cli) for full details.
+## CLI
 
 | Command | Description |
 |---------|-------------|
@@ -84,13 +72,14 @@ See the [CLI Guide](https://agentic-project-management.dev/docs/cli) for full de
 | `apm custom` | Install from custom repositories |
 | `apm update` | Update to latest compatible version |
 | `apm archive` | Archive current session or manage archives |
-| `apm add` | Add assistant(s) to existing installation |
-| `apm remove` | Remove assistant(s) from installation |
+| `apm add` / `apm remove` | Add or remove assistant(s) |
 | `apm status` | Show installation state |
+
+See the [CLI Guide](https://agentic-project-management.dev/docs/cli) for full details.
 
 ## Customization
 
-APM supports custom repositories for teams that want to modify the workflow. Fork the repo or use it as a template, adjust templates, build, release, and install with `apm custom -r owner/repo`. A [customization skill](skills/apm-customization/) is included in the repo to guide AI agents through the process.
+APM supports custom repositories for teams that want to modify the workflow. Fork the repo, adjust templates, build, release, and install with `apm custom -r owner/repo`. A [customization skill](skills/apm-customization/) is included to guide AI agents through the process.
 
 See the [Customization Guide](https://agentic-project-management.dev/docs/customization-guide) for details.
 
