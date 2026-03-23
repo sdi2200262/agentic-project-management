@@ -47,7 +47,7 @@ outcome: <complete | partial | incomplete>
 - `project`: string, required, project name from the Spec.
 - `stages_completed`: integer, required, number of completed Stages.
 - `total_tasks`: integer, required, total Tasks across all Stages.
-- `outcome`: enum, required, session state at summary time. When the Tracker's YAML frontmatter contains `status: complete`, use `complete` - the Manager has authoritatively confirmed project completion. Otherwise, assess from artifact state: `partial` when some Stages completed but work remains, `incomplete` when significant work remains unfinished.
+- `outcome`: enum, required, derived from session state. `complete` when the Tracker's YAML frontmatter contains `status: complete` (Manager has authoritatively confirmed). `partial` when `stages_completed >= 1` (at least one Stage finished). `incomplete` when `stages_completed == 0` (no Stages finished).
 
 *Body sections* (order as listed):
 
