@@ -39,6 +39,8 @@ Perform the following actions:
 
 **Prerequisite:** Context Gathering Procedure must be complete.
 
+The `.apm/` directory contains fresh templates created by `apm init` - Spec, Plan, Tracker, and Memory Index with placeholder content. These are your scaffolds to populate during this procedure.
+
 Perform the following actions:
 1. Read `{GUIDE_PATH:work-breakdown}`.
 2. Execute the guide through completion. The guide controls Spec, Plan, and Rules creation, each with User approval checkpoints.

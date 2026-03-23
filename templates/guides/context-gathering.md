@@ -6,7 +6,7 @@
 
 This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. Your goal here is to exhaust requirements, constraints, and project context until you have sufficient understanding for the User to approve. Only after the User approves the understanding summary and you read the Work Breakdown guide do you begin decomposing work into planning documents, assigning Workers, or thinking about project structure.
 
-During the Implementation Phase, a Manager coordinates multiple Workers, each focused on a specific domain. Workers may receive multiple Tasks over time, building accumulated working context as they progress. The Manager uses the Spec and Plan to construct self-contained Task assignments, and Workers see only their current Task assignment and Rules. When parallel work is needed, the Manager handles workspace isolation through branches and worktrees. This means context gathered here should distinguish between project-level design decisions, domain-specific implementation details, and universal execution patterns that apply to all Workers.
+During the Implementation Phase, a Manager coordinates multiple Workers, each focused on a specific domain. Workers may receive multiple Tasks over time, building accumulated working context as they progress. The Manager uses the Spec and Plan to construct self-contained Task assignments, and Workers see only their current Task assignment and Rules. The Manager creates a feature branch for each dispatch and Workers commit on their assigned branch - Workers never operate directly on the base branch. For parallel dispatch, the Manager also creates worktrees for workspace isolation. This means context gathered here should distinguish between project-level design decisions, domain-specific implementation details, and universal execution patterns that apply to all Workers.
 
 ---
 
@@ -16,7 +16,8 @@ During the Implementation Phase, a Manager coordinates multiple Workers, each fo
 
 - *Clarity over exhaustion:* Aim for sufficient understanding, not exhaustive interrogation.
 - *Leverage existing material:* Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{RULES_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions. When the workspace contains git repositories, check git history and branch structure as project signals alongside other exploration. Note workspace structure: which directories are repositories, which are working targets vs read-only references. Different repositories may have different conventions.
-- *Explore on signal:* When User responses reference codebase elements or documentation, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
+- *Confirm before exploring:* Documents the User attaches in the initiation prompt are current and authoritative - explore based on them freely. Documents discovered during workspace scanning require User confirmation before serving as a basis for exploration.
+- *Explore on signal:* When User responses reference codebase elements or documentation, or when discovered documents are confirmed, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
 - *Adapt to context:* Match language and depth to project size, type, and User expertise. Go deeper for large or multi-domain projects, revealed dependencies, or unclear domain boundaries. Stay light for small projects with clear, complete responses.
 - *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition until Context Gathering is complete and you are proceeding to Work Breakdown. Do not use planning vocabulary - Stages, Tasks, Workers, agent names or assignments, tracks, phases, task sizing or workload distribution - in questions, summaries, or exploration prompts. Mapping signals to work units happens exclusively during Work Breakdown.
 - *Iterate within rounds:* Fill gaps in the current round through follow-ups - do not defer to later rounds.
@@ -39,11 +40,7 @@ When processing User responses, assess what was explicitly stated, what can be r
 
 Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect planning document accuracy. Each question round requires at least one interactive exchange with the User before advancement. Retroactive round summaries - summarizing rounds not actually conducted - are prohibited. "Sufficiently covered" requires each focus area addressed through questions, exploration, or explicit acknowledgment it does not apply.
 
-Before advancing, present a round completion summary in chat under the header **Round N Summary:** (where N is the round number) covering:
-- *Context gathered:* key findings from this round.
-- *Planning relevance:* how the findings inform subsequent planning - what type of context they contribute (design decisions, work structure signals, execution patterns).
-- *Gaps assessed:* what gaps were identified, how resolved, and any acceptable gaps carried forward.
-- *Advancement reasoning:* why this round is complete and what the next round builds on.
+Before advancing, present a round completion summary in chat under the header **Round N Summary:** (where N is the round number). Cover what was gathered in this round, how it informs planning (design decisions, work structure signals, execution patterns), what gaps were identified and how they were resolved, and why the round is ready to advance.
 
 Round summaries present what was learned - do not organize findings into proposed work streams, structural groupings, or decomposition patterns. After Round 1 and 2 summaries, immediately begin the next round. After Round 3, continue to the understanding summary.
 
@@ -85,10 +82,11 @@ Before beginning question rounds, check for previous session archives.
 Before question rounds begin, scan the workspace to map the project environment per §2.1 Guiding Principles.
 
 Perform the following actions:
-1. Scan the workspace: list root directory structure, identify git repositories (check recent commit history and branch structure), locate existing materials (README, PRD, requirements docs, architecture docs). Present discovered materials to the User. If the initiation context referenced specific documents, treat those as current and authoritative. For other discovered documents, confirm with the User that they are current and relevant before using them as a basis for exploration.
-2. Check if `{RULES_FILE}` exists. If found, read its contents and present them to the User. Ask whether the existing content is current and relevant to this session, explaining that during Work Breakdown an APM_RULES block will be added to the file where APM-specific standards will go, and that existing content outside the block will be preserved. Ask if the User wants to consider any modifications to the existing content alongside the APM Rules block during Work Breakdown. Note findings for integration. If not found, note its absence for the Agent configuration step in Round 1.
-3. If `.apm/` resides inside a repository, note that the default is to gitignore the entire `.apm/` directory. Ask the User if they want to track any `.apm/` artifacts (planning documents, Memory) in git. If `.apm/` is not inside a repository, no action needed.
-4. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's Workspace section during Work Breakdown.
+1. Scan the workspace: list root directory structure, identify git repositories (check recent commit history and branch structure), locate existing materials (README, PRD, requirements docs, architecture docs). Present discovered materials to the User.
+2. Confirm document authority per §2.1 Guiding Principles: documents referenced in the initiation context are current and authoritative. For other discovered documents, ask the User whether they are current and relevant before using them as a basis for exploration.
+3. Check if `{RULES_FILE}` exists. If found, read its contents and present them to the User. Ask whether the existing content is current and relevant to this session, explaining that during Work Breakdown an APM_RULES block will be added to the file where APM-specific standards will go, and that existing content outside the block will be preserved. Ask if the User wants to consider any modifications to the existing content alongside the APM Rules block during Work Breakdown. Note findings for integration. If not found, note its absence for the Agent configuration step in Round 1.
+4. If `.apm/` resides inside a repository, note that the default is to gitignore the entire `.apm/` directory. Ask the User if they want to track any `.apm/` artifacts (planning documents, Memory) in git. If `.apm/` is not inside a repository, no action needed.
+5. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's Workspace section during Work Breakdown.
 
 Present a brief summary of what was found to the User before starting question rounds. Use findings to skip redundant questions and focus rounds on what is not yet understood.
 
@@ -100,7 +98,7 @@ These rules apply across all three question rounds.
 1. Ask the initial questions defined for the round.
 2. After each User response, assess gaps per §2.2 Response and Gap Assessment.
 3. Follow up on gaps or advance per §2.3 Round Advancement.
-4. After subagent results return, verify findings per §2.4 Exploration and Research Standards. If critical gaps remain, dispatch a follow-up before continuing.
+4. After subagent results return: verify key claims against the codebase (read referenced files, confirm critical details), then present a concise summary of findings to the User before incorporating into round reasoning per §2.4 Exploration and Research Standards. If critical gaps remain, dispatch a follow-up before continuing.
 5. Repeat until the round's focus areas are sufficiently covered.
 
 Combine related questions naturally in conversation. Track what has been answered - ask only for what is missing.
@@ -173,7 +171,7 @@ Combine related questions naturally in conversation. Track what has been answere
 *Workflow Preferences:*
 - Specific workflow patterns, quality standards, or validation approaches preferred?
 - Coordination requirements, review processes, or approval gates to build into the work structure?
-- Version control commit conventions? If conventions were detected during workspace exploration, propose them as defaults rather than asking. If parallel work streams were identified in earlier rounds, note that version control with branches and worktrees is required for workspace isolation and is handled by the Manager during the Implementation Phase. If the User declines version control, note that parallel dispatch will be unavailable and confirm.
+- Version control conventions? Workers always operate on feature branches created by the Manager, never directly on the base branch — branch usage is a given, not a preference. If conventions were detected during workspace exploration, propose them as defaults rather than asking. The questions for the User are about commit format and branch naming pattern. If parallel work streams were identified, note that the Manager also uses worktrees for workspace isolation. If the User declines version control entirely, note that all dispatch modes require branches and confirm the decision.
 
 *Consistency and Documentation:*
 - Consistency standards, documentation requirements, or delivery formats?

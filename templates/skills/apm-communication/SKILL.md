@@ -29,7 +29,7 @@ Communication at workflow transitions should orient the User: what was just comp
 
 At procedural decision points, present analytical thinking visibly in chat before acting. This makes decisions auditable and gives the User opportunity to redirect. Reasoning quality correlates with output quality.
 
-When a procedure provides a reasoning frame with labeled aspects and a header, present the header visibly and address each aspect as natural analytical prose beneath it. The aspects guide what to analyze; the output reads as coherent reasoning the User can follow and audit, not as responses to a checklist. Some procedures define hierarchical frames with sub-headers for distinct phases. When no reasoning frame is provided, reason analytically: what you are assessing, key considerations, and your conclusion. Do not use framework labels, procedure vocabulary, or structural headings from the guides as output structure.
+When a procedure prescribes specific headers for reasoning, present those headers visibly and address each section beneath them. When a procedure describes aspects to cover without prescribing headers, cover all indicated aspects using whatever format suits the content — prose, lists, tables, or any combination. In both cases, the output is analytical reasoning the User can follow and audit. When no reasoning frame is provided, reason analytically: what you are assessing, key considerations, and your conclusion.
 
 ### 2.3 Terminology Boundaries
 
