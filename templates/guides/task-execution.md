@@ -14,19 +14,15 @@ This guide defines how you execute Tasks assigned by the Manager via Task Prompt
 
 Follow cross-agent integration steps completely - read files, review artifacts, understand interfaces. Use same-agent guidance as recall anchors - review referenced paths to refresh context if needed.
 
-**Integration issues.** For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities - continue with best interpretation and note uncertainty; missing expected files - pause for guidance. **Default:** Do not execute on an unstable foundation.
+**Integration issues.** Do not execute on an unstable foundation. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities - continue with best interpretation and note uncertainty; missing expected files - pause for guidance.
 
 ### 2.2 Validation Standards
 
-Validate automated checks first, then output verification, then user approval if needed. Do not waste User time on work that fails automated checks.
+Validation criteria in the Task Prompt specify what to check. Execute each criterion as written - run tests, verify outputs exist and match expected structure, confirm behavior meets requirements. Always complete autonomous checks first. If any autonomous check fails, correct it before involving the User - do not request User review or User action while autonomous checks are failing.
 
-- *Programmatic:* Automated verification - tests pass, builds succeed, scripts execute correctly. Assess autonomously.
-- *Artifact:* Output existence and structural verification - files exist with required sections, configs valid, outputs match patterns. Verify autonomously.
-- *User:* Human judgment required - design approval, content quality, architectural decisions. Pause for User review. Always performed last.
+When a criterion requires User involvement - judgment the Worker cannot self-assess (design approval, content quality) or action outside the development environment (running external checks, confirming platform behavior) - pause and present work only after all autonomous checks pass. When pausing, communicate clearly per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication: what is needed and why, what the User should expect or verify, and what to report back so execution can continue.
 
-Validation criteria define the required verification level. When criteria require resources not currently available, request them from the User rather than substituting a lower verification level.
-
-**Default:** Fail-fast on autonomous validations to avoid wasted User reviews.
+When criteria require resources not currently available, request them from the User rather than substituting a lower verification level.
 
 ### 2.3 Iteration Standards
 
@@ -34,9 +30,7 @@ When validation fails, you enter a correction loop - correct, re-execute, re-val
 
 Continue when the cause is identified and progress is being made. Stop when fixes are causing new issues, the issue requires external resolution, or debugging is not converging. When execution suggests Task Prompt instructions may be inaccurate, this is also a stop condition. When a stop condition is reached, spawn a subagent for fresh-context resolution rather than exhausting context. If the subagent resolves the issue, apply findings and resume. If unresolved, prefer reporting back with Partial status - the Manager can restructure or reassign. When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
 
-**User collaboration:** Pause when User validation is required (you cannot self-approve subjective quality), when explicit User actions are needed (outside the development environment), when environment resources are needed for validation, or when iteration stalls and you need guidance. Continue autonomously for programmatic and artifact validation, and when the cause of failure is clear and the fix is within scope.
-
-**Default:** When uncertain or when stopping without Success, pause and present situation to User with options rather than making unilateral decisions.
+**User collaboration:** Pause when criteria require User judgment (you cannot self-approve subjective quality), when explicit User actions are needed (outside the development environment), when environment resources are needed for validation, or when iteration stalls and you need guidance. Continue autonomously when checks can be performed without User involvement and when the cause of failure is clear and the fix is within scope. When uncertain or stopping without Success, pause and present the situation to the User with options rather than making unilateral decisions.
 
 ### 2.4 Rules Updates
 
@@ -88,11 +82,9 @@ Perform the following actions:
 ### 3.4 Task Validation
 
 Perform the following actions:
-1. Order validations per §2.2 Validation Standards: programmatic first, then artifact, then user.
-2. Execute programmatic validations. If any fail - continue to the correction loop. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
-3. Execute artifact validations. If any fail - continue to the correction loop.
-4. If user validation present: pause and present work for review. Communicate what was accomplished, what needs review, and where deliverables are located. If approved - proceed to §3.6 Task Completion with Success status. If feedback provided - continue to the correction loop with feedback integrated.
-5. If all validation passed - proceed to §3.6 Task Completion with Success status.
+1. Execute autonomous checks from the Task Prompt's validation criteria per §2.2 Validation Standards: run tests, verify builds, confirm outputs exist and match expected structure. If any fail, continue to the correction loop. Ambiguous results: treat as failure and iterate; if iteration doesn't resolve, pause for guidance.
+2. If criteria require User involvement: pause and present work per §2.2 Validation Standards. Communicate what was accomplished, what needs the User's review or action, where deliverables are located, and what to report back. If approved or completed, proceed to §3.6 Task Completion with Success status. If feedback provided, continue to the correction loop with feedback integrated.
+3. If all criteria passed, proceed to §3.6 Task Completion with Success status.
 
 ### 3.5 Correction Loop
 

@@ -148,8 +148,6 @@ These concepts are not formal capitalized terms but are clearly defined because 
 
 **Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command - not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
 
-**Validation approaches.** Each Task specifies validation using one or more approaches: programmatic (automated checks), artifact (output existence and structure), or user (human judgment requiring a pause). Validation follows a fixed order: programmatic, then artifact, then user.
-
 **Cross-agent overrides.** When a Worker Handoff is detected, same-agent dependencies from Tasks whose logs were not loaded by the incoming Worker are reclassified as cross-agent. The Manager maintains an override list in the Tracker, recording the specific Tasks affected. During Task Assignment, the Manager checks this list to determine dependency context depth. The Dependency Graph is not modified; overrides are a runtime layer over the static plan.
 
 ---

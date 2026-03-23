@@ -38,9 +38,9 @@ These principles apply across all decomposition levels. Adapt granularity to pro
 
 **Steps:** Organize work within a Task for failure tracing. Ordered, discrete, sharing the Task's validation. If a step needs independent validation, split the Task.
 
-**Scope boundaries:** Worker-assignable work is completable within the development environment with autonomous or artifact-based validation. User coordination involves external platforms, credentials, or validation outside the environment - include explicit coordination steps and mark user validation.
+**Scope boundaries:** Worker-assignable work is completable within the development environment and verifiable autonomously. User coordination involves external platforms, credentials, or validation requiring human judgment - include explicit coordination steps and note where User involvement is needed.
 
-**Validation criteria.** Each Task specifies validation: programmatic (automated checks), artifact (output existence and structure), or user (human judgment). Programmatic and artifact allow autonomous iteration; user validation requires pausing. Most Tasks combine multiple approaches. Validation criteria are Worker-scoped - no references to other Stages, Tasks, or coordination-level gates. Workers validate their own deliverables; Stage coordination is the Manager's concern.
+**Validation criteria.** Each Task specifies concrete pass/fail criteria tied to its deliverables - what to check and how. Criteria the Worker can verify autonomously (tests pass, outputs exist with correct structure, behavior matches requirements) allow autonomous iteration. Criteria requiring User involvement - judgment (design approval, content quality) or action (running external checks, confirming platform behavior) - require the Worker to pause. Most Tasks combine multiple criteria. Validation criteria are Worker-scoped - no references to other Stages, Tasks, or coordination-level gates. Workers validate their own deliverables; Stage coordination is the Manager's concern.
 
 ### 2.2 Spec Standards
 
@@ -136,7 +136,7 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      - *Worker assignment:* which Worker and why.
      - *Task scope:* what is the Task's scope? Is the User involved in any steps?
      - *Task guidance:* implementation context the Worker needs: domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis.
-     - *Task validation:* approaches selected from programmatic, artifact, and user (per §4.2 Plan Format), with rationale for inclusion or exclusion. Validation criteria co-define the Task with Guidance.
+     - *Task validation:* concrete criteria that verify the Task's deliverables - what to check and how. Note where User involvement is needed. Validation criteria co-define the Task with Guidance.
      - *Dependencies:* same-agent as `Task N.M`, cross-agent as **`Task N.M by <Agent>`** (bolded), specifying the deliverable at the boundary.
      - *Steps:* ordered operations building toward Task completion.
      Every aspect above applies to every Task. Depth of reasoning varies with complexity - complex Tasks warrant thorough analysis, straightforward Tasks can be addressed concisely - but all aspects must be covered. After each Stage, assess whether each Task represents independently validatable work per §2.1 Decomposition Principles.
@@ -219,7 +219,7 @@ Below the frontmatter, the document starts with `# APM Plan` followed by the Pla
 ```markdown
 * **Objective:** [Single-sentence Task goal.]
 * **Output:** [Concrete deliverables - files, components, artifacts produced.]
-* **Validation:** [Binary pass/fail criteria with approach(es): Programmatic, Artifact, and/or User.]
+* **Validation:** [Concrete pass/fail criteria. Note where User involvement is needed.]
 * **Guidance:** [Technical constraints, approach specifications, references to existing patterns, User collaboration patterns.]
 * **Dependencies:** [Prior Task outputs required. Format: `Task N.M by <Domain> Agent, ...` Bold cross-agent dependencies. Use "None" when no dependencies exist.]
 

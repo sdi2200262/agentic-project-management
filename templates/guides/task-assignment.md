@@ -177,7 +177,7 @@ has_dependencies: true
 - *Detailed Instructions:* Plan steps transformed into actionable instructions with integrated Spec content and guidance.
 - *Workspace:* Branch name for sequential dispatch, worktree path for parallel dispatch. Worker operates in the specified workspace, commits there, and notes it in the Task Log. Workers do not merge.
 - *Expected Output:* Deliverables from Plan Output field.
-- *Validation Criteria:* From Plan Validation field with validation approaches (programmatic, artifact, user).
+- *Validation Criteria:* From Plan Validation field.
 - *Instruction Accuracy:* The objective and expected output are authoritative - deliver those. However, the detailed instructions and steps were constructed from planning documents and may contain inaccurate details, missed prerequisites, or outdated assumptions about the codebase. When a specific instruction contradicts what the codebase actually shows, validate the actual state rather than persisting with the instruction as written.
 - *Task Iteration:* When facing persistent issues that resist direct fixing, spawn a subagent for fresh-context resolution rather than exhausting the context window. If unresolved, log to Memory and report with Partial status.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
