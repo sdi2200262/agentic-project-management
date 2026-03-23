@@ -52,7 +52,7 @@ Before constructing individual Task Prompts, assess dispatch opportunities acros
 **Task readiness:** A Task is Ready when all its dependencies are complete. Read the Tracker for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
 
 **Dispatch modes.** Assess all Ready Tasks, group by Worker, and form dispatch units:
-- *Batch.* Multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
+- *Batch:* Multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all Ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
 - *Single:* one Ready Task for a Worker.
 - *Parallel:* two or more dispatch units (any mix) with no unresolved cross-agent dependencies among them, dispatched simultaneously. Requires version control workspace isolation.
 
@@ -68,7 +68,13 @@ Version control provides workspace isolation during parallel dispatch. Each disp
 
 **Branch standards:** Every dispatch unit gets its own feature branch off the base branch per the branch convention in the Tracker. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
 
-**Worktree standards:** Worktrees are created only for parallel dispatch - when multiple Workers need physically separate directories simultaneously. For sequential dispatch, the Worker operates in the main working directory on their feature branch. Layout per §4.2 Worktree Directory Layout. Concurrency limit: maximum 3-4 concurrent worktrees. Lifecycle: short-lived - created before dispatch, removed after merge. Worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
+**Worktree standards.** Worktrees are created only for parallel dispatch - when multiple Workers need physically separate directories simultaneously. For sequential dispatch, the Worker operates in the main working directory on their feature branch.
+
+- *Layout:* per §4.2 Worktree Directory Layout.
+- *Concurrency limit:* maximum 3-4 concurrent worktrees.
+- *Lifecycle:* short-lived - created before dispatch, removed after merge.
+
+Worktrees contain only tracked files; if a Worker needs untracked assets, note this in the Task Prompt.
 
 ### 2.6 Delivery Standards
 
@@ -168,7 +174,7 @@ has_dependencies: true
 - `has_dependencies`: Whether dependency context is present.
 
 **Prompt Body Sections:**
-- **Title:** `#` heading using Task ID and title. Each section uses `##` heading:
+- *Title.* `#` heading using Task ID and title. Each section uses `##` heading:
 - *Task Reference:* Task ID and assigned agent.
 - *Context from Dependencies.* Included when `has_dependencies: true`. Format depends on dependency type per §2.1 Dependency Context Standards.
   - *Same-agent.* "Building on your previous work:" intro - `**From Task <N>.<M>:**` with key outputs and recall points - `**Integration Approach:**` with brief guidance.

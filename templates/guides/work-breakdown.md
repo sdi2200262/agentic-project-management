@@ -16,7 +16,7 @@ This guide defines the process for Work Breakdown, which transforms gathered con
 - *Spec and Plan:* Manager reads directly. Workers do not reference these files - the Manager extracts relevant content into Task Prompts.
 - *`{RULES_FILE}`:* Workers access directly during Task execution. Standards must be self-contained without Spec or Plan context.
 
-**Completeness:** All context gathered during Context Gathering must be captured across these three artifacts: design decisions in the Spec, work structure and dependencies in Plan Task fields, domain-specific implementation details in Plan Task Guidance, and universal execution patterns in Rules. Commit conventions go to Rules; branch naming goes to the Tracker's Version Control section for the Manager. The Tracker's remaining sections (Task Tracking, Agent Tracking, Working Notes) are the Manager's domain. If you choose to omit gathered context from all three artifacts, justify why it is not needed for execution - the Manager and Workers operate from these documents alone and will not have access to anything left out.
+**Completeness.** All context gathered during Context Gathering must be captured across these three artifacts: design decisions in the Spec, work structure and dependencies in Plan Task fields, domain-specific implementation details in Plan Task Guidance, and universal execution patterns in Rules. Commit conventions go to Rules; branch naming goes to the Tracker's Version Control section for the Manager. The Tracker's remaining sections (Task Tracking, Agent Tracking, Working Notes) are the Manager's domain. If you choose to omit gathered context from all three artifacts, justify why it is not needed for execution - the Manager and Workers operate from these documents alone and will not have access to anything left out.
 
 During the Implementation Phase, the Manager coordinates multiple Workers, each focused on a specific domain. Workers may receive multiple Tasks over time, building accumulated working context as they progress. The Manager constructs self-contained Task assignments from the Spec and Plan, handles all coordination (dispatch decisions, version control operations, branch and worktree management, merging), and reviews completed work. Workers commit on their assigned branch following commit conventions from Rules but do not create branches, manage worktrees, push, or merge. Your planning documents define work organization and content; coordination decisions happen at runtime and are not your concern.
 
@@ -153,12 +153,14 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
 
 ### 3.3 Rules Analysis
 
-Present reasoning under the header **Rules Analysis:** addressing the aspects below. Perform the following actions per §2.4 `{RULES_FILE}` Standards:
+Present reasoning under the header **Rules Analysis:** addressing the aspects below.
+
+Perform the following actions per §2.4 `{RULES_FILE}` Standards:
 1. Analyze for universal execution patterns across all planning sources:
    - **From the Spec:** execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in the Spec - they reach Workers through Task Prompts.
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan.
-   - **Version control conventions:** commit and branch conventions detected during Context Gathering, specified by the User, or found in existing `{RULES_FILE}` content. If none were detected, propose lightweight defaults: `type: description` commits and `type/short-description` branches. Commit conventions go to Rules, branch conventions go to the Tracker per §1.1 Completeness. APM does not push to remotes by default; note this and ask if the User wants otherwise. If the User declines version control entirely, record the decision.
+   - **Version control conventions.** Commit and branch conventions detected during Context Gathering, specified by the User, or found in existing `{RULES_FILE}` content. If none were detected, propose lightweight defaults: `type: description` commits (feat, fix, refactor, docs, test, chore) and `type/short-description` branches. Commit conventions go to Rules, branch conventions go to the Tracker per §1.1 Completeness. APM does not push to remotes by default; note this and ask if the User wants otherwise. If the User declines version control entirely, record the decision.
    - **Classification.** Which candidates are truly universal vs Task-specific; whether each is self-contained for Workers with no access to the Spec or the Plan. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains? Most projects produce few genuinely universal rules. Project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
    - **Existing standards:** what `{RULES_FILE}` already contains; reference rather than duplicate.
 2. Write APM_RULES block to `{RULES_FILE}` per §4.3 APM_RULES Block:
@@ -287,7 +289,7 @@ APM_RULES {
 
 **Plan:** Each Task is understandable without external reference. Use specific language - not "implement properly" but the specific pattern to follow. All fields populated. Consistent naming and terminology.
 
-**`{RULES_FILE}`:** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_RULES block rather than duplicating existing standards. Format selection: tables for pattern comparisons, code blocks for syntax examples, bulleted lists for rules, numbered lists for sequential steps, prose for context.
+**`{RULES_FILE}`.** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_RULES block rather than duplicating existing standards. Format selection: tables for pattern comparisons, code blocks for syntax examples, bulleted lists for rules, numbered lists for sequential steps, prose for context.
 
 ### 5.2 Common Mistakes
 - *Over-specification:* Implementation details in the Spec that belong in Task guidance - if it only affects one Task, it is Task guidance.

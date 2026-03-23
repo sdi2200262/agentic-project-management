@@ -42,7 +42,7 @@ Perform the following actions:
 Perform the following actions:
 1. Update the Tracker and Index: replace `<Project Name>` with actual project name.
 2. Verify version control state: read the Tracker's Version Control section (populated by the Planner). Confirm git state is consistent - the base branch exists, the repository is accessible. Check for stale worktrees or orphaned feature branches from prior instances and clean if found. If the Tracker shows no version control (User declined), note that parallel dispatch is unavailable.
-3. Populate the Tracker: Task tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (uninitialized).
+3. Populate the Tracker: Task Tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (uninitialized).
 4. Present a concise understanding summary: project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure and Task count.
 5. Request User approval to proceed. If corrections needed, integrate feedback and re-request. When approved, generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment and proceed to §3 Continuous Coordination.
 

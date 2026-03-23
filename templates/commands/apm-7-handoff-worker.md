@@ -37,7 +37,7 @@ Perform the following actions:
 Perform the following actions:
 1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what is happening now. Content is actionable and present-tense; past actions belong in the Handoff Log.
 2. Apply Worker Handoff asymmetry:
-   - *Mid-Task:* "Read the Task from `task.md`, I completed steps 1-4, resume from step 5." Direct the incoming Worker to read the Task Bus file directly (intact since task receipt). Include execution progress detail.
+   - *Mid-Task:* "Read the Task from `task.md`, I completed steps 1-4, resume from step 5." Direct the incoming Worker to read the Task Bus file directly (intact since Task receipt). Include execution progress detail.
    - *Between-Tasks:* "No active Task, await `/apm-4-check-tasks`." State context and readiness.
 3. Include: Handoff Log path, instructions to read current Stage Task Logs, reminder to indicate incoming Worker status in first Task Report (listing specific Task Log files loaded and noting that previous-Stage logs were not loaded), and continuation guidance.
 

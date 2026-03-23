@@ -65,7 +65,7 @@ When User responses or existing material reference codebase elements, or signal 
 
 ## 3. Context Gathering Procedure
 
-Complete each step before proceeding to the next.
+Two setup activities (archive check, workspace scan), three progressive question rounds following shared iteration rules, and a finalization with User approval. Complete each step before proceeding to the next.
 
 ### 3.1 Archive Context
 
@@ -122,7 +122,7 @@ Combine related questions naturally in conversation. Track what has been answere
 6. What is your current plan or vision?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
 
-**Agent configuration.** If `{RULES_FILE}` was not found during the workspace assessment (§3.2): "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
+**Agent configuration.** If `{RULES_FILE}` was not found during §3.2 Workspace Assessment: "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
 
 **Round completion.** Present a round completion summary per §2.3 Round Advancement. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 

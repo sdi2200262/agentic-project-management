@@ -32,7 +32,7 @@ The goal is to extract information needed for the next review decision.
 
 After reviewing a Task Log, determine the review outcome.
 
-**Review the log:** If everything looks good - Success status with no flags, log content supports the status - proceed to task tracking updates. If something needs attention - flags raised, non-Success status, or inconsistencies - investigate before proceeding.
+**Review the log:** If everything looks good - Success status with no flags, log content supports the status - proceed to Task Tracking updates. If something needs attention - flags raised, non-Success status, or inconsistencies - investigate before proceeding.
 
 **Investigation scope:** Investigate directly for contained checks; use a subagent for context-intensive issues. When scope is unclear, prefer subagent to preserve Manager context. {MANAGER_SUBAGENT_GUIDANCE}
 
@@ -94,7 +94,7 @@ Use a bulleted list for both types - one item per note, each self-contained and 
 
 ## 3. Task Review Procedure
 
-Process each report through report processing, Task Log review, and review outcome determination. Update the Tracker after each cycle.
+Three sequential steps per report (processing, log review, outcome determination), with conditional branches for planning document modification and Stage summary creation. Update the Tracker after each cycle.
 
 ### 3.1 Report Processing
 

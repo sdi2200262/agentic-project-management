@@ -95,7 +95,7 @@ Guides follow a consistent structure with §1 Overview, §2 Operational Standard
 
 **§5 Content Guidelines elevation:** When Content Guidelines contains only Common Mistakes (no additional quality subsections), the heading becomes `## 5. Common Mistakes` - dropping the "Content Guidelines" container. This elevation applies only to this section, and the section number follows the renumbering rule above.
 
-**Procedure section structure:** Each guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. Subsections (§3.1, §3.2...) are the procedure's activities. Procedure outlines (numbered lists of subsection names before the subsections themselves) are omitted - subsection headers serve as the outline.
+**Procedure section structure:** Each guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. Subsections (§3.1, §3.2...) are the procedure's activities. When the procedure has multiple phases with distinct gates (write-approve cycles, conditional branches) or non-obvious flow patterns (loops, mixed step/rules subsections), a brief sequence description before the first subsection orients the reader on the overall structure. These describe the procedure's shape - they are not outlines that duplicate subsection headers verbatim.
 
 ### 3.2 Section Requirements
 

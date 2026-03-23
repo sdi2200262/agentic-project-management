@@ -66,7 +66,7 @@ Perform the following actions:
 Perform the following actions:
 1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).
 2. Write the Task Report to the Report Bus: `.apm/bus/<agent-slug>/report.md`. The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log.
-3. Direct the User to deliver the report to the Manager per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication - provide `/apm-5-check-reports <agent-id>` for targeted retrieval.
+3. Direct the User to deliver the report to the Manager per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication - provide both `/apm-5-check-reports <agent-id>` for targeted retrieval and `/apm-5-check-reports` as the general command, since multiple Workers may finish concurrently.
 
 For batch execution, write a single batch report per `{SKILL_PATH:apm-communication}` §4.5 Batch Report Envelope Format after completing all Tasks (or stopping on failure).
 
@@ -104,8 +104,8 @@ compatibility_issues: true | false
 - `agent`: Your agent identifier.
 - `status`: Task outcome per §2.2 Outcome Standards. `Success`, `Partial`, or `Failed`.
 - `failure_point`: `null` for Success; description of where/why the Task didn't succeed for Partial and Failed.
-- `important_findings`: Whether discoveries have implications beyond current Task scope per §2.1.
-- `compatibility_issues`: Whether output conflicts with existing systems per §2.1.
+- `important_findings`: Whether discoveries have implications beyond current Task scope per §2.1 Flag Assessment Standards.
+- `compatibility_issues`: Whether output conflicts with existing systems per §2.1 Flag Assessment Standards.
 
 **Markdown Body Template:**
 
@@ -151,7 +151,6 @@ compatibility_issues: true | false
 
 ### 5.2 Common Mistakes
 
-- *Setting flags too conservatively:* False negatives hurt coordination more than false positives. When uncertain, set to `true`.
 - *Forgetting conditional sections:* When a flag is `true`, include the corresponding section (Compatibility Concerns, Important Findings).
 - *Missing artifact references:* When deliverables are produced, list file paths in the Output section.
 

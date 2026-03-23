@@ -52,7 +52,7 @@ When receiving a batch of Tasks (multiple Task Prompts in a single Task Bus mess
 
 ## 3. Task Execution Procedure
 
-Follow subsections sequentially from Task Prompt receipt through completion.
+Sequential flow from Task Prompt receipt through completion. Task Validation and the Correction Loop form a cycle that repeats until success or a stop condition.
 
 ### 3.1 Task Prompt Receipt
 
