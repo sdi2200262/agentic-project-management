@@ -38,7 +38,7 @@ Fetch and read the following doc files from the documentation repository to unde
 
 - **Introduction.md** - What APM is and how it works
 - **Getting_Started.md** - Installation, initialization, and first session walkthrough
-- **CLI.md** - All CLI commands, directory structure, metadata format, and versioning
+- **CLI_Guide.md** - All CLI commands, directory structure, metadata format, and versioning
 
 These pages are the source of truth for what the current release expects. Compare what they describe against what exists in the User's workspace to identify the differences. Note: the documentation site at `agentic-project-management.dev` may not yet reflect v1 content. Use the repository links above for current v1 documentation.
 
@@ -60,7 +60,7 @@ Installations from v0.5.x and earlier have significant structural differences fr
 
 **Assistant directories:** v0.5.x installed only command files into assistant directories (e.g. `.cursor/commands/`). v1.0.0+ installs commands, guides, skills, and agent configurations across multiple subdirectories. The assistant directories themselves (`.cursor/`, `.claude/`, `.github/`, etc.) may also contain non-APM content the User has placed there. Only APM-installed files should be removed during migration.
 
-**Supported assistants:** v0.5.x supported up to 11 assistants including Windsurf, Kilo Code, Qwen Code, Roo Code, and others. v1.0.0 narrowed official support to assistants with native subagent capabilities: Cursor, Claude Code, GitHub Copilot, Gemini CLI, and OpenCode.
+**Supported assistants:** v0.5.x supported up to 11 assistants including Windsurf, Kilo Code, Qwen Code, Roo Code, and others. v1.0.0 narrowed official support to Cursor, Claude Code, GitHub Copilot, Gemini CLI, and OpenCode.
 
 **Terminology:** v0.5.x used different names for agent roles and procedures (Setup Agent → Planner, Implementation Agent → Worker, Context Synthesis → Context Gathering, Project Breakdown → Work Breakdown, Handover → Handoff, etc.).
 
@@ -98,7 +98,7 @@ Perform the following actions:
      | session-YYYY-MM-DD-001 | YYYY-MM-DD | Migration archive from APM vX.X.X | N/A | N/A |
      ```
 
-   When creating the archive, convert the old `metadata.json` to the current schema so that `apm archive --list` and `apm status` display it correctly. The current archive metadata schema is documented in the [CLI Guide](https://github.com/sdi2200262/apm-website/blob/main/docs/CLI.md). Map old fields to current equivalents (e.g. `templateVersion` → `releaseVersion`, full assistant names → short IDs), add `archivedAt` with the current timestamp, and set `reason` to `"migration"`. Fetch the CLI Guide if needed to confirm the current schema.
+   Convert the old `metadata.json` to the current archive schema and place it inside the archive directory as `metadata.json`. The current schema is documented in the [CLI Guide](https://github.com/sdi2200262/apm-website/blob/main/docs/CLI_Guide.md). Map old fields to current equivalents: `templateVersion` → `releaseVersion`, full assistant names → short IDs, add `source`, `repository`, `archivedAt` (current timestamp), and `reason` (`"migration"`) fields. `installedFiles` can be left as an empty object since pre-v1.0.0 installations did not track installed files. Fetch the CLI Guide if needed to confirm the current schema.
 
    Inform the User of the archive directory name and ask if they would like to rename it to something more descriptive.
 
@@ -129,9 +129,9 @@ Perform the following actions:
    **Step 3: Clean up assistant directories.** Remove only APM-installed files from assistant directories. This requires care:
    - Identify which files in assistant directories (e.g. `.cursor/commands/`, `.claude/commands/`) were installed by APM. v0.5.x files typically have `apm-` prefixes or match known APM command patterns.
    - List every file that will be removed and present the list to the User before deleting anything.
+   - Remove the deprecated `.apm/guides/` directory if it exists. Pre-v1.0.0 stored guides inside `.apm/guides/`; v1.0.0+ scaffolds them into the assistant directory as `apm-guides/`. The archive step preserves the content; this step removes the directory from the active `.apm/` root.
    - Do NOT remove entire assistant directories (`.cursor/`, `.claude/`, etc.) as they may contain non-APM content (user rules, custom commands, IDE configurations).
    - Do NOT remove files that are clearly not APM-related. When uncertain, ask the User.
-   - If the old version installed a `guides/` directory inside `.apm/`, that will already be handled by the archive step.
 
    **Step 4: Clean metadata.** Remove `.apm/metadata.json` from the root `.apm/` directory (the archived copy in `.apm/archives/` is preserved). The current CLI will see a clean state and allow `apm init`.
 

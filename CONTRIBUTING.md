@@ -47,7 +47,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 
 ### Community Extensions
 
-APM officially supports AI assistants with autonomous subagent capabilities. For other assistants that lack compatible subagent support (e.g. Windsurf, Kilo Code, Roo Code), community members may develop and maintain unofficial extensions.
+APM officially supports Cursor, Claude Code, GitHub Copilot, Gemini CLI, and OpenCode. For other assistants (e.g. Windsurf, Kilo Code, Roo Code), community members may develop and maintain unofficial extensions.
 
 Community extensions are not officially supported, may lag behind releases, and should be tested thoroughly before use. If you're interested in developing or maintaining an extension, please open an issue to discuss.
 

@@ -83,11 +83,11 @@ APM supports custom repositories for teams that want to modify the workflow. For
 
 See the [Customization Guide](https://agentic-project-management.dev/docs/customization-guide) for details.
 
-## Migrating from v0.5.x
+## Migrating from Pre-v1.0.0
 
-A standalone [migration skill](skills/apm-migration/) guides an AI agent through migrating from older APM versions. It archives your existing artifacts, cleans up old files, and leaves the project ready for `apm init`. The new Planner detects archived sessions during Context Gathering and carries context forward.
+The [Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide#migrating-from-older-versions) documents the recommended migration procedure. A standalone [migration skill](skills/apm-migration/) is also available to guide an AI agent through the process step by step - it handles state assessment, metadata conversion, safe cleanup, and next steps.
 
-See the [standalone skills README](skills/) for per-platform installation instructions.
+See the [standalone skills directory](skills/) for per-platform installation instructions for the migration skill.
 
 ## Contributing
 

@@ -1,19 +1,17 @@
 # APM Standalone Skills
 
-Standalone skills that can be installed independently from the main APM bundles. These are optional tools for specific situations that fall outside the core APM workflow.
-
-Unlike the skills bundled with APM (installed by `apm init`), standalone skills are installed manually and used on demand.
+Optional skills that live outside the main APM bundles. Unlike the skills installed by `apm init`, these are used on demand for specific situations.
 
 ## Available Skills
 
-| Skill | Description | Installation |
+| Skill | Purpose | How to use |
 | :--- | :--- | :--- |
-| [apm-migration](apm-migration/) | Guides migration from an older APM version to the current release, preserving session artifacts as archives | Manual (curl) |
-| [apm-customization](apm-customization/) | Guides customization of APM templates within a forked or templated repository | Included in the repo |
+| [apm-migration](apm-migration/) | Guides an AI agent through migrating a pre-v1.0.0 installation to the current release | Install manually into your project (see below) |
+| [apm-customization](apm-customization/) | Guides an AI agent through customizing templates in a forked APM repository | Already present in any fork or template of this repo |
 
-## Installation
+## Installing the Migration Skill
 
-Download the skill file into the appropriate skills directory for the AI assistant being used. After installation, reference the skill in the assistant's chat to use it.
+Download the skill file into the skills directory for your AI assistant, then reference it in chat to begin.
 
 **Claude Code:**
 

@@ -21,7 +21,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 * **New artifact structure.** Spec (`.apm/spec.md`), Plan with dependency graphs (`.apm/plan.md`), Rules (platform rules file), Tracker (`.apm/tracker.md`), Memory hierarchy (`.apm/memory/` with Index, Task Logs, Handoff Logs). Replaces Implementation Plan and Memory Root.
 
-* **Platform support narrowed** to assistants with native subagent capabilities: Claude Code, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
+* **Platform support narrowed** to Claude Code, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
 
 * **Template file structure changed.** Commands in `templates/commands/`, guides in `templates/guides/`, skills in `templates/skills/`, agents in `templates/agents/`. Governed by `templates/_standards/` (WORKFLOW.md, TERMINOLOGY.md, STRUCTURE.md, WRITING.md).
 
