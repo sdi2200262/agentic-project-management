@@ -79,7 +79,7 @@ See the [CLI Guide](https://agentic-project-management.dev/docs/cli) for full de
 
 ## Customization
 
-APM supports custom repositories for teams that want to modify the workflow. Fork the repo, adjust templates, build, release, and install with `apm custom -r owner/repo`. A [customization skill](skills/apm-customization/) is included to guide AI agents through the process.
+APM supports custom repositories for teams that want to modify the workflow. Fork the repo (for upstream sync) or use "Use this template" (for a clean start), adjust templates, build, release, and install with `apm custom -r owner/repo`. A [customization skill](skills/apm-customization/) is included to guide AI agents through the process.
 
 See the [Customization Guide](https://agentic-project-management.dev/docs/customization-guide) for details.
 

@@ -38,7 +38,7 @@ By default, `apm init` fetches the latest stable release matching the CLI's majo
 
 ### Updating Templates (`apm update`)
 
-For official installs, `apm update` fetches the latest compatible release. For custom installs, users can choose to stay with their custom repository or switch to official.
+For official installs, `apm update` fetches the latest compatible release. For custom installs, `apm update` fetches newer releases from the same custom repository.
 
 ## Metadata Tracking
 
