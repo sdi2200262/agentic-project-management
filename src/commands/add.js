@@ -9,9 +9,10 @@
 import { CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, getInstalledFiles } from '../core/metadata.js';
+import { getRepoSettings } from '../core/config.js';
 import { fetchReleaseByTag, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { selectAssistant } from '../ui/prompts.js';
+import { selectAssistant, confirmSecurityDisclaimer } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -30,6 +31,18 @@ export async function addCommand(options = {}) {
   const metadata = await readMetadata();
   if (!metadata) {
     throw CLIError.notInitialized();
+  }
+
+  // Security disclaimer for custom installations
+  if (metadata.source === 'custom') {
+    const repoSettings = await getRepoSettings(metadata.repository);
+    if (!repoSettings?.skipDisclaimer) {
+      const accepted = await confirmSecurityDisclaimer();
+      if (!accepted) {
+        logger.info('Aborted.');
+        return;
+      }
+    }
   }
 
   // Fetch the same release

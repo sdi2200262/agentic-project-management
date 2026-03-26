@@ -45,7 +45,6 @@ Explore the repository to understand the layout. The key directories are:
 - `TERMINOLOGY.md` - Formal vocabulary and defined concepts
 - `STRUCTURE.md` - Structural standards for each file type
 - `WRITING.md` - Writing patterns, tone, formatting
-- `ISSUES.md` - Known issues tracker for the official APM repository. Internal development doc, not relevant to custom repos unless the User has added their own entries.
 - `NOTES.md` - Development notes and research findings for the official repository. Internal development doc, not relevant to custom repos unless the User has added their own entries.
 
 **`build/`** - The build system that processes templates into platform-specific bundles. `build-config.json` defines the supported targets (assistants) and their directory layouts.
@@ -151,6 +150,8 @@ When the User's custom repository diverges from the official APM release, change
 - Update the repository's README to describe what was customized and why
 - If the changes affect the workflow (new procedures, modified coordination patterns), note how the customization differs from the official documentation
 - If adding new commands or skills, document their purpose and usage
+
+Custom repositories carry trust implications for anyone who installs from them. Bundles can write files anywhere within the project directory, and the templates define how AI assistants behave. When publishing a custom repository, document what the customization changes so users can make informed trust decisions. If the customization adds files outside the standard assistant config directory (e.g., source files, configuration), note this explicitly in the README.
 
 ---
 

@@ -11,6 +11,7 @@ import path from 'path';
 import AdmZip from 'adm-zip';
 import { fetchAsset } from './github.js';
 import { CLIError } from '../core/errors.js';
+import logger from '../ui/logger.js';
 
 /**
  * Downloads a bundle from a URL.
@@ -54,6 +55,15 @@ export async function extractBundle(zipBuffer, destPath, options = {}) {
       if (entryPath.startsWith('.apm/archives/')) continue;
 
       const fullPath = path.join(destPath, entryPath);
+      const resolvedDest = path.resolve(destPath);
+      const resolvedFull = path.resolve(fullPath);
+
+      // Block path traversal — skip entries that escape the destination
+      if (!resolvedFull.startsWith(resolvedDest + path.sep) && resolvedFull !== resolvedDest) {
+        logger.warn(`Blocked path traversal entry: ${entryPath}`);
+        continue;
+      }
+
       await fs.ensureDir(path.dirname(fullPath));
       await fs.writeFile(fullPath, entry.getData());
       writtenFiles.push(entryPath);
