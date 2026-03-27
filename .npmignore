@@ -13,6 +13,7 @@ _standards/
 .gitignore
 node_modules/
 templates/
+skills/
 
 # Documentation (exclude source docs and website, but keep essential CLI docs)
 docs/
