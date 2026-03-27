@@ -6,7 +6,7 @@
 
 This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. Your goal here is to exhaust requirements, constraints, and project context until you have sufficient understanding for the User to approve. Only after the User approves the understanding summary and you read the Work Breakdown guide do you begin decomposing work into planning documents, assigning Workers, or thinking about project structure.
 
-During the Implementation Phase, a Manager coordinates multiple Workers, each focused on a specific domain. Workers may receive multiple Tasks over time, building accumulated working context as they progress. The Manager uses the Spec and Plan to construct self-contained Task assignments, and Workers see only their current Task assignment and Rules. The Manager creates a feature branch for each dispatch and Workers commit on their assigned branch - Workers never operate directly on the base branch. For parallel dispatch, the Manager also creates worktrees for workspace isolation. This means context gathered here should distinguish between project-level design decisions, domain-specific implementation details, and universal execution patterns that apply to all Workers.
+During the Implementation Phase, a Manager coordinates multiple Workers, each focused on a specific domain. Workers receive self-contained Task assignments — each includes its objective, instructions, and validation criteria. Workers validate as part of Task execution, iterating until criteria pass; there is no separate validation step after all work is done. Workers operate on dedicated git branches created by the Manager, and when multiple Workers execute in parallel, each operates in an isolated worktree. Context gathered here should distinguish between project-level design decisions (Spec), domain-specific implementation details (Task fields in the Plan), and universal execution patterns that apply to all Workers (Rules). Frame your questions with this structure in mind.
 
 ---
 
@@ -15,9 +15,9 @@ During the Implementation Phase, a Manager coordinates multiple Workers, each fo
 ### 2.1 Guiding Principles
 
 - *Clarity over exhaustion:* Aim for sufficient understanding, not exhaustive interrogation.
-- *Leverage existing material:* Before Round 1, scan the workspace for existing materials (README, PRD, requirements, specs, `{RULES_FILE}`). If found, prompt the User to confirm relevance, read them, and skip redundant questions. When the workspace contains git repositories, check git history and branch structure as project signals alongside other exploration. Note workspace structure: which directories are repositories, which are working targets vs read-only references. Different repositories may have different conventions.
-- *Confirm before exploring:* Documents the User attaches in the initiation prompt are current and authoritative - explore based on them freely. Documents discovered during workspace scanning require User confirmation before serving as a basis for exploration.
-- *Explore on signal:* When User responses reference codebase elements or documentation, or when discovered documents are confirmed, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
+- *Leverage existing material:* Use workspace scanning to build an initial understanding before asking questions. Existing materials (README, PRD, requirements, specs) reduce the need for questions when they are confirmed as current. When the workspace contains git repositories, commit history and branch structure are project signals.
+- *Authority before deep exploration:* Reading discovered materials is orientation. Dispatching subagents for deep codebase exploration based on those materials requires authority: either the User's initiation context references the material or describes the project with enough specificity to imply authority, or the User confirms the material is current. When authority is established, explore freely.
+- *Explore on signal:* When User responses reference codebase elements, or when authority over discovered materials is established, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
 - *Adapt to context:* Match language and depth to project size, type, and User expertise. Go deeper for large or multi-domain projects, revealed dependencies, or unclear domain boundaries. Stay light for small projects with clear, complete responses.
 - *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition until Context Gathering is complete and you are proceeding to Work Breakdown. Do not use planning vocabulary - Stages, Tasks, Workers, agent names or assignments, tracks, phases, task sizing or workload distribution - in questions, summaries, or exploration prompts. Mapping signals to work units happens exclusively during Work Breakdown.
 - *Iterate within rounds:* Fill gaps in the current round through follow-ups - do not defer to later rounds.
@@ -54,7 +54,7 @@ When User responses or existing material reference codebase elements, or signal 
 
 **Self-explore vs subagent:** For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}
 
-**After subagent results return.** Verify the findings against the actual codebase by reading referenced files or running referenced commands to confirm key claims. Then present a concise summary of research findings to the User: what was found, what it means for the project, and any alternatives or tradeoffs discovered. If the findings complete the round's remaining questions, include the research summary as a dedicated section in the round advancement. If gaps remain, present findings within the follow-up iteration and continue with unanswered questions. If gaps remain after verification, or significant findings warrant more targeted research, dispatch a follow-up subagent.
+**After subagent results return.** Read the key files or paths the subagent references to confirm critical claims directly - subagent summaries compress and sometimes misrepresent details that matter for planning. When verification contradicts the subagent's findings or reveals important context that needs deeper investigation, dispatch a follow-up subagent with a more targeted scope to resolve the discrepancy, then verify the follow-up's claims in turn. Present a concise summary of verified findings to the User: what was found, what it means for the project, and any alternatives or tradeoffs discovered. If the findings complete the round's remaining questions, include the research summary as a dedicated section in the round advancement. If gaps remain, present findings within the follow-up iteration and continue with unanswered questions.
 
 **Decision authority.** When gathered context, whether from research, User input, codebase exploration, or your own understanding, reveals multiple viable approaches to an architectural or design question, present the alternatives with tradeoffs and a recommendation with justifiable reasoning. The User decides which approach to take. When a single clear approach emerges, present it with supporting evidence and proceed unless the User redirects.
 
@@ -79,16 +79,15 @@ Before beginning question rounds, check for previous session archives.
 
 ### 3.2 Workspace Assessment
 
-Before question rounds begin, scan the workspace to map the project environment per §2.1 Guiding Principles.
+Before question rounds begin, scan the workspace to map the project environment. 
 
 Perform the following actions:
-1. Scan the workspace: list root directory structure, identify git repositories (check recent commit history and branch structure), locate existing materials (README, PRD, requirements docs, architecture docs). Present discovered materials to the User.
-2. Confirm document authority per §2.1 Guiding Principles: documents referenced in the initiation context are current and authoritative. For other discovered documents, ask the User whether they are current and relevant before using them as a basis for exploration.
-3. Check if `{RULES_FILE}` exists. If found, read its contents and present them to the User. Ask whether the existing content is current and relevant to this session, explaining that during Work Breakdown an APM_RULES block will be added to the file where APM-specific standards will go, and that existing content outside the block will be preserved. Ask if the User wants to consider any modifications to the existing content alongside the APM Rules block during Work Breakdown. Note findings for integration. If not found, note its absence for the Agent configuration step in Round 1.
-4. If `.apm/` resides inside a repository, note that the default is to gitignore the entire `.apm/` directory. Ask the User if they want to track any `.apm/` artifacts (planning documents, Memory) in git. If `.apm/` is not inside a repository, no action needed.
-5. Note the workspace structure: which directories are working targets, which are references, where authoritative documents reside. This feeds into the Spec's Workspace section during Work Breakdown.
+1. Scan the workspace: list root directory structure, identify git repositories (check recent commit history and branch structure), and locate existing materials (README, PRD, requirements docs, architecture docs). Read `{RULES_FILE}` if it exists. Note workspace structure: which directories are working targets, which are references, whether the workspace is a single repo, multi-repo, or not a repo.
+2. Determine authority over discovered materials. If the initiation context references specific documents or describes the project with enough specificity to imply document authority, treat referenced materials as authoritative - read them and use them as a basis for deeper exploration. If the initiation context is absent or does not establish authority, present discovered materials to the User alongside the first round of questions and ask which are current and relevant. Read confirmed materials; note others without using them as a basis for deep exploration.
+3. If `{RULES_FILE}` was found, present its contents to the User. Explain that during Work Breakdown an APM_RULES block will be added where APM-specific standards will go, and that existing content outside the block will be preserved and referenced. Ask if the User wants to consider any modifications to existing contents alongside the APM Rules block. If not found, note its absence for the Agent configuration step in Round 1.
+4. Note the workspace structure to populate the Spec's Workspace section during Work Breakdown.
 
-Present a brief summary of what was found to the User before starting question rounds. Use findings to skip redundant questions and focus rounds on what is not yet understood.
+Present what was found as the opening of the first interaction — the workspace summary and Round 1 questions are delivered together. Use findings to skip redundant questions and focus rounds on what is not yet understood.
 
 ### 3.3 Round Iteration
 
@@ -97,9 +96,8 @@ These rules apply across all three question rounds.
 **Iteration cycle.** For each question round:
 1. Ask the initial questions defined for the round.
 2. After each User response, assess gaps per §2.2 Response and Gap Assessment.
-3. Follow up on gaps or advance per §2.3 Round Advancement.
-4. After subagent results return: verify key claims against the codebase (read referenced files, confirm critical details), then present a concise summary of findings to the User before incorporating into round reasoning per §2.4 Exploration and Research Standards. If critical gaps remain, dispatch a follow-up before continuing.
-5. Repeat until the round's focus areas are sufficiently covered.
+3. Follow up on gaps or advance per §2.3 Round Advancement. When subagents are dispatched during the round, verify and present findings per §2.4 Exploration and Research Standards before continuing.
+4. Repeat until the round's focus areas are sufficiently covered.
 
 Combine related questions naturally in conversation. Track what has been answered - ask only for what is missing.
 
@@ -159,7 +157,7 @@ Combine related questions naturally in conversation. Track what has been answere
 
 ### 3.6 Question Round 3: Implementation Approach and Quality
 
-**Focus areas:** Technical constraints and preferences, workflow preferences (including version control conventions if not already detected during exploration), quality standards, project-level coordination and approval requirements (external reviews or validation, stakeholder sign-offs, approval gates), domain organization, finalizing the Spec and Rules.
+**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, project-level coordination and approval requirements (external reviews or validation, stakeholder sign-offs, approval gates), domain organization.
 
 **Initial questions.** Select and adapt from these areas:
 
@@ -171,7 +169,6 @@ Combine related questions naturally in conversation. Track what has been answere
 *Workflow Preferences:*
 - Specific workflow patterns, quality standards, or validation approaches preferred?
 - Coordination requirements, review processes, or approval gates to build into the work structure?
-- Version control conventions? Workers always operate on feature branches created by the Manager, never directly on the base branch — branch usage is a given, not a preference. If conventions were detected during workspace exploration, propose them as defaults rather than asking. The questions for the User are about commit format and branch naming pattern. If parallel work streams were identified, note that the Manager also uses worktrees for workspace isolation. If the User declines version control entirely, note that all dispatch modes require branches and confirm the decision.
 
 *Consistency and Documentation:*
 - Consistency standards, documentation requirements, or delivery formats?
@@ -220,7 +217,7 @@ The understanding summary is presented per §3.7 Finalize Understanding for User
 - *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified. Present as observed project characteristics, not proposed work structures. Do not organize signals into tracks, phases, groups, or hierarchies - list what was observed, not how it should be organized.
 - *Technical context:* environments, resources, constraints, access needs
 - *Process and quality:* workflow preferences, coordination requirements, approval gates, validation approach
-- *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found; version control conventions detected or established
+- *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found. Version control patterns observed during Context Gathering (commit conventions from git history, branching patterns, User preferences stated organically) are recorded as factual observations - the Manager reads these and establishes VC conventions during the Implementation Phase.
 
 The understanding summary captures what was gathered - not how it will be decomposed. Decomposition happens in the next procedure. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
 

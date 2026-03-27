@@ -11,7 +11,7 @@ title: <Project Name>
 | Task | Status | Agent | Branch |
 |------|--------|-------|--------|
 
-## Agent Tracking
+## Worker Tracking
 
 | Agent | Instance | Notes |
 |-------|----------|-------|

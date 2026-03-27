@@ -41,10 +41,15 @@ Perform the following actions:
 
 Perform the following actions:
 1. Update the Tracker and Index: replace `<Project Name>` with actual project name.
-2. Verify version control state: read the Tracker's Version Control section (populated by the Planner). Confirm git state is consistent - the base branch exists, the repository is accessible. Check for stale worktrees or orphaned feature branches from prior instances and clean if found. If the Tracker shows no version control (User declined), note that parallel dispatch is unavailable.
-3. Populate the Tracker: Task Tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format, agent tracking with all Workers (uninitialized).
-4. Present a concise understanding summary: project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure and Task count.
-5. Request User approval to proceed. If corrections needed, integrate feedback and re-request. When approved, generate the first Task Prompt per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment and proceed to §3 Continuous Coordination.
+2. Explore version control. Read the Spec's Workspace section for working repositories and any VC observations the Planner recorded. For each working repository:
+   - Navigate to the directory. If git is not initialized, run `git init` and inform the User.
+   - Check git state: current branch, available branches, recent commit history. Note commit message patterns and branching patterns. The current branch is not necessarily the base branch the User wants — present what you find and confirm. If you notice potentially stale worktrees or orphaned branches, note them in the understanding summary for the User to address.
+   - If `.apm/` is inside a repository directory, add `.apm/` to `.gitignore` by default. Ask the User if they want to track any `.apm/` artifacts in git (planning documents, Memory). If yes, adjust entries accordingly.
+3. Present understanding summary and VC conventions together for User approval.
+   **Understanding summary:** project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure, Task count, workstreams and efficient dispatch opportunities.
+   **Version control conventions:** Combine the Planner's VC observations with what you detected in step 2. Present APM's version control model: each Task dispatch creates a feature branch off the base branch (per `{GUIDE_PATH:task-assignment}` §3.3 Branch and Worktree Management); when multiple Workers operate in parallel, each gets an isolated worktree; Workers commit on their assigned branch following the agreed commit convention; the Manager merges completed branches back to base (per `{GUIDE_PATH:task-review}` §2.5 Merge Standards); APM does not push to remotes by default. Propose conventions — using detected patterns where they exist, lightweight defaults where they do not (`type/short-description` branches, `type: description` commits with types feat, fix, refactor, docs, test, chore). Confirm the base branch for each repository. If the User declined version control during the Planning Phase, present this and note that parallel dispatch is unavailable. Request approval to proceed.
+   - If corrections needed to your understanding or version control conventions → Integrate feedback and re-present.
+   - If approved → Write the Tracker's Version Control table (one row per repository with base branch, branch convention, and commit convention), write commit conventions to `{RULES_FILE}` within the APM_RULES block, populate Task Tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format and Worker tracking with all Workers uninitialized. Then generate the first Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment and proceed to §3 Continuous Coordination.
 
 ### 2.2 Incoming Manager Initiation
 
@@ -61,12 +66,12 @@ Perform the following actions:
 
 After each review, reassess readiness and continue to dispatch in the same turn when Tasks are Ready without waiting for User input per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards. Repeat until all Stages complete, User input is needed, User intervenes, or Handoff is needed.
 
-1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment, construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction. Direct User to the Worker(s).
+1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment, construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.3 Task Prompt Construction. Direct User to the Worker(s).
 2. **Await Report:** User runs `/apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this chat.
 3. **Review and Continue.** Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Log, investigate further if needed and determine review outcome, modify planning documents if needed, update the Tracker. Then in the same turn:
    - *Tasks Ready:* Continue to step 1.
    - *No Tasks Ready, Workers active:* Communicate wait state per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
-   - *Follow-up needed:* Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction (repeat step 2).
+   - *Follow-up needed:* Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction (repeat step 2).
    - *Stage complete:* Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation, then continue to step 1 for next Stage.
 
 ---
@@ -83,7 +88,10 @@ When all Stages are complete:
 1. Set `status: complete` in the Tracker's YAML frontmatter.
 2. Review all Stage summaries for overall project outcome.
 3. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
-4. Recommend running `/apm-8-summarize-session` in a new chat to summarize the completed APM session and optionally archive it for future reference.
+4. Direct the User to the next steps. The APM session is now complete but its artifacts (Spec, Plan, Tracker, Memory, Task Logs) remain in `.apm/`. Two follow-up actions are available:
+   - **Summarization:** running `/apm-8-summarize-session` in a new chat produces a structured session summary covering decisions made, work completed, and lessons learned.
+   - **Archival:** running `apm archive` via the `agentic-pm` CLI converts the contents of the `.apm/` directory into a timestamped archive in `.apm/archives/` and cleans the workspace. The summarization agent also offers archival at the end of its procedure. Archives with session summaries are discovered and absorbed by future Planners more efficiently.
+   Recommend starting with summarization.
 
 ---
 
@@ -99,8 +107,8 @@ Handoff is User-initiated when context window limits approach.
 ## 7. Operating Rules
 
 - **Coordination-level role:** You normally operate at the coordination level - assigning Tasks, reviewing results, maintaining project state, working from Task Logs and summaries rather than raw source code. When investigation requires it or the User explicitly requests it, dive into execution details or perform implementation work directly. Authority thresholds for planning document modifications per `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
-- **Initialization tracking:** Use agent tracking in the Tracker to determine which Workers have been initialized. See `{GUIDE_PATH:task-assignment}` §3.4 Task Prompt Construction step 7 for initialization and delivery guidance.
-- **Handoff tracking:** Use agent tracking and cross-agent overrides in the Tracker to track Worker Handoffs. See `{GUIDE_PATH:task-review}` §3.1 Report Processing for dependency reclassification details.
+- **Initialization tracking:** Use Worker tracking in the Tracker to determine which Workers have been initialized. See `{GUIDE_PATH:task-assignment}` §3.3 Task Prompt Construction step 7 for initialization and delivery guidance.
+- **Handoff tracking:** Use Worker tracking and cross-agent overrides in the Tracker to track Worker Handoffs. See `{GUIDE_PATH:task-review}` §3.1 Report Processing for dependency reclassification details.
 - **Context scope:** Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.
 
 ---

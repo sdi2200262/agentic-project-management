@@ -12,7 +12,7 @@ This guide defines how you execute Tasks assigned by the Manager via Task Prompt
 
 ### 2.1 Context Integration Standards
 
-Follow cross-agent integration steps completely - read files, review artifacts, understand interfaces. Use same-agent guidance as recall anchors - review referenced paths to refresh context if needed.
+Follow cross-agent integration steps completely - read files, review artifacts, understand interfaces. For dependency integration that requires reading specific files at known paths, read them directly. Subagent dispatch is for open-ended exploration or investigation where the scope is broad or context isolation is beneficial. Use same-agent guidance as recall anchors - review referenced paths to refresh context if needed.
 
 **Integration issues.** Do not execute on an unstable foundation. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities - continue with best interpretation and note uncertainty; missing expected files - pause for guidance.
 

@@ -112,7 +112,7 @@ Memory resides in `.apm/memory/` and captures project history for progress track
 | Term | Definition | Location |
 | ------ | ------------ | ---------- |
 | **Memory** | The hierarchical file structure in `.apm/memory/` that captures project history for progress tracking and Handoff continuity. Contains the Index, Task Logs, and Handoff Logs. | `.apm/memory/` |
-| **Tracker** | Live project state document containing task tracking, agent tracking, version control state, and working notes. Updated by the Manager throughout the Implementation Phase as the operational view for dispatch decisions, dependency analysis, and Handoff continuity. | `.apm/tracker.md` |
+| **Tracker** | Live project state document containing Task tracking, Worker tracking, version control state, and working notes. Updated by the Manager throughout the Implementation Phase as the operational view for dispatch decisions, dependency analysis, and Handoff continuity. | `.apm/tracker.md` |
 | **Index** | Durable project memory containing Memory notes (persistent observations and patterns) and Stage summaries (appended after each Stage completion). | `.apm/memory/index.md` |
 | **Task Log** | Structured log created by Worker after Task completion. Captures outcome, validation, deliverables, and flags. | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` |
 | **Handoff Log** | Log created during Handoff containing working context not captured elsewhere. | `.apm/memory/handoffs/<agent>/handoff-<NN>.log.md` |
@@ -134,9 +134,9 @@ These concepts are not formal capitalized terms but are clearly defined because 
 - *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates either form a chain with only internal dependencies, or are an independent group of same-Worker Tasks all Ready simultaneously. When forming chains, the Manager weighs whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
 - *Parallel:* two or more dispatch units (singles or batches) sent to different Workers simultaneously when no unresolved cross-Worker dependencies exist. Requires version control workspace isolation.
 
-**Agent instances.** Each agent role is numbered sequentially. Manager 1 is the first Manager; Manager 2 takes over after Handoff. Workers follow the same pattern (e.g., Frontend Agent 1, Frontend Agent 2). Instance numbers are tracked in the Tracker's agent tracking table. Auto-compaction recovery does not increment the instance number - the recovered agent continues as the same instance. Instance number increments via Handoff.
+**Agent instances.** Each agent role is numbered sequentially. Manager 1 is the first Manager; Manager 2 takes over after Handoff. Workers follow the same pattern (e.g., Frontend Agent 1, Frontend Agent 2). Instance numbers are tracked in the Tracker's Worker tracking table. Auto-compaction recovery does not increment the instance number - the recovered agent continues as the same instance. Instance number increments via Handoff.
 
-**Agent states.** Agents in the Tracker are either uninitialized (defined in the Plan but no instance started) or on a specific instance (Instance N). An instance number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
+**Worker states.** Workers in the Tracker are either uninitialized (defined in the Plan but no instance started) or on a specific instance (Instance N). An instance number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
 
 **Recovery.** Context reconstruction after platform auto-compaction within an agent instance. The recovered agent re-reads the initiation command and follows its document loading instructions to rebuild procedural knowledge and project state. Recovery does not increment the instance number or constitute a Handoff. The agent notes the recovery in its next communication (Task Report for Workers, Tracker for the Manager) and in its eventual Handoff Log.
 

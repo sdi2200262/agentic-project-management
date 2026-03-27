@@ -56,7 +56,7 @@ Before constructing individual Task Prompts, assess dispatch opportunities acros
 - *Single:* one Ready Task for a Worker.
 - *Parallel:* two or more dispatch units (any mix) with no unresolved cross-agent dependencies among them, dispatched simultaneously. Requires version control workspace isolation.
 
-**Parallel prerequisites:** Parallel dispatch requires version control to be initialized (per §3.1 VC Verification, normally done during Manager 1 initiation). Recommend the User configure platform tool approvals for Workers to minimize interactive wait times during execution. If the User declines VC setup, fall back to sequential dispatch.
+**Parallel dispatch prerequisites:** Version control must be initialized (established during Manager 1 initiation per `{COMMAND_PATH:apm-2-initiate-manager}` §2.1). If version control is not active, fall back to sequential dispatch. Recommend the User configure platform tool approvals for Workers to minimize interactive wait times during parallel execution.
 
 Before dispatching a ready unit, check whether a pending report would unlock Tasks that combine well with the current unit. If it is the only outstanding report, waiting costs little. If multiple reports are pending or no plausible combination exists, dispatch immediately.
 
@@ -64,7 +64,7 @@ Before dispatching a ready unit, check whether a pending report would unlock Tas
 
 ### 2.5 Version Control Standards
 
-Version control provides workspace isolation during parallel dispatch. Each dispatch unit operates on its own feature branch, and you coordinate all merges during Task Review.
+Version control provides workspace isolation during parallel dispatch. Each dispatch unit operates on its own feature branch, and you coordinate all merges during Task Review. When multiple repositories are listed in the Tracker's Version Control table, identify which repository each Task operates in from the Spec's Workspace section. If the User initially declined version control but later requests it mid-session, initialize it: run `git init` if needed, detect or confirm the base branch, establish conventions with the User, update Rules and the Tracker, then proceed with branch-based dispatch.
 
 **Branch standards:** Every dispatch unit gets its own feature branch off the base branch per the branch convention in the Tracker. APM terminology (Task IDs, Stage numbers, agent identifiers) does not appear in branch names, commit messages, or worktree directory names - these reflect the actual work, not the framework managing it. A batch of sequential Tasks assigned to the same Worker shares one branch.
 
@@ -86,16 +86,7 @@ When dispatching multiple sequential Tasks to the same Worker, send them as a ba
 
 ## 3. Task Assignment Procedure
 
-VC Verification runs once during Manager 1 initiation. The remaining steps form the dispatch cycle, executing each time Tasks are dispatched.
-
-### 3.1 VC Verification
-
-Execute once during Manager 1 initiation, after Memory initialization. Version control is established by the Planner during the Planning Phase - the Tracker's Version Control section and the Rules contain the conventions. Perform the following actions:
-1. Read VC state from the Tracker's Version Control table: each row defines a repository's base branch, branch convention, and commit convention. If the table is empty, the User declined version control during planning - parallel dispatch is unavailable, fall back to sequential dispatch. When multiple repositories are listed, identify which repository each Task operates in from the Spec's Workspace section. If the User later requests version control, the Manager can initialize it mid-session by running `git init` if needed, detect or confirm the base branch, establish conventions with the User, update Rules and the Tracker, then proceed with branch-based dispatch.
-2. Verify git state is consistent: the base branch exists, the repository is accessible. Navigate to the working repository if the Spec specifies a different directory.
-3. Check for stale worktrees or orphaned feature branches from prior instances. Clean if found.
-
-### 3.2 Dispatch Assessment
+### 3.1 Dispatch Assessment
 
 Assess dispatch opportunities from current project state per §2.4 Dispatch Standards. Before each dispatch decision, assess the current project state visibly in chat under the header **Dispatch Assessment:** covering which Tasks are Ready, what dependency relationships exist among them, and what dispatch mode best serves progress and efficiency. Each dispatch cycle is a fresh assessment.
 
@@ -106,7 +97,7 @@ Perform the following actions:
 4. Assess parallel opportunity: if 2+ dispatch units exist with no unresolved cross-agent dependencies - parallel dispatch.
 5. Formulate dispatch plan: which Workers receive which units, whether parallel. For each Task, continue to per-Task analysis.
 
-### 3.3 Per-Task Analysis
+### 3.2 Per-Task Analysis
 
 Execute for each Task in the dispatch plan.
 
@@ -117,7 +108,7 @@ Perform the following actions:
 4. Extract Spec content relevant to this Task per §2.2 Spec Extraction Standards. The Spec is in context from session start and refreshed on any modification. A fresh read is warranted at the start of a new Stage's first dispatch; per-Task re-reads of an unchanged Spec are not needed.
 5. Extract Task definition fields from the Plan: Objective, Steps, Guidance, Output, Validation. Transform steps into actionable instructions, incorporating Guidance and relevant Spec content.
 
-### 3.4 Task Prompt Construction
+### 3.3 Task Prompt Construction
 
 Assemble the Task Prompt and deliver via the Message Bus.
 
@@ -134,18 +125,18 @@ Perform the following actions:
    - For batch dispatch - summarize what the Worker will receive (number of Tasks, sequential execution).
    - For parallel dispatch - list each Worker with its required action.
 
-### 3.5 Follow-Up Task Prompt Construction
+### 3.4 Follow-Up Task Prompt Construction
 
 Execute when the review outcome (per `{GUIDE_PATH:task-review}` §3.3 Review Outcome) determines follow-up is needed.
 
 Perform the following actions:
 1. Capture follow-up context: what went wrong, investigation findings, required refinement, any planning document modifications.
-2. If planning documents were modified, extract relevant updated content per §3.3 Per-Task Analysis.
+2. If planning documents were modified, extract relevant updated content per §3.2 Per-Task Analysis.
 3. Refine all content sections per §2.3 Follow-Up Standards. Include a follow-up context section explaining the issue and required refinement.
 4. Construct the follow-up prompt per §4.2 Follow-Up Format. Same `log_path` as the original.
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
 6. Write to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`.
-7. Direct the User to the Worker per §3.4 Task Prompt Construction step 7.
+7. Direct the User to the Worker per §3.3 Task Prompt Construction step 7.
 
 ---
 

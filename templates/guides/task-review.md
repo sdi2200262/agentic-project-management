@@ -38,7 +38,7 @@ After reviewing a Task Log, determine the review outcome.
 
 **Post-investigation outcome:**
 - *No issues:* (false positives, nothing actionable) → Continue to next Task(s).
-- *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction. If the Worker also left changes uncommitted, note this in the follow-up instructions.
+- *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. If the Worker also left changes uncommitted, note this in the follow-up instructions.
 - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification.
 - *Previously-Done work deficient:* (investigation of a later Task reveals issues with already-Done work) → Create a new Task through Plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; reference it from the new Task, include the discovery context, and specify what needs correction.
 
@@ -103,8 +103,8 @@ Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or 
 Perform the following actions:
 1. Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`).
 2. If batch report (`batch: true` in frontmatter), process each Task's outcome individually through §3.2 Task Log Review and §3.3 Review Outcome. Unstarted Tasks re-enter the dispatch pool.
-3. Check for Handoff indication - look for a statement that the Worker is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update agent tracking in the Tracker: increment the instance number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
-4. Check for auto-compaction indication - a Worker that recovered from auto-compaction notes it in the Task Report. If detected, update agent tracking Notes in the Tracker (e.g., "auto-compacted, recovered"). No dependency reclassification - the Worker continues as the same instance. Provide slightly more comprehensive dependency context in future Task Prompts for this Worker.
+3. Check for Handoff indication - look for a statement that the Worker is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update Worker tracking in the Tracker: increment the instance number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
+4. Check for auto-compaction indication - a Worker that recovered from auto-compaction notes it in the Task Report. If detected, update Worker tracking Notes in the Tracker (e.g., "auto-compacted, recovered"). No dependency reclassification - the Worker continues as the same instance. Provide slightly more comprehensive dependency context in future Task Prompts for this Worker.
 5. Update dispatch tracking: mark this Worker as available, note completed Task(s) for readiness assessment.
 6. Merge completed branch per §2.5 Merge Standards if dependent Tasks need it.
 
@@ -125,12 +125,12 @@ Perform the following actions:
 1. Review findings from the Task Log per §2.2 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If version control is active and the Task was successful but changes remain uncommitted on the Task branch, commit on behalf following the conventions from Rules - no follow-up needed. If everything looks good → skip to step 3. If something needs attention → continue to step 2.
 2. Investigate and determine outcome per §2.2 Review Outcome Standards:
    - *No issues:* → Continue to step 3.
-   - *Follow-up needed:* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.5 Follow-Up Task Prompt Construction. Continue to step 3.
+   - *Follow-up needed:* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. Continue to step 3.
    - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification (returns to step 3 after completion).
 3. Update the Tracker per §4.1 Task Tracking Format: mark completed Tasks as Done, reassess Waiting Tasks for readiness, update branches. Execute pending merges per §2.5 Merge Standards before reassessing readiness. Assess whether the review yielded note-worthy context and add to working notes - both ephemeral coordination items and durable observations for later distillation. Remove stale working notes. Batch all changes from this review-dispatch cycle into a single Tracker edit.
 4. Assess next action per §2.4 Parallel Coordination Standards:
    - If all Stage Tasks are Done and merged → Collapse Stage per §4.1 Task Tracking Format and proceed to §3.5 Stage Summary Creation.
-   - If Tasks are Ready → Proceed to `{GUIDE_PATH:task-assignment}` §3.2 Dispatch Assessment in the same turn.
+   - If Tasks are Ready → Proceed to `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment in the same turn.
    - If no Tasks are Ready but Workers are active → Communicate wait state per §2.4 Parallel Coordination Standards and direct User to return the next report.
 
 ### 3.4 Planning Document Modification
@@ -211,11 +211,11 @@ status: complete  # optional, set by Manager at project completion - absence mea
 
 **Tracker sections:**
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
-- *`## Agent Tracking`:* Records agent states, instance numbers, and coordination notes. Update agent tracking when agents are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the agent table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
+- *`## Worker Tracking`:* Records Worker states, instance numbers, and coordination notes. Update Worker tracking when Workers are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the Worker table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
 - *`## Version Control`:* Per-repository base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Populated by the Planner during Planning Phase Completion - branch state is tracked in the Task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.7 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
-**Agent Tracking Table:**
+**Worker Tracking Table:**
 ```markdown
 | Agent | Instance | Notes |
 |-------|----------|-------|
@@ -223,7 +223,7 @@ status: complete  # optional, set by Manager at project completion - absence mea
 | backend-agent | 1 | |
 ```
 
-**Cross-Agent Overrides** (below Agent Tracking table, when applicable):
+**Cross-Agent Overrides** (below Worker Tracking table, when applicable):
 ```markdown
 **Cross-Agent Overrides:**
 - frontend-agent: Tasks 1.1, 1.3 (pre-Handoff) - treat as cross-agent
