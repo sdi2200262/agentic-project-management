@@ -59,7 +59,6 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 Guidance may reference authoritative sources by path - the Manager reads those sources and integrates relevant content into the Task Prompt. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and Guidance.
 
 **Dispatch-aware structuring.** When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities. Three dispatch modes exist:
-
 - *Batch:* same-agent Task groups dispatchable together (sequential chains or independent groups).
 - *Parallel:* independent dispatch units for different agents, dispatchable simultaneously.
 - *Single:* a lone Ready Task with no batch or parallel partners.
@@ -80,8 +79,7 @@ When uncertain whether something qualifies, prefer placing it in Task guidance -
 
 ## 3. Work Breakdown Procedure
 
-Three sequential phases, each with its own analysis, file write, and User approval gate:
-
+Three sequential activities, each with its own analysis, file write, and User approval gate:
 1. Spec Analysis - analyze design decisions, write the Spec, pause for User review.
 2. Plan Analysis - analyze work structure, write the Plan, pause for User review.
 3. Rules Analysis - analyze execution patterns, write Rules, pause for User review.
@@ -135,7 +133,7 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
    - *Stage N Task Analysis.* For each Stage in order, state context (User requirements and constraints influencing this Stage), then for each Task:
      - *Worker assignment:* which Worker and why.
      - *Task scope:* what is the Task's scope? Is the User involved in any steps?
-     - *Task guidance:* implementation context the Worker needs: domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis.
+     - *Task guidance:* implementation context the Worker needs, including domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis.
      - *Task validation:* concrete criteria that verify the Task's deliverables - what to check and how. Note where User involvement is needed. Validation criteria co-define the Task with Guidance.
      - *Dependencies:* same-agent as `Task N.M`, cross-agent as **`Task N.M by <Agent>`** (bolded), specifying the deliverable at the boundary.
      - *Steps:* ordered operations building toward Task completion.

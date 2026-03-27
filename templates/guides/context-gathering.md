@@ -6,7 +6,7 @@
 
 This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. Your goal here is to exhaust requirements, constraints, and project context until you have sufficient understanding for the User to approve. Only after the User approves the understanding summary and you read the Work Breakdown guide do you begin decomposing work into planning documents, assigning Workers, or thinking about project structure.
 
-During the Implementation Phase, a Manager coordinates multiple Workers, each focused on a specific domain. Workers receive self-contained Task assignments — each includes its objective, instructions, and validation criteria. Workers validate as part of Task execution, iterating until criteria pass; there is no separate validation step after all work is done. Workers operate on dedicated git branches created by the Manager, and when multiple Workers execute in parallel, each operates in an isolated worktree. Context gathered here should distinguish between project-level design decisions (Spec), domain-specific implementation details (Task fields in the Plan), and universal execution patterns that apply to all Workers (Rules). Frame your questions with this structure in mind.
+During the Implementation Phase, a Manager coordinates multiple Workers, each focused on a specific domain. Workers receive self-contained Task assignments - each includes its objective, instructions, and validation criteria. Workers validate as part of Task execution, iterating until criteria pass; there is no separate validation step after all work is done. Workers operate on dedicated git branches created by the Manager, and when multiple Workers execute in parallel, each operates in an isolated worktree. Context gathered here should distinguish between project-level design decisions (Spec), domain-specific implementation details (Task fields in the Plan), and universal execution patterns that apply to all Workers (Rules). Frame your questions with this structure in mind.
 
 ---
 
@@ -16,7 +16,7 @@ During the Implementation Phase, a Manager coordinates multiple Workers, each fo
 
 - *Clarity over exhaustion:* Aim for sufficient understanding, not exhaustive interrogation.
 - *Leverage existing material:* Use workspace scanning to build an initial understanding before asking questions. Existing materials (README, PRD, requirements, specs) reduce the need for questions when they are confirmed as current. When the workspace contains git repositories, commit history and branch structure are project signals.
-- *Authority before deep exploration:* Reading discovered materials is orientation. Dispatching subagents for deep codebase exploration based on those materials requires authority: either the User's initiation context references the material or describes the project with enough specificity to imply authority, or the User confirms the material is current. When authority is established, explore freely.
+- *Authority before deep exploration:* Reading discovered materials is orientation. Dispatching subagents for deep codebase exploration based on those materials requires authority - either the User's initiation context references the material or describes the project with enough specificity to imply authority, or the User confirms the material is current. When authority is established, explore freely.
 - *Explore on signal:* When User responses reference codebase elements, or when authority over discovered materials is established, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
 - *Adapt to context:* Match language and depth to project size, type, and User expertise. Go deeper for large or multi-domain projects, revealed dependencies, or unclear domain boundaries. Stay light for small projects with clear, complete responses.
 - *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition until Context Gathering is complete and you are proceeding to Work Breakdown. Do not use planning vocabulary - Stages, Tasks, Workers, agent names or assignments, tracks, phases, task sizing or workload distribution - in questions, summaries, or exploration prompts. Mapping signals to work units happens exclusively during Work Breakdown.
@@ -69,10 +69,10 @@ Two setup activities (archive check, workspace scan), three progressive question
 Before beginning question rounds, check for previous session archives.
 
 1. Check if `.apm/archives/` exists.
-   - If it does not exist or is empty → Skip to §3.3 Round Iteration.
+   - If it does not exist or is empty → Skip to §3.2 Workspace Assessment.
 2. Read `.apm/archives/index.md` if present. Otherwise, list archive directories in `.apm/archives/`.
 3. Present the available archives to the User with basic info (name, date, scope). Ask: "Are any of these previous sessions relevant to the current project? If so, which ones?"
-   - If the User indicates none are relevant → Skip to §3.3 Round Iteration.
+   - If the User indicates none are relevant → Skip to §3.2 Workspace Assessment.
 4. For each indicated archive, {ARCHIVE_EXPLORER_GUIDANCE}. Integrate findings when the agent returns.
 5. Verify archived findings against the current codebase. {PLANNER_SUBAGENT_GUIDANCE} Use targeted verification questions based on the handles the archive explorer provided. Identify what still holds, what has changed, and what has been invalidated.
 6. Integrate verified context into question rounds as a baseline - focus subsequent questions on delta (what changed, what is new) rather than re-establishing what was already known.
@@ -87,7 +87,7 @@ Perform the following actions:
 3. If `{RULES_FILE}` was found, present its contents to the User. Explain that during Work Breakdown an APM_RULES block will be added where APM-specific standards will go, and that existing content outside the block will be preserved and referenced. Ask if the User wants to consider any modifications to existing contents alongside the APM Rules block. If not found, note its absence for the Agent configuration step in Round 1.
 4. Note the workspace structure to populate the Spec's Workspace section during Work Breakdown.
 
-Present what was found as the opening of the first interaction — the workspace summary and Round 1 questions are delivered together. Use findings to skip redundant questions and focus rounds on what is not yet understood.
+Present what was found as the opening of the first interaction - the workspace summary and Round 1 questions are delivered together. Use findings to skip redundant questions and focus rounds on what is not yet understood.
 
 ### 3.3 Round Iteration
 

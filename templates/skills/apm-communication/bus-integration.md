@@ -1,8 +1,3 @@
----
-name: bus-integration
-description: Standalone bus integration guide for agents operating outside APM's Manager coordination.
----
-
 # APM Bus System Integration Guide
 
 ## 1. Overview

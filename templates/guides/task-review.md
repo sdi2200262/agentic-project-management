@@ -9,7 +9,7 @@ This guide defines how you review Task results, determine review outcomes, modif
 ### 1.1 Outputs
 
 - *Stage summaries:* Appended to the Index after each Stage completion.
-- *Updated Tracker:* Updated after each review cycle to reflect completed Tasks, readiness changes, merge state, and coordination context.
+- *Updated Tracker:* Updated after each review cycle to reflect Task state changes, readiness changes, merge state, and coordination context.
 - *Modified planning documents:* When findings warrant it - updated Spec, Plan, or Rules.
 
 ---
@@ -78,13 +78,13 @@ Merge state is a dispatch prerequisite. Merge completed feature branches into th
 
 ### 2.6 Stage Summary Standards
 
-Stage summaries compress Stage execution for future incoming Manager instances (after Handoff) and project retrospectives. Write as descriptive prose covering outcome, agents involved, notable findings, and patterns - point to commits and key decisions. Follow with a Task Log reference list. Exclude implementation details, code specifics, and routine operations. Do not duplicate working notes or Memory notes as a separate section. Keep concise - coordination-ready context, not comprehensive documentation.
+Stage summaries compress the Stage's coordination history for future incoming Manager instances (after Handoff) and project retrospectives. Write as descriptive prose covering outcome, agents involved, notable findings, and patterns - point to commits and key decisions. Follow with a Task Log reference list. Exclude implementation details, code specifics, and routine operations. Do not duplicate working notes or Memory notes as a separate section. Keep concise - coordination-ready context, not comprehensive documentation.
 
 ### 2.7 Note-Taking Standards
 
 Notes capture context that falls outside structured tracking but aids coordination and continuity. Two categories serve different purposes:
 
-**Working Notes (Tracker).** Coordination context accumulated during the Stage. Working notes serve two purposes: ephemeral context for upcoming decisions (pending considerations, User preferences, temporary constraints) and durable observations awaiting distillation (patterns, preferences, architectural insights). Insert when a review yields note-worthy context. Remove ephemeral items when no longer applicable. At Stage summary time, distill durable observations into Memory notes in the Index per §3.5.
+**Working Notes (Tracker).** Coordination context accumulated during the Stage. Working notes serve two purposes: ephemeral context for upcoming decisions (pending considerations, User preferences, temporary constraints) and durable observations awaiting distillation (patterns, preferences, architectural insights). Insert when a review yields note-worthy context. Remove ephemeral items when no longer applicable. At Stage summary time, distill durable observations into Memory notes in the Index per §3.5 Stage Summary Creation.
 
 **Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Memory notes are written during Stage summary creation - distill accumulated working notes into Memory notes, retaining only observations with lasting value. Not all working notes become Memory notes. Ephemeral items - pending considerations, temporary constraints, status updates, routine observations - are discarded during distillation. Only durable observations that would help a future agent (patterns, User preferences, architectural insights, integration lessons) persist.
 
@@ -148,7 +148,7 @@ Perform the following actions:
 
 ### 3.5 Stage Summary Creation
 
-Execute when all Tasks in a Stage are complete. A Task is complete when the review concludes with no outstanding follow-ups. Write the Stage Summary once, after all follow-up cycles finish.
+Execute when all Tasks in a Stage are Done. A Task is Done when the review concludes with no outstanding follow-ups. Write the Stage Summary once, after all follow-up cycles finish.
 
 Perform the following actions:
 1. Enumerate Task Logs for the completed Stage using a directory listing, e.g., `ls .apm/memory/stage-<NN>/` (or platform equivalent). Synthesize from logs already reviewed during individual Task Reviews - re-reading is not needed when logs are unchanged and still in context.
@@ -212,7 +212,7 @@ status: complete  # optional, set by Manager at project completion - absence mea
 **Tracker sections:**
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
 - *`## Worker Tracking`:* Records Worker states, instance numbers, and coordination notes. Update Worker tracking when Workers are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the Worker table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
-- *`## Version Control`:* Per-repository base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Populated by the Planner during Planning Phase Completion - branch state is tracked in the Task table's Branch column.
+- *`## Version Control`:* Per-repository base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Branch state is tracked per-Task in the Task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.7 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
 **Worker Tracking Table:**

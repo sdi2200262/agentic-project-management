@@ -43,12 +43,13 @@ Perform the following actions:
 1. Update the Tracker and Index: replace `<Project Name>` with actual project name.
 2. Explore version control. Read the Spec's Workspace section for working repositories and any VC observations the Planner recorded. For each working repository:
    - Navigate to the directory. If git is not initialized, run `git init` and inform the User.
-   - Check git state: current branch, available branches, recent commit history. Note commit message patterns and branching patterns. The current branch is not necessarily the base branch the User wants — present what you find and confirm. If you notice potentially stale worktrees or orphaned branches, note them in the understanding summary for the User to address.
+   - Check git state: current branch, available branches, recent commit history. Note commit message patterns and branching patterns. The current branch is not necessarily the base branch the User wants - present what you find and confirm. If you notice potentially stale worktrees or orphaned branches, note them in the understanding summary for the User to address.
    - If `.apm/` is inside a repository directory, add `.apm/` to `.gitignore` by default. Ask the User if they want to track any `.apm/` artifacts in git (planning documents, Memory). If yes, adjust entries accordingly.
-3. Present understanding summary and VC conventions together for User approval.
-   **Understanding summary:** project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure, Task count, workstreams and efficient dispatch opportunities.
-   **Version control conventions:** Combine the Planner's VC observations with what you detected in step 2. Present APM's version control model: each Task dispatch creates a feature branch off the base branch (per `{GUIDE_PATH:task-assignment}` §3.3 Branch and Worktree Management); when multiple Workers operate in parallel, each gets an isolated worktree; Workers commit on their assigned branch following the agreed commit convention; the Manager merges completed branches back to base (per `{GUIDE_PATH:task-review}` §2.5 Merge Standards); APM does not push to remotes by default. Propose conventions — using detected patterns where they exist, lightweight defaults where they do not (`type/short-description` branches, `type: description` commits with types feat, fix, refactor, docs, test, chore). Confirm the base branch for each repository. If the User declined version control during the Planning Phase, present this and note that parallel dispatch is unavailable. Request approval to proceed.
-   - If corrections needed to your understanding or version control conventions → Integrate feedback and re-present.
+3. Present understanding summary and VC conventions together for User approval, covering:
+   - *Understanding summary:* project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure, Task count, workstreams and efficient dispatch opportunities.
+   - *Version control conventions:* combine the Planner's VC observations with what you detected in step 2. Present APM's version control model - each Task dispatch creates a feature branch off the base branch (per `{GUIDE_PATH:task-assignment}` §2.5 Version Control Standards); when multiple Workers operate in parallel, each gets an isolated worktree; Workers commit on their assigned branch following the agreed commit convention; the Manager merges completed branches back to base (per `{GUIDE_PATH:task-review}` §2.5 Merge Standards); APM does not push to remotes by default. Propose conventions - using detected patterns where they exist, lightweight defaults where they do not (`type/short-description` branches, `type: description` commits with types feat, fix, refactor, docs, test, chore). Confirm the base branch for each repository. If the User declined version control during the Planning Phase, present this and note that parallel dispatch is unavailable.
+4. Request User approval to proceed.
+   - If corrections needed → Integrate feedback and re-present.
    - If approved → Write the Tracker's Version Control table (one row per repository with base branch, branch convention, and commit convention), write commit conventions to `{RULES_FILE}` within the APM_RULES block, populate Task Tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format and Worker tracking with all Workers uninitialized. Then generate the first Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment and proceed to §3 Continuous Coordination.
 
 ### 2.2 Incoming Manager Initiation
@@ -78,7 +79,7 @@ After each review, reassess readiness and continue to dispatch in the same turn 
 
 ## 4. Stage Completion
 
-When all Tasks in a Stage are complete, create a Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation before dispatching the next Stage. If all Stages complete → §5 Project Completion.
+When all Tasks in a Stage are Done, create a Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation before dispatching the next Stage. If all Stages complete → §5 Project Completion.
 
 ---
 
@@ -87,7 +88,7 @@ When all Tasks in a Stage are complete, create a Stage summary per `{GUIDE_PATH:
 When all Stages are complete:
 1. Set `status: complete` in the Tracker's YAML frontmatter.
 2. Review all Stage summaries for overall project outcome.
-3. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, Stage outcomes, notable findings, and final deliverables.
+3. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, per-Stage summaries, notable findings, and final deliverables.
 4. Direct the User to the next steps. The APM session is now complete but its artifacts (Spec, Plan, Tracker, Memory, Task Logs) remain in `.apm/`. Two follow-up actions are available:
    - **Summarization:** running `/apm-8-summarize-session` in a new chat produces a structured session summary covering decisions made, work completed, and lessons learned.
    - **Archival:** running `apm archive` via the `agentic-pm` CLI converts the contents of the `.apm/` directory into a timestamped archive in `.apm/archives/` and cleans the workspace. The summarization agent also offers archival at the end of its procedure. Archives with session summaries are discovered and absorbed by future Planners more efficiently.

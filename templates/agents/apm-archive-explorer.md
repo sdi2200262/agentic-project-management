@@ -26,7 +26,7 @@ Each archive directory contains the session's planning and Memory artifacts:
 | `session-summary.md` | Point-in-time summary of the session (optional) | Read first if present |
 | `spec.md` | Design decisions and constraints | High - informs what was decided |
 | `plan.md` | Stage and Task breakdown, Dependency Graph | High - informs what was planned |
-| `tracker.md` | Final Task statuses, agent states, working notes | Medium - informs what happened |
+| `tracker.md` | Final Task statuses, Worker states, working notes | Medium - informs what happened |
 | `memory/index.md` | Memory notes and Stage summaries | Medium - informs patterns and outcomes |
 | `metadata.json` | Installation metadata and archival timestamp | Low - informs installation context |
 
@@ -35,7 +35,6 @@ Each archive directory contains the session's planning and Memory artifacts:
 ## 3. Exploration Procedure
 
 When you receive an archive path or list of archive paths:
-
 1. For each indicated archive:
    - Read `session-summary.md` if present. This provides a pre-built overview - skip redundant reads when the summary covers the needed detail.
    - If no summary exists or deeper detail is needed, read `spec.md` and `plan.md` for design decisions and work structure.

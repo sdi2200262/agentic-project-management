@@ -61,7 +61,7 @@ When a Task Prompt arrives (via `/apm-4-check-tasks`):
 3. **Report:** Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.
 4. **Await:** Wait for next Task Prompt or User instruction.
 
-Repeat until all assigned Tasks are complete, User intervenes, or Handoff is needed.
+Repeat until all assigned Tasks are Done, User intervenes, or Handoff is needed.
 
 ---
 

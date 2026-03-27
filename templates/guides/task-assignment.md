@@ -49,14 +49,14 @@ Follow-up Task Prompts occur when the review outcome determines retry after inve
 
 Before constructing individual Task Prompts, assess dispatch opportunities across Ready Tasks.
 
-**Task readiness:** A Task is Ready when all its dependencies are complete. Read the Tracker for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
+**Task readiness:** A Task is Ready when all its dependencies are Done. Read the Tracker for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
 
 **Dispatch modes.** Assess all Ready Tasks, group by Worker, and form dispatch units:
-- *Batch:* Multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all Ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
+- *Batch:* Multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all Ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Batches of 2-3 Tasks work well in practice.
 - *Single:* one Ready Task for a Worker.
 - *Parallel:* two or more dispatch units (any mix) with no unresolved cross-agent dependencies among them, dispatched simultaneously. Requires version control workspace isolation.
 
-**Parallel dispatch prerequisites:** Version control must be initialized (established during Manager 1 initiation per `{COMMAND_PATH:apm-2-initiate-manager}` §2.1). If version control is not active, fall back to sequential dispatch. Recommend the User configure platform tool approvals for Workers to minimize interactive wait times during parallel execution.
+**Parallel dispatch prerequisites:** Version control must be initialized (established during Manager 1 initiation per `{COMMAND_PATH:apm-2-initiate-manager}` §2.1 First Manager Initiation). If version control is not active, fall back to sequential dispatch. Recommend the User configure platform tool approvals for Workers to minimize interactive wait times during parallel execution.
 
 Before dispatching a ready unit, check whether a pending report would unlock Tasks that combine well with the current unit. If it is the only outstanding report, waiting costs little. If multiple reports are pending or no plausible combination exists, dispatch immediately.
 
@@ -190,7 +190,7 @@ Follow-up Task Prompts use the same structure as §4.1 Task Prompt Format with t
 
 ### 4.3 Branch Naming
 
-Branch naming follows the convention recorded in the Tracker Version Control table (established by the Planner during the Planning Phase). Branch names are descriptive of the actual work; for batches, the name reflects the batch scope.
+Branch naming follows the convention recorded in the Tracker Version Control table. Branch names are descriptive of the actual work; for batches, the name reflects the batch scope.
 
 ### 4.4 Worktree Directory Layout
 
