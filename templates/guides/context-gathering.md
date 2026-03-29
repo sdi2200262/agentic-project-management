@@ -6,23 +6,37 @@
 
 This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. Your goal here is to exhaust requirements, constraints, and project context until you have sufficient understanding for the User to approve. Only after the User approves the understanding summary and you read the Work Breakdown guide do you begin decomposing work into planning documents, assigning Workers, or thinking about project structure.
 
-During the Implementation Phase, a Manager coordinates multiple Workers, each focused on a specific domain. Workers receive self-contained Task assignments - each includes its objective, instructions, and validation criteria. Workers validate as part of Task execution, iterating until criteria pass; there is no separate validation step after all work is done. Workers operate on dedicated git branches created by the Manager, and when multiple Workers execute in parallel, each operates in an isolated worktree. Context gathered here should distinguish between project-level design decisions (Spec), domain-specific implementation details (Task fields in the Plan), and universal execution patterns that apply to all Workers (Rules). Frame your questions with this structure in mind.
-
 ---
 
 ## 2. Operational Standards
 
-### 2.1 Guiding Principles
+### 2.1 Workflow Context
+
+Context Gathering is the first of two sequential procedures. Understanding what comes next shapes how you gather context - which questions to ask, which to avoid, what depth to reach, and what to research yourself versus what remains for later.
+
+**What your context feeds into.** After Context Gathering completes and the User approves your understanding, you read the Work Breakdown guide and decompose gathered context into three planning documents:
+- *Spec:* Project-level design decisions and constraints. The Manager reads the Spec and uses it to construct work assignments for Workers.
+- *Plan:* How work is organized - structure, sequencing, and domain-specific details. The Manager uses the Plan for coordination and work assignment construction.
+- *Rules:* Universal execution standards that all Workers apply directly.
+
+Work Breakdown requires distinguishing project-level decisions from domain-specific details from universal patterns. The depth and quality of what you gather here directly determines the quality of those documents.
+
+**What happens after planning is complete.** The Manager coordinates the Implementation Phase: assigning work to Workers across domains, reviewing completed work, maintaining project state. The Manager enriches work assignments at runtime with workspace context, findings from completed work, and coordination notes - your documents provide the planning-time substance, the Manager adds what only runtime can determine. All coordination mechanics - version control conventions, how work gets assigned and sequenced between Workers, branch management, workspace isolation, merging - are the Manager's runtime domain.
+
+This shapes Context Gathering in practice. The planning documents need project substance - requirements, constraints, technical decisions, domain knowledge, design rationale. Coordination mechanics are the Manager's runtime concern, so your questions stay focused on the project itself. When version control patterns or coordination preferences surface from exploration or User responses, note them as factual observations. Technical understanding of existing codebases and systems is Context Gathering research - Workers execute from assignments derived from your documents, so inaccurate understanding here propagates forward.
+
+### 2.2 Guiding Principles
 
 - *Clarity over exhaustion:* Aim for sufficient understanding, not exhaustive interrogation.
 - *Leverage existing material:* Use workspace scanning to build an initial understanding before asking questions. Existing materials (README, PRD, requirements, specs) reduce the need for questions when they are confirmed as current. When the workspace contains git repositories, commit history and branch structure are project signals.
 - *Authority before deep exploration:* Reading discovered materials is orientation. Dispatching subagents for deep codebase exploration based on those materials requires authority - either the User's initiation context references the material or describes the project with enough specificity to imply authority, or the User confirms the material is current. When authority is established, explore freely.
-- *Explore on signal:* When User responses reference codebase elements, or when authority over discovered materials is established, proactively explore before continuing questions. See §2.4 Exploration and Research Standards.
+- *Explore on signal:* When User responses reference codebase elements, or when authority over discovered materials is established, proactively explore before continuing questions. See §2.5 Exploration and Research Standards.
 - *Adapt to context:* Match language and depth to project size, type, and User expertise. Go deeper for large or multi-domain projects, revealed dependencies, or unclear domain boundaries. Stay light for small projects with clear, complete responses.
-- *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition until Context Gathering is complete and you are proceeding to Work Breakdown. Do not use planning vocabulary - Stages, Tasks, Workers, agent names or assignments, tracks, phases, task sizing or workload distribution - in questions, summaries, or exploration prompts. Mapping signals to work units happens exclusively during Work Breakdown.
+- *Substance, not coordination:* Do not ask about version control preferences, branching strategies, or how work gets assigned between Workers - the framework handles coordination at runtime. Ask about the project - requirements, constraints, technical decisions, domain knowledge - so that these decisions are fully informed when you reach Work Breakdown after the User approves your understanding.
+- *Signals, not structure:* Identify work structure signals (domains, dependencies, complexity) but do not discuss or decide decomposition per §2.1 Workflow Context. Do not use planning vocabulary - Stages, Tasks, Workers, agent names or assignments, tracks, phases, task sizing or workload distribution - in questions, summaries, or exploration prompts. Do not surface internal awareness about document placement, decomposition, or coordination in User-facing output - it implies decisions that have not been made.
 - *Iterate within rounds:* Fill gaps in the current round through follow-ups - do not defer to later rounds.
 
-### 2.2 Response and Gap Assessment
+### 2.3 Response and Gap Assessment
 
 When processing User responses, assess what was explicitly stated, what can be reasonably inferred, and what assumptions you are making. Explicit statements are high-confidence. Inferences on critical points should be verified. Assumptions should be flagged for clarification.
 
@@ -32,11 +46,11 @@ When processing User responses, assess what was explicitly stated, what can be r
 - *Vague:* Rephrase with concrete interpretations.
 - *Incomplete:* Acknowledge the covered part and ask for the remainder.
 - *Contradictory:* Surface the contradiction neutrally.
-- *Uncertain:* Distinguish preferences (probe further) from genuine unknowns (consider research per §2.4 Exploration and Research Standards).
+- *Uncertain:* Distinguish preferences (probe further) from genuine unknowns (consider research per §2.5 Exploration and Research Standards).
 
 **Gap assessment:** A gap exists when information needed for planning documents is missing, ambiguous, or lacks validation criteria. After each User response, assess what gaps remain and what follow-ups would resolve them. Gaps are resolved by asking directly (missing info), rephrasing and confirming (ambiguity), or proposing concrete criteria (validation).
 
-### 2.3 Round Advancement
+### 2.4 Round Advancement
 
 Advance when the current round's focus areas are sufficiently covered and further questions would yield diminishing returns. Continue when gaps remain that affect planning document accuracy. Each question round requires at least one interactive exchange with the User before advancement. Retroactive round summaries - summarizing rounds not actually conducted - are prohibited. "Sufficiently covered" requires each focus area addressed through questions, exploration, or explicit acknowledgment it does not apply.
 
@@ -44,13 +58,13 @@ Before advancing, present a round completion summary in chat under the header **
 
 Round summaries present what was learned - do not organize findings into proposed work streams, structural groupings, or decomposition patterns. After Round 1 and 2 summaries, immediately begin the next round. After Round 3, continue to the understanding summary.
 
-### 2.4 Exploration and Research Standards
+### 2.5 Exploration and Research Standards
 
 When User responses or existing material reference codebase elements, or signal that relevant context exists, explore proactively. Do not wait for permission. Dispatch subagents autonomously to build deeper context. When subagent exploration answers some focus area questions but not others, ask the remaining unanswered ones. Ask reassurance and preference questions about big decisions or significant context gathered through exploration.
 
 **After exploration.** Reassess gaps: what is now known, what questions are answered, what new gaps emerged. Subsequent questions target the delta. Present critical findings for confirmation.
 
-**Scope assessment:** Research that builds your understanding of the project belongs in Context Gathering - exploring the codebase, verifying documentation, resolving technical unknowns. Research that is itself a project deliverable belongs in the Plan. Only defer when research is a project deliverable or the User explicitly requests deferral. When the project involves existing codebases that Workers will interact with, exploring those codebases to inform planning documents is Context Gathering work.
+**Scope assessment:** Research that builds your understanding of the project - exploring codebases, verifying documentation, resolving technical unknowns - belongs in Context Gathering per §2.1 Workflow Context. Research that is itself a project deliverable belongs in the Plan. Only defer when research is a project deliverable or the User explicitly requests deferral.
 
 **Self-explore vs subagent:** For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}
 
@@ -95,8 +109,8 @@ These rules apply across all three question rounds.
 
 **Iteration cycle.** For each question round:
 1. Ask the initial questions defined for the round.
-2. After each User response, assess gaps per §2.2 Response and Gap Assessment.
-3. Follow up on gaps or advance per §2.3 Round Advancement. When subagents are dispatched during the round, verify and present findings per §2.4 Exploration and Research Standards before continuing.
+2. After each User response, assess gaps per §2.3 Response and Gap Assessment.
+3. Follow up on gaps or advance per §2.4 Round Advancement. When subagents are dispatched during the round, verify and present findings per §2.5 Exploration and Research Standards before continuing.
 4. Repeat until the round's focus areas are sufficiently covered.
 
 Combine related questions naturally in conversation. Track what has been answered - ask only for what is missing.
@@ -120,7 +134,7 @@ Combine related questions naturally in conversation. Track what has been answere
 
 **Agent configuration.** If `{RULES_FILE}` was not found during §3.2 Workspace Assessment: "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
 
-**Round completion.** Present a round completion summary per §2.3 Round Advancement. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
+**Round completion.** Present a round completion summary per §2.4 Round Advancement. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 
 ### 3.5 Question Round 2: Technical Requirements
 
@@ -153,7 +167,7 @@ Combine related questions naturally in conversation. Track what has been answere
 - What has already been decided about technical direction, tools, or approaches - and what remains open?
 - Are there things that are definitely in or out of scope?
 
-**Round completion.** Present a round completion summary per §2.3 Round Advancement. You must have sufficient understanding of: design decisions and constraints, work structure and dependencies, technical requirements, complexity and risk factors, and validation criteria for core requirements.
+**Round completion.** Present a round completion summary per §2.4 Round Advancement. You must have sufficient understanding of: design decisions and constraints, work structure and dependencies, technical requirements, complexity and risk factors, and validation criteria for core requirements.
 
 ### 3.6 Question Round 3: Implementation Approach and Quality
 
@@ -184,7 +198,7 @@ Combine related questions naturally in conversation. Track what has been answere
 - Is there anything that's definitely in or out of scope?
 - Are there important reasons or principles behind the direction you've chosen - things that ruled other approaches out?
 
-**Round completion.** Present a round completion summary per §2.3 Round Advancement. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
+**Round completion.** Present a round completion summary per §2.4 Round Advancement. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
 
 ### 3.7 Finalize Understanding
 
@@ -217,7 +231,8 @@ The understanding summary is presented per §3.7 Finalize Understanding for User
 - *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified. Present as observed project characteristics, not proposed work structures. Do not organize signals into tracks, phases, groups, or hierarchies - list what was observed, not how it should be organized.
 - *Technical context:* environments, resources, constraints, access needs
 - *Process and quality:* workflow preferences, coordination requirements, approval gates, validation approach
-- *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found. Version control patterns observed during Context Gathering (commit conventions from git history, branching patterns, User preferences stated organically) are recorded as factual observations - the Manager reads these and establishes VC conventions during the Implementation Phase.
+- *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found.
+- *Observed preferences:* version control patterns, coordination preferences, or other factual observations that surfaced during exploration or User responses.
 
 The understanding summary captures what was gathered - not how it will be decomposed. Decomposition happens in the next procedure. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
 
@@ -234,10 +249,10 @@ Distinguish User requirements (constraints) from preferences (guidance). Require
 - *Over-questioning:* Excessive detail on minor aspects while missing critical gaps.
 - *Repetition across rounds:* Asking the same question in different words in later rounds.
 - *Skipping validation:* Accepting requirements without understanding success criteria.
-- *Premature decomposition:* Using decomposition vocabulary or organizing findings into work structures per §2.1 Guiding Principles (e.g., "Track A/B/C" hierarchies, "separate Workers," "task sizing").
-- *Ignoring existing materials:* Asking questions already answered by workspace materials per §2.1 Guiding Principles.
-- *Deferring exploration:* Waiting to research while signals indicate relevant context exists per §2.4 Exploration and Research Standards.
-- *Agent coordination questions:* Asking about Worker blocker handling, dispatch strategy, or escalation protocols - these are framework-defined, not project context. Round 3 coordination focuses on project-level needs (external reviews, approval gates), not agent coordination.
+- *Premature decomposition:* Organizing findings into work structures, naming specific agents, or using planning vocabulary (Stages, Tasks, Workers, tracks, phases, task sizing) during Context Gathering.
+- *Ignoring existing materials:* Asking questions already answered by workspace materials discovered during the workspace assessment.
+- *Deferring research:* Waiting to explore while signals indicate relevant context exists, or deferring technical questions to execution that should be resolved during Context Gathering.
+- *Framework coordination questions:* Asking about how the Manager assigns work, how Workers coordinate, version control preferences, or other mechanics handled at runtime. When coordination patterns surface organically, note them as factual observations.
 
 ---
 
