@@ -12,13 +12,13 @@ APM is an open-source framework for managing ambitious software projects with AI
 
 As conversations grow, AI context degrades. The assistant loses track of requirements, produces bad code, and hallucinates details. For substantial projects, this makes sustained progress nearly impossible.
 
-APM coordinates three specialized agent types, each operating in its own context with only the information it needs:
+To address this, APM coordinates three specialized agent types, each operating in its own context with only the information it needs:
 
 - **Planner** - Conducts structured project discovery and decomposes requirements into three planning documents: a Spec (what to build), a Plan (how work is organized), and Rules (how work is performed).
 - **Manager** - Coordinates execution by assigning Tasks to Workers, reviewing completed work, and maintaining project state. Operates on execution summaries rather than raw code.
-- **Workers** - Execute specific Tasks with tightly scoped context. Each Worker receives a self-contained Task Prompt with everything it needs, executes, validates, and reports back.
+- **Workers** - Execute specific Tasks with tightly scoped context. Each Worker receives self-contained Task Prompts with everything it needs, executes, validates, and reports back.
 
-Project state lives in structured files outside any agent's context. When a conversation ends or an agent reaches its limits, a Handoff transfers working knowledge to a fresh instance. Completed sessions can be archived and carried forward to new ones.
+Project state lives in structured files outside any agent's context. When a conversation ends or an agent reaches its limits, a Handoff transfers working knowledge to a fresh instance as needed. This also allows completed APM sessions to be archived and their context carried forward to new ones.
 
 You mediate every exchange between agents, keeping the workflow platform-agnostic and every interaction visible. Each agent guides you through the workflow at every step, telling you exactly which command to run, in which conversation, and what to do next.
 
@@ -28,7 +28,9 @@ You mediate every exchange between agents, keeping the workflow platform-agnosti
 
 ## Quick Start
 
-Supports Claude Code, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
+APM supports Claude Code, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
+
+Install the CLI:
 
 ```bash
 npm install -g agentic-pm
@@ -40,15 +42,20 @@ Navigate to your project directory and initialize:
 apm init
 ```
 
-Select your AI assistant when prompted. APM installs commands, guides, skills, and project artifact templates into your workspace.
+Select your AI assistant when prompted. The CLI installs commands, guides, skills, and project artifact templates into your workspace.
 
-Open your AI assistant and run:
+Next, open your AI assistant and run:
 
+```
+/apm-1-initiate-planner
+```
+
+You can also provide context about what you want to build:
 ```
 /apm-1-initiate-planner I want you to build Claude Opus 5. Make no mistakes.
 ```
 
-The Planner guides you through project discovery and creates planning documents. Once approved, it tells you to open a new conversation and run `/apm-2-initiate-manager` to begin coordinated execution. From there, each agent directs you through the workflow step by step.
+The Planner collaborates with you through project discovery and creates the planning documents for you to review. Once approved, it guides you to open a new conversation and run `/apm-2-initiate-manager` to begin coordinated execution. From there, each agent directs you through the workflow step by step.
 
 For the full walkthrough, see the [Getting Started](https://agentic-project-management.dev/docs/getting-started) guide.
 
