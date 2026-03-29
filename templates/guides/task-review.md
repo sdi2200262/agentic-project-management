@@ -205,7 +205,7 @@ Write the end state of each Task for the review-dispatch cycle. When a Task is u
 ```yaml
 ---
 title: <project name>
-status: complete  # optional, set by Manager at project completion - absence means in-progress
+completed_at: <datetime>  # set by Manager at project completion - absence means in-progress, ISO 8601 UTC
 ---
 ```
 

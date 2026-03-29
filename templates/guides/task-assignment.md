@@ -93,7 +93,7 @@ Assess dispatch opportunities from current project state per §2.4 Dispatch Stan
 Perform the following actions:
 1. Identify Ready Tasks from the Tracker. Cross-reference the Dependency Graph for newly unblocked Tasks.
 2. Check whether a pending report would unlock Tasks that combine well with currently Ready Tasks. If waiting costs little, consider it. Otherwise proceed.
-3. Group Ready Tasks by assigned Worker. Form dispatch units per §2.4 Dispatch Standards.
+3. Group Ready Tasks by assigned Worker. Form dispatch units per §2.4 Dispatch Standards - assess all three modes (single, batch, parallel) before committing to a dispatch plan.
 4. Assess parallel opportunity: if 2+ dispatch units exist with no unresolved cross-agent dependencies - parallel dispatch.
 5. Formulate dispatch plan: which Workers receive which units, whether parallel. For each Task, continue to per-Task analysis.
 
@@ -161,7 +161,7 @@ has_dependencies: true
 - `stage`: Stage number.
 - `task`: Task number within Stage.
 - `agent`: Worker identifier (kebab-case).
-- `log_path`: Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. All Tasks in the same Stage share the same Stage directory. You construct the path; the Worker writes directly to it.
+- `log_path`: Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. All Tasks in the same Stage share the same Stage directory. You construct the path; the Worker writes directly to it. For worktree dispatch, use an absolute path from the project root.
 - `has_dependencies`: Whether dependency context is present.
 
 **Prompt Body Sections:**

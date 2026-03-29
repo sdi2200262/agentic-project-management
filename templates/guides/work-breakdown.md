@@ -112,7 +112,7 @@ Present reasoning under the header **Spec Analysis:** addressing the aspects bel
 
 ### 3.2 Plan Analysis
 
-Present reasoning under the header **Plan Analysis:** with sub-headers **Domain Analysis:**, **Stage Analysis:**, **Stage N Task Analysis:** for each Stage, and **Dependency Analysis:** for the analytical phases. After writing the Plan, review under **Plan Review:**. Perform the following actions per §2.3 Plan Standards.
+Present reasoning under the header **Plan Analysis:** with sub-headers **Domain Analysis:**, **Stage Analysis:**, **Stage N Task Analysis:** for each Stage, and **Dependency Analysis:** for the analytical phases. Perform the following actions per §2.3 Plan Standards.
 
 **Plan Header:**
 1. Set `title` in `.apm/plan.md` YAML frontmatter to the project name (same as Spec).
@@ -137,15 +137,16 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      - *Task validation:* concrete criteria that verify the Task's deliverables - what to check and how. Note where User involvement is needed. Validation criteria co-define the Task with Guidance.
      - *Dependencies:* same-agent as `Task N.M`, cross-agent as **`Task N.M by <Agent>`** (bolded), specifying the deliverable at the boundary.
      - *Steps:* ordered operations building toward Task completion.
-     Every aspect above must be addressed for every Task - none may be skipped. Depth of reasoning varies with complexity, but coverage does not: even a concise Task analysis names the Worker, states scope, provides guidance, specifies validation criteria, lists dependencies, and defines steps. After each Stage, assess whether each Task represents independently validatable work per §2.1 Decomposition Principles.
-   - *Dependency Analysis.* After all Tasks are analyzed, verify all cross-agent dependencies are correctly identified and bolded. Cross-check agent assignments - if a dependency's producer differs from the consumer's agent, it must be bolded. Reason through the dependency audit (list, classify, flag misclassified) and cross-agent chains (provider, consumer, agents, required deliverable). Fix any misclassified dependencies. Generate a mermaid Dependency Graph per §4.2 Plan Format. Verify edge types: same-agent dependencies use `-->`, cross-agent dependencies use `-.->`. When presenting the dependency audit to the User, describe dependencies by their relationship rather than by graph notation.
+     Every aspect above must be addressed for every Task - none may be skipped. Depth of reasoning varies with complexity, but coverage does not: even a concise Task analysis names the Worker, states scope, provides guidance, specifies validation criteria, and lists dependencies. Steps incorporate all previous aspects. After each Stage, assess whether each Task represents independently validatable work per §2.1 Decomposition Principles.
+   - *Dependency Analysis.* After all Tasks are analyzed, verify all cross-agent dependencies are correctly identified and bolded. Cross-check agent assignments - if a dependency's producer differs from the consumer's agent, it must be bolded. Reason through the dependency audit (list, classify, flag misclassified) and cross-agent chains (provider, consumer, agents, required deliverable). Fix any misclassified dependencies. When presenting the dependency audit to the User, describe dependencies by their relationship rather than by graph notation.
 2. Write the full Plan per §4.2 Plan Format. Enrich Task details from reasoning. Ensure every cross-agent dependency is bolded at write time. Include the Dependency Graph in the Plan header.
-3. After writing the Plan, review it and correct any issues found:
+3. Re-read the written Plan and verify under the header **Plan Review:**
    - *Structural check:* Confirm every Task has all required fields (Objective, Output, Validation, Guidance, Dependencies, Steps). Confirm every cross-agent dependency is bolded in both the Task's Dependencies field and the Dependency Graph.
    - *Workload check:* Count Tasks per Worker. Flag disproportionate workloads for subdivision review. If a Worker is clearly overloaded, subdivide autonomously (reason through domain boundaries and Worker coherence, update assignments and dependencies). If the imbalance is borderline or involves judgment calls, present the assessment to the User and ask before modifying.
-   - *Consistency check:* Verify that Dependency Graph edge types match dependency classifications (`-->` same-agent, `-.->` cross-agent). Confirm Worker names in the Graph match the Workers table.
+   - *Consistency check:* Verify that the Dependency Graph correctly distinguishes same-agent from cross-agent dependencies. Confirm Worker names in the Graph match the Workers table.
+   Correct any issues found before presenting to the User.
 4. Pause for User review:
-   - State the Plan is complete and the artifact is created.
+   - State the Plan is complete and the artifact is created. Present a summary to the User: Worker count, Stage count with names and Task counts, total Tasks, dispatch patterns.
    - Ask User to review the Plan.
    - If modifications needed → Apply and repeat step 4.
    - If approved → Proceed to §3.3 Rules Analysis.
@@ -159,7 +160,7 @@ Perform the following actions per §2.4 `{RULES_FILE}` Standards:
    - **From the Spec:** execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in the Spec - they reach Workers through Task Prompts.
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan. Version control conventions are excluded - the Manager handles those and appends content to Rules during the start of the Implementation Phase.
-   - **Classification.** Which candidates are truly universal vs Task-specific; whether each is self-contained for Workers with no access to the Spec or the Plan. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains? Most projects produce few genuinely universal rules. Project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
+   - **Classification.** Which candidates are truly universal vs Task-specific; whether each is self-contained per §2.4 `{RULES_FILE}` Standards. Universal means applicable to every Worker regardless of domain - test each: does it apply to all Workers, or only specific domains? Most projects produce few genuinely universal rules. Project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
    - **Existing standards:** what `{RULES_FILE}` already contains; reference rather than duplicate.
 2. Write APM_RULES block to `{RULES_FILE}` per §4.3 APM_RULES Block:
    - If file exists: preserve existing content outside block, append APM_RULES block.
