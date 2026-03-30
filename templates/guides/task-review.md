@@ -90,6 +90,10 @@ Notes capture context that falls outside structured tracking but aids coordinati
 
 Use a bulleted list for both types - one item per note, each self-contained and understandable without surrounding context.
 
+### 2.8 Non-APM Agent Reports
+
+When a report arrives from an agent not listed in Worker tracking, it is a non-APM agent that joined the session independently. These reports do not follow the standard processing flow - there is no Task Log, no Worker tracking entry, and no dispatch state to update. Assess the report on its own terms: what the agent did, whether it affects planning documents or current dispatch. Add a working note to the Tracker recording the agent's identity and contribution. Inform the User of the findings. If follow-up work is needed, assign it per `{GUIDE_PATH:task-assignment}` §2.7 Non-APM Agent Dispatch.
+
 ---
 
 ## 3. Task Review Procedure

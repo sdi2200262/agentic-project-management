@@ -86,6 +86,10 @@ Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/
 
 When dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
 
+### 2.7 Non-APM Agent Dispatch
+
+When a non-APM agent has joined the session and you need to assign follow-up work to it, write a plain assignment to its Task Bus - not a full Task Prompt. Include what to do and what to produce, and instruct it to report back. Do not include log paths, logging instructions, or Handoff metadata - non-APM agents do not log to Memory or participate in Worker tracking.
+
 ---
 
 ## 3. Task Assignment Procedure
