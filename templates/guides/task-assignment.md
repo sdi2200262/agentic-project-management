@@ -86,6 +86,8 @@ When dispatching multiple sequential Tasks to the same Worker, send them as a ba
 
 ## 3. Task Assignment Procedure
 
+Dispatch assessment followed by per-Task analysis and prompt construction for each Task in the dispatch plan. Follow-up prompts use a separate construction path when a review outcome requires retry.
+
 ### 3.1 Dispatch Assessment
 
 Assess dispatch opportunities from current project state per §2.4 Dispatch Standards. Before each dispatch decision, assess the current project state visibly in chat under the header **Dispatch Assessment:** covering which Tasks are Ready, what dependency relationships exist among them, and what dispatch mode best serves progress and efficiency. Each dispatch cycle is a fresh assessment.

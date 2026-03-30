@@ -27,9 +27,9 @@ Communication at workflow transitions should orient the User: what was just comp
 
 ### 2.2 Visible Reasoning
 
-At procedural decision points, present analytical thinking visibly in chat before acting. This makes decisions auditable and gives the User opportunity to redirect. Reasoning quality correlates with output quality.
+At procedural decision points, present your analysis visibly in chat before acting. The User needs to understand why you are making each decision - explain your assessments, justify your choices, and surface trade-offs so they can review and audit your reasoning and redirect if needed. Reasoning quality correlates with output quality.
 
-When a procedure prescribes specific headers for reasoning, present those headers visibly and address each section beneath them. When a procedure describes aspects to cover without prescribing headers, cover all indicated aspects using whatever format suits the content - prose, lists, tables, or any combination. In both cases, the output is analytical reasoning the User can follow and audit. When no reasoning frame is provided, reason analytically: what you are assessing, key considerations, and your conclusion.
+When a procedure prescribes specific headers for reasoning, present those headers visibly and address each section beneath them. When a procedure describes aspects to cover without prescribing headers, cover all indicated aspects using whatever format suits the content - prose, lists, tables, or any combination. In both cases, the output is analysis presented for the User's review. When no reasoning frame is provided, present what you are assessing, the key considerations, and your conclusion.
 
 ### 2.3 Terminology Boundaries
 
@@ -37,11 +37,13 @@ Formal APM terms - consistently capitalized words in APM commands and guides lik
 
 The following are internal authoring structure - use them for navigation but never surface them in user-facing output:
 - Section references (§N.M).
-- Procedure names as labels.
+- Procedure names and named sections from your guides.
 - Step labels and checkpoint names.
 - Decision categories.
 
-Reasoning frame headers and their labeled aspects are always surfaced as defined by the procedure per §2.2 Visible Reasoning.
+When transitioning between sections, describe what you are doing and why rather than announcing which section you are executing. Describe your findings and move naturally into the next topic rather than stating "Beginning [section name]" or "Entering [step name]."
+
+Reasoning frame headers prescribed by your procedures are always surfaced as defined per §2.2 Visible Reasoning. These are analytical output structure, not section announcements.
 
 ---
 

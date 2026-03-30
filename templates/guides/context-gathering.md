@@ -76,7 +76,7 @@ When User responses or existing material reference codebase elements, or signal 
 
 ## 3. Context Gathering Procedure
 
-Two setup activities (archive check, workspace scan), three progressive question rounds following shared iteration rules, and a finalization with User approval. Complete each step before proceeding to the next.
+Two setup steps (archive check and workspace scan), three progressive question rounds with iterative follow-ups until each round's focus areas are sufficiently covered, and a finalization with a consolidated understanding summary for User approval. Complete each step before proceeding to the next.
 
 ### 3.1 Archive Context
 

@@ -45,14 +45,14 @@ Task Logs serve the Manager's coordination needs, not archival documentation. As
 
 ## 3. Task Logging Procedure
 
-Execute after Task completion per `{GUIDE_PATH:task-execution}` §3.6 Task Completion.
+Two sequential steps after Task completion: write the Task Log, then deliver the Task Report via the bus. Execute after Task completion per `{GUIDE_PATH:task-execution}` §3.6 Task Completion.
 
 ### 3.1 Task Log Procedure
 
 After Task execution, populate the Task Log at the path provided in the Task Prompt (`log_path`).
 
 Perform the following actions:
-1. Assess execution outcomes visibly in chat: what was delivered, what issues or important findings arose, and what to flag for the Manager.
+1. Present your assessment of execution outcomes visibly in chat: what was delivered, what issues or important findings arose, and what to flag for the Manager.
 2. Complete YAML frontmatter fields:
    - Set `status` per §2.2 Outcome Standards.
    - Set `failure_point`: `null` for Success, or a description for Partial and Failed.

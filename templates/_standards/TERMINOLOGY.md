@@ -76,7 +76,7 @@ Partial means "I need guidance to continue." Failed means "I could not achieve t
 
 | Term | Definition |
 | ------ | ------------ |
-| **Procedure** | A named workflow activity in APM. Each Procedure defines a specific phase of agent work: Context Gathering, Work Breakdown, Task Assignment, Task Execution, Task Review, Task Logging, and Handoff. |
+| **Procedure** | A defined workflow operation in APM. Each Procedure covers a specific part of agent work: Context Gathering, Work Breakdown, Task Assignment, Task Execution, Task Review, Task Logging, and Handoff. |
 
 | Term | Definition |
 | ------ | ------------ |

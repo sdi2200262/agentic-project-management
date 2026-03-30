@@ -93,7 +93,7 @@ Assess the failure per §2.3 Iteration Standards. If continuing: correct the iss
 ### 3.6 Task Completion
 
 Perform the following actions:
-1. Assess visibly in chat: whether all objectives are met and deliverables are ready, whether any important findings or compatibility issues arose, and determine the Task's outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards.
+1. Present your assessment visibly in chat: whether all objectives are met and deliverables are ready, whether any important findings or compatibility issues arose, and the Task's outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards.
 2. Commit work to the assigned branch per §2.5 Version Control Standards.
 3. Create Task Log per `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure at `log_path`.
 4. Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery. Include relevant status indications:

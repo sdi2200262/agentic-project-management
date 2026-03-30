@@ -4,7 +4,7 @@
 
 **Reading Agent:** Planner
 
-This guide defines the process for Work Breakdown, which transforms gathered context into planning documents (Spec, Plan, and Rules) through visible reasoning - thinking visibly in chat before committing to files.
+This guide defines the process for Work Breakdown, which transforms gathered context into planning documents (Spec, Plan, and Rules) through visible reasoning - presenting analysis in chat for the User to review before committing to files.
 
 ### 1.1 Outputs
 
@@ -86,12 +86,9 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 
 ## 3. Work Breakdown Procedure
 
-Three sequential activities, each with its own analysis, file write, and User approval gate:
-1. Spec Analysis - analyze design decisions, write the Spec, pause for User review.
-2. Plan Analysis - analyze work structure, write the Plan, pause for User review.
-3. Rules Analysis - analyze execution patterns, write Rules, pause for User review.
+Three sequential documents (Spec, Plan, Rules), each with its own analysis, file write, and User approval gate. Complete each and wait for User approval before starting the next.
 
-Complete each phase before starting the next. Present reasoning visibly in chat as natural analytical thinking per `{SKILL_PATH:apm-communication}` §2.2 Visible Reasoning. At each approval gate, describe what was written, what comes next if approved, and ask for review.
+Present analysis visibly in chat for the User to review per `{SKILL_PATH:apm-communication}` §2.2 Visible Reasoning. At each approval gate, describe what was written, what comes next if approved, and ask for review.
 
 ### 3.1 Spec Analysis
 

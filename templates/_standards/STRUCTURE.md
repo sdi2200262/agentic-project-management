@@ -87,7 +87,7 @@ Guides follow a consistent structure with §1 Overview, §2 Operational Standard
 | ------- | ------ | ------- |
 | Overview | §1 | Introduce purpose and reading agent. Subsections for objectives and outputs are optional - include when they convey non-obvious information not already clear from the guide title. |
 | Operational Standards | §2 | Define reasoning approaches and decision rules for the procedure. |
-| [Procedure Section] | §3 | Define the procedure and its activities. |
+| [Procedure Section] | §3 | Define the procedure and its parts. |
 | Structural Specifications | §4 | Define output formats and schemas. Omit when the guide produces no artifacts or only references formats defined elsewhere. |
 | Content Guidelines | §5 | Common Mistakes for genuinely non-obvious error patterns. Omit quality standards subsections that restate §2 Operational Standards. |
 
@@ -95,7 +95,7 @@ Guides follow a consistent structure with §1 Overview, §2 Operational Standard
 
 **§5 Content Guidelines elevation:** When Content Guidelines contains only Common Mistakes (no additional quality subsections), the heading becomes `## 5. Common Mistakes` - dropping the "Content Guidelines" container. This elevation applies only to this section, and the section number follows the renumbering rule above.
 
-**Procedure section structure:** Each guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. Subsections (§3.1, §3.2...) are the procedure's activities. When the procedure has multiple phases with distinct gates (write-approve cycles, conditional branches) or non-obvious flow patterns (loops, mixed step/rules subsections), a brief sequence description before the first subsection orients the reader on the overall structure. These describe the procedure's shape - they are not outlines that duplicate subsection headers verbatim.
+**Procedure section structure:** Each guide contains one procedure. Section title is `## 3. [Procedure Name] Procedure`. A brief description before the first subsection orients the reader on the procedure's shape - its parts, their order, and any non-sequential flow (loops, conditional branches, approval gates). These describe structure, not duplicate subsection headers verbatim. Subsections (§3.1, §3.2...) define the procedure's flow.
 
 ### 3.2 Section Requirements
 
@@ -103,7 +103,7 @@ Guides follow a consistent structure with §1 Overview, §2 Operational Standard
 
 **§2 Operational Standards:** One subsection per standards area. Cover reasoning and decision areas for the procedure. Include default behavior statements where ambiguity is possible.
 
-**§3 Procedure:** Single procedure with subsection activities. Cross-references §2 standards when decisions apply. Includes conditional branching where applicable.
+**§3 Procedure:** Single procedure with subsections defining its flow. Cross-references §2 standards when decisions apply. Includes conditional branching where applicable.
 
 **§4 Structural Specifications:** Define formats for all outputs. Specify file path patterns. Provide schemas with field descriptions. Omit type and required annotations for self-documenting fields.
 
