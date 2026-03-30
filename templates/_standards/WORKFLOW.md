@@ -113,7 +113,7 @@ The Message Bus is a file-based communication mechanism in `.apm/bus/`. The Plan
 | Report Bus | `report.md` | Worker → Manager | Task Reports |
 | Handoff Bus | `handoff.md` | Outgoing → incoming agent | Handoff prompt content |
 
-A bus file is either empty (no message present) or contains a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. This prevents stale messages from accumulating and signals that the previous message was processed.
+A bus file is either empty (no message present) or contains a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. This prevents stale messages from accumulating and signals that the previous message was processed. Agents always read a bus file before writing to it to ensure cross-platform file tool compatibility.
 
 Workers read their Task Bus when the User runs `/apm-4-check-tasks` in the Worker's chat. The Manager reads Report Buses when the User runs `/apm-5-check-reports`. Both commands accept optional agent identifier arguments for targeted delivery.
 
