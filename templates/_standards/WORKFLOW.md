@@ -153,13 +153,13 @@ Project persistence resides in `.apm/` with this hierarchy:
 
 **Tracker** (`tracker.md`) is the live project state document. It contains Task tracking, Worker tracking, version control state, and working notes. The Manager updates it throughout the Implementation Phase as the operational view for dispatch decisions, dependency analysis, and Handoff continuity.
 
-**Index** (`memory/index.md`) is the project's durable memory. It contains Memory notes (persistent observations and patterns with lasting value) and Stage summaries (appended after each Stage completion). Memory notes come first - durable knowledge is hit first by incoming Managers.
+**Index** (`memory/index.md`) is the project's durable memory. It contains Memory notes (observations with lasting impact on future coordination) and Stage summaries (historical record of each Stage, appended after completion). Memory notes come first - forward-looking knowledge is hit first by incoming Managers.
 
 **Task tracking** (within Tracker) records Task statuses, agent assignments, and branch state per Stage. The Manager updates it after each Task Review. Tasks progress through lifecycle states per `TERMINOLOGY.md` §4: Waiting, Ready, Active, Done.
 
 **Worker tracking** (within Tracker) records Worker identifiers, instance numbers, and notes. Workers start as uninitialized and transition to Instance N when initialized. The Manager updates it when Workers are first dispatched to, and when Handoffs are detected. Cross-agent overrides are recorded below the Worker table when Worker Handoffs reclassify dependencies.
 
-**Working notes** (within Tracker) are coordination context maintained by the Manager and User. Contents include User preferences, coordination insights, and durable observations awaiting distillation into Memory notes at Stage summary time. Working notes are inserted and removed as context evolves.
+**Working notes** (within Tracker) are coordination context accumulated during the Stage - User preferences, coordination insights, technical observations, patterns noticed during reviews. At Stage end, working notes are distilled: observations with lasting impact become Memory notes, Stage-specific observations become Stage summary prose. Working notes are inserted and removed as context evolves.
 
 **Stage directories** (`memory/stage-<NN>/`) contain Task Logs for each Stage. Workers write Task Logs directly to the specified `log_path`; the file write operation creates parent directories as needed.
 

@@ -78,15 +78,15 @@ Merge state is a dispatch prerequisite. Merge completed feature branches into th
 
 ### 2.6 Stage Summary Standards
 
-Stage summaries compress the Stage's coordination history for future incoming Manager instances (after Handoff) and project retrospectives. Write as descriptive prose covering outcome, agents involved, notable findings, and patterns - point to commits and key decisions. Follow with a Task Log reference list. Exclude implementation details, code specifics, and routine operations. Do not duplicate working notes or Memory notes as a separate section. Keep concise - coordination-ready context, not comprehensive documentation.
+Stage summaries are the historical record of what happened during the Stage - written for future incoming Manager instances (after Handoff) and project retrospectives. They capture the Stage's coordination history and absorb Stage-specific observations from working notes during distillation. Write as descriptive prose covering outcome, agents involved, notable findings, patterns, and key decisions - point to commits where relevant. Implementation details belong in Task Logs, not here - but when working notes captured important events that involved implementation specifics, those are part of the Stage's history and belong in the summary. Follow with a Task Log reference list for deeper detail. Do not duplicate Memory notes as a separate section.
 
 ### 2.7 Note-Taking Standards
 
 Notes capture context that falls outside structured tracking but aids coordination and continuity. Two categories serve different purposes:
 
-**Working Notes (Tracker).** Coordination context accumulated during the Stage. Working notes serve two purposes: ephemeral context for upcoming decisions (pending considerations, User preferences, temporary constraints) and durable observations awaiting distillation (patterns, preferences, architectural insights). Insert when a review yields note-worthy context. Remove ephemeral items when no longer applicable. At Stage summary time, distill durable observations into Memory notes in the Index per §3.5 Stage Summary Creation.
+**Working Notes (Tracker).** Coordination context accumulated during the Stage - pending considerations, User preferences, temporary constraints, technical observations, patterns noticed during reviews. Insert when a review yields note-worthy context. Remove items that are no longer applicable as the Stage progresses. At Stage end, all working notes are distilled into two destinations per §3.5 Stage Summary Creation: Stage summary prose per §2.6 Stage Summary Standards and Memory notes.
 
-**Memory Notes (Index):** Durable observations that persist across Handoffs and inform future agents. Memory notes are written during Stage summary creation - distill accumulated working notes into Memory notes, retaining only observations with lasting value. Not all working notes become Memory notes. Ephemeral items - pending considerations, temporary constraints, status updates, routine observations - are discarded during distillation. Only durable observations that would help a future agent (patterns, User preferences, architectural insights, integration lessons) persist.
+**Memory Notes (Index).** Observations with lasting impact on future Stages, coordination, or assignments - User preferences, operational principles, architectural insights, patterns that shape upcoming decisions. Not all working notes become Memory notes. Implementation details and Stage-specific observations belong in the Stage summary, not in Memory - they are historical, not forward-looking.
 
 Use a bulleted list for both types - one item per note, each self-contained and understandable without surrounding context.
 
@@ -156,7 +156,7 @@ Execute when all Tasks in a Stage are Done. A Task is Done when the review concl
 
 Perform the following actions:
 1. Enumerate Task Logs for the completed Stage using a directory listing, e.g., `ls .apm/memory/stage-<NN>/` (or platform equivalent). Synthesize from logs already reviewed during individual Task Reviews - re-reading is not needed when logs are unchanged and still in context.
-2. Filter working notes: remove ephemeral items, distill durable observations into Memory notes in the Index. Keep ephemeral working notes that will be needed in the next Stage. When this review immediately triggers Stage summary (last Task in Stage), durable observations from this review can be written directly to Memory notes rather than first passing through working notes.
+2. Distill working notes per §2.7 Note-Taking Standards: observations with lasting impact on future work become Memory notes in the Index, Stage-specific observations become Stage summary prose. Keep working notes that will be needed in the next Stage. When this review immediately triggers Stage summary (last Task in Stage), observations from this review can be written directly to their destinations rather than first passing through working notes.
 3. Synthesize Stage-level observations and append a Stage summary to the Index per §4.4 Stage Summary Format. The Index structure (Memory notes above Stage summaries) enables steps 2 and 3 as a single contiguous edit.
 
 ---
