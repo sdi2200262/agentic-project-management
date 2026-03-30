@@ -225,13 +225,11 @@ The understanding summary captures what was gathered - not how it will be decomp
 
 ## 5. Common Mistakes
 
-- *Over-questioning:* Excessive detail on minor aspects while missing critical gaps.
-- *Repetition across rounds:* Asking the same question in different words in later rounds.
-- *Skipping validation:* Accepting requirements without understanding success criteria.
-- *Premature decomposition:* Organizing findings into work structures, naming specific agents, or using planning vocabulary (Stages, Tasks, Workers, tracks, phases, task sizing) during Context Gathering.
-- *Ignoring existing materials:* Asking questions already answered by workspace materials discovered during the workspace assessment.
-- *Deferring research:* Waiting to explore while signals indicate relevant context exists, or deferring technical questions to execution that should be resolved during Context Gathering.
-- *Framework coordination questions:* Asking about how the Manager assigns work, how Workers coordinate, version control preferences, or other mechanics handled at runtime. When coordination patterns surface organically, note them as factual observations.
+- *Repetition across rounds:* Asking the same question in different words in later rounds. Track what has been answered.
+- *Skipping validation criteria:* Accepting requirements without understanding how success will be verified. Every requirement needs concrete criteria.
+- *Silent research absorption:* Dispatching subagents, receiving results, and distilling them into summaries without showing the User what was found. Present research findings to the User before incorporating them - the User catches errors the Planner cannot.
+- *Unverified subagent claims:* Accepting subagent findings as authoritative without reading the referenced files directly. Subagent summaries compress details and can misrepresent what matters for planning - claims that enter the Spec unverified mislead Workers downstream.
+- *Autonomous architectural decisions:* Selecting a technical approach based on research without presenting viable alternatives and tradeoffs to the User. Architectural choices that shape what Workers build require User decision.
 
 ---
 

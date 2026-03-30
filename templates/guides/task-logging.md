@@ -245,6 +245,7 @@ If the batch stopped early due to a Failed Task, indicate which Task caused the 
 
 - *Forgetting conditional sections:* When a flag is `true`, include the corresponding section (Compatibility Concerns, Important Findings).
 - *Missing artifact references:* When deliverables are produced, list file paths in the Output section.
+- *Deferred batch logging:* In batch execution, write each Task Log immediately after completing that Task - before starting the next. Deferring all logging to the end of a batch risks context loss if auto-compaction occurs mid-batch.
 
 ---
 

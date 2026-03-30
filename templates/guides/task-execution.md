@@ -106,9 +106,10 @@ Perform the following actions:
 ## 4. Common Mistakes
 
 - *Task Prompt metadata in code:* Step numbers, Task IDs, and APM terminology do not belong in project source files, comments, or commit messages.
-- *Missing Handoff indication:* Not indicating incoming Worker status after Handoff.
 - *Incomplete cross-agent integration:* Proceeding without fully reading and understanding cross-agent dependency context.
-- *Premature Partial:* Partial is for pausing to seek guidance, not for giving up early. Continue iterating when validation failed but the cause is clear and fixable.
+- *Debug spiraling:* Iterating on persistent bugs in the main context without delegating to a subagent. Extended debug loops consume context rapidly and risk auto-compaction. When direct fixes are not converging after initial attempts, dispatch a debug subagent to isolate the investigation.
+- *Working non-incrementally:* Writing large deliverables in one pass without testing intermediate results. Build incrementally - compile, run, or validate after each meaningful step rather than producing everything and then discovering issues.
+- *Logging Success with incomplete validation:* Marking a Task as Success when validation criteria were not fully exercised. If criteria cannot be met (missing resources, need User cooperation), log as Partial and explain what remains rather than claiming Success with caveats.
 
 ---
 

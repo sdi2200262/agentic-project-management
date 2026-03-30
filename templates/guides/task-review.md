@@ -281,12 +281,11 @@ modified: Task 2.3 scope clarified based on task-02-02.log.md findings. Modified
 
 ## 5. Common Mistakes
 
-- *Duplicating log content:* Stage summaries should reference logs, not reproduce them.
-- *Ignoring flags:* `important_findings` and `compatibility_issues` force deeper review - skipping breaks the coordination loop.
 - *Fake Success:* If a Worker claims Success but log content does not support it, treat as investigation needed.
+- *Accepting insufficient reports:* Marking Tasks as Done when validation criteria were not fully exercised or deliverables are partial. Push back with a follow-up assignment before accepting.
 - *Skipping Handoff detection:* Failing to track Worker Handoff leads to incorrect dependency context treatment.
+- *Unacknowledged recovery:* When a Worker report indicates auto-compaction occurred, factor this into the assessment - reconstructed context may have affected report completeness.
 - *Symptom treatment:* Modifying one document to work around an issue that should be addressed in another.
-- *Orphaned references:* Removing items without updating references from other documents.
 - *Missing cascade:* Updating the Spec or Plan without assessing impact on the other.
 - *Unauthorized modifications:* Making significant changes without User collaboration.
 

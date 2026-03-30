@@ -299,17 +299,13 @@ APM_RULES {
 **`{RULES_FILE}`.** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_RULES block rather than duplicating existing standards. Format selection: tables for pattern comparisons, code blocks for syntax examples, bulleted lists for rules, numbered lists for sequential steps, prose for context.
 
 ### 5.2 Common Mistakes
-- *Over-specification:* Implementation details in the Spec that belong in Task guidance - if it only affects one Task, it is Task guidance.
 - *Under-specification:* Design decisions left implicit - if it could reasonably go multiple ways, document the chosen direction.
-- *Task packing:* Multiple unrelated deliverables in one Task - split them.
-- *Over-decomposition:* Excessive small Tasks - combine when they share context and validation.
 - *Vague validation:* "Works correctly" is not a criterion - specify what "correctly" means concretely.
 - *Missing dependencies:* Tasks requiring prior work not marked - trace prerequisites.
-- *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph (`-->` vs `-.->`) - classify at write time by checking whether producer and consumer share the same agent. Verify during Plan review.
-- *Duplicating source documents:* Restating requirements from User documents (PRD, specifications) instead of referencing the source. The Spec captures design decisions layered on existing requirements.
-- *Non-universal standards:* Task-specific patterns elevated to `{RULES_FILE}` - if it only applies to some Tasks, it is Task guidance.
-- *Output specifications as standards:* Elevating response formats, error strings, or interface contracts to `{RULES_FILE}`. These define what is being built and belong in the Spec - universality across Workers does not make them execution patterns.
-- *Standards referencing external documents:* The Spec, Plan, and design artifacts are intentionally omitted from Workers' context - referencing them from `{RULES_FILE}` undermines that scoping. See §2.5 `{RULES_FILE}` Standards.
+- *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph - classify at write time by checking whether producer and consumer share the same agent. Verify during Plan Review.
+- *Duplicating source documents:* Restating requirements from User documents instead of referencing the source. The Spec captures design decisions layered on existing requirements.
+- *Collapsed phases:* Producing all three documents in one reasoning block instead of following the sequential analyze-write-approve cycle. Each document has a distinct approval gate - the User reviews each before the next begins.
+- *Skipped approval gate:* Completing an internal review and proceeding to the next document without pausing for User approval. The Planner's review and the User's approval are separate steps.
 
 ---
 
