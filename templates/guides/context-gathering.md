@@ -29,7 +29,7 @@ This shapes Context Gathering in practice. The planning documents need project s
 
 - *Clarity over exhaustion:* Aim for sufficient understanding, not exhaustive interrogation.
 - *Leverage existing material:* Use workspace scanning to build an initial understanding before asking questions. Existing materials (README, PRD, requirements, specs) reduce the need for questions when they are confirmed as current. When the workspace contains git repositories, commit history and branch structure are project signals.
-- *Authority before deep exploration:* Reading discovered materials is orientation. Dispatching subagents for deep codebase exploration based on those materials requires authority - either the User's initiation context references the material or describes the project with enough specificity to imply authority, or the User confirms the material is current. When authority is established, explore freely.
+- *Authority before deep exploration:* Authority over project-defining materials is established during initiation per `{COMMAND_PATH:apm-1-initiate-planner}` §2 - either from the User's front-loaded context or through User confirmation. Deep codebase exploration is based on materials with established authority. When authority is established, explore freely.
 - *Explore on signal:* When User responses reference codebase elements, or when authority over discovered materials is established, proactively explore before continuing questions. See §2.5 Exploration and Research Standards.
 - *Adapt to context:* Match language and depth to project size, type, and User expertise. Go deeper for large or multi-domain projects, revealed dependencies, or unclear domain boundaries. Stay light for small projects with clear, complete responses.
 - *Substance, not coordination:* Do not ask about version control preferences, branching strategies, or how work gets assigned between Workers - the framework handles coordination at runtime. Ask about the project - requirements, constraints, technical decisions, domain knowledge - so that these decisions are fully informed when you reach Work Breakdown after the User approves your understanding.
@@ -76,34 +76,19 @@ When User responses or existing material reference codebase elements, or signal 
 
 ## 3. Context Gathering Procedure
 
-Two setup steps (archive check and workspace scan), three progressive question rounds with iterative follow-ups until each round's focus areas are sufficiently covered, and a finalization with a consolidated understanding summary for User approval. Complete each step before proceeding to the next.
+Archive and workspace context setup (building on initiation), three progressive question rounds with iterative follow-ups until each round's focus areas are sufficiently covered, and a finalization with a consolidated understanding summary for User approval. Complete each step before proceeding to the next.
 
-### 3.1 Archive Context
+### 3.1 Pre-Round Context
 
-Before beginning question rounds, check for previous session archives.
+**Archives.** If archives were identified as relevant during initiation, explore them now. For each relevant archive, {ARCHIVE_EXPLORER_GUIDANCE}. Verify archived findings against the current codebase using the handles the archive explorer provides per §2.5 Exploration and Research Standards. Integrate verified context as a baseline - focus subsequent questions on delta rather than re-establishing what was already known.
 
-1. Check if `.apm/archives/` exists.
-   - If it does not exist or is empty → Skip to §3.2 Workspace Assessment.
-2. Read `.apm/archives/index.md` if present. Otherwise, list archive directories in `.apm/archives/`.
-3. Present the available archives to the User with basic info (name, date, scope). Ask: "Are any of these previous sessions relevant to the current project? If so, which ones?"
-   - If the User indicates none are relevant → Skip to §3.2 Workspace Assessment.
-4. For each indicated archive, {ARCHIVE_EXPLORER_GUIDANCE}. Integrate findings when the agent returns.
-5. Verify archived findings against the current codebase. {PLANNER_SUBAGENT_GUIDANCE} Use targeted verification questions based on the handles the archive explorer provided. Identify what still holds, what has changed, and what has been invalidated.
-6. Integrate verified context into question rounds as a baseline - focus subsequent questions on delta (what changed, what is new) rather than re-establishing what was already known.
+**Deep exploration.** When the workspace contains codebases relevant to the project, explore all of them before entering question rounds - not selectively. Questions asked without baseline knowledge of a relevant codebase will be poorly targeted. For substantial research, {PLANNER_SUBAGENT_GUIDANCE}
 
-### 3.2 Workspace Assessment
-
-Before question rounds begin, scan the workspace to map the project environment. 
-
-Perform the following actions:
-1. Scan the workspace: list root directory structure, identify git repositories (check recent commit history and branch structure), and locate existing materials (README, PRD, requirements docs, architecture docs). Read `{RULES_FILE}` if it exists. Note workspace structure: which directories are working targets, which are references, whether the workspace is a single repo, multi-repo, or not a repo. When the workspace contains multiple codebases relevant to the project, explore all of them during the workspace assessment - not selectively. Questions asked without baseline knowledge of a relevant codebase will be poorly targeted.
-2. Determine authority over discovered materials. If the initiation context references specific documents or describes the project with enough specificity to imply document authority, treat referenced materials as authoritative - read them and use them as a basis for deeper exploration. If the initiation context is absent or does not establish authority, present discovered materials to the User alongside the first round of questions and ask which are current and relevant. Read confirmed materials; note others without using them as a basis for deep exploration.
-3. If `{RULES_FILE}` was found, present its contents to the User. Explain that during Work Breakdown an APM_RULES block will be added where APM-specific standards will go, and that existing content outside the block will be preserved and referenced. Ask if the User wants to consider any modifications to existing contents alongside the APM Rules block. If not found, note its absence for the Agent configuration step in Round 1.
-4. Note the workspace structure to populate the Spec's Workspace section during Work Breakdown.
+**`{RULES_FILE}`.** If `{RULES_FILE}` was found during initiation, present its contents to the User. Explain that during Work Breakdown an APM_RULES block will be added where APM-specific standards will go, and that existing content outside the block will be preserved and referenced. Ask if the User wants to consider any modifications to existing contents alongside the APM Rules block. If not found, note its absence for the Agent configuration step in Round 1.
 
 Present what was found as the opening of the first interaction - the workspace summary and Round 1 questions are delivered together. Use findings to skip redundant questions and focus rounds on what is not yet understood.
 
-### 3.3 Round Iteration
+### 3.2 Round Iteration
 
 These rules apply across all three question rounds.
 
@@ -119,7 +104,7 @@ Combine related questions naturally in conversation. Track what has been answere
 
 **Validation criteria gathering:** Capture success states and criteria for each requirement. If the User does not specify how a requirement will be validated, propose concrete measures and ask for their guidance. Integrate validation gathering into Rounds 2 and 3 follow-ups.
 
-### 3.4 Question Round 1: Existing Materials and Vision
+### 3.3 Question Round 1: Existing Materials and Vision
 
 **Focus areas:** Project type and deliverables, problem and purpose, essential features and scope, required skills and expertise, existing documentation and materials, current plan or vision, previous work and codebase context.
 
@@ -132,11 +117,11 @@ Combine related questions naturally in conversation. Track what has been answere
 6. What is your current plan or vision?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
 
-**Agent configuration.** If `{RULES_FILE}` was not found during §3.2 Workspace Assessment: "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
+**Rules configuration.** If `{RULES_FILE}` was not found during §3.1 Archive and Workspace Context: "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
 
 **Round completion.** Present a round completion summary per §2.4 Round Advancement. You must have sufficient understanding of: project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 
-### 3.5 Question Round 2: Technical Requirements
+### 3.4 Question Round 2: Technical Requirements
 
 **Focus areas:** Design decisions and constraints, work structure and dependencies, technical and resource requirements, complexity and risk assessment, validation criteria.
 
@@ -169,7 +154,7 @@ Combine related questions naturally in conversation. Track what has been answere
 
 **Round completion.** Present a round completion summary per §2.4 Round Advancement. You must have sufficient understanding of: design decisions and constraints, work structure and dependencies, technical requirements, complexity and risk factors, and validation criteria for core requirements.
 
-### 3.6 Question Round 3: Implementation Approach and Quality
+### 3.5 Question Round 3: Implementation Approach and Quality
 
 **Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, project-level coordination and approval requirements (external reviews or validation, stakeholder sign-offs, approval gates), domain organization.
 
@@ -200,7 +185,7 @@ Combine related questions naturally in conversation. Track what has been answere
 
 **Round completion.** Present a round completion summary per §2.4 Round Advancement. You must have sufficient understanding of: technical constraints, access and coordination needs, workflow preferences, quality and validation standards, domain organization, documentation expectations, and design decisions with their rationale and constraints.
 
-### 3.7 Finalize Understanding
+### 3.6 Finalize Understanding
 
 After completing the three question rounds, present gathered context for User review.
 
@@ -220,7 +205,7 @@ Perform the following actions:
 
 ### 4.1 Understanding Summary Format
 
-The understanding summary is presented per §3.7 Finalize Understanding for User review. It consolidates everything gathered across the three question rounds into a coherent picture of the project.
+The understanding summary is presented per §3.6 Finalize Understanding for User review. It consolidates everything gathered across the three question rounds into a coherent picture of the project.
 
 **Structure:** Use free-form markdown. Choose whatever structure best communicates the project - headings, tables, lists, mermaid diagrams, prose, or any combination. Adapt the format to the project's nature and complexity.
 

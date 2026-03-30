@@ -20,33 +20,40 @@ You will create or update `{RULES_FILE}` at workspace root with Rules during Wor
 
 **Initiation context from User:** {ARGS}
 
-If the line above contains text, the User has front-loaded project context. Incorporate it before starting Context Gathering - it may focus discovery and reduce question rounds. Do not skip Context Gathering. If empty, ignore and proceed normally.
+If the line above contains text, the User has front-loaded project context. This may establish which materials are authoritative and focus discovery. Do not skip Context Gathering regardless of how much context is provided. If empty, proceed without assumptions.
 
 ---
 
-## 2. Context Gathering Procedure
+## 2. Workspace Discovery and Authority
+
+Before reading the Context Gathering guide, scan the workspace and establish which materials are authoritative. This determines what you carry into Context Gathering.
 
 Perform the following actions:
-1. Read `{GUIDE_PATH:context-gathering}` for the project discovery process.
-2. Execute the guide through completion. The guide controls question rounds 1-3, gap assessment, the understanding summary, and the procedure checkpoint.
-3. When complete, return here and proceed to §3 Work Breakdown Procedure.
+1. Light scan: list root directory structure, identify git repositories and their recent commit history, locate materials that could inform planning (PRDs, requirements docs, specifications, design docs, TODOs). Check if `.apm/archives/` exists. Read `{RULES_FILE}` if it exists. READMEs and general documentation are workspace orientation - read them freely but do not dispatch subagents or explore codebases deeply. Deeper exploration happens after reading the Context Gathering guide. Note the workspace structure: which directories are working targets, which are references, whether the workspace is a single repo, multi-repo, or not a repo.
+2. Assess what you found in step 1 against the initiation context:
+   - Materials and archives identified directly or implicitly by the initiation context are authoritative and valuable for project discovery. Read them and proceed to §3 Context Gathering Procedure without pausing for User confirmation.
+   - Materials and archives not clearly established as relevant by the initiation context - pause and ask the User which are current and relevant before reading them. When confirmed, proceed to §3 Context Gathering Procedure.
+   - When there is no initiation context, ask the User about everything you found in step 1. When confirmed, proceed to §3 Context Gathering Procedure.
 
 ---
 
-## 3. Work Breakdown Procedure
+## 3. Context Gathering Procedure
 
-**Prerequisite:** Context Gathering Procedure must be complete.
+**Prerequisite:** Workspace Discovery and Authority must be complete.
 
-The `.apm/` directory contains fresh templates created by `apm init` - Spec, Plan, Tracker, and Memory Index with placeholder content. These are your scaffolds to populate during this procedure.
-
-Perform the following actions:
-1. Read `{GUIDE_PATH:work-breakdown}`.
-2. Execute the guide through completion. The guide controls Spec, Plan, and Rules creation, each with User approval checkpoints.
-3. When the guide completes, proceed to §4 Planning Phase Completion.
+Read `{GUIDE_PATH:context-gathering}` and any authoritative documents from §2 together. Execute the guide through completion. The guide controls deep codebase exploration, three iterative question rounds, gap assessment for each round, the understanding summary, and the procedure checkpoint. When complete, proceed to §4 Work Breakdown Procedure.
 
 ---
 
-## 4. Planning Phase Completion
+## 4. Work Breakdown Procedure
+
+**Prerequisite:** Context Gathering Procedure must be complete with User-approved understanding summary.
+
+The `.apm/` directory contains fresh templates created by `apm init` - Spec, Plan, Tracker, and Memory Index with placeholder content. These are your scaffolds to populate during this procedure. Read `{GUIDE_PATH:work-breakdown}` and execute the guide through completion. The guide controls Spec, Plan, and Rules analysis and creation, each with User approval checkpoints. When complete, proceed to §5 Planning Phase Completion.
+
+---
+
+## 5. Planning Phase Completion
 
 **Prerequisite:** Work Breakdown Procedure must be complete with all planning documents approved.
 
@@ -61,10 +68,10 @@ Perform the following actions:
 
 ---
 
-## 5. Operating Rules
+## 6. Operating Rules
 
 - Read only the APM documents listed in this command and in the referenced guides. Do not read other agents' guides, commands, or APM procedural documents beyond those referenced here and their internal cross-references.
-- You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.4 Exploration and Research Standards. Prefer subagents for cross-codebase research to preserve context for Work Breakdown.
+- You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.5 Exploration and Research Standards. Prefer subagents for cross-codebase research to preserve context for Work Breakdown.
 
 ---
 
