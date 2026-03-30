@@ -33,9 +33,13 @@ Tasks may depend on outputs from previous Tasks. The context you include depends
 
 ### 2.2 Spec Extraction Standards
 
-Task Prompts must be self-contained. Extract relevant Spec content and integrate it directly into the prompt - never reference the Spec by path. Workers should not need to look beyond their Task Prompt. When the Spec references external User documents for specific content, follow those references and extract the relevant content directly - the Task Prompt remains self-contained regardless of where the source content resides.
+Task Prompts must be self-contained with respect to planning documents and authoritative sources - Workers do not read the Spec, Plan, or external design documents. Extract relevant content from these sources and integrate it directly into the prompt. Never reference the Spec or Plan by path.
 
-**Include** content that defines interfaces, schemas, or contracts the Task must implement; establishes constraints on approach or patterns; or clarifies design decisions affecting deliverables. **Exclude** content relating to other domains, providing background without actionable requirements, or already captured in the Task's Guidance field. Preserve specificity with exact constraints, not summaries.
+**Embed** content the Worker cannot discover from the codebase alone: design decisions and constraints from the Spec, corrected findings from previous Tasks, integration guidance derived from coordination context, and content from authoritative User documents the Spec references. Preserve specificity with exact constraints, not summaries.
+
+**Reference with reading instructions** content that exists in the codebase: source files, existing patterns, configurations. Point the Worker to specific files and what to look for in them - the Worker reads them directly from their workspace. This applies to both dependency context and Spec content that references codebase patterns. The Manager's value is knowing which files matter and what to look for, not embedding their contents.
+
+**Exclude** content relating to other domains, providing background without actionable requirements, or already captured in the Task's Guidance field.
 
 ### 2.3 Follow-Up Standards
 
