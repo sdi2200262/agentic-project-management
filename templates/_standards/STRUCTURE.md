@@ -133,6 +133,8 @@ description: <one or two sentence description of skill purpose>
 
 Skills require §1 Overview (including reading agents) and an end marker. Subsections for objectives and outputs within §1 are optional - include when they convey non-obvious information. Beyond §1, skills organize content freely to match their nature. Skills may contain operational standards, procedures, structural specifications, content guidelines, or any combination - section naming and ordering adapts to the skill's purpose.
 
+**Additional files.** A skill directory may contain additional files alongside `SKILL.md` for supplementary content (integration guides, reference material, scripts). Additional files do not require YAML frontmatter or specific section structure.
+
 ---
 
 ## 5. Agent Structure

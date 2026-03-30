@@ -52,7 +52,7 @@ Two sequential steps after Task completion: write the Task Log, then deliver the
 After Task execution, populate the Task Log at the path provided in the Task Prompt (`log_path`).
 
 Perform the following actions:
-1. Present your assessment of execution outcomes visibly in chat: what was delivered, what issues or important findings arose, and what to flag for the Manager.
+1. From the completion assessment already presented in chat per `{GUIDE_PATH:task-execution}` §3.6 Task Completion, determine what to capture in the Task Log.
 2. Complete YAML frontmatter fields:
    - Set `status` per §2.2 Outcome Standards.
    - Set `failure_point`: `null` for Success, or a description for Partial and Failed.
@@ -68,7 +68,7 @@ Perform the following actions:
 2. Write the Task Report to the Report Bus: `.apm/bus/<agent-slug>/report.md`. The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log.
 3. Direct the User to deliver the report to the Manager per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication - provide both `/apm-5-check-reports <agent-id>` for targeted retrieval and `/apm-5-check-reports` as the general command, since multiple Workers may finish concurrently.
 
-For batch execution, write a single batch report per `{SKILL_PATH:apm-communication}` §4.5 Batch Report Envelope Format after completing all Tasks (or stopping on failure).
+For batch execution, write a single batch report per §4.3 Batch Report Format after completing all Tasks (or stopping on failure).
 
 ---
 
@@ -138,6 +138,98 @@ compatibility_issues: true | false
 [Only include if important_findings: true]
 [Project-relevant discoveries that Manager must know]
 ```
+
+### 4.2 Task Report Format
+
+Task Reports are concise summaries written to the Report Bus for the Manager to process. Detail belongs in the Task Log - the report provides enough for the Manager to assess the outcome and locate the log.
+
+**Location:** `.apm/bus/<agent-slug>/report.md`
+
+**YAML Frontmatter Schema:**
+
+```yaml
+---
+stage: <N>
+task: <M>
+agent: <agent-slug>
+status: Success | Partial | Failed
+log_path: ".apm/memory/stage-<NN>/task-<NN>-<MM>.log.md"
+important_findings: true | false
+compatibility_issues: true | false
+---
+```
+
+**Field Descriptions:**
+- `stage`: Stage number from the Task Prompt.
+- `task`: Task number from the Task Prompt.
+- `agent`: Your agent identifier.
+- `status`: Task outcome per §2.2 Outcome Standards.
+- `log_path`: Path to the Task Log for this Task.
+- `important_findings`: Same value as the Task Log.
+- `compatibility_issues`: Same value as the Task Log.
+
+**Markdown Body:** 1-2 sentences summarizing the outcome. Reference the Task Log for detail.
+
+For batch reports, use §4.3 Batch Report Format instead.
+
+### 4.3 Batch Report Format
+
+When completing a batch of Tasks (or stopping early on failure), the Report Bus file uses this structure.
+
+**Location:** `.apm/bus/<agent-slug>/report.md`
+
+**YAML Frontmatter Schema:**
+
+```yaml
+---
+batch: true
+batch_size: <N>
+completed: <M>
+stopped_early: true | false
+tasks:
+  - stage: 1
+    task: 1
+    status: Success
+  - stage: 1
+    task: 2
+    status: Failed
+  - stage: 1
+    task: 3
+    status: "Not started"
+---
+```
+
+**Field Descriptions:**
+- `batch`: Always `true` for batch reports.
+- `batch_size`: Total Tasks in the batch.
+- `completed`: Tasks that were executed (excludes unstarted).
+- `stopped_early`: Whether the batch stopped before completing all Tasks.
+- `tasks[].stage`: Stage number.
+- `tasks[].task`: Task number within Stage.
+- `tasks[].status`: `Success`, `Partial`, `Failed`, or `"Not started"` for unexecuted Tasks.
+
+**Markdown Body Template:**
+
+```markdown
+# Batch Report
+
+## Summary
+[Brief overview: X of Y Tasks completed, stopped early if applicable]
+
+## Task Outcomes
+
+### <Title>
+**Status:** [Success | Partial | Failed]
+**Task Log:** `<log_path>`
+[1-2 sentence summary of outcome]
+
+...
+
+## Batch Notes
+[Any cross-cutting observations, patterns, or issues affecting multiple Tasks]
+```
+
+If the batch stopped early due to a Failed Task, indicate which Task caused the stop and list remaining Tasks as "Not started (batch stopped)."
 
 ---
 

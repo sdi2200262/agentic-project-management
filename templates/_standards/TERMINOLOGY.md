@@ -131,7 +131,7 @@ These concepts are not formal capitalized terms but are clearly defined because 
 **Dispatch modes.** The Manager determines how to dispatch Ready Tasks:
 
 - *Single:* one Task dispatched to one Worker.
-- *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates either form a chain with only internal dependencies, or are an independent group of same-Worker Tasks all Ready simultaneously. When forming chains, the Manager weighs whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 3-5 Tasks per batch.
+- *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates either form a chain with only internal dependencies, or are an independent group of same-Worker Tasks all Ready simultaneously. When forming chains, the Manager weighs whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 2-3 Tasks per batch.
 - *Parallel:* two or more dispatch units (singles or batches) sent to different Workers simultaneously when no unresolved cross-Worker dependencies exist. Requires version control workspace isolation.
 
 **Agent instances.** Each agent role is numbered sequentially. Manager 1 is the first Manager; Manager 2 takes over after Handoff. Workers follow the same pattern (e.g., Frontend Agent 1, Frontend Agent 2). Instance numbers are tracked in the Tracker's Worker tracking table. Auto-compaction recovery does not increment the instance number - the recovered agent continues as the same instance. Instance number increments via Handoff.

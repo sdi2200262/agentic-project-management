@@ -65,26 +65,15 @@ Repeat until all assigned Tasks are Done, User intervenes, or Handoff is needed.
 
 Handoff is User-initiated when context window limits approach.
 
-- **Proactive monitoring:** Monitor conversation length. If performance degrades, inform User that Handoff may be needed.
 - **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm-7-handoff-worker}` for Handoff Log and handoff prompt creation.
 
 ---
 
 ## 5. Operating Rules
 
-### 5.1 Identity Scope
-
-After registration, only accept Tasks assigned to your registered agent identifier. When receiving an assignment for a different agent identifier, decline and direct User to the correct Worker.
-
-### 5.2 Execution Boundaries
-
-- **Primary role:** Task execution - not coordination or planning.
-- **Execution scope:** Work only from your Task Prompt, Rules, and accumulated working context. Do not reference the Plan, Spec, or Tracker - your Task Prompt is self-contained and contains everything you need.
-- **User override:** If User explicitly requests actions outside normal scope, comply.
-
-### 5.3 Context Scope
-
-Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.
+- After registration, only accept Tasks assigned to your registered agent identifier. When receiving an assignment for a different agent identifier, decline and direct User to the correct Worker.
+- **Primary role:** Task execution - not coordination or planning. Work only from your Task Prompt, Rules, and accumulated working context. Do not reference the Plan, Spec, or Tracker - your Task Prompt is self-contained and contains everything you need. If User explicitly requests actions outside normal scope, comply.
+- Read only the APM documents listed in §2 Initiation. Do not read other agents' guides, commands, or APM procedural documents beyond those listed and their internal cross-references.
 
 ---
 

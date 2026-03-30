@@ -71,7 +71,7 @@ Perform the following actions:
 ## 6. Operating Rules
 
 - Read only the APM documents listed in this command and in the referenced guides. Do not read other agents' guides, commands, or APM procedural documents beyond those referenced here and their internal cross-references.
-- You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.5 Exploration and Research Standards. Prefer subagents for cross-codebase research to preserve context for Work Breakdown.
+- You may explore the codebase and conduct research during Context Gathering per `{GUIDE_PATH:context-gathering}` §2.5 Exploration and Research Standards.
 
 ---
 

@@ -4,7 +4,7 @@
 
 **Reading Agent:** Planner
 
-This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. Your goal here is to exhaust requirements, constraints, and project context until you have sufficient understanding for the User to approve. Only after the User approves the understanding summary and you read the Work Breakdown guide do you begin decomposing work into planning documents, assigning Workers, or thinking about project structure.
+This guide defines the process for Context Gathering - gathering sufficient context to create accurate planning documents that enable structured project execution. Your goal here is to exhaust requirements, constraints, and project context until you have sufficient understanding for the User to approve. Only after the User approves the understanding summary and you read the Work Breakdown guide do you begin decomposing work into planning documents, assigning Workers, or addressing project structure.
 
 ---
 
@@ -68,7 +68,7 @@ When User responses or existing material reference codebase elements, or signal 
 
 **Self-explore vs subagent:** For focused investigation (specific files, targeted questions, quick lookups), self-explore directly. For substantial research (cross-codebase exploration, extensive investigation), {PLANNER_SUBAGENT_GUIDANCE}
 
-**After subagent results return.** Read the key files or paths the subagent references to confirm critical claims directly - subagent summaries compress and sometimes misrepresent details that matter for planning. When verification contradicts the subagent's findings or reveals important context that needs deeper investigation, dispatch a follow-up subagent with a more targeted scope to resolve the discrepancy, then verify the follow-up's claims in turn. Present a concise summary of verified findings to the User: what was found, what it means for the project, and any alternatives or tradeoffs discovered. If the findings complete the round's remaining questions, include the research summary as a dedicated section in the round advancement. If gaps remain, present findings within the follow-up iteration and continue with unanswered questions.
+**After subagent results return.** Read the key files or paths the subagent references to confirm critical claims directly - subagent summaries compress details and can misrepresent what matters for planning. When verification contradicts the subagent's findings or reveals important context that needs deeper investigation, dispatch a follow-up subagent with a more targeted scope to resolve the discrepancy, then verify the follow-up's claims in turn. Present a concise summary of verified findings to the User: what was found, what it means for the project, and any alternatives or tradeoffs discovered. If the findings complete the round's remaining questions, include the research summary as a dedicated section in the round advancement. If gaps remain, present findings within the follow-up iteration and continue with unanswered questions.
 
 **Decision authority.** When gathered context, whether from research, User input, codebase exploration, or your own understanding, reveals multiple viable approaches to an architectural or design question, present the alternatives with tradeoffs and a recommendation with justifiable reasoning. The User decides which approach to take. When a single clear approach emerges, present it with supporting evidence and proceed unless the User redirects.
 
@@ -223,13 +223,7 @@ The understanding summary captures what was gathered - not how it will be decomp
 
 ---
 
-## 5. Content Guidelines
-
-### 5.1 Communication Quality
-
-Distinguish User requirements (constraints) from preferences (guidance). Requirements are non-negotiable; preferences allow judgment during planning.
-
-### 5.2 Common Mistakes
+## 5. Common Mistakes
 
 - *Over-questioning:* Excessive detail on minor aspects while missing critical gaps.
 - *Repetition across rounds:* Asking the same question in different words in later rounds.

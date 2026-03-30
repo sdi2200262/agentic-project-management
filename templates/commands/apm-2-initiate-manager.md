@@ -96,7 +96,7 @@ When all Stages are complete:
 
 Handoff is User-initiated when context window limits approach.
 
-- **Proactive monitoring:** Monitor conversation length. If performance degrades, inform User that Handoff may be needed.
+- **Proactive monitoring:** Monitor Worker performance through their reports and Task Logs. If a Worker's output quality degrades or a report indicates auto-compaction occurred, inform the User that the Worker needs a Handoff or recovery to continue effectively.
 - **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm-6-handoff-manager}` for Handoff Log and handoff prompt creation.
 
 ---

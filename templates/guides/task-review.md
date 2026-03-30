@@ -18,7 +18,7 @@ This guide defines how you review Task results, determine review outcomes, modif
 
 ### 2.1 Task Log Review Standards
 
-The goal is to extract information needed for the next review decision.
+Extract the information needed for the next review decision.
 
 **Status interpretation.** Assess whether the status and flags are consistent with the log's body content - inconsistency is a hallucination indicator. Status values: Success (objective achieved, all validation passed), Partial (progress made, needs guidance), Failed (objective not achieved).
 
@@ -78,7 +78,7 @@ Merge state is a dispatch prerequisite. Merge completed feature branches into th
 
 ### 2.6 Stage Summary Standards
 
-Stage summaries are the historical record of what happened during the Stage - written for future incoming Manager instances (after Handoff) and project retrospectives. They capture the Stage's coordination history and absorb Stage-specific observations from working notes during distillation. Write as descriptive prose covering outcome, agents involved, notable findings, patterns, and key decisions - point to commits where relevant. Implementation details belong in Task Logs, not here - but when working notes captured important events that involved implementation specifics, those are part of the Stage's history and belong in the summary. Follow with a Task Log reference list for deeper detail. Do not duplicate Memory notes as a separate section.
+Stage summaries are the historical record of what happened during the Stage - written for future incoming Manager instances (after Handoff) and project retrospectives. They capture the Stage's coordination history and absorb Stage-specific observations from working notes during distillation. Write as descriptive prose covering outcome, agents involved, notable findings, patterns, and key decisions - point to commits where relevant. Implementation details belong in Task Logs, not here - but when working notes captured important events that involved implementation specifics, those are part of the Stage's history and belong in the summary. Follow with a Task Log reference list for deeper detail. Keep concise - coordination-ready context, not comprehensive documentation. Do not duplicate Memory notes as a separate section.
 
 ### 2.7 Note-Taking Standards
 
@@ -106,7 +106,7 @@ Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or 
 
 Perform the following actions:
 1. Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`).
-2. If batch report (`batch: true` in frontmatter), process each Task's outcome individually through §3.2 Task Log Review and §3.3 Review Outcome. Unstarted Tasks re-enter the dispatch pool.
+2. If batch report (`batch: true` in frontmatter): the report contains per-Task outcomes in a `tasks` array (each with `stage`, `task`, `status`) and fields `completed`, `stopped_early`. Process each completed Task individually through §3.2 Task Log Review and §3.3 Review Outcome. Tasks with status `"Not started"` re-enter the dispatch pool.
 3. Check for Handoff indication - look for a statement that the Worker is a new instance, a list of current-Stage Task Logs read, and a note that previous-Stage logs were not loaded. If detected, verify the Handoff Log exists. Update Worker tracking in the Tracker: increment the instance number for this Worker. Compare the loaded Task Logs against all Tasks previously completed by this Worker and record cross-agent overrides in the Tracker for any completed Tasks whose logs were not loaded. From this point forward, previous-Stage same-agent dependencies for this Worker are treated as cross-agent.
 4. Check for auto-compaction indication - a Worker that recovered from auto-compaction notes it in the Task Report. If detected, update Worker tracking Notes in the Tracker (e.g., "auto-compacted, recovered"). No dependency reclassification - the Worker continues as the same instance. Provide slightly more comprehensive dependency context in future Task Prompts for this Worker.
 5. Update dispatch tracking: mark this Worker as available, note completed Task(s) for readiness assessment.
@@ -145,9 +145,9 @@ Perform the following actions:
 1. Capture triggering context: which Task Log revealed the findings, what specific findings indicate modification, Task status and flags, post-investigation outcome.
 2. Apply §2.3 Planning Document Modification Standards: assess affected documents, analyze cascade implications, determine authority scope.
 3. If any modification requires User collaboration → Present concisely: trigger, required change, authority exceeded rationale, options with trade-offs, recommendation. Integrate User guidance.
-4. Execute modifications following existing document patterns per §4.6 Planning Document Modification Guidelines. Verify consistency: reference integrity across documents (same data descriptions match), terminology consistency, scope alignment between the Spec and Plan. When correcting the Spec, check whether the Plan references the same content and update accordingly.
-5. When modifying Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph per §4.6 Planning Document Modification Guidelines.
-6. Document: update `modified` field in Spec and/or Plan YAML frontmatter per §4.5 Modification Log Format.
+4. Execute modifications following existing document patterns per §4.5 Planning Document Modification Guidelines. Verify consistency: reference integrity across documents (same data descriptions match), terminology consistency, scope alignment between the Spec and Plan. When correcting the Spec, check whether the Plan references the same content and update accordingly.
+5. When modifying Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph per §4.5 Planning Document Modification Guidelines.
+6. Document: update `modified` field in Spec and/or Plan YAML frontmatter per §4.4 Modification Log Format.
 7. Proceed to §3.3 Review Outcome step 4 to update tracking. Reassess readiness against the updated Plan and proceed accordingly.
 
 ### 3.5 Stage Summary Creation
@@ -157,7 +157,7 @@ Execute when all Tasks in a Stage are Done. A Task is Done when the review concl
 Perform the following actions:
 1. Enumerate Task Logs for the completed Stage using a directory listing, e.g., `ls .apm/memory/stage-<NN>/` (or platform equivalent). Synthesize from logs already reviewed during individual Task Reviews - re-reading is not needed when logs are unchanged and still in context.
 2. Distill working notes per §2.7 Note-Taking Standards: observations with lasting impact on future work become Memory notes in the Index, Stage-specific observations become Stage summary prose. Keep working notes that will be needed in the next Stage. When this review immediately triggers Stage summary (last Task in Stage), observations from this review can be written directly to their destinations rather than first passing through working notes.
-3. Synthesize Stage-level observations and append a Stage summary to the Index per §4.4 Stage Summary Format. The Index structure (Memory notes above Stage summaries) enables steps 2 and 3 as a single contiguous edit.
+3. Synthesize Stage-level observations and append a Stage summary to the Index per §4.3 Index Format. The Index structure (Memory notes above Stage summaries) enables steps 2 and 3 as a single contiguous edit.
 
 ---
 
@@ -216,7 +216,7 @@ completed_at: <datetime>  # set by Manager at project completion - absence means
 **Tracker sections:**
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
 - *`## Worker Tracking`:* Records Worker states, instance numbers, and coordination notes. Update Worker tracking when Workers are first dispatched to, when Handoffs are detected, and when auto-compaction recovery is reported. Cross-agent overrides are recorded below the Worker table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
-- *`## Version Control`:* Per-repository base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.5 Tracker VC Entry Format. Branch state is tracked per-Task in the Task table's Branch column.
+- *`## Version Control`:* Per-repository base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.4 Tracker VC Entry Format. Branch state is tracked per-Task in the Task table's Branch column.
 - *`## Working Notes`:* Ephemeral coordination context per §2.7 Note-Taking Standards. Contents are inserted and removed as context evolves.
 
 **Worker Tracking Table:**
@@ -246,11 +246,7 @@ title: <project name>
 
 **Index sections:**
 - *`## Memory Notes`:* Durable observations per §2.7 Note-Taking Standards. Patterns, preferences, and insights that persist across Handoffs.
-- *`## Stage Summaries`:* Appended after each Stage completion per §4.4 Stage Summary Format.
-
-### 4.4 Stage Summary Format
-
-Append to the Index `## Stage Summaries` section after each Stage completion:
+- *`## Stage Summaries`:* Appended after each Stage completion. Each entry:
 ```markdown
 ### Stage <N> - <Stage Name>
 
@@ -261,14 +257,14 @@ Append to the Index `## Stage Summaries` section after each Stage completion:
 - task-<NN>-<MM>.log.md
 ```
 
-### 4.5 Modification Log Format
+### 4.4 Modification Log Format
 
 Update the `modified` field in YAML frontmatter when modifying the Spec or Plan:
 ```yaml
 modified: Task 2.3 scope clarified based on task-02-02.log.md findings. Modified by the Manager.
 ```
 
-### 4.6 Planning Document Modification Guidelines
+### 4.5 Planning Document Modification Guidelines
 
 **Spec:** Maintain existing section structure. Add content under relevant headings. Use `##` for top-level categories. Keep specifications concrete and actionable - design decisions that affect what is being built and apply across multiple Tasks. Task-specific details belong in Task guidance, not here.
 

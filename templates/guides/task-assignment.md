@@ -37,7 +37,7 @@ Task Prompts must be self-contained with respect to planning documents and autho
 
 **Embed** content the Worker cannot discover from the codebase alone: design decisions and constraints from the Spec, corrected findings from previous Tasks, integration guidance derived from coordination context, and content from authoritative User documents the Spec references. Preserve specificity with exact constraints, not summaries.
 
-**Reference with reading instructions** content that exists in the codebase: source files, existing patterns, configurations. Point the Worker to specific files and what to look for in them - the Worker reads them directly from their workspace. This applies to both dependency context and Spec content that references codebase patterns. The Manager's value is knowing which files matter and what to look for, not embedding their contents.
+**Reference with reading instructions** content that exists in the codebase: source files, existing patterns, configurations. Point the Worker to specific files and what to look for in them - the Worker reads them directly from their workspace. This applies to both dependency context and Spec content that references codebase patterns. The Manager identifies which files matter and what to look for, rather than embedding their contents.
 
 **Exclude** content relating to other domains, providing background without actionable requirements, or already captured in the Task's Guidance field.
 
@@ -56,7 +56,7 @@ Before constructing individual Task Prompts, assess dispatch opportunities acros
 **Task readiness:** A Task is Ready when all its dependencies are Done. Read the Tracker for current statuses; cross-reference the Dependency Graph for newly unblocked Tasks.
 
 **Dispatch modes.** Assess all Ready Tasks, group by Worker, and form dispatch units:
-- *Batch:* Multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all Ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Batches of 2-3 Tasks work well in practice.
+- *Batch:* Multiple Ready Tasks for the same Worker, dispatched together. Candidates either form a sequential chain (each depends only on the previous or already-complete Tasks) or are an independent group (no dependencies between them, all Ready simultaneously). When forming chains, weigh whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 2-3 Tasks per batch.
 - *Single:* one Ready Task for a Worker.
 - *Parallel:* two or more dispatch units (any mix) with no unresolved cross-agent dependencies among them, dispatched simultaneously. Requires version control workspace isolation.
 
@@ -82,9 +82,7 @@ Worktrees contain only tracked files; if a Worker needs untracked assets, note t
 
 ### 2.6 Delivery Standards
 
-Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists.
-
-When dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
+Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists. When dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per §4.5 Batch Envelope Format.
 
 ### 2.7 Non-APM Agent Dispatch
 
@@ -128,7 +126,7 @@ Perform the following actions:
 3. Create a feature branch off the repository's base branch per §2.5 Version Control Standards. For parallel dispatch, create a worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`. Include the branch name (sequential) or worktree path (parallel) in the Workspace section.
 4. Record the branch name in the Task row's Branch column when updating the Tracker.
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
-6. Write the Task Prompt to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`. For batches, use `{SKILL_PATH:apm-communication}` §4.4 Batch Envelope Format.
+6. Write the Task Prompt to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`. For batches, use §4.5 Batch Envelope Format.
 7. Direct the User to the Worker's chat per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication:
    - If the Worker is not yet initialized - direct the User to start a new chat and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
    - If the Worker is already initialized - direct the User to run `/apm-4-check-tasks` in the Worker's chat.
@@ -198,15 +196,11 @@ Follow-up Task Prompts use the same structure as §4.1 Task Prompt Format with t
 - *All content sections* refined based on what went wrong, not copied from the previous attempt.
 - *Same `log_path`* as the original Task Prompt.
 
-### 4.3 Branch Naming
+### 4.3 Branch and Worktree Standards
 
-Branch naming follows the convention recorded in the Tracker Version Control table. Branch names are descriptive of the actual work; for batches, the name reflects the batch scope.
+Branch naming follows the convention recorded in the Tracker Version Control table. Branch names are descriptive of the actual work; for batches, the name reflects the batch scope. Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived from the branch name (e.g., replacing `/` with `-`). Each worktree directory contains a full checkout of all tracked files. Untracked files are not present.
 
-### 4.4 Worktree Directory Layout
-
-Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived from the branch name (e.g., replacing `/` with `-`). Each worktree directory contains a full checkout of all tracked files. Untracked files are not present.
-
-### 4.5 Tracker VC Entry Format
+### 4.4 Tracker VC Entry Format
 
 VC configuration recorded in the Version Control table within the Tracker, with one row per repository. Branch state is tracked per-Task in the Task table's Branch column - an incoming Manager reads Task rows to rebuild working VC context.
 
@@ -219,6 +213,34 @@ VC configuration recorded in the Version Control table within the Tracker, with 
 |-----------|-------------|-------------------|-------------------|
 | <repo-name> | <branch-name> | <convention> | <convention> |
 ```
+
+### 4.5 Batch Envelope Format
+
+When sending multiple Tasks to a Worker in a batch, the Task Bus file uses this structure:
+
+**YAML Frontmatter Schema:**
+```yaml
+---
+batch: true
+batch_size: <N>
+tasks:
+  - stage: 1
+    task: 1
+    log_path: ".apm/memory/stage-01/task-01-01.log.md"
+  - stage: 1
+    task: 2
+    log_path: ".apm/memory/stage-01/task-01-02.log.md"
+---
+```
+
+**Field Descriptions:**
+- `batch`: Always `true` for batch envelopes.
+- `batch_size`: Total Tasks in the batch.
+- `tasks[].stage`: Stage number.
+- `tasks[].task`: Task number within Stage.
+- `tasks[].log_path`: Pre-constructed path for the Task Log, following the same pattern as single Task Prompts.
+
+**Body:** Individual Task Prompts separated by `---` delimiters. Each Task Prompt retains its full structure (YAML frontmatter and body) as if standalone.
 
 ---
 
