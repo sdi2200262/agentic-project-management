@@ -130,11 +130,11 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      - How domains map to Workers with proposed names and responsibilities.
      Update Plan header Workers field.
    - *Stage Analysis:*
-     - What each Stage delivers and its boundary rationale.
+     - What each Stage delivers and why it constitutes a distinct milestone.
      - Why this ordering, what each Stage builds on and what it enables.
-     - For each Stage, what distinct deliverables are needed, which Workers produce each, which can be produced independently vs which depend on others. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it. Each Task produces a single meaningful deliverable scoped to one Worker's domain.
+     - For each Stage, reason through the deliverables needed to meet the Stage objective and how they decompose into Tasks: which deliverables are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine, which Worker produces each, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it. The task structure should emerge visibly from this reasoning - not appear as a predetermined list.
      Update Plan header Stages field.
-   - *Stage N Task Analysis.* For each Stage in order, state context (User requirements and constraints influencing this Stage), then for each Task:
+   - *Stage N Task Analysis.* For each Task identified above, deepen the analysis. State context (User requirements and constraints influencing this Stage), then for each Task:
      - *Worker assignment:* which Worker and why.
      - *Task scope:* what is the Task's scope? Is the User involved in any steps?
      - *Task guidance:* implementation context the Worker needs, including domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis.
