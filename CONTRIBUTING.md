@@ -81,7 +81,7 @@ APM uses a build system that processes source templates into platform-specific b
 - **Build system:** Edit files in `build/` for processors, config, and generators.
 - **CLI source:** Edit files in `src/` for CLI command behavior.
 - **Standalone skills:** Edit files in `skills/` for independently installable skills.
-- **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website).
+- **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed — see the apm-website README for details.
 
 **Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected commands, guides, and skills. See the change propagation rules in [CLAUDE.md](CLAUDE.md).
 

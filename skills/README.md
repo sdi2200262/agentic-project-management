@@ -17,7 +17,7 @@ Download the skill file into the skills directory for your AI assistant, then re
 
 ```bash
 mkdir -p .claude/skills/apm-migration
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-migration/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/apm-migration/SKILL.md \
   -o .claude/skills/apm-migration/SKILL.md
 ```
 
@@ -25,7 +25,7 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
 
 ```bash
 mkdir -p .cursor/skills/apm-migration
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-migration/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/apm-migration/SKILL.md \
   -o .cursor/skills/apm-migration/SKILL.md
 ```
 
@@ -33,7 +33,7 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
 
 ```bash
 mkdir -p .github/skills/apm-migration
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-migration/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/apm-migration/SKILL.md \
   -o .github/skills/apm-migration/SKILL.md
 ```
 
@@ -41,7 +41,7 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
 
 ```bash
 mkdir -p .gemini/skills/apm-migration
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-migration/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/apm-migration/SKILL.md \
   -o .gemini/skills/apm-migration/SKILL.md
 ```
 
@@ -49,7 +49,7 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
 
 ```bash
 mkdir -p .opencode/skills/apm-migration
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-migration/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/apm-migration/SKILL.md \
   -o .opencode/skills/apm-migration/SKILL.md
 ```
 
