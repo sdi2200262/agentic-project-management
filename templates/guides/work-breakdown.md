@@ -30,7 +30,7 @@ From Context Gathering's §2.1 Workflow Context, you know these documents serve 
 
 **Coordination is runtime:** How work gets dispatched - sequencing, parallel execution, grouping - is determined by the Manager at runtime based on the Plan's structure. Version control conventions are established by the Manager during the Implementation Phase. The Plan captures work structure; the Manager reads coordination opportunities from it.
 
-**Passing observations to the Manager:** When you have factual observations or User preferences that the Manager should consider but that you have no authority to act on, note them as blockquotes in the relevant header section of the document per §4.1 Spec Format and §4.2 Plan Format - version control and workspace observations under the Spec's Workspace section, coordination observations under the Plan's Dependency Graph section. Only include factual observations with specific evidence and explicit User preferences - not interpretations or recommendations.
+**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should consider but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover project environment observations, User preferences, and context that informs the Manager's coordination. Plan notes cover work structure observations, dependency characteristics, and decomposition rationale. Include factual observations with specific evidence and explicit User preferences - not dispatch recommendations or coordination advice.
 
 ### 2.2 Decomposition Principles
 
@@ -193,7 +193,7 @@ modified: <last modification note>
 
 Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, and authoritative document locations). A single horizontal rule separates the header from the design decision content below. No horizontal rules within the content sections - `##` headings provide sufficient visual separation.
 
-- *Planner observations:* Factual observations about version control patterns, workspace conventions, and User preferences noted under `## Workspace` as a blockquote per §2.1 Workflow Context. Format: `> **Notes:** <prose or unordered list>`. These stay in the header, above the separator.
+- *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Format: `> **Notes:** <prose or unordered list>`. These cover project environment observations, User preferences, and context that informs the Manager's coordination per §2.1 Workflow Context.
 
 **Content structure.** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. The Spec should read as a coherent description of what is being built and why, shaped by the project's unique requirements.
 
@@ -213,7 +213,7 @@ modified: <last modification note>
 
 Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). A single horizontal rule separates the header from Stage sections below. No horizontal rules within Stage sections.
 
-- *Planner observations:* Coordination observations (efficient execution opportunities, dependency bottlenecks, workload patterns) noted under `## Dependency Graph` as a blockquote per §2.1 Workflow Context. Format: `> **Notes:** <prose or unordered list>`. These stay in the header, above the separator.
+- *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Format: `> **Notes:** <prose or unordered list>`. These cover work structure observations, dependency characteristics, and decomposition rationale per §2.1 Workflow Context.
 
 **Stage Format.** Each Stage in the Plan:
 - *Header:* `## Stage N: [Name]`
