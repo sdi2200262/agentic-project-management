@@ -28,9 +28,10 @@ Read the following documents (these reads are independent):
 Determine identity from the `{ARGS}` argument:
 1. Resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution.
 2. Register as the resolved agent: store the agent identifier and bus path for this instance.
-3. List the bus directory with file sizes, e.g., `ls -la .apm/bus/<agent-slug>/` (or platform equivalent). Confirm bus files exist (`task.md`, `report.md`, `handoff.md`). Check `handoff.md` size:
+3. List the bus directory with file sizes, e.g., `ls -la .apm/bus/<agent-slug>/` (or platform equivalent). Confirm bus files exist (`task.md`, `report.md`, `handoff.md`). Check bus state:
    - If Handoff Bus has content → **incoming Worker**. Proceed to §2.2 Incoming Worker Initiation.
-   - If Handoff Bus is empty → **new Worker** (first instance). Proceed to §2.3 New Worker.
+   - If Handoff Bus is empty and Task Bus has content → confirm registration to User and proceed to §3 Task Execution Loop.
+   - If both are empty → confirm registration to User: state agent identifier and bus path. Await Task Prompt via `/apm-4-check-tasks`.
 
 ### 2.2 Incoming Worker Initiation
 
@@ -38,20 +39,16 @@ Perform the following actions:
 1. Read handoff prompt from `.apm/bus/<agent-slug>/handoff.md`.
 2. Process handoff prompt: extract instance number, read Handoff Log and current Stage Task Logs as instructed.
 3. Clear the Handoff Bus after processing.
-4. Confirm Handoff to User: state instance number, logs loaded, readiness for next Task. Note which specific Task Logs were loaded - and that previous-Stage logs were not loaded - for inclusion in first Task Report.
-5. Await Task Prompt via `/apm-4-check-tasks`.
-
-### 2.3 New Worker
-
-Perform the following actions:
-1. Confirm registration to User: state agent identifier and bus path.
-2. Await Task Prompt via `/apm-4-check-tasks`.
+4. Confirm Handoff to User: state instance number, logs loaded, readiness to continue. When previous Stages exist, note which specific Task Logs were loaded and which were not explaining that previous-Stage logs were not loaded for efficiency.
+5. Check Task Bus:
+   - If Task Bus has content → the handoff prompt describes a mid-Task or mid-batch continuation. Proceed to §3 Task Execution Loop.
+   - If Task Bus is empty → await Task Prompt via `/apm-4-check-tasks`.
 
 ---
 
 ## 3. Task Execution Loop
 
-When a Task Prompt arrives (via `/apm-4-check-tasks`):
+When a Task Prompt is available (detected during init or delivered via `/apm-4-check-tasks`):
 1. **Execute:** See `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure. The guide controls validation, execution, and completion.
 2. **Log:** Create Task Log per `{GUIDE_PATH:task-logging}` §3 Task Logging Procedure.
 3. **Report:** Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.

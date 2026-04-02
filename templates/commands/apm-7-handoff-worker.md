@@ -38,8 +38,9 @@ Perform the following actions:
 1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what is happening now. Content is actionable and present-tense; past actions belong in the Handoff Log.
 2. Apply Worker Handoff asymmetry:
    - *Mid-Task:* "Read the Task from `task.md`, I completed steps 1-4, resume from step 5." Direct the incoming Worker to read the Task Bus file directly (intact since Task receipt). Include execution progress detail.
+   - *Mid-batch:* The batch is still in `task.md`. Describe the state of each Task in the batch: which are complete (logs written), which is in progress and how far, and which have not been started. The incoming Worker reads the intact batch from the Task Bus and continues from where work left off.
    - *Between-Tasks:* "No active Task, await `/apm-4-check-tasks`." State context and readiness.
-3. Include: Handoff Log path, instructions to read current Stage Task Logs, reminder to indicate incoming Worker status in first Task Report (listing specific Task Log files loaded and noting that previous-Stage logs were not loaded), and continuation guidance.
+3. Include: Handoff Log path, instructions to read current Stage Task Logs, and reminder to indicate incoming Worker status in first Task Report (listing specific Task Log files loaded and, when previous Stages exist, noting that previous-Stage logs were not loaded).
 
 ### 2.3 User Review and Finalization
 
@@ -79,7 +80,6 @@ stage: <N>
 - *Summary:* Tasks completed count, current Stage, Stage progress for this Worker.
 - *Working Context:* Patterns, approaches, or context established during this instance.
 - *Working Notes:* Technical details, environment observations, or other context not captured in Task Logs.
-- *Continuation Guidance:* Specific guidance for the incoming Worker about in-progress patterns or upcoming work.
 
 ---
 
@@ -90,13 +90,14 @@ Written to `.apm/bus/<agent-slug>/handoff.md`. The incoming Worker processes thi
 **Required content:**
 - *Identity:* Outgoing and incoming instance numbers.
 - *Rebuilding context:*
-  1. Read Handoff Log - note working context, technical notes, continuation guidance.
+  1. Read Handoff Log - note working context and technical notes.
   2. Read current Stage Task Logs (this Worker's logs only).
   3. Do not load previous-Stage logs - the Manager provides comprehensive context via Task Prompts for cross-Stage dependencies.
 - *Current State:* Current Stage, Tasks completed this instance, notes.
-- *Incoming Worker indication:* Remind incoming Worker to include Handoff status in first Task Report - state instance number, list specific Task Log files loaded, and note that previous-Stage logs were not loaded. This triggers Manager Handoff detection.
-- *Immediate Next Action:* Await next Task Prompt from User via `/apm-4-check-tasks`.
-- *Closing instruction:* Confirm to User that Handoff Log and Stage context have been read, then state readiness for next Task Prompt.
+- *Continuation guidance:* Specific guidance for the incoming Worker about in-progress patterns or upcoming work.
+- *Incoming Worker indication:* Remind incoming Worker to include Handoff status in first Task Report - state instance number, list specific Task Log files loaded, and when previous Stages exist note that previous-Stage logs were not loaded. This triggers Manager Handoff detection.
+- *Immediate Next Action:* For mid-Task or mid-batch, instruct the incoming Worker to read the Task Bus and continue. For between-Tasks, state readiness to await `/apm-4-check-tasks`.
+- *Closing instruction:* Confirm to User that Handoff Log and Stage context have been read, then state readiness.
 
 ---
 

@@ -128,7 +128,7 @@ Perform the following actions:
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
 6. Read the Worker's Task Bus, then write the Task Prompt to it: `.apm/bus/<agent-slug>/task.md`. For batches, use §4.5 Batch Envelope Format.
 7. Direct the User to the Worker's chat per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication:
-   - If the Worker is not yet initialized - direct the User to start a new chat and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
+   - If the Worker is not yet initialized - direct the User to start a new chat and run `/apm-3-initiate-worker <agent-id>`. The Worker detects the pending Task Prompt during init and begins executing. Only on first dispatch to this Worker.
    - If the Worker is already initialized - direct the User to run `/apm-4-check-tasks` in the Worker's chat.
    - For batch dispatch - summarize what the Worker will receive (number of Tasks, sequential execution).
    - For parallel dispatch - list each Worker with its required action.
