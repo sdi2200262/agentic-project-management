@@ -24,7 +24,7 @@ From Context Gathering's §2.1 Workflow Context, you know these documents serve 
 
 **How the Spec is used:** The Manager reads the Spec and extracts relevant content per-Task into self-contained Task Prompts for Workers. Design decisions should be at the level the Manager needs for extraction - not implementation mechanics.
 
-**How the Plan is used:** The Manager uses the Plan for coordination and Task Prompt construction. Task guidance provides the domain-specific substance the Manager wraps into Task Prompts. The Manager enriches Task Prompts at runtime with workspace context, findings from completed work, and cross-domain coordination notes. Task guidance provides what planning can determine; the Manager adds what only runtime reveals.
+**How the Plan is used:** The Manager uses the Plan for coordination and Task Prompt construction. Task guidance provides the domain-specific substance the Manager wraps into Task Prompts. When Task guidance shares design decisions already captured in the Spec, reference the relevant Spec section rather than restating - the Manager reads both documents and integrates Spec content into Task Prompts during extraction. Task guidance adds what the Spec does not cover: domain-specific implementation context, constraints, and patterns. The Manager enriches Task Prompts at runtime with workspace context, findings from completed work, and cross-domain coordination notes. Task guidance provides what planning can determine; the Manager adds what only runtime reveals.
 
 **How Rules are used:** Workers are designed to focus on their Task Prompt and Rules - not because they cannot access other documents, but because their Task Prompts should be sufficient. Rules must be self-contained and applicable to all Workers: embed content directly, do not reference the Spec, Plan, or external authoritative documents by path.
 
@@ -68,7 +68,7 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 
 **Task self-sufficiency:** Each Task must contain enough context for a Worker to execute from a Task Prompt alone per §2.1 Workflow Context.
 
-**Guidance and steps:** Guidance may reference authoritative sources by path - the Manager reads those sources and integrates relevant content into the Task Prompt. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and guidance.
+**Guidance and steps:** Guidance may reference the Spec or authoritative sources by path for shared design decisions rather than restating them - the Manager reads those sources and integrates relevant content into the Task Prompt. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and guidance.
 
 **Dispatch-aware structuring.** The Manager dispatches work in three modes: single Tasks, batches (sequential same-Worker Tasks grouped together), and parallel (independent dispatch units sent to different Workers simultaneously). When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities - Tasks that can proceed independently, groups that chain naturally within a domain, work that can happen in parallel across domains. The Manager determines which mode to use at runtime based on the Plan's structure.
 
