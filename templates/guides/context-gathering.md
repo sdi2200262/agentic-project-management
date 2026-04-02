@@ -23,7 +23,7 @@ Work Breakdown requires distinguishing project-level decisions from domain-speci
 
 **What happens after planning is complete.** The Manager coordinates the Implementation Phase: assigning work to Workers across domains, reviewing completed work, maintaining project state. The Manager enriches work assignments at runtime with workspace context, findings from completed work, and coordination notes - your documents provide the planning-time substance, the Manager adds what only runtime can determine. All coordination mechanics - version control conventions, how work gets assigned and sequenced between Workers, branch management, workspace isolation, merging - are the Manager's runtime domain.
 
-This shapes Context Gathering in practice. The planning documents need project substance - requirements, constraints, technical decisions, domain knowledge, design rationale. Coordination mechanics are the Manager's runtime concern, so your questions stay focused on the project itself. When version control patterns or coordination preferences surface from exploration or User responses, note them as factual observations. Technical understanding of existing codebases and systems is Context Gathering research - Workers execute from assignments derived from your documents, so inaccurate understanding here propagates forward.
+This shapes Context Gathering in practice. The planning documents need project substance - requirements, constraints, technical decisions, domain knowledge, design rationale. Coordination mechanics are the Manager's runtime concern, so your questions stay focused on the project itself. Each work assignment carries its own validation criteria - capture success states and concrete measures per requirement during Context Gathering, and these become per-assignment criteria during Work Breakdown. When the project needs holistic validation across domains at major milestones, that becomes a dedicated assignment - not a framework-level gate. When version control patterns or coordination preferences surface from exploration or User responses, note them as factual observations. Technical understanding of existing codebases and systems is Context Gathering research - Workers execute from assignments derived from your documents, so inaccurate understanding here propagates forward.
 
 ### 2.2 Guiding Principles
 
@@ -76,7 +76,7 @@ When User responses or existing material reference codebase elements, or signal 
 
 ## 3. Context Gathering Procedure
 
-Archive and workspace context setup (building on initiation), three progressive question rounds with iterative follow-ups until each round's focus areas are sufficiently covered, and a finalization with a consolidated understanding summary for User approval. Complete each step before proceeding to the next.
+Archive and workspace context setup (building on initiation), three progressive question rounds with iterative follow-ups until each round's focus areas are sufficiently covered, and a finalization with a consolidated understanding summary for User approval. Complete each step before proceeding to the next. Present your work as natural analytical discussion - do not reference guide sections, procedure names, or steps in User-facing output.
 
 ### 3.1 Pre-Round Context
 

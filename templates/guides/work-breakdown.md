@@ -129,7 +129,7 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      - Why domains are separated or combined.
      - How domains map to Workers with proposed names and responsibilities.
      Update Plan header Workers field.
-   - *Stage Analysis:*
+   - *Stage Analysis.* Stages are sequential milestone groupings - Stage N+1 begins only after Stage N completes. Each Stage delivers coherent value that subsequent Stages build on. Parallelism happens within a Stage (parallel Tasks across Workers), not across Stages.
      - What each Stage delivers and why it constitutes a distinct milestone.
      - Why this ordering, what each Stage builds on and what it enables.
      - For each Stage, reason through the deliverables needed to meet the Stage objective and how they decompose into Tasks: which deliverables are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine, which Worker produces each, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it. The task structure should emerge visibly from this reasoning - not appear as a predetermined list.

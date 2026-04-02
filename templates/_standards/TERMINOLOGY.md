@@ -148,6 +148,8 @@ These concepts are not formal capitalized terms but are clearly defined because 
 
 **Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command - not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
 
+**Understanding summary.** A consolidated presentation of gathered context for User review and approval. The Planner presents one at the end of Context Gathering, covering requirements, design decisions, work structure signals, and technical context. The Manager presents one during first initiation, covering project scope, design decisions, and proposed version control conventions. Both serve as approval gates - the User reviews and approves before the agent proceeds.
+
 **Cross-agent overrides.** When a Worker Handoff is detected, same-agent dependencies from Tasks whose logs were not loaded by the incoming Worker are reclassified as cross-agent. The Manager maintains an override list in the Tracker, recording the specific Tasks affected. During Task Assignment, the Manager checks this list to determine dependency context depth. The Dependency Graph is not modified; overrides are a runtime layer over the static plan.
 
 ---
