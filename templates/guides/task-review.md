@@ -74,7 +74,7 @@ Merge state is a dispatch prerequisite. Merge completed feature branches into th
 
 **Branch protection adaptation:** If the base branch has protection rules preventing direct merges, adapt (create a PR, merge into an intermediate branch, or ask the User). Discovered reactively and noted in working notes.
 
-**Cleanup:** After a successful merge, remove the worktree if one exists (`git worktree remove .apm/worktrees/<branch-slug>`) and delete the merged feature branch (`git branch -d <branch-name>`). During Stage-end merge sweeps with multiple branches, batch all removals and deletions into a single terminal invocation.
+**Cleanup:** After a successful merge, clean up in this order: first remove the worktree if one exists (`git worktree remove .apm/worktrees/<branch-slug>`), then delete the merged feature branch (`git branch -d <branch-name>`). The branch cannot be deleted while a worktree references it. During Stage-end merge sweeps with multiple branches, batch all removals first, then all deletions, in a single terminal invocation.
 
 ### 2.6 Stage Summary Standards
 
