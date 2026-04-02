@@ -55,7 +55,7 @@ When writing to APM artifacts (Spec, Plan, Tracker, Task Logs, bus files), follo
 
 ## 4. Message Bus Protocol
 
-Bus files are either empty (no message present) or contain a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. Always read a bus file before writing to it - this ensures the platform's file tools recognize the file and avoids write failures on empty or cleared files.
+Bus directories and files are initialized during the Planning Phase. Bus files are either empty (no message present) or contain a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. Always read a bus file before writing to it - this ensures the platform's file tools recognize the file and avoids write failures on empty or cleared files.
 
 ### 4.1 Bus Identity Standards
 

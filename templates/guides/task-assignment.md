@@ -82,7 +82,7 @@ Worktrees contain only tracked files; if a Worker needs untracked assets, note t
 
 ### 2.6 Delivery Standards
 
-Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists. When dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per §4.5 Batch Envelope Format.
+Bus directories and files are created by the Planner during the Planning Phase — do not re-create them. Before writing to a Worker's Task Bus, clear the Worker's Report Bus (`.apm/bus/<agent-slug>/report.md`) via terminal (e.g., `truncate -s 0` or shell redirection). Skip clearing on first Task Prompt to a Worker when no report exists. Read the Task Bus before writing to it per `{SKILL_PATH:apm-communication}` §4 Message Bus Protocol. When dispatching multiple sequential Tasks to the same Worker, send them as a batch in a single Task Bus message per §4.5 Batch Envelope Format.
 
 ### 2.7 Non-APM Agent Dispatch
 
@@ -126,7 +126,7 @@ Perform the following actions:
 3. Create a feature branch off the repository's base branch per §2.5 Version Control Standards. For parallel dispatch, create a worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`. Include the branch name (sequential) or worktree path (parallel) in the Workspace section.
 4. Record the branch name in the Task row's Branch column when updating the Tracker.
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
-6. Write the Task Prompt to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`. For batches, use §4.5 Batch Envelope Format.
+6. Read the Worker's Task Bus, then write the Task Prompt to it: `.apm/bus/<agent-slug>/task.md`. For batches, use §4.5 Batch Envelope Format.
 7. Direct the User to the Worker's chat per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication:
    - If the Worker is not yet initialized - direct the User to start a new chat and run `/apm-3-initiate-worker <agent-id>`, then `/apm-4-check-tasks`. Only on first dispatch to this Worker.
    - If the Worker is already initialized - direct the User to run `/apm-4-check-tasks` in the Worker's chat.
@@ -143,7 +143,7 @@ Perform the following actions:
 3. Refine all content sections per §2.3 Follow-Up Standards. Include a follow-up context section explaining the issue and required refinement.
 4. Construct the follow-up prompt per §4.2 Follow-Up Format. Same `log_path` as the original.
 5. Clear the incoming Report Bus per §2.6 Delivery Standards.
-6. Write to the Worker's Task Bus: `.apm/bus/<agent-slug>/task.md`.
+6. Read the Worker's Task Bus, then write to it: `.apm/bus/<agent-slug>/task.md`.
 7. Direct the User to the Worker per §3.3 Task Prompt Construction step 7.
 
 ---
