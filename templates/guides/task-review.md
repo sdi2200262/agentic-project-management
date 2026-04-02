@@ -74,7 +74,7 @@ Merge state is a dispatch prerequisite. Merge completed feature branches into th
 
 **Branch protection adaptation:** If the base branch has protection rules preventing direct merges, adapt (create a PR, merge into an intermediate branch, or ask the User). Discovered reactively and noted in working notes.
 
-**Cleanup:** After a successful merge, clean up in this order: first remove the worktree if one exists (`git worktree remove .apm/worktrees/<branch-slug>`), then delete the merged feature branch (`git branch -d <branch-name>`). The branch cannot be deleted while a worktree references it. During Stage-end merge sweeps with multiple branches, batch all removals first, then all deletions, in a single terminal invocation.
+**Cleanup.** After a successful merge, clean up in this order: first remove the worktree if one exists (`git worktree remove .apm/worktrees/<branch-slug>`), then delete the merged feature branch (`git branch -d <branch-name>`). The branch cannot be deleted while a worktree references it. During Stage-end merge sweeps with multiple branches, batch all removals first, then all deletions, in a single terminal invocation.
 
 ### 2.6 Stage Summary Standards
 
@@ -152,7 +152,7 @@ Perform the following actions:
 
 ### 3.5 Stage Summary Creation
 
-Execute when all Tasks in a Stage are Done. A Task is Done when the review concludes with no outstanding follow-ups. Write the Stage Summary once, after all follow-up cycles finish.
+Execute when all Tasks in a Stage are Done. A Task is Done when the review concludes with no outstanding follow-ups. Write the Stage summary once, after all follow-up cycles finish.
 
 Perform the following actions:
 1. Enumerate Task Logs for the completed Stage using a directory listing, e.g., `ls .apm/memory/stage-<NN>/` (or platform equivalent). Synthesize from logs already reviewed during individual Task Reviews - re-reading is not needed when logs are unchanged and still in context.

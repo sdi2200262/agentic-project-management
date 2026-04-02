@@ -74,7 +74,7 @@ Version control provides workspace isolation during parallel dispatch. Each disp
 
 **Worktree standards.** Worktrees are created only for parallel dispatch. Each parallel dispatch unit gets its own worktree so all parallel Workers operate in isolated directories and the main working directory remains on the base branch for merge operations. For sequential dispatch, the Worker operates in the main working directory on their feature branch.
 
-- *Layout:* per §4.2 Worktree Directory Layout.
+- *Layout:* per §4.3 Branch and Worktree Standards.
 - *Concurrency limit:* maximum 3-4 concurrent worktrees.
 - *Lifecycle:* short-lived - created before dispatch, removed after merge.
 

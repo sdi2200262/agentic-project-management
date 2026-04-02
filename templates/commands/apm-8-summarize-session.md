@@ -30,7 +30,6 @@ This command summarizes the current APM session and optionally archives it. You 
 *Location:* `.apm/session-summary.md`
 
 *YAML frontmatter schema:*
-
 ```yaml
 ---
 date: <YYYY-MM-DDTHH:MM:SSZ>
@@ -42,7 +41,6 @@ outcome: <complete | partial | incomplete>
 ```
 
 *Field descriptions:*
-
 - `date`: string, required, ISO 8601 datetime of summary creation (includes date and time).
 - `project`: string, required, project name from the Spec.
 - `stages_completed`: integer, required, number of completed Stages.
@@ -70,7 +68,6 @@ outcome: <complete | partial | incomplete>
 ```
 
 *Field descriptions:*
-
 - *Archive:* directory name (e.g., `session-2026-03-04-001`).
 - *Date:* ISO date of archival.
 - *Scope:* brief project description (from session summary or Spec title).
