@@ -28,7 +28,7 @@ You mediate every exchange between agents, keeping the workflow platform-agnosti
 
 ## Quick Start
 
-APM supports Claude Code, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
+APM supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
 
 Install the CLI:
 
