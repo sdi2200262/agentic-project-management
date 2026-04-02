@@ -61,21 +61,28 @@ export function replacePlaceholders(content, context) {
     return path.join(directories.guides, `${guideName}.md`);
   });
 
-  // Replace AGENT_PATH placeholder (agents are flat files: <name>.md, Copilot: <name>.agent.md)
-  const agentExt = id === 'copilot' ? '.agent.md' : '.md';
+  // Replace AGENT_PATH placeholder (agents are flat files: <name>.md, Copilot: <name>.agent.md, Codex: <name>.toml)
+  const agentExt = id === 'copilot' ? '.agent.md' : id === 'codex' ? '.toml' : '.md';
   replaced = replaced.replace(/{AGENT_PATH:([^}]+)}/g, (_match, agentName) => {
     return path.join(directories.agents, `${agentName}${agentExt}`);
   });
 
   // Replace COMMAND_PATH placeholder (resolves to full path with target-specific extension)
+  // Codex: commands are skills in directory structure (skills/<name>/SKILL.md)
   const commandExt = getOutputExtension(target);
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, commandName) => {
     const base = path.basename(commandName, path.extname(commandName));
+    if (id === 'codex') {
+      return path.join(directories.commands, base, 'SKILL.md');
+    }
     return path.join(directories.commands, `${base}${commandExt}`);
   });
 
   // Replace ARGS placeholder based on format
-  const argsPlaceholder = format === 'toml' ? '{{args}}' : id === 'copilot' ? '${input:args}' : '$ARGUMENTS';
+  const argsPlaceholder = format === 'toml' ? '{{args}}'
+    : id === 'copilot' ? '${input:args}'
+    : id === 'codex' ? '(the text provided by the User after the skill invocation, if any)'
+    : '$ARGUMENTS';
   replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
 
   // Replace RULES_FILE placeholder

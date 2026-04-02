@@ -90,15 +90,31 @@ async function processTemplate(templatePath, options) {
       if (target.format === 'toml') {
         const description = frontmatter.description || 'APM command';
         finalContent = `description = "${description}"\n\nprompt = """\n${processedBody}\n"""\n`;
+        outputPath = path.join(commandsDir, `${basename}${ext}`);
+      } else if (target.id === 'codex') {
+        // Codex: commands become skills in directory structure (skills/<name>/SKILL.md)
+        const codexFrontmatter = `---\nname: ${basename}\ndescription: ${frontmatter.description || 'APM command'}\nuser-invocable: true\n---\n`;
+        finalContent = codexFrontmatter + processedBody;
+        const skillDir = path.join(commandsDir, basename);
+        await fs.ensureDir(skillDir);
+        outputPath = path.join(skillDir, 'SKILL.md');
       } else {
         finalContent = processedFull;
+        outputPath = path.join(commandsDir, `${basename}${ext}`);
       }
-      outputPath = path.join(commandsDir, `${basename}${ext}`);
     } else if (isAgent) {
-      // Agents: flat files (agents/<agent-name>.md, Copilot: <agent-name>.agent.md)
-      finalContent = processedFull;
-      const agentExt = target.id === 'copilot' ? '.agent.md' : '.md';
-      outputPath = path.join(agentsDir, `${basename}${agentExt}`);
+      if (target.id === 'codex') {
+        // Codex: agents are TOML files with developer_instructions
+        const name = frontmatter.name || basename;
+        const description = (frontmatter.description || '').replace(/"/g, '\\"');
+        finalContent = `name = "${name}"\ndescription = "${description}"\n\ndeveloper_instructions = """\n${processedBody}\n"""\n`;
+        outputPath = path.join(agentsDir, `${basename}.toml`);
+      } else {
+        // Agents: flat files (agents/<agent-name>.md, Copilot: <agent-name>.agent.md)
+        finalContent = processedFull;
+        const agentExt = target.id === 'copilot' ? '.agent.md' : '.md';
+        outputPath = path.join(agentsDir, `${basename}${agentExt}`);
+      }
     } else {
       // Skills: directory-based structure (skills/<skill-name>/SKILL.md + optional files)
       finalContent = processedFull;

@@ -114,6 +114,28 @@
         "configNote": null
       },
       "postInstallNote": null
+    },
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "bundleName": "codex.zip",
+      "format": "markdown",
+      "configDir": ".codex",
+      "directories": {
+        "commands": ".codex/skills",
+        "skills": ".codex/skills",
+        "guides": ".codex/apm-guides",
+        "agents": ".codex/agents"
+      },
+      "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
+      "newChatGuidance": "Open a new terminal and start Codex CLI",
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "spawn_agent(agent_type=\"explorer\", message=\"...\")",
+        "explorerName": "explorer",
+        "configNote": null
+      },
+      "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm-1-initiate-planner) instead of /slash-commands."
     }
   ]
 }
