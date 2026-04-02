@@ -300,12 +300,12 @@ Handoff transfers context between successive instances of the same agent role wh
 
 | Artifact | Location | Content | Lifecycle |
 | -------- | -------- | ------- | --------- |
-| Handoff prompt | Handoff Bus | Current state: outstanding Tasks, mid-Task progress, pointers to logs and files | Ephemeral; cleared after incoming agent processes it |
-| Handoff Log | Memory | Past actions: working context, decisions made, approaches tried | Persistent archival context |
+| Handoff prompt | Handoff Bus | Current state and continuation: outstanding Tasks, mid-Task progress, pointers to logs, continuation guidance | Ephemeral; cleared after incoming agent processes it |
+| Handoff Log | Memory | Past actions: working context, decisions made, approaches tried, technical notes | Persistent archival context |
 
 **Worker and Manager asymmetry** - Workers and the Manager have different Handoff characteristics due to their bus clearing behavior. A mid-Task Worker Handoff occurs while the Task Bus still contains the original Task Prompt (the bus has not been cleared yet); the handoff prompt references the intact Task Prompt directly. A mid-batch Worker Handoff occurs while the Task Bus still contains the batch envelope; the handoff prompt describes the state of each Task in the batch - which are complete, which is in progress and how far, and which have not been started. A between-Tasks Worker Handoff occurs after the Task Bus was cleared; the handoff prompt states readiness to await the next Task. A Manager Handoff must describe outstanding Tasks in full because Workers may have already cleared their Task Buses.
 
-**Context rebuilding** - An incoming Manager reads the Handoff Log, the Tracker, the Index (Stage summaries and Memory notes), and relevant recent Task Logs to reconstruct working context. An incoming Worker reads the Handoff Log and their own current-Stage Task Logs only. The Manager accounts for this limited context in future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent.
+**Context rebuilding** - An incoming Manager reads the Handoff Log, the Tracker, the Index (Stage summaries and Memory notes), and relevant recent Task Logs to reconstruct working context. An incoming Worker reads the Handoff Log and their own current-Stage Task Logs only. When previous Stages exist, the incoming Worker notes that previous-Stage logs were not loaded. The Manager accounts for this limited context in future Task Prompts by treating previous-Stage same-agent dependencies as cross-agent.
 
 ### 8.2 Recovery
 
