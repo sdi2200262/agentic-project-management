@@ -30,7 +30,7 @@ From Context Gathering's §2.1 Workflow Context, you know these documents serve 
 
 **Coordination is runtime:** The Manager determines how work gets dispatched - sequencing, parallel execution, grouping - at runtime based on the Plan's structure. The Manager establishes version control conventions during the Implementation Phase. The Plan captures work structure; the Manager reads coordination opportunities from it.
 
-**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should consider but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover project environment observations, User preferences, and context that informs the Manager's coordination. Plan notes cover work structure observations, dependency characteristics, and decomposition rationale. Include factual observations with specific evidence and explicit User preferences - not dispatch recommendations or coordination advice.
+**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should consider but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover project environment observations, User preferences, and context that informs the Manager's coordination. Plan notes cover work structure observations that reveal dispatch opportunities: which Tasks are independent, which form sequential chains within the same domain, cross-agent convergence points, and relative Task complexity. Include factual observations with specific evidence and explicit User preferences - not directives telling the Manager what to do.
 
 ### 2.2 Decomposition Principles
 
@@ -68,7 +68,7 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 
 **Task self-sufficiency:** Each Task must contain enough context for a Worker to execute from a Task Prompt alone per §2.1 Workflow Context.
 
-**Guidance and steps:** Guidance may reference the Spec or authoritative sources by path for shared design decisions rather than restating them - the Manager reads those sources and integrates relevant content into the Task Prompt. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and guidance.
+**Guidance and steps:** When Task guidance involves design decisions already captured in the Spec, reference the Spec section rather than restating the content. The Manager reads both documents and integrates Spec content into the Task Prompt during extraction - restating duplicates work and risks divergence. Guidance adds what the Spec does not cover: domain-specific implementation context, constraints, and patterns. Authoritative User documents follow the same principle - reference by path and section. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and guidance.
 
 **Dispatch-aware structuring.** The Manager dispatches work in three modes: single Tasks, batches (sequential same-Worker Tasks grouped together), and parallel (independent dispatch units sent to different Workers simultaneously). When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities - Tasks that can proceed independently, groups that chain naturally within a domain, work that can happen in parallel across domains. The Manager determines which mode to use at runtime based on the Plan's structure.
 
@@ -86,20 +86,13 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 
 ## 3. Work Breakdown Procedure
 
-Three sequential documents (Spec, Plan, Rules), each with its own analysis, file write, and User approval gate. Complete each and wait for User approval before starting the next.
+Three sequential documents (Spec, Plan, Rules), each with its own analysis, file write, and User approval gate. Complete each and wait for User approval before starting the next. Each document follows a single pass: present your analysis visibly in chat, read the target artifact file, then write. The analysis structures your reasoning for the User, the read transitions to writing mode, and the write produces the artifact.
 
 Present analysis visibly in chat for the User to review per `{SKILL_PATH:apm-communication}` §2.2 Visible Reasoning. At each approval gate, describe what was written, what comes next if approved, and ask for review.
 
 ### 3.1 Spec Analysis
 
 Present reasoning under the header **Spec Analysis:** addressing the aspects below. Perform the following actions per §2.3 Spec Standards.
-
-**Spec Header:**
-1. Set `title` in `.apm/spec.md` YAML frontmatter to the project name.
-2. Set `modified` field: "Spec creation by the Planner."
-3. Fill the `## Overview` section: 3-5 sentences (project type, core problem, essential scope, success criteria).
-
-**Spec Content:**
 1. Analyze design decisions from gathered context:
    - *Design decisions.* Each explicit choice and implicit constraint embedded in requirements: what was decided, what alternatives existed, why this direction. Surface assumptions stated as facts that represent actual decisions.
    - *Source documents:* which requirements already have authoritative definitions in User documents; reference rather than duplicate.
@@ -107,7 +100,7 @@ Present reasoning under the header **Spec Analysis:** addressing the aspects bel
    - *Decision relationships:* decisions that cascade, constrain, or cluster naturally together.
    - *Structure rationale:* how to organize decisions so the Manager can extract relevant content per Task.
    - *Workspace.* From the workspace assessment during Context Gathering, document the project environment: directory structure, working repositories, reference repositories, authoritative document locations, existing `{RULES_FILE}` content that was found.
-2. Write the full Spec per §4.1 Spec Format. Let structure follow the decisions identified.
+2. Read `.apm/spec.md`, then write the full Spec per §4.1 Spec Format. Set `title` to the project name, `modified` to "Spec creation by the Planner.", and fill `## Overview` with 3-5 sentences (project type, core problem, essential scope, success criteria). Let content structure follow the decisions identified.
 3. Pause for User review:
    - State the Spec is complete and the artifact is created.
    - Ask User to review for accuracy.
@@ -117,12 +110,6 @@ Present reasoning under the header **Spec Analysis:** addressing the aspects bel
 ### 3.2 Plan Analysis
 
 Present reasoning under the header **Plan Analysis:** with sub-headers **Domain Analysis:**, **Stage Analysis:**, **Stage N Task Analysis:** for each Stage, and **Dependency Analysis:** for the analytical phases. Perform the following actions per §2.4 Plan Standards.
-
-**Plan Header:**
-1. Set `title` in `.apm/plan.md` YAML frontmatter to the project name (same as Spec).
-2. Set `modified` field: "Plan creation by the Planner."
-
-**Plan Content:**
 1. Analyze work structure from gathered context and the approved Spec per §2.2 Decomposition Principles:
    - *Domain Analysis.* Grounded in the Spec approved above:
      - Logical work domains and their scope.
@@ -137,14 +124,14 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
    - *Stage N Task Analysis.* For each Task identified above, deepen the analysis. State context (User requirements and constraints influencing this Stage), then for each Task:
      - *Worker assignment:* which Worker and why.
      - *Task scope:* what is the Task's scope? Is the User involved in any steps?
-     - *Task guidance:* implementation context the Worker needs, including domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis.
+     - *Task guidance:* implementation context the Worker needs, including domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis. For design decisions already in the Spec, reference the Spec section per §2.4 Plan Standards rather than restating, adding domain-specific context as needed.
      - *Task validation:* concrete criteria that verify the Task's deliverables - what to check and how. Note where User involvement is needed. Validation criteria co-define the Task with Guidance.
      - *Dependencies:* same-agent as `Task N.M`, cross-agent as **`Task N.M by <Agent>`** (bolded), specifying the deliverable at the boundary.
      - *Steps:* ordered operations building toward Task completion.
      Every aspect above must be addressed for every Task - none may be skipped. Depth of reasoning varies with complexity, but coverage does not: even a concise Task analysis names the Worker, states scope, provides guidance, specifies validation criteria, and lists dependencies. Steps incorporate all previous aspects. After each Stage, assess whether each Task represents independently validatable work per §2.2 Decomposition Principles.
-   - *Dependency Analysis.* After all Tasks are analyzed, verify all cross-agent dependencies are correctly identified and bolded. Cross-check agent assignments - if a dependency's producer differs from the consumer's agent, it must be bolded. Reason through the dependency audit (list, classify, flag misclassified) and cross-agent chains (provider, consumer, agents, required deliverable). Fix any misclassified dependencies. When presenting the dependency audit to the User, describe dependencies by their relationship rather than by graph notation.
-2. Write the full Plan per §4.2 Plan Format. Enrich Task details from reasoning. Ensure every cross-agent dependency is bolded at write time. Include the Dependency Graph in the Plan header.
-3. Re-read the written Plan and verify under the header **Plan Review:**
+   - *Dependency Analysis.* After all Tasks are analyzed, verify all cross-agent dependencies are correctly identified. Cross-check agent assignments - if a dependency's producer differs from the consumer's agent, it is a cross-agent dependency. Reason through the dependency audit (list, classify, flag misclassified) and cross-agent chains (provider, consumer, agents, required deliverable). Fix any misclassified dependencies. Describe dependencies by their relationship - which Worker produces what output for which consumer - not by graph rendering properties (edge styles, bolding, arrow types). Graph formatting is applied during the write step, not during analysis.
+2. Read `.apm/plan.md`, then write the full Plan per §4.2 Plan Format. Set `title` to the project name (same as Spec) and `modified` to "Plan creation by the Planner." Enrich Task details from reasoning. Ensure every cross-agent dependency is bolded at write time. Include the Dependency Graph in the Plan header.
+3. Re-read the written Plan file and verify under the header **Plan Review:** This is a post-write verification pass against the written artifact - not a second analysis. Check what was written, not what should be written.
    - *Structural check:* Confirm every Task has all required fields (Objective, Output, Validation, Guidance, Dependencies, Steps). Confirm every cross-agent dependency is bolded in both the Task's Dependencies field and the Dependency Graph.
    - *Workload check:* Count Tasks per Worker. Flag disproportionate workloads for subdivision review. If a Worker is clearly overloaded, subdivide autonomously (reason through domain boundaries and Worker coherence, update assignments and dependencies). If the imbalance is borderline or involves judgment calls, present the assessment to the User and ask before modifying.
    - *Consistency check:* Verify that the Dependency Graph correctly distinguishes same-agent from cross-agent dependencies. Confirm Worker names in the Graph match the Workers table.
@@ -166,7 +153,7 @@ Perform the following actions per §2.5 `{RULES_FILE}` Standards:
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan. Version control conventions are excluded - the Manager handles those and appends content to Rules during the start of the Implementation Phase.
    - **Classification.** Separate truly universal patterns from Task-specific ones per §2.5 `{RULES_FILE}` Standards. Universal means applicable to every Worker regardless of domain. Most projects produce few genuinely universal rules - project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
    - **Existing standards:** what `{RULES_FILE}` already contains; reference rather than duplicate.
-2. Write APM_RULES block to `{RULES_FILE}` per §4.3 APM_RULES Block:
+2. Read `{RULES_FILE}` (or confirm it does not exist), then write the APM_RULES block per §4.3 APM_RULES Block:
    - If file exists: preserve existing content outside block, append APM_RULES block.
    - If creating new: create file with APM_RULES block only.
 3. Pause for User review:
@@ -306,6 +293,8 @@ APM_RULES {
 - *Duplicating source documents:* Restating requirements from User documents instead of referencing the source. The Spec captures design decisions layered on existing requirements.
 - *Collapsed phases:* Producing all three documents in one reasoning block instead of following the sequential analyze-write-approve cycle. Each document has a distinct approval gate - the User reviews each before the next begins.
 - *Skipped approval gate:* Completing an internal review and proceeding to the next document without pausing for User approval. The Planner's review and the User's approval are separate steps.
+- *Restating Spec content in Task guidance:* Task guidance that repeats design decisions already captured in the Spec creates duplication and risks divergence. Reference the Spec section; add only domain-specific context the Spec does not cover.
+- *Rules referencing Spec or Plan:* Workers do not have the Spec or Plan in their designed context. Rules that reference these documents ("per Spec §X", "see Plan Task 2.1") are inaccessible to Workers. Rules must be self-contained - embed the content directly.
 
 ---
 

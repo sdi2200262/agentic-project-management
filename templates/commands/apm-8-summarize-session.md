@@ -51,7 +51,7 @@ outcome: <complete | partial | incomplete>
 - *Project Scope:* What was being built and why, from the Spec.
 - *Stages and Outcomes.* Per-Stage summary: objective, Tasks completed, notable results.
 - *Key Deliverables:* Primary outputs with file paths or descriptions.
-- *Codebase State.* How deliverables relate to `.apm/` artifacts: Tasks reflected in code, pending work, gaps between Plan and implementation.
+- *Codebase State.* Compare the actual codebase against the planning artifacts: which planned deliverables exist as code, which are partial or missing, whether the code evolved past what the Spec and Plan describe, and any gaps between what was planned and what was implemented.
 - *Notable Findings:* Operational lessons and patterns - issues encountered and how they were resolved, self-corrections during execution, recovery events, coordination insights. Draw from Memory notes, working notes, and Task Logs.
 - *Known Issues:* Unresolved problems, open questions, or caveats.
 - *Snapshot Notice:* "This summary reflects the session state as of `<datetime>`. The codebase may have diverged since this summary was created."

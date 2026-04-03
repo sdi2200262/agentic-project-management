@@ -45,7 +45,7 @@ Task Prompts must be self-contained with respect to planning documents and autho
 
 Follow-up Task Prompts occur when the review outcome determines retry after investigation. You arrive with: original Task Log findings, investigation results, understanding of what went wrong, and potentially modified planning documents.
 
-**Content principle:** The follow-up is a new prompt - Objective, Instructions, Output, and Validation are refined based on what went wrong. Do not copy the previous prompt.
+**Content principle:** The follow-up is a new prompt - Objective, Instructions, Output, and Validation are refined based on what went wrong. Do not copy the previous prompt. The Worker operated with scoped context; your follow-up bridges the gap between what the Worker saw and what you now know from investigation, other Task completions, and planning document updates. Give the Worker concrete direction rather than restating the original assignment.
 
 **Log path continuity:** Use the same `log_path` as the original. The Worker overwrites the previous log. The Manager captures iteration patterns in Stage summaries when relevant.
 
@@ -184,7 +184,7 @@ has_dependencies: true
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field.
 - *Instruction Accuracy:* The objective and expected output are authoritative - deliver those. However, the detailed instructions and steps were constructed from planning documents and may contain inaccurate details, missed prerequisites, or outdated assumptions about the codebase. When a specific instruction contradicts what the codebase actually shows, validate the actual state rather than persisting with the instruction as written.
-- *Task Iteration:* When facing persistent issues that resist direct fixing, spawn a subagent for fresh-context resolution rather than exhausting the context window. If unresolved, log to Memory and report with Partial status.
+- *Task Iteration:* When a fix attempt does not resolve an issue, spawn a debug subagent with the full accumulated context (error output, what was tried, relevant file paths) for fresh-context investigation rather than continuing to iterate in the main context. When the root cause could stem from multiple independent areas, spawn separate subagents in parallel. If unresolved after subagent investigation, report with Partial status.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
 - *Task Report:* Instruction to output a Task Report for User to return to Manager.
 
