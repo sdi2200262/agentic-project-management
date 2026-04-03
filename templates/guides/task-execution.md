@@ -77,7 +77,7 @@ Perform the following actions:
 1. Execute Detailed Instructions sequentially, applying Guidance and relevant Rules from `{RULES_FILE}`, working toward the Objective.
 2. When an instruction requires explicit User action, communicate what needs doing, why, and what options exist. Await completion, then resume.
 3. When an instruction includes a subagent step, spawn the relevant subagent with a structured task description. Integrate findings and continue. {WORKER_SUBAGENT_GUIDANCE}
-4. When all instructions complete, continue to §3.4 Task Validation.
+4. When all instructions complete, communicate that implementation is complete and you are moving to validation. Continue to §3.4 Task Validation.
 
 ### 3.4 Task Validation
 

@@ -28,10 +28,10 @@ Read the following documents (these reads are independent):
 Determine identity from the `{ARGS}` argument:
 1. Resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution.
 2. Register as the resolved agent: store the agent identifier and bus path for this instance.
-3. List the bus directory with file sizes, e.g., `ls -la .apm/bus/<agent-slug>/` (or platform equivalent). Confirm bus files exist (`task.md`, `report.md`, `handoff.md`). Check bus state:
+3. Verify bus files exist (`task.md`, `report.md`, `handoff.md`) in the bus directory. Check bus state:
    - If Handoff Bus has content → **incoming Worker**. Proceed to §2.2 Incoming Worker Initiation.
-   - If Handoff Bus is empty and Task Bus has content → confirm registration to User and proceed to §3 Task Execution Loop.
-   - If both are empty → confirm registration to User: state agent identifier and bus path. Await Task Prompt via `/apm-4-check-tasks`.
+   - If Handoff Bus is empty and Task Bus has content → confirm identity to User and proceed to §3 Task Execution Loop.
+   - If both are empty → confirm identity to User and await Task Prompt via `/apm-4-check-tasks`.
 
 ### 2.2 Incoming Worker Initiation
 
