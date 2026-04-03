@@ -45,6 +45,8 @@ APM is installed via the `agentic-pm` CLI (`npm install -g agentic-pm`) and supp
 
 The official documentation is the source of truth. Always fetch the relevant page rather than relying on the overview above or on training data.
 
+**LLM entry point:** https://agentic-project-management.dev/llms.txt - structured index of all docs with descriptions, follows the llms.txt standard.
+
 **Documentation site:** https://agentic-project-management.dev/docs
 
 | Page | URL path | Covers |
@@ -64,6 +66,9 @@ The official documentation is the source of truth. Always fetch the relevant pag
 | Tips and Tricks | `/docs/tips-and-tricks` | Model selection, cost optimization, workflow efficiency |
 
 **Repository:** https://github.com/sdi2200262/agentic-project-management
+
+The full documentation is also available as a single file:
+`https://agentic-project-management.dev/llms-full.txt`
 
 When the documentation site is unreachable, fetch docs directly from the website repository:
 `https://raw.githubusercontent.com/sdi2200262/apm-website/main/docs/<filename>.md`
