@@ -90,11 +90,22 @@ APM supports custom repositories for teams that want to modify the workflow. For
 
 See the [Customization Guide](https://agentic-project-management.dev/docs/customization-guide) for details.
 
-## Migrating from Pre-v1.0.0
+## APM Assist
 
-The [Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide#migrating-from-older-versions) documents the recommended migration procedure. A standalone [migration skill](skills/apm-migration/) is also available to guide an AI agent through the process step by step - it handles state assessment, metadata conversion, safe cleanup, and next steps.
+The [`apm-assist`](skills/apm-assist/) skill turns your AI assistant into an APM-aware helper. Install it into any project and your assistant can explain how APM works, answer questions by reading the live documentation, detect your installation state and version, and guide migration from v0.5.x. It works with any supported platform.
 
-See the [standalone skills directory](skills/) for per-platform installation instructions for the migration skill.
+```bash
+# Claude Code example
+mkdir -p .claude/skills/apm-assist
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-assist/SKILL.md \
+  -o .claude/skills/apm-assist/SKILL.md
+```
+
+See the [standalone skills directory](skills/) for other platforms.
+
+## Migrating from v0.5.x
+
+The [Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide#migrating-from-v05x) documents the recommended migration procedure. The `apm-assist` skill above can also walk you through it interactively.
 
 ## Contributing
 
