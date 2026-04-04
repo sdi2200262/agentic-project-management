@@ -109,19 +109,22 @@ Present reasoning under the header **Spec Analysis:** addressing the aspects bel
 
 ### 3.2 Plan Analysis
 
-Present reasoning under the header **Plan Analysis:** with sub-headers **Domain Analysis:**, **Stage Analysis:**, **Stage N Task Analysis:** for each Stage, and **Dependency Analysis:** for the analytical phases. Perform the following actions per §2.4 Plan Standards.
+Present reasoning under the header **Plan Analysis:** with sub-headers **Domain Analysis:**, **Stage Analysis:**, **Stage N Task Analysis:** for each Stage, and **Dependency Analysis:**. Each section derives from the previous - domains inform stage boundaries, stage objectives decompose into tasks. Perform the following actions per §2.4 Plan Standards.
 1. Analyze work structure from gathered context and the approved Spec per §2.2 Decomposition Principles:
    - *Domain Analysis.* Grounded in the Spec approved above:
      - Logical work domains and their scope.
      - Why domains are separated or combined.
      - How domains map to Workers with proposed names and responsibilities.
      Update Plan header Workers field.
-   - *Stage Analysis.* Stages are sequential milestone groupings - Stage N+1 begins only after Stage N completes. Each Stage delivers coherent value that subsequent Stages build on. Parallelism happens within a Stage (parallel Tasks across Workers), not across Stages.
+   - *Stage Analysis.* Starting from the domains identified above, reason about how their work naturally sequences into Stages. Where do the domain boundaries, dependency chains, or deliverable milestones create natural progression points? Each Stage is a sequential milestone grouping - Stage N+1 begins only after Stage N completes. Parallelism happens within a Stage (parallel Tasks across Workers), not across Stages.
+     - How the domains' characteristics and dependencies create stage boundaries.
      - What each Stage delivers and why it constitutes a distinct milestone.
-     - Why this ordering, what each Stage builds on and what it enables.
-     - For each Stage, reason through the deliverables needed to meet the Stage objective and how they decompose into Tasks: which deliverables are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine, which Worker produces each, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it. If the User approved milestone review gates during Context Gathering, include them at the end of the relevant Stage per §2.2 Decomposition Principles. The Task structure should emerge visibly from this reasoning - not appear as a predetermined list.
+     - How each Stage's deliverables map to Tasks: which deliverables are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine, which Worker produces each, and which can proceed independently vs sequentially.
+     - When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it.
+     - If the User approved milestone review gates during Context Gathering, include them at the end of the relevant Stage per §2.2 Decomposition Principles.
+     - The Task structure should emerge visibly from this reasoning - not appear as a predetermined list.
      Update Plan header Stages field.
-   - *Stage N Task Analysis.* For each Task identified above, deepen the analysis. State context (User requirements and constraints influencing this Stage), then for each Task:
+   - *Stage N Task Analysis.* For each Task derived from the Stage objectives above, deepen the analysis. State context (User requirements and constraints influencing this Stage), then for each Task:
      - *Worker assignment:* which Worker and why.
      - *Task scope:* what is the Task's scope? Is the User involved in any steps?
      - *Task guidance:* implementation context the Worker needs, including domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis. For design decisions already in the Spec, reference the Spec section per §2.4 Plan Standards rather than restating, adding domain-specific context as needed.
