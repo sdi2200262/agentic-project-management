@@ -59,7 +59,7 @@ Neutral, direct language. No hedging: "Consider..." not "You might want to consi
 
 ### 2.2 Voice Standards
 
-Active voice ("The Manager creates..." not "is created"). No anthropomorphization - agents execute and perform, they do not want, feel, or think.
+Active voice ("The Manager creates..." not "is created"). No emotional anthropomorphization - agents do not want, feel, prefer, or believe. Cognitive verbs that describe agent operations (reason, assess, determine, analyze, verify) are accurate, not anthropomorphization.
 
 **Standards files** (`_standards/`): Third person throughout. Standards describe how agents behave and how the workflow operates - they do not instruct a runtime reader. "The Manager assesses cascade implications" not "Assess cascade implications." "Workers iterate on failure" not "Iterate on failure." Instructional language directed at template maintainers is acceptable ("Prefer X over Y", "Use X format") because standards address maintainers, not runtime agents.
 

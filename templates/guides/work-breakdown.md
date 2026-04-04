@@ -30,7 +30,7 @@ From Context Gathering's §2.1 Workflow Context, you know these documents serve 
 
 **Coordination is runtime:** The Manager determines how work gets dispatched - sequencing, parallel execution, grouping - at runtime based on the Plan's structure. The Manager establishes version control conventions during the Implementation Phase. The Plan captures work structure; the Manager reads coordination opportunities from it.
 
-**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should consider but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover project environment observations, User preferences, and context that informs the Manager's coordination. Plan notes cover work structure observations that reveal dispatch opportunities: which Tasks are independent, which form sequential chains within the same domain, cross-agent convergence points, and relative Task complexity. Include factual observations with specific evidence and explicit User preferences - not directives telling the Manager what to do.
+**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should consider but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover project environment observations, User preferences, and context that informs the Manager's coordination. Plan notes cover work structure observations that reveal dispatch and coordination opportunities: which Tasks are independent, which form sequential chains within the same domain, cross-agent convergence points, relative Task complexity, and Stage boundaries where complexity may warrant holistic verification. Include factual observations with specific evidence and explicit User preferences - not directives telling the Manager what to do.
 
 ### 2.2 Decomposition Principles
 
@@ -46,7 +46,7 @@ These principles apply across all decomposition levels. Adapt granularity to pro
 
 **Scope boundaries:** Worker-assignable work is completable within the development environment and verifiable autonomously. User coordination involves external platforms, credentials, or validation requiring human judgment - include explicit coordination steps and note where User involvement is needed.
 
-**Validation criteria.** Each Task specifies concrete pass/fail criteria tied to its deliverables - what to check and how. Criteria the Worker can verify autonomously (tests pass, outputs exist with correct structure, behavior matches requirements) allow autonomous iteration. Criteria requiring User involvement - judgment (design approval, content quality) or action (running external checks, confirming platform behavior) - require the Worker to pause. Most Tasks combine multiple criteria. Validation criteria are Worker-scoped - no references to other Stages, Tasks, or coordination-level gates. Workers validate their own deliverables; Stage coordination is the Manager's concern. Milestone review gates - Tasks at the end of a Stage that holistically verify work before proceeding - require explicit User approval during Context Gathering.
+**Validation criteria.** Each Task specifies concrete pass/fail criteria tied to its deliverables - what to check and how. Criteria the Worker can verify autonomously (tests pass, outputs exist with correct structure, behavior matches requirements) allow autonomous iteration. Criteria requiring User involvement - judgment (design approval, content quality) or action (running external checks, confirming platform behavior) - require the Worker to pause. Most Tasks combine multiple criteria. Validation criteria are Worker-scoped - no references to other Stages, Tasks, or coordination-level gates. Workers validate their own deliverables; holistic verification beyond individual Tasks - milestone checks, acceptance gates, end-to-end validation - is the Manager's runtime responsibility. When Context Gathering surfaced observations about holistic verification needs, include them in Plan notes per §2.1 Workflow Context - the Manager acts on them at runtime, not as planned Tasks.
 
 ### 2.3 Spec Standards
 
@@ -119,12 +119,10 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
    - *Stage Analysis.* Starting from the domains identified above, reason about how their work naturally sequences into Stages. Where do the domain boundaries, dependency chains, or deliverable milestones create natural progression points? Each Stage is a sequential milestone grouping - Stage N+1 begins only after Stage N completes. Parallelism happens within a Stage (parallel Tasks across Workers), not across Stages.
      - How the domains' characteristics and dependencies create stage boundaries.
      - What each Stage delivers and why it constitutes a distinct milestone.
-     - How each Stage's deliverables map to Tasks: which deliverables are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine, which Worker produces each, and which can proceed independently vs sequentially.
-     - When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it.
-     - If the User approved milestone review gates during Context Gathering, include them at the end of the relevant Stage per §2.2 Decomposition Principles.
-     - The Task structure should emerge visibly from this reasoning - not appear as a predetermined list.
+     - How each Stage's deliverables map to Tasks: which deliverables are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine, which Worker produces each, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it.
+     - Conclude each Stage by identifying the Tasks that emerge from its objectives - what each Task is and why it exists as a separate unit of work. The Task structure should emerge visibly from this reasoning.
      Update Plan header Stages field.
-   - *Stage N Task Analysis.* For each Task derived from the Stage objectives above, deepen the analysis. State context (User requirements and constraints influencing this Stage), then for each Task:
+   - *Stage N Task Analysis.* For each Task derived from the Stage analysis above, deepen the analysis. State context (User requirements and constraints influencing this Stage), then for each Task:
      - *Worker assignment:* which Worker and why.
      - *Task scope:* what is the Task's scope? Is the User involved in any steps?
      - *Task guidance:* implementation context the Worker needs, including domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis. For design decisions already in the Spec, reference the Spec section per §2.4 Plan Standards rather than restating, adding domain-specific context as needed.
@@ -133,16 +131,12 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      - *Steps:* ordered operations building toward Task completion.
      Every aspect above must be addressed for every Task - none may be skipped. Depth of reasoning varies with complexity, but coverage does not: even a concise Task analysis names the Worker, states scope, provides guidance, specifies validation criteria, and lists dependencies. Steps incorporate all previous aspects. After each Stage, assess whether each Task represents independently validatable work per §2.2 Decomposition Principles.
    - *Dependency Analysis.* After all Tasks are analyzed, verify all cross-agent dependencies are correctly identified. Cross-check agent assignments - if a dependency's producer differs from the consumer's agent, it is a cross-agent dependency. Reason through the dependency audit (list, classify, flag misclassified) and cross-agent chains (provider, consumer, agents, required deliverable). Fix any misclassified dependencies. Describe dependencies by their relationship - which Worker produces what output for which consumer - not by graph rendering properties (edge styles, bolding, arrow types). Graph formatting is applied during the write step, not during analysis.
+   - *Pre-write checks.* Before writing, verify: every Task has all required fields (Objective, Output, Validation, Guidance, Dependencies, Steps), workload is reasonably distributed across Workers (subdivide or flag imbalances), and dependency classifications are consistent. Correct issues in the analysis before proceeding to the write.
 2. Read `.apm/plan.md`, then write the full Plan per §4.2 Plan Format. Set `title` to the project name (same as Spec) and `modified` to "Plan creation by the Planner." Enrich Task details from reasoning. Ensure every cross-agent dependency is bolded at write time. Include the Dependency Graph in the Plan header.
-3. Re-read the written Plan file and verify under the header **Plan Review:** This is a post-write verification pass against the written artifact - not a second analysis. Check what was written, not what should be written.
-   - *Structural check:* Confirm every Task has all required fields (Objective, Output, Validation, Guidance, Dependencies, Steps). Confirm every cross-agent dependency is bolded in both the Task's Dependencies field and the Dependency Graph.
-   - *Workload check:* Count Tasks per Worker. Flag disproportionate workloads for subdivision review. If a Worker is clearly overloaded, subdivide autonomously (reason through domain boundaries and Worker coherence, update assignments and dependencies). If the imbalance is borderline or involves judgment calls, present the assessment to the User and ask before modifying.
-   - *Consistency check:* Verify that the Dependency Graph correctly distinguishes same-agent from cross-agent dependencies. Confirm Worker names in the Graph match the Workers table.
-   Correct any issues found before presenting to the User.
-4. Pause for User review:
+3. Pause for User review:
    - State the Plan is complete and the artifact is created. Present a summary to the User: Worker count, Stage count with names and Task counts, total Tasks, dispatch patterns.
    - Ask User to review the Plan.
-   - If modifications needed → Apply and repeat step 4.
+   - If modifications needed → Apply and repeat step 3.
    - If approved → Proceed to §3.3 Rules Analysis.
 
 ### 3.3 Rules Analysis
@@ -292,7 +286,7 @@ APM_RULES {
 - *Under-specification:* Design decisions left implicit - if it could reasonably go multiple ways, document the chosen direction.
 - *Vague validation:* "Works correctly" is not a criterion - specify what "correctly" means concretely.
 - *Missing dependencies:* Tasks requiring prior work not marked - trace prerequisites.
-- *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph - classify at write time by checking whether producer and consumer share the same agent. Verify during Plan Review.
+- *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph - classify at write time by checking whether producer and consumer share the same agent.
 - *Duplicating source documents:* Restating requirements from User documents instead of referencing the source. The Spec captures design decisions layered on existing requirements.
 - *Collapsed phases:* Producing all three documents in one reasoning block instead of following the sequential analyze-write-approve cycle. Each document has a distinct approval gate - the User reviews each before the next begins.
 - *Skipped approval gate:* Completing an internal review and proceeding to the next document without pausing for User approval. The Planner's review and the User's approval are separate steps.
