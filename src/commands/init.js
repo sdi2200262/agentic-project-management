@@ -152,6 +152,14 @@ export async function initCommand(options = {}) {
   }
   logger.success('APM initialized!');
   logger.info('Run "apm add" to add more assistants, or "apm update" to check for updates.');
+  console.log('');
+  const names = assistantIds
+    .map(id => manifest.assistants.find(a => a.id === id))
+    .filter(a => a && installedFiles[a.id])
+    .map(a => a.name);
+  const assistantLabel = names.length ? names.join(', ') : 'your AI assistant';
+  logger.info(`New to APM? Install the apm-assist skill so ${assistantLabel} can explain how APM works and answer questions outside of APM sessions.`);
+  logger.info('See: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#installing-skills');
 }
 
 export default initCommand;

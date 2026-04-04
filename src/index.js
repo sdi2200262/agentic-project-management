@@ -86,6 +86,11 @@ function displayHelp() {
   console.log(`            - Update via: ${chalk.yellow('apm update')}`);
   console.log('');
   console.log(chalk.gray('Learn more:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management'));
+  console.log('');
+  console.log(chalk.gray('New to APM? The apm-assist skill gives your AI assistant full knowledge of'));
+  console.log(chalk.gray('the framework so it can answer questions and help with migration.'));
+  console.log(chalk.gray('See:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management/tree/main/skills#installing-skills'));
+  console.log('');
 }
 
 const program = new Command();

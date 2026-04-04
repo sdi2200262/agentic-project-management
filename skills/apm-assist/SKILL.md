@@ -9,6 +9,8 @@ description: Reference and procedures for helping users understand APM, detect t
 
 This skill provides the context and procedures needed to help users with APM (Agentic Project Management). It covers explaining concepts, detecting installation state, answering questions from the live documentation, and guiding migration from older versions.
 
+**This skill is not part of the APM workflow.** APM sessions run in their own dedicated conversations - the Planner, Manager, and Workers each get a separate chat. This skill is for answering questions about APM and helping with setup or migration. If the user wants to start an APM session, fetch the [Getting Started](https://agentic-project-management.dev/docs/getting-started) guide and walk them through the steps it describes. Do not attempt to run APM procedures in this conversation.
+
 ### 1.1 What This Skill Covers
 
 - **Explaining APM** - How APM works, its concepts, workflow, and architecture
