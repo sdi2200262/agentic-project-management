@@ -68,7 +68,7 @@ Task Logs record the execution result:
 | **Partial** | Some progress made; Worker needs guidance to continue. |
 | **Failed** | Objective not achieved; Worker attempted but could not resolve the issue. |
 
-Partial means "I need guidance to continue." Failed means "I could not achieve the objective." The `failure_point` field accompanies non-Success statuses: `null` for Success, or a description for Partial and Failed.
+Partial means "I need guidance to continue." Failed means "I could not achieve the objective."
 
 ---
 

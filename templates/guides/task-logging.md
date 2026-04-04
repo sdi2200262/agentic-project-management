@@ -29,9 +29,9 @@ Boolean flags in YAML frontmatter signal conditions requiring Manager attention.
 
 Status reflects whether the objective was achieved. Select based on end state, not effort expended.
 
-- *Success:* Objective achieved, all validation passed. `failure_point: null`
-- *Partial:* Some progress made but incomplete; Worker needs guidance to continue. `failure_point: <description>`
-- *Failed:* Objective not achieved; Worker attempted but could not resolve the issue. `failure_point: <description>`
+- *Success:* Objective achieved, all validation passed.
+- *Partial:* Some progress made but incomplete; Worker needs guidance to continue.
+- *Failed:* Objective not achieved; Worker attempted but could not resolve the issue.
 
 Use Partial when: validation is ambiguous, important findings emerged that could affect other Tasks, iteration stalled with recurring failures, or approach uncertainty depends on factors outside Worker's scope. Continue iterating (do not log yet) when validation failed but the cause is clear and fixable, no findings require Manager awareness, and progress is being made.
 
@@ -55,7 +55,6 @@ Perform the following actions:
 1. From the completion assessment already presented in chat per `{GUIDE_PATH:task-execution}` §3.6 Task Completion, determine what to capture in the Task Log.
 2. Complete YAML frontmatter fields:
    - Set `status` per §2.2 Outcome Standards.
-   - Set `failure_point`: `null` for Success, or a description for Partial and Failed.
    - Set `important_findings` and `compatibility_issues` per §2.1 Flag Assessment Standards.
    - Set `stage`, `task`, `title`, and `agent` from the Task Prompt.
 3. Complete markdown body sections per §4.1 Task Log Format. Always include: Summary, Details, Output, Validation, Issues. Include conditional sections (Compatibility Concerns, Important Findings) only when their corresponding flag is `true`.
@@ -91,7 +90,6 @@ task: <M>
 title: <Task title from Plan>
 agent: <agent-slug>
 status: Success | Partial | Failed
-failure_point: null | <description>
 important_findings: true | false
 compatibility_issues: true | false
 ---
@@ -103,7 +101,6 @@ compatibility_issues: true | false
 - `title`: Task title from the Task Prompt.
 - `agent`: Your agent identifier.
 - `status`: Task outcome per §2.2 Outcome Standards. `Success`, `Partial`, or `Failed`.
-- `failure_point`: `null` for Success; description of where/why the Task didn't succeed for Partial and Failed.
 - `important_findings`: Whether discoveries have implications beyond current Task scope per §2.1 Flag Assessment Standards.
 - `compatibility_issues`: Whether output conflicts with existing systems per §2.1 Flag Assessment Standards.
 
