@@ -92,13 +92,13 @@ Present analysis visibly in chat for the User to review per `{SKILL_PATH:apm-com
 
 ### 3.1 Spec Analysis
 
-Present reasoning under the header **Spec Analysis:** addressing the aspects below. Perform the following actions per §2.3 Spec Standards.
+Present reasoning under the header **Spec Analysis:** addressing the aspects below. The Spec captures what is being built - not how work is decomposed. Workers, Stages, and Task structure are determined during Plan Analysis. Perform the following actions per §2.3 Spec Standards.
 1. Analyze design decisions from gathered context:
    - *Design decisions.* Each explicit choice and implicit constraint embedded in requirements: what was decided, what alternatives existed, why this direction. Surface assumptions stated as facts that represent actual decisions.
    - *Source documents:* which requirements already have authoritative definitions in User documents; reference rather than duplicate.
    - *Boundary calls.* For each candidate, determine its primary location per §2.1 Workflow Context: Spec (project-level design decisions), Task guidance (Task-scoped details, single-domain constraints), or Rules (universal execution patterns). Each item belongs in one primary location.
    - *Decision relationships:* decisions that cascade, constrain, or cluster naturally together.
-   - *Structure rationale:* how to organize decisions so the Manager can extract relevant content per Task.
+   - *Structure rationale:* how to organize decisions by project concerns so the Manager can extract relevant content.
    - *Workspace.* From the workspace assessment during Context Gathering, document the project environment: directory structure, working repositories, reference repositories, authoritative document locations, existing `{RULES_FILE}` content that was found.
 2. Read `.apm/spec.md`, then write the full Spec per §4.1 Spec Format. Set `title` to the project name, `modified` to "Spec creation by the Planner.", and fill `## Overview` with 3-5 sentences (project type, core problem, essential scope, success criteria). Let content structure follow the decisions identified.
 3. Pause for User review:
@@ -116,11 +116,11 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      - Why domains are separated or combined.
      - How domains map to Workers with proposed names and responsibilities.
      Update Plan header Workers field.
-   - *Stage Analysis.* Starting from the domains identified above, reason about how their work naturally sequences into Stages. Where do the domain boundaries, dependency chains, or deliverable milestones create natural progression points? Each Stage is a sequential milestone grouping - Stage N+1 begins only after Stage N completes. Parallelism happens within a Stage (parallel Tasks across Workers), not across Stages.
+   - *Stage Analysis.* Starting from the domains identified above, reason about how their work naturally sequences into Stages. Where do the domain boundaries, dependency chains, or deliverable milestones create natural progression points? Each Stage is a sequential milestone grouping - Stage N+1 begins only after Stage N completes. Parallelism happens within a Stage (parallel Tasks across Workers), not across Stages. Present each Stage to the User by walking through its purpose, then its deliverables, then how those deliverables decompose into Tasks:
      - How the domains' characteristics and dependencies create stage boundaries.
      - What each Stage delivers and why it constitutes a distinct milestone.
-     - How each Stage's deliverables map to Tasks: which deliverables are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine, which Worker produces each, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it.
-     - Conclude each Stage by identifying the Tasks that emerge from its objectives - what each Task is and why it exists as a separate unit of work. The Task structure should emerge visibly from this reasoning.
+     - What deliverables each Stage requires and how they decompose: which are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it.
+     - Conclude each Stage by naming the Tasks that emerge from this reasoning, what each one produces, and why each exists as a separate unit of work.
      Update Plan header Stages field.
    - *Stage N Task Analysis.* For each Task derived from the Stage analysis above, deepen the analysis. State context (User requirements and constraints influencing this Stage), then for each Task:
      - *Worker assignment:* which Worker and why.
@@ -131,7 +131,7 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      - *Steps:* ordered operations building toward Task completion.
      Every aspect above must be addressed for every Task - none may be skipped. Depth of reasoning varies with complexity, but coverage does not: even a concise Task analysis names the Worker, states scope, provides guidance, specifies validation criteria, and lists dependencies. Steps incorporate all previous aspects. After each Stage, assess whether each Task represents independently validatable work per §2.2 Decomposition Principles.
    - *Dependency Analysis.* After all Tasks are analyzed, verify all cross-agent dependencies are correctly identified. Cross-check agent assignments - if a dependency's producer differs from the consumer's agent, it is a cross-agent dependency. Reason through the dependency audit (list, classify, flag misclassified) and cross-agent chains (provider, consumer, agents, required deliverable). Fix any misclassified dependencies. Describe dependencies by their relationship - which Worker produces what output for which consumer - not by graph rendering properties (edge styles, bolding, arrow types). Graph formatting is applied during the write step, not during analysis.
-   - *Pre-write checks.* Before writing, verify: every Task has all required fields (Objective, Output, Validation, Guidance, Dependencies, Steps), workload is reasonably distributed across Workers (subdivide or flag imbalances), and dependency classifications are consistent. Correct issues in the analysis before proceeding to the write.
+   - *Pre-write checks.* Before writing, verify the analysis is complete: every Task was analyzed with all aspects covered (Worker assignment, scope, guidance, validation, dependencies, steps), workload is reasonably distributed across Workers (subdivide or flag imbalances), all cross-agent dependencies are identified, and notes for the Manager are ready per §2.1 Workflow Context. Correct issues in the analysis before proceeding to the write.
 2. Read `.apm/plan.md`, then write the full Plan per §4.2 Plan Format. Set `title` to the project name (same as Spec) and `modified` to "Plan creation by the Planner." Enrich Task details from reasoning. Ensure every cross-agent dependency is bolded at write time. Include the Dependency Graph in the Plan header.
 3. Pause for User review:
    - State the Plan is complete and the artifact is created. Present a summary to the User: Worker count, Stage count with names and Task counts, total Tasks, dispatch patterns.
