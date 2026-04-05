@@ -30,7 +30,7 @@ From Context Gathering's §2.1 Workflow Context, you know these documents serve 
 
 **Coordination is runtime:** The Manager determines how work gets dispatched - sequencing, parallel execution, grouping - at runtime based on the Plan's structure. The Manager establishes version control conventions during the Implementation Phase. The Plan captures work structure; the Manager reads coordination opportunities from it.
 
-**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should consider but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover project environment observations, User preferences, and context that informs the Manager's coordination. Plan notes cover work structure observations that reveal dispatch and coordination opportunities: which Tasks are independent, which form sequential chains within the same domain, cross-agent convergence points, relative Task complexity, and Stage boundaries where complexity may warrant holistic verification. Include factual observations with specific evidence and explicit User preferences - not directives telling the Manager what to do.
+**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should be aware of but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover the project environment the Manager will encounter: version control observations, workspace constraints, which codebases are live targets vs read-only references, and User preferences that affect execution. Plan notes cover what the Planner observed about the work structure it created: why certain boundaries exist, where natural groupings or sequencing patterns are, what the critical path looks like, where convergence creates complexity, and Stage boundaries where holistic verification may be valuable. Notes are awareness for the Manager — observations and reasoning that inform judgment, not instructions about what to do.
 
 ### 2.2 Decomposition Principles
 
@@ -74,9 +74,11 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 
 ### 2.5 `{RULES_FILE}` Standards
 
-`{RULES_FILE}` defines how work is performed - universal execution patterns across all Tasks. Workers receive the entire file during Task execution, not just the APM Rules block. The block is a namespace to separate APM-managed standards from pre-existing content.
+`{RULES_FILE}` defines how work is performed - execution patterns that apply across all or most Tasks. Workers receive the entire file during Task execution, not just the APM Rules block. The block is a namespace to separate APM-managed standards from pre-existing content.
 
-**Content placement:** Rules capture how work is performed - not what is being built. Output formats, response strings, data schemas, and interface contracts define what is being built and belong in the Spec even when multiple Workers need them. Execution patterns belong here only when they apply to every Worker regardless of domain - all Workers read the same file, so domain-specific patterns do not belong here. When uncertain, prefer placing it in Task guidance - easier to promote later than to demote.
+**Content placement:** Rules capture how work is performed - not what is being built. Output formats, response strings, data schemas, and interface contracts define what is being built and belong in the Spec even when multiple Workers need them. Execution patterns belong here when they apply to all or most Tasks - narrowly domain-specific patterns are better placed in Task guidance. When uncertain, prefer Task guidance - easier to promote later than to demote.
+
+**Writing style:** All Workers read the same Rules file. Write rules so any Worker can determine whether a rule applies to its current work. Frame rules conditionally on the work being performed rather than on a specific Worker or domain — a Worker touching multiple domains should apply the right rules to each naturally.
 
 **Pre-existing content:** When `{RULES_FILE}` already contains User standards, reference relevant pre-existing rules from the APM Rules block rather than duplicating. Do not modify pre-existing content unless the User explicitly requests it.
 
@@ -148,7 +150,7 @@ Perform the following actions per §2.5 `{RULES_FILE}` Standards:
    - **From the Spec:** execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in the Spec - they reach Workers through Task Prompts.
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan. Version control conventions are excluded - the Manager handles those and appends content to Rules during the start of the Implementation Phase.
-   - **Classification.** Separate truly universal patterns from Task-specific ones per §2.5 `{RULES_FILE}` Standards. Universal means applicable to every Worker regardless of domain. Most projects produce few genuinely universal rules - project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
+   - **Classification.** Separate patterns that apply to all or most Tasks from narrowly Task-specific ones per §2.5 `{RULES_FILE}` Standards. Most projects produce few genuinely universal rules - project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
    - **Existing standards:** what `{RULES_FILE}` already contains; reference rather than duplicate.
 2. Read `{RULES_FILE}` (or confirm it does not exist), then write the APM_RULES block per §4.3 APM_RULES Block:
    - If file exists: preserve existing content outside block, append APM_RULES block.
@@ -177,7 +179,7 @@ modified: <last modification note>
 
 Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, and authoritative document locations). A single horizontal rule separates the header from the design decision content below. No horizontal rules within the content sections - `##` headings provide sufficient visual separation.
 
-- *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Format: `> **Notes:** <prose or unordered list>`. These cover project environment observations, User preferences, and context that informs the Manager's coordination per §2.1 Workflow Context.
+- *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Format: `> **Notes:** <prose or unordered list>`. These cover the project environment the Manager will encounter per §2.1 Workflow Context: version control observations, workspace constraints, and User preferences that affect execution.
 
 **Content structure.** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. The Spec should read as a coherent description of what is being built and why, shaped by the project's unique requirements.
 
@@ -195,9 +197,9 @@ modified: <last modification note>
 ---
 ```
 
-Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). A single horizontal rule separates the header from Stage sections below. No horizontal rules within Stage sections.
+Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). A single horizontal rule separates the header from Stage sections below. No other horizontal rules in the Plan — `##` and `###` headings provide sufficient visual separation between Stages and Tasks.
 
-- *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Format: `> **Notes:** <prose or unordered list>`. These cover work structure observations, dependency characteristics, and decomposition rationale per §2.1 Workflow Context.
+- *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Format: `> **Notes:** <prose or unordered list>`. These cover what the Planner observed about the work structure per §2.1 Workflow Context: why boundaries exist, natural groupings, critical path, convergence points.
 
 **Stage Format.** Each Stage in the Plan:
 - *Header:* `## Stage N: [Name]`
@@ -288,10 +290,11 @@ APM_RULES {
 - *Missing dependencies:* Tasks requiring prior work not marked - trace prerequisites.
 - *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph - classify at write time by checking whether producer and consumer share the same agent.
 - *Duplicating source documents:* Restating requirements from User documents instead of referencing the source. The Spec captures design decisions layered on existing requirements.
-- *Collapsed phases:* Producing all three documents in one reasoning block instead of following the sequential analyze-write-approve cycle. Each document has a distinct approval gate - the User reviews each before the next begins.
-- *Skipped approval gate:* Completing an internal review and proceeding to the next document without pausing for User approval. The Planner's review and the User's approval are separate steps.
+- *Skipped approval gate:* Each document has its own analyze-write-approve cycle. The User reviews and approves each document before the next begins. Producing multiple documents without pausing, or proceeding to the next document without User approval, breaks the cycle.
 - *Restating Spec content in Task guidance:* Task guidance that repeats design decisions already captured in the Spec creates duplication and risks divergence. Reference the Spec section; add only domain-specific context the Spec does not cover.
-- *Rules referencing Spec or Plan:* Workers do not have the Spec or Plan in their designed context. Rules that reference these documents ("per Spec §X", "see Plan Task 2.1") are inaccessible to Workers. Rules must be self-contained - embed the content directly.
+- *Rules referencing Spec or Plan:* Workers rely on their Task Prompts and the Rules file — the Spec and Plan are for the Manager. Rules must be self-contained and not reference the Spec or Plan directly. Content needed in Rules should be embedded.
+- *Misplaced notes:* Work structure observations (parallelism, dispatch patterns, decomposition rationale) belong in Plan notes, not Spec notes. Project environment observations (workspace constraints, version control patterns) belong in Spec notes, not Plan notes.
+- *Notes as instructions:* Notes inform the Manager's awareness, not its actions. Observations about what exists and why, not directives about what to do.
 
 ---
 

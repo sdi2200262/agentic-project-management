@@ -17,9 +17,9 @@ Context Gathering is the first of two sequential procedures. Understanding what 
 **What your context feeds into.** After Context Gathering completes and the User approves your understanding, you read the Work Breakdown guide and decompose gathered context into three planning documents:
 - *Spec:* Project-level design decisions and constraints. The Manager reads the Spec and uses it to construct work assignments for Workers.
 - *Plan:* How work is organized - structure, sequencing, and domain-specific details. The Manager uses the Plan for coordination and work assignment construction.
-- *Rules:* Universal execution standards that all Workers apply directly.
+- *Rules:* Execution standards that apply across all or most work assignments. All Workers read the same Rules file.
 
-Work Breakdown requires distinguishing project-level decisions from domain-specific details from universal patterns. The depth and quality of what you gather here directly determines the quality of those documents.
+Work Breakdown requires distinguishing project-level decisions from domain-specific details from broadly applicable patterns. The depth and quality of what you gather here directly determines the quality of those documents.
 
 **What happens after planning is complete.** The Manager coordinates the Implementation Phase: assigning work to Workers across domains, reviewing completed work, maintaining project state. The Manager enriches work assignments at runtime with workspace context, findings from completed work, and coordination notes - your documents provide the planning-time substance, the Manager adds what only runtime can determine. All coordination mechanics - version control conventions, how work gets assigned and sequenced between Workers, branch management, workspace isolation, merging - are the Manager's runtime domain.
 
@@ -216,7 +216,7 @@ The understanding summary is presented per §3.6 Finalize Understanding for User
 - *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified. Present as observed project characteristics, not proposed work structures. Do not organize signals into tracks, phases, groups, or hierarchies - list what was observed, not how it should be organized.
 - *Technical context:* environments, resources, constraints, access needs
 - *Process and quality:* workflow preferences, coordination requirements, approval gates, validation approach
-- *Execution conventions:* universal patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found.
+- *Execution conventions:* broadly applicable patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found.
 - *Observed preferences:* version control patterns, coordination preferences, or other factual observations that surfaced during exploration or User responses.
 
 The understanding summary captures what was gathered - not how it will be decomposed. Decomposition happens in the next procedure. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.
