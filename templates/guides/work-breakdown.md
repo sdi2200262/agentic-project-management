@@ -119,10 +119,9 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      - How domains map to Workers with proposed names and responsibilities.
      Update Plan header Workers field.
    - *Stage Structure.* Starting from the domains identified above, reason about how the project's work sequences into Stages. Where do the domain boundaries, dependency chains, or deliverable milestones create natural progression points? Each Stage is a sequential milestone grouping - Stage N+1 begins only after Stage N completes. Parallelism happens within a Stage (parallel Tasks across Workers), not across Stages. Present the sequencing rationale and what each Stage delivers before analyzing individual Stages. Update Plan header Stages field.
-   - *Stage N.* For each Stage, analyze in a self-contained block that walks from deliverables through Tasks:
-     - What deliverables this Stage requires to meet its milestone. How those deliverables map to Tasks: which are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine into one, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it. When deliverables share tight context or dependencies, combine them to reduce coordination overhead.
-     - Name the Tasks that emerge from this decomposition, what each one produces, and why each exists as a separate unit of work.
-     - For each Task, deepen the analysis:
+   - *Stage N.* For each Stage:
+     - *Stage deliverables and Task mapping.* What deliverables this Stage requires to meet its milestone. How those deliverables map to Tasks: which are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine into one, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it. When deliverables share tight context or dependencies, combine them to reduce coordination overhead. Present the mapping reasoning, then name the Tasks that emerge — what each one produces, and why each exists as a separate unit of work.
+     - *Per-Task analysis.* For each Task:
        - *Worker assignment:* which Worker and why.
        - *Task scope:* what is the Task's scope? Is the User involved in any steps?
        - *Task guidance:* implementation context the Worker needs, including domain-specific patterns (how to structure code, existing patterns to follow), constraints (performance, security, dependencies), technical decisions (library choices, API contracts), single-domain details (validation approach, testing strategy, error handling specifics). Include context classified as Task-scoped per §3.1 Spec Analysis. For design decisions already in the Spec, reference the Spec section per §2.4 Plan Standards rather than restating, adding domain-specific context as needed.
@@ -293,6 +292,8 @@ APM_RULES {
 - *Rules referencing Spec or Plan:* Workers rely on their Task Prompts and the Rules file — the Spec and Plan are for the Manager. Rules must be self-contained and not reference the Spec or Plan directly. Content needed in Rules should be embedded.
 - *Misplaced notes:* Work structure observations (parallelism, dispatch patterns, decomposition rationale) belong in Plan notes, not Spec notes. Project environment observations (workspace constraints, version control patterns) belong in Spec notes, not Plan notes.
 - *Notes as instructions:* Notes inform the Manager's awareness, not its actions. Observations about what exists and why, not directives about what to do.
+- *Analysis presented as predetermined:* Visible reasoning in chat must show how conclusions were reached, not present them as already decided. Internal reasoning or thinking may reach conclusions first, but the visible analysis must still walk through the reasoning for the User to review.
+- *Tasks presented without derivation:* Each Stage's Tasks must be visibly derived from its deliverables — which deliverables map to which Tasks and why. Presenting a Task list without this reasoning prevents the User from auditing decomposition decisions.
 
 ---
 

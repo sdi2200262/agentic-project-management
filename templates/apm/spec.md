@@ -11,3 +11,5 @@ modified: <last modification note>
 
 ---
 
+> **Notes:** [Planner notes for the Manager, if any]
+
