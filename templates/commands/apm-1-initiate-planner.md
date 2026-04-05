@@ -49,7 +49,7 @@ Read `{GUIDE_PATH:context-gathering}` and any authoritative documents from §2 t
 
 **Prerequisite:** Context Gathering Procedure must be complete with User-approved understanding summary.
 
-The `.apm/` directory contains fresh templates created by `apm init` - Spec, Plan, Tracker, and Memory Index with placeholder content. These are your scaffolds to populate during this procedure. Read `{GUIDE_PATH:work-breakdown}` and execute the guide through completion. The guide controls Spec, Plan, and Rules analysis and creation, each with User approval checkpoints. When complete, proceed to §5 Planning Phase Completion.
+The `.apm/` directory contains fresh templates created by `apm init` - Spec, Plan, Tracker, and Memory Index with placeholder content. These are your scaffolds to populate during this procedure - the Work Breakdown guide reads each one before writing to it. Read `{GUIDE_PATH:work-breakdown}` and execute the guide through completion. The guide controls Spec, Plan, and Rules analysis and creation, each with User approval checkpoints. When complete, proceed to §5 Planning Phase Completion.
 
 ---
 
