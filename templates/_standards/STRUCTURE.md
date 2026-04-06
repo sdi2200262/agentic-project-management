@@ -188,7 +188,7 @@ Section numbers in text references use the § symbol with section title: "See §
 
 Horizontal rules (`---`) separate major sections (## headings) only. Horizontal rules are not used within sections or between subsections.
 
-**Planning documents** (Spec, Plan) use a single horizontal rule to separate the document header from content. No other horizontal rules appear in planning documents — `##` and `###` headings provide sufficient visual separation.
+**Planning documents** (Spec, Plan) use a single horizontal rule to separate the document header from content. No other horizontal rules appear in planning documents - `##` and `###` headings provide sufficient visual separation.
 
 ---
 

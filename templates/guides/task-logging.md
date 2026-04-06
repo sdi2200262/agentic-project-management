@@ -113,7 +113,7 @@ compatibility_issues: true | false
 [1-2 sentences describing main outcome]
 
 ## Details
-[Work performed, decisions made, steps taken in logical order]
+[Work performed, decisions made, steps taken in logical order. Note subagent usage when applicable.]
 
 ## Output
 - File paths for created/modified files

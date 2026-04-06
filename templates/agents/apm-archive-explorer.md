@@ -39,7 +39,7 @@ When you receive an archive path or list of archive paths:
    - Read `session-summary.md` if present. This provides a pre-built overview - skip redundant reads when the summary covers the needed detail.
    - If no summary exists or deeper detail is needed, read `spec.md` and `plan.md` for design decisions and work structure.
    - Read `memory/index.md` for Memory notes and Stage summaries when patterns or outcomes are needed.
-   - Read `tracker.md` only when specific Task statuses or agent states matter.
+   - Read `tracker.md` only when specific Task statuses or Worker states matter.
    - Check `metadata.json` for archival date and installation context.
 
 2. Synthesize findings into structured output:

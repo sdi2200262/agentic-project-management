@@ -14,7 +14,7 @@ This guide defines how you execute Tasks assigned by the Manager via Task Prompt
 
 Follow cross-agent integration steps completely - read files, review artifacts, understand interfaces. For dependency integration that requires reading specific files at known paths, read them directly. Subagent dispatch is for open-ended exploration or investigation where the scope is broad or context isolation is beneficial. Use same-agent guidance as recall anchors - review referenced paths to refresh context if needed.
 
-**Integration issues.** Do not execute on an unstable foundation. For cross-agent dependencies: pause for User guidance. For same-agent: minor ambiguities - continue with best interpretation and note uncertainty; missing expected files - pause for guidance.
+**Integration issues:** Do not execute on an unstable foundation. For cross-agent dependencies, pause for User guidance. For same-agent, minor ambiguities - continue with best interpretation and note uncertainty; missing expected files - pause for guidance.
 
 ### 2.2 Validation Standards
 
@@ -60,7 +60,7 @@ On Task receipt, perform the following actions:
 1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, it contains multiple Task Prompts separated by `---` delimiters. Execute each Task sequentially per §2.6 Batch Rules.
 2. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5 Operating Rules.
 3. If Workspace section present: switch to the specified branch or worktree path before starting work.
-4. If `has_dependencies: true` - continue to §3.2 Context Integration. Otherwise - proceed to §3.3 Task Execution.
+4. If `has_dependencies: true` → continue to §3.2 Context Integration, otherwise proceed to §3.3 Task Execution.
 
 ### 3.2 Context Integration
 
@@ -105,9 +105,9 @@ Perform the following actions:
 
 ## 4. Common Mistakes
 
-- *Task Prompt metadata in code:* Step numbers, Task IDs, and APM terminology do not belong in project source files, comments, or commit messages.
-- *Incomplete cross-agent integration:* Proceeding without fully reading and understanding cross-agent dependency context.
-- *Debug spiraling:* Iterating on persistent bugs in the main context without delegating to a subagent. Extended debug loops consume context rapidly and risk auto-compaction. When direct fixes are not converging after initial attempts, dispatch a debug subagent to isolate the investigation.
+- *Framework vocabulary in project output:* Commit messages, source comments, and code should describe the actual work - not the framework managing it. Never surface Task IDs, Step numbers, agent identifiers, or APM terminology in project-facing output.
+- *Skipping cross-agent integration steps:* When cross-agent dependency context includes file reading instructions and integration guidance, completing those steps fully before starting implementation catches integration mismatches early. Proceeding on assumptions about another Worker's output leads to rework.
+- *Continuing to iterate instead of delegating:* When a second fix attempt fails or the root cause is unclear, the effective path is spawning a debug subagent with accumulated context rather than continuing in the main context where each iteration consumes context budget.
 - *Working non-incrementally:* Writing large deliverables in one pass without testing intermediate results. Build incrementally - compile, run, or validate after each meaningful step rather than producing everything and then discovering issues.
 - *Logging Success with incomplete validation:* Marking a Task as Success when validation criteria were not fully exercised. If criteria cannot be met (missing resources, need User cooperation), log as Partial and explain what remains rather than claiming Success with caveats.
 

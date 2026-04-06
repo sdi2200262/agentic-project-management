@@ -20,17 +20,17 @@ All context gathered during Context Gathering must be captured across these thre
 
 ### 2.1 Workflow Context
 
-From Context Gathering's §2.1 Workflow Context, you know these documents serve different audiences and that the Manager handles all coordination at runtime. This section deepens that awareness into the placement decisions you make during decomposition.
+From Context Gathering's §2.1 Workflow Context, you know these documents serve different audiences and that the Manager handles all coordination at runtime. Workers should not be aware of the Spec, Plan, Tracker, or Index - they see only their Task Prompt, Rules, and what they accumulate during execution. Content reaches Workers only through the Manager's extraction into Task Prompts, so your placement decisions here determine what Workers eventually work with. This section deepens that awareness into the placement decisions you make during decomposition.
 
-**How the Spec is used.** The Manager reads the Spec and extracts relevant content per-Task into self-contained Task Prompts for Workers. Design decisions should be at the level the Manager needs for extraction - not implementation mechanics.
+**How the Spec is used:** The Manager reads the Spec and extracts relevant content per-Task into self-contained Task Prompts for Workers. Design decisions should be at the level the Manager needs for extraction - not implementation mechanics.
 
-**How the Plan is used.** The Manager uses the Plan for coordination and Task Prompt construction. Task guidance provides the domain-specific substance the Manager wraps into Task Prompts. When Task guidance shares design decisions already captured in the Spec, reference the relevant Spec section rather than restating - the Manager reads both documents and integrates Spec content into Task Prompts during extraction. Task guidance adds what the Spec does not cover: domain-specific implementation context, constraints, and patterns. The Manager enriches Task Prompts at runtime with workspace context, findings from completed work, and cross-domain coordination notes. Task guidance provides what planning can determine; the Manager adds what only runtime reveals.
+**How the Plan is used:** The Manager uses the Plan for coordination and Task Prompt construction. Task guidance provides the domain-specific substance the Manager wraps into Task Prompts. When Task guidance shares design decisions already captured in the Spec, reference the relevant Spec section rather than restating - the Manager reads both documents and integrates Spec content into Task Prompts during extraction. Task guidance adds what the Spec does not cover (domain-specific implementation context, constraints, and patterns). The Manager enriches Task Prompts at runtime with workspace context, findings from completed work, and cross-domain coordination notes. Task guidance provides what planning can determine; the Manager adds what only runtime reveals.
 
-**How Rules are used.** Workers are designed to focus on their Task Prompt and Rules - not because they cannot access other documents, but because their Task Prompts should be sufficient. Rules must be self-contained and applicable to all Workers: embed content directly, do not reference the Spec, Plan, or external authoritative documents by path.
+**How Rules are used:** Rules are the only planning-time document Workers read directly. Because Workers should not be aware of the Spec or Plan, Rules must be self-contained. Embed content directly, do not reference the Spec, Plan, or external authoritative documents by path.
 
 **Coordination is runtime:** The Manager determines how work gets dispatched - sequencing, parallel execution, grouping - at runtime based on the Plan's structure. The Manager establishes version control conventions during the Implementation Phase. The Plan captures work structure; the Manager reads coordination opportunities from it.
 
-**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should be aware of but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover the project environment the Manager will encounter: version control observations, workspace constraints, which codebases are live targets vs read-only references, and User preferences that affect execution. Plan notes cover what the Planner observed about the work structure it created: why certain boundaries exist, where natural groupings or sequencing patterns are, what the critical path looks like, where convergence creates complexity, and Stage boundaries where holistic verification may be valuable. Notes are awareness for the Manager — observations and reasoning that inform judgment, not instructions about what to do.
+**Passing notes to the Manager:** When you have observations, User preferences, or context that the Manager should be aware of but that you have no authority to act on, include them as a blockquote notes section after the document header separator per §4.1 Spec Format and §4.2 Plan Format. Spec notes cover the project environment the Manager will encounter (version control observations, workspace constraints, which codebases are live targets vs read-only references, and User preferences that affect execution). Plan notes cover what the Planner observed about the work structure it created (why certain boundaries exist, where natural groupings or sequencing patterns are, what the critical path looks like, where convergence creates complexity, and Stage boundaries where holistic verification may be valuable). Notes are awareness for the Manager - observations and reasoning that inform judgment, not instructions about what to do.
 
 ### 2.2 Decomposition Principles
 
@@ -46,7 +46,7 @@ These principles apply across all decomposition levels. Adapt granularity to pro
 
 **Scope boundaries:** Worker-assignable work is completable within the development environment and verifiable autonomously. User coordination involves external platforms, credentials, or validation requiring human judgment - include explicit coordination steps and note where User involvement is needed.
 
-**Validation criteria.** Each Task specifies concrete pass/fail criteria tied to its deliverables - what to check and how. Criteria the Worker can verify autonomously (tests pass, outputs exist with correct structure, behavior matches requirements) allow autonomous iteration. Criteria requiring User involvement - judgment (design approval, content quality) or action (running external checks, confirming platform behavior) - require the Worker to pause. Most Tasks combine multiple criteria. Validation criteria are Worker-scoped - no references to other Stages, Tasks, or coordination-level gates. Workers validate their own deliverables; holistic verification beyond individual Tasks - milestone checks, acceptance gates, end-to-end validation - is the Manager's runtime responsibility. When Context Gathering surfaced observations about holistic verification needs, include them in Plan notes per §2.1 Workflow Context - the Manager acts on them at runtime, not as planned Tasks.
+**Validation criteria:** Each Task specifies concrete pass/fail criteria tied to its deliverables - what to check and how. Criteria the Worker can verify autonomously (tests pass, outputs exist with correct structure, behavior matches requirements) allow autonomous iteration. Criteria requiring User involvement - judgment (design approval, content quality) or action (running external checks, confirming platform behavior) - require the Worker to pause. Most Tasks combine multiple criteria. Validation criteria are Worker-scoped - no references to other Stages, Tasks, or coordination-level gates. Workers validate their own deliverables; holistic verification beyond individual Tasks - milestone checks, acceptance gates, end-to-end validation - is the Manager's runtime responsibility. When Context Gathering surfaced observations about holistic verification needs, include them in Plan notes per §2.1 Workflow Context - the Manager acts on them at runtime, not as planned Tasks.
 
 ### 2.3 Spec Standards
 
@@ -68,9 +68,9 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 
 **Task self-sufficiency:** Each Task must contain enough context for a Worker to execute from a Task Prompt alone per §2.1 Workflow Context.
 
-**Guidance and steps:** When Task guidance involves design decisions already captured in the Spec, reference the Spec section rather than restating the content. The Manager reads both documents and integrates Spec content into the Task Prompt during extraction - restating duplicates work and risks divergence. Guidance adds what the Spec does not cover: domain-specific implementation context, constraints, and patterns. Authoritative User documents follow the same principle - reference by path and section. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and guidance.
+**Guidance and steps:** When Task guidance involves design decisions already captured in the Spec, reference the Spec section rather than restating the content. The Manager reads both documents and integrates Spec content into the Task Prompt during extraction - restating duplicates work and risks divergence. Guidance adds what the Spec does not cover (domain-specific implementation context, constraints, and patterns). Authoritative User documents follow the same principle - reference by path and section. Steps describe the Worker's sequential operations - the Manager transforms them into actionable instructions enriched with Spec content and guidance.
 
-**Dispatch-aware structuring.** The Manager dispatches work in three modes: single Tasks, batches (sequential same-Worker Tasks grouped together), and parallel (independent dispatch units sent to different Workers simultaneously). When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities - Tasks that can proceed independently, groups that chain naturally within a domain, work that can happen in parallel across domains. The Manager determines which mode to use at runtime based on the Plan's structure.
+**Dispatch-aware structuring:** The Manager dispatches work in three modes (single Tasks, batches of sequential same-Worker Tasks grouped together, and parallel dispatch units sent to different Workers simultaneously). When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities - Tasks that can proceed independently, groups that chain naturally within a domain, work that can happen in parallel across domains. The Manager determines which mode to use at runtime based on the Plan's structure.
 
 ### 2.5 `{RULES_FILE}` Standards
 
@@ -78,7 +78,7 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 
 **Content placement:** Rules capture how work is performed - not what is being built. Output formats, response strings, data schemas, and interface contracts define what is being built and belong in the Spec even when multiple Workers need them. Execution patterns belong here when they apply to all or most Tasks - narrowly domain-specific patterns are better placed in Task guidance. When uncertain, prefer Task guidance - easier to promote later than to demote.
 
-**Writing style:** All Workers read the same Rules file. Write rules so any Worker can determine whether a rule applies to its current work. Frame rules conditionally on the work being performed rather than on a specific Worker or domain — a Worker touching multiple domains should apply the right rules to each naturally.
+**Writing style:** All Workers read the same Rules file. Write rules so any Worker can determine whether a rule applies to its current work. Frame rules conditionally on the work being performed rather than on a specific Worker or domain - a Worker touching multiple domains should apply the right rules to each naturally.
 
 **Pre-existing content:** When `{RULES_FILE}` already contains User standards, reference relevant pre-existing rules from the APM Rules block rather than duplicating. Do not modify pre-existing content unless the User explicitly requests it.
 
@@ -111,7 +111,7 @@ Present reasoning under the header **Spec Analysis:** addressing the aspects bel
 
 ### 3.2 Plan Analysis
 
-Present reasoning under the header **Plan Analysis:** with sub-headers **Domain Analysis:**, **Stage Structure:**, **Stage N:** for each Stage, and **Dependency Analysis:**. Each section derives from the previous - domains inform stage structure, stage objectives decompose into tasks. Perform the following actions per §2.4 Plan Standards.
+Present reasoning under the header **Plan Analysis:** with sub-headers **Domain Analysis:**, **Stage Structure:**, **Stage N:** for each Stage, and **Dependency Analysis:**. Each section derives from the previous - domains inform Stage structure, Stage objectives decompose into Tasks. Perform the following actions per §2.4 Plan Standards.
 1. Analyze work structure from gathered context and the approved Spec per §2.2 Decomposition Principles:
    - *Domain Analysis.* Grounded in the Spec approved above:
      - Logical work domains and their scope.
@@ -120,7 +120,7 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
      Update Plan header Workers field.
    - *Stage Structure.* Starting from the domains identified above, reason about how the project's work sequences into Stages. Where do the domain boundaries, dependency chains, or deliverable milestones create natural progression points? Each Stage is a sequential milestone grouping - Stage N+1 begins only after Stage N completes. Parallelism happens within a Stage (parallel Tasks across Workers), not across Stages. Present the sequencing rationale and what each Stage delivers before analyzing individual Stages. Update Plan header Stages field.
    - *Stage N.* For each Stage:
-     - *Stage deliverables and Task mapping.* What deliverables this Stage requires to meet its milestone. How those deliverables map to Tasks: which are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine into one, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it. When deliverables share tight context or dependencies, combine them to reduce coordination overhead. Present the mapping reasoning, then name the Tasks that emerge — what each one produces, and why each exists as a separate unit of work.
+     - *Stage deliverables and Task mapping.* What deliverables this Stage requires to meet its milestone. How those deliverables map to Tasks: which are distinct enough to warrant separate Tasks, which are tightly coupled enough to combine into one, and which can proceed independently vs sequentially. When a deliverable spans domains, split into per-domain Tasks with cross-agent dependencies. When a deliverable is large, split into sequential Tasks that build toward it. When deliverables share tight context or dependencies, combine them to reduce coordination overhead. Present the mapping reasoning, then name the Tasks that emerge - what each one produces, and why each exists as a separate unit of work.
      - *Per-Task analysis.* For each Task:
        - *Worker assignment:* which Worker and why.
        - *Task scope:* what is the Task's scope? Is the User involved in any steps?
@@ -147,7 +147,7 @@ Perform the following actions per §2.5 `{RULES_FILE}` Standards:
    - **From the Spec:** execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in the Spec - they reach Workers through Task Prompts.
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan. Version control conventions are excluded - the Manager handles those and appends content to Rules during the start of the Implementation Phase.
-   - **Classification.** Separate patterns that apply to all or most Tasks from narrowly Task-specific ones per §2.5 `{RULES_FILE}` Standards. Most projects produce few genuinely universal rules - project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
+   - **Classification:** Separate patterns that apply to all or most Tasks from narrowly Task-specific ones per §2.5 `{RULES_FILE}` Standards. Most projects produce few genuinely universal rules - project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
    - **Existing standards:** what `{RULES_FILE}` already contains; reference rather than duplicate.
 2. Read `{RULES_FILE}` (or confirm it does not exist), then write the APM_RULES block per §4.3 APM_RULES Block:
    - If file exists: preserve existing content outside block, append APM_RULES block.
@@ -178,7 +178,7 @@ Below the frontmatter, the document starts with `# APM Spec` followed by two hea
 
 - *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Format: `> **Notes:** <prose or unordered list>`. These cover the project environment the Manager will encounter per §2.1 Workflow Context: version control observations, workspace constraints, and User preferences that affect execution.
 
-**Content structure.** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. The Spec should read as a coherent description of what is being built and why, shaped by the project's unique requirements.
+**Content structure:** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. The Spec should read as a coherent description of what is being built and why, shaped by the project's unique requirements.
 
 **Content rules:** Use markdown headings (`##`) to organize decision groups. Each specification must be concrete and actionable. Structure for extraction - the Manager distills relevant content into individual Task Prompts, so decisions should be locatable and separable. Reference existing User documents rather than duplicating - include file paths and specific sections so the Manager can locate source material during Task Assignment. Use tables for enumerated values, mermaid diagrams for relationships, code blocks for schemas, prose for rationale.
 
@@ -194,7 +194,7 @@ modified: <last modification note>
 ---
 ```
 
-Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). A single horizontal rule separates the header from Stage sections below. No other horizontal rules in the Plan — `##` and `###` headings provide sufficient visual separation between Stages and Tasks.
+Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). A single horizontal rule separates the header from Stage sections below. No other horizontal rules in the Plan - `##` and `###` headings provide sufficient visual separation between Stages and Tasks.
 
 - *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Format: `> **Notes:** <prose or unordered list>`. These cover what the Planner observed about the work structure per §2.1 Workflow Context: why boundaries exist, natural groupings, critical path, convergence points.
 
@@ -275,25 +275,24 @@ APM_RULES {
 
 ### 5.1 Quality Standards
 
-**Spec:** Design decisions are concrete and traceable to Context Gathering findings. Reference existing User documents rather than duplicating.
+**Spec:** Design decisions are concrete and traceable to Context Gathering findings. Reference existing User documents rather than duplicating. Structure for extraction - decisions should be locatable and separable.
 
 **Plan:** Each Task is understandable without external reference. Use specific language - not "implement properly" but the specific pattern to follow. All fields populated. Consistent naming and terminology.
 
-**`{RULES_FILE}`.** Only genuinely universal patterns. Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_RULES block rather than duplicating existing standards. Format selection: tables for pattern comparisons, code blocks for syntax examples, bulleted lists for rules, numbered lists for sequential steps, prose for context.
+**`{RULES_FILE}`:** Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_RULES block rather than duplicating existing standards. Format selection: tables for pattern comparisons, code blocks for syntax examples, bulleted lists for rules, numbered lists for sequential steps, prose for context.
 
 ### 5.2 Common Mistakes
 - *Under-specification:* Design decisions left implicit - if it could reasonably go multiple ways, document the chosen direction.
-- *Vague validation:* "Works correctly" is not a criterion - specify what "correctly" means concretely.
-- *Missing dependencies:* Tasks requiring prior work not marked - trace prerequisites.
+- *Spec absorbing decomposition:* The Spec capturing how work is decomposed (Worker assignments, Task structure, Stage sequencing) instead of what is being built. Workers, Stages, and Task structure are Plan concerns - the Spec stays at the design decision level.
+- *Validation as afterthought:* "Works correctly" is not a criterion. Each Task needs concrete measures - what to check, how to check it, and what the pass/fail boundary is. Vague criteria produce vague validation.
 - *Misclassified dependencies:* Cross-agent dependencies not bolded, same-agent dependencies incorrectly bolded, or wrong edge types in the Dependency Graph - classify at write time by checking whether producer and consumer share the same agent.
-- *Duplicating source documents:* Restating requirements from User documents instead of referencing the source. The Spec captures design decisions layered on existing requirements.
 - *Skipped approval gate:* Each document has its own analyze-write-approve cycle. The User reviews and approves each document before the next begins. Producing multiple documents without pausing, or proceeding to the next document without User approval, breaks the cycle.
-- *Restating Spec content in Task guidance:* Task guidance that repeats design decisions already captured in the Spec creates duplication and risks divergence. Reference the Spec section; add only domain-specific context the Spec does not cover.
-- *Rules referencing Spec or Plan:* Workers rely on their Task Prompts and the Rules file — the Spec and Plan are for the Manager. Rules must be self-contained and not reference the Spec or Plan directly. Content needed in Rules should be embedded.
+- *Restating Spec content in Task guidance:* When Task guidance repeats design decisions already in the Spec, both the Planner and the Manager maintain redundant content that can diverge. Reference the Spec section in Task guidance - the Manager reads both documents and integrates Spec content into Task Prompts during extraction.
+- *Rules that reference coordination-level documents:* Workers should not be aware of the Spec, Plan, Tracker, or Index. A rule that says "per the Spec" or "as defined in the Plan" references documents the Worker has never read. Embed the content directly.
 - *Misplaced notes:* Work structure observations (parallelism, dispatch patterns, decomposition rationale) belong in Plan notes, not Spec notes. Project environment observations (workspace constraints, version control patterns) belong in Spec notes, not Plan notes.
 - *Notes as instructions:* Notes inform the Manager's awareness, not its actions. Observations about what exists and why, not directives about what to do.
 - *Analysis presented as predetermined:* Visible reasoning in chat must show how conclusions were reached, not present them as already decided. Internal reasoning or thinking may reach conclusions first, but the visible analysis must still walk through the reasoning for the User to review.
-- *Tasks presented without derivation:* Each Stage's Tasks must be visibly derived from its deliverables — which deliverables map to which Tasks and why. Presenting a Task list without this reasoning prevents the User from auditing decomposition decisions.
+- *Tasks presented without derivation:* Each Stage's Tasks must be visibly derived from its deliverables - which deliverables map to which Tasks and why. Presenting a Task list without this reasoning prevents the User from auditing decomposition decisions.
 
 ---
 
