@@ -60,7 +60,7 @@ On Task receipt, perform the following actions:
 1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, it contains multiple Task Prompts separated by `---` delimiters. Execute each Task sequentially per §2.6 Batch Rules.
 2. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5 Operating Rules.
 3. If Workspace section present: switch to the specified branch or worktree path before starting work.
-4. If `has_dependencies: true`, continue to §3.2 Context Integration, otherwise proceed to §3.3 Task Execution.
+4. If `has_dependencies: true`, continue to Context Integration, otherwise proceed to §3.3 Task Execution.
 
 ### 3.2 Context Integration
 
@@ -77,7 +77,7 @@ Perform the following actions:
 1. Execute Detailed Instructions sequentially, applying Guidance and relevant Rules from `{RULES_FILE}`, working toward the Objective.
 2. When an instruction requires explicit User action, communicate what needs doing, why, and what options exist. Await completion, then resume.
 3. When an instruction includes a subagent step, spawn the relevant subagent with a structured task description. Integrate findings and continue. {WORKER_SUBAGENT_GUIDANCE}
-4. When all instructions complete, communicate that implementation is complete and you are moving to validation. Continue to §3.4 Task Validation.
+4. When all instructions complete, communicate that implementation is complete and you are moving to validation. Continue to Task Validation.
 
 ### 3.4 Task Validation
 
@@ -88,7 +88,7 @@ Perform the following actions:
 
 ### 3.5 Correction Loop
 
-Assess the failure per §2.3 Iteration Standards. If the cause is clear and the fix is contained, correct the issue, re-execute affected portions, and return to §3.4 Task Validation. If your correction does not resolve the issue, spawn a debug subagent per §2.3 Iteration Standards rather than continuing to iterate. If the subagent resolves it, apply findings and return to §3.4 Task Validation. If unresolved, present the situation to the User with what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Upon User guidance: integrate the new direction and proceed to the appropriate procedure step, or apply outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and continue to §3.6 Task Completion.
+Assess the failure per §2.3 Iteration Standards. If the cause is clear and the fix is contained, correct the issue, re-execute affected portions, and return to §3.4 Task Validation. If your correction does not resolve the issue, spawn a debug subagent per §2.3 Iteration Standards rather than continuing to iterate. If the subagent resolves it, apply findings and return to §3.4 Task Validation. If unresolved, present the situation to the User with what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Upon User guidance: integrate the new direction and proceed to the appropriate procedure step, or apply outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and continue to Task Completion.
 
 ### 3.6 Task Completion
 

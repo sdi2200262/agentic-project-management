@@ -176,7 +176,7 @@ modified: <last modification note>
 
 Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, and authoritative document locations). A single horizontal rule separates the header from the design decision content below. No horizontal rules within the content sections - `##` headings provide sufficient visual separation.
 
-- *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Format: `> **Notes:** <prose or unordered list>`. These cover the project environment the Manager will encounter per §2.1 Workflow Context: version control observations, workspace constraints, and User preferences that affect execution.
+- *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Use the format `> **Notes:** <prose or unordered list>`. These cover the project environment the Manager will encounter per §2.1 Workflow Context - version control observations, workspace constraints, and User preferences that affect execution.
 
 **Content structure:** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. The Spec should read as a coherent description of what is being built and why, shaped by the project's unique requirements.
 
@@ -196,7 +196,7 @@ modified: <last modification note>
 
 Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). A single horizontal rule separates the header from Stage sections below. No other horizontal rules in the Plan - `##` and `###` headings provide sufficient visual separation between Stages and Tasks.
 
-- *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Format: `> **Notes:** <prose or unordered list>`. These cover what the Planner observed about the work structure per §2.1 Workflow Context: why boundaries exist, natural groupings, critical path, convergence points.
+- *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Use the format `> **Notes:** <prose or unordered list>`. These cover what the Planner observed about the work structure per §2.1 Workflow Context - why boundaries exist, natural groupings, critical path, convergence points.
 
 **Stage Format.** Each Stage in the Plan:
 - *Header:* `## Stage N: [Name]`
@@ -213,7 +213,7 @@ Below the frontmatter, the document starts with `# APM Plan` followed by the Pla
 * **Output:** [Concrete deliverables - files, components, artifacts produced.]
 * **Validation:** [Concrete pass/fail criteria. Note where User involvement is needed.]
 * **Guidance:** [Technical constraints, approach specifications, references to existing patterns, User collaboration patterns.]
-* **Dependencies:** [Prior Task outputs required. Format: `Task N.M by <Domain> Agent, ...` Bold cross-agent dependencies. Use "None" when no dependencies exist.]
+* **Dependencies:** [Prior Task outputs required. Use `Task N.M by <Domain> Agent, ...` format. Bold cross-agent dependencies. Use "None" when no dependencies exist.]
 
 1. [Step description]
 2. [Step description]
@@ -279,7 +279,7 @@ APM_RULES {
 
 **Plan:** Each Task is understandable without external reference. Use specific language - not "implement properly" but the specific pattern to follow. All fields populated. Consistent naming and terminology.
 
-**`{RULES_FILE}`:** Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_RULES block rather than duplicating existing standards. Format selection: tables for pattern comparisons, code blocks for syntax examples, bulleted lists for rules, numbered lists for sequential steps, prose for context.
+**`{RULES_FILE}`:** Concrete and actionable - each standard specific enough that violation is detectable. If `{RULES_FILE}` already exists, preserve its content and append the APM_RULES block rather than duplicating existing standards. Use tables for pattern comparisons, code blocks for syntax examples, bulleted lists for rules, numbered lists for sequential steps, prose for context.
 
 ### 5.2 Common Mistakes
 - *Under-specification:* Design decisions left implicit - if it could reasonably go multiple ways, document the chosen direction.

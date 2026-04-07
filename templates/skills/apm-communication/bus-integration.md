@@ -34,6 +34,3 @@ The Manager may assign follow-up work through your Task Bus after processing you
 2. Read `.apm/bus/<your-agent-slug>/task.md` and process the assignment.
 3. Write your report to the Report Bus and direct the User to deliver it.
 
----
-
-**End of Skill**
