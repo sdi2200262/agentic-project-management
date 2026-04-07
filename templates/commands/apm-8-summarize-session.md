@@ -18,8 +18,8 @@ This command summarizes the current APM session and optionally archives it. You 
 3. Write `.apm/session-summary.md` per the session summary structure below. The summary is a point-in-time snapshot - state this explicitly.
 4. Present the summary to the User. Ask if there is anything to add, correct, or emphasize before finalizing. If the User provides input, update the summary accordingly.
 5. Ask: "Would you like me to archive this session?" If yes, ask whether the User wants a custom archive name or the default dated name.
-   - If the User declines → No further action.
-   - If the User approves → Continue to step 6.
+   - If the User declines, no further action.
+   - If the User approves, continue to step 6.
 6. Run `apm archive --force` or `apm archive --force --name <name>` if a custom name was provided.
 7. Read `.apm/archives/index.md`. If it does not exist or is malformed, create it per the archive index format below.
 8. Append an entry for the newly archived session to the index table.

@@ -92,24 +92,24 @@ No blank line between introductory sentence and list. Numbered lists for sequent
 
 ### 3.3 Conditional Branching
 
-Arrow notation for conditions:
+Natural language for conditions:
 
-- If condition A → Proceed to §3.2 Dependency Context.
-- If condition B → Continue to action 4.
+- If condition A, proceed to §3.2 Dependency Context.
+- If condition B, continue to action 4.
 
 For complex branching with multiple outcomes:
 
 **Determine the outcome:**
 
-- *Outcome 1:* Description → Action to take.
-- *Outcome 2:* Description → Action to take.
+- If outcome 1, take action.
+- If outcome 2, take action.
 
 **Pause with response handling:**
 
 ```text
 3. Pause for User review.
-   - If approved → Continue to action 4.
-   - If modifications needed → Apply changes and repeat action 2.
+   - If approved, continue to action 4.
+   - If modifications needed, apply changes and repeat action 2.
 ```
 
 ### 3.4 Decision Rules
@@ -118,9 +118,9 @@ Decision rules define criteria for choosing between outcomes. Each condition map
 
 **Determine validation result:**
 
-- *All checks pass:* → Proceed to §3.4 Completion.
-- *Minor issues:* → Document issues and continue.
-- *Critical failures:* → Pause for User review.
+- If all checks pass, proceed to §3.4 Completion.
+- If minor issues found, document issues and continue.
+- If critical failures found, pause for User review.
 
 **Default:** When severity is ambiguous, treat as minor.
 
@@ -190,10 +190,8 @@ Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctu
 *Subtopic:*                             # Italic direct list
 - Item one
 
-- *Option:* Description → Action.       # Italic list item label
+- *Option:* Description of the action.  # Italic list item label
 ```
-
-Note: arrows (`→`) in list items indicate conditional flow (e.g., `*Option:* Description → Action`), not label punctuation.
 
 ### 7.2 Spacing
 

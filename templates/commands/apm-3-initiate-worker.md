@@ -28,10 +28,10 @@ Read the following documents (these reads are independent):
 Determine identity from the `{ARGS}` argument:
 1. Resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution.
 2. Register as the resolved agent: store the agent identifier and bus path for this instance.
-3. Verify bus files exist (`task.md`, `report.md`, `handoff.md`) in the bus directory. Check bus state:
-   - If Handoff Bus has content → **incoming Worker**. Proceed to §2.2 Incoming Worker Initiation.
-   - If Handoff Bus is empty and Task Bus has content → confirm identity to User and proceed to §3 Task Execution Loop.
-   - If both are empty → confirm identity to User and await Task Prompt via `/apm-4-check-tasks`.
+3. Verify bus files exist (`task.md`, `report.md`, `handoff.md`) in the bus directory. Determine your init path from bus state:
+   - If Handoff Bus has content, you are an incoming Worker after Handoff. Proceed to §2.2 Incoming Worker Initiation.
+   - If Handoff Bus is empty and Task Bus has content, confirm identity to User and proceed to §3 Task Execution Loop.
+   - If both are empty, confirm identity to User and await Task Prompt via `/apm-4-check-tasks`.
 
 ### 2.2 Incoming Worker Initiation
 
@@ -41,8 +41,8 @@ Perform the following actions:
 3. Clear the Handoff Bus after processing.
 4. Confirm Handoff to User: state instance number, logs loaded, readiness to continue. When previous Stages exist, note which specific Task Logs were loaded and which were not explaining that previous-Stage logs were not loaded for efficiency.
 5. Check Task Bus:
-   - If Task Bus has content → the handoff prompt describes a mid-Task or mid-batch continuation. Proceed to §3 Task Execution Loop.
-   - If Task Bus is empty → await Task Prompt via `/apm-4-check-tasks`.
+   - If Task Bus has content, the handoff prompt describes a mid-Task or mid-batch continuation. Proceed to §3 Task Execution Loop.
+   - If Task Bus is empty, await Task Prompt via `/apm-4-check-tasks`.
 
 ---
 

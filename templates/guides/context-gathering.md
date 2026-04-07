@@ -195,8 +195,8 @@ Perform the following actions:
    - State that all question rounds are complete and understanding is presented.
    - Ask the User to review carefully before planning document generation.
    - Offer options: modifications needed (describe issues) or approved (proceed to Work Breakdown).
-   - If modifications needed → Apply targeted follow-ups, update summary, and repeat step 1.
-   - If approved → Continue to step 3.
+   - If modifications needed, apply targeted follow-ups, update summary, and repeat step 1.
+   - If approved, continue to step 3.
 3. Output procedure completion stating Context Gathering is complete. The next step is the Work Breakdown procedure per `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure.
 
 ---

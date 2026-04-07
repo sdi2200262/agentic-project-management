@@ -28,10 +28,9 @@ Perform the following actions:
    - `{GUIDE_PATH:task-review}` - Task Review, review outcomes, planning document modifications
    - `{SKILL_PATH:apm-communication}` - Message Bus protocol
    After reading the Spec, check whether it references external User documents as authoritative sources. If so, read those documents before proceeding - you extract content from them into Task Prompts and need their context for the understanding summary.
-2. Determine your role:
-   - Check if the Tracker is in template state (contains `<Project Name>` placeholder).
-   - If template state → **Manager 1** (first instance). Proceed to §2.1 First Manager Initiation.
-   - If populated → **incoming Manager** (instance N). Proceed to §2.2 Incoming Manager Initiation.
+2. Check the Handoff Bus at `.apm/bus/manager/handoff.md`:
+   - If it has content, you are an incoming Manager after Handoff. Proceed to §2.2 Incoming Manager Initiation.
+   - If empty, you are the first Manager. Proceed to §2.1 First Manager Initiation.
 
 ### 2.1 First Manager Initiation
 
@@ -45,8 +44,8 @@ Perform the following actions:
    - *Understanding summary:* project scope and objectives, key design decisions and constraints from the Spec, notable Rules, Workers, Stage structure, Task count, workstreams and efficient dispatch opportunities. Note any Stage boundaries where holistic verification may be warranted based on Plan notes and project complexity.
    - *Version control conventions:* present the default version control model, then layer in project-specific observations. By default in APM, each Task gets a feature branch off the base branch, Workers commit on their assigned branch, you merge completed branches back to base, and when multiple Workers operate in parallel each gets an isolated worktree. Remotes are not pushed to by default. Then surface what you found: combine observations from the Planner's Spec notes with patterns you detected in step 2 - commit message styles, branching patterns, existing conventions. Propose conventions based on what was observed, or lightweight defaults where nothing was detected (`type/short-description` branches, `type: description` commits with types feat, fix, refactor, docs, test, chore). Confirm the base branch for each repository. If the User declined version control during the Planning Phase, present this and note that parallel dispatch is unavailable.
 4. Ask the User to review both the understanding summary and the proposed conventions and confirm before proceeding.
-   - If corrections needed → Integrate feedback and re-present.
-   - If approved → Write the Tracker's Version Control table (one row per repository with base branch, branch convention, and commit convention), write commit conventions to `{RULES_FILE}` within the APM_RULES block, populate Task Tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format and Worker tracking with all Workers uninitialized. Then generate the first Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment and proceed to §3 Continuous Coordination.
+   - If corrections needed, integrate feedback and re-present.
+   - If approved, write the Tracker's Version Control table (one row per repository with base branch, branch convention, and commit convention), write commit conventions to `{RULES_FILE}` within the APM_RULES block, populate Task Tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format and Worker tracking with all Workers uninitialized. Then generate the first Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment and proceed to §3 Continuous Coordination.
 
 ### 2.2 Incoming Manager Initiation
 
@@ -75,7 +74,7 @@ After each review, reassess readiness and continue to dispatch in the same turn 
 
 ## 4. Stage Completion
 
-When all Tasks in a Stage are Done, create a Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation before dispatching the next Stage. If all Stages complete → §5 Project Completion.
+When all Tasks in a Stage are Done, create a Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation before dispatching the next Stage. If all Stages complete, proceed to §5 Project Completion.
 
 ---
 

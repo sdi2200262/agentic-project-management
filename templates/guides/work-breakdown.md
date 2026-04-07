@@ -106,8 +106,8 @@ Present reasoning under the header **Spec Analysis:** addressing the aspects bel
 3. Pause for User review:
    - State the Spec is complete and the artifact is created.
    - Ask User to review for accuracy.
-   - If modifications needed → Apply and repeat step 3.
-   - If approved → Proceed to §3.2 Plan Analysis.
+   - If modifications needed, apply and repeat step 3.
+   - If approved, proceed to §3.2 Plan Analysis.
 
 ### 3.2 Plan Analysis
 
@@ -135,8 +135,8 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
 3. Pause for User review:
    - State the Plan is complete and the artifact is created. Present a summary to the User: Worker count, Stage count with names and Task counts, total Tasks, dispatch patterns.
    - Ask User to review the Plan.
-   - If modifications needed → Apply and repeat step 3.
-   - If approved → Proceed to §3.3 Rules Analysis.
+   - If modifications needed, apply and repeat step 3.
+   - If approved, proceed to §3.3 Rules Analysis.
 
 ### 3.3 Rules Analysis
 
@@ -155,8 +155,8 @@ Perform the following actions per §2.5 `{RULES_FILE}` Standards:
 3. Pause for User review:
    - State Rules are complete.
    - Ask User to review `{RULES_FILE}` for accuracy.
-   - If modifications needed → Apply and repeat step 3.
-   - If approved → State Work Breakdown is complete and all planning documents are created. Proceed to `{COMMAND_PATH:apm-1-initiate-planner}` §4 Planning Phase Completion.
+   - If modifications needed, apply and repeat step 3.
+   - If approved, state Work Breakdown is complete and all planning documents are created. Proceed to `{COMMAND_PATH:apm-1-initiate-planner}` §4 Planning Phase Completion.
 
 ---
 

@@ -28,7 +28,7 @@ When criteria require resources not currently available, request them from the U
 
 When validation fails, you enter a correction loop - correct, re-execute, re-validate.
 
-Continue when the cause is clear and the fix is contained. When the initial correction does not resolve the issue - the same failure recurs, the fix introduces new problems, or the root cause is unclear - spawn a debug subagent with the full context accumulated so far (error output, what was tried, relevant file paths) so it begins targeted investigation from a fresh context. When the root cause could stem from multiple independent areas, spawn separate subagents to examine each in parallel. Extended debugging in the main context consumes context rapidly and risks auto-compaction; subagent delegation is more effective than continued iteration. If the subagent resolves the issue, apply findings and resume. If unresolved, prefer reporting back with Partial status - the Manager can restructure or reassign. When execution suggests Task Prompt instructions may be inaccurate, this is also a reason to stop iterating. When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
+Continue when the cause is clear and the fix is contained. When a correction does not resolve the issue - the same failure recurs, the fix introduces new problems, or the root cause is unclear - spawn a debug subagent with the full context accumulated so far (error output, what was tried, relevant file paths) for fresh-context investigation rather than continuing to iterate in the main context. When the root cause could stem from multiple independent areas, spawn separate subagents to examine each in parallel. Repeated debugging in the main context consumes context rapidly and risks auto-compaction; a subagent with fresh context is more effective than continued iteration. If the subagent resolves the issue, apply findings and resume. If unresolved, prefer reporting back with Partial status - the Manager can restructure or reassign. When execution suggests Task Prompt instructions may be inaccurate, this is also a reason to stop iterating. When classification is unclear, prefer Partial with clear description - invites guidance rather than closing options.
 
 **User collaboration:** Pause when criteria require User judgment (you cannot self-approve subjective quality), when explicit User actions are needed (outside the development environment), when environment resources are needed for validation, or when iteration stalls and you need guidance. Continue autonomously when checks can be performed without User involvement and when the cause of failure is clear and the fix is within scope. When uncertain or stopping without Success, pause and present the situation to the User with options rather than making unilateral decisions.
 
@@ -60,7 +60,7 @@ On Task receipt, perform the following actions:
 1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, it contains multiple Task Prompts separated by `---` delimiters. Execute each Task sequentially per §2.6 Batch Rules.
 2. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5 Operating Rules.
 3. If Workspace section present: switch to the specified branch or worktree path before starting work.
-4. If `has_dependencies: true` → continue to §3.2 Context Integration, otherwise proceed to §3.3 Task Execution.
+4. If `has_dependencies: true`, continue to §3.2 Context Integration, otherwise proceed to §3.3 Task Execution.
 
 ### 3.2 Context Integration
 
@@ -88,7 +88,7 @@ Perform the following actions:
 
 ### 3.5 Correction Loop
 
-Assess the failure per §2.3 Iteration Standards. If the cause is clear and the fix is contained, correct the issue, re-execute affected portions, and return to §3.4 Task Validation. If the initial correction does not resolve the issue, spawn a debug subagent per §2.3 Iteration Standards. If the subagent resolves it, apply findings and return to §3.4 Task Validation. If unresolved, present the situation to the User with what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Upon User guidance: integrate the new direction and proceed to the appropriate procedure step, or apply outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and continue to §3.6 Task Completion.
+Assess the failure per §2.3 Iteration Standards. If the cause is clear and the fix is contained, correct the issue, re-execute affected portions, and return to §3.4 Task Validation. If your correction does not resolve the issue, spawn a debug subagent per §2.3 Iteration Standards rather than continuing to iterate. If the subagent resolves it, apply findings and return to §3.4 Task Validation. If unresolved, present the situation to the User with what validation failed, what corrections were attempted, why stopping, current state, and options for proceeding. Upon User guidance: integrate the new direction and proceed to the appropriate procedure step, or apply outcome status per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and continue to §3.6 Task Completion.
 
 ### 3.6 Task Completion
 
@@ -107,7 +107,7 @@ Perform the following actions:
 
 - *Framework vocabulary in project output:* Commit messages, source comments, and code should describe the actual work - not the framework managing it. Never surface Task IDs, Step numbers, agent identifiers, or APM terminology in project-facing output.
 - *Skipping cross-agent integration steps:* When cross-agent dependency context includes file reading instructions and integration guidance, completing those steps fully before starting implementation catches integration mismatches early. Proceeding on assumptions about another Worker's output leads to rework.
-- *Continuing to iterate instead of delegating:* When a second fix attempt fails or the root cause is unclear, the effective path is spawning a debug subagent with accumulated context rather than continuing in the main context where each iteration consumes context budget.
+- *Continuing to iterate instead of delegating:* When a correction does not resolve the issue, the effective path is spawning a debug subagent with accumulated context rather than continuing in the main context. Each iteration consumes context budget and reduces reasoning quality - a subagent with fresh context is more effective.
 - *Working non-incrementally:* Writing large deliverables in one pass without testing intermediate results. Build incrementally - compile, run, or validate after each meaningful step rather than producing everything and then discovering issues.
 - *Logging Success with incomplete validation:* Marking a Task as Success when validation criteria were not fully exercised. If criteria cannot be met (missing resources, need User cooperation), log as Partial and explain what remains rather than claiming Success with caveats.
 

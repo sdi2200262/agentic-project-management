@@ -184,7 +184,7 @@ has_dependencies: true
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field.
 - *Instruction Accuracy:* The objective and expected output are authoritative - deliver those. However, the detailed instructions and steps were constructed from planning documents and may contain inaccurate details, missed prerequisites, or outdated assumptions about the codebase. When a specific instruction contradicts what the codebase actually shows, validate the actual state rather than persisting with the instruction as written.
-- *Task Iteration:* When a fix attempt does not resolve an issue, spawn a debug subagent with the full accumulated context (error output, what was tried, relevant file paths) for fresh-context investigation rather than continuing to iterate in the main context. When the root cause could stem from multiple independent areas, spawn separate subagents in parallel. If unresolved after subagent investigation, report with Partial status.
+- *Task Iteration:* When a fix attempt does not resolve an issue, spawn a debug subagent with the full accumulated context (error output, what was tried, relevant file paths) for fresh-context investigation rather than continuing to iterate in the main context. Repeated iteration degrades reasoning quality and risks auto-compaction - escalate to a subagent early. When the root cause could stem from multiple independent areas, spawn separate subagents in parallel. If unresolved after subagent investigation, report with Partial status.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
 - *Task Report:* Instruction to output a Task Report for User to return to Manager.
 

@@ -37,12 +37,12 @@ After reviewing a Task Log, determine the review outcome.
 **Investigation scope:** Investigate directly for contained checks; use a subagent for context-intensive issues. When scope is unclear, prefer subagent to preserve Manager context. {MANAGER_SUBAGENT_GUIDANCE}
 
 **Post-investigation outcome:**
-- *No issues:* (false positives, nothing actionable) → Continue to next Task(s).
-- *Follow-up needed:* (Worker must retry with refined instructions) → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. If the Worker also left changes uncommitted, note this in the follow-up instructions.
-- *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification.
-- *Previously-Done work deficient:* (investigation of a later Task reveals issues with already-Done work) → Create a new Task through Plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; reference it from the new Task, include the discovery context, and specify what needs correction.
+- If no issues are found (false positives, nothing actionable), continue to the next Task(s).
+- If the Worker needs to retry with refined instructions, create a follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. If the Worker also left changes uncommitted, note this in the follow-up instructions.
+- If planning documents need modification, proceed to §3.4 Planning Document Modification.
+- If investigation reveals deficiencies in previously-Done work, create a new Task through Plan modification per §2.3 Planning Document Modification Standards. The original Task remains Done; reference it from the new Task, include the discovery context, and specify what needs correction.
 
-Within-authority actions (follow-ups for small contained issues, minor planning document corrections) are executed immediately during the review cycle. Present findings to the User for awareness after acting. Only changes exceeding Manager authority per §2.3 Planning Document Modification Standards pause for User approval.
+Small contained actions (follow-ups for isolated issues, minor planning document corrections) can be executed immediately during the review cycle - present findings to the User for awareness after acting. When changes are significant enough to affect project direction or scope, pause for User approval per §2.3 Planning Document Modification Standards.
 
 ### 2.3 Planning Document Modification Standards
 
@@ -96,7 +96,7 @@ After all Tasks in a Stage are Done, assess whether the Stage's deliverables req
 
 **When to verify:** Stages where the User confirmed verification during the understanding summary approval, where Task Reviews surfaced edge cases or compatibility concerns, where follow-up prompts were required during the Stage, where Workers reported difficulties or important findings, where the Planner flagged complexity in Plan notes, or where accumulated working notes suggest deliverables should be checked as a whole. Simple Stages with clean Task Reviews and no flags can proceed directly to the summary.
 
-**How to verify:** Run the same kinds of checks Workers perform - execute tests, validate against Spec criteria, examine edge cases at boundaries between deliverables, dispatch a verification subagent for context-intensive checks.
+**How to verify:** Re-run the most important validation checks Workers already performed, exercise edge cases that individual Task validation may not have covered, run holistic end-to-end checks across the Stage's deliverables, and read source files, artifacts, or data to confirm the codebase is in the expected state. Verification should match the validation patterns established in the project - the same kinds of checks at the integration level. For context-intensive checks, dispatch a verification subagent.
 
 **When verification reveals issues:** Determine the appropriate response based on scope. For contained issues you can resolve directly, fix them. For issues requiring focused investigation, dispatch a subagent. For issues requiring Worker-level execution, create a new Task through Plan modification per §2.3 Planning Document Modification Standards. For issues whose scope or direction is unclear, present findings to the User with your assessment and proposed options. When verification requires User judgment or action, present findings and pause.
 
@@ -124,7 +124,7 @@ Perform the following actions:
 
 ### 3.2 Task Log Review
 
-Execute after report processing. Present your assessment of the Task Log visibly in chat: whether the claimed status is consistent with evidence, whether flags indicate coordination-relevant findings, and what the appropriate next action is.
+Execute after report processing. Present your assessment of the Task Log visibly in natural language: whether the claimed status is consistent with evidence, whether flags indicate coordination-relevant findings, and what the appropriate next action is.
 
 Perform the following actions:
 1. Read the Task Log at the path referenced in the Task Report.
@@ -136,16 +136,16 @@ Perform the following actions:
 Execute after Task Log review.
 
 Perform the following actions:
-1. Review findings from the Task Log per §2.2 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If version control is active and the Task was successful but changes remain uncommitted on the Task branch, commit on behalf following the conventions from Rules - no follow-up needed. If everything looks good → skip to step 3. If something needs attention → continue to step 2.
+1. Review findings from the Task Log per §2.2 Review Outcome Standards. Assess deliverables against the Task's objectives and validation criteria before determining the outcome. If version control is active and the Task was successful but changes remain uncommitted on the Task branch, commit on behalf following the conventions from Rules - no follow-up needed. If everything looks good, skip to step 3. If something needs attention, continue to step 2.
 2. Investigate and determine outcome per §2.2 Review Outcome Standards:
-   - *No issues:* → Continue to step 3.
-   - *Follow-up needed:* → Create follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction. Continue to step 3.
-   - *Planning document modification needed:* → Proceed to §3.4 Planning Document Modification (returns to step 3 after completion).
+   - If no issues are found, continue to step 3.
+   - If the Worker needs a follow-up, create a follow-up Task Prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction and continue to step 3.
+   - If planning documents need modification, proceed to §3.4 Planning Document Modification (returns to step 3 after completion).
 3. Update the Tracker per §4.1 Task Tracking Format: mark completed Tasks as Done, reassess Waiting Tasks for readiness, update branches. Execute pending merges per §2.5 Merge Standards before reassessing readiness. Assess whether the review yielded note-worthy context and add to working notes - both ephemeral coordination items and durable observations for later distillation. Remove stale working notes. Batch all changes from this review-dispatch cycle into a single Tracker edit.
 4. Assess next action per §2.4 Parallel Coordination Standards:
-   - If all Stage Tasks are Done and merged → Collapse Stage per §4.1 Task Tracking Format and proceed to §3.5 Stage Summary Creation.
-   - If Tasks are Ready → Proceed to `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment in the same turn.
-   - If no Tasks are Ready but Workers are active → Communicate wait state per §2.4 Parallel Coordination Standards and direct User to return the next report.
+   - If all Stage Tasks are Done and merged, collapse Stage per §4.1 Task Tracking Format and proceed to §3.5 Stage Summary Creation.
+   - If Tasks are Ready, proceed to `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment in the same turn.
+   - If no Tasks are Ready but Workers are active, communicate wait state per §2.4 Parallel Coordination Standards and direct User to return the next report.
 
 ### 3.4 Planning Document Modification
 
@@ -154,7 +154,7 @@ Execute when the review outcome identifies that planning documents need modifica
 Perform the following actions:
 1. Capture triggering context: which Task Log revealed the findings, what specific findings indicate modification, Task status and flags, post-investigation outcome.
 2. Apply §2.3 Planning Document Modification Standards: assess affected documents, analyze cascade implications, determine authority scope.
-3. If any modification requires User collaboration → Present concisely: trigger, required change, authority exceeded rationale, options with trade-offs, recommendation. Integrate User guidance.
+3. If any modification is significant enough to require User input, present concisely: what triggered it, what needs to change, why it exceeds what you can decide alone, options with trade-offs, and your recommendation. Integrate User guidance.
 4. Execute modifications following existing document patterns per §4.5 Planning Document Modification Guidelines. Verify consistency: reference integrity across documents (same data descriptions match), terminology consistency, scope alignment between the Spec and Plan. When correcting the Spec, check whether the Plan references the same content and update accordingly.
 5. When modifying Plan Tasks (adding, removing, or changing dependencies), update the Dependency Graph per §4.5 Planning Document Modification Guidelines.
 6. Document: update `modified` field in Spec and/or Plan YAML frontmatter per §4.4 Modification Log Format.
