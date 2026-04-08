@@ -69,7 +69,7 @@ On Task receipt, perform the following actions:
 Perform the following actions:
 1. Read the Context from Dependencies section.
 2. Execute integration based on dependency type per §2.1 Context Integration Standards:
-   - **Cross-agent:** Follow integration steps completely - read files, review artifacts, understand interfaces. {WORKER_SUBAGENT_GUIDANCE}
+   - **Cross-agent:** Follow integration steps completely - read files, review artifacts, understand interfaces. {WORKER_SUBAGENT_GUIDANCE} When a subagent returns findings, verify critical claims by reading the key files it references before proceeding - subagent summaries compress details and can misrepresent what matters for execution.
    - **Same-agent:** Use guidance to recall and build upon prior work; review referenced paths to refresh context if needed.
 3. If integration issues discovered, apply decision rules from §2.1 Context Integration Standards.
 
@@ -78,7 +78,7 @@ Perform the following actions:
 Perform the following actions:
 1. Execute Detailed Instructions sequentially, applying Guidance and relevant Rules from `{RULES_FILE}`, working toward the Objective.
 2. When an instruction requires explicit User action, communicate what needs doing, why, and what options exist. Await completion, then resume.
-3. When an instruction includes a subagent step, spawn the relevant subagent with a structured task description. Integrate findings and continue. {WORKER_SUBAGENT_GUIDANCE}
+3. When an instruction includes a subagent step, spawn the relevant subagent with a structured task description. Verify critical findings by reading key files the subagent references before integrating into execution. {WORKER_SUBAGENT_GUIDANCE}
 4. When all instructions complete, communicate that implementation is complete and you are moving to validation. Continue to Task Validation.
 
 ### 3.4 Task Validation
