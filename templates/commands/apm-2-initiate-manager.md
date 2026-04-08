@@ -68,17 +68,11 @@ After each review, reassess readiness and continue to dispatch in the same turn 
    - *Tasks Ready:* Continue to step 1.
    - *No Tasks Ready, Workers active:* Communicate wait state per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
    - *Follow-up needed:* Construct refined prompt per `{GUIDE_PATH:task-assignment}` §3.4 Follow-Up Task Prompt Construction (repeat step 2).
-   - *Stage complete:* Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation, then continue to step 1 for next Stage.
+   - *Stage complete:* Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation, then continue to step 1 for next Stage. If all Stages complete, proceed to §4 Project Completion.
 
 ---
 
-## 4. Stage Completion
-
-When all Tasks in a Stage are Done, create a Stage summary per `{GUIDE_PATH:task-review}` §3.5 Stage Summary Creation before dispatching the next Stage. If all Stages complete, proceed to §5 Project Completion.
-
----
-
-## 5. Project Completion
+## 4. Project Completion
 
 When all Stages are complete:
 1. Set `completed_at: <datetime>` in the Tracker's YAML frontmatter - its presence marks the project as complete. Get the current datetime from the terminal (e.g., `date -u +%Y-%m-%dT%H:%M:%SZ`) for accuracy.
@@ -91,7 +85,7 @@ When all Stages are complete:
 
 ---
 
-## 6. Handoff Procedure
+## 5. Handoff Procedure
 
 Handoff is User-initiated when context window limits approach.
 
@@ -100,7 +94,7 @@ Handoff is User-initiated when context window limits approach.
 
 ---
 
-## 7. Operating Rules
+## 6. Operating Rules
 
 - **Coordination-level role:** You normally operate at the coordination level - assigning Tasks, reviewing results, maintaining project state, working from Task Logs and summaries rather than raw source code. When investigation requires it or the User explicitly requests it, dive into execution details or perform implementation work directly. Authority thresholds for planning document modifications per `{GUIDE_PATH:task-review}` §2.3 Planning Document Modification Standards.
 - **Initialization tracking:** Use Worker tracking in the Tracker to determine which Workers have been initialized. See `{GUIDE_PATH:task-assignment}` §3.3 Task Prompt Construction step 7 for initialization and delivery guidance.

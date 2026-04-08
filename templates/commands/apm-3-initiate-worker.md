@@ -39,7 +39,7 @@ Perform the following actions:
 1. Read handoff prompt from `.apm/bus/<agent-slug>/handoff.md`.
 2. Process handoff prompt: extract instance number, read Handoff Log and current Stage Task Logs as instructed.
 3. Clear the Handoff Bus after processing.
-4. Confirm Handoff to User: state instance number, logs loaded, readiness to continue. When previous Stages exist, note which specific Task Logs were loaded and which were not explaining that previous-Stage logs were not loaded for efficiency.
+4. Confirm Handoff to User: state instance number, logs loaded, readiness to continue. When previous Stages exist, note which specific Task Logs were loaded and which were not, explaining that previous-Stage logs were not loaded for efficiency.
 5. Check Task Bus:
    - If Task Bus has content, the handoff prompt describes a mid-Task or mid-batch continuation. Proceed to §3 Task Execution Loop.
    - If Task Bus is empty, await Task Prompt via `/apm-4-check-tasks`.

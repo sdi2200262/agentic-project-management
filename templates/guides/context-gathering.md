@@ -84,7 +84,7 @@ Archive and workspace context setup (building on initiation), three progressive 
 
 **Deep exploration:** When the workspace contains codebases relevant to the project, explore all of them before entering question rounds - not selectively. Questions asked without baseline knowledge of a relevant codebase will be poorly targeted. For substantial research, {PLANNER_SUBAGENT_GUIDANCE}
 
-**`{RULES_FILE}`:** If `{RULES_FILE}` was found during initiation, present its contents to the User. Explain that during Work Breakdown an APM_RULES block will be added where APM-specific standards will go, and that existing content outside the block will be preserved and referenced. Ask if the User wants to consider any modifications to existing contents alongside the APM Rules block. If not found, note its absence for the Agent configuration step in Round 1.
+**`{RULES_FILE}`:** If `{RULES_FILE}` was found during initiation, present its contents to the User. Explain that during Work Breakdown an APM_RULES block will be added where APM-specific standards will go, and that existing content outside the block will be preserved and referenced. Ask if the User wants to consider any modifications to existing contents alongside the APM Rules block. If not found, note its absence for the Rules configuration step in Round 1.
 
 Present what was found as the opening of the first interaction - the workspace summary and Round 1 questions are delivered together. Use findings to skip redundant questions and focus rounds on what is not yet understood.
 
@@ -117,7 +117,7 @@ Combine related questions naturally in conversation. Track what has been answere
 6. What is your current plan or vision?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
 
-**Rules configuration:** If `{RULES_FILE}` was not found during §3.1 Archive and Workspace Context, ask the User - "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
+**Rules configuration:** If `{RULES_FILE}` was not found during §3.1 Pre-Round Context, ask the User - "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
 
 **Round completion:** Present a round completion summary per §2.4 Round Advancement. You must have sufficient understanding of project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 
@@ -156,7 +156,7 @@ Combine related questions naturally in conversation. Track what has been answere
 
 ### 3.5 Question Round 3: Implementation Approach and Quality
 
-**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, project-level coordination and approval requirements (external reviews or validation, stakeholder sign-offs, approval gates), domain organization.
+**Focus areas:** Technical constraints and preferences, workflow preferences, quality standards, project-level coordination and approval requirements (external reviews or validation, stakeholder sign-offs, approval gates), domain organization, design decisions and constraints.
 
 **Initial questions.** Select and adapt from these areas:
 
@@ -227,7 +227,7 @@ The understanding summary captures what was gathered - not how it will be decomp
 
 - *Repetition across rounds:* Asking the same question in different words in later rounds. Track what has been answered.
 - *Skipping validation criteria:* Accepting requirements without understanding how success will be verified. Every requirement needs concrete criteria.
-- *Silent research absorption:* Dispatching subagents, receiving results, and distilling them into summaries without showing the User what was found. Present research findings to the User before incorporating them - the User catches errors the Planner cannot.
+- *Silent research absorption:* Dispatching subagents, receiving results, and distilling them into summaries without showing the User what was found. Present research findings to the User before incorporating them - the User catches errors you cannot.
 - *Unverified subagent claims:* Accepting subagent findings as authoritative without reading the referenced files directly. Subagent summaries compress details and can misrepresent what matters for planning - claims that enter the Spec unverified mislead Workers downstream.
 - *Autonomous architectural decisions:* Selecting a technical approach based on research without presenting viable alternatives and tradeoffs to the User. Architectural choices that shape what Workers build require User decision.
 
