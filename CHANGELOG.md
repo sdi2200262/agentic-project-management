@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [1.0.0] - Unreleased
+## [1.0.0] - 2026-04-09
 
 v1.0.0 is a complete redesign of the APM workflow. The scope of changes across both the codebase and the workflow itself is too large to cover exhaustively here. This is a concise summary of the most significant changes. For the full specification, see the [documentation](https://github.com/sdi2200262/apm-website/tree/main/docs).
 

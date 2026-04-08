@@ -1,6 +1,6 @@
 # Security Considerations
 
-This document covers security risks when using the `agentic-pm` CLI, particularly with custom repositories. For the full user-facing security guide, see the [Security page](https://sdi2200262.github.io/apm-website/security) on the documentation site.
+This document covers security risks when using the `agentic-pm` CLI, particularly with custom repositories. For the full user-facing security guide, see the [Security Guide](https://agentic-project-management.dev/docs/security) on the documentation site.
 
 ## Custom Repository Risks
 

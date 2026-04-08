@@ -25,7 +25,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 ### High-Priority Areas
 
 **Workflow Testing & Feedback**
-- Run APM sessions on real projects and report issues via [Issue #79](https://github.com/sdi2200262/agentic-project-management/issues/79)
+- Run APM sessions on real projects and report issues via [GitHub Issues](https://github.com/sdi2200262/agentic-project-management/issues)
 - Test across different assistants and model combinations
 - Identify edge cases in coordination, Handoff, and session continuation
 
@@ -36,7 +36,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 
 **Standalone Skills**
 - The `skills/` directory contains standalone skills installed independently from APM bundles
-- Current skills: [apm-migration](skills/apm-migration/) (version migration), [apm-customization](skills/apm-customization/) (repo customization)
+- Current skills: [apm-assist](skills/apm-assist/) (APM assistant, migration, docs), [apm-customization](skills/apm-customization/) (repo customization)
 - Contributions welcome for new standalone skills that complement the APM workflow
 
 ### Community Contributions
@@ -81,7 +81,7 @@ APM uses a build system that processes source templates into platform-specific b
 - **Build system:** Edit files in `build/` for processors, config, and generators.
 - **CLI source:** Edit files in `src/` for CLI command behavior.
 - **Standalone skills:** Edit files in `skills/` for independently installable skills.
-- **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed — see the apm-website README for details.
+- **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed. See the apm-website README for details.
 
 **Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected commands, guides, and skills. See the change propagation rules in [CLAUDE.md](CLAUDE.md).
 

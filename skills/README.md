@@ -17,7 +17,7 @@ Download the skill file into the skills directory for your AI assistant, then re
 
 ```bash
 mkdir -p .claude/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/<skill>/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
   -o .claude/skills/<skill>/SKILL.md
 ```
 
@@ -25,7 +25,7 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
 
 ```bash
 mkdir -p .cursor/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/<skill>/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
   -o .cursor/skills/<skill>/SKILL.md
 ```
 
@@ -33,7 +33,7 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
 
 ```bash
 mkdir -p .github/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/<skill>/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
   -o .github/skills/<skill>/SKILL.md
 ```
 
@@ -41,7 +41,7 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
 
 ```bash
 mkdir -p .gemini/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/<skill>/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
   -o .gemini/skills/<skill>/SKILL.md
 ```
 
@@ -49,7 +49,7 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
 
 ```bash
 mkdir -p .<platform>/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/v1.0.0-dev/skills/<skill>/SKILL.md \
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
   -o .<platform>/skills/<skill>/SKILL.md
 ```
 

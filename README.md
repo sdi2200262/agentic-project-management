@@ -2,8 +2,6 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![npm](https://img.shields.io/npm/v/agentic-pm)](https://www.npmjs.com/package/agentic-pm) [![GitHub Release](https://img.shields.io/github/v/release/sdi2200262/agentic-project-management)](https://github.com/sdi2200262/agentic-project-management/releases)
 
-> **Note:** APM v1 is currently in testing preview. For testing updates, see [Issue #79](https://github.com/sdi2200262/agentic-project-management/issues/79).
-
 *Manage complex projects with a team of AI agents, smoothly and efficiently.*
 
 ## What is APM?
