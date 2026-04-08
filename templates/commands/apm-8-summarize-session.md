@@ -20,10 +20,10 @@ This command summarizes the current APM session and optionally archives it. You 
 5. Ask: "Would you like me to archive this session?" If yes, ask whether the User wants a custom archive name or the default dated name.
    - If the User declines, no further action.
    - If the User approves, continue to step 6.
-6. Run `apm archive --force` or `apm archive --force --name <name>` if a custom name was provided.
+6. Run `apm archive --force` or `apm archive --force --name <name>` if a custom name was provided. The CLI snapshots all `.apm/` artifacts (planning documents, Tracker, Memory) into `.apm/archives/<name>/`, writes archival metadata to `metadata.json` inside the archive, then removes the installed files and `.apm/metadata.json` from the workspace root - leaving it clean for a new session while preserving archives.
 7. Read `.apm/archives/index.md`. If it does not exist or is malformed, create it per the archive index format below.
 8. Append an entry for the newly archived session to the index table.
-9. Confirm to the User that archival is complete and direct them to run `apm init` (or `apm custom`) to reinitialize with fresh templates.
+9. Confirm to the User that archival is complete. To start a new APM session, the User runs `apm init` (or `apm custom`) in the terminal - this is a CLI command, not an assistant command. The CLI downloads and extracts fresh templates (commands, guides, skills, agents) and scaffolds a new `.apm/` directory with blank planning documents (Spec, Plan, Tracker, Memory Index) and a new `metadata.json` tracking the installation. After init completes, the User starts a new Planner with `/apm-1-initiate-planner` in their assistant. Archives from previous sessions remain in `.apm/archives/` and are accessible to the new Planner during Context Gathering.
 
 **Session summary structure:**
 

@@ -21,6 +21,13 @@ const PREFIX_WIDTH = 9;
 const INDENT = '  ';
 
 /**
+ * Whether stdout is an interactive terminal.
+ * When false (piped, redirected, or run by an agent), skip
+ * screen clearing, cursor manipulation, and progress animation.
+ */
+const IS_TTY = !!process.stdout.isTTY;
+
+/**
  * Logs an informational message.
  *
  * @param {string} message - Message to log.
@@ -149,8 +156,13 @@ export function banner() {
  * Clears content below the banner and repositions cursor.
  * On first call, clears the screen and renders the banner.
  * On subsequent calls, only clears the content area — the banner stays put.
+ * In non-TTY mode, prints the banner once and skips all clearing.
  */
 export function clearAndBanner() {
+  if (!IS_TTY) {
+    if (bannerHeight === 0) banner();
+    return;
+  }
   if (bannerHeight === 0) {
     console.clear();
     banner();
@@ -173,11 +185,16 @@ export function line(length = 50) {
  * Clears screen, shows banner, and displays an animated progress message.
  * Returns a stop function. Designed to be naturally wiped by the next
  * prompt's clearAndBanner(), but stop() should be called to clean up.
+ * In non-TTY mode, prints the message once with no animation.
  *
  * @param {string} message - Progress message to display.
  * @returns {Function} Stop function to clear the animation.
  */
 export function progress(message) {
+  if (!IS_TTY) {
+    console.log('  ' + message + '...');
+    return () => {};
+  }
   const frames = ['.', '..', '...'];
   let i = 0;
   process.stdout.write('  ' + chalk.dim(message + frames[0]));
