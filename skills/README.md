@@ -4,54 +4,23 @@ Optional skills that live outside the main APM bundles. Unlike the skills instal
 
 ## Available Skills
 
-| Skill | Purpose | How to use |
-| :--- | :--- | :--- |
-| [apm-assist](apm-assist/) | General-purpose APM assistant - explains concepts, detects versions, handles migration, answers questions from live docs | Install manually into your project (see below) |
-| [apm-customization](apm-customization/) | Guides an AI agent through customizing templates in a forked APM repository | Already present in any fork or template of this repo |
+### apm-assist
 
-## Installing Skills
+General-purpose APM assistant - explains concepts, detects installed versions, handles migration from v0.5.x, and answers questions from the live documentation. Works with any supported platform.
 
-Download the skill file into the skills directory for your AI assistant, then reference it in chat to begin. Replace `<skill>` with the skill name (e.g. `apm-assist`):
-
-**Claude Code:**
+Install by downloading the skill file into your assistant's skills directory. For Claude Code:
 
 ```bash
-mkdir -p .claude/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
-  -o .claude/skills/<skill>/SKILL.md
+mkdir -p .claude/skills/apm-assist
+curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-assist/SKILL.md \
+  -o .claude/skills/apm-assist/SKILL.md
 ```
 
-**Cursor:**
+For other platforms, replace `.claude` with the platform's config directory (`.cursor`, `.github`, `.gemini`, `.opencode`, `.codex`). The skill file is the same across all platforms.
 
-```bash
-mkdir -p .cursor/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
-  -o .cursor/skills/<skill>/SKILL.md
-```
+### apm-customization
 
-**GitHub Copilot:**
-
-```bash
-mkdir -p .github/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
-  -o .github/skills/<skill>/SKILL.md
-```
-
-**Gemini CLI:**
-
-```bash
-mkdir -p .gemini/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
-  -o .gemini/skills/<skill>/SKILL.md
-```
-
-**OpenCode / Codex:**
-
-```bash
-mkdir -p .<platform>/skills/<skill>
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/<skill>/SKILL.md \
-  -o .<platform>/skills/<skill>/SKILL.md
-```
+Guides an AI agent through customizing APM templates, navigating the repository structure, making changes, building, and releasing. No installation needed - this skill is already present in any fork or template of this repository. The AI agent reads it directly from `skills/apm-customization/SKILL.md` when working within the repo. If your platform does not discover it automatically, copy it to the platform's skills directory (e.g., `.claude/skills/apm-customization/SKILL.md`).
 
 ## Contributing
 
