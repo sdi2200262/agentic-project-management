@@ -88,6 +88,14 @@ APM supports custom repositories for teams that want to modify the workflow. For
 
 See the [Customization Guide](https://agentic-project-management.dev/docs/customization-guide) for details.
 
+### APM Auto
+
+[APM Auto](https://github.com/sdi2200262/apm-auto) is an official custom adaptation of APM built for Claude Code. It replaces the user-mediated Worker model with autonomous subagent dispatch - the Manager spawns ephemeral subagents via `Agent()` to execute Tasks, reviews their output, and continues without requiring you to shuttle messages between chats. Best for prototyping, fast execution, and simpler projects.
+
+```bash
+apm custom -r sdi2200262/apm-auto
+```
+
 ## APM Assist
 
 The [`apm-assist`](skills/apm-assist/) skill turns your AI assistant into an APM-aware helper. Install it into any project and your assistant can explain how APM works, answer questions by reading the live documentation, detect your installation state and version, and guide migration from v0.5.x. It works with any supported platform.
