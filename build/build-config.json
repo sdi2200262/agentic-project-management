@@ -122,8 +122,8 @@
       "format": "markdown",
       "configDir": ".codex",
       "directories": {
-        "commands": ".codex/skills",
-        "skills": ".codex/skills",
+        "commands": ".agents/skills",
+        "skills": ".agents/skills",
         "guides": ".codex/apm-guides",
         "agents": ".codex/agents"
       },

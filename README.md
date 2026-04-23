@@ -8,21 +8,35 @@
 
 APM is an open-source framework for managing ambitious software projects with AI assistants. Instead of working in a single, increasingly chaotic chat, APM structures your work into a coordinated system where different AI agents handle planning, coordination, and execution as a team.
 
+What distinguishes this from subagent-based approaches: the agents doing implementation work are not restarted fresh on each task. They accumulate working context across assignments - building familiarity with their domain as the project progresses. When context fills, a structured Handoff transfers that working knowledge to a fresh instance rather than discarding it.
+
 As conversations grow, AI context degrades. The assistant loses track of requirements, produces bad code, and hallucinates details. For substantial projects, this makes sustained progress nearly impossible.
 
 To address this, APM coordinates three specialized agent types, each operating in its own context with only the information it needs:
 
 - **Planner** - Conducts structured project discovery and decomposes requirements into three planning documents: a Spec (what to build), a Plan (how work is organized), and Rules (how work is performed).
 - **Manager** - Coordinates execution by assigning Tasks to Workers, reviewing completed work, and maintaining project state. Operates on execution summaries rather than raw code.
-- **Workers** - Execute specific Tasks with tightly scoped context. Each Worker receives self-contained Task Prompts with everything it needs, executes, validates, and reports back.
+- **Workers** - Execute Tasks within defined domains (frontend, backend, API, etc.). Each Worker receives a self-contained Task Prompt for each assignment, executes, validates, logs to memory, and reports back.
 
-Project state lives in structured files outside any agent's context. When a conversation ends or an agent reaches its limits, a Handoff transfers working knowledge to a fresh instance as needed. This also allows completed APM sessions to be archived and their context carried forward to new ones.
+Project state lives in structured files outside any agent's context. Because of this, when an agent reaches its limits, you can Handoff its working knowledge to a fresh instance of that same agent in a new chat. This also allows completed sessions to be archived and their context carried forward to new ones.
 
-You mediate every exchange between agents, keeping the workflow platform-agnostic and every interaction visible. Each agent guides you through the workflow at every step, telling you exactly which command to run, in which conversation, and what to do next.
+You mediate every exchange between agents by running commands in the appropriate conversation. This keeps every step visible and auditable, letting you set the pace and review work at each stage. Each agent tells you exactly what to run, in which conversation, and what to do next.
 
 <p align="center">
   <img src="assets/apm-social-card.png" alt="Agentic Project Management" width="800"/>
 </p>
+
+## What a Session Looks Like
+
+You start the Planner with an initiation command and it asks you structured questions while reading through your codebase - you can correct, steer, add context, and sign off on its understanding. That conversation produces three planning documents that govern everything that follows.
+
+From there it's simple: the Manager coordinates execution using the planning documents and tells you what command to run next and where, you run it in the right conversation, and work gets done. One command delivers a task to a Worker. Another brings the Worker's report back to the Manager. At each step you can proceed, iterate, adjust, or redirect.
+
+As the project grows, Workers build up focused working knowledge of their domains. When one fills its context, you run a Handoff command and the next instance picks up without gaps. The same applies to the Manager.
+
+## Who This Is For
+
+APM is for people who build with AI agents and own what they ship. Delivering each message between agents is a built-in checkpoint; you see every task assignment before it reaches a Worker and every result before the Manager acts on it. Workers run in separate conversations, giving you full visibility into their work and room to interact, redirect, or course-correct at any point. The workflow is transparent by design.
 
 ## Quick Start
 
@@ -100,14 +114,14 @@ apm custom -r sdi2200262/apm-auto
 
 The [`apm-assist`](skills/apm-assist/) skill turns your AI assistant into an APM-aware helper. Install it into any project and your assistant can explain how APM works, answer questions by reading the live documentation, detect your installation state and version, and guide migration from v0.5.x. It works with any supported platform.
 
-```bash
-# Claude Code example
-mkdir -p .claude/skills/apm-assist
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-assist/SKILL.md \
-  -o .claude/skills/apm-assist/SKILL.md
-```
+Give this to your AI assistant to handle installation:
 
-See the [standalone skills directory](skills/) for other platforms.
+```
+Install the apm-assist skill into this project. It is a general-purpose assistant skill for the Agentic Project Management (APM) framework that explains concepts, answers questions from the live documentation, detects installed versions and analyzes sessions, and guides migration from older versions to v1.
+
+Installation instructions and platform-specific paths are in the standalone skills README:
+https://github.com/sdi2200262/agentic-project-management/blob/main/skills/README.md
+```
 
 ## Migrating from v0.5.x
 
