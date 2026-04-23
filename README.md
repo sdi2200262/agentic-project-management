@@ -114,14 +114,14 @@ apm custom -r sdi2200262/apm-auto
 
 The [`apm-assist`](skills/apm-assist/) skill turns your AI assistant into an APM-aware helper. Install it into any project and your assistant can explain how APM works, answer questions by reading the live documentation, detect your installation state and version, and guide migration from v0.5.x. It works with any supported platform.
 
-```bash
-# Claude Code example
-mkdir -p .claude/skills/apm-assist
-curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management/main/skills/apm-assist/SKILL.md \
-  -o .claude/skills/apm-assist/SKILL.md
-```
+Give this to your AI assistant to handle installation:
 
-See the [standalone skills directory](skills/) for other platforms.
+```
+Install the apm-assist skill into this project. It is a general-purpose assistant skill for the Agentic Project Management (APM) framework that explains concepts, answers questions from the live documentation, detects installed versions and analyzes sessions, and guides migration from older versions to v1.
+
+Installation instructions and platform-specific paths are in the standalone skills README:
+https://github.com/sdi2200262/agentic-project-management/blob/main/skills/README.md
+```
 
 ## Migrating from v0.5.x
 

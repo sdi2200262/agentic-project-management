@@ -8,7 +8,7 @@ Optional skills that live outside the main APM bundles. Unlike the skills instal
 
 General-purpose APM assistant - explains concepts, detects installed versions, handles migration from v0.5.x, and answers questions from the live documentation. Works with any supported platform.
 
-Install by downloading the skill file into your assistant's skills directory. For Claude Code:
+Download the skill file into your platform's skill directory. For Claude Code:
 
 ```bash
 mkdir -p .claude/skills/apm-assist
@@ -16,7 +16,16 @@ curl -sL https://raw.githubusercontent.com/sdi2200262/agentic-project-management
   -o .claude/skills/apm-assist/SKILL.md
 ```
 
-For other platforms, replace `.claude` with the platform's config directory (`.cursor`, `.github`, `.gemini`, `.opencode`, `.codex`). The skill file is the same across all platforms.
+The skill file is the same across all platforms - only the destination directory differs:
+
+| Platform | Skill directory |
+|---|---|
+| Claude Code | `.claude/skills/apm-assist/` |
+| Cursor | `.cursor/skills/apm-assist/` |
+| GitHub Copilot | `.github/skills/apm-assist/` |
+| Gemini CLI | `.gemini/skills/apm-assist/` |
+| OpenCode | `.opencode/skills/apm-assist/` |
+| Codex CLI | `.agents/skills/apm-assist/` |
 
 ### apm-customization
 
