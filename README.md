@@ -110,6 +110,14 @@ See the [Customization Guide](https://agentic-project-management.dev/docs/custom
 apm custom -r sdi2200262/apm-auto
 ```
 
+### APM Semi
+
+[APM Semi](https://github.com/sdi2200262/apm-semi) is an official custom adaptation of APM for collaborative human-and-agent project execution. The User can claim any Task at any point and execute it directly while the agent on their side stays on standby - answering questions, running validation, and writing the Task Log on the User's behalf. Best for users who want to author the substantive code themselves and lean on AI for boilerplate or peripheral Tasks.
+
+```bash
+apm custom -r sdi2200262/apm-semi
+```
+
 ## APM Assist
 
 The [`apm-assist`](skills/apm-assist/) skill turns your AI assistant into an APM-aware helper. Install it into any project and your assistant can explain how APM works, answer questions by reading the live documentation, detect your installation state and version, and guide migration from v0.5.x. It works with any supported platform.
