@@ -10,7 +10,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 - **For new bug reports**, include:
   - APM CLI version (run `apm --version` or `npm list -g agentic-pm`)
   - Node.js and npm versions (run `node --version` and `npm --version`)
-  - AI assistant used (Claude Code, Cursor, Copilot, Gemini CLI, or OpenCode)
+  - AI assistant used (Claude Code, Cursor, Copilot, Antigravity CLI, or OpenCode)
   - Agent type experiencing issues (Planner, Manager, or Worker)
   - Step-by-step reproduction of the issue (if possible, otherwise a detailed description)
   - Expected vs actual behavior
@@ -47,7 +47,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 
 ### Community Extensions
 
-APM officially supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, and OpenCode. For other assistants (e.g. Windsurf, Kilo Code, Roo Code), community members may develop and maintain unofficial extensions.
+APM officially supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity CLI, and OpenCode. For other assistants (e.g. Windsurf, Kilo Code, Roo Code), community members may develop and maintain unofficial extensions.
 
 Community extensions are not officially supported, may lag behind releases, and should be tested thoroughly before use. If you're interested in developing or maintaining an extension, please open an issue to discuss.
 
