@@ -50,16 +50,16 @@
       "postInstallNote": null
     },
     {
-      "id": "antigravity",
-      "name": "Antigravity (CLI & IDE)",
-      "bundleName": "antigravity.zip",
+      "id": .agents",
+      "name": "Antigravity",
+      "bundleName": .agents.zip",
       "format": "markdown",
-      "configDir": ".antigravity",
+      "configDir": ".agents",
       "directories": {
-        "commands": ".antigravity/commands",
-        "skills": ".antigravity/skills",
-        "guides": ".antigravity/apm-guides",
-        "agents": ".antigravity/agents"
+        "commands": ".agents/workflows",
+        "skills": ".agents/skills",
+        "guides": ".agents/apm-guides",
+        "agents": ".agents/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
       "newChatGuidance": "Open a new terminal and start Antigravity CLI, or start a new Antigravity IDE session",
