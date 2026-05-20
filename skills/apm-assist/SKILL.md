@@ -39,7 +39,7 @@ Agents communicate through a file-based Message Bus in `.apm/bus/`. The user car
 
 When an Agent's context fills, a Handoff transfers working knowledge to a fresh instance. Sessions can be archived and built upon by future Planners.
 
-APM is installed via the `agentic-pm` CLI (`npm install -g agentic-pm`) and supports Claude Code, Cursor, GitHub Copilot, Gemini CLI, OpenCode, and Codex.
+APM is installed via the `agentic-pm` CLI (`npm install -g agentic-pm`) and supports Claude Code, Cursor, GitHub Copilot, Antigravity CLI, OpenCode, and Codex.
 
 ---
 
@@ -202,7 +202,7 @@ Archive metadata adds `archivedAt` and `reason` (e.g. `"migration"`) fields.
 
 **CLI changes:** v0.5.x CLI had only `apm init` and `apm update`. v1.0.0 adds `apm archive`, `apm custom`, `apm add`, `apm remove`, and `apm status`. The `apm init` command in v1.0.0 is fresh-install only (refuses to run if already initialized).
 
-**Platform support:** v0.5.x supported 11 assistants (including Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity, Qwen Code). v1.0.0 narrowed to Cursor, Claude Code, GitHub Copilot, Gemini CLI, OpenCode, and Codex.
+**Platform support:** v0.5.x supported 11 assistants (including Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity, Qwen Code). v1.1.0 updated Antigravity CLI to Antigravity CLI. v1.0.0 narrowed to Cursor, Claude Code, GitHub Copilot, Antigravity CLI, OpenCode, and Codex.
 
 ### 5.4 Execute
 

@@ -23,7 +23,7 @@ The skill file is the same across all platforms - only the destination directory
 | Claude Code | `.claude/skills/apm-assist/` |
 | Cursor | `.cursor/skills/apm-assist/` |
 | GitHub Copilot | `.github/skills/apm-assist/` |
-| Gemini CLI | `.gemini/skills/apm-assist/` |
+| Antigravity CLI | `.antigravity/skills/apm-assist/` |
 | OpenCode | `.opencode/skills/apm-assist/` |
 | Codex CLI | `.agents/skills/apm-assist/` |
 
