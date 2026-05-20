@@ -40,7 +40,7 @@ APM is for people who build with AI agents and own what they ship. Delivering ea
 
 ## Quick Start
 
-APM supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
+APM supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, and OpenCode.
 
 Install the CLI:
 

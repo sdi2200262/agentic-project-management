@@ -50,26 +50,26 @@
       "postInstallNote": null
     },
     {
-      "id": "gemini",
-      "name": "Gemini CLI",
-      "bundleName": "gemini.zip",
-      "format": "toml",
-      "configDir": ".gemini",
+      "id": .agents",
+      "name": "Antigravity",
+      "bundleName": .agents.zip",
+      "format": "markdown",
+      "configDir": ".agents",
       "directories": {
-        "commands": ".gemini/commands",
-        "skills": ".gemini/skills",
-        "guides": ".gemini/apm-guides",
-        "agents": ".gemini/agents"
+        "commands": ".agents/workflows",
+        "skills": ".agents/skills",
+        "guides": ".agents/apm-guides",
+        "agents": ".agents/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Open a new terminal and start Gemini CLI",
+      "newChatGuidance": "Open a new terminal and start Antigravity CLI, or start a new Antigravity IDE session",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "@codebase_investigator <natural language query>",
-        "explorerName": "codebase_investigator",
-        "configNote": "Requires `experimental.enableAgents: true` in ~/.gemini/settings.json"
+        "toolSyntax": "Agent(subagent_type=\"Explore\", prompt=\"...\")",
+        "explorerName": "Explore",
+        "configNote": null
       },
-      "postInstallNote": "Gemini CLI requires `experimental.enableAgents: true` in ~/.gemini/settings.json for subagent features."
+      "postInstallNote": null
     },
     {
       "id": "cursor",
