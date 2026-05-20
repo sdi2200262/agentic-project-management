@@ -89,7 +89,7 @@ export function replacePlaceholders(content, context) {
   replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
 
   // Replace RULES_FILE placeholder
-  const rulesFileName = id === 'claude' ? 'CLAUDE.md' : id === 'gemini' ? 'GEMINI.md' : 'AGENTS.md';
+  const rulesFileName = id === 'claude' ? 'CLAUDE.md' : id === 'antigravity' ? 'ANTIGRAVITY.md' : 'AGENTS.md';
   replaced = replaced.replace(/{RULES_FILE}/g, rulesFileName);
 
   // Replace SKILLS_DIR placeholder
