@@ -179,7 +179,7 @@ Supported placeholders:
 - `{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{AGENT_PATH:name}` - Cross-reference paths
 - `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_DIR}` - Platform-specific directory paths
 - `{ARGS}` - `$ARGUMENTS` (Markdown), `{{args}}` (TOML), `${input:args}` (Copilot)
-- `{RULES_FILE}` - `CLAUDE.md` (Claude), `GEMINI.md` (Gemini), `AGENTS.md` (others)
+- `{RULES_FILE}` - `CLAUDE.md` (Claude), `ANTIGRAVITY.md` (Gemini), `AGENTS.md` (others)
 - `{PLANNER_SUBAGENT_GUIDANCE}`, `{MANAGER_SUBAGENT_GUIDANCE}`, `{WORKER_SUBAGENT_GUIDANCE}`, `{SUBAGENT_GUIDANCE}` - Role-specific subagent syntax
 - `{ARCHIVE_EXPLORER_GUIDANCE}` - Subagent spawn syntax for archive explorer agent
 - `{CONTEXT_ATTACH_SYNTAX}` - Platform-specific file reference instructions
