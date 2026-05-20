@@ -51,7 +51,7 @@
     },
     {
       "id": "antigravity",
-      "name": "Antigravity CLI",
+      "name": "Antigravity (CLI & IDE)",
       "bundleName": "antigravity.zip",
       "format": "markdown",
       "configDir": ".antigravity",
@@ -62,7 +62,7 @@
         "agents": ".antigravity/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Open a new terminal and start Antigravity CLI",
+      "newChatGuidance": "Open a new terminal and start Antigravity CLI, or start a new Antigravity IDE session",
       "subagentGuidance": {
         "hasSubagents": true,
         "toolSyntax": "Agent(subagent_type=\"Explore\", prompt=\"...\")",

@@ -11,11 +11,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Breaking Changes
 
-* **Antigravity CLI Migration:** Transitioned support from Antigravity CLI to the new Antigravity CLI. The `.antigravity` configuration directory has been replaced with `.antigravity`, and the rules file has been renamed from `ANTIGRAVITY.md` to `ANTIGRAVITY.md`. Output format has been updated from TOML to Markdown.
+* **Antigravity (CLI & IDE) Migration:** Transitioned support from Antigravity (CLI & IDE) to the new Antigravity (CLI & IDE). The `.antigravity` configuration directory has been replaced with `.antigravity`, and the rules file has been renamed from `ANTIGRAVITY.md` to `ANTIGRAVITY.md`. Output format has been updated from TOML to Markdown.
 
 ### Added
 
-* **Antigravity CLI Support:** Full support for the new Antigravity CLI, including optimized directory structure and agent-first subagent guidance.
+* **Antigravity (CLI & IDE) Support:** Full support for the new Antigravity (CLI & IDE), including optimized directory structure and agent-first subagent guidance.
 
 ## [1.0.1] - 2026-04-24
 
@@ -37,7 +37,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 * **New artifact structure.** Spec (`.apm/spec.md`), Plan with dependency graphs (`.apm/plan.md`), Rules (platform rules file), Tracker (`.apm/tracker.md`), Memory hierarchy (`.apm/memory/` with Index, Task Logs, Handoff Logs). Replaces Implementation Plan and Memory Root.
 
-* **Platform support narrowed** to Claude Code, Cursor, GitHub Copilot, Antigravity CLI, and OpenCode.
+* **Platform support narrowed** to Claude Code, Cursor, GitHub Copilot, Antigravity (CLI & IDE), and OpenCode.
 
 * **Template file structure changed.** Commands in `templates/commands/`, guides in `templates/guides/`, skills in `templates/skills/`, agents in `templates/agents/`. Governed by `templates/_standards/` (WORKFLOW.md, TERMINOLOGY.md, STRUCTURE.md, WRITING.md).
 
@@ -114,7 +114,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 * **`apm init` Command:** Automates project setup, including AI assistant selection, asset download from GitHub Releases, and creation of the `.apm` directory structure (`.apm/guides`, `.apm/Memory`, `.apm/Implementation_Plan.md`, `.apm/metadata.json`). By default, automatically finds and installs the latest template version compatible with the current CLI version. Supports `--tag <tag>` option for installing specific template versions (e.g., `apm init --tag v0.5.0+templates.1`).
 * **`apm update` Command:** Allows users to update their local APM installation to the latest compatible template version. Includes intelligent version compatibility checking that compares installed templates against available releases, only updating if a newer compatible build exists. Informs users when newer templates require a CLI update via `npm update -g agentic-pm`. Includes backup and restore functionality for safe updates.
 * **Version Compatibility System:** Dynamic CLI version reading from `package.json` with automatic template version matching. The CLI automatically finds templates compatible with the running CLI version and compares build numbers for update decisions.
-* **Support for 10 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Antigravity CLI, Qwen Code, OpenCode, Windsurf, Kilo Code, Auggie CLI, and Roo Code.
+* **Support for 10 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Antigravity (CLI & IDE), Qwen Code, OpenCode, Windsurf, Kilo Code, Auggie CLI, and Roo Code.
 * **Build Process (`npm run build`):** New script (`scripts/build.js`) processes source templates (`templates/`) into distributable bundles (`dist/`) for each assistant, handling formatting (Markdown/TOML) and placeholders.
 * **Metadata File (`.apm/metadata.json`):** Tracks the installed APM version (template tag) and selected AI assistant within the project.
 * **`Troubleshooting_Guide.md`:** Added a dedicated guide based on the v0.4 User Guide's troubleshooting section.
