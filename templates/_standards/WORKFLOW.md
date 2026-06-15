@@ -115,7 +115,7 @@ The Message Bus is a file-based communication mechanism in `.apm/bus/`. The Plan
 
 A bus file is either empty (no message present) or contains a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. This prevents stale messages from accumulating and signals that the previous message was processed. Agents always read a bus file before writing to it to ensure cross-platform file tool compatibility.
 
-Workers read their Task Bus when the User runs `/apm-4-check-tasks` in the Worker's chat. The Manager reads Report Buses when the User runs `/apm-5-check-reports`. Both commands accept optional agent identifier arguments for targeted delivery.
+Workers read their Task Bus when the User runs `{COMMAND_SLUG:proceed}` in the Worker's chat. The Manager reads Report Buses when the User runs `{COMMAND_SLUG:review}`. Both commands accept optional agent identifier arguments for targeted delivery.
 
 When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. Each Task Prompt within the batch retains its full standalone structure.
 
@@ -124,7 +124,7 @@ When dispatching multiple sequential Tasks to the same Worker, the Manager sends
 1. Manager writes a Task Prompt to a Worker's Task Bus and provides the User with specific action guidance - which command to run, in which agent's chat, and whether the Worker needs initialization first.
 2. User runs the indicated command(s) in the Worker's context.
 3. Worker executes the Task, writes a Task Log, writes a Task Report to the Report Bus, and directs the User to deliver the report - including the agent identifier for targeted retrieval.
-4. User runs `/apm-5-check-reports` in the Manager's chat.
+4. User runs `{COMMAND_SLUG:review}` in the Manager's chat.
 5. Manager reviews the report and log, determines next steps.
 
 The User is the trigger puller at every boundary - there is no direct agent-to-agent communication. Each agent provides concise, actionable guidance covering only their end of the exchange.
@@ -198,7 +198,7 @@ Task outcome status reflects whether the objective was achieved:
 
 ### 6.1 Context Gathering
 
-**Runtime:** `commands/apm-1-initiate-planner.md` (§2), `guides/context-gathering.md`
+**Runtime:** `commands/apm.initiate.md` (§2), `guides/context-gathering.md`
 
 The Planner gathers project requirements through three progressive rounds of questions, deriving technical formalization from natural User responses rather than asking Users to produce technical content directly.
 
@@ -218,7 +218,7 @@ After all rounds, the Planner presents a consolidated understanding summary for 
 
 ### 6.2 Work Breakdown
 
-**Runtime:** `commands/apm-1-initiate-planner.md` (§3-4), `guides/work-breakdown.md`
+**Runtime:** `commands/apm.initiate.md` (§3-4), `guides/work-breakdown.md`
 
 The Planner decomposes gathered context into planning documents through visible reasoning - thinking is presented in chat before file output. The User sees decomposition decisions and can redirect before artifacts are written. The Planner's workflow awareness deepens at this stage: understanding how each document is consumed (the Manager extracts Spec content per-Task into Task Prompts, enriches them at runtime, and Workers focus on their Task Prompt and Rules by design), shaping content placement decisions.
 
@@ -236,7 +236,7 @@ The Planner decomposes gathered context into planning documents through visible 
 
 ### 7.1 Task Assignment
 
-**Runtime:** `guides/task-assignment.md`, `commands/apm-4-check-tasks.md`
+**Runtime:** `guides/task-assignment.md`, `commands/apm.proceed.md`
 
 The Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them via the Task Bus.
 
@@ -260,11 +260,11 @@ Before dispatching, the Manager checks whether a pending report would unlock Tas
 
 ### 7.2 Task Execution
 
-**Runtime:** `commands/apm-3-initiate-worker.md`, `guides/task-execution.md`, `guides/task-logging.md`
+**Runtime:** `commands/apm.execute.md`, `guides/task-execution.md`, `guides/task-logging.md`
 
 The Worker executes Task instructions, validates results, iterates if needed, logs the outcome, and reports back.
 
-**Worker registration** - A Worker binds to an agent identity during initiation by resolving the provided agent identifier against `.apm/bus/` directory names. This identity persists for the duration of the Implementation Phase for this Worker instance. The Task Prompt's agent identifier field is used for cross-validation, not identity binding. After registration, the Worker checks bus state to determine the init path: if the Handoff Bus has content, the Worker is an incoming instance and processes the handoff; if the Task Bus has content (with or without a preceding handoff), the Worker reads the Task Prompt and begins executing immediately; if neither has content, the Worker awaits Task delivery via `/apm-4-check-tasks`.
+**Worker registration** - A Worker binds to an agent identity during initiation by resolving the provided agent identifier against `.apm/bus/` directory names. This identity persists for the duration of the Implementation Phase for this Worker instance. The Task Prompt's agent identifier field is used for cross-validation, not identity binding. After registration, the Worker checks bus state to determine the init path: if the Handoff Bus has content, the Worker is an incoming instance and processes the handoff; if the Task Bus has content (with or without a preceding handoff), the Worker reads the Task Prompt and begins executing immediately; if neither has content, the Worker awaits Task delivery via `{COMMAND_SLUG:proceed}`.
 
 **Execution flow** - The Worker integrates dependency context if present, executes steps sequentially, then validates per the Task Prompt's validation criteria. The Worker validates autonomously first (running checks, verifying outputs), then pauses when criteria require User involvement (judgment or action) - the Worker does not involve the User until autonomous checks pass. When validation fails, the Worker investigates the root cause before attempting a correction - reading error output, tracing the failure, and identifying what specifically went wrong. If the correction does not resolve the issue, the Worker spawns a debug subagent to investigate root causes and iterate on fixes in a fresh context rather than continuing in the main context. The Worker validates the subagent's findings before applying them. When a Task includes subagent steps, the Worker spawns the relevant subagent and integrates findings into execution.
 
@@ -276,7 +276,7 @@ The Worker executes Task instructions, validates results, iterates if needed, lo
 
 ### 7.3 Task Review
 
-**Runtime:** `guides/task-review.md`, `commands/apm-5-check-reports.md`
+**Runtime:** `guides/task-review.md`, `commands/apm.review.md`
 
 The Manager reviews Worker results, determines review outcomes, modifies planning documents when needed, and updates the Tracker.
 
@@ -298,7 +298,7 @@ The Manager reviews Worker results, determines review outcomes, modifies plannin
 
 ### 8.1 Handoff
 
-**Runtime:** `commands/apm-6-handoff-manager.md`, `commands/apm-7-handoff-worker.md`
+**Runtime:** `commands/apm.handoff.manager.md`, `commands/apm.handoff.worker.md`
 
 Handoff transfers context between successive instances of the same agent role when context window limits approach. It applies to the Manager and Workers only - the Planner operates as a single instance. Handoff is User-initiated and can occur at any point (mid-Task, between Tasks, while awaiting reports) as long as the handoff prompt captures comprehensive current state.
 
@@ -315,13 +315,13 @@ Handoff transfers context between successive instances of the same agent role wh
 
 ### 8.2 Recovery
 
-**Runtime:** `commands/apm-9-recover.md`
+**Runtime:** `commands/apm.recover.md`
 
 Recovery reconstructs context after platform auto-compaction, manual compaction, or a cleared or lost conversation. The User invokes the recovery command with the agent's role. The agent re-reads its initiation command and follows its document loading instructions to rebuild procedural knowledge, then explores project artifacts and the codebase to reconstruct operational state. Recovery does not increment the instance number. The agent notes the recovery event in subsequent communications and in its eventual Handoff Log.
 
 ### 8.3 Session Continuation
 
-**Runtime:** `commands/apm-8-summarize-session.md`, `agents/apm-archive-explorer.md`, `guides/context-gathering.md` (§3.1)
+**Runtime:** `commands/apm.summarize.md`, `agents/apm-archive-explorer.md`, `guides/context-gathering.md` (§3.1)
 
 Session continuation archives the current session's artifacts for future reference. After archival, the user reinitializes APM to begin a new session with fresh templates while retaining read access to previous session context.
 

@@ -135,7 +135,7 @@
         "explorerName": "explorer",
         "configNote": null
       },
-      "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm-1-initiate-planner) instead of /slash-commands."
+      "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm.initiate) instead of /slash-commands."
     }
   ]
 }

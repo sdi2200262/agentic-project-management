@@ -184,7 +184,7 @@ Workspace installation state:
   "assistants": ["claude"],
   "installedFiles": {
     "_apm": [".apm/plan.md", ".apm/spec.md"],
-    "claude": [".claude/commands/apm-1-initiate-planner.md"]
+    "claude": [".claude/commands/apm.initiate.md"]
   },
   "installedAt": "2024-01-01T00:00:00.000Z"
 }

@@ -30,7 +30,7 @@ Explore the repository to understand the layout. The key directories are:
 
 **`templates/`** - The source files that become the APM installation. Everything the User receives when running `apm init` or `apm custom` originates here. Changes to APM's workflow, procedures, communication patterns, or agent behavior happen in this directory.
 
-**`templates/commands/`** - Slash commands the User sends to the model. These are the entry points for each Agent role (Planner, Manager, Worker) and for workflow actions (check-tasks, check-reports, handoff, recover, summarize).
+**`templates/commands/`** - Slash commands the User sends to the model. These are the entry points for each Agent role (Planner, Manager, Worker) and for workflow actions (proceed, review, handoff, recover, summarize).
 
 **`templates/guides/`** - Procedural files Agents read autonomously. Each guide contains a single procedure with operational standards, step-by-step actions, output specifications, and content guidelines. Guides are the most detailed procedural documents in the system.
 

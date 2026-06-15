@@ -63,7 +63,7 @@ Agent identity is derived from the agent directory name (`.apm/bus/<agent-slug>/
 
 ### 4.2 Agent ID Resolution
 
-When `/apm-4-check-tasks` or `/apm-5-check-reports` accept an `[agent-id]` argument, resolve it against `.apm/bus/` directory names: exact match, then prefix, then best plausible match. When only one plausible candidate exists, resolve to it. When multiple candidates are plausible, list them and ask the User. When no bus directories exist, inform that the Message Bus is not initialized.
+When `{COMMAND_SLUG:proceed}` or `{COMMAND_SLUG:review}` accept an `[agent-id]` argument, resolve it against `.apm/bus/` directory names: exact match, then prefix, then best plausible match. When only one plausible candidate exists, resolve to it. When multiple candidates are plausible, list them and ask the User. When no bus directories exist, inform that the Message Bus is not initialized.
 
 ### 4.3 Agent Slug Format
 

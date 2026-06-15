@@ -1,6 +1,6 @@
 ---
-command_name: initiate-worker
-description: Initiate an APM Worker.
+command_name: execute
+description: Initiate an APM Worker session — bind identity and execute assigned Tasks.
 ---
 
 # APM {VERSION} - Worker Initiation Command
@@ -31,7 +31,7 @@ Determine identity from the `{ARGS}` argument:
 3. Verify bus files exist (`task.md`, `report.md`, `handoff.md`) in the bus directory. Determine your init path from bus state:
    - If Handoff Bus has content, you are an incoming Worker after Handoff. Proceed to §2.2 Incoming Worker Initiation.
    - If Handoff Bus is empty and Task Bus has content, confirm identity to User and proceed to §3 Task Execution Loop.
-   - If both are empty, confirm identity to User and await Task Prompt via `/apm-4-check-tasks`.
+   - If both are empty, confirm identity to User and await Task Prompt via `{COMMAND_SLUG:proceed}`.
 
 ### 2.2 Incoming Worker Initiation
 
@@ -42,13 +42,13 @@ Perform the following actions:
 4. Confirm Handoff to User: state instance number, logs loaded, readiness to continue. When previous Stages exist, note which specific Task Logs were loaded and which were not, explaining that previous-Stage logs were not loaded for efficiency.
 5. Check Task Bus:
    - If Task Bus has content, the handoff prompt describes a mid-Task or mid-batch continuation. Proceed to §3 Task Execution Loop.
-   - If Task Bus is empty, await Task Prompt via `/apm-4-check-tasks`.
+   - If Task Bus is empty, await Task Prompt via `{COMMAND_SLUG:proceed}`.
 
 ---
 
 ## 3. Task Execution Loop
 
-When a Task Prompt is available (detected during init or delivered via `/apm-4-check-tasks`):
+When a Task Prompt is available (detected during init or delivered via `{COMMAND_SLUG:proceed}`):
 1. **Execute:** See `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure. The guide controls validation, execution, and completion.
 2. **Log:** Create Task Log per `{GUIDE_PATH:task-logging}` §3 Task Logging Procedure.
 3. **Report:** Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.
@@ -62,7 +62,7 @@ Repeat until all assigned Tasks are Done, User intervenes, or Handoff is needed.
 
 Handoff is User-initiated when context window limits approach.
 
-- **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm-7-handoff-worker}` for Handoff Log and handoff prompt creation.
+- **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm.handoff.worker}` for Handoff Log and handoff prompt creation.
 
 ---
 

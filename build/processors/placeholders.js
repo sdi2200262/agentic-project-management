@@ -17,6 +17,7 @@ import path from 'path';
  * - {SKILL_PATH:name}: Full path to skill file (<name>/SKILL.md)
  * - {GUIDE_PATH:name}: Full path to guide file (<name>.md) - flat structure, no frontmatter
  * - {COMMAND_PATH:name}: Full path to command file (resolves extension per target)
+ * - {COMMAND_SLUG:slug}: Slash invocation string (/apm.slug; Codex: $apm.slug)
  * - {AGENT_PATH:name}: Full path to agent file (<name>.md, Copilot: <name>.agent.md)
  * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
  * - {RULES_FILE}: Platform-specific agents file name
@@ -71,11 +72,25 @@ export function replacePlaceholders(content, context) {
   // Codex: commands are skills in directory structure (skills/<name>/SKILL.md)
   const commandExt = getOutputExtension(target);
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, commandName) => {
-    const base = path.basename(commandName, path.extname(commandName));
+    let base = commandName;
+    if (base.endsWith('.prompt.md')) {
+      base = base.slice(0, -'.prompt.md'.length);
+    } else if (base.endsWith('.md')) {
+      base = base.slice(0, -3);
+    } else if (base.endsWith('.toml')) {
+      base = base.slice(0, -5);
+    }
     if (id === 'codex') {
       return path.join(directories.commands, base, 'SKILL.md');
     }
     return path.join(directories.commands, `${base}${commandExt}`);
+  });
+
+  // Replace COMMAND_SLUG placeholder (slash invocation: /apm.initiate, Codex: $apm.initiate)
+  const invokeSeparator = target.invokeSeparator ?? '.';
+  replaced = replaced.replace(/{COMMAND_SLUG:([^}]+)}/g, (_match, slug) => {
+    const prefix = id === 'codex' ? '$' : '/';
+    return `${prefix}apm${invokeSeparator}${slug}`;
   });
 
   // Replace ARGS placeholder based on format

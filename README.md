@@ -59,15 +59,15 @@ Select your AI assistant when prompted. The CLI installs commands, guides, skill
 Next, open your AI assistant and run:
 
 ```
-/apm-1-initiate-planner
+/apm.initiate
 ```
 
 You can also provide context about what you want to build:
 ```
-/apm-1-initiate-planner I want you to build Claude Opus 5. Make no mistakes.
+/apm.initiate I want you to build Claude Opus 5. Make no mistakes.
 ```
 
-The Planner collaborates with you through project discovery and creates the planning documents for you to review. Once approved, it guides you to open a new conversation and run `/apm-2-initiate-manager` to begin coordinated execution. From there, each agent directs you through the workflow step by step.
+The Planner collaborates with you through project discovery and creates the planning documents for you to review. Once approved, it guides you to open a new conversation and run `/apm.manage` to begin coordinated execution. From there, each agent directs you through the workflow step by step.
 
 For the full walkthrough, see the [Getting Started](https://agentic-project-management.dev/docs/getting-started) guide.
 

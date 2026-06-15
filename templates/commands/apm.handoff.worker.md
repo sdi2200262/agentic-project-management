@@ -1,5 +1,5 @@
 ---
-command_name: handoff-worker
+command_name: handoff.worker
 description: Perform a Handoff with an APM Worker.
 ---
 
@@ -39,14 +39,14 @@ Perform the following actions:
 2. Apply Worker Handoff asymmetry:
    - *Mid-Task:* "Read the Task from `task.md`, I completed steps 1-4, resume from step 5." Direct the incoming Worker to read the Task Bus file directly (intact since Task receipt). Include execution progress detail.
    - *Mid-batch:* The batch is still in `task.md`. Describe the state of each Task in the batch - which are complete (logs written), which is in progress and how far, and which have not been started. The incoming Worker reads the intact batch from the Task Bus and continues from where work left off.
-   - *Between-Tasks:* "No active Task, await `/apm-4-check-tasks`." State context and readiness.
+   - *Between-Tasks:* "No active Task, await `{COMMAND_SLUG:proceed}`." State context and readiness.
 3. Include: Handoff Log path, instructions to read current Stage Task Logs, and reminder to indicate incoming Worker status in first Task Report (listing specific Task Log files loaded and, when previous Stages exist, noting that previous-Stage logs were not loaded).
 
 ### 2.3 User Review and Finalization
 
 Perform the following actions:
 1. Write handoff prompt to the Handoff Bus: `.apm/bus/<agent-slug>/handoff.md`.
-2. Present both artifacts to User: Handoff Log (file path) and handoff prompt (bus path). Request review and direct User to start a new chat and run `/apm-3-initiate-worker <agent-id>` - the incoming Worker will auto-detect the handoff prompt.
+2. Present both artifacts to User: Handoff Log (file path) and handoff prompt (bus path). Request review and direct User to start a new chat and run `{COMMAND_SLUG:execute} <agent-id>` - the incoming Worker will auto-detect the handoff prompt.
 3. If modifications requested, update accordingly. This completes the outgoing Worker's duties.
 
 ---
@@ -96,7 +96,7 @@ Written to `.apm/bus/<agent-slug>/handoff.md`. The incoming Worker processes thi
 - *Current State:* Current Stage, Tasks completed this instance, notes.
 - *Continuation guidance:* Specific guidance for the incoming Worker about in-progress patterns or upcoming work.
 - *Incoming Worker indication:* Remind incoming Worker to include Handoff status in first Task Report - state instance number, list specific Task Log files loaded, and when previous Stages exist note that previous-Stage logs were not loaded. This triggers Manager Handoff detection.
-- *Immediate Next Action:* For mid-Task or mid-batch, instruct the incoming Worker to read the Task Bus and continue. For between-Tasks, state readiness to await `/apm-4-check-tasks`.
+- *Immediate Next Action:* For mid-Task or mid-batch, instruct the incoming Worker to read the Task Bus and continue. For between-Tasks, state readiness to await `{COMMAND_SLUG:proceed}`.
 - *Closing instruction:* Confirm to User that Handoff Log and Stage context have been read, then state readiness.
 
 ---

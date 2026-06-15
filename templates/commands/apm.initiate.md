@@ -1,6 +1,6 @@
 ---
-command_name: initiate-planner
-description: Initiate an APM Planner.
+command_name: initiate
+description: Initiate an APM Planner session — context gathering and work breakdown.
 ---
 
 # APM {VERSION} - Planner Initiation Command
@@ -64,7 +64,7 @@ Perform the following actions:
    - Create empty Report Bus: `.apm/bus/<agent-slug>/report.md`
    - Create empty Handoff Bus: `.apm/bus/<agent-slug>/handoff.md`
    Create the Manager's bus directory: `.apm/bus/manager/` with empty Handoff Bus `.apm/bus/manager/handoff.md`. Create all directories and bus files using `mkdir -p` and `touch` in a single terminal command.
-2. State the Planning Phase is complete: planning documents created, Message Bus initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `/apm-2-initiate-manager` in a new chat.
+2. State the Planning Phase is complete: planning documents created, Message Bus initialized, agents ready for coordination. Direct the User to start the Implementation Phase by initiating the Manager with `{COMMAND_SLUG:manage}` in a new chat.
 
 ---
 

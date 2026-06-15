@@ -23,7 +23,7 @@ Create your own bus directory in `.apm/bus/`:
 
 When you have completed work relevant to the APM session:
 1. Write your report to `.apm/bus/<your-agent-slug>/report.md`. Your first report must clearly explain who you are, what you did, and why you are participating in the session - the Manager has no record of your participation. Include enough context for the Manager to assess the situation. Subsequent reports can be concise.
-2. Direct the User to deliver the report: `/apm-5-check-reports <your-agent-slug>` in the Manager's chat.
+2. Direct the User to deliver the report: `{COMMAND_SLUG:review} <your-agent-slug>` in the Manager's chat.
 
 ---
 

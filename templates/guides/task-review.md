@@ -112,7 +112,7 @@ Three sequential steps per report (processing, log review, outcome determination
 
 ### 3.1 Report Processing
 
-Execute when User runs `/apm-5-check-reports` or returns with a Task Report (or batch report) from a Worker.
+Execute when User runs `{COMMAND_SLUG:review}` or returns with a Task Report (or batch report) from a Worker.
 
 Perform the following actions:
 1. Read the report from the Report Bus (`.apm/bus/<agent-slug>/report.md`).

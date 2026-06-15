@@ -62,7 +62,7 @@ Sequential flow from Task Prompt receipt through completion. Task Validation and
 
 On Task receipt, perform the following actions:
 1. Check for batch envelope: if Task Bus contains `batch: true` in frontmatter, it contains multiple Task Prompts separated by `---` delimiters. Execute each Task sequentially per §2.6 Batch Rules.
-2. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm-3-initiate-worker}` §5 Operating Rules.
+2. Verify `agent` in YAML frontmatter matches your assigned identity. Validate the bus directory matches `agent` per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards. If mismatch, decline per `{COMMAND_PATH:apm.execute}` §5 Operating Rules.
 3. If Workspace section present: switch to the specified branch or worktree path before starting work.
 4. If `has_dependencies: true`, continue to Context Integration, otherwise proceed to §3.3 Task Execution.
 
@@ -106,8 +106,8 @@ Perform the following actions:
 3. Create Task Log per `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure at `log_path`.
 4. Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery. Include relevant status indications:
    - *After Handoff.* If this is the first Task after Handoff initialization, include incoming Worker indication: state instance number, list the specific Task Log files loaded, and note that previous-Stage logs were not loaded.
-   - *After recovery:* If auto-compaction occurred and recovery was performed via `/apm-9-recover`, note it in the Task Report so the Manager is aware.
-5. State readiness for the next Task via `/apm-4-check-tasks` (no argument needed - you are already registered). Await the next Task Prompt or Handoff initiation.
+   - *After recovery:* If auto-compaction occurred and recovery was performed via `{COMMAND_SLUG:recover}`, note it in the Task Report so the Manager is aware.
+5. State readiness for the next Task via `{COMMAND_SLUG:proceed}` (no argument needed - you are already registered). Await the next Task Prompt or Handoff initiation.
 
 ---
 

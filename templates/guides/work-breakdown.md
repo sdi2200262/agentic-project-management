@@ -156,7 +156,7 @@ Perform the following actions per §2.5 `{RULES_FILE}` Standards:
    - State Rules are complete.
    - Ask User to review `{RULES_FILE}` for accuracy.
    - If modifications needed, apply and repeat step 3.
-   - If approved, state Work Breakdown is complete and all planning documents are created. Proceed to `{COMMAND_PATH:apm-1-initiate-planner}` §4 Planning Phase Completion.
+   - If approved, state Work Breakdown is complete and all planning documents are created. Proceed to `{COMMAND_PATH:apm.initiate}` §4 Planning Phase Completion.
 
 ---
 
