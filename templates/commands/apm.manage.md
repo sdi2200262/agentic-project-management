@@ -1,6 +1,6 @@
 ---
-command_name: initiate-manager
-description: Initiate an APM Manager.
+command_name: manage
+description: Initiate an APM Manager session — coordinate Tasks and review Worker results.
 ---
 
 # APM {VERSION} - Manager Initiation Command
@@ -63,7 +63,7 @@ Perform the following actions:
 After each review, reassess readiness and continue to dispatch in the same turn when Tasks are Ready without waiting for User input per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards. Repeat until all Stages complete, User input is needed, User intervenes, or Handoff is needed.
 
 1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment, construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.3 Task Prompt Construction. Direct User to the Worker(s).
-2. **Await Report:** User runs `/apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this chat.
+2. **Await Report:** User runs `{COMMAND_SLUG:task}` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `{COMMAND_SLUG:review}` in this chat.
 3. **Review and Continue.** Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Log, investigate further if needed and determine review outcome, modify planning documents if needed, update the Tracker. Then in the same turn:
    - *Tasks Ready:* Continue to step 1.
    - *No Tasks Ready, Workers active:* Communicate wait state per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
@@ -79,7 +79,7 @@ When all Stages are complete:
 2. Review all Stage summaries for overall project outcome.
 3. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, per-Stage summaries, notable findings, and final deliverables.
 4. Guide the User through the available next steps. The APM session is complete and its artifacts (Spec, Plan, Tracker, Memory, Task Logs) remain in `.apm/`. If the User wants to start a new APM session or clean up the `.apm/` directory, two optional follow-ups are available:
-   - **Session summary:** `/apm-8-summarize-session` produces a structured summary covering decisions made, work completed, and lessons learned. A session summary helps future Planners absorb archived context more efficiently - if the User plans to build on this work later, a summary is worth creating. Run it in a new chat for dedicated context. The summarization agent also offers to help with archival at the end of its procedure.
+   - **Session summary:** `{COMMAND_SLUG:summarize}` produces a structured summary covering decisions made, work completed, and lessons learned. A session summary helps future Planners absorb archived context more efficiently - if the User plans to build on this work later, a summary is worth creating. Run it in a new chat for dedicated context. The summarization agent also offers to help with archival at the end of its procedure.
    - **Archival:** running `apm archive` via the CLI archives the current `.apm/` artifacts into `.apm/archives/` and removes them from the `.apm/` root, leaving it clean for a new APM session. Use `apm archive --name <custom-name>` for a descriptive archive name instead of the default dated one.
    Recommend starting with summarization if the User wants both.
 
@@ -90,7 +90,7 @@ When all Stages are complete:
 Handoff is User-initiated when context window limits approach.
 
 - **Proactive monitoring:** Monitor Worker performance through their reports and Task Logs. If a Worker's output quality degrades or a report indicates auto-compaction occurred, inform the User that the Worker needs a Handoff or recovery to continue effectively.
-- **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm-6-handoff-manager}` for Handoff Log and handoff prompt creation.
+- **Handoff execution:** When User initiates, see `{COMMAND_PATH:apm.handoff.manager}` for Handoff Log and handoff prompt creation.
 
 ---
 

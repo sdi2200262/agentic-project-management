@@ -12,10 +12,11 @@ Different document types have different structural needs. This matrix defines th
 
 | Document Type | Structure Policy |
 | ------------- | ---------------- |
-| **Initiation commands** (`apm-1`, `apm-2`, `apm-3`) | Strict structure. Role declaration, initiation, core procedures, operating rules. |
-| **Utility commands** (`apm-4`, `apm-5`, `apm-8`) | Lightweight structure. Short trigger or standalone commands - full rigidity adds no clarity. |
-| **Handoff commands** (`apm-6`, `apm-7`) | Lightweight structure. Procedure, structural specs for artifacts. |
-| **Troubleshooting commands** (`apm-9`) | Lightweight structure. Recovery and diagnostic commands for workflow disruptions. |
+| **Bootstrap commands** (`apm.plan`, `apm.manage`, `apm.work`) | Strict structure. Role declaration, initiation, core procedures, operating rules. |
+| **Bus commands** (`apm.task`, `apm.review`) | Lightweight structure. Short trigger commands - full rigidity adds no clarity. |
+| **Handoff commands** (`apm.handoff.manager`, `apm.handoff.worker`) | Lightweight structure. Procedure, structural specs for artifacts. |
+| **Utility commands** (`apm.summarize`) | Lightweight structure. Standalone commands. |
+| **Troubleshooting commands** (`apm.recover`) | Lightweight structure. Recovery and diagnostic commands for workflow disruptions. |
 | **Guides** | Strict 5-section pattern (§1 Overview through §5 Content Guidelines) by default. Sections may be merged only when there is a clear, justified reduction in cross-referencing overhead - not for cosmetic reasons. |
 | **Skills** | Free-form structure. Required: §1 Overview (reading agents, objectives, outputs) and end marker. Internal organization adapts to the skill's nature - skills may contain standards, procedures, reference content, or any combination. |
 | **Agents** | Free-form structure. Required: §1 Overview (spawning agents, purpose, outputs) and end marker. Internal organization adapts to the agent's purpose. |
@@ -34,12 +35,12 @@ Every command file begins with YAML frontmatter.
 
 ```yaml
 ---
-command_name: <kebab-case-name>
+command_name: <slug>
 description: <one or two sentence description of command purpose>
 ---
 ```
 
-- `command_name` (required, kebab-case): Command identifier.
+- `command_name` (required, slug): Command identifier matching the filename stem after `apm.` (e.g. `plan`, `handoff.manager`).
 - `description` (required, one or two sentences): Brief statement of command purpose.
 
 ### 2.2 Section Structure
@@ -59,7 +60,7 @@ Commands follow a variable structure based on purpose, with required opening and
 | Section | Content |
 | ------- | ------- |
 | §1 Overview | Role declaration ("You are the **[Agent Type]**"), role scope, greeting instruction, responsibilities, skill reference. |
-| §2 Initiation | First instance vs incoming agent logic, artifact reading. Worker includes identity binding. Exemption: the Planner (`apm-1`) operates as a single instance with no Handoff or incoming agent logic, so §2 is omitted and core Procedures start at §2. |
+| §2 Initiation | First instance vs incoming agent logic, artifact reading. Worker includes identity binding. Exemption: the Planner (`apm.plan`) operates as a single instance with no Handoff or incoming agent logic, so §2 is omitted and core Procedures start at §2. |
 | §3+ [Core Procedures] | Main procedures for this agent type. |
 | §N Operating Rules | Boundaries, communication, subagent usage. |
 
@@ -254,7 +255,7 @@ field_two: <type or allowed values>
 
 ### 8.3 Placeholder Notation
 
-Value placeholders use `<placeholder>` for values to fill, `[optional]` for conditional content, `...` for pattern continuation, `<N>`/`<M>` for integer values, and `<NN>`/`<MM>` for zero-padded numeric identifiers. Cross-reference placeholders (`{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{AGENT_PATH:name}`, `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_DIR}`, `{RULES_FILE}`, `{VERSION}`, `{TIMESTAMP}`, `{ARGS}`) are resolved during build.
+Value placeholders use `<placeholder>` for values to fill, `[optional]` for conditional content, `...` for pattern continuation, `<N>`/`<M>` for integer values, and `<NN>`/`<MM>` for zero-padded numeric identifiers. Cross-reference placeholders (`{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{COMMAND_SLUG:slug}`, `{AGENT_PATH:name}`, `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_DIR}`, `{RULES_FILE}`, `{VERSION}`, `{TIMESTAMP}`, `{ARGS}`) are resolved during build.
 
 ---
 
@@ -265,9 +266,9 @@ Value placeholders use `<placeholder>` for values to fill, `[optional]` for cond
 | Component | Convention |
 | --------- | ---------- |
 | Directory | `commands/` |
-| File | `apm-<N>-<action>.md` |
-| Prefix | `apm-<N>-` where N is sort order |
-| Names | kebab-case throughout |
+| File | `apm.<slug>.md` |
+| Prefix | `apm.` dot namespace (no numeric sort prefix) |
+| Slug | action verb or qualified verb (e.g. `plan`, `handoff.manager`) |
 
 ### 9.2 Guide Files
 

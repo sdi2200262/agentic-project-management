@@ -1,11 +1,11 @@
 ---
-command_name: check-reports
-description: Deliver a Task Report to an APM Manager.
+command_name: review
+description: Review Task Reports from the Report Bus.
 ---
 
-# APM {VERSION} - Manager Check Reports Command
+# APM {VERSION} - Manager Review Command
 
-Check Report Bus(es) for pending Task Reports. If you are a Planner, Worker, or non-APM agent, concisely decline and take no action. This replaces manual file referencing - scan bus directories or check a specific Worker's Report Bus.
+Review Task Reports from Worker Report Buses. If you are a Planner, Worker, or non-APM agent, concisely decline and take no action. This replaces manual file referencing - scan bus directories or check a specific Worker's Report Bus.
 
 Accepts optional `[agent-id ...]` arguments. With arguments, checks those Workers' Report Buses. Without arguments, checks Workers with active dispatches plus a health check for unexpected content.
 

@@ -123,7 +123,9 @@ Each bundle contains (with dot prefixes):
       index.md
   {configDir}/
     commands/
-      apm-1-initiate-planner.md
+      apm.plan.md
+      apm.manage.md
+      apm.work.md
       ...
     guides/
       context-gathering.md
@@ -148,9 +150,11 @@ Commands are named directly in source files:
 
 ```
 templates/commands/
-  apm-1-initiate-planner.md
-  apm-2-initiate-manager.md
-  apm-3-initiate-worker.md
+  apm.plan.md
+  apm.manage.md
+  apm.work.md
+  apm.task.md
+  apm.review.md
   ...
 ```
 
@@ -162,7 +166,7 @@ Commands keep minimal frontmatter for TOML description:
 
 ```yaml
 ---
-command_name: initiate-manager
+command_name: manage
 description: Initializes a Manager Agent...
 ---
 ```
@@ -176,7 +180,7 @@ Supported placeholders:
 
 - `{VERSION}` - Package version
 - `{TIMESTAMP}` - ISO timestamp
-- `{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{AGENT_PATH:name}` - Cross-reference paths
+- `{SKILL_PATH:name}`, `{GUIDE_PATH:name}`, `{COMMAND_PATH:name}`, `{COMMAND_SLUG:slug}`, `{AGENT_PATH:name}` - Cross-reference paths and slash invocation strings
 - `{SKILLS_DIR}`, `{GUIDES_DIR}`, `{AGENTS_DIR}` - Platform-specific directory paths
 - `{ARGS}` - `$ARGUMENTS` (Markdown), `{{args}}` (TOML), `${input:args}` (Copilot)
 - `{RULES_FILE}` - `CLAUDE.md` (Claude), `AGENTS.md` (all others)

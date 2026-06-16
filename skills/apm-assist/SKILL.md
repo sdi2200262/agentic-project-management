@@ -130,18 +130,18 @@ This section provides the specific mappings between v0.5.x and v1.0.0. Always cr
 
 **Commands:**
 
-| v0.5.x | v1.0.0 |
-| :--- | :--- |
-| `/apm-1-initiate-setup` | `/apm-1-initiate-planner` |
-| `/apm-2-initiate-manager` | `/apm-2-initiate-manager` |
-| `/apm-3-initiate-implementation` | `/apm-3-initiate-worker <id>` |
-| `/apm-4-delegate` | (removed - native subagents) |
-| `/apm-5-handover-manager` | `/apm-6-handoff-manager` |
-| `/apm-5-handover-implementation` | `/apm-7-handoff-worker` |
-| (none) | `/apm-4-check-tasks` (Message Bus delivery) |
-| (none) | `/apm-5-check-reports` (Message Bus delivery) |
-| (none) | `/apm-8-summarize-session` |
-| (none) | `/apm-9-recover` |
+| v0.5.x | v1.0.0 (numbered) | v1.0.1+ (dot namespace) |
+| :--- | :--- | :--- |
+| `/apm-1-initiate-setup` | `/apm-1-initiate-planner` | `/apm.plan` |
+| `/apm-2-initiate-manager` | `/apm-2-initiate-manager` | `/apm.manage` |
+| `/apm-3-initiate-implementation` | `/apm-3-initiate-worker <id>` | `/apm.work <id>` |
+| `/apm-4-delegate` | (removed - native subagents) | (removed) |
+| `/apm-5-handover-manager` | `/apm-6-handoff-manager` | `/apm.handoff.manager` |
+| `/apm-5-handover-implementation` | `/apm-7-handoff-worker` | `/apm.handoff.worker` |
+| (none) | `/apm-4-check-tasks` | `/apm.task` |
+| (none) | `/apm-5-check-reports` | `/apm.review` |
+| (none) | `/apm-8-summarize-session` | `/apm.summarize` |
+| (none) | `/apm-9-recover` | `/apm.recover` |
 
 **File structure:**
 
