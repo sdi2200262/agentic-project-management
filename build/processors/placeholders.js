@@ -86,7 +86,7 @@ export function replacePlaceholders(content, context) {
     return path.join(directories.commands, `${base}${commandExt}`);
   });
 
-  // Replace COMMAND_SLUG placeholder (slash invocation: /apm.initiate, Codex: $apm.initiate)
+  // Replace COMMAND_SLUG placeholder (slash invocation: /apm.plan, Codex: $apm.plan)
   const invokeSeparator = target.invokeSeparator ?? '.';
   replaced = replaced.replace(/{COMMAND_SLUG:([^}]+)}/g, (_match, slug) => {
     const prefix = id === 'codex' ? '$' : '/';

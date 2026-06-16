@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Breaking Changes
 
-* **Command renaming:** Slash commands use dot namespace without numeric prefixes. `apm-1-initiate-planner` → `apm.initiate`, `apm-2-initiate-manager` → `apm.manage`, `apm-3-initiate-worker` → `apm.execute`, `apm-4-check-tasks` → `apm.proceed`, `apm-5-check-reports` → `apm.review`, `apm-6-handoff-manager` → `apm.handoff.manager`, `apm-7-handoff-worker` → `apm.handoff.worker`, `apm-8-summarize-session` → `apm.summarize`, `apm-9-recover` → `apm.recover`. Run `apm update` to install new command names.
+* **Command renaming:** Slash commands use dot namespace without numeric prefixes. `apm-1-initiate-planner` → `apm.plan`, `apm-2-initiate-manager` → `apm.manage`, `apm-3-initiate-worker` → `apm.work`, `apm-4-check-tasks` → `apm.task`, `apm-5-check-reports` → `apm.review`, `apm-6-handoff-manager` → `apm.handoff.manager`, `apm-7-handoff-worker` → `apm.handoff.worker`, `apm-8-summarize-session` → `apm.summarize`, `apm-9-recover` → `apm.recover`. Run `apm update` to install new command names.
 
 * **Gemini CLI Migration:** Transitioned support from Gemini CLI to the new Antigravity platform. The configuration directory has moved from `.gemini` to `.agents`, and the rules file has been renamed from `GEMINI.md` to `AGENTS.md`. Output format has been updated from TOML to Markdown.
 

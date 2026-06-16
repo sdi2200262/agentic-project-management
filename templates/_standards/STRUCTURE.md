@@ -12,8 +12,8 @@ Different document types have different structural needs. This matrix defines th
 
 | Document Type | Structure Policy |
 | ------------- | ---------------- |
-| **Bootstrap commands** (`apm.initiate`, `apm.manage`, `apm.execute`) | Strict structure. Role declaration, initiation, core procedures, operating rules. |
-| **Bus commands** (`apm.proceed`, `apm.review`) | Lightweight structure. Short trigger commands - full rigidity adds no clarity. |
+| **Bootstrap commands** (`apm.plan`, `apm.manage`, `apm.work`) | Strict structure. Role declaration, initiation, core procedures, operating rules. |
+| **Bus commands** (`apm.task`, `apm.review`) | Lightweight structure. Short trigger commands - full rigidity adds no clarity. |
 | **Handoff commands** (`apm.handoff.manager`, `apm.handoff.worker`) | Lightweight structure. Procedure, structural specs for artifacts. |
 | **Utility commands** (`apm.summarize`) | Lightweight structure. Standalone commands. |
 | **Troubleshooting commands** (`apm.recover`) | Lightweight structure. Recovery and diagnostic commands for workflow disruptions. |
@@ -40,7 +40,7 @@ description: <one or two sentence description of command purpose>
 ---
 ```
 
-- `command_name` (required, slug): Command identifier matching the filename stem after `apm.` (e.g. `initiate`, `handoff.manager`).
+- `command_name` (required, slug): Command identifier matching the filename stem after `apm.` (e.g. `plan`, `handoff.manager`).
 - `description` (required, one or two sentences): Brief statement of command purpose.
 
 ### 2.2 Section Structure
@@ -60,7 +60,7 @@ Commands follow a variable structure based on purpose, with required opening and
 | Section | Content |
 | ------- | ------- |
 | §1 Overview | Role declaration ("You are the **[Agent Type]**"), role scope, greeting instruction, responsibilities, skill reference. |
-| §2 Initiation | First instance vs incoming agent logic, artifact reading. Worker includes identity binding. Exemption: the Planner (`apm.initiate`) operates as a single instance with no Handoff or incoming agent logic, so §2 is omitted and core Procedures start at §2. |
+| §2 Initiation | First instance vs incoming agent logic, artifact reading. Worker includes identity binding. Exemption: the Planner (`apm.plan`) operates as a single instance with no Handoff or incoming agent logic, so §2 is omitted and core Procedures start at §2. |
 | §3+ [Core Procedures] | Main procedures for this agent type. |
 | §N Operating Rules | Boundaries, communication, subagent usage. |
 
@@ -268,7 +268,7 @@ Value placeholders use `<placeholder>` for values to fill, `[optional]` for cond
 | Directory | `commands/` |
 | File | `apm.<slug>.md` |
 | Prefix | `apm.` dot namespace (no numeric sort prefix) |
-| Slug | action verb or qualified verb (e.g. `initiate`, `handoff.manager`) |
+| Slug | action verb or qualified verb (e.g. `plan`, `handoff.manager`) |
 
 ### 9.2 Guide Files
 

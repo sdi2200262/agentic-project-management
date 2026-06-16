@@ -115,7 +115,7 @@ The Message Bus is a file-based communication mechanism in `.apm/bus/`. The Plan
 
 A bus file is either empty (no message present) or contains a message awaiting delivery. Before writing to an outgoing bus file, an agent clears its incoming bus file. This prevents stale messages from accumulating and signals that the previous message was processed. Agents always read a bus file before writing to it to ensure cross-platform file tool compatibility.
 
-Workers read their Task Bus when the User runs `{COMMAND_SLUG:proceed}` in the Worker's chat. The Manager reads Report Buses when the User runs `{COMMAND_SLUG:review}`. Both commands accept optional agent identifier arguments for targeted delivery.
+Workers read their Task Bus when the User runs `{COMMAND_SLUG:task}` in the Worker's chat. The Manager reads Report Buses when the User runs `{COMMAND_SLUG:review}`. Both commands accept optional agent identifier arguments for targeted delivery.
 
 When dispatching multiple sequential Tasks to the same Worker, the Manager sends them as a batch in a single Task Bus message. Each Task Prompt within the batch retains its full standalone structure.
 
@@ -198,7 +198,7 @@ Task outcome status reflects whether the objective was achieved:
 
 ### 6.1 Context Gathering
 
-**Runtime:** `commands/apm.initiate.md` (§2), `guides/context-gathering.md`
+**Runtime:** `commands/apm.plan.md` (§2), `guides/context-gathering.md`
 
 The Planner gathers project requirements through three progressive rounds of questions, deriving technical formalization from natural User responses rather than asking Users to produce technical content directly.
 
@@ -218,7 +218,7 @@ After all rounds, the Planner presents a consolidated understanding summary for 
 
 ### 6.2 Work Breakdown
 
-**Runtime:** `commands/apm.initiate.md` (§3-4), `guides/work-breakdown.md`
+**Runtime:** `commands/apm.plan.md` (§3-4), `guides/work-breakdown.md`
 
 The Planner decomposes gathered context into planning documents through visible reasoning - thinking is presented in chat before file output. The User sees decomposition decisions and can redirect before artifacts are written. The Planner's workflow awareness deepens at this stage: understanding how each document is consumed (the Manager extracts Spec content per-Task into Task Prompts, enriches them at runtime, and Workers focus on their Task Prompt and Rules by design), shaping content placement decisions.
 
@@ -236,7 +236,7 @@ The Planner decomposes gathered context into planning documents through visible 
 
 ### 7.1 Task Assignment
 
-**Runtime:** `guides/task-assignment.md`, `commands/apm.proceed.md`
+**Runtime:** `guides/task-assignment.md`, `commands/apm.task.md`
 
 The Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them via the Task Bus.
 
@@ -260,11 +260,11 @@ Before dispatching, the Manager checks whether a pending report would unlock Tas
 
 ### 7.2 Task Execution
 
-**Runtime:** `commands/apm.execute.md`, `guides/task-execution.md`, `guides/task-logging.md`
+**Runtime:** `commands/apm.work.md`, `guides/task-execution.md`, `guides/task-logging.md`
 
 The Worker executes Task instructions, validates results, iterates if needed, logs the outcome, and reports back.
 
-**Worker registration** - A Worker binds to an agent identity during initiation by resolving the provided agent identifier against `.apm/bus/` directory names. This identity persists for the duration of the Implementation Phase for this Worker instance. The Task Prompt's agent identifier field is used for cross-validation, not identity binding. After registration, the Worker checks bus state to determine the init path: if the Handoff Bus has content, the Worker is an incoming instance and processes the handoff; if the Task Bus has content (with or without a preceding handoff), the Worker reads the Task Prompt and begins executing immediately; if neither has content, the Worker awaits Task delivery via `{COMMAND_SLUG:proceed}`.
+**Worker registration** - A Worker binds to an agent identity during initiation by resolving the provided agent identifier against `.apm/bus/` directory names. This identity persists for the duration of the Implementation Phase for this Worker instance. The Task Prompt's agent identifier field is used for cross-validation, not identity binding. After registration, the Worker checks bus state to determine the init path: if the Handoff Bus has content, the Worker is an incoming instance and processes the handoff; if the Task Bus has content (with or without a preceding handoff), the Worker reads the Task Prompt and begins executing immediately; if neither has content, the Worker awaits Task delivery via `{COMMAND_SLUG:task}`.
 
 **Execution flow** - The Worker integrates dependency context if present, executes steps sequentially, then validates per the Task Prompt's validation criteria. The Worker validates autonomously first (running checks, verifying outputs), then pauses when criteria require User involvement (judgment or action) - the Worker does not involve the User until autonomous checks pass. When validation fails, the Worker investigates the root cause before attempting a correction - reading error output, tracing the failure, and identifying what specifically went wrong. If the correction does not resolve the issue, the Worker spawns a debug subagent to investigate root causes and iterate on fixes in a fresh context rather than continuing in the main context. The Worker validates the subagent's findings before applying them. When a Task includes subagent steps, the Worker spawns the relevant subagent and integrates findings into execution.
 

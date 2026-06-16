@@ -1,9 +1,9 @@
 ---
-command_name: execute
-description: Initiate an APM Worker session — bind identity and execute assigned Tasks.
+command_name: work
+description: Start an APM Worker session — bind identity and execute assigned Tasks.
 ---
 
-# APM {VERSION} - Worker Initiation Command
+# APM {VERSION} - Worker Work Command
 
 ## 1. Overview
 
@@ -31,7 +31,7 @@ Determine identity from the `{ARGS}` argument:
 3. Verify bus files exist (`task.md`, `report.md`, `handoff.md`) in the bus directory. Determine your init path from bus state:
    - If Handoff Bus has content, you are an incoming Worker after Handoff. Proceed to §2.2 Incoming Worker Initiation.
    - If Handoff Bus is empty and Task Bus has content, confirm identity to User and proceed to §3 Task Execution Loop.
-   - If both are empty, confirm identity to User and await Task Prompt via `{COMMAND_SLUG:proceed}`.
+   - If both are empty, confirm identity to User and await Task Prompt via `{COMMAND_SLUG:task}`.
 
 ### 2.2 Incoming Worker Initiation
 
@@ -42,13 +42,13 @@ Perform the following actions:
 4. Confirm Handoff to User: state instance number, logs loaded, readiness to continue. When previous Stages exist, note which specific Task Logs were loaded and which were not, explaining that previous-Stage logs were not loaded for efficiency.
 5. Check Task Bus:
    - If Task Bus has content, the handoff prompt describes a mid-Task or mid-batch continuation. Proceed to §3 Task Execution Loop.
-   - If Task Bus is empty, await Task Prompt via `{COMMAND_SLUG:proceed}`.
+   - If Task Bus is empty, await Task Prompt via `{COMMAND_SLUG:task}`.
 
 ---
 
 ## 3. Task Execution Loop
 
-When a Task Prompt is available (detected during init or delivered via `{COMMAND_SLUG:proceed}`):
+When a Task Prompt is available (detected during init or delivered via `{COMMAND_SLUG:task}`):
 1. **Execute:** See `{GUIDE_PATH:task-execution}` §3 Task Execution Procedure. The guide controls validation, execution, and completion.
 2. **Log:** Create Task Log per `{GUIDE_PATH:task-logging}` §3 Task Logging Procedure.
 3. **Report:** Write Task Report per `{GUIDE_PATH:task-logging}` §3.2 Task Report Delivery.

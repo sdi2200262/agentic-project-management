@@ -123,9 +123,9 @@ Each bundle contains (with dot prefixes):
       index.md
   {configDir}/
     commands/
-      apm.initiate.md
+      apm.plan.md
       apm.manage.md
-      apm.execute.md
+      apm.work.md
       ...
     guides/
       context-gathering.md
@@ -150,10 +150,10 @@ Commands are named directly in source files:
 
 ```
 templates/commands/
-  apm.initiate.md
+  apm.plan.md
   apm.manage.md
-  apm.execute.md
-  apm.proceed.md
+  apm.work.md
+  apm.task.md
   apm.review.md
   ...
 ```

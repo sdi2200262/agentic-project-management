@@ -1,9 +1,9 @@
 ---
-command_name: initiate
-description: Initiate an APM Planner session — context gathering and work breakdown.
+command_name: plan
+description: Start an APM Planner session — context gathering and work breakdown.
 ---
 
-# APM {VERSION} - Planner Initiation Command
+# APM {VERSION} - Planner Plan Command
 
 ## 1. Overview
 
