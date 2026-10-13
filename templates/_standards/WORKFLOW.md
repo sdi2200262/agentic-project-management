@@ -14,7 +14,7 @@ APM is a multi-agent project management framework that coordinates agents throug
 
 **Platform agnosticism** - Core concepts (the Message Bus, Memory, planning documents) are platform-independent. Platform-specific capabilities are additive and delivered through the build pipeline's conditional placeholder system.
 
-**Context scoping** - All agents are identical - same tools, same capabilities. There is no mechanism that prevents an agent from reading any file. Context scoping is entirely behavioral, shaped by what each agent reads and does during its session: the initiation command, the guides and skills it references, what those guides direct the agent to read, what arrives through the bus, and everything the agent reads, executes, and accumulates during its work. Workers are scoped to their Task Prompts, Rules, and accumulated working context - they should not be aware of the Spec, Plan, Tracker, Index, or any coordination-level concepts. This scoping holds because nothing in the Worker's reading chain mentions these documents and no Task Prompt references them. The Manager holds coordination-level context (planning documents, Memory, the full project picture) and enforces Worker scoping by extracting relevant content into self-contained Task Prompts rather than referencing coordination-level documents. The Planner holds initial project context during the Planning Phase but does not participate during implementation.
+**Context scoping** - All agents are identical - same tools, same capabilities. There is no mechanism that prevents an agent from reading any file. Context scoping is entirely behavioral, shaped by what each agent reads and does during its session: the initiation command, the guides and skills it references, what those guides direct the agent to read, what arrives through the bus, and everything the agent reads, executes, and accumulates during its work. Workers are scoped to their Task Prompts, Rules, and accumulated working context - they should not be aware of the Spec, Plan, Tracker, Index, or any coordination-level concepts. Worker instructions prohibit reading these coordination documents, and Task Prompts embed relevant content instead of referencing them by path. Explicit User requests may extend the Worker's normal scope. The Manager holds coordination-level context (planning documents, Memory, the full project picture) and enforces Worker scoping by extracting relevant content into self-contained Task Prompts rather than referencing coordination-level documents. The Planner holds initial project context during the Planning Phase but does not participate during implementation.
 
 **Structured memory** - Memory captures project history in a hierarchical file structure that enables Handoff continuity and efficient progress tracking.
 
@@ -66,7 +66,7 @@ All agents have direct access to this file. Both the Manager and Workers may upd
 
 Rules are read directly by every Worker in the project - including Workers assigned to different domains. A frontend Worker and a backend Worker read the same file. Content is applicable to all or most Tasks. Rules are framed conditionally on the work being performed rather than on a specific Worker or domain, so any Worker can determine whether a rule applies to its current work. Narrowly domain-specific execution patterns belong in Task Prompts via Spec extraction, not here.
 
-Version control is the Manager's operational domain. The Manager creates a feature branch for every dispatch, Workers always operate on their assigned branch, and parallel dispatch uses worktrees for workspace isolation. The Manager establishes all VC conventions during first init: it explores the workspace's git state, reads any VC observations the Planner recorded in the Spec, and confirms conventions with the User. When no conventions are detected or specified, the Manager proposes lightweight defaults: `type: description` commits (feat, fix, refactor, docs, test, chore) and `type/short-description` branches. APM does not push to remotes by default. When `.apm/` resides inside a repository directory, the Manager adds `.apm/` to `.gitignore` by default and asks the User if they want to track any `.apm/` artifacts in git (planning documents, Memory). If the User declines version control entirely, the Manager notes that parallel dispatch is unavailable. Commit conventions are universal execution patterns (every Worker commits following the same format) and belong in Rules. Branch naming conventions are recorded in the Tracker's Version Control section. When the workspace contains multiple repositories with different conventions, per-repository conventions are captured in the Tracker and only conventions that are genuinely universal across all repositories belong in Rules.
+Version control is the Manager's operational domain. The Manager creates a feature branch for every dispatch unit (single Task or batch), Workers always operate on their assigned branch, and parallel dispatch uses worktrees for workspace isolation. The Manager establishes all VC conventions during first init: it explores the workspace's git state, reads any VC observations the Planner recorded in the Spec, and confirms conventions with the User. When no conventions are detected or specified, the Manager proposes lightweight defaults: `type: description` commits (feat, fix, refactor, docs, test, chore) and `type/short-description` branches. APM does not push to remotes by default. When `.apm/` resides inside a repository directory, the Manager adds `.apm/` to `.gitignore` by default and asks the User if they want to track any `.apm/` artifacts in git (planning documents, Memory). If the User declines version control entirely, the Manager notes that parallel dispatch is unavailable. Commit conventions are universal execution patterns (every Worker commits following the same format) and belong in Rules. Branch naming conventions are recorded in the Tracker's Version Control section. When the workspace contains multiple repositories with different conventions, per-repository conventions are captured in the Tracker and only conventions that are genuinely universal across all repositories belong in Rules.
 
 ### 3.4 Document Modification
 
@@ -97,7 +97,7 @@ The Spec and Plan have bidirectional influence - changes to one may require adju
 
 Agent communication follows three models based on audience:
 
-**Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. No framework vocabulary - section references (§N.M), procedure step names, checkpoint labels, decision categories - is exposed. Only terms defined in `TERMINOLOGY.md` are used formally. When describing decisions, agents explain what happened, what was decided, and what happens next - not which procedure branch was taken. When directing Users to take action, agents provide specific actionable guidance naturally: which command to run, in which agent's chat, with what arguments. Commands are presented in code format for easy copying. Communication at workflow transitions orients the User on what was completed and what comes next.
+**Agent-to-user communication.** Agents explain decisions and actions to Users in natural language. No framework vocabulary - section references (§N.M), procedure step names, checkpoint labels, decision categories - is exposed. Only terms defined in `TERMINOLOGY.md` are used formally. When describing decisions, agents explain what happened, what was decided, and what happens next - not which procedure branch was taken. When directing Users to take action, agents provide specific actionable guidance naturally: which command to run, in which agent's chat, with what arguments. Commands the User needs to run are presented in code blocks for easy copying; file paths, values, and references use inline code. Communication at workflow transitions orients the User on what was completed and what comes next.
 
 **Visible reasoning.** Agents present analysis visibly in chat so the User can understand, review, and audit their decisions - explaining assessments, justifying choices, and surfacing trade-offs. Internal reasoning may reach conclusions before visible output begins, but visible analysis in chat must still walk through the reasoning for User audit. When a procedure defines a reasoning frame with a header and labeled aspects, the agent presents the header visibly and addresses the aspects as natural analytical prose beneath it. Some frames are hierarchical with sub-headers for distinct phases. When no frame is defined, agents present their assessment, key considerations, and conclusion. The communication skill defines the standards.
 
@@ -198,11 +198,11 @@ Task outcome status reflects whether the objective was achieved:
 
 ### 6.1 Context Gathering
 
-**Runtime:** `commands/apm-1-initiate-planner.md` (§2), `guides/context-gathering.md`
+**Runtime:** `commands/apm-1-initiate-planner.md` (§2-3), `guides/context-gathering.md`
 
 The Planner gathers project requirements through three progressive rounds of questions, deriving technical formalization from natural User responses rather than asking Users to produce technical content directly.
 
-**Workspace assessment** - Before question rounds begin, the Planner scans the workspace to orient itself: directory structure, git repositories (commit history, branch structure as project signals), `{RULES_FILE}` contents, and the location of existing materials (documentation, requirements, specs). The Planner reads `{RULES_FILE}` freely as structural orientation. When the User's initiation context references specific documents or describes the project with enough specificity to imply document authority, the Planner treats those materials as authoritative - reads them and may explore based on them. For materials discovered during scanning without initiation context authority, the Planner lists them for the User alongside the first round of questions, asking which are current and relevant. On confirmation, the Planner reads them and may use them as a basis for deeper exploration. The workspace assessment produces an initial understanding of the project environment that informs question rounds and feeds into the Spec's Workspace section during Work Breakdown.
+**Workspace assessment** - Before question rounds begin, the Planner scans the workspace to orient itself: directory structure, git repositories (commit history, branch structure as project signals), `{RULES_FILE}` contents, and the location of existing materials (documentation, requirements, specs). The Planner reads `{RULES_FILE}` freely as structural orientation. When the User's initiation context references specific documents or describes the project with enough specificity to imply document authority, the Planner treats those materials as authoritative - reads them and may explore based on them. For materials and archives discovered without initiation context authority, the Planner pauses during initiation to ask which are current and relevant before reading them. After authority is established and the Context Gathering guide is read, the Planner explores relevant archives and codebases before the question rounds. The workspace assessment produces an initial understanding of the project environment that informs question rounds and feeds into the Spec's Workspace section during Work Breakdown.
 
 **Round 1 - Existing Materials and Vision.** Project type, problem, scope, skills, existing documentation, current vision.
 
@@ -218,7 +218,7 @@ After all rounds, the Planner presents a consolidated understanding summary for 
 
 ### 6.2 Work Breakdown
 
-**Runtime:** `commands/apm-1-initiate-planner.md` (§3-4), `guides/work-breakdown.md`
+**Runtime:** `commands/apm-1-initiate-planner.md` (§4-5), `guides/work-breakdown.md`
 
 The Planner decomposes gathered context into planning documents through visible reasoning - thinking is presented in chat before file output. The User sees decomposition decisions and can redirect before artifacts are written. The Planner's workflow awareness deepens at this stage: understanding how each document is consumed (the Manager extracts Spec content per-Task into Task Prompts, enriches them at runtime, and Workers focus on their Task Prompt and Rules by design), shaping content placement decisions.
 
@@ -317,7 +317,7 @@ Handoff transfers context between successive instances of the same agent role wh
 
 **Runtime:** `commands/apm-9-recover.md`
 
-Recovery reconstructs context after platform auto-compaction, manual compaction, or a cleared or lost conversation. The User invokes the recovery command with the agent's role. The agent re-reads its initiation command and follows its document loading instructions to rebuild procedural knowledge, then explores project artifacts and the codebase to reconstruct operational state. Recovery does not increment the instance number. The agent notes the recovery event in subsequent communications and in its eventual Handoff Log.
+Recovery reconstructs context after platform auto-compaction, manual compaction, or a cleared or lost conversation. The User invokes the recovery command with an optional role argument. Without it, the agent infers its role from conversation context or asks the User. Recovery applies only to the Manager and Workers. The agent re-reads its initiation command and follows its document loading instructions to rebuild procedural knowledge, then explores project artifacts and the codebase to reconstruct operational state. Recovery does not increment the instance number. The agent notes the recovery event in subsequent communications and in its eventual Handoff Log.
 
 ### 8.3 Session Continuation
 
@@ -325,7 +325,7 @@ Recovery reconstructs context after platform auto-compaction, manual compaction,
 
 Session continuation archives the current session's artifacts for future reference. After archival, the user reinitializes APM to begin a new session with fresh templates while retaining read access to previous session context.
 
-**Archive structure** - Archived sessions reside in `.apm/archives/`. Each archive is a directory named `session-YYYY-MM-DD-NNN` (zero-padded daily counter) containing the session's planning documents, Tracker, and Memory. The bus directory is not archived - bus state is ephemeral and session-specific.
+**Archive structure** - Archived sessions reside in `.apm/archives/`. Each archive defaults to the name `session-YYYY-MM-DD-NNN` (zero-padded daily counter), or uses a custom name. It snapshots all `.apm/` contents except `archives/`, including planning documents, Tracker, Memory, Message Bus files, metadata, and any other session files. `apm archive` then removes the active session files, installed templates, and active metadata while preserving archives.
 
 ```text
 .apm/archives/
@@ -336,6 +336,7 @@ Session continuation archives the current session's artifacts for future referen
 │   ├── spec.md
 │   ├── tracker.md
 │   ├── session-summary.md     # optional
+│   ├── bus/                   # if present
 │   └── memory/
 │       ├── index.md
 │       ├── stage-01/
@@ -356,7 +357,7 @@ Session continuation archives the current session's artifacts for future referen
 
 **`apm-archive-explorer` subagent** - A custom subagent shipped with APM bundles. It understands archive structure and efficiently extracts relevant context from archived sessions. The Planner spawns it during Context Gathering when archived sessions are relevant.
 
-**No secondary archival** - Archives accumulate in `.apm/archives/`. There is no mechanism to archive archives. Users manage cleanup manually.
+**No secondary archival** - Archives accumulate in `.apm/archives/`. There is no mechanism to archive archives. Users manage cleanup through `apm archive --delete <name>` or `apm archive --clear`, or remove archives manually.
 
 ---
 
