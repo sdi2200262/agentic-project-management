@@ -32,6 +32,8 @@ The `build/` directory, CI/CD workflows, and configuration files are not version
 
 The CLI and template releases are decoupled but tied by **major version**. CLI v1.x will only fetch v1.x.x releases from the official repository, ensuring template compatibility. Minor and patch versions can differ between CLI and templates.
 
+A template release can also require a minimum CLI version by setting `minCliVersion` in its `apm-release.json`. From CLI v1.0.2 on, the CLI refuses such a release and asks the user to update the CLI. Earlier CLIs ignore the field, so only a major version bump keeps them away from an incompatible release.
+
 ## `agentic-pm` CLI Behavior
 
 ### Official Repository (`apm init`)
