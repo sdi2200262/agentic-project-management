@@ -58,9 +58,9 @@ Commands follow a variable structure based on purpose, with required opening and
 
 | Section | Content |
 | ------- | ------- |
-| §1 Overview | Role declaration ("You are the **[Agent Type]**"), role scope, greeting instruction, responsibilities, skill reference. |
+| §1 Overview | Role declaration ("You are the **[Role]**"), role scope, greeting instruction, responsibilities, skill reference. |
 | §2 Initiation | First instance vs incoming agent logic, artifact reading. Worker includes identity binding. Exemption: the Planner (`apm-1`) operates as a single instance with no Handoff or incoming agent logic, so §2 is omitted and core Procedures start at §2. |
-| §3+ [Core Procedures] | Main procedures for this agent type. |
+| §3+ [Core Procedures] | Main procedures for this role. |
 | §N Operating Rules | Boundaries, communication, subagent usage. |
 
 **Utility and troubleshooting commands** (lightweight profile): One-liner purpose with applicability guard and argument handling. Flat procedure steps handle core logic. No formal sections - title, description paragraph, procedure, end marker.

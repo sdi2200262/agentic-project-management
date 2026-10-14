@@ -19,7 +19,7 @@ Structured findings covering: project scope, completed work, design decisions, k
 
 ## 2. Archive Structure
 
-Each archive directory contains the session's planning and Memory artifacts:
+Each archive directory snapshots the session's `.apm/` contents. The artifacts most useful for planning are:
 
 | Artifact | Content | Priority |
 |----------|---------|----------|
