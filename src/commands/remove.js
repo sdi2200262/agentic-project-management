@@ -88,6 +88,9 @@ export async function removeCommand(options = {}) {
   const overwritten = [...lastWriter].filter(([file, writer]) =>
     assistantIds.includes(writer) && remainingIds.some(id => (installedFiles[id] || []).includes(file))
   );
+  const affected = remainingIds.filter(id =>
+    overwritten.some(([file]) => (installedFiles[id] || []).includes(file))
+  );
 
   await removeInstalledFiles(process.cwd(), installedFiles, assistantIds);
 
@@ -113,8 +116,8 @@ export async function removeCommand(options = {}) {
     logger.success(`Removed ${names}. ${logger.plural(remaining.length, 'assistant')} remaining.`);
     if (overwritten.length) {
       const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))]);
-      const others = remaining.join(' ');
-      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${logger.list(remaining)} also ${remaining.length === 1 ? 'uses' : 'use'}. These files have ${writers}'s instructions. To restore ${logger.list(remaining)}'s, run "apm remove -a ${others}", then "apm add -a ${others}". This is a known issue, pending a fix.`);
+      const others = affected.join(' ');
+      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${logger.list(affected)} also ${affected.length === 1 ? 'uses' : 'use'}. These files have ${writers}'s instructions. To restore ${logger.list(affected)}'s, run "apm remove -a ${others}", then "apm add -a ${others}". This is a known issue, pending a fix.`);
     }
   }
 }
