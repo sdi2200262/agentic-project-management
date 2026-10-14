@@ -79,7 +79,7 @@ export async function removeCommand(options = {}) {
   const installedFiles = getInstalledFiles(metadata);
 
   // Shared files hold the text of the last assistant installed (metadata keeps install order).
-  // Count kept files that a removed assistant overwrote last, so the remaining ones have the wrong text.
+  // Find kept files that a removed assistant overwrote last: the remaining assistants have the wrong text in them.
   const lastWriter = new Map();
   for (const id of metadata.assistants) {
     for (const file of installedFiles[id] || []) lastWriter.set(file, id);
@@ -114,7 +114,7 @@ export async function removeCommand(options = {}) {
     if (overwritten.length) {
       const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))]);
       const others = remaining.join(' ');
-      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${logger.list(remaining)} also ${remaining.length === 1 ? 'uses' : 'use'}, so they still have ${writers}'s text. To restore ${logger.list(remaining)}'s own text, run "apm remove -a ${others}", then "apm add -a ${others}".`);
+      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${logger.list(remaining)} also ${remaining.length === 1 ? 'uses' : 'use'}. These files still have ${writers}'s text. To restore ${logger.list(remaining)}'s own text, run "apm remove -a ${others}", then "apm add -a ${others}".`);
     }
   }
 }

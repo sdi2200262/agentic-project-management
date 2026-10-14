@@ -20,14 +20,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Known Issues
 
-* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. Whichever is installed or updated last overwrites the other's copy, so with both installed only one has its own text. Removing the one that overwrote last leaves the other with the wrong text; run `apm remove -a <id>`, then `apm add -a <id>`, to restore it. CLI v1.0.2 keeps these files on remove and warns in that case; older CLIs delete them, and the same steps restore them.
+* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. The one installed or updated last overwrites the other's copy. Removing that one leaves the other with the wrong text. To restore an assistant's own text, run `apm remove -a <id>`, then `apm add -a <id>`. CLI v1.0.2 keeps these files on remove and warns in that case. Older CLIs delete them, and the same two commands restore them.
 
 ## CLI v1.0.2 - Unreleased
 
 ### Changed
 
 * **Clearer prompts and messages.** The archive and update confirmations say exactly what is removed and that archives are kept. `apm update` names the version you're on, post-install notes show as information rather than warnings, and help says which command `--list` and `--clear` belong to. Help text, the release-not-found error and the skills link match current behaviour.
-* **`apm remove` keeps shared files.** When two assistants install the same file, such as Codex and Antigravity's `.agents/skills/`, removing one keeps the file for the other, and warns if the removed one had overwritten it. An assistant's folder is removed once it's empty.
+* **`apm remove` keeps shared files.** When two assistants install the same file, such as Codex and Antigravity's `.agents/skills/`, removing one keeps the file for the other. A warning shows when the removed one had overwritten it. An assistant's folder is removed once it's empty.
 * **`apm status` checks files on disk.** It flags missing files and says how to restore them.
 * **Clearer counts and errors.** Messages say "1 assistant" rather than "1 assistant(s)", and `apm init --tag` says when a tag belongs to another major version.
 * **`--tag` finds any release.** Tags are looked up directly, and release lists cover the newest 100 releases.
