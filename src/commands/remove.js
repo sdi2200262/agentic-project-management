@@ -114,7 +114,7 @@ export async function removeCommand(options = {}) {
     if (overwritten.length) {
       const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))]);
       const others = remaining.join(' ');
-      logger.warn(`Kept ${logger.plural(overwritten.length, 'shared file')} that ${writers} overwrote when it was installed, so ${logger.list(remaining)} now has ${writers}'s text. To restore it, run "apm remove -a ${others}", then "apm add -a ${others}".`);
+      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${logger.list(remaining)} also ${remaining.length === 1 ? 'uses' : 'use'}, so they still have ${writers}'s text. To restore ${logger.list(remaining)}'s own text, run "apm remove -a ${others}", then "apm add -a ${others}".`);
     }
   }
 }
