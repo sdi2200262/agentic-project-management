@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## Templates v1.0.3 - Unreleased
+## CLI v1.0.2 + Templates v1.0.3 - 2026-10-15
 
 ### Changed
 
@@ -17,28 +17,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * **Subagent and new-chat guidance per assistant.** Each assistant's subagent syntax and new-chat instructions now match its current tools and cover both its editor and CLI. The archive explorer is called by name, with `mode: subagent` for OpenCode, an explicit tool list for Antigravity, and `user-invocable: false` for Copilot. It no longer appears in agent pickers.
 * **Commands stay user-triggered in Copilot and Antigravity.** Command skills set `disable-model-invocation: true`. They appear in the `/` menu but not in the model's skill list.
 * **Assistant order.** `apm init` lists assistants as Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, OpenCode.
-
-### Known Issues
-
-* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. The one installed or updated last overwrites the other's copy. Removing that one leaves the other with its instructions. To restore an assistant's instructions, run `apm remove -a <id>`, then `apm add -a <id>`. With both installed, this overwrites the other's. CLI v1.0.2 keeps these files on remove and warns in that case. Older CLIs delete them, and the same two commands restore them. A fix is pending.
-
-## CLI v1.0.2 - Unreleased
-
-### Changed
-
 * **Clearer prompts and messages.** The archive and update confirmations say exactly what is removed and that archives are kept. `apm update` names the version you're on, post-install notes show as information rather than warnings, and help says which command `--list` and `--clear` belong to. Help text, the release-not-found error and the skills link match current behaviour.
 * **`apm remove` keeps shared files.** When two assistants install the same file, such as Codex and Antigravity's `.agents/skills/`, removing one keeps the file for the other. A warning shows when the removed one had overwritten it. An assistant's folder is removed once it's empty.
 * **`apm status` checks files on disk.** It flags missing files and says how to restore them.
 * **Clearer counts and errors.** Messages say "1 assistant" rather than "1 assistant(s)", and `apm init --tag` says when a tag belongs to another major version.
 * **`--tag` finds any release.** Tags are looked up directly, and release lists cover the newest 100 releases.
 
+### Added
+
+* **Minimum CLI version.** A template release can set `minCliVersion` in its manifest; the CLI refuses it and asks you to update when it's older.
+
 ### Security
 
 * **Updated dependencies.** `axios` 1.20.0 and `adm-zip` 0.6.1 fix published advisories, including zip-bomb and symlink issues in extraction.
 
-### Added
+### Known Issues
 
-* **Minimum CLI version.** A template release can set `minCliVersion` in its manifest; the CLI refuses it and asks you to update when it's older.
+* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. The one installed or updated last overwrites the other's copy. Removing that one leaves the other with its instructions. To restore an assistant's instructions, run `apm remove -a <id>`, then `apm add -a <id>`. With both installed, this overwrites the other's. CLI v1.0.2 keeps these files on remove and warns in that case. Older CLIs delete them, and the same two commands restore them. A fix is pending.
 
 ## Templates v1.0.2 - 2026-06-08
 
