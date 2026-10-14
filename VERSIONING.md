@@ -8,7 +8,7 @@ APM uses a decoupled versioning system with two independent release tracks: the 
 
 The CLI source code lives in `src/`. Changes to this directory trigger new NPM releases. The CLI handles template management via `apm init`, `apm custom`, `apm update`, `apm archive`, `apm add`, `apm remove`, and `apm status`.
 
-Pre-release versions use the `-test-N` suffix (e.g., `1.0.0-test-1`). NPM's `latest` tag always points to the most recent stable release, so `npm install agentic-pm` installs stable versions only. Pre-releases require explicit installation: `npm install agentic-pm@0.5.0-test-1`.
+Pre-release versions use the `-test-N` suffix (e.g., `1.0.0-test-1`). NPM's `latest` tag always points to the most recent stable release, so `npm install agentic-pm` installs stable versions only. Pre-releases require explicit installation: `npm install agentic-pm@1.0.0-test-1`.
 
 ### 2. APM Template Releases (GitHub Releases)
 

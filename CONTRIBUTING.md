@@ -10,14 +10,14 @@ Thank you for considering contributing to APM! Your contributions help build a b
 - **For new bug reports**, include:
   - APM CLI version (run `apm --version` or `npm list -g agentic-pm`)
   - Node.js and npm versions (run `node --version` and `npm --version`)
-  - AI assistant used (Claude Code, Cursor, Copilot, Antigravity, or OpenCode)
-  - Agent type experiencing issues (Planner, Manager, or Worker)
+  - AI assistant used (Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, or OpenCode)
+  - Agent role experiencing issues (Planner, Manager, or Worker)
   - Step-by-step reproduction of the issue (if possible, otherwise a detailed description)
   - Expected vs actual behavior
 
 ### Suggesting Features & Improvements
 
-- Workflow improvements: procedures, coordination patterns, memory system optimizations
+- Workflow improvements: procedures, coordination patterns, memory system optimisations
 - Documentation improvements: clearer explanations, additional examples, missing use cases
 - Platform support: better integration with supported assistants
 - Build system: placeholder additions, platform-specific enhancements
@@ -36,13 +36,13 @@ Thank you for considering contributing to APM! Your contributions help build a b
 
 **Standalone Skills**
 - The `skills/` directory contains standalone skills installed independently from APM bundles
-- Current skills: [apm-assist](skills/apm-assist/) (APM assistant, migration, docs), [apm-customization](skills/apm-customization/) (repo customization)
+- Current skills: [apm-assist](skills/apm-assist/) (APM assistant, migration, docs), [apm-customization](skills/apm-customization/) (customising a forked or templated repository)
 - Contributions welcome for new standalone skills that complement the APM workflow
 
 ### Community Contributions
 
-- Share adaptations: domain-specific customizations via custom repositories
-- Best practices: cost optimization strategies, effective coordination patterns
+- Share adaptations: domain-specific customisations via custom repositories
+- Best practices: cost optimisation strategies, effective coordination patterns
 - Case studies: real project examples using APM
 
 ### Community Extensions
@@ -63,7 +63,7 @@ Community extensions are not officially supported, may lag behind releases, and 
 
 2. **Install dependencies:**
    ```bash
-   npm install
+   npm ci
    ```
 
 3. **Create a feature branch:**
@@ -83,7 +83,7 @@ APM uses a build system that processes source templates into platform-specific b
 - **Standalone skills:** Edit files in `skills/` for independently installable skills.
 - **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed. See the apm-website README for details.
 
-**Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected commands, guides, and skills. See the change propagation rules in [CLAUDE.md](CLAUDE.md).
+**Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected commands, guides, and skills. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
 
 #### Building
 
@@ -110,7 +110,7 @@ This processes templates and creates platform-specific bundles in `dist/`.
 ### Pull Requests
 
 1. Ensure your changes are tested.
-2. Commit with clear messages following the conventions in [CLAUDE.md](CLAUDE.md).
+2. Commit with clear messages in the `type(scope): description` format used in the repository history.
 3. Push your branch and create a Pull Request with a clear description.
 4. Reference related issues if applicable.
 5. Include test instructions for template changes.
