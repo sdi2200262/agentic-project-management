@@ -14,13 +14,19 @@ Pre-release versions use the `-test-N` suffix (e.g., `1.0.0-test-1`). NPM's `lat
 
 Templates live in `templates/` and are processed by the build system in `build/`. Running `npm run build:release` generates ZIP bundles for each supported AI assistant plus an `apm-release.json` manifest. These artifacts are published as GitHub Releases.
 
-Template releases are fully decoupled from CLI versioning. The release workflow auto-increments patch versions (1.0.0 → 1.0.1) based on the latest stable release tag. For minor/major bumps, provide a version override when triggering the workflow.
+Template releases are fully decoupled from CLI versioning. The release workflow auto-increments patch versions (1.0.0 → 1.0.1) based on the latest stable release tag. For minor/major bumps, provide a version override when triggering the workflow. Never override with a version that is already tagged: the workflow then replaces that release's assets in place, and installs already on it are not offered an update.
 
 Pre-release versions (e.g., `v1.0.0-test-1`, `v1.1.0-beta-1`) are supported for testing. Pre-releases sort before their stable counterpart (`v1.0.0-test-1 < v1.0.0`) and are excluded when the CLI fetches the "latest" release.
+
+Releases before v1.0.0 used build metadata to tie templates to a CLI version (e.g. `v0.5.4+templates.1`). Since v1.0.0, template tags are plain `vX.Y.Z`.
 
 ### 3. Build System
 
 The `build/` directory, CI/CD workflows, and configuration files are not versioned. Changes are tracked via git history only.
+
+## Changelog
+
+[CHANGELOG.md](CHANGELOG.md) covers both tracks in one list, ordered by date. Each heading names what it covers: `CLI vX.Y.Z`, `Templates vX.Y.Z`, or both joined with `+` when they shipped together. Unreleased work sits at the top with `Unreleased` in place of a date.
 
 ## Version Compatibility
 
