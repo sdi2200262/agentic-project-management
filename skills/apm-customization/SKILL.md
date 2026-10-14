@@ -120,7 +120,7 @@ A new target (assistant) needs entries in `build/build-config.json` and `build/p
 
 ### CLI Changes
 
-Changes to `src/` affect the CLI tool. These follow different conventions defined in `src/_standards/CLI.md` and require their own release cycle (npm publish, separate from template releases).
+Changes to `src/` affect the CLI tool. These require their own release cycle (npm publish, separate from template releases).
 
 ---
 
