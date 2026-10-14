@@ -6,28 +6,6 @@
   },
   "targets": [
     {
-      "id": "copilot",
-      "name": "GitHub Copilot",
-      "bundleName": "copilot.zip",
-      "format": "markdown",
-      "configDir": ".github",
-      "directories": {
-        "commands": ".github/prompts",
-        "skills": ".github/skills",
-        "guides": ".github/apm-guides",
-        "agents": ".github/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `#file` and select the file from the picker.",
-      "newChatGuidance": "Start a new Copilot Chat",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "#runSubagent",
-        "explorerName": "exploration",
-        "configNote": null
-      },
-      "postInstallNote": null
-    },
-    {
       "id": "claude",
       "name": "Claude Code",
       "bundleName": "claude.zip",
@@ -45,6 +23,72 @@
         "hasSubagents": true,
         "toolSyntax": "Agent(subagent_type=\"Explore\", prompt=\"...\")",
         "explorerName": "Explore",
+        "configNote": null
+      },
+      "postInstallNote": null
+    },
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "bundleName": "codex.zip",
+      "format": "markdown",
+      "configDir": ".codex",
+      "directories": {
+        "commands": ".agents/skills",
+        "skills": ".agents/skills",
+        "guides": ".codex/apm-guides",
+        "agents": ".codex/agents"
+      },
+      "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
+      "newChatGuidance": "Open a new terminal and start Codex CLI",
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "spawn_agent(agent_type=\"explorer\", message=\"...\")",
+        "explorerName": "explorer",
+        "configNote": null
+      },
+      "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm-1-initiate-planner) instead of /slash-commands."
+    },
+    {
+      "id": "cursor",
+      "name": "Cursor",
+      "bundleName": "cursor.zip",
+      "format": "markdown",
+      "configDir": ".cursor",
+      "directories": {
+        "commands": ".cursor/commands",
+        "skills": ".cursor/skills",
+        "guides": ".cursor/apm-guides",
+        "agents": ".cursor/agents"
+      },
+      "contextAttachSyntax": "Reference the file using `@` and search for the file name.",
+      "newChatGuidance": "Start a new Cursor Agent chat",
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
+        "explorerName": "explore",
+        "configNote": null
+      },
+      "postInstallNote": null
+    },
+    {
+      "id": "copilot",
+      "name": "GitHub Copilot",
+      "bundleName": "copilot.zip",
+      "format": "markdown",
+      "configDir": ".github",
+      "directories": {
+        "commands": ".github/prompts",
+        "skills": ".github/skills",
+        "guides": ".github/apm-guides",
+        "agents": ".github/agents"
+      },
+      "contextAttachSyntax": "Reference the file using `#file` and select the file from the picker.",
+      "newChatGuidance": "Start a new Copilot Chat",
+      "subagentGuidance": {
+        "hasSubagents": true,
+        "toolSyntax": "#runSubagent",
+        "explorerName": "exploration",
         "configNote": null
       },
       "postInstallNote": null
@@ -72,28 +116,6 @@
       "postInstallNote": null
     },
     {
-      "id": "cursor",
-      "name": "Cursor",
-      "bundleName": "cursor.zip",
-      "format": "markdown",
-      "configDir": ".cursor",
-      "directories": {
-        "commands": ".cursor/commands",
-        "skills": ".cursor/skills",
-        "guides": ".cursor/apm-guides",
-        "agents": ".cursor/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `@` and search for the file name.",
-      "newChatGuidance": "Start a new Cursor Agent chat",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
-        "explorerName": "explore",
-        "configNote": null
-      },
-      "postInstallNote": null
-    },
-    {
       "id": "opencode",
       "name": "OpenCode",
       "bundleName": "opencode.zip",
@@ -114,28 +136,6 @@
         "configNote": null
       },
       "postInstallNote": null
-    },
-    {
-      "id": "codex",
-      "name": "Codex CLI",
-      "bundleName": "codex.zip",
-      "format": "markdown",
-      "configDir": ".codex",
-      "directories": {
-        "commands": ".agents/skills",
-        "skills": ".agents/skills",
-        "guides": ".codex/apm-guides",
-        "agents": ".codex/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Open a new terminal and start Codex CLI",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "spawn_agent(agent_type=\"explorer\", message=\"...\")",
-        "explorerName": "explorer",
-        "configNote": null
-      },
-      "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm-1-initiate-planner) instead of /slash-commands."
     }
   ]
 }
