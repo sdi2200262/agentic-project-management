@@ -32,6 +32,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * **Clearer counts and errors.** Messages say "1 assistant" rather than "1 assistant(s)", and `apm init --tag` says when a tag belongs to another major version.
 * **`--tag` finds any release.** Tags are looked up directly, and release lists cover the newest 100 releases.
 
+### Security
+
+* **Updated dependencies.** `axios` 1.20.0 and `adm-zip` 0.6.1 fix published advisories, including zip-bomb and symlink issues in extraction.
+
 ### Added
 
 * **Minimum CLI version.** A template release can set `minCliVersion` in its manifest; the CLI refuses it and asks you to update when it's older.
