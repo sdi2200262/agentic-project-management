@@ -37,13 +37,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * **Antigravity Support:** Support for Antigravity (CLI and IDE), with commands in `.agents/workflows/` and skills in `.agents/skills/`.
 
-## Templates v1.0.1 - 2026-04-24
+## Templates v1.0.1 - 2026-04-23
 
 ### Fixed
 
 * **Codex CLI fixes:** Resolved issues with Codex CLI command invocation and path handling.
 
-## CLI v1.0.0 + Templates v1.0.0 - 2026-04-12
+## CLI v1.0.0 + Templates v1.0.0 - 2026-04-09
 
 v1.0.0 is a complete redesign of the APM workflow. The scope of changes across both the codebase and the workflow itself is too large to cover exhaustively here. This is a concise summary of the most significant changes. For the full specification, see the [documentation](https://github.com/sdi2200262/apm-website/tree/main/docs).
 
@@ -105,7 +105,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 ---
 
-## CLI v0.5.2 + Templates v0.5.2 - 2025-11-26
+## CLI v0.5.2 + Templates v0.5.2 - 2025-12-04
 
 ### Added
 
