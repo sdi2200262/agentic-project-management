@@ -31,6 +31,8 @@ import path from 'path';
  * - {CONTEXT_ATTACH_SYNTAX}: Platform-specific instructions for how Users reference files in chat
  * - {NEW_CHAT_GUIDANCE}: Platform-specific natural language clause for starting a new chat
  *
+ * Targets with a commandPrefix other than '/' also have /apm-N command references rewritten.
+ *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
  * @param {string} context.version - Version string.
@@ -107,24 +109,24 @@ export function replacePlaceholders(content, context) {
   const configNote = subagentGuidance.configNote
     ? ` ${subagentGuidance.configNote}.`
     : '';
-  const plannerGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent for substantial research - it runs in its own context window, preserving yours for planning: \`${subagentGuidance.toolSyntax}\`. Structure the prompt with specific research questions and expected sources. Verify findings against the codebase, then present a summary to the User before incorporating into round reasoning.${configNote}`;
+  const plannerGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent for substantial research - it runs in its own context window, preserving yours for planning: ${subagentGuidance.toolSyntax}. Structure the prompt with specific research questions and expected sources. Verify findings against the codebase, then present a summary to the User before incorporating into round reasoning.${configNote}`;
   replaced = replaced.replace(/{PLANNER_SUBAGENT_GUIDANCE}/g, plannerGuidanceText);
 
   // Replace MANAGER_SUBAGENT_GUIDANCE placeholder
-  const managerGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent for investigation - it runs in its own context window, preserving yours for coordination: \`${subagentGuidance.toolSyntax}\`. Structure the prompt with the investigation goal, files to examine, and what to report back.`;
+  const managerGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent for investigation - it runs in its own context window, preserving yours for coordination: ${subagentGuidance.toolSyntax}. Structure the prompt with the investigation goal, files to examine, and what to report back.`;
   replaced = replaced.replace(/{MANAGER_SUBAGENT_GUIDANCE}/g, managerGuidanceText);
 
   // Replace WORKER_SUBAGENT_GUIDANCE placeholder
-  const workerGuidanceText = `For complex cross-agent dependencies or multi-file exploration, spawn a dedicated ${subagentGuidance.explorerName} subagent rather than inline searching - it runs in its own context window and returns consolidated findings: \`${subagentGuidance.toolSyntax}\`. Structure the prompt with specific files to read and questions to answer.`;
+  const workerGuidanceText = `For complex cross-agent dependencies or multi-file exploration, spawn a dedicated ${subagentGuidance.explorerName} subagent rather than inline searching - it runs in its own context window and returns consolidated findings: ${subagentGuidance.toolSyntax}. Structure the prompt with specific files to read and questions to answer.`;
   replaced = replaced.replace(/{WORKER_SUBAGENT_GUIDANCE}/g, workerGuidanceText);
 
   // Replace SUBAGENT_GUIDANCE placeholder (generic, for non-role agents)
-  const subagentGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent - it runs in its own context window and returns findings when complete: \`${subagentGuidance.toolSyntax}\`.`;
+  const subagentGuidanceText = `Spawn a dedicated ${subagentGuidance.explorerName} subagent - it runs in its own context window and returns findings when complete: ${subagentGuidance.toolSyntax}.`;
   replaced = replaced.replace(/{SUBAGENT_GUIDANCE}/g, subagentGuidanceText);
 
   // Replace ARCHIVE_EXPLORER_GUIDANCE placeholder
   const archiveExplorerPath = path.join(directories.agents, `apm-archive-explorer${agentExt}`);
-  const archiveExplorerText = `spawn a subagent with the \`${archiveExplorerPath}\` agent configuration and pass it the archive path(s) to explore`;
+  const archiveExplorerText = `spawn the \`apm-archive-explorer\` subagent by name (defined in \`${archiveExplorerPath}\`) and pass it the archive path(s) to explore`;
   replaced = replaced.replace(/{ARCHIVE_EXPLORER_GUIDANCE}/g, archiveExplorerText);
 
   // Replace CONTEXT_ATTACH_SYNTAX placeholder
@@ -132,6 +134,12 @@ export function replacePlaceholders(content, context) {
 
   // Replace NEW_CHAT_GUIDANCE placeholder
   replaced = replaced.replace(/{NEW_CHAT_GUIDANCE}/g, target.newChatGuidance || 'Start a new chat');
+
+  // Rewrite APM slash commands for platforms that invoke skills with another prefix (Codex: $apm-...).
+  // A slash that follows a word character or dot is part of a path and is left alone.
+  if (target.commandPrefix && target.commandPrefix !== '/') {
+    replaced = replaced.replace(/(?<![\w.])\/(apm-\d-[a-z-]+)/g, (_match, name) => `${target.commandPrefix}${name}`);
+  }
 
   return replaced;
 }

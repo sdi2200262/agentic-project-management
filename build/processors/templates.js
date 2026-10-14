@@ -7,6 +7,7 @@
  */
 
 import fs from 'fs-extra';
+import yaml from 'js-yaml';
 import path from 'path';
 import logger from '../utils/logger.js';
 import { findMdFiles } from '../utils/files.js';
@@ -112,7 +113,10 @@ async function processTemplate(templatePath, options) {
         outputPath = path.join(agentsDir, `${basename}.toml`);
       } else {
         // Agents: flat files (agents/<agent-name>.md, Copilot: <agent-name>.agent.md)
-        finalContent = processedFull;
+        // Targets may add platform-specific frontmatter (e.g. OpenCode mode, Antigravity tools)
+        finalContent = target.agentFrontmatter
+          ? `---\n${yaml.dump({ ...frontmatter, ...target.agentFrontmatter }, { lineWidth: -1 })}---\n${processedBody}`
+          : processedFull;
         const agentExt = target.id === 'copilot' ? '.agent.md' : '.md';
         outputPath = path.join(agentsDir, `${basename}${agentExt}`);
       }
