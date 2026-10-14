@@ -18,7 +18,7 @@ import path from 'path';
  * - {GUIDE_PATH:name}: Full path to guide file (<name>.md) - flat structure, no frontmatter
  * - {COMMAND_PATH:name}: Full path to command file (resolves extension per target)
  * - {AGENT_PATH:name}: Full path to agent file (<name>.md, Copilot: <name>.agent.md)
- * - {ARGS}: $ARGUMENTS (Claude Code, OpenCode), ${input:args} (Copilot), or descriptive text (Antigravity, Codex CLI, Cursor)
+ * - {ARGS}: $ARGUMENTS (Claude Code, OpenCode) or descriptive text (Antigravity, Codex CLI, Copilot, Cursor)
  * - {RULES_FILE}: Platform-specific agents file name
  * - {SKILLS_DIR}: Platform-specific skills directory
  * - {GUIDES_DIR}: Platform-specific guides directory
@@ -71,7 +71,7 @@ export function replacePlaceholders(content, context) {
   });
 
   // Replace COMMAND_PATH placeholder (resolves to full path with target-specific extension)
-  // Codex and Antigravity: commands are skills in directory structure (skills/<name>/SKILL.md)
+  // Codex, Antigravity and Copilot: commands are skills in directory structure (skills/<name>/SKILL.md)
   const commandExt = getOutputExtension(target);
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, commandName) => {
     const base = path.basename(commandName, path.extname(commandName));
@@ -82,13 +82,12 @@ export function replacePlaceholders(content, context) {
   });
 
   // Replace ARGS placeholder based on format
-  // Platforms with native argument variables: Claude Code and OpenCode ($ARGUMENTS), Copilot
-  // (${input:args}). Antigravity, Cursor and Codex have no documented argument variable, so
-  // descriptive text is used so the model picks up the user's input naturally. The {{args}} branch is a legacy path for the
-  // toml format, which no current target uses.
+  // Platforms with native argument variables: Claude Code and OpenCode ($ARGUMENTS). Antigravity,
+  // Codex, Copilot and Cursor have no argument variable, so descriptive text is used so the model
+  // picks up the user's input naturally. The {{args}} branch is a legacy path for the toml format,
+  // which no current target uses.
   const argsPlaceholder = format === 'toml' ? '{{args}}'
-    : id === 'copilot' ? '${input:args}'
-    : (id === 'antigravity' || id === 'codex' || id === 'cursor') ? '(the text provided by the User after the command invocation, if any)'
+    : (id === 'antigravity' || id === 'codex' || id === 'copilot' || id === 'cursor') ? '(the text provided by the User after the command invocation, if any)'
     : '$ARGUMENTS';
   replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
 
@@ -148,24 +147,21 @@ export function replacePlaceholders(content, context) {
  * Determines whether a target installs commands as skills (<commandsDir>/<name>/SKILL.md).
  *
  * @param {Object} target - Target configuration object.
- * @returns {boolean} True for Codex and Antigravity.
+ * @returns {boolean} True for Codex, Antigravity and Copilot.
  */
 export function commandsAsSkills(target) {
-  return target.id === 'codex' || target.id === 'antigravity';
+  return target.id === 'codex' || target.id === 'antigravity' || target.id === 'copilot';
 }
 
 /**
  * Determines the output file extension for a target.
  *
  * @param {Object} target - Target configuration object.
- * @returns {string} File extension including dot (e.g., '.md', '.prompt.md'; '.toml' only for the legacy toml format).
+ * @returns {string} File extension including dot (e.g., '.md'; '.toml' only for the legacy toml format).
  */
 export function getOutputExtension(target) {
   if (target.format === 'toml') {
     return '.toml';
-  }
-  if (target.id === 'copilot') {
-    return '.prompt.md';
   }
   return '.md';
 }

@@ -1,13 +1,33 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning (SemVer)](https://semver.org/spec/v2.0.0.html) for the **core CLI package** published on NPM.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and both release tracks follow [Semantic Versioning (SemVer)](https://semver.org/spec/v2.0.0.html).
 
-> **Note:** APM uses a decoupled versioning system. The CLI (`agentic-pm` on NPM) and template releases (GitHub Releases) version independently but share major version for compatibility. This changelog primarily tracks CLI changes, but major template releases may also be noted. See [VERSIONING.md](VERSIONING.md) for full details.
+> **Note:** APM ships two release tracks that version independently but share the major version: the **CLI** (`agentic-pm` on npm) and the **Templates** (GitHub Releases). Each heading names the track and version it covers - `CLI vX.Y.Z`, `Templates vX.Y.Z`, or both joined with `+` when they shipped together - and headings are ordered by date, newest first. See [VERSIONING.md](VERSIONING.md) for details.
 
 ---
 
-## [1.0.2] - Unreleased
+## Templates v1.0.3 - Unreleased
+
+### Changed
+
+* **Antigravity commands are skills.** Commands install to `.agents/skills/` instead of `.agents/workflows/`, because Antigravity stops running workflows on October 19, 2026. Subagent guidance uses `invoke_subagent` and the built-in `research` agent. Run `apm update` to switch an existing install.
+* **Copilot commands are skills.** Commands install to `.github/skills/` instead of `.github/prompts/`, so they work in Copilot CLI as well as VS Code, where prompt files are deprecated. Run `apm update` to switch an existing install.
+* **Codex commands use `$`.** Instructions in the Codex bundle now say `$apm-…` instead of `/apm-…`, which Codex rejects.
+* **Subagent and new-chat guidance per assistant.** Each assistant's subagent syntax and new-chat instructions now match its current tools and cover both its editor and CLI. The archive explorer is called by name, with `mode: subagent` for OpenCode and an explicit tool list for Antigravity.
+* **Assistant order.** `apm init` lists assistants as Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, OpenCode.
+
+### Known Issues
+
+* **Codex and Antigravity share `.agents/skills/`.** With both installed, the last one installed or updated writes the shared skills, and `apm remove` of either deletes skills the other uses. Run `apm add` for the remaining assistant to restore them.
+
+## CLI v1.0.2 - Unreleased
+
+### Changed
+
+* **Clearer prompts and messages.** The archive and update confirmations say exactly what is removed and that archives are kept. Help text, the release-not-found error and the skills link match current behaviour.
+
+## Templates v1.0.2 - 2026-06-08
 
 ### Breaking Changes
 
@@ -15,15 +35,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-* **Antigravity Support:** Full support for the new Antigravity (CLI and IDE), including optimized directory structure (`.agents/workflows/`, `.agents/skills/`) and agent-first subagent guidance.
+* **Antigravity Support:** Support for Antigravity (CLI and IDE), with commands in `.agents/workflows/` and skills in `.agents/skills/`.
 
-## [1.0.1] - 2026-04-24
+## Templates v1.0.1 - 2026-04-23
 
 ### Fixed
 
 * **Codex CLI fixes:** Resolved issues with Codex CLI command invocation and path handling.
 
-## [1.0.0] - 2026-04-12
+## CLI v1.0.0 + Templates v1.0.0 - 2026-04-09
 
 v1.0.0 is a complete redesign of the APM workflow. The scope of changes across both the codebase and the workflow itself is too large to cover exhaustively here. This is a concise summary of the most significant changes. For the full specification, see the [documentation](https://github.com/sdi2200262/apm-website/tree/main/docs).
 
@@ -65,7 +85,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 ---
 
-## [0.5.4] - 2026-01-24
+## CLI v0.5.4 + Templates v0.5.4 - 2026-01-24
 
 ### Added
 
@@ -77,7 +97,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 ---
 
-## [0.5.3] - 2025-12-05
+## CLI v0.5.3 - 2025-12-05
 
 ### Fixed
 
@@ -85,7 +105,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 ---
 
-## [0.5.2] - 2025-11-26
+## CLI v0.5.2 + Templates v0.5.2 - 2025-12-04
 
 ### Added
 
@@ -106,7 +126,9 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 ---
 
-## [0.5.0] - 2025-10-29
+## CLI v0.5.1 + Templates v0.5.1 - 2025-11-03
+
+First stable release of the CLI. Version 0.5.0 shipped only as pre-releases (`0.5.0-test-1` to `0.5.0-test-4`, from 2025-10-29).
 
 ### Added
 
@@ -148,7 +170,7 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 ---
 
-## [0.4.0] - 2025-08-19
+## Templates v0.4.0 - 2025-08-19
 
 APM v0.4 represents a complete framework refinement. The v0.3 architecture is enhanced to provide a more sophisticated, scalable approach to multi-agent project management while maintaining the core principles that made APM effective.
 
@@ -188,7 +210,7 @@ See the complete [documentation suite](docs/) for detailed setup instructions, c
 
 ---
 
-## [0.3.0] - 2025-05-21
+## Templates v0.3.0 - 2025-05-21
 
 ### Added
 - New section in `prompts/02_Utility_Prompts_And_Format_Definitions/Handover_Artifact_Format.md` for "Recent Conversational Context & Key User Directives" in the `Handover_File.md`.
@@ -214,7 +236,7 @@ See the complete [documentation suite](docs/) for detailed setup instructions, c
 
 ---
 
-## [0.2.0] - 2025-05-14
+## Templates v0.2.0 - 2025-05-14
 ### Added
 - New Manager Agent Guide for dynamic Memory Bank setup (`02_Memory_Bank_Guide.md`).
 - Cursor Rules system with 3 initial rules and `rules/README.md` for MA reliability upon Initiation Phase.
@@ -227,7 +249,7 @@ See the complete [documentation suite](docs/) for detailed setup instructions, c
 
 ---
 
-## [0.1.0] - 2025-05-12
+## Templates v0.1.0 - 2025-05-12
 ### Added
 - Initial framework structure
 - Defined Memory Bank log format and Handover Artifact formats.

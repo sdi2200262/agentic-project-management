@@ -79,17 +79,17 @@
       "format": "markdown",
       "configDir": ".github",
       "directories": {
-        "commands": ".github/prompts",
+        "commands": ".github/skills",
         "skills": ".github/skills",
         "guides": ".github/apm-guides",
         "agents": ".github/agents"
       },
       "contextAttachSyntax": "Reference the file using `#file` and select the file from the picker.",
-      "newChatGuidance": "Start a new Copilot Chat",
+      "newChatGuidance": "Start a new chat in the VS Code Chat view, or open a new terminal and run `copilot`",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "#runSubagent",
-        "explorerName": "exploration",
+        "toolSyntax": "`runSubagent` with `agentName: \"Explore\"` in VS Code, or `task` with `agent_type: \"explore\"` in Copilot CLI",
+        "explorerName": "Explore",
         "configNote": null
       },
       "postInstallNote": null
