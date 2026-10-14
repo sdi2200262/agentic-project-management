@@ -2,7 +2,7 @@
  * Update Command Module
  *
  * Handles 'apm update' command for updating installed assistants.
- * Archives current state, cleans tracked files, re-extracts fresh.
+ * Archives the current session, cleans tracked files, re-extracts fresh.
  *
  * @module src/commands/update
  */
@@ -76,8 +76,8 @@ export async function updateCommand(options = {}) {
     const droppedAssistants = metadata.assistants.filter(id => !survivingAssistants.includes(id));
 
     const bullets = [
-      `Snapshot all .apm/ artifacts into .apm/archives/${resolvedName}`,
-      `Delete all APM-installed files for: ${currentList}`,
+      `Snapshot all .apm/ contents (except archives/) into .apm/archives/${resolvedName}`,
+      `Remove active session files and installed templates for: ${currentList}`,
       `Download and install ${release.tag_name} for: ${survivingList}`
     ];
     if (droppedAssistants.length > 0) {

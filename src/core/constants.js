@@ -32,7 +32,7 @@ export const OFFICIAL_REPO = {
 };
 
 /**
- * CLI major version used to filter compatible releases.
+ * CLI major version used to filter official releases.
  * Derived dynamically from package.json version.
  *
  * @type {number}

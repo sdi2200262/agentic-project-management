@@ -159,7 +159,7 @@ export async function initCommand(options = {}) {
     .map(a => a.name);
   const assistantLabel = names.length ? names.join(', ') : 'your AI assistant';
   logger.info(`New to APM? Install the apm-assist skill so ${assistantLabel} can explain how APM works and answer questions outside of APM sessions.`);
-  logger.info('See: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#installing-skills');
+  logger.info('See: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
 }
 
 export default initCommand;

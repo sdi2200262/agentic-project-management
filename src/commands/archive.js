@@ -146,8 +146,8 @@ async function createMode(force, archiveName) {
     const assistantList = metadata.assistants.join(', ');
     const proceed = await confirmDestructiveAction(
       [
-        `Snapshot all .apm/ artifacts into .apm/archives/${resolvedName}`,
-        `Delete all APM-installed files for: ${assistantList}`
+        `Snapshot all .apm/ contents (except archives/) into .apm/archives/${resolvedName}`,
+        `Remove active session files, installed templates for ${assistantList}, and active metadata (archives are kept)`
       ],
       'Archive and clean?'
     );
@@ -169,7 +169,7 @@ async function createMode(force, archiveName) {
   // Clear content for final output
   logger.clearAndBanner();
   logger.success(`Archived to ${path.relative(cwd, archivePath)}`);
-  logger.info('Run "apm init" to reinitialize.');
+  logger.info('Run "apm init" (or "apm custom") to install templates for a new session.');
 }
 
 export default archiveCommand;

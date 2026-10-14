@@ -91,7 +91,7 @@ export class CLIError extends Error {
    */
   static releaseNotFound(repo) {
     return new CLIError(
-      `No compatible releases found for ${repo}`,
+      `No releases found for ${repo}`,
       CLIErrorCode.RELEASE_NOT_FOUND,
       { repo }
     );
@@ -105,7 +105,7 @@ export class CLIError extends Error {
    */
   static manifestMissing(tag) {
     return new CLIError(
-      `Release ${tag} does not contain apm-release.json`,
+      `Release ${tag} does not contain apm-release.json and cannot be installed`,
       CLIErrorCode.MANIFEST_MISSING,
       { tag }
     );
