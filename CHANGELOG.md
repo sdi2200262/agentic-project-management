@@ -126,7 +126,9 @@ v1.0.0 is a complete redesign of the APM workflow. The scope of changes across b
 
 ---
 
-## CLI v0.5.0 + Templates v0.5.0 - 2025-10-29
+## CLI v0.5.1 + Templates v0.5.1 - 2025-11-03
+
+First stable release of the CLI. Version 0.5.0 shipped only as pre-releases (`0.5.0-test-1` to `0.5.0-test-4`, from 2025-10-29).
 
 ### Added
 
