@@ -28,8 +28,10 @@ export function generateReleaseManifest(config, version) {
     return entry;
   });
 
-  return {
-    version,
-    assistants
-  };
+  const manifest = { version, assistants };
+  // Optional: CLI versions older than this refuse the release (only CLI v1.0.2 and later read it)
+  if (config.build?.minCliVersion) {
+    manifest.minCliVersion = config.build.minCliVersion;
+  }
+  return manifest;
 }
