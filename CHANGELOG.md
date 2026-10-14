@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Known Issues
 
-* **Codex and Antigravity share `.agents/skills/`.** With both installed, the last one installed or updated writes the shared skills, so one of them gets the other's command prefix and guide paths. CLI v1.0.2 keeps the shared files when either is removed and warns that they may still hold the removed assistant's version; `apm remove` then `apm add` for the remaining assistant refreshes them. With an older CLI, `apm remove` of either deletes skills the other uses, and the same remove-then-add restores them.
+* **Codex and Antigravity share `.agents/skills/`.** With both installed, the last one installed or updated writes the shared skills, so one of them gets the other's command prefix and guide paths. CLI v1.0.2 keeps the shared files when either is removed, and warns when the removed assistant was the last one to overwrite them; `apm remove` then `apm add` for the remaining assistant restores its text. With an older CLI, `apm remove` of either deletes skills the other uses, and the same remove-then-add restores them.
 
 ## CLI v1.0.2 - Unreleased
 

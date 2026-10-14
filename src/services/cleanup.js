@@ -32,7 +32,6 @@ export async function removeInstalledFiles(cwd, installedFiles, assistantIds = n
   // _apm files are handled by the archive service, not by cleanup
   const ids = (assistantIds || Object.keys(installedFiles)).filter(id => id !== '_apm');
   let removed = 0;
-  let keptShared = 0;
 
   // Files that assistants staying installed also list (e.g. shared .agents/skills/) are kept
   const kept = new Set(
@@ -55,10 +54,7 @@ export async function removeInstalledFiles(cwd, installedFiles, assistantIds = n
     if (!Array.isArray(files)) continue;
 
     for (const file of files) {
-      if (kept.has(file)) {
-        keptShared++;
-        continue;
-      }
+      if (kept.has(file)) continue;
       const fullPath = path.join(cwd, file);
       if (await fs.pathExists(fullPath)) {
         await fs.remove(fullPath);
@@ -106,7 +102,7 @@ export async function removeInstalledFiles(cwd, installedFiles, assistantIds = n
     !keptDirs.some(other => other !== d && other.startsWith(d + path.sep))
   );
 
-  return { removed, keptShared, keptDirs: leafKeptDirs };
+  return { removed, keptDirs: leafKeptDirs };
 }
 
 export default { removeInstalledFiles };

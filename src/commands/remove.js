@@ -77,7 +77,19 @@ export async function removeCommand(options = {}) {
 
   // Clean tracked files for removed assistants
   const installedFiles = getInstalledFiles(metadata);
-  const { keptShared } = await removeInstalledFiles(process.cwd(), installedFiles, assistantIds);
+
+  // Shared files hold the text of the last assistant installed (metadata keeps install order).
+  // Count kept files that a removed assistant overwrote last, so the remaining ones have the wrong text.
+  const lastWriter = new Map();
+  for (const id of metadata.assistants) {
+    for (const file of installedFiles[id] || []) lastWriter.set(file, id);
+  }
+  const remainingIds = metadata.assistants.filter(id => !assistantIds.includes(id));
+  const overwritten = [...lastWriter].filter(([file, writer]) =>
+    assistantIds.includes(writer) && remainingIds.some(id => (installedFiles[id] || []).includes(file))
+  );
+
+  await removeInstalledFiles(process.cwd(), installedFiles, assistantIds);
 
   // Update metadata
   const remaining = metadata.assistants.filter(id => !assistantIds.includes(id));
@@ -99,9 +111,10 @@ export async function removeCommand(options = {}) {
   } else {
     const names = assistantIds.join(', ');
     logger.success(`Removed ${names}. ${logger.plural(remaining.length, 'assistant')} remaining.`);
-    if (keptShared) {
+    if (overwritten.length) {
+      const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))]);
       const others = remaining.join(' ');
-      logger.warn(`Kept ${logger.plural(keptShared, 'file')} that ${remaining.join(', ')} also ${remaining.length === 1 ? 'uses' : 'use'}. They may still contain ${names}'s version; to refresh them, run "apm remove -a ${others}", then "apm add -a ${others}".`);
+      logger.warn(`Kept ${logger.plural(overwritten.length, 'shared file')} that ${writers} overwrote when it was installed, so ${logger.list(remaining)} now has ${writers}'s text. To restore it, run "apm remove -a ${others}", then "apm add -a ${others}".`);
     }
   }
 }
