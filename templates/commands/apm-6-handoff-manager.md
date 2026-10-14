@@ -26,7 +26,7 @@ Perform the following actions:
 2. Create Handoff Log per §3 Handoff Log Structure, capturing **past actions** - what was done, decided, and observed. Content is strictly past tense; current state belongs in the handoff prompt.
    - Coordination overview: Stages managed, Tasks reviewed, dispatch cycles completed.
    - Tracked Worker Handoffs (which Workers, from which Stage) - most critical for dependency context treatment.
-   - If auto-compaction occurred during this instance, note it and describe which portions of working context are reconstructed rather than first-hand from the summary.
+   - If compaction or recovery occurred during this instance, note it and describe which portions of working context are reconstructed rather than first-hand from the summary.
    - VC state extracted from the Tracker in context: active branches, worktrees, pending merges.
    - User preferences and communication patterns.
    - Coordination insights, decisions made, approaches tried.

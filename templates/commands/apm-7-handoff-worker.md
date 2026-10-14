@@ -30,7 +30,7 @@ Perform the following actions:
    - Working context, patterns, and approaches established during this instance.
    - Technical notes not captured in Task Logs.
    - If mid-Task, include execution progress framed as past work (steps completed, approaches tried).
-   - If auto-compaction occurred during this instance, note it and describe which portions of working context are reconstructed rather than first-hand from the summary.
+   - If compaction or recovery occurred during this instance, note it and describe which portions of working context are reconstructed rather than first-hand from the summary.
 
 ### 2.2 Handoff Prompt Creation
 
