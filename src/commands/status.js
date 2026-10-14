@@ -6,6 +6,8 @@
  * @module src/commands/status
  */
 
+import fs from 'fs-extra';
+import path from 'path';
 import { readMetadata, getInstalledFiles } from '../core/metadata.js';
 import { countArchives } from '../services/archive.js';
 import logger from '../ui/logger.js';
@@ -45,12 +47,30 @@ export async function statusCommand() {
 
   console.log(chalk.cyan.bold('Assistants'));
   const installedFiles = getInstalledFiles(metadata);
+  if (!metadata.assistants.length) {
+    console.log('  none (run "apm add" to add one)');
+  }
+  const incomplete = [];
   for (const id of metadata.assistants) {
-    const files = installedFiles[id];
-    const fileCount = Array.isArray(files) ? files.length : 0;
-    console.log(`  ${id} (${fileCount} files)`);
+    const files = Array.isArray(installedFiles[id]) ? installedFiles[id] : [];
+    let missing = 0;
+    for (const file of files) {
+      if (!(await fs.pathExists(path.join(cwd, file)))) missing++;
+    }
+    if (missing) {
+      incomplete.push(id);
+      console.log(`  ${id} (${files.length} files, ${chalk.yellow(`${missing} missing`)})`);
+    } else {
+      console.log(`  ${id} (${files.length} files)`);
+    }
   }
   console.log('');
+
+  if (incomplete.length) {
+    const ids = incomplete.join(' ');
+    logger.warn(`Some APM files are missing. To restore them, run "apm remove -a ${ids}", then "apm add -a ${ids}".`);
+    console.log('');
+  }
 
   const archiveCount = await countArchives(cwd);
   if (archiveCount > 0) {

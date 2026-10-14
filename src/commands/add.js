@@ -126,7 +126,7 @@ export async function addCommand(options = {}) {
   }
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.warn(assistant.postInstallNote);
+    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
 }
 

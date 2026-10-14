@@ -178,7 +178,7 @@ export async function updateCommand(options = {}) {
   }
   for (const id of updatedAssistants) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.warn(assistant.postInstallNote);
+    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
   logger.success(`Updated to ${release.tag_name} (${updatedAssistants.length} assistant(s))!`);
 }
@@ -222,7 +222,7 @@ async function findOfficialUpdate(metadata) {
 
     // Nothing available
     if (!newerStable && !newestPrerelease) {
-      logger.success('Already on the latest pre-release!');
+      logger.success(`Already on the latest pre-release (${metadata.releaseVersion}).`);
       if (!latest) {
         logger.info(`No stable release available yet for v${CLI_MAJOR_VERSION}.x.`);
       }
@@ -280,7 +280,7 @@ async function findOfficialUpdate(metadata) {
   }
 
   if (latest) {
-    logger.success('Already on the latest version!');
+    logger.success(`Already on the latest version (${metadata.releaseVersion}).`);
   } else {
     logger.info(`No stable releases found for v${CLI_MAJOR_VERSION}.x.`);
   }
@@ -321,7 +321,7 @@ async function findCustomUpdate(metadata) {
     : allReleases.filter(r => r.tag_name !== metadata.releaseVersion);
 
   if (!newerReleases.length) {
-    logger.success('Already on the latest version!');
+    logger.success(`Already on the latest version (${metadata.releaseVersion}).`);
     return null;
   }
 

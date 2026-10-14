@@ -7,7 +7,7 @@
  */
 
 import { fetchJSON, fetchAsset } from './github.js';
-import { OFFICIAL_REPO, CLI_MAJOR_VERSION, RELEASE_MANIFEST } from '../core/constants.js';
+import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, RELEASE_MANIFEST } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { validateReleaseManifest } from '../schemas/release.js';
 
@@ -62,7 +62,7 @@ export function isStableRelease(release) {
  * @returns {Promise<Object[]>} Array of release objects.
  */
 export async function fetchReleases(repo) {
-  const path = `/repos/${repo.owner}/${repo.repo}/releases`;
+  const path = `/repos/${repo.owner}/${repo.repo}/releases?per_page=100`;
   return fetchJSON(path);
 }
 
@@ -76,6 +76,42 @@ export async function fetchReleases(repo) {
 export async function fetchReleaseByTag(repoString, tag) {
   const [owner, repo] = repoString.split('/');
   return fetchJSON(`/repos/${owner}/${repo}/releases/tags/${tag}`);
+}
+
+/**
+ * Finds a release by tag, returning null when the tag doesn't exist.
+ * Looks the tag up directly, so it works for releases outside the fetched list.
+ *
+ * @param {string} repoString - Repository in 'owner/repo' format.
+ * @param {string} tag - Release tag name.
+ * @returns {Promise<Object|null>} Release object or null.
+ */
+export async function findReleaseByTag(repoString, tag) {
+  try {
+    return await fetchReleaseByTag(repoString, tag);
+  } catch (err) {
+    if (err.status === 404) return null;
+    throw err;
+  }
+}
+
+/**
+ * Compares two versions. Pre-releases sort before the stable release they lead to.
+ *
+ * @param {string} a - Version or tag (e.g., '1.0.2', 'v1.0.2-test-1').
+ * @param {string} b - Version or tag.
+ * @returns {number} Negative if a < b, 0 if equal, positive if a > b.
+ */
+export function compareVersions(a, b) {
+  const va = parseVersion(a);
+  const vb = parseVersion(b);
+  if (!va || !vb) return 0;
+  for (const key of ['major', 'minor', 'patch']) {
+    if (va[key] !== vb[key]) return va[key] - vb[key];
+  }
+  if (!va.prereleaseLabel && vb.prereleaseLabel) return 1;
+  if (va.prereleaseLabel && !vb.prereleaseLabel) return -1;
+  return (va.prereleaseNum || 0) - (vb.prereleaseNum || 0);
 }
 
 /**
@@ -149,6 +185,10 @@ export async function fetchReleaseManifest(release) {
     throw CLIError.manifestInvalid(release.tag_name, validation.errors);
   }
 
+  if (manifest.minCliVersion && compareVersions(CLI_VERSION, manifest.minCliVersion) < 0) {
+    throw CLIError.cliTooOld(release.tag_name, manifest.minCliVersion);
+  }
+
   return manifest;
 }
 
@@ -189,6 +229,8 @@ export default {
   isStableRelease,
   fetchReleases,
   fetchReleaseByTag,
+  findReleaseByTag,
+  compareVersions,
   filterByMajorVersion,
   getLatestRelease,
   fetchReleaseManifest,

@@ -10,7 +10,7 @@
 import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
-import { fetchOfficialReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
+import { fetchOfficialReleases, findReleaseByTag, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { selectAssistant } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
@@ -48,7 +48,9 @@ export async function initCommand(options = {}) {
   // Find target release
   let release;
   if (tag) {
-    release = releases.find(r => r.tag_name === tag);
+    // Look the tag up directly so it works beyond the fetched list; keep to this CLI's major version
+    release = releases.find(r => r.tag_name === tag)
+      || (parseVersion(tag)?.major === CLI_MAJOR_VERSION ? await findReleaseByTag(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`, tag) : null);
     if (!release) {
       throw CLIError.releaseNotFound(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo} (tag: ${tag})`);
     }
@@ -148,7 +150,7 @@ export async function initCommand(options = {}) {
   }
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.warn(assistant.postInstallNote);
+    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
   logger.success('APM initialized!');
   logger.info('Run "apm add" to add more assistants, or "apm update" to check for updates.');
