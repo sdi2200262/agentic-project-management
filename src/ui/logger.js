@@ -211,7 +211,30 @@ export function progress(message) {
   };
 }
 
+/**
+ * Formats a count with a singular or plural noun (e.g. "1 assistant", "2 assistants").
+ *
+ * @param {number} count - Number of items.
+ * @param {string} noun - Singular noun.
+ * @returns {string} Formatted count.
+ */
+export function plural(count, noun) {
+  return `${count} ${noun}${count === 1 ? '' : 's'}`;
+}
+
+/**
+ * Joins names into a readable list (e.g. "A", "A and B", "A, B and C").
+ *
+ * @param {string[]} names - Names to join.
+ * @returns {string} Joined list.
+ */
+export function list(names) {
+  return names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join('');
+}
+
 export default {
+  plural,
+  list,
   info,
   warn,
   error,

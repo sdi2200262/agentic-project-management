@@ -31,7 +31,7 @@ export async function initCommand(options = {}) {
   // Fresh only — show info for existing installations
   const existing = await readMetadata();
   if (existing) {
-    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${existing.assistants.length} assistant(s)).`);
+    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'assistant')}).`);
     logger.blank();
     logger.info('Use "apm add" to add assistants, "apm update" to update, or "apm archive" to start fresh.');
     return;
@@ -49,8 +49,11 @@ export async function initCommand(options = {}) {
   let release;
   if (tag) {
     // Look the tag up directly so it works beyond the fetched list; keep to this CLI's major version
+    if (parseVersion(tag)?.major !== CLI_MAJOR_VERSION) {
+      throw CLIError.releaseNotFound(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo} (tag: ${tag}; this CLI installs v${CLI_MAJOR_VERSION}.x releases)`);
+    }
     release = releases.find(r => r.tag_name === tag)
-      || (parseVersion(tag)?.major === CLI_MAJOR_VERSION ? await findReleaseByTag(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`, tag) : null);
+      || await findReleaseByTag(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo}`, tag);
     if (!release) {
       throw CLIError.releaseNotFound(`${OFFICIAL_REPO.owner}/${OFFICIAL_REPO.repo} (tag: ${tag})`);
     }
@@ -98,7 +101,7 @@ export async function initCommand(options = {}) {
       return;
     }
   } else {
-    const header = `Found ${manifest.assistants.length} assistant(s) available in ${release.tag_name}`;
+    const header = `Found ${logger.plural(manifest.assistants.length, 'assistant')} available in ${release.tag_name}`;
     const selected = await selectAssistant(manifest.assistants, { header });
     assistantIds = [selected];
   }
@@ -159,7 +162,7 @@ export async function initCommand(options = {}) {
     .map(id => manifest.assistants.find(a => a.id === id))
     .filter(a => a && installedFiles[a.id])
     .map(a => a.name);
-  const assistantLabel = names.length ? names.join(', ') : 'your AI assistant';
+  const assistantLabel = names.length ? logger.list(names) : 'your AI assistant';
   logger.info(`New to APM? Install the apm-assist skill so ${assistantLabel} can explain how APM works and answer questions outside of APM sessions.`);
   logger.info('See: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
 }

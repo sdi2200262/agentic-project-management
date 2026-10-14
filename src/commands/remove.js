@@ -54,7 +54,7 @@ export async function removeCommand(options = {}) {
     }
   } else {
     const choices = metadata.assistants.map(id => ({ name: id, value: id }));
-    const header = `Found ${metadata.assistants.length} assistant(s) installed from ${metadata.releaseVersion}`;
+    const header = `Found ${logger.plural(metadata.assistants.length, 'assistant')} installed from ${metadata.releaseVersion}`;
     const selected = await selectPrompt({ message: 'Select assistant to remove:', choices, header });
     assistantIds = [selected];
   }
@@ -77,7 +77,7 @@ export async function removeCommand(options = {}) {
 
   // Clean tracked files for removed assistants
   const installedFiles = getInstalledFiles(metadata);
-  await removeInstalledFiles(process.cwd(), installedFiles, assistantIds);
+  const { keptShared } = await removeInstalledFiles(process.cwd(), installedFiles, assistantIds);
 
   // Update metadata
   const remaining = metadata.assistants.filter(id => !assistantIds.includes(id));
@@ -98,7 +98,11 @@ export async function removeCommand(options = {}) {
     logger.info('Run "apm archive" to archive, or "apm add" to add new assistants.');
   } else {
     const names = assistantIds.join(', ');
-    logger.success(`Removed ${names}. ${remaining.length} assistant(s) remaining.`);
+    logger.success(`Removed ${names}. ${logger.plural(remaining.length, 'assistant')} remaining.`);
+    if (keptShared) {
+      const others = remaining.join(' ');
+      logger.warn(`Kept ${logger.plural(keptShared, 'file')} that ${remaining.join(', ')} also ${remaining.length === 1 ? 'uses' : 'use'}. They may still contain ${names}'s version; to refresh them, run "apm remove -a ${others}", then "apm add -a ${others}".`);
+    }
   }
 }
 

@@ -27,7 +27,7 @@ export async function statusCommand() {
     logger.info('Not initialized.');
     const archiveCount = await countArchives(cwd);
     if (archiveCount > 0) {
-      logger.info(`${archiveCount} archived session(s) found. Use "apm archive -l" to list.`);
+      logger.info(`${logger.plural(archiveCount, 'archived session')} found. Use "apm archive -l" to list.`);
     } else {
       logger.info('Run "apm init" to get started.');
     }
@@ -75,7 +75,7 @@ export async function statusCommand() {
   const archiveCount = await countArchives(cwd);
   if (archiveCount > 0) {
     console.log(chalk.cyan.bold('Archives'));
-    console.log(`  ${archiveCount} archived session(s). Use "apm archive -l" to list.`);
+    console.log(`  ${logger.plural(archiveCount, 'archived session')}. Use "apm archive -l" to list.`);
     console.log('');
   }
 }

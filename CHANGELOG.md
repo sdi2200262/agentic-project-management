@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Known Issues
 
-* **Codex and Antigravity share `.agents/skills/`.** With both installed, the last one installed or updated writes the shared skills, so one of them gets the other's command prefix and guide paths. CLI v1.0.2 keeps the shared files when either is removed; with an older CLI, `apm remove` of either deletes skills the other uses, and `apm remove` then `apm add` for the remaining assistant restores them.
+* **Codex and Antigravity share `.agents/skills/`.** With both installed, the last one installed or updated writes the shared skills, so one of them gets the other's command prefix and guide paths. CLI v1.0.2 keeps the shared files when either is removed and warns that they may still hold the removed assistant's version; `apm remove` then `apm add` for the remaining assistant refreshes them. With an older CLI, `apm remove` of either deletes skills the other uses, and the same remove-then-add restores them.
 
 ## CLI v1.0.2 - Unreleased
 
@@ -29,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * **Clearer prompts and messages.** The archive and update confirmations say exactly what is removed and that archives are kept. `apm update` names the version you're on, post-install notes show as information rather than warnings, and help says which command `--list` and `--clear` belong to. Help text, the release-not-found error and the skills link match current behaviour.
 * **`apm remove` keeps shared files.** Files that another installed assistant also uses, such as Codex and Antigravity's `.agents/skills/`, stay in place, and an assistant's folder is removed once it's empty.
 * **`apm status` checks files on disk.** It flags missing files and says how to restore them.
+* **Clearer counts and errors.** Messages say "1 assistant" rather than "1 assistant(s)", and `apm init --tag` says when a tag belongs to another major version.
 * **`--tag` finds any release.** Tags are looked up directly, and release lists cover the newest 100 releases.
 
 ### Added

@@ -55,7 +55,7 @@ export async function customCommand(options = {}) {
   // Fresh only — show info for existing installations
   const existing = await readMetadata();
   if (existing) {
-    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${existing.assistants.length} assistant(s)).`);
+    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'assistant')}).`);
     logger.blank();
     logger.info('Use "apm add" to add assistants, "apm update" to update, or "apm archive" to start fresh.');
     return;
@@ -141,7 +141,7 @@ export async function customCommand(options = {}) {
     }
   } else {
     hadInteractivePrompt = true;
-    const header = `Found ${manifest.assistants.length} assistant(s) available in ${release.tag_name}`;
+    const header = `Found ${logger.plural(manifest.assistants.length, 'assistant')} available in ${release.tag_name}`;
     const selected = await selectAssistant(manifest.assistants, { header });
     assistantIds = [selected];
   }

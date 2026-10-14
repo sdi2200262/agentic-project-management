@@ -81,7 +81,7 @@ export async function updateCommand(options = {}) {
       `Download and install ${release.tag_name} for: ${survivingList}`
     ];
     if (droppedAssistants.length > 0) {
-      bullets.push(`Drop unsupported assistant(s): ${droppedAssistants.join(', ')}`);
+      bullets.push(`Drop unsupported ${droppedAssistants.length === 1 ? 'assistant' : 'assistants'}: ${droppedAssistants.join(', ')}`);
     }
 
     const proceed = await confirmDestructiveAction(
@@ -171,7 +171,7 @@ export async function updateCommand(options = {}) {
   // Clear content for final output
   logger.clearAndBanner();
   if (skippedAssistants.length > 0) {
-    logger.warn(`Dropped ${skippedAssistants.length} assistant(s) not in ${release.tag_name}: ${skippedAssistants.join(', ')}`);
+    logger.warn(`Dropped ${logger.plural(skippedAssistants.length, 'assistant')} not in ${release.tag_name}: ${skippedAssistants.join(', ')}`);
   }
   for (const id of updatedAssistants) {
     logger.success(`Updated ${manifest.assistants.find(a => a.id === id)?.name || id}`);
@@ -180,7 +180,7 @@ export async function updateCommand(options = {}) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
-  logger.success(`Updated to ${release.tag_name} (${updatedAssistants.length} assistant(s))!`);
+  logger.success(`Updated to ${release.tag_name} (${logger.plural(updatedAssistants.length, 'assistant')})!`);
 }
 
 /**
@@ -325,7 +325,7 @@ async function findCustomUpdate(metadata) {
     return null;
   }
 
-  const header = `Found ${newerReleases.length} release(s) from ${metadata.repository} newer than ${metadata.releaseVersion}`;
+  const header = `Found ${logger.plural(newerReleases.length, 'release')} from ${metadata.repository} newer than ${metadata.releaseVersion}`;
   const selectedTag = await selectRelease(newerReleases, { header });
   return newerReleases.find(r => r.tag_name === selectedTag);
 }

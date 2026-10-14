@@ -83,7 +83,7 @@ export async function addCommand(options = {}) {
       return;
     }
   } else {
-    const header = `Found ${uninstalled.length} uninstalled assistant(s) in ${metadata.releaseVersion}`;
+    const header = `Found ${logger.plural(uninstalled.length, 'uninstalled assistant')} in ${metadata.releaseVersion}`;
     const selected = await selectAssistant(uninstalled, { header });
     assistantIds = [selected];
   }
