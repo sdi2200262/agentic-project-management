@@ -7,7 +7,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## [1.0.2] - Unreleased
+## [1.0.3] - Unreleased
+
+### Changed
+
+* **Antigravity commands are skills.** Commands install to `.agents/skills/` instead of `.agents/workflows/`, because Antigravity stops running workflows on October 19, 2026. Subagent guidance uses `invoke_subagent` and the built-in `research` agent. Run `apm update` to switch an existing install.
+* **Copilot commands are skills.** Commands install to `.github/skills/` instead of `.github/prompts/`, so they work in Copilot CLI as well as VS Code, where prompt files are deprecated. Run `apm update` to switch an existing install.
+* **Codex commands use `$`.** Instructions in the Codex bundle now say `$apm-…` instead of `/apm-…`, which Codex rejects.
+* **Subagent and new-chat guidance per assistant.** Each assistant's subagent syntax and new-chat instructions now match its current tools and cover both its editor and CLI. The archive explorer is called by name, with `mode: subagent` for OpenCode and an explicit tool list for Antigravity.
+* **Assistant order.** `apm init` lists assistants as Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, OpenCode.
+
+### Known Issues
+
+* **Codex and Antigravity share `.agents/skills/`.** With both installed, the last one installed or updated writes the shared skills, and `apm remove` of either deletes skills the other uses. Run `apm add` for the remaining assistant to restore them.
+
+## [1.0.2] - 2026-06-08
 
 ### Breaking Changes
 
@@ -15,15 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-* **Antigravity Support:** Full support for Antigravity (app, IDE and CLI). Commands install as skills in `.agents/skills/` because Antigravity stops running workflows on October 19, 2026. Subagent guidance uses `invoke_subagent` and the built-in `research` agent.
-
-### Changed
-
-* **Copilot commands are skills.** Commands install to `.github/skills/` instead of `.github/prompts/`, so they work in Copilot CLI as well as VS Code, where prompt files are deprecated. Run `apm update` to switch an existing install.
-* **Codex commands use `$`.** Instructions in the Codex bundle now say `$apm-…` instead of `/apm-…`, which Codex rejects.
-* **Subagent and new-chat guidance per assistant.** Each assistant's subagent syntax and new-chat instructions now match its current tools and cover both its editor and CLI. The archive explorer is called by name, with `mode: subagent` for OpenCode and an explicit tool list for Antigravity.
-* **Assistant order.** `apm init` lists assistants as Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, OpenCode.
-* **CLI wording.** The archive and update prompts say exactly what is removed and that archives are kept.
+* **Antigravity Support:** Support for Antigravity (CLI and IDE), with commands in `.agents/workflows/` and skills in `.agents/skills/`.
 
 ## [1.0.1] - 2026-04-24
 
