@@ -18,10 +18,10 @@
         "agents": ".claude/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Open a new terminal and start Claude Code",
+      "newChatGuidance": "Open a new terminal and run `claude`, or open a new Claude Code tab in VS Code or a new session in the desktop app",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "Agent(subagent_type=\"Explore\", prompt=\"...\")",
+        "toolSyntax": "`Agent(subagent_type=\"Explore\", description=\"...\", prompt=\"...\")`",
         "explorerName": "Explore",
         "configNote": null
       },
@@ -40,13 +40,14 @@
         "agents": ".codex/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Open a new terminal and start Codex CLI",
+      "newChatGuidance": "Open a new terminal and run `codex`, or start a new chat in the Codex IDE extension or app",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "spawn_agent(agent_type=\"explorer\", message=\"...\")",
+        "toolSyntax": "`spawn_agent(task_name=\"explore_<topic>\", agent_type=\"explorer\", fork_turns=\"none\", message=\"...\")`",
         "explorerName": "explorer",
         "configNote": null
       },
+      "commandPrefix": "$",
       "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm-1-initiate-planner) instead of /slash-commands."
     },
     {
@@ -62,10 +63,10 @@
         "agents": ".cursor/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` and search for the file name.",
-      "newChatGuidance": "Start a new Cursor Agent chat",
+      "newChatGuidance": "Start a new Agent chat in the Cursor editor, or open a new terminal in the project root and run `agent`",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
+        "toolSyntax": "`Task(subagent_type=\"explore\", description=\"...\", prompt=\"...\")`",
         "explorerName": "explore",
         "configNote": null
       },
@@ -106,12 +107,17 @@
         "agents": ".agents/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Open a new terminal and start Antigravity CLI, or open a new Antigravity IDE agent chat",
+      "newChatGuidance": "Start a new conversation in the Antigravity app or IDE agent panel, or open a new terminal and run `agy`",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "invoke_subagent",
+        "toolSyntax": "the `invoke_subagent` tool",
         "explorerName": "research",
         "configNote": null
+      },
+      "agentFrontmatter": {
+        "tools": ["view_file", "grep_search", "run_command"],
+        "subagent": true,
+        "mainAgent": false
       },
       "postInstallNote": null
     },
@@ -128,12 +134,15 @@
         "agents": ".opencode/agents"
       },
       "contextAttachSyntax": "Reference the file using `@` followed by the file name.",
-      "newChatGuidance": "Open a new terminal and start OpenCode",
+      "newChatGuidance": "Open a new terminal and run `opencode`, or start a new session in the OpenCode desktop app",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "Task(subagent_type=\"explore\", prompt=\"...\")",
+        "toolSyntax": "`task(subagent_type=\"explore\", description=\"...\", prompt=\"...\")` on OpenCode 1.x, or `subagent(agent=\"explore\", description=\"...\", prompt=\"...\")` on OpenCode 2.x",
         "explorerName": "explore",
         "configNote": null
+      },
+      "agentFrontmatter": {
+        "mode": "subagent"
       },
       "postInstallNote": null
     }
