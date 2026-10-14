@@ -94,9 +94,9 @@ async function processTemplate(templatePath, options) {
         outputPath = path.join(commandsDir, `${basename}${ext}`);
       } else if (commandsAsSkills(target)) {
         // Codex, Antigravity and Copilot: commands become skills in directory structure (skills/<name>/SKILL.md)
-        // Copilot: disable-model-invocation keeps the commands user-triggered, as VS Code's prompt migration does
+        // Copilot and Antigravity: disable-model-invocation keeps the commands user-triggered, as VS Code's prompt migration does
         const invocable = target.id === 'codex' ? 'user-invocable: true\n'
-          : target.id === 'copilot' ? 'disable-model-invocation: true\n'
+          : ['copilot', 'antigravity'].includes(target.id) ? 'disable-model-invocation: true\n'
           : '';
         const skillFrontmatter = `---\nname: ${basename}\ndescription: ${frontmatter.description || 'APM command'}\n${invocable}---\n`;
         finalContent = skillFrontmatter + processedBody;

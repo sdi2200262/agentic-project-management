@@ -92,6 +92,9 @@
         "explorerName": "Explore",
         "configNote": null
       },
+      "agentFrontmatter": {
+        "user-invocable": false
+      },
       "postInstallNote": null
     },
     {
