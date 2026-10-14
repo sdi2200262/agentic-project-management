@@ -10,8 +10,8 @@ import fs from 'fs-extra';
 import path from 'path';
 
 /**
- * Recursively finds all .md template files in commands/ and skills/ directories.
- * Excludes README.md, _standards, and apm directories.
+ * Recursively finds all .md template files under the source directory (commands/, skills/, guides/, agents/).
+ * Excludes README.md and the _standards/ and apm/ directories.
  *
  * @param {string} sourceDir - Directory to search.
  * @returns {Promise<string[]>} Array of markdown file paths.

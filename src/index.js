@@ -46,8 +46,8 @@ function displayHelp() {
   console.log(chalk.cyan.bold('Commands:'));
   console.log(`  ${chalk.bold('init')}              Initialize APM with official releases`);
   console.log(`  ${chalk.bold('custom')}            Install from a custom repository`);
-  console.log(`  ${chalk.bold('update')}            Update installed assistant releases`);
-  console.log(`  ${chalk.bold('archive')}           Archive current session or list archives`);
+  console.log(`  ${chalk.bold('update')}            Update installed assistant templates`);
+  console.log(`  ${chalk.bold('archive')}           Archive the current session or manage archives`);
   console.log(`  ${chalk.bold('add')}               Add assistant(s) to existing installation`);
   console.log(`  ${chalk.bold('remove')}            Remove assistant(s) from installation`);
   console.log(`  ${chalk.bold('status')}            Show installation status`);
@@ -80,7 +80,7 @@ function displayHelp() {
   console.log(`            - Follows SemVer: ${chalk.blue.underline('https://semver.org/')}`);
   console.log(`            - Update with: ${chalk.yellow('npm update -g agentic-pm')}`);
   console.log('');
-  console.log(`  ${chalk.bold('APM Releases')} (v1.x.x):`);
+  console.log(`  ${chalk.bold('Official APM Releases')} (v1.x.x):`);
   console.log(`            - Follows SemVer: ${chalk.blue.underline('https://semver.org/')}`);
   console.log(`            - Compatible with v1.x.x agentic-pm CLI`);
   console.log(`            - Update via: ${chalk.yellow('apm update')}`);
@@ -89,7 +89,7 @@ function displayHelp() {
   console.log('');
   console.log(chalk.gray('New to APM? The apm-assist skill gives your AI assistant full knowledge of'));
   console.log(chalk.gray('the framework so it can answer questions and help with migration.'));
-  console.log(chalk.gray('See:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management/tree/main/skills#installing-skills'));
+  console.log(chalk.gray('See:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist'));
   console.log('');
 }
 
@@ -179,7 +179,7 @@ program
 
 program
   .command('archive')
-  .description('Archive current session or list archives')
+  .description('Archive the current session or manage archives')
   .option('-l, --list', 'List archived sessions')
   .option('-f, --force', 'Skip destructive action confirmations')
   .option('-n, --name <name>', 'Custom archive name')

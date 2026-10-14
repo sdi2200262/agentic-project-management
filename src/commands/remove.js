@@ -66,7 +66,7 @@ export async function removeCommand(options = {}) {
       actions.push(`Skip: ${skipped.join(', ')} (not installed)`);
     }
     if (assistantIds.length === metadata.assistants.length) {
-      actions.push('This removes all assistants — .apm/ project artifacts will remain');
+      actions.push('This removes all assistants — .apm/ session artifacts will remain');
     }
     const proceed = await confirmDestructiveAction(actions, 'Remove?');
     if (!proceed) {

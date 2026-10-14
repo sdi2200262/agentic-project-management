@@ -29,17 +29,17 @@ This skill provides the context and procedures needed to help users with APM (Ag
 
 ## 2. APM at a Glance
 
-APM (Agentic Project Management) is a framework for building complex software projects with AI assistants. Instead of one long chat that degrades as context fills, APM structures work into a coordinated system with three Agent types:
+APM (Agentic Project Management) is an open-source framework for managing ambitious software projects with AI assistants. On long tasks, the LLM behind an agent suffers from context decay and context pressure as its conversation grows. APM counters the first by recording the project's intent in planning documents, and the second by splitting the work among agents in separate conversations. Coordination between the agents is mediated by the user, making each exchange a chance to review the work and intervene before issues propagate. APM calls this productive friction.
 
-- **Planner** - Runs once at project start. Gathers requirements through structured discovery, then creates three planning documents: the Spec (what to build), the Plan (how work is organized into Stages and Tasks), and the Rules (how work is performed).
-- **Manager** - Coordinates execution. Assigns Tasks to Workers via self-contained Task Prompts, reviews completed work, and maintains project state.
-- **Workers** - Execute Tasks in specific domains (frontend, backend, etc.). Each Worker sees only its Task Prompt and the Rules, not the full project scope.
+An APM session runs in two phases, with three agent roles:
 
-Agents communicate through a file-based Message Bus in `.apm/bus/`. The user carries messages between Agent conversations by running commands. Project state lives in structured files (`.apm/`) so nothing is lost when a conversation ends.
+- **Planner** - Explores the codebase and questions the user about purpose, requirements, and constraints. Once the user approves its understanding, it writes the Spec (what to build), the Plan (how the work is divided into Stages and Tasks), and the Rules (how the work is carried out). One instance per session.
+- **Manager** - Hands out self-contained Task Prompts, reviews what comes back, and keeps the Tracker (the session's progress) and Memory (its work history) up to date.
+- **Workers** - Each takes the Tasks of one area of the project (frontend, backend, etc.), completes and validates them, logs the outcome to Memory, and reports back. A Worker sees its Task Prompt and the Rules, not the full project scope.
 
-When an Agent's context fills, a Handoff transfers working knowledge to a fresh instance. Sessions can be archived and built upon by future Planners.
+Agents exchange messages through a file-based Message Bus in `.apm/bus/`, and the user delivers each one by running a command. The session's state lives in `.apm/`, outside any conversation. When an agent's context fills, a Handoff moves its role to a fresh conversation. When the session ends, it can be archived for the next session's Planner to build on.
 
-APM is installed via the `agentic-pm` CLI (`npm install -g agentic-pm`) and supports Claude Code, Cursor, GitHub Copilot, Antigravity, OpenCode, and Codex.
+APM is installed via the `agentic-pm` CLI (`npm install -g agentic-pm`) and supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, and OpenCode.
 
 ---
 
@@ -56,16 +56,17 @@ The official documentation is the source of truth. Always fetch the relevant pag
 | Introduction | `/docs/introduction` | What APM is, the problem it solves, high-level overview |
 | Getting Started | `/docs/getting-started` | Installation, first session walkthrough, all steps |
 | Quick Reference | `/docs/quick-reference` | Commands, CLI, file structure, workflow cheat sheet |
-| Agent Types | `/docs/agent-types` | Planner, Manager, Worker roles and responsibilities |
+| Agent Roles | `/docs/agent-roles` | Planner, Manager, and Worker responsibilities |
 | Agent Orchestration | `/docs/agent-orchestration` | Planning documents, Message Bus, Task Prompts, Memory, Handoff |
 | Workflow Overview | `/docs/workflow-overview` | Every procedure in both phases, step by step |
 | Prompt Engineering | `/docs/prompt-engineering` | How APM's files are designed and structured |
 | Context Engineering | `/docs/context-engineering` | How Agent context is scoped and why |
 | CLI Guide | `/docs/cli` | All CLI commands, options, directory structure, metadata schema |
 | Troubleshooting | `/docs/troubleshooting-guide` | Common issues, recovery procedures, migration |
-| Customization Guide | `/docs/customization-guide` | Custom repositories, build pipeline, template modification |
+| Customisation Guide | `/docs/customisation-guide` | Custom repositories, build pipeline, template modification |
 | Security Guide | `/docs/security` | Trust model, custom bundle risks, mitigation |
-| Tips and Tricks | `/docs/tips-and-tricks` | Model selection, cost optimization, workflow efficiency |
+| Tips and Tricks | `/docs/tips-and-tricks` | Model selection, cost optimisation, workflow efficiency |
+| Research | `/research` | The BSc thesis presenting APM v1 and evaluating it against Spec-kit with twelve developers |
 
 **Repository:** https://github.com/sdi2200262/agentic-project-management
 
@@ -151,7 +152,7 @@ This section provides the specific mappings between v0.5.x and v1.0.0. Always cr
 | `.apm/Memory/Memory_Root.md` | `.apm/memory/index.md` |
 | `.apm/Memory/<phase>/<task>.md` | `.apm/memory/stage-NN/task-NN-NN.log.md` |
 | `.apm/guides/` | Platform directory (e.g. `.claude/apm-guides/`) |
-| (none) | `.apm/tracker.md` (live project state) |
+| (none) | `.apm/tracker.md` (live session state) |
 | (none) | `.apm/bus/` (file-based Message Bus) |
 
 **Metadata (v0.5.x):** Two formats exist depending on the minor version:
@@ -189,7 +190,7 @@ Key differences from v1.0.0 metadata: v0.5.x uses `templateVersion` (with `+temp
 
 Archive metadata adds `archivedAt` and `reason` (e.g. `"migration"`) fields.
 
-**Guides and installed files:** In v0.5.x, procedural guides lived in `.apm/guides/`. In v1.0.0, guides, skills, agent configs, and commands are all installed into the platform-specific directory (e.g. `.claude/apm-guides/`, `.claude/skills/`, `.claude/agents/`, `.claude/commands/`). The `.apm/` directory in v1.0.0 contains only project artifacts (Spec, Plan, Tracker, Memory, Bus, metadata).
+**Guides and installed files:** In v0.5.x, procedural guides lived in `.apm/guides/`. In v1.0.0, guides, skills, agent configs, and commands are all installed into the platform-specific directory (e.g. `.claude/apm-guides/`, `.claude/skills/`, `.claude/agents/`, `.claude/commands/`). The `.apm/` directory in v1.0.0 contains only session artifacts (Spec, Plan, Tracker, Memory, Bus, metadata).
 
 **Archives:** v0.5.x `apm update` created backup directories at `.apm/apm-backup-<tag>/` with optional zip files - no structured archive metadata. v1.0.0 uses `.apm/archives/session-YYYY-MM-DD-NNN/` with proper `metadata.json` inside each archive. During migration, old backup directories should be consolidated into the v1.0.0 archive format.
 
@@ -202,7 +203,7 @@ Archive metadata adds `archivedAt` and `reason` (e.g. `"migration"`) fields.
 
 **CLI changes:** v0.5.x CLI had only `apm init` and `apm update`. v1.0.0 adds `apm archive`, `apm custom`, `apm add`, `apm remove`, and `apm status`. The `apm init` command in v1.0.0 is fresh-install only (refuses to run if already initialized).
 
-**Platform support:** v0.5.x supported 11 assistants (including Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity, Qwen Code). v1.1.0 updated Antigravity to Antigravity. v1.0.0 narrowed to Cursor, Claude Code, GitHub Copilot, Antigravity, OpenCode, and Codex.
+**Platform support:** v0.5.x supported 11 assistants (including Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity, Qwen Code). v1.0.0 narrowed to Cursor, Claude Code, GitHub Copilot, Gemini CLI, OpenCode, and Codex. v1.0.2 replaced Gemini CLI with Antigravity.
 
 ### 5.4 Execute
 

@@ -1,15 +1,15 @@
 ---
 name: apm-customization
-description: Guides an AI agent through customizing APM templates, building releases, and managing a custom APM repository.
+description: Guide an assistant editing a forked or templated APM repository through template conventions, custom builds, and releases installed with apm custom.
 ---
 
-# APM Customization Skill
+# APM Customisation
 
 ## 1. Overview
 
 **Reading Agent:** Any AI assistant working within a forked or templated APM repository
 
-This skill guides the customization of APM templates. It assumes the Agent is operating within the APM codebase itself (a fork or template of the official repository) and can explore the repository structure directly.
+This skill guides an assistant working inside a forked or templated APM repository. Use the repository source and its standards to make the requested changes. The website’s Customisation Guide explains the process to developers; this skill covers where to work and how the files connect. It does not apply to changing an installed project’s Spec, Plan, or Rules.
 
 ### 1.1 Objectives
 
@@ -25,6 +25,8 @@ The User describes what they want to change or add. The Agent explores the relev
 ---
 
 ## 2. Repository Structure
+
+A GitHub fork preserves history and supports upstream merges. **Use this template** starts with a clean history and no upstream link; later upstream changes need manual comparison.
 
 Explore the repository to understand the layout. The key directories are:
 
@@ -45,7 +47,7 @@ Explore the repository to understand the layout. The key directories are:
 - `TERMINOLOGY.md` - Formal vocabulary and defined concepts
 - `STRUCTURE.md` - Structural standards for each file type
 - `WRITING.md` - Writing patterns, tone, formatting
-- `NOTES.md` - Development notes and research findings for the official repository. Internal development doc, not relevant to custom repos unless the User has added their own entries.
+- `NOTES.md` - Proposed future work for the official repository. These proposals do not describe current behaviour.
 
 **`build/`** - The build system that processes templates into platform-specific bundles. `build-config.json` defines the supported targets (assistants) and their directory layouts.
 
@@ -69,12 +71,12 @@ Explore `build/processors/placeholders.js` to see all supported placeholders. Co
 - `{ARGS}` - Platform-specific argument syntax
 - `{SUBAGENT_GUIDANCE}` - Platform-native subagent invocation
 
-Explore `build/build-config.json` to see each target's directory layout, format (Markdown or TOML), and platform-specific values.
+Explore `build/build-config.json` to see each target’s directory layout, output format, and platform-specific values. All current targets use Markdown.
 
 **Building locally:**
 
 ```bash
-npm install
+npm ci
 npm run build:release
 ```
 
@@ -114,11 +116,11 @@ When adding a new guide, skill, command, or agent:
 
 ### Build Configuration Changes
 
-If adding a new target (assistant), modify `build/build-config.json` to add the target definition with its directories, format, and platform-specific values. Explore existing targets as examples.
+A new target (assistant) needs entries in `build/build-config.json` and `build/processors/placeholders.js`: the directory layout and target values in the first, and placeholder resolution and assistant-specific rules in the second. Explore existing targets as examples.
 
 ### CLI Changes
 
-Changes to `src/` affect the CLI tool. These follow different conventions defined in `src/_standards/CLI.md` and require their own release cycle (npm publish, separate from template releases).
+Changes to `src/` affect the CLI tool. These require their own release cycle (npm publish, separate from template releases).
 
 ---
 
@@ -131,7 +133,7 @@ After making changes, the User creates a release that can be installed via `apm 
 3. **Tag** - Create a git tag following the versioning convention
 4. **Release** - Create a GitHub Release and attach all files from `dist/` (the ZIP bundles and `apm-release.json`)
 
-The `apm-release.json` manifest is what the CLI reads to discover available assistants in the release. Explore `build/generators/manifest.js` to understand its structure.
+The `apm-release.json` manifest is what the CLI reads to discover available assistants in the release. A release without it cannot be installed. Explore `build/generators/manifest.js` to understand its structure.
 
 Note: the `.github/workflows/` directory contains CI workflows configured for the official APM repository's release pipeline. These workflows are tailored to the official repo's versioning and publishing process. For custom repositories, the manual build-tag-release approach described above is more straightforward. The User can set up their own CI workflows if needed, but the official ones should not be assumed to work as-is in a fork.
 
@@ -140,6 +142,8 @@ Users install from the custom repository with:
 ```bash
 apm custom -r owner/repo
 ```
+
+The custom command offers all releases, without the CLI-major-version filter used by `apm init`. After installation, `apm update` uses the same custom repository. Private repositories need a GitHub token through `GITHUB_TOKEN` or a signed-in `gh` CLI.
 
 ---
 

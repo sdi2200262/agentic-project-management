@@ -81,7 +81,7 @@ async function processTemplate(templatePath, options) {
     finalContent = replacePlaceholders(content, context);
     outputPath = path.join(guidesDir, `${basename}.md`);
   } else {
-    // Commands and Skills: parse frontmatter
+    // Commands, agents and skills: parse frontmatter
     const { frontmatter, content: body } = parseFrontmatter(content);
     const processedBody = replacePlaceholders(body, context);
     const processedFull = replacePlaceholders(content, context);
