@@ -114,7 +114,7 @@ export async function removeCommand(options = {}) {
     if (overwritten.length) {
       const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))]);
       const others = remaining.join(' ');
-      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${logger.list(remaining)} also ${remaining.length === 1 ? 'uses' : 'use'}. These files still have ${writers}'s text. To restore ${logger.list(remaining)}'s own text, run "apm remove -a ${others}", then "apm add -a ${others}".`);
+      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${logger.list(remaining)} also ${remaining.length === 1 ? 'uses' : 'use'}. These files have ${writers}'s instructions. To restore ${logger.list(remaining)}'s, run "apm remove -a ${others}", then "apm add -a ${others}". This is a known issue, pending a fix.`);
     }
   }
 }

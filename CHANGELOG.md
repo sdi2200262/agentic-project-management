@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Known Issues
 
-* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. The one installed or updated last overwrites the other's copy. Removing that one leaves the other with the wrong text. To restore an assistant's own text, run `apm remove -a <id>`, then `apm add -a <id>`. CLI v1.0.2 keeps these files on remove and warns in that case. Older CLIs delete them, and the same two commands restore them.
+* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. The one installed or updated last overwrites the other's copy. Removing that one leaves the other with its instructions. To restore an assistant's instructions, run `apm remove -a <id>`, then `apm add -a <id>`. With both installed, this overwrites the other's. CLI v1.0.2 keeps these files on remove and warns in that case. Older CLIs delete them, and the same two commands restore them. A fix is pending.
 
 ## CLI v1.0.2 - Unreleased
 
