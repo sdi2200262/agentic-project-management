@@ -15,9 +15,9 @@ import path from 'path';
  *
  * Safety rules:
  * - Only deletes files explicitly listed in installedFiles.
- * - Only removes directories that are intermediate path segments of
- *   those files (i.e., directories APM created).
- * - Never removes the assistant root directory (e.g. .github/, .claude/).
+ * - Keeps files that an assistant staying installed also lists.
+ * - Only removes directories that are parent segments of those files.
+ * - Removes the assistant root directory (e.g. .agents/) only when it is empty.
  * - Stops climbing at any directory that still contains other content
  *   (user files, non-APM subdirectories, etc.).
  *
@@ -33,30 +33,41 @@ export async function removeInstalledFiles(cwd, installedFiles, assistantIds = n
   const ids = (assistantIds || Object.keys(installedFiles)).filter(id => id !== '_apm');
   let removed = 0;
 
-  // Collect every intermediate directory from our installed file paths.
+  // Files that assistants staying installed also list (e.g. shared .agents/skills/) are kept
+  const kept = new Set(
+    Object.keys(installedFiles)
+      .filter(id => id !== '_apm' && !ids.includes(id))
+      .flatMap(id => Array.isArray(installedFiles[id]) ? installedFiles[id] : [])
+  );
+
+  // Collect every parent directory from our installed file paths.
   // For ".github/skills/context-gathering/SKILL.md" this yields:
   //   .github/skills/context-gathering
   //   .github/skills
-  // but NOT .github (the root) and NOT cwd.
+  //   .github (the root, removed only if empty and never reported as kept)
+  // but NOT cwd.
   const ownedDirs = new Set();
+  const rootDirs = new Set();
 
   for (const id of ids) {
     const files = installedFiles[id];
     if (!Array.isArray(files)) continue;
 
     for (const file of files) {
+      if (kept.has(file)) continue;
       const fullPath = path.join(cwd, file);
       if (await fs.pathExists(fullPath)) {
         await fs.remove(fullPath);
         removed++;
       }
 
-      // Walk path segments to collect intermediate dirs (skip root segment)
+      // Walk path segments to collect every parent dir, including the assistant root
+      // (e.g. ".agents"), which is removed only if it ends up empty
       const segments = file.split(/[\\/]/);
-      // segments[0] is the assistant root (e.g. ".github") — skip it
-      for (let i = segments.length - 1; i > 1; i--) {
+      for (let i = segments.length - 1; i >= 1; i--) {
         const dir = path.join(cwd, ...segments.slice(0, i));
         ownedDirs.add(dir);
+        if (i === 1) rootDirs.add(dir);
       }
     }
   }
@@ -77,7 +88,7 @@ export async function removeInstalledFiles(cwd, installedFiles, assistantIds = n
         // Only report if all remaining entries are non-APM content
         // (not a parent dir we already cleaned — that would be noise)
         const hasRealContent = entries.some(e => !removedDirs.has(path.join(dir, e)));
-        if (hasRealContent) {
+        if (hasRealContent && !rootDirs.has(dir)) {
           keptDirs.push(path.relative(cwd, dir));
         }
       }

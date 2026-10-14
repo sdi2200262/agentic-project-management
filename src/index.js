@@ -59,14 +59,14 @@ function displayHelp() {
   console.log(`  ${chalk.bold('-f, --force')}               Skip destructive action confirmations`);
   console.log(`                              ${chalk.dim('(update, archive, remove, custom --remove-repo/--clear)')}`);
   console.log('');
-  console.log(chalk.cyan.bold('Custom Repository:'));
+  console.log(chalk.cyan.bold('Custom Repository (apm custom):'));
   console.log(`  ${chalk.bold('-r, --repo <repo>')}         Repository in owner/repo format`);
   console.log(`  ${chalk.bold('--add-repo <repos...>')}     Save custom repository(ies)`);
   console.log(`  ${chalk.bold('--remove-repo <repos...>')}  Remove saved repository(ies)`);
   console.log(`  ${chalk.bold('--list')}                    List saved custom repositories`);
   console.log(`  ${chalk.bold('--clear')}                   Clear all saved custom repositories`);
   console.log('');
-  console.log(chalk.cyan.bold('Archive:'));
+  console.log(chalk.cyan.bold('Archive (apm archive):'));
   console.log(`  ${chalk.bold('-l, --list')}                List archived sessions`);
   console.log(`  ${chalk.bold('--delete <name>')}           Delete a specific archive`);
   console.log(`  ${chalk.bold('--clear')}                   Delete all archives`);

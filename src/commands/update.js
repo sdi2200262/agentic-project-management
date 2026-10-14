@@ -81,7 +81,7 @@ export async function updateCommand(options = {}) {
       `Download and install ${release.tag_name} for: ${survivingList}`
     ];
     if (droppedAssistants.length > 0) {
-      bullets.push(`Drop unsupported assistant(s): ${droppedAssistants.join(', ')}`);
+      bullets.push(`Drop unsupported ${droppedAssistants.length === 1 ? 'assistant' : 'assistants'}: ${droppedAssistants.join(', ')}`);
     }
 
     const proceed = await confirmDestructiveAction(
@@ -171,16 +171,16 @@ export async function updateCommand(options = {}) {
   // Clear content for final output
   logger.clearAndBanner();
   if (skippedAssistants.length > 0) {
-    logger.warn(`Dropped ${skippedAssistants.length} assistant(s) not in ${release.tag_name}: ${skippedAssistants.join(', ')}`);
+    logger.warn(`Dropped ${logger.plural(skippedAssistants.length, 'assistant')} not in ${release.tag_name}: ${skippedAssistants.join(', ')}`);
   }
   for (const id of updatedAssistants) {
     logger.success(`Updated ${manifest.assistants.find(a => a.id === id)?.name || id}`);
   }
   for (const id of updatedAssistants) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.warn(assistant.postInstallNote);
+    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
-  logger.success(`Updated to ${release.tag_name} (${updatedAssistants.length} assistant(s))!`);
+  logger.success(`Updated to ${release.tag_name} (${logger.plural(updatedAssistants.length, 'assistant')})!`);
 }
 
 /**
@@ -222,7 +222,7 @@ async function findOfficialUpdate(metadata) {
 
     // Nothing available
     if (!newerStable && !newestPrerelease) {
-      logger.success('Already on the latest pre-release!');
+      logger.success(`Already on the latest pre-release (${metadata.releaseVersion}).`);
       if (!latest) {
         logger.info(`No stable release available yet for v${CLI_MAJOR_VERSION}.x.`);
       }
@@ -280,7 +280,7 @@ async function findOfficialUpdate(metadata) {
   }
 
   if (latest) {
-    logger.success('Already on the latest version!');
+    logger.success(`Already on the latest version (${metadata.releaseVersion}).`);
   } else {
     logger.info(`No stable releases found for v${CLI_MAJOR_VERSION}.x.`);
   }
@@ -321,11 +321,11 @@ async function findCustomUpdate(metadata) {
     : allReleases.filter(r => r.tag_name !== metadata.releaseVersion);
 
   if (!newerReleases.length) {
-    logger.success('Already on the latest version!');
+    logger.success(`Already on the latest version (${metadata.releaseVersion}).`);
     return null;
   }
 
-  const header = `Found ${newerReleases.length} release(s) from ${metadata.repository} newer than ${metadata.releaseVersion}`;
+  const header = `Found ${logger.plural(newerReleases.length, 'release')} from ${metadata.repository} newer than ${metadata.releaseVersion}`;
   const selectedTag = await selectRelease(newerReleases, { header });
   return newerReleases.find(r => r.tag_name === selectedTag);
 }

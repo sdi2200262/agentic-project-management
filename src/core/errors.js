@@ -15,6 +15,7 @@ export const CLIErrorCode = {
 
   // Release errors
   RELEASE_NOT_FOUND: 'RELEASE_NOT_FOUND',
+  CLI_TOO_OLD: 'CLI_TOO_OLD',
   MANIFEST_MISSING: 'MANIFEST_MISSING',
   MANIFEST_INVALID: 'MANIFEST_INVALID',
   BUNDLE_NOT_FOUND: 'BUNDLE_NOT_FOUND',
@@ -94,6 +95,21 @@ export class CLIError extends Error {
       `No releases found for ${repo}`,
       CLIErrorCode.RELEASE_NOT_FOUND,
       { repo }
+    );
+  }
+
+  /**
+   * Creates an error for a release that needs a newer CLI.
+   *
+   * @param {string} tag - Release tag.
+   * @param {string} minCliVersion - Minimum CLI version the release requires.
+   * @returns {CLIError} Formatted error instance.
+   */
+  static cliTooOld(tag, minCliVersion) {
+    return new CLIError(
+      `${tag} requires agentic-pm ${minCliVersion} or later. Update with: npm update -g agentic-pm`,
+      CLIErrorCode.CLI_TOO_OLD,
+      { tag, minCliVersion }
     );
   }
 

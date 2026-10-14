@@ -70,7 +70,9 @@ export async function fetchJSON(path) {
     const reason = err.response?.status
       ? `HTTP ${err.response.status}`
       : err.message;
-    throw CLIError.networkError(`${GITHUB_API_BASE}${path}`, reason);
+    const error = CLIError.networkError(`${GITHUB_API_BASE}${path}`, reason);
+    error.status = err.response?.status;
+    throw error;
   }
 }
 

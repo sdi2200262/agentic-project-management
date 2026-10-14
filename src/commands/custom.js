@@ -10,7 +10,7 @@ import { CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
 import { getCustomRepos, addCustomRepo, removeCustomRepo, getRepoSettings, updateRepoSettings } from '../core/config.js';
-import { fetchCustomReleases, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
+import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
@@ -55,7 +55,7 @@ export async function customCommand(options = {}) {
   // Fresh only — show info for existing installations
   const existing = await readMetadata();
   if (existing) {
-    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${existing.assistants.length} assistant(s)).`);
+    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'assistant')}).`);
     logger.blank();
     logger.info('Use "apm add" to add assistants, "apm update" to update, or "apm archive" to start fresh.');
     return;
@@ -102,7 +102,7 @@ export async function customCommand(options = {}) {
   // Find target release
   let release;
   if (tag) {
-    release = releases.find(r => r.tag_name === tag);
+    release = releases.find(r => r.tag_name === tag) || await findReleaseByTag(repoString, tag);
     if (!release) {
       throw CLIError.releaseNotFound(`${repoString} (tag: ${tag})`);
     }
@@ -141,7 +141,7 @@ export async function customCommand(options = {}) {
     }
   } else {
     hadInteractivePrompt = true;
-    const header = `Found ${manifest.assistants.length} assistant(s) available in ${release.tag_name}`;
+    const header = `Found ${logger.plural(manifest.assistants.length, 'assistant')} available in ${release.tag_name}`;
     const selected = await selectAssistant(manifest.assistants, { header });
     assistantIds = [selected];
   }
@@ -211,7 +211,7 @@ export async function customCommand(options = {}) {
   }
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.warn(assistant.postInstallNote);
+    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
   logger.success(`APM initialized from ${repoString}!`);
   if (repoSaved) logger.info('Repository saved.');

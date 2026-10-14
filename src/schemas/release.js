@@ -77,6 +77,11 @@ export function validateReleaseManifest(manifest) {
     errors.push('version: required string');
   }
 
+  // minCliVersion is optional
+  if (manifest.minCliVersion !== undefined && typeof manifest.minCliVersion !== 'string') {
+    errors.push('minCliVersion: must be a string if provided');
+  }
+
   // assistants is required array
   if (!Array.isArray(manifest.assistants)) {
     errors.push('assistants: required array');

@@ -122,7 +122,7 @@ async function clearMode(force) {
 
   const count = await clearArchives(cwd);
   logger.clearAndBanner();
-  logger.success(`Deleted ${count} archive(s).`);
+  logger.success(`Deleted ${logger.plural(count, 'archive')}.`);
 }
 
 /**
