@@ -18,9 +18,10 @@ import path from 'path';
  * - {GUIDE_PATH:name}: Full path to guide file (<name>.md) - flat structure, no frontmatter
  * - {COMMAND_PATH:name}: Full path to command file (resolves extension per target)
  * - {AGENT_PATH:name}: Full path to agent file (<name>.md, Copilot: <name>.agent.md)
- * - {ARGS}: $ARGUMENTS (markdown) or {{args}} (toml)
+ * - {ARGS}: $ARGUMENTS (Claude Code, Antigravity, OpenCode), ${input:args} (Copilot), or descriptive text (Codex CLI, Cursor)
  * - {RULES_FILE}: Platform-specific agents file name
  * - {SKILLS_DIR}: Platform-specific skills directory
+ * - {GUIDES_DIR}: Platform-specific guides directory
  * - {AGENTS_DIR}: Platform-specific agents directory
  * - {PLANNER_SUBAGENT_GUIDANCE}: Platform-specific subagent exploration guidance for Planner
  * - {MANAGER_SUBAGENT_GUIDANCE}: Platform-specific subagent guidance for Manager investigation
@@ -79,9 +80,10 @@ export function replacePlaceholders(content, context) {
   });
 
   // Replace ARGS placeholder based on format
-  // Platforms with native argument variables: Claude ($ARGUMENTS), Copilot (${input:args}),
-  // OpenCode ($ARGUMENTS); the TOML output format uses {{args}}. Cursor and Codex have no
-  // argument variable, so descriptive text is used so the model picks up the user's input naturally.
+  // Platforms with native argument variables: Claude Code, Antigravity and OpenCode ($ARGUMENTS),
+  // Copilot (${input:args}). Cursor and Codex have no argument variable, so descriptive text is used
+  // so the model picks up the user's input naturally. The {{args}} branch is a legacy path for the
+  // toml format, which no current target uses.
   const argsPlaceholder = format === 'toml' ? '{{args}}'
     : id === 'copilot' ? '${input:args}'
     : (id === 'codex' || id === 'cursor') ? '(the text provided by the User after the command invocation, if any)'
@@ -138,7 +140,7 @@ export function replacePlaceholders(content, context) {
  * Determines the output file extension for a target.
  *
  * @param {Object} target - Target configuration object.
- * @returns {string} File extension including dot (e.g., '.md', '.toml', '.prompt.md').
+ * @returns {string} File extension including dot (e.g., '.md', '.prompt.md'; '.toml' only for the legacy toml format).
  */
 export function getOutputExtension(target) {
   if (target.format === 'toml') {

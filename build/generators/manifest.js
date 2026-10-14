@@ -19,7 +19,7 @@ export function generateReleaseManifest(config, version) {
       id: target.id,
       name: target.name,
       bundle: target.bundleName,
-      description: `Optimized for ${target.name}`,
+      description: `Optimised for ${target.name}`,
       configDir: target.configDir
     };
     if (target.postInstallNote) {
