@@ -56,7 +56,7 @@
       "format": "markdown",
       "configDir": ".agents",
       "directories": {
-        "commands": ".agents/workflows",
+        "commands": ".agents/skills",
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides",
         "agents": ".agents/agents"
@@ -65,8 +65,8 @@
       "newChatGuidance": "Open a new terminal and start Antigravity CLI, or open a new Antigravity IDE agent chat",
       "subagentGuidance": {
         "hasSubagents": true,
-        "toolSyntax": "Agent(subagent_type=\"Explore\", prompt=\"...\")",
-        "explorerName": "Explore",
+        "toolSyntax": "invoke_subagent",
+        "explorerName": "research",
         "configNote": null
       },
       "postInstallNote": null

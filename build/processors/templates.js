@@ -11,7 +11,7 @@ import path from 'path';
 import logger from '../utils/logger.js';
 import { findMdFiles } from '../utils/files.js';
 import { parseFrontmatter } from './frontmatter.js';
-import { replacePlaceholders, getOutputExtension } from './placeholders.js';
+import { replacePlaceholders, getOutputExtension, commandsAsSkills } from './placeholders.js';
 import { generateReleaseManifest } from '../generators/manifest.js';
 import { createZipArchive } from '../generators/archive.js';
 import { getVersion } from '../core/config.js';
@@ -91,10 +91,11 @@ async function processTemplate(templatePath, options) {
         const description = frontmatter.description || 'APM command';
         finalContent = `description = "${description}"\n\nprompt = """\n${processedBody}\n"""\n`;
         outputPath = path.join(commandsDir, `${basename}${ext}`);
-      } else if (target.id === 'codex') {
-        // Codex: commands become skills in directory structure (skills/<name>/SKILL.md)
-        const codexFrontmatter = `---\nname: ${basename}\ndescription: ${frontmatter.description || 'APM command'}\nuser-invocable: true\n---\n`;
-        finalContent = codexFrontmatter + processedBody;
+      } else if (commandsAsSkills(target)) {
+        // Codex and Antigravity: commands become skills in directory structure (skills/<name>/SKILL.md)
+        const invocable = target.id === 'codex' ? 'user-invocable: true\n' : '';
+        const skillFrontmatter = `---\nname: ${basename}\ndescription: ${frontmatter.description || 'APM command'}\n${invocable}---\n`;
+        finalContent = skillFrontmatter + processedBody;
         const skillDir = path.join(commandsDir, basename);
         await fs.ensureDir(skillDir);
         outputPath = path.join(skillDir, 'SKILL.md');

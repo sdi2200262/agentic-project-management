@@ -18,7 +18,7 @@ import path from 'path';
  * - {GUIDE_PATH:name}: Full path to guide file (<name>.md) - flat structure, no frontmatter
  * - {COMMAND_PATH:name}: Full path to command file (resolves extension per target)
  * - {AGENT_PATH:name}: Full path to agent file (<name>.md, Copilot: <name>.agent.md)
- * - {ARGS}: $ARGUMENTS (Claude Code, Antigravity, OpenCode), ${input:args} (Copilot), or descriptive text (Codex CLI, Cursor)
+ * - {ARGS}: $ARGUMENTS (Claude Code, OpenCode), ${input:args} (Copilot), or descriptive text (Antigravity, Codex CLI, Cursor)
  * - {RULES_FILE}: Platform-specific agents file name
  * - {SKILLS_DIR}: Platform-specific skills directory
  * - {GUIDES_DIR}: Platform-specific guides directory
@@ -69,24 +69,24 @@ export function replacePlaceholders(content, context) {
   });
 
   // Replace COMMAND_PATH placeholder (resolves to full path with target-specific extension)
-  // Codex: commands are skills in directory structure (skills/<name>/SKILL.md)
+  // Codex and Antigravity: commands are skills in directory structure (skills/<name>/SKILL.md)
   const commandExt = getOutputExtension(target);
   replaced = replaced.replace(/{COMMAND_PATH:([^}]+)}/g, (_match, commandName) => {
     const base = path.basename(commandName, path.extname(commandName));
-    if (id === 'codex') {
+    if (commandsAsSkills(target)) {
       return path.join(directories.commands, base, 'SKILL.md');
     }
     return path.join(directories.commands, `${base}${commandExt}`);
   });
 
   // Replace ARGS placeholder based on format
-  // Platforms with native argument variables: Claude Code, Antigravity and OpenCode ($ARGUMENTS),
-  // Copilot (${input:args}). Cursor and Codex have no argument variable, so descriptive text is used
-  // so the model picks up the user's input naturally. The {{args}} branch is a legacy path for the
+  // Platforms with native argument variables: Claude Code and OpenCode ($ARGUMENTS), Copilot
+  // (${input:args}). Antigravity, Cursor and Codex have no documented argument variable, so
+  // descriptive text is used so the model picks up the user's input naturally. The {{args}} branch is a legacy path for the
   // toml format, which no current target uses.
   const argsPlaceholder = format === 'toml' ? '{{args}}'
     : id === 'copilot' ? '${input:args}'
-    : (id === 'codex' || id === 'cursor') ? '(the text provided by the User after the command invocation, if any)'
+    : (id === 'antigravity' || id === 'codex' || id === 'cursor') ? '(the text provided by the User after the command invocation, if any)'
     : '$ARGUMENTS';
   replaced = replaced.replace(/{ARGS}/g, argsPlaceholder);
 
@@ -134,6 +134,16 @@ export function replacePlaceholders(content, context) {
   replaced = replaced.replace(/{NEW_CHAT_GUIDANCE}/g, target.newChatGuidance || 'Start a new chat');
 
   return replaced;
+}
+
+/**
+ * Determines whether a target installs commands as skills (<commandsDir>/<name>/SKILL.md).
+ *
+ * @param {Object} target - Target configuration object.
+ * @returns {boolean} True for Codex and Antigravity.
+ */
+export function commandsAsSkills(target) {
+  return target.id === 'codex' || target.id === 'antigravity';
 }
 
 /**
