@@ -8,7 +8,7 @@ When using `apm custom` to install templates from third-party repositories, you 
 
 ### What Custom Repositories Can Do
 
-- **Write files anywhere within the project directory**: Official bundles only contain files within the assistant config directory (e.g., `.claude/commands/`, `.claude/skills/`) and `.apm/`. A malicious bundle could include entries with arbitrary paths like `src/malicious.js` or `package.json`, writing files anywhere within the project root. Path traversal outside the project directory is blocked by the CLI.
+- **Write files anywhere within the project directory**: Official bundles only contain files within the assistant's folders (e.g., `.claude/skills/`, `.agents/skills/`) and `.apm/`. A malicious bundle could include entries with arbitrary paths like `src/malicious.js` or `package.json`, writing files anywhere within the project root. Path traversal outside the project directory is blocked by the CLI.
 
 - **Overwrite specific APM files**: Bundles write only the files they contain. A malicious bundle could overwrite existing APM commands or skills with modified versions.
 

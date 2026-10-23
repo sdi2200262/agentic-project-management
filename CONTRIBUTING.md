@@ -20,7 +20,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 - Workflow improvements: procedures, coordination patterns, memory system optimisations
 - Documentation improvements: clearer explanations, additional examples, missing use cases
 - Platform support: better integration with supported assistants
-- Build system: placeholder additions, platform-specific enhancements
+- Build system: placeholder additions, support for new assistants
 
 ### High-Priority Areas
 
@@ -82,6 +82,8 @@ APM uses a build system that processes source templates into platform-specific b
 - **CLI source:** Edit files in `src/` for CLI command behavior.
 - **Standalone skills:** Edit files in `skills/` for independently installable skills.
 - **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed. See the apm-website README for details.
+
+**Assistant differences:** Every assistant installs the same commands, guides, and skills; only the explorer agent file differs. Placeholders in `build/processors/placeholders.js` resolve the same way for every assistant, and the build fails if the shared files differ between assistants. Put anything that differs per assistant, such as command prefixes or subagent calls, in §5 Assistant Reference of `templates/skills/apm-communication/SKILL.md`.
 
 **Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected commands, guides, and skills. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
 

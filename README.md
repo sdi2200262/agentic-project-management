@@ -39,7 +39,7 @@ Open your assistant in the project and run:
 /apm-1-initiate-planner
 ```
 
-Describe what you want to build or change. The Planner works with you on the planning documents, then directs you to start the Manager in a new conversation. From there, each agent tells you what to run next and where. For the full walkthrough, see [Getting Started](https://agentic-project-management.dev/docs/getting-started).
+In Codex CLI, type `$apm-1-initiate-planner`; in OpenCode, `@apm-1-initiate-planner`. Describe what you want to build or change. The Planner works with you on the planning documents, then directs you to start the Manager in a new conversation. From there, each agent tells you what to run next and where. For the full walkthrough, see [Getting Started](https://agentic-project-management.dev/docs/getting-started).
 
 ## Documentation
 
