@@ -120,6 +120,9 @@ export async function removeCommand(options = {}) {
 
   // Clear content for final output
   logger.clearAndBanner();
+  for (const id of skipped) {
+    logger.error(`Assistant '${id}' is not installed, skipped.`);
+  }
   if (remaining.length === 0) {
     logger.success('All assistants removed.');
     logger.info('Run "apm archive" to archive, or "apm add" to add new assistants.');

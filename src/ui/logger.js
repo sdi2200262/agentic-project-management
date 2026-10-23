@@ -54,7 +54,8 @@ export function warn(message, options = {}) {
 }
 
 /**
- * Logs an error message.
+ * Logs an error message and marks the process as failed, so a command
+ * that prints an error exits non-zero even when it returns normally.
  *
  * @param {string} message - Message to log.
  * @param {Object} [options={}] - Logging options.
@@ -65,6 +66,7 @@ export function error(message, options = {}) {
   const prefix = LOG_LEVELS.ERROR('[ERROR]'.padEnd(PREFIX_WIDTH));
   const formatted = options.indent ? `${INDENT}${message}` : message;
   console.error(`${prefix} ${formatted}`);
+  process.exitCode = 1;
 
   if (options.error?.stack) {
     console.error(chalk.gray(options.error.stack));
