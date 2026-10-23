@@ -7,6 +7,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
+## CLI v1.0.3 + Templates v1.1.0 - Unreleased
+
+Every assistant now installs the same commands, guides and communication skill. Run `apm update` to move an existing install to the new layout; it removes the old files and installs the new ones.
+
+### Breaking Changes
+
+* **CLI v1.0.2 or later is required.** CLI v1.0.1 and older ignore `minCliVersion` and delete shared files when you remove an assistant, which breaks the other assistants that use them. Check with `apm --version` and update with `npm install -g agentic-pm@latest`. After `apm init`, `apm add` or `apm update`, older CLIs show a note saying this.
+* **Claude Code commands are skills.** Commands install to `.claude/skills/` instead of `.claude/commands/`. You still run them as `/apm-…`.
+* **OpenCode commands are skills.** Commands install to `.agents/skills/`, and `.opencode/commands/` is no longer used. Run them as `@apm-…` instead of `/apm-…`.
+* **Shared folder for Codex, Cursor, Copilot and OpenCode.** Commands, guides and skills install to `.agents/skills/` and `.agents/apm-guides/`, as Antigravity's already did. They previously lived in each assistant's own folder: `.codex/apm-guides/`, `.cursor/`, `.github/` and `.opencode/`.
+
+### Changed
+
+* **One layout for every assistant.** Claude Code installs to `.claude/skills/` and `.claude/apm-guides/`. Codex, Cursor, Copilot, Antigravity and OpenCode share `.agents/skills/` and `.agents/apm-guides/`. Each assistant keeps one explorer agent file in its own folder, such as `.codex/agents/` or `.github/agents/`.
+* **Assistant Reference.** What differs between assistants is listed in §5 of the `apm-communication` skill: the APM folder, how to run a command (`/` for most, `$` for Codex, `@` for OpenCode), the Rules file, the explorer subagent call and how to start a new chat. Commands and guides point to it instead of carrying per-assistant text.
+* **Command descriptions.** Each command's description now says to use it only when you run it, and every command skill sets `disable-model-invocation: true`, so agents don't start commands on their own.
+* **Prompts need a terminal.** `apm remove` and other commands that ask for confirmation stop with an error when no terminal is attached, instead of doing nothing.
+* **`apm status` names missing files.** It lists each missing file by name.
+* **Consistent assistant names.** CLI prompts and messages use the same name for each assistant.
+
+### Fixed
+
+* **Codex and Antigravity no longer overwrite each other's skills.** Both now install identical files to `.agents/skills/`, so installing, updating or removing one leaves the other's instructions intact. This resolves the Templates v1.0.3 known issue. Run `apm update` to apply the fix.
+
 ## CLI v1.0.2 + Templates v1.0.3 - 2026-10-15
 
 ### Changed
@@ -33,7 +57,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Known Issues
 
-* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. The one installed or updated last overwrites the other's copy. Removing that one leaves the other with its instructions. To restore an assistant's instructions, run `apm remove -a <id>`, then `apm add -a <id>`. With both installed, this overwrites the other's. CLI v1.0.2 keeps these files on remove and warns in that case. Older CLIs delete them, and the same two commands restore them. A fix is pending.
+* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. The one installed or updated last overwrites the other's copy. Removing that one leaves the other with its instructions. To restore an assistant's instructions, run `apm remove -a <id>`, then `apm add -a <id>`. With both installed, this overwrites the other's. CLI v1.0.2 keeps these files on remove and warns in that case. Older CLIs delete them, and the same two commands restore them. Fixed in Templates v1.1.0; run `apm update`.
 
 ## Templates v1.0.2 - 2026-06-08
 
