@@ -2,74 +2,53 @@
 
 ## 1. Overview
 
-**Reading Agent:** Worker
+**Reading agent:** Worker
 
-This guide defines how you log Task outcomes and report results. Task Logs capture Task-level context using structured markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
-
-### 1.1 Outputs
-
-- *Task Log:* Structured log at `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` capturing outcome, validation, deliverables, and flags.
-- *Task Report:* Concise summary written to the Report Bus for the Manager to process.
-
----
+Write a Task Log at the prompt's `log_path`, then a concise Report Bus message. The Manager uses the log to assess outcomes and coordinate further work without the chat history.
 
 ## 2. Operational Standards
 
 ### 2.1 Flag Assessment Standards
 
-Boolean flags in YAML frontmatter signal conditions requiring Manager attention. Set flags based on what you observed during execution relative to your Task Prompt and working context.
+Set flags from scoped observations:
 
-**`important_findings`:** Set to `true` when execution revealed information not in your Task Prompt that seems project-relevant, you discovered dependencies, risks, or constraints your Task Prompt didn't account for, or something suggests other Tasks or agents might be affected.
+- `important_findings`: new project-relevant information, dependencies, risks or constraints absent from the prompt, or findings that may affect other work. Include User corrections as directed by the execution guide.
+- `compatibility_issues`: conflicts with existing code/conventions, integration concerns, breaking changes or migration requirements.
 
-**`compatibility_issues`:** Set to `true` when your output conflicts with existing code, patterns, or conventions you touched, you discovered integration concerns that might affect other parts of the system, or breaking changes or migration requirements resulted from your work.
-
-**Default:** When uncertain whether a finding warrants a flag, set to `true`. False negatives hurt coordination more than false positives.
+When uncertain whether a flag applies, set it to true. Explain the finding in its conditional body section.
 
 ### 2.2 Outcome Standards
 
-Status reflects whether the objective was achieved. Select based on end state, not effort expended.
+Select status from results, not effort:
 
-- *Success:* Objective achieved, all validation passed.
-- *Partial:* Some progress made but incomplete; you need guidance to continue.
-- *Failed:* Objective not achieved; you attempted but could not resolve the issue.
+- Success: objective achieved and all validation passed.
+- Partial: progress made but incomplete; guidance is needed.
+- Failed: objective not achieved despite attempts to resolve it.
 
-Use Partial when: validation is ambiguous, important findings emerged that could affect other Tasks, iteration stalled with recurring failures, or approach uncertainty depends on factors outside your scope. Continue iterating (do not log yet) when validation failed but the cause is clear and fixable, no findings require Manager awareness, and progress is being made.
+Use Partial for ambiguous validation, important findings that could affect other Tasks, recurring failures or uncertainty beyond your scope. Keep iterating before logging when a failure is clear and fixable, no findings require Manager attention and progress continues.
 
 ### 2.3 Detail Level Standards
 
-Task Logs serve the Manager's coordination needs, not archival documentation. Ask: does this detail help the Manager understand what was accomplished? Would it affect the Manager's next review decision? Can it be found by reading the referenced artifacts directly?
+Write for the Manager's next decision and future continuation. Lead with the outcome; give concrete deliverables, checks/results, limits, consequential decisions and unresolved issues. Reference paths instead of copying artifacts. Use snippets only for novel, complex or critical logic, at most 20 lines. Include diagnostic output needed to understand errors.
 
-**Default:** Prefer concise but comprehensive summaries with artifact references over verbose inline content. Reference artifacts by path rather than including large code blocks. Include code snippets only for novel, complex, or critical logic (20 lines or fewer). For error messages, include relevant stack traces or diagnostic details.
-
----
+Keep required sections, but omit duplicated narrative and a step-by-step account that adds no review value. Distinguish performed checks from unverified claims.
 
 ## 3. Task Logging Procedure
 
-Two sequential steps after Task completion: write the Task Log, then deliver the Task Report via the bus. Execute after Task completion per `{GUIDE_PATH:task-execution}` §3.6 Task Completion.
-
 ### 3.1 Task Log Procedure
 
-After Task execution, populate the Task Log at the path provided in the Task Prompt (`log_path`).
-
-Perform the following actions:
-1. From the completion assessment already presented in chat per `{GUIDE_PATH:task-execution}` §3.6 Task Completion, determine what to capture in the Task Log.
-2. Complete YAML frontmatter fields:
-   - Set `status` per §2.2 Outcome Standards.
-   - Set `important_findings` and `compatibility_issues` per §2.1 Flag Assessment Standards.
-   - Set `stage`, `task`, `title`, and `agent` from the Task Prompt.
-3. Complete markdown body sections per §4.1 Task Log Format. Always include: Summary, Details, Output, Validation, Issues. Include conditional sections (Compatibility Concerns, Important Findings) only when their corresponding flag is `true`.
-4. Write the Task Log to `log_path`.
+1. Capture the completion outcome and evidence.
+2. Set `stage`, `task`, `title` and `agent` from the prompt; select status and flags per §2.
+3. Fill Summary, Details, Output, Validation and Issues per §4.1. Add Compatibility Concerns and Important Findings only when their flags are true. Note subagent usage when applicable.
+4. Write to `log_path`. For a batch, do this after each Task, before the next begins.
 
 ### 3.2 Task Report Delivery
 
-Perform the following actions:
-1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).
-2. Read the Report Bus, then write the Task Report to it: `.apm/bus/<agent-slug>/report.md`. The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log.
-3. Direct the User to deliver the report to the Manager per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication - provide both `apm-5-check-reports <agent-id>` for targeted retrieval and `apm-5-check-reports` as the general command, since multiple Workers may finish concurrently.
+After the single Task or the entire batch finishes/stops:
 
-For batch execution, write a single batch report per §4.3 Batch Report Format after completing all Tasks (or stopping on failure).
-
----
+1. Clear `.apm/bus/<agent-slug>/task.md` via terminal.
+2. Read and write `.apm/bus/<agent-slug>/report.md` with the outcome, status, log path and flags per §4.2, or one batch report per §4.3. Keep detail in the logs.
+3. Direct the User to the Manager with both `apm-5-check-reports <agent-id>` for targeted delivery and `apm-5-check-reports` for multiple concurrent results. Use the assistant's invocation from the communication skill.
 
 ## 4. Structural Specifications
 
@@ -229,21 +208,3 @@ tasks:
 If the batch stopped early due to a Failed Task, indicate which Task caused the stop and list remaining Tasks as "Not started (batch stopped)."
 
 ---
-
-## 5. Content Guidelines
-
-### 5.1 Good vs Poor Logging
-- *Summary:* "Made some changes and fixed issues" → "Implemented POST /api/users with validation. All tests passing."
-- *Details:* "I worked on the endpoint and there were some issues" → "Added registration route with email/password validation using express-validator"
-- *Output:* "Changed some files" → "Modified: `routes/users.js`, `server.js`"
-- *Validation:* "It works now" → "Test suite: 5/5 passing. Manual testing confirmed expected responses."
-
-### 5.2 Common Mistakes
-
-- *Forgetting conditional sections:* When a flag is `true`, include the corresponding section (Compatibility Concerns, Important Findings).
-- *Missing artifact references:* When deliverables are produced, list file paths in the Output section.
-- *Deferred batch logging:* In batch execution, write each Task Log immediately after completing that Task - before starting the next. Deferring all logging to the end of a batch risks context loss if auto-compaction occurs mid-batch.
-
----
-
-**End of Guide**
