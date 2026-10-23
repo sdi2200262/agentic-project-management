@@ -13,6 +13,11 @@ import { countArchives } from '../services/archive.js';
 import logger from '../ui/logger.js';
 
 /**
+ * Most missing files listed per assistant before the rest are summarized.
+ */
+const MAX_MISSING_SHOWN = 10;
+
+/**
  * Executes the status command.
  *
  * @returns {Promise<void>}
@@ -53,13 +58,19 @@ export async function statusCommand() {
   const incomplete = [];
   for (const id of metadata.assistants) {
     const files = Array.isArray(installedFiles[id]) ? installedFiles[id] : [];
-    let missing = 0;
+    const missing = [];
     for (const file of files) {
-      if (!(await fs.pathExists(path.join(cwd, file)))) missing++;
+      if (!(await fs.pathExists(path.join(cwd, file)))) missing.push(file);
     }
-    if (missing) {
+    if (missing.length) {
       incomplete.push(id);
-      console.log(`  ${id} (${files.length} files, ${chalk.yellow(`${missing} missing`)})`);
+      console.log(`  ${id} (${files.length} files, ${chalk.yellow(`${missing.length} missing`)})`);
+      for (const file of missing.slice(0, MAX_MISSING_SHOWN)) {
+        console.log(chalk.yellow(`    - ${file}`));
+      }
+      if (missing.length > MAX_MISSING_SHOWN) {
+        console.log(chalk.yellow(`    ... and ${missing.length - MAX_MISSING_SHOWN} more`));
+      }
     } else {
       console.log(`  ${id} (${files.length} files)`);
     }
