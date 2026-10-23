@@ -1,30 +1,11 @@
-# APM Templates Development Notes
+# APM Development Notes
 
-This document contains development notes, research findings, and implementation considerations for the APM templates. These notes inform future development decisions and track areas requiring further investigation.
+These notes describe unimplemented ideas. They do not change the workflow in `WORKFLOW.md` or authorize new runtime behavior.
 
----
+## Worker-managed teams
 
-## Claude Code Agent Teams Integration (Future)
+A possible future extension would let a Worker delegate independent parts of its assigned scope to a team, integrate their work and report through the existing bus. APM Workers would remain independent conversations; the team would operate within one Worker's scope.
 
-**Context:** Claude Code's experimental Agent Teams feature enables Workers to internally spawn a team and parallelize work within their assigned task scope. The Worker becomes the team lead, assigns sub-work to teammates, synthesizes results, and reports back through the standard bus protocol. The Manager is unaware this happened - reports and memory logs have the same structure regardless.
+Before implementing this idea, establish platform support, cleanup and branch responsibilities, cost guidance, and behavior when a batch stops or needs follow-up. Preserve Worker validation, logging and reporting obligations.
 
-**Status:** Future work. Depends on an experimental platform feature (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` environment variable), disabled by default. Optional and platform-exclusive. Reference: <https://code.claude.com/docs/en/agent-teams>
-
-This applies exclusively to Claude Code and is delivered through the existing conditional placeholder system - a new placeholder (e.g., `{WORKER_TEAM_GUIDANCE}`) resolves to Team Execution Standards for Claude Code and to empty string for all other platforms. No new skill file; the placeholder inserts content into the Task Execution guide as an Operational Standard (§2) and a conditional step (§3.3).
-
-Appropriate for batch assignments with 3+ independent sub-tasks or single complex tasks with multiple independent deliverables touching distinct file groups. Not appropriate for tightly sequential work or where coordination overhead exceeds the benefit. Each teammate operates on a sub-branch off the Worker's branch; the Worker merges teammate branches and resolves conflicts before reporting. All teammates must be shut down and cleaned up before the Worker writes its Task Log and Report - team resources are ephemeral. APM Workers are independent chats (not teammates), enabling multi-team coordination (e.g., Frontend Team and Backend Team concurrently) without platform-level nested team support.
-
-### Open Questions
-
-1. **Cost guidance:** Should APM provide guidance on when Team Execution is cost-effective vs. wasteful, or leave it entirely to Worker judgment?
-2. **Batch + FollowUp interaction:** When a batch task fails and the Manager issues a FollowUp, should remaining unstarted tasks be re-batched with the FollowUp or dispatched separately?
-
-### Affected Components
-
-| Component | Change Type | Scope |
-| ----------- | ------------ | ------- |
-| Task Execution guide | Add conditional Team Execution section (§2 + §3.3) | CC only |
-| Build config (`build-config.json`) | Add `teamGuidance` field for Claude Code target | Build system |
-| Placeholder processor (`placeholders.js`) | Add `{WORKER_TEAM_GUIDANCE}` replacement | Build system |
-
----
+The earlier proposal used per-assistant build placeholders. That approach conflicts with the shared-content layout. Any future design must keep assistant-specific calls in the communication skill's Assistant Reference and shared instructions identical across bundles. No team-execution placeholder or team workflow is currently specified.

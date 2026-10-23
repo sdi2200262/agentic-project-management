@@ -27,13 +27,13 @@ Formal terms are always capitalized and carry defined meaning. All other languag
 
 ## 3. Planning Documents
 
-Three documents form a waterfall: Spec (what to build) → Plan (how work is organized) → Rules (how work is performed).
+The Planner produces three documents in order: Spec (what to build), Plan (how work is organized), then Rules (how work is performed). Each requires User approval before proceeding. The Rules filename is given in the communication skill’s §5 Assistant Reference.
 
 | Term | Definition | Location |
 | ------ | ------------ | ---------- |
 | **Spec** | Project-specific design decisions and constraints that inform the Plan. The Manager may update it during the Implementation Phase. | `.apm/spec.md` |
 | **Plan** | Stage and Task breakdown with agent assignments, Dependency Graph, and validation criteria. The Manager may update it during the Implementation Phase. | `.apm/plan.md` |
-| **Rules** | Execution rules applicable to all or most Tasks, maintained as the APM Rules block within `{RULES_FILE}`. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | `{RULES_FILE}` at workspace root |
+| **Rules** | Execution rules applicable to all or most Tasks, maintained as the APM Rules block within the Rules file. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | The Rules file at workspace root |
 | **Dependency Graph** | Mermaid diagram in the Plan header that visualizes Task dependencies, agent assignments, and execution flow. Enables the Manager to identify batch candidates, parallel dispatch opportunities, and critical path bottlenecks. | Within `.apm/plan.md` |
 
 ---

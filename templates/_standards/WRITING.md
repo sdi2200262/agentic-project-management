@@ -1,231 +1,66 @@
 # APM Writing Standards
 
-This document defines how to write content within APM skills and commands. It establishes tone, instruction patterns, output guidance, and terminology usage rules. This is a development-time specification: agents do not read this file during runtime. Every rule here takes effect only through the templates that implement it - template authors embed these rules contextually in commands, guides, and skills.
+These standards guide template authors. Agents receive them through commands, guides and skills, not by reading `_standards/` at runtime. Apply them to both the instructions and the output those instructions request. Terms follow `TERMINOLOGY.md`; document and artifact structure follows `STRUCTURE.md`.
 
-All terms used in this document are defined in `TERMINOLOGY.md`. All structural patterns follow `STRUCTURE.md`.
+## 1. Write for the reader
 
----
+Before writing, identify the reader, the decision or action they need to take, and the context they already have. State the rule, condition and required action directly. Keep enough explanation to make the instruction unambiguous.
 
-## 1. General Principles
+Trust capable models to apply clear criteria. Define the result and constraints rather than prescribing a thinking process, invented classification system or exhaustive decision tree. Keep enumerated values where artifact schemas require them.
 
-### 1.1 Core Standards
+Give each rule one primary home. Refer to it elsewhere instead of repeating its full procedure or listing its inverse as a Common Mistake. A reference is sufficient only when the reading role can load it within its normal access boundaries. Task Prompts remain self-contained; Workers do not need coordination documents to execute them.
 
-**Clarity** - every sentence serves a purpose. **Precision** - terms match `TERMINOLOGY.md` exactly. **Consistency** - the same patterns across all files. **Actionability** - every instruction is directly executable. **Completeness** - all cases covered, no gaps requiring assumptions.
+Remove padding, repeated warnings and generic reinforcement. Choose prose, lists or tables for the content, not for a token quota or fixed file length. Preserve conditions, authority, approval gates and artifact contracts when shortening instructions.
 
-### 1.2 Enforcement Tiers
+## 2. Use plain, precise language
 
-**Hard requirements (must enforce):** Token efficiency and condensation practices. Markdown formatting rules. Direct actionable instruction style - imperative mood, no hedging. Output and schema fidelity. Formal terminology - `TERMINOLOGY.md` defines the only formal APM terms; all other language is natural. See §6 Terminology Usage. De-duplication - one primary explanation per concept.
+Keep each sentence to one main thought. Prefer concrete subjects, active verbs and familiar words. Keep related words together and put prerequisites before the steps that depend on them. Use the passive when the receiver of an action is the subject that matters.
 
-**Soft guidance (reasoning-oriented):** Phrasing style preferences. Narrative flow suggestions. Optional presentation patterns (tables vs prose, list vs paragraph).
+Use a casually formal tone in chat and match authored prose to its reader and purpose. Remove hype, intensifiers and canned transitions. State claims at the certainty the evidence supports; identify consequential uncertainty and its cause.
 
-### 1.3 Token Efficiency
+Use formal APM terms consistently as defined in `TERMINOLOGY.md`. Ordinary labels and section names do not acquire formal status through capitalization or formatting. Explain unfamiliar concepts before relying on their names.
 
-Skills, guides, and commands are written for token efficiency while preserving comprehensiveness:
+Runtime instructions address the reading agent as “you”; use third person for other roles. Shared skills distinguish role responsibilities explicitly. Standards describe the workflow in third person and may address maintainers directly.
 
-- Prose is preferred over tables when conveying the same information.
-- Excessive spacing and structural padding are avoided.
-- Compact list formats are used when listing related items.
-- Redundant phrasing and unnecessary elaboration are eliminated.
-- Related concepts are combined in flowing paragraphs rather than isolated bullets.
-- Bold and italic introduce hierarchy inline instead of using additional heading levels.
+## 3. Make procedures actionable
 
-Token efficiency does not mean sacrificing clarity or completeness. Remove waste and tighten expression, not substance.
+Use numbered steps for ordered actions and lists for independent items. State the trigger, prerequisites, decisions, actions and completion condition. Include response handling whenever the agent must pause for the User: what approval allows, how corrections are applied, and when to ask again.
 
-### 1.4 Audience Awareness
+Use natural conditions with a clear action. State a default only when it resolves a consequential edge case. Do not introduce example defaults that conflict with the workflow's validation or authority rules.
 
-Skills, guides, and commands serve two audiences: **Human Users** (readable prose, logical flow, clear structure, scannable sections) and **AI Agents** (predictable patterns, explicit instructions, unambiguous terminology). Content serves both - structured formats where appropriate, prose for explanations, consistent section patterns for reliable parsing.
+Give a rule's reason when it helps the reader apply it correctly. Keep examples for non-obvious cases. Describe ordinary sequential transitions naturally; use section references for navigation and non-sequential jumps.
 
-### 1.5 Simplicity Standards
+## 4. Request useful communication
 
-Skills and commands are written for capable models that reason well from clear, concise instructions:
+Agents explain decisions through conclusions, supporting evidence, material trade-offs and uncertainty. Do not require disclosure or reconstruction of internal reasoning, scripted thinking headers, or staged “thinking then writing” rituals. Reviewable proposals and approvals remain explicit workflow steps.
 
-**Trust model reasoning.** State rules and criteria clearly. Guide assessment rather than dictating decisions. Prefer reasoning frameworks over exhaustive if/then trees or lookup tables.
+Put shared communication principles in `apm-communication`; add only situation-specific guidance in each procedure:
 
-**Guardrail restraint.** One clear statement of a rule is sufficient. Do not restate the same constraint in multiple forms or pad instructions with cautionary variations. Include examples only when the pattern is genuinely non-obvious. Skills, guides, and commands should not exceed ~500 lines - reduce descriptive content before reducing structural specifications or procedural steps.
+| Situation | What the output should convey |
+|---|---|
+| Questions | The relevant understanding or gap, a focused question, and any context or options needed to answer. |
+| Proposals | The proposed result, consequential choices and their reasons, and the decision or approval needed. |
+| Progress | A meaningful finding, change or blocker, plus the next action when relevant. |
+| Completion | Outcome, deliverables, validation evidence, limits and any required action. |
+| Review | Findings against objectives and evidence, their implications, and the resulting action. |
+| Continuity | Current state, decisions and reasons, unresolved issues, source paths and concrete resumption steps. |
 
-**Reasoning over classification.** Describe concepts through their implications rather than defining named categories for agents to classify into. Taxonomies are appropriate only for output schema fields where agents select from enumerated values.
+Lead with the substance the reader needs. Avoid repeated recaps and closing summaries that add no information. Before sending a substantial reply, check that its opening and length suit the request. Do not impose rigid chat formats where content and User needs vary.
 
-### 1.6 De-Duplication Rule
+Artifacts serve future readers without conversation context. Follow their schemas, verify concrete claims against source, and keep drafting history out of finished prose. A short log must still record enough evidence and context to support review and continuation.
 
-Each concept has one primary explanation in one location, with brief references elsewhere. Other files should reference it ("per [location]" or "see [location]") instead of repeating full explanations. Content Guidelines sections (§5) in guides should not restate Operational Standards (§2). Common Mistakes entries should cover patterns not already derivable as inversions of §2 rules.
+## 5. References and shared text
 
----
+Use explicit file paths and section references where they help navigation. Repair references when headings or numbers change. Cross-file template references use supported build placeholders: `{SKILL_PATH:name}`, `{GUIDE_PATH:name}` and `{COMMAND_PATH:name}`.
 
-## 2. Tone & Voice
+All six assistants receive identical template text. Refer to commands by name without a prefix. Assistant-specific paths, invocation syntax, argument handling, subagent calls and new-chat steps belong in `apm-communication` §5 Assistant Reference. Shared prose refers to “the Rules file” and “the command argument”; do not restore the removed `{RULES_FILE}` or `{ARGS}` placeholders.
 
-### 2.1 Instructional Tone
+Runtime file paths produced by the build are relative to the assistant's APM folder. Use the reference table to resolve that folder and assistant-specific actions. Keep project artifact paths rooted at `.apm/` as their contracts require.
 
-Neutral, direct language. No hedging: "Consider..." not "You might want to consider...". "Do X." not "It would be a good idea to...". State facts directly without "Please note that..." framing.
+## 6. Formatting
 
-### 2.2 Voice Standards
+Use headings for distinct subjects, short paragraphs for explanations, numbered lists for sequences and tables for comparisons or schemas. Leave a blank line before lists and after headings. Avoid unnecessary nesting and decorative hierarchy.
 
-Active voice ("The Manager creates..." not "is created"). No emotional anthropomorphization - agents do not want, feel, prefer, or believe. Cognitive verbs that describe agent operations (reason, assess, determine, analyze, verify) are accurate, not anthropomorphization.
+Use inline code for paths, field names and literal values. Put commands the User must run in fenced code blocks. Use fenced blocks with an appropriate language for schemas and examples; use a longer outer fence when showing nested code blocks. Reserve bold for terms or labels readers need to find again, and use italics sparingly.
 
-**Standards files** (`_standards/`): Third person throughout. Standards describe how agents behave and how the workflow operates - they do not instruct a runtime reader. "The Manager assesses cascade implications" not "Assess cascade implications." "Workers iterate on failure" not "Iterate on failure." Instructional language directed at template maintainers is acceptable ("Prefer X over Y", "Use X format") because standards address maintainers, not runtime agents.
-
-**Runtime files** (commands, guides, skills): Second person and imperative mood when addressing the reading agent. "Perform the following actions" not "The Worker performs the following actions." "You operate with narrow context" not "Workers operate with narrow context." Third person for OTHER agents - a guide read by the Manager uses third person for Workers ("Workers do not reference the Plan") and second person for the Manager ("Extract relevant Spec content"). Skills read by multiple agent roles use third person when distinguishing specific roles ("The Manager coordinates merges; Workers commit to their branch") since no single reader is the exclusive audience.
-
-### 2.3 Neutrality
-
-No preference, opinion, or judgment unless defining a standard. "Use X when Y" not "The best approach is...". "X is required when Y" not "Ideally, you should...". State rules directly - rationale in a separate line if needed.
-
----
-
-## 3. Instruction Writing
-
-### 3.1 Imperative Mood
-
-Instructions begin with action verbs: **Perform** (sequence of actions), **Execute** (run procedure), **Read** (access file/section), **Create** (new artifact), **Update** (modify existing), **Output** (present to User), **Determine** (decision based on criteria), **Assess** (evaluate against standards), **Apply** (use standard/rule), **Continue** (flow to next step within current context), **Proceed** (jump to different section or procedure).
-
-### 3.2 Action Block Format
-
-Sequential actions follow this format:
-
-```text
-Perform the following actions:
-1. First action with specific details.
-2. Second action with specific details.
-3. Third action with specific details.
-```
-
-No blank line between introductory sentence and list. Numbered lists for sequential actions. Each action is complete and actionable with specific details (file paths, field names, conditions). No sub-numbering beyond one level. Pause actions include or are immediately followed by instructions for handling User response.
-
-### 3.3 Conditional Branching
-
-Natural language for conditions:
-
-- If condition A, proceed to §3.2 Dependency Context.
-- If condition B, continue to action 4.
-
-For complex branching with multiple outcomes:
-
-**Determine the outcome:**
-
-- If outcome 1, take action.
-- If outcome 2, take action.
-
-**Pause with response handling:**
-
-```text
-3. Pause for User review.
-   - If approved, continue to action 4.
-   - If modifications needed, apply changes and repeat action 2.
-```
-
-### 3.4 Decision Rules
-
-Decision rules define criteria for choosing between outcomes. Each condition maps to a specific action. Include a **Default** when behavior for edge cases matters.
-
-**Determine validation result:**
-
-- If all checks pass, proceed to §3.4 Completion.
-- If minor issues found, document issues and continue.
-- If critical failures found, pause for User review.
-
-**Default:** When severity is ambiguous, treat as minor.
-
----
-
-## 4. Output Guidance
-
-Agent communication standards - including agent-to-user communication, visible reasoning, and terminology boundaries - are defined in the communication skill and implemented through guide and command instructions. This section governs how template authors write those instructions.
-
-**Reasoning frames.** Procedures guide visible reasoning in two ways. Some prescribe specific headers the agent presents visibly, organizing analysis into distinct sections - the agent follows that structure. Others describe aspects the agent must cover without prescribing how to present them - the agent covers all indicated aspects using whatever format suits the content (prose, lists, tables, or any combination). Only explicitly prescribed headers are required in the agent's chat output. Label text describes analytical aspects, not framework vocabulary. Reasoning headers use bold formatting as prescribed by the runtime procedure; italic labels distinguish aspects within lists per `STRUCTURE.md` §6.1 Heading Levels.
-
-**Procedure transitions.** When writing procedure transitions, use natural sequential flow ("Continue to the next step") rather than section-targeted navigation with procedure names ("Proceed to §3.2 Plan Analysis") where possible. Include §N.M references only where non-sequential jumps require them.
-
-**Terminology distinction.** `TERMINOLOGY.md` terms are the only formal APM terms. All other labels - procedural step names, decision categories, section names - are natural language. Standard English capitalization applies in context but confers no formal status. Formatting (bold/italic) establishes hierarchy within content per §7.1, not term formality.
-
----
-
-## 5. Reference Standards
-
-References use "See" or "per" exclusively. References appear inline within prose or as standalone sentences - not as list items.
-
-**Same-Document:** "See §N.M Section Title" or "per §N.M Section Title." Example: "See §2.1 Context Integration Standards."
-
-**Cross-Skill:** "See `{SKILL_PATH:skill-name}` §N.M Section Title." Example: "Validate bus identity per `{SKILL_PATH:apm-communication}` §4.1 Bus Identity Standards."
-
-**Cross-Guide:** "See `{GUIDE_PATH:guide-name}` §N.M Section Title." Example: "See `{GUIDE_PATH:work-breakdown}` §3 Work Breakdown Procedure."
-
-**Command:** "See `{COMMAND_PATH:command-name}`."
-
-**Cross-Document:** State file name or placeholder with specific section. Reference content, do not duplicate.
-
----
-
-## 6. Terminology Usage
-
-Terms are used exactly as defined in `TERMINOLOGY.md`. Synonyms are not used. `TERMINOLOGY.md` terms are always capitalized and carry formal defined meaning - they are the APM vocabulary. All other language is natural: standard English capitalization applies (headings, procedural labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language.
-
-Defined concepts (same-agent/cross-agent dependencies, dispatch modes) are explained through their implications in natural prose - not elevated through naming conventions. Singular form is used when referring to the concept; plural when referring to multiple instances.
-
----
-
-## 7. Content Formatting
-
-Document-level structure (heading levels, section numbering, horizontal rules) is defined in `STRUCTURE.md`. This section covers content presentation within sections.
-
-### 7.1 Inline Hierarchy
-
-Bold and italic create hierarchy within subsections (H3 > Bold > Italic). Punctuation after labels determines content structure.
-
-**Label punctuation:** Labels use colon (`:`) to introduce content. No arrows or hyphens as label separators.
-
-**Double-colon rule.** A label colon must not appear on the same line as a second prose colon that introduces further content (a sub-list or clause). Colons inside inline code, quoted strings, or examples do not count. When prose after a label would end with a colon introducing a sub-list, use a period on the label instead, or rephrase the prose to eliminate the trailing colon.
-
-**Examples:**
-
-```text
-**Topic:**                              # Direct list follows
-- Item one
-- Item two
-
-**Topic:** Inline content here.         # Inline prose follows
-
-**Topic.** Prose introducing list:      # Period avoids double-colon
-- Item one
-- Item two
-
-*Subtopic:*                             # Italic direct list
-- Item one
-
-- *Option:* Description of the action.  # Italic list item label
-```
-
-### 7.2 Spacing
-
-- No blank line between label and its content (list or prose).
-- No blank line between introductory sentence and its list.
-- One blank line between paragraphs and between distinct sub-topics.
-- One blank line after code blocks.
-
-**Grouping headers:** When a bold label groups multiple italic sub-topics (not direct content), one blank line separates the bold header from the first italic sub-topic:
-
-```text
-**Grouping Header:**
-
-*Subtopic A:*
-- Item one
-
-*Subtopic B:*
-- Item one
-```
-
-### 7.3 Lists
-
-**Numbered lists:** Sequential actions. Capital letter, period. **Bulleted lists:** Non-sequential items. Capital letter, period. **Nested lists:** Maximum two levels of nesting (three total depth). Restructure if deeper nesting seems necessary.
-
-### 7.4 Hyphens
-
-Only hyphens (`-`) are used for inline separation. Em-dashes (`—`) and en-dashes (`–`) are not permitted. Use hyphens with surrounding spaces (`word - word`) for inline separation between clauses or label-description pairs.
-
-### 7.5 Code Blocks
-
-Fenced code blocks (triple backticks) are used for output templates, file structure examples, YAML schemas, markdown body templates, and multi-line code. Inline backticks are used for file paths, field names, values, and section references.
-
-When code blocks appear inside code blocks (such as examples showing template usage), indent the inner code block by 4 spaces. The outer block uses triple backticks; the indented inner block uses triple backticks at the indented level.
-
----
-
-**End of Writing Standards**
+Preserve exact field names, values, identifiers and required artifact sections. Formatting preferences do not justify changing a contract or a workflow rule.
