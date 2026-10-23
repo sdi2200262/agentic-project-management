@@ -147,33 +147,31 @@ async function copyApmDirectory(sourceDir, targetBuildDir) {
 }
 
 /**
- * Hashes the files in a target's APM folder (`.claude/` or `.agents/`), excluding agents.
+ * Hashes the files in a target's skills and guides folders.
  *
  * Every assistant installs the same skills and guides, so these hashes must match across targets.
  *
  * @param {string} targetBuildDir - Target build directory.
  * @param {Object} target - Target configuration.
- * @returns {Promise<Map<string, string>>} Map of path within the APM folder to SHA-256 hash.
+ * @returns {Promise<Map<string, string>>} Map of path (skills/... or apm-guides/...) to SHA-256 hash.
  */
 async function hashSharedFiles(targetBuildDir, target) {
-  const apmDir = path.join(targetBuildDir, path.dirname(target.directories.skills));
-  const agentsDir = path.join(targetBuildDir, target.directories.agents);
   const hashes = new Map();
 
-  async function walk(dir) {
+  async function walk(dir, base) {
     for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
       const fullPath = path.join(dir, entry.name);
-      if (fullPath === agentsDir) continue;
       if (entry.isDirectory()) {
-        await walk(fullPath);
+        await walk(fullPath, base);
       } else {
         const hash = crypto.createHash('sha256').update(await fs.readFile(fullPath)).digest('hex');
-        hashes.set(path.relative(apmDir, fullPath).split(path.sep).join('/'), hash);
+        hashes.set(path.join(base, path.relative(path.join(targetBuildDir, target.directories[base === 'skills' ? 'skills' : 'guides']), fullPath)).split(path.sep).join('/'), hash);
       }
     }
   }
 
-  await walk(apmDir);
+  await walk(path.join(targetBuildDir, target.directories.skills), 'skills');
+  await walk(path.join(targetBuildDir, target.directories.guides), 'apm-guides');
   return hashes;
 }
 

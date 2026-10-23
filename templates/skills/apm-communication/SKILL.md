@@ -82,7 +82,7 @@ APM installs the same commands, guides and skills for every assistant. Where ass
 | Antigravity | `.agents/` | `/apm-1-initiate-planner` | `AGENTS.md` |
 | OpenCode | `.agents/` | `@apm-1-initiate-planner` | `AGENTS.md` |
 
-Guides are in `apm-guides/` and skills, including the commands, in `skills/`, both inside the APM folder. The User types any command argument after the command name, such as `/apm-3-initiate-worker frontend-agent`.
+Guides are in `.agents/apm-guides/` for every assistant. Skills, including the commands, are in `skills/` inside the APM folder. The User types any command argument after the command name, such as `/apm-3-initiate-worker frontend-agent`.
 
 **Explorer subagent.** Spawn it with:
 - Claude Code: `Agent(subagent_type="Explore", description="...", prompt="...")`

@@ -15,7 +15,7 @@
       "directories": {
         "commands": ".claude/skills",
         "skills": ".claude/skills",
-        "guides": ".claude/apm-guides",
+        "guides": ".agents/apm-guides",
         "agents": ".claude/agents"
       },
       "postInstallNote": null

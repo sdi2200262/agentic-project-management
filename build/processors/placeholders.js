@@ -9,23 +9,23 @@
 import path from 'path';
 
 const SKILLS_DIR = 'skills';
-const GUIDES_DIR = 'apm-guides';
+const GUIDES_DIR = '.agents/apm-guides';
 
 /**
  * Replaces template placeholders.
  *
  * Every assistant installs the same text, so placeholders resolve the same way for all targets.
- * Paths are relative to the assistant's APM folder (`.claude/` for Claude Code, `.agents/` for the
- * others); the communication skill's Assistant Reference lists the folders and everything else that
- * differs between assistants.
+ * Guides are in `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's
+ * skills folder (`.claude/skills/` for Claude Code, `.agents/skills/` for the others); the communication
+ * skill's Assistant Reference lists it and everything else that differs between assistants.
  *
  * Supported placeholders:
  * - {VERSION}: Package version
  * - {SKILL_PATH:name}: Skill file (skills/<name>/SKILL.md)
- * - {GUIDE_PATH:name}: Guide file (apm-guides/<name>.md)
+ * - {GUIDE_PATH:name}: Guide file (.agents/apm-guides/<name>.md)
  * - {COMMAND_PATH:name}: Command file; commands are skills (skills/<name>/SKILL.md)
  * - {SKILLS_DIR}: Skills directory (skills)
- * - {GUIDES_DIR}: Guides directory (apm-guides)
+ * - {GUIDES_DIR}: Guides directory (.agents/apm-guides)
  * - {PLANNER_SUBAGENT_GUIDANCE}: Subagent exploration guidance for the Planner
  * - {MANAGER_SUBAGENT_GUIDANCE}: Subagent guidance for Manager investigation
  * - {WORKER_SUBAGENT_GUIDANCE}: Subagent guidance for Worker context integration
