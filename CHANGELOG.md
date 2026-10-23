@@ -25,7 +25,8 @@ Every assistant now installs the same commands, guides and communication skill. 
 * **Command descriptions.** Each command's description now says to use it only when you run it, and every command skill sets `disable-model-invocation: true`, so agents don't start commands on their own.
 * **Prompts need a terminal.** `apm remove` and other commands that ask for confirmation stop with an error when no terminal is attached, instead of doing nothing.
 * **`apm status` names missing files.** It lists each missing file by name.
-* **Consistent assistant names.** CLI prompts and messages use the same name for each assistant.
+* **Consistent assistant names.** Every command shows assistants as name and id, such as "Codex CLI (codex)".
+* **Failed commands exit with an error status.** Any command that prints an error, such as for an unknown `-a` id, now exits with status 1.
 
 ### Fixed
 
