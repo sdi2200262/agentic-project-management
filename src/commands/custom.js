@@ -12,7 +12,7 @@ import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js
 import { getCustomRepos, addCustomRepo, removeCustomRepo, getRepoSettings, updateRepoSettings } from '../core/config.js';
 import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer } from '../ui/prompts.js';
+import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -184,9 +184,9 @@ export async function customCommand(options = {}) {
   });
   await writeMetadata(metadata);
 
-  // Offer to save repo
+  // Offer to save repo (optional, so skipped without a terminal)
   let repoSaved = false;
-  if (!repoSettings) {
+  if (!repoSettings && isInteractive()) {
     const saveRepo = await confirmAction('Save this repository for future use?', {
       header: `Initialized from ${repoString} — repository is not in your saved list`
     });

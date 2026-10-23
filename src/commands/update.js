@@ -14,7 +14,7 @@ import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchRele
 import { downloadAndExtract } from '../services/extractor.js';
 import { createArchive, generateArchiveName } from '../services/archive.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
-import { confirmDestructiveAction, confirmAction, selectRelease, selectPrompt, confirmSecurityDisclaimer } from '../ui/prompts.js';
+import { confirmDestructiveAction, confirmAction, selectRelease, selectPrompt, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
 import { getRepoSettings, addCustomRepo, updateRepoSettings } from '../core/config.js';
 import logger from '../ui/logger.js';
 import path from 'path';
@@ -86,7 +86,8 @@ export async function updateCommand(options = {}) {
 
     const proceed = await confirmDestructiveAction(
       bullets,
-      `Update to ${release.tag_name}?`
+      `Update to ${release.tag_name}?`,
+      { hint: 'Pass -f to update without confirmation.' }
     );
     if (!proceed) {
       logger.info('Aborted.');
@@ -149,8 +150,8 @@ export async function updateCommand(options = {}) {
   });
   await writeMetadata(newMetadata, cwd);
 
-  // Offer to save custom repo if not already saved
-  if (metadata.source === 'custom') {
+  // Offer to save custom repo if not already saved (optional, so skipped without a terminal)
+  if (metadata.source === 'custom' && isInteractive()) {
     const repoSettings = await getRepoSettings(metadata.repository);
     if (!repoSettings) {
       const saveRepo = await confirmAction('Save this repository for future use?', {
@@ -230,17 +231,20 @@ async function findOfficialUpdate(metadata) {
     }
 
     const currentHeader = `Currently on ${metadata.releaseVersion} (pre-release)`;
+    const hint = 'Run "apm update" in an interactive terminal to choose whether to leave the pre-release.';
 
     // Only one option — use a simple confirm
     if (newerStable && !newestPrerelease) {
       const proceed = await confirmAction(`Update to stable release ${newerStable.tag_name}?`, {
-        header: currentHeader
+        header: currentHeader,
+        hint
       });
       return proceed ? newerStable : null;
     }
     if (!newerStable && newestPrerelease) {
       const proceed = await confirmAction(`Update to pre-release ${newestPrerelease.tag_name}?`, {
-        header: currentHeader
+        header: currentHeader,
+        hint
       });
       return proceed ? newestPrerelease : null;
     }
@@ -268,7 +272,8 @@ async function findOfficialUpdate(metadata) {
     const selected = await selectPrompt({
       message: 'Select a version:',
       choices,
-      header: currentHeader
+      header: currentHeader,
+      hint
     });
     if (!selected) return null;
     return selected === newerStable.tag_name ? newerStable : newestPrerelease;
@@ -326,7 +331,10 @@ async function findCustomUpdate(metadata) {
   }
 
   const header = `Found ${logger.plural(newerReleases.length, 'release')} from ${metadata.repository} newer than ${metadata.releaseVersion}`;
-  const selectedTag = await selectRelease(newerReleases, { header });
+  const selectedTag = await selectRelease(newerReleases, {
+    header,
+    hint: 'Run "apm update" in an interactive terminal to choose the release.'
+  });
   return newerReleases.find(r => r.tag_name === selectedTag);
 }
 

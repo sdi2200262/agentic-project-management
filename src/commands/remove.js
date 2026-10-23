@@ -55,7 +55,12 @@ export async function removeCommand(options = {}) {
   } else {
     const choices = metadata.assistants.map(id => ({ name: id, value: id }));
     const header = `Found ${logger.plural(metadata.assistants.length, 'assistant')} installed from ${metadata.releaseVersion}`;
-    const selected = await selectPrompt({ message: 'Select assistant to remove:', choices, header });
+    const selected = await selectPrompt({
+      message: 'Select assistant to remove:',
+      choices,
+      header,
+      hint: 'Pass -a <id> to choose the assistant and -f to remove it without confirmation.'
+    });
     assistantIds = [selected];
   }
 
@@ -68,7 +73,7 @@ export async function removeCommand(options = {}) {
     if (assistantIds.length === metadata.assistants.length) {
       actions.push('This removes all assistants — .apm/ session artifacts will remain');
     }
-    const proceed = await confirmDestructiveAction(actions, 'Remove?');
+    const proceed = await confirmDestructiveAction(actions, 'Remove?', { hint: 'Pass -f to remove without confirmation.' });
     if (!proceed) {
       logger.info('Aborted.');
       return;
