@@ -7,47 +7,21 @@ description: Perform a Handoff with an APM Manager. Use only when the User runs 
 
 ## 1. Overview
 
-This command initiates the Handoff procedure for a Manager approaching context window limits. You create two artifacts:
-- **Handoff Log:** Working context not captured in planning documents or Task Logs, stored in `.apm/memory/handoffs/manager/`.
-- **Handoff prompt:** Written to the Handoff Bus, instructing the incoming Manager to reconstruct context procedurally.
-
-The incoming Manager rebuilds working context from planning documents, guides, skills, Task Logs, and the Handoff Log - not from the Handoff Log alone.
-
----
+On User-initiated Manager Handoff, transfer working context through a persistent Handoff Log and a current continuation prompt on the Handoff Bus. The incoming Manager also loads planning documents, guides, skills and Task Logs; the log supplements those artifacts.
 
 ## 2. Handoff Procedure
 
-Execute when User initiates Handoff.
-
 ### 2.1 Handoff Log Creation
 
-Perform the following actions:
-1. Determine instance numbers: your current instance number and incoming Manager instance number (yours + 1).
-2. Create Handoff Log per §3 Handoff Log Structure, capturing **past actions** - what was done, decided, and observed. Content is strictly past tense; current state belongs in the handoff prompt.
-   - Coordination overview: Stages managed, Tasks reviewed, dispatch cycles completed.
-   - Tracked Worker Handoffs (which Workers, from which Stage) - most critical for dependency context treatment.
-   - If compaction or recovery occurred during this instance, note it and describe which portions of working context are reconstructed rather than first-hand from the summary.
-   - VC state extracted from the Tracker in context: active branches, worktrees, pending merges.
-   - User preferences and communication patterns.
-   - Coordination insights, decisions made, approaches tried.
+Determine your instance number and the next one (current + 1). Write the log per §3 with past work, decisions, approaches and useful observations not already captured elsewhere. Include tracked Worker Handoffs and their dependency implications, VC state from the Tracker, User preferences and coordination insights. If recovery/compaction occurred, distinguish reconstructed context from first-hand work.
 
 ### 2.2 Handoff Prompt Creation
 
-Perform the following actions:
-1. Create handoff prompt per §4 Handoff Prompt Structure, capturing **current state** - what is happening now. Content is actionable and present-tense; past actions belong in the Handoff Log.
-   - Outstanding Tasks in full: objectives, expected outputs, detailed instructions, review criteria, relevant Spec sections, dependency context, workspace information.
-   - Mid-review progress and pending review outcomes.
-   - Active Workers and their dispatch state.
-   - Pointers to Task Logs and files for the incoming Manager to read.
+Prepare the prompt per §4 with current state and an actionable resumption step. Describe outstanding Tasks fully: objectives, outputs, instructions, review criteria, relevant Spec content, dependencies and workspace. Worker Task Buses may already be cleared. Include pending reviews/outcomes, active Workers and required log/file reads.
 
 ### 2.3 User Review and Finalization
 
-Perform the following actions:
-1. Write handoff prompt to the Handoff Bus: `.apm/bus/manager/handoff.md`.
-2. Present both artifacts to User: Handoff Log (file path) and handoff prompt (bus path). Request review and direct User to start a new chat and run `apm-2-initiate-manager` - the incoming Manager will auto-detect the handoff prompt.
-3. If modifications requested, update accordingly. This completes the outgoing Manager's duties.
-
----
+Read and write `.apm/bus/manager/handoff.md`. Give the User both artifact paths, request review and direct them to run `apm-2-initiate-manager` in a new chat using their assistant's instructions. The next Manager detects the bus automatically. Apply requested corrections; your outgoing duties then end.
 
 ## 3. Handoff Log Structure
 
@@ -94,7 +68,3 @@ Written to `.apm/bus/manager/handoff.md`. The incoming Manager processes this pr
 - *Current State:* Current Stage, Stage progress, next Task, blockers, working notes.
 - *Immediate Next Action:* Specific coordination action to resume.
 - *Closing instruction:* Output a concise understanding summary (project state, Worker Handoffs and implications, VC state, next action) then proceed with coordination.
-
----
-
-**End of Command**

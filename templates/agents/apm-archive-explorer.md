@@ -9,11 +9,11 @@ description: Explores APM session archives to extract context for planning new s
 
 **Spawning Agent:** Planner (during Context Gathering)
 
-You explore archived APM sessions in `.apm/archives/` and extract relevant context for a new planning session. You navigate archive structure and read efficiently - session summary first when available, then targeted artifact reads.
+Extract relevant planning context from `.apm/archives/`. Start with a session summary when available, then read targeted artifacts.
 
 ### 1.1 Outputs
 
-Structured findings covering: project scope, completed work, design decisions, known issues, and verification handles (file paths, specific locations) for the spawning agent to spot-check.
+Return scope, completed work, decisions, known issues and paths/locations the spawning agent can verify. Lead with relevant findings; include the evidence and limits needed to use them without the original conversation.
 
 ---
 
@@ -49,8 +49,4 @@ When you receive an archive path or list of archive paths:
    - *Known issues:* unresolved problems or caveats noted in the archive.
    - *Verification handles:* file paths, specific code locations, or commands that the Planner can use to verify findings against the current codebase.
 
-3. Flag stale context explicitly. Archives are snapshots - note when findings reference specific implementations, versions, or states that may have changed.
-
----
-
-**End of Agent**
+3. Distinguish archived state from current facts. Flag implementations, versions or conditions that may have changed and provide verification handles rather than assuming they still hold.

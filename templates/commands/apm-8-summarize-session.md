@@ -5,25 +5,17 @@ description: Summarize and optionally archive an APM session. Use only when the 
 
 # APM {VERSION} - Summarize Session Command
 
-This command summarizes the current APM session and optionally archives it. You are a standalone agent - not a Planner, Manager, or Worker. If you are one of those roles, concisely decline and take no action.
+Summarize the session and optionally archive it. Run as a standalone agent; Planners, Managers and Workers decline without action.
 
-**Procedure:**
-1. Read the following artifacts directly (these reads are independent):
-   - `.apm/spec.md` - design decisions and constraints
-   - `.apm/plan.md` - Stages, Tasks, agent assignments
-   - `.apm/tracker.md` - Task statuses, Worker states, working notes
-   - `.apm/memory/index.md` - Memory notes and Stage summaries
-   If working notes or Stage summaries reference specific Task Logs for claims or findings that need verification, read those logs directly. Do not read all Task Logs - comprehensive log review is handled by the subagent in step 2.
-2. {SUBAGENT_GUIDANCE} Prompt it to read all `.apm/` artifacts including Task Logs in `.apm/memory/` and cross-validate against the current codebase. The subagent verifies that deliverables exist, commits are on the expected branches, and key validation results hold. It reports back: per-Stage outcomes with log-level detail, codebase staleness relative to `.apm/` state, and notable findings from execution.
-3. Write `.apm/session-summary.md` per the session summary structure below. The summary is a point-in-time snapshot - state this explicitly.
-4. Present the summary to the User. Ask if there is anything to add, correct, or emphasize before finalizing. If the User provides input, update the summary accordingly.
-5. Ask: "Would you like me to archive this session?" If yes, ask whether the User wants a custom archive name or the default dated name.
-   - If the User declines, no further action.
-   - If the User approves, continue to step 6.
-6. Run `apm archive --force` or `apm archive --force --name <name>` if a custom name was provided. The CLI snapshots all `.apm/` contents except `archives/` (planning documents, Tracker, Memory, Message Bus files, metadata, session summary) into `.apm/archives/<name>/`, writes archival metadata to `metadata.json` inside the archive, then removes the active session files, installed templates, and `.apm/metadata.json` - leaving it clean for a new session while preserving archives.
-7. Read `.apm/archives/index.md`. If it does not exist or is malformed, create it per the archive index format below.
-8. Append an entry for the newly archived session to the index table.
-9. Confirm to the User that archival is complete. To start a new APM session, the User runs `apm init` (or `apm custom`) in the terminal - this is a CLI command, not an assistant command. The CLI downloads and extracts fresh templates (commands, guides, skills, agents) and scaffolds a new `.apm/` directory with blank planning documents (Spec, Plan, Tracker, Memory Index) and a new `metadata.json` tracking the installation. After init completes, the User starts a new Planner with `apm-1-initiate-planner` in their assistant. Archives from previous sessions remain in `.apm/archives/` and are accessible to the new Planner during Context Gathering.
+1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Follow references to Task Logs when a particular claim needs verification rather than reading every log yourself.
+2. {SUBAGENT_GUIDANCE} Ask it to inspect all `.apm/` artifacts, including Task Logs, against the codebase. Have it verify deliverables, expected commits/branches and key validation results, returning Stage outcomes, stale artifact/code differences and consequential findings.
+3. Write `.apm/session-summary.md` using the format below. Ground claims in artifacts and verification; distinguish completed, partial and missing work and state the snapshot's date.
+4. Present the summary for review. Apply additions, corrections or emphasis the User requests before finalizing.
+5. Ask whether to archive. If declined, stop. If approved, ask for a custom name or the default dated name.
+6. Run `apm archive --force` or `apm archive --force --name <name>`. The CLI snapshots `.apm/` except `archives/` into `.apm/archives/<name>/`, adds archival metadata, and removes active session files, installed templates and active metadata while keeping archives.
+7. Read `.apm/archives/index.md`; create it in the format below if missing or malformed.
+8. Add the new archive entry, newest first.
+9. Confirm archival with the archive path. To begin a fresh session, direct the User to run CLI `apm init` (or `apm custom`) for fresh templates/scaffolds, then `apm-1-initiate-planner` in their assistant. Previous archives remain available.
 
 **Session summary structure:**
 
@@ -75,7 +67,3 @@ outcome: <complete | partial | incomplete>
 - *Tasks:* total Tasks.
 
 Newest entries go at the top of the table.
-
----
-
-**End of Command**
