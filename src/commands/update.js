@@ -9,7 +9,8 @@
 
 import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
-import { readMetadata, writeMetadata, createMetadata, getInstalledFiles } from '../core/metadata.js';
+import { readMetadata, writeMetadata, createMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
+import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion, isStableRelease } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { createArchive, generateArchiveName } from '../services/archive.js';
@@ -53,13 +54,16 @@ export async function updateCommand(options = {}) {
   const manifest = await fetchReleaseManifest(release);
   stop();
 
+  // Names from the target release, falling back to those recorded at install
+  const names = { ...getAssistantNames(metadata), ...assistantNamesFromManifest(manifest) };
+
   // Check if any current assistants exist in the target release
   const survivingAssistants = metadata.assistants.filter(id =>
     manifest.assistants.some(a => a.id === id)
   );
   if (!survivingAssistants.length) {
-    const available = manifest.assistants.map(a => a.id).join(', ');
-    logger.error(`None of your assistants (${metadata.assistants.join(', ')}) are available in ${release.tag_name}.`);
+    const available = formatAssistantList(manifest.assistants.map(a => a.id), names);
+    logger.error(`None of your assistants (${formatAssistantList(metadata.assistants, names)}) are available in ${release.tag_name}.`);
     logger.info(`Available in ${release.tag_name}: ${available}`);
     logger.info('Use "apm archive" then "apm init" to install with different assistants.');
     return;
@@ -71,8 +75,8 @@ export async function updateCommand(options = {}) {
 
   // Confirm destructive action
   if (!force) {
-    const currentList = metadata.assistants.join(', ');
-    const survivingList = survivingAssistants.join(', ');
+    const currentList = formatAssistantList(metadata.assistants, names);
+    const survivingList = formatAssistantList(survivingAssistants, names);
     const droppedAssistants = metadata.assistants.filter(id => !survivingAssistants.includes(id));
 
     const bullets = [
@@ -81,7 +85,7 @@ export async function updateCommand(options = {}) {
       `Download and install ${release.tag_name} for: ${survivingList}`
     ];
     if (droppedAssistants.length > 0) {
-      bullets.push(`Drop unsupported ${droppedAssistants.length === 1 ? 'assistant' : 'assistants'}: ${droppedAssistants.join(', ')}`);
+      bullets.push(`Drop unsupported ${droppedAssistants.length === 1 ? 'assistant' : 'assistants'}: ${formatAssistantList(droppedAssistants, names)}`);
     }
 
     const proceed = await confirmDestructiveAction(
@@ -146,6 +150,7 @@ export async function updateCommand(options = {}) {
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION,
     assistants: updatedAssistants,
+    assistantNames: assistantNamesFromManifest(manifest, updatedAssistants),
     installedFiles: newInstalledFiles
   });
   await writeMetadata(newMetadata, cwd);
@@ -172,10 +177,10 @@ export async function updateCommand(options = {}) {
   // Clear content for final output
   logger.clearAndBanner();
   if (skippedAssistants.length > 0) {
-    logger.warn(`Dropped ${logger.plural(skippedAssistants.length, 'assistant')} not in ${release.tag_name}: ${skippedAssistants.join(', ')}`);
+    logger.warn(`Dropped ${logger.plural(skippedAssistants.length, 'assistant')} not in ${release.tag_name}: ${formatAssistantList(skippedAssistants, names)}`);
   }
   for (const id of updatedAssistants) {
-    logger.success(`Updated ${manifest.assistants.find(a => a.id === id)?.name || id}`);
+    logger.success(`Updated ${formatAssistant(id, names[id])}`);
   }
   for (const id of updatedAssistants) {
     const assistant = manifest.assistants.find(a => a.id === id);

@@ -13,6 +13,7 @@ import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js
 import { fetchOfficialReleases, findReleaseByTag, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { selectAssistant } from '../ui/prompts.js';
+import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -89,7 +90,7 @@ export async function initCommand(options = {}) {
     for (const arg of assistantList) {
       const found = manifest.assistants.find(a => a.id === arg);
       if (!found) {
-        const available = manifest.assistants.map(a => a.id).join(', ');
+        const available = formatAssistantList(manifest.assistants.map(a => a.id), assistantNamesFromManifest(manifest));
         warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
         continue;
       }
@@ -115,7 +116,7 @@ export async function initCommand(options = {}) {
     const bundleAsset = findBundleAsset(release, assistant.bundle);
 
     if (!bundleAsset) {
-      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' not found in release, skipping.` });
+      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' for ${formatAssistant(id, assistant.name)} not found in release, skipping.` });
       continue;
     }
 
@@ -140,6 +141,7 @@ export async function initCommand(options = {}) {
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION,
     assistants: assistantIds,
+    assistantNames: assistantNamesFromManifest(manifest, assistantIds),
     installedFiles
   });
   await writeMetadata(metadata);
@@ -149,7 +151,7 @@ export async function initCommand(options = {}) {
   for (const w of warnings) logger[w.level](w.msg);
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (installedFiles[id]) logger.success(`Installed ${assistant.name}`);
+    if (installedFiles[id]) logger.success(`Installed ${formatAssistant(id, assistant.name)}`);
   }
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);

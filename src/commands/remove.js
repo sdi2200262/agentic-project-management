@@ -8,7 +8,8 @@
 
 import { CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
-import { readMetadata, writeMetadata, getInstalledFiles } from '../core/metadata.js';
+import { readMetadata, writeMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
+import { formatAssistant, formatAssistantList } from '../core/assistants.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
 import { selectPrompt, confirmDestructiveAction } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
@@ -36,6 +37,9 @@ export async function removeCommand(options = {}) {
     return;
   }
 
+  const names = getAssistantNames(metadata);
+  const label = id => formatAssistant(id, names[id]);
+
   // Determine which assistants to remove
   let assistantIds;
   let skipped = [];
@@ -49,11 +53,11 @@ export async function removeCommand(options = {}) {
       assistantIds.push(arg);
     }
     if (!assistantIds.length) {
-      logger.error(`None of the specified assistants are installed. Installed: ${metadata.assistants.join(', ')}`);
+      logger.error(`None of the specified assistants are installed. Installed: ${formatAssistantList(metadata.assistants, names)}`);
       return;
     }
   } else {
-    const choices = metadata.assistants.map(id => ({ name: id, value: id }));
+    const choices = metadata.assistants.map(id => ({ name: label(id), value: id }));
     const header = `Found ${logger.plural(metadata.assistants.length, 'assistant')} installed from ${metadata.releaseVersion}`;
     const selected = await selectPrompt({
       message: 'Select assistant to remove:',
@@ -66,7 +70,7 @@ export async function removeCommand(options = {}) {
 
   // Confirm destructive action
   if (!force) {
-    const actions = [`Remove APM-installed files for: ${assistantIds.join(', ')}`];
+    const actions = [`Remove APM-installed files for: ${formatAssistantList(assistantIds, names)}`];
     if (skipped?.length) {
       actions.push(`Skip: ${skipped.join(', ')} (not installed)`);
     }
@@ -108,6 +112,9 @@ export async function removeCommand(options = {}) {
 
   metadata.assistants = remaining;
   metadata.installedFiles = remainingFiles;
+  if (metadata.assistantNames) {
+    for (const id of assistantIds) delete metadata.assistantNames[id];
+  }
   metadata.cliVersion = CLI_VERSION;
   await writeMetadata(metadata);
 
@@ -117,12 +124,12 @@ export async function removeCommand(options = {}) {
     logger.success('All assistants removed.');
     logger.info('Run "apm archive" to archive, or "apm add" to add new assistants.');
   } else {
-    const names = assistantIds.join(', ');
-    logger.success(`Removed ${names}. ${logger.plural(remaining.length, 'assistant')} remaining.`);
+    logger.success(`Removed ${formatAssistantList(assistantIds, names)}. ${logger.plural(remaining.length, 'assistant')} remaining.`);
     if (overwritten.length) {
-      const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))]);
+      const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))].map(label));
       const others = affected.join(' ');
-      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${logger.list(affected)} also ${affected.length === 1 ? 'uses' : 'use'}. These files have ${writers}'s instructions. To restore ${logger.list(affected)}'s, run "apm remove -a ${others}", then "apm add -a ${others}". This is a known issue, pending a fix.`);
+      const affectedList = logger.list(affected.map(label));
+      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${affectedList} also ${affected.length === 1 ? 'uses' : 'use'}. These files have ${writers}'s instructions. To restore ${affectedList}'s, run "apm remove -a ${others}", then "apm add -a ${others}". This is a known issue, pending a fix.`);
     }
   }
 }

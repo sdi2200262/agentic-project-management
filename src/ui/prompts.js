@@ -9,6 +9,7 @@
 import { select, input, confirm, Separator } from '@inquirer/prompts';
 import chalk from 'chalk';
 import { CLIError } from '../core/errors.js';
+import { formatAssistant } from '../core/assistants.js';
 import logger from './logger.js';
 
 /**
@@ -74,7 +75,7 @@ export async function selectAssistant(assistants, { header, hint = 'Pass -a <id>
     console.log('');
   }
   const choices = assistants.map(a => ({
-    name: `${a.name} - ${a.description}`,
+    name: a.description ? `${formatAssistant(a.id, a.name)} - ${a.description}` : formatAssistant(a.id, a.name),
     value: a.id
   }));
 

@@ -55,6 +55,17 @@ export function getInstalledFiles(metadata) {
 }
 
 /**
+ * Gets the assistant display names recorded in metadata.
+ * Metadata written before CLI 1.0.3 has none; callers then fall back to known names.
+ *
+ * @param {Object} metadata - Metadata object.
+ * @returns {Object} Map of assistantId to display name.
+ */
+export function getAssistantNames(metadata) {
+  return metadata?.assistantNames || {};
+}
+
+/**
  * Creates initial metadata for a new installation.
  *
  * @param {Object} options - Installation options.
@@ -64,15 +75,17 @@ export function getInstalledFiles(metadata) {
  * @param {string[]} options.assistants - Array of assistant IDs.
  * @param {string} options.cliVersion - CLI version that performed the installation.
  * @param {Object} [options.installedFiles={}] - Map of assistantId to file paths.
+ * @param {Object} [options.assistantNames={}] - Map of assistantId to display name.
  * @returns {Object} Metadata object.
  */
-export function createMetadata({ source, repository, releaseVersion, assistants, cliVersion, installedFiles = {} }) {
+export function createMetadata({ source, repository, releaseVersion, assistants, cliVersion, installedFiles = {}, assistantNames = {} }) {
   return {
     source,
     repository,
     releaseVersion,
     cliVersion,
     assistants,
+    assistantNames,
     installedFiles,
     installedAt: new Date().toISOString()
   };
@@ -82,5 +95,6 @@ export default {
   readMetadata,
   writeMetadata,
   getInstalledFiles,
+  getAssistantNames,
   createMetadata
 };

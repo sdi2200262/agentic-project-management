@@ -8,7 +8,8 @@
 
 import fs from 'fs-extra';
 import path from 'path';
-import { readMetadata, getInstalledFiles } from '../core/metadata.js';
+import { readMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
+import { formatAssistant } from '../core/assistants.js';
 import { countArchives } from '../services/archive.js';
 import logger from '../ui/logger.js';
 
@@ -55,6 +56,7 @@ export async function statusCommand() {
   if (!metadata.assistants.length) {
     console.log('  none (run "apm add" to add one)');
   }
+  const names = getAssistantNames(metadata);
   const incomplete = [];
   for (const id of metadata.assistants) {
     const files = Array.isArray(installedFiles[id]) ? installedFiles[id] : [];
@@ -64,7 +66,7 @@ export async function statusCommand() {
     }
     if (missing.length) {
       incomplete.push(id);
-      console.log(`  ${id} (${files.length} files, ${chalk.yellow(`${missing.length} missing`)})`);
+      console.log(`  ${formatAssistant(id, names[id])}: ${files.length} files, ${chalk.yellow(`${missing.length} missing`)}`);
       for (const file of missing.slice(0, MAX_MISSING_SHOWN)) {
         console.log(chalk.yellow(`    - ${file}`));
       }
@@ -72,7 +74,7 @@ export async function statusCommand() {
         console.log(chalk.yellow(`    ... and ${missing.length - MAX_MISSING_SHOWN} more`));
       }
     } else {
-      console.log(`  ${id} (${files.length} files)`);
+      console.log(`  ${formatAssistant(id, names[id])}: ${files.length} files`);
     }
   }
   console.log('');
