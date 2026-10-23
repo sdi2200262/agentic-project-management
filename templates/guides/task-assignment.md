@@ -28,7 +28,7 @@ Create a refined prompt from review/investigation findings, not a copy of the pr
 
 ### 2.4 Dispatch Standards
 
-Read readiness from the Tracker and cross-check the Dependency Graph. Dependencies must be Done before dependent work executes. Form units from single Tasks or same-Worker batches; batch candidates are independent Ready Tasks or chains whose dependencies are internal or already complete. Prefer 2–3 Tasks per batch, and dispatch individually when intermediate results would unblock other Workers sooner.
+Read readiness from the Tracker and cross-check the Dependency Graph. For dispatch readiness, dependencies outside a batch must be Done; a batch may contain a sequential chain whose internal dependencies are completed by preceding Tasks. Form units from single Tasks or same-Worker batches; independent batch candidates must all be Ready. Prefer 2–3 Tasks per batch, and dispatch individually when intermediate results would unblock other Workers sooner.
 
 Dispatch units to different Workers in parallel when there are no unresolved cross-agent dependencies and version control provides workspace isolation. Otherwise dispatch sequentially. Recommend appropriate platform tool approvals for parallel Workers to reduce waits.
 
