@@ -2,7 +2,8 @@
   "build": {
     "sourceDir": "templates",
     "outputDir": "dist",
-    "cleanOutput": true
+    "cleanOutput": true,
+    "postInstallNote": "If apm --version shows a version below 1.0.2, run npm install -g agentic-pm@latest to update it. Older versions can delete shared files when you remove an assistant."
   },
   "targets": [
     {

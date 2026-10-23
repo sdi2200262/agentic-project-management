@@ -14,6 +14,8 @@
  * @returns {Object} Release manifest object.
  */
 export function generateReleaseManifest(config, version) {
+  // Optional build-level note, shown after every assistant's own note
+  const buildNote = config.build?.postInstallNote;
   const assistants = config.targets.map(target => {
     const entry = {
       id: target.id,
@@ -22,8 +24,9 @@ export function generateReleaseManifest(config, version) {
       description: `Optimised for ${target.name}`,
       configDir: target.configDir
     };
-    if (target.postInstallNote) {
-      entry.postInstallNote = target.postInstallNote;
+    const note = [target.postInstallNote, buildNote].filter(Boolean).join(' ');
+    if (note) {
+      entry.postInstallNote = note;
     }
     return entry;
   });
