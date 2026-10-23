@@ -12,7 +12,8 @@ import path from 'path';
 import logger from '../utils/logger.js';
 import { findMdFiles } from '../utils/files.js';
 import { parseFrontmatter } from './frontmatter.js';
-import { replacePlaceholders, getOutputExtension, commandsAsSkills } from './placeholders.js';
+import crypto from 'crypto';
+import { replacePlaceholders } from './placeholders.js';
 import { generateReleaseManifest } from '../generators/manifest.js';
 import { createZipArchive } from '../generators/archive.js';
 import { getVersion } from '../core/config.js';
@@ -71,9 +72,8 @@ async function processTemplate(templatePath, options) {
   const isAgent = isAgentTemplate(templatePath, sourceDir);
   const category = isCommand ? 'command' : (isGuide ? 'guide' : (isAgent ? 'agent' : 'skill'));
 
-  const context = { version, target };
+  const context = { version };
   const basename = path.basename(templatePath, '.md');
-  const ext = getOutputExtension(target);
   let finalContent;
   let outputPath;
 
@@ -88,25 +88,13 @@ async function processTemplate(templatePath, options) {
     const processedFull = replacePlaceholders(content, context);
 
     if (isCommand) {
-      if (target.format === 'toml') {
-        const description = frontmatter.description || 'APM command';
-        finalContent = `description = "${description}"\n\nprompt = """\n${processedBody}\n"""\n`;
-        outputPath = path.join(commandsDir, `${basename}${ext}`);
-      } else if (commandsAsSkills(target)) {
-        // Codex, Antigravity and Copilot: commands become skills in directory structure (skills/<name>/SKILL.md)
-        // Copilot and Antigravity: disable-model-invocation keeps the commands user-triggered, as VS Code's prompt migration does
-        const invocable = target.id === 'codex' ? 'user-invocable: true\n'
-          : ['copilot', 'antigravity'].includes(target.id) ? 'disable-model-invocation: true\n'
-          : '';
-        const skillFrontmatter = `---\nname: ${basename}\ndescription: ${frontmatter.description || 'APM command'}\n${invocable}---\n`;
-        finalContent = skillFrontmatter + processedBody;
-        const skillDir = path.join(commandsDir, basename);
-        await fs.ensureDir(skillDir);
-        outputPath = path.join(skillDir, 'SKILL.md');
-      } else {
-        finalContent = processedFull;
-        outputPath = path.join(commandsDir, `${basename}${ext}`);
-      }
+      // Commands are skills for every assistant (skills/<name>/SKILL.md). disable-model-invocation keeps
+      // them user-triggered where the assistant honours it; Codex ignores it, so descriptions say so too.
+      const skillFrontmatter = `---\nname: ${basename}\ndescription: ${frontmatter.description || 'APM command'}\ndisable-model-invocation: true\n---\n`;
+      finalContent = skillFrontmatter + processedBody;
+      const skillDir = path.join(commandsDir, basename);
+      await fs.ensureDir(skillDir);
+      outputPath = path.join(skillDir, 'SKILL.md');
     } else if (isAgent) {
       if (target.id === 'codex') {
         // Codex: agents are TOML files with developer_instructions
@@ -159,12 +147,69 @@ async function copyApmDirectory(sourceDir, targetBuildDir) {
 }
 
 /**
+ * Hashes the files in a target's APM folder (`.claude/` or `.agents/`), excluding agents.
+ *
+ * Every assistant installs the same skills and guides, so these hashes must match across targets.
+ *
+ * @param {string} targetBuildDir - Target build directory.
+ * @param {Object} target - Target configuration.
+ * @returns {Promise<Map<string, string>>} Map of path within the APM folder to SHA-256 hash.
+ */
+async function hashSharedFiles(targetBuildDir, target) {
+  const apmDir = path.join(targetBuildDir, path.dirname(target.directories.skills));
+  const agentsDir = path.join(targetBuildDir, target.directories.agents);
+  const hashes = new Map();
+
+  async function walk(dir) {
+    for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+      const fullPath = path.join(dir, entry.name);
+      if (fullPath === agentsDir) continue;
+      if (entry.isDirectory()) {
+        await walk(fullPath);
+      } else {
+        const hash = crypto.createHash('sha256').update(await fs.readFile(fullPath)).digest('hex');
+        hashes.set(path.relative(apmDir, fullPath).split(path.sep).join('/'), hash);
+      }
+    }
+  }
+
+  await walk(apmDir);
+  return hashes;
+}
+
+/**
+ * Throws when any target's shared files differ from the first target's.
+ *
+ * @param {Map<string, Map<string, string>>} sharedByTarget - Hashes per target ID.
+ * @throws {BuildError} When a file is missing or has different content.
+ */
+function checkSharedFiles(sharedByTarget) {
+  const [[firstId, first], ...rest] = [...sharedByTarget];
+  const problems = [];
+
+  for (const [id, hashes] of rest) {
+    for (const file of new Set([...first.keys(), ...hashes.keys()])) {
+      if (!hashes.has(file) || !first.has(file)) {
+        problems.push(`${file}: in ${hashes.has(file) ? id : firstId} only`);
+      } else if (hashes.get(file) !== first.get(file)) {
+        problems.push(`${file}: ${id} differs from ${firstId}`);
+      }
+    }
+  }
+
+  if (problems.length > 0) {
+    throw BuildError.sharedFilesDiffer(problems);
+  }
+  logger.success(`Shared files identical across ${sharedByTarget.size} targets (${first.size} files)`);
+}
+
+/**
  * Builds a single target.
  *
  * @param {Object} target - Target configuration.
  * @param {Object} config - Full build configuration.
  * @param {string} version - Version string.
- * @returns {Promise<void>}
+ * @returns {Promise<Map<string, string>>} Hashes of the target's shared files.
  */
 async function buildTarget(target, config, version) {
   const { build: buildConfig } = config;
@@ -205,6 +250,7 @@ async function buildTarget(target, config, version) {
   }
 
   logger.success(`Completed target: ${target.name}`);
+  const sharedHashes = await hashSharedFiles(targetBuildDir, target);
 
   // Create ZIP archive
   const zipPath = path.join(outputDir, target.bundleName);
@@ -219,6 +265,8 @@ async function buildTarget(target, config, version) {
   } catch (err) {
     throw BuildError.archiveFailed(target.name, err.message);
   }
+
+  return sharedHashes;
 }
 
 /**
@@ -240,9 +288,11 @@ export async function buildAll(config) {
   const version = await getVersion();
   logger.info(`Building ${targets.length} targets to ${outputDir}...`);
 
+  const sharedByTarget = new Map();
   for (const target of targets) {
-    await buildTarget(target, config, version);
+    sharedByTarget.set(target.id, await buildTarget(target, config, version));
   }
+  checkSharedFiles(sharedByTarget);
 
   // Write release manifest
   const releaseManifest = generateReleaseManifest(config, version);

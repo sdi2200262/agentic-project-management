@@ -1,13 +1,13 @@
 ---
 command_name: recover
-description: Recover an APM agent's working context.
+description: Recover an APM agent's working context. Use only when the User runs this command.
 ---
 
 # APM {VERSION} - Recover Command
 
 This command reconstructs working context after platform auto-compaction, manual compaction, or when an initiated agent must resume after a cleared or lost conversation. It applies to the Manager and Workers only. If you are a Planner or non-APM agent, concisely decline and take no action. Accepts an optional `[role]` argument: `manager` or a Worker agent identifier (e.g., `frontend-agent`).
 
-The command argument - if provided - will be listed here: `{ARGS}`. If empty, then no argument was provided.
+The command argument, if any, is the text the User typed after the command.
 
 **Procedure:**
 1. Determine role: from the command argument if provided (`manager` for the Manager, any other value for a Worker). If no argument, infer from conversation context (compaction summary or the initiation just performed). If conversation context does not reveal your role, ask the User.

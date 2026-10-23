@@ -21,7 +21,7 @@ Agents not managed by APM can participate in bus communication by creating their
 
 When communicating with the User - asking questions, requesting actions, providing status updates, presenting completions - use natural language adapted to the situation. Explain what happened, what was decided, and what happens next. There are no rigid templates; adapt phrasing to what the situation requires while conveying necessary information.
 
-When directing Users to perform actions (run commands, switch chats, review artifacts), provide specific actionable guidance naturally: which command, in which agent's chat, with what arguments. Present commands the User needs to run in code blocks so they are easy to copy. Use inline code for file paths, values, and references within prose. When multiple actions are needed (open a new chat, run initiation, check tasks), list them clearly with enough spacing to distinguish each step. When the action requires a new chat, tell the User how to start one: {NEW_CHAT_GUIDANCE}.
+When directing Users to perform actions (run commands, switch chats, review artifacts), provide specific actionable guidance naturally: which command, in which agent's chat, with what arguments. Present commands the User needs to run in code blocks so they are easy to copy. Use inline code for file paths, values, and references within prose. When multiple actions are needed (open a new chat, run initiation, check tasks), list them clearly with enough spacing to distinguish each step. Write each command with your assistant's prefix, and when the action requires a new chat, tell the User how to start one in their assistant, per §5 Assistant Reference.
 
 Communication at workflow transitions should orient the User: what was just completed, what comes next, and what action is needed. Adapt naturally to the moment rather than following a fixed format.
 
@@ -63,11 +63,44 @@ Agent identity is derived from the agent directory name (`.apm/bus/<agent-slug>/
 
 ### 4.2 Agent ID Resolution
 
-When `/apm-4-check-tasks` or `/apm-5-check-reports` accept an `[agent-id]` argument, resolve it against `.apm/bus/` directory names: exact match, then prefix, then best plausible match. When only one plausible candidate exists, resolve to it. When multiple candidates are plausible, list them and ask the User. When no bus directories exist, inform that the Message Bus is not initialized.
+When `apm-4-check-tasks` or `apm-5-check-reports` accept an `[agent-id]` argument, resolve it against `.apm/bus/` directory names: exact match, then prefix, then best plausible match. When only one plausible candidate exists, resolve to it. When multiple candidates are plausible, list them and ask the User. When no bus directories exist, inform that the Message Bus is not initialized.
 
 ### 4.3 Agent Slug Format
 
 Agent slugs are derived from the Worker names listed in the Plan Workers field by converting to lowercase and replacing spaces with hyphens. Examples: `Frontend Agent` → `frontend-agent`, `Backend Agent` → `backend-agent`. The Manager's own directory uses the slug `manager`.
+
+## 5. Assistant Reference
+
+APM installs the same commands, guides and skills for every assistant. Where assistants differ, use the entry for the assistant you are running in.
+
+| Assistant | APM folder | Run a command | Rules file |
+|---|---|---|---|
+| Claude Code | `.claude/` | `/apm-1-initiate-planner` | `CLAUDE.md` |
+| Codex CLI | `.agents/` | `$apm-1-initiate-planner` | `AGENTS.md` |
+| Cursor | `.agents/` | `/apm-1-initiate-planner` | `AGENTS.md` |
+| GitHub Copilot | `.agents/` | `/apm-1-initiate-planner` | `AGENTS.md` |
+| Antigravity | `.agents/` | `/apm-1-initiate-planner` | `AGENTS.md` |
+| OpenCode | `.agents/` | `@apm-1-initiate-planner` | `AGENTS.md` |
+
+Guides are in `apm-guides/` and skills, including the commands, in `skills/`, both inside the APM folder. The User types any command argument after the command name, such as `/apm-3-initiate-worker frontend-agent`.
+
+**Explorer subagent.** Spawn it with:
+- Claude Code: `Agent(subagent_type="Explore", description="...", prompt="...")`
+- Codex CLI: `spawn_agent(task_name="explore_<topic>", agent_type="explorer", fork_turns="none", message="...")`
+- Cursor: `Task(subagent_type="explore", description="...", prompt="...")`
+- GitHub Copilot: `runSubagent` with `agentName: "Explore"` in VS Code, or `task` with `agent_type: "explore"` in Copilot CLI
+- Antigravity: the `invoke_subagent` tool with the `research` agent
+- OpenCode: `subagent(agent="explore", description="...", prompt="...")`
+
+The `apm-archive-explorer` subagent is installed with APM. Spawn it by name with the same tool.
+
+**New chat.** Tell the User to:
+- Claude Code: open a new terminal and run `claude`, or open a new Claude Code tab in VS Code or a new session in the desktop app
+- Codex CLI: open a new terminal and run `codex`, or start a new chat in the Codex IDE extension or app
+- Cursor: start a new Agent chat in the Cursor editor, or open a new terminal in the project root and run `agent`
+- GitHub Copilot: start a new chat in the VS Code Chat view, or open a new terminal and run `copilot`
+- Antigravity: start a new conversation in the Antigravity app or IDE agent panel, or open a new terminal and run `agy`
+- OpenCode: open a new terminal and run `opencode`, or start a new session in the OpenCode desktop app
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 command_name: check-reports
-description: Deliver a Task Report to an APM Manager.
+description: Deliver a Task Report to an APM Manager. Use only when the User runs this command.
 ---
 
 # APM {VERSION} - Manager Check Reports Command
@@ -11,7 +11,7 @@ Accepts optional `[agent-id ...]` arguments. With arguments, checks those Worker
 
 **Procedure:**
 1. Determine scan scope:
-   - If `{ARGS}` provided, resolve each agent-id per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. Batch-read all targeted Report Buses in a single terminal invocation, e.g., `cat .apm/bus/<slug-1>/report.md .apm/bus/<slug-2>/report.md` (or platform equivalent). Continue to step 3.
+   - If a command argument is provided, resolve each agent-id per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. Batch-read all targeted Report Buses in a single terminal invocation, e.g., `cat .apm/bus/<slug-1>/report.md .apm/bus/<slug-2>/report.md` (or platform equivalent). Continue to step 3.
    - If no argument, continue to step 2.
 
 2. Scan Report Buses: scan and read all Report Buses in a single terminal invocation, e.g., `for f in .apm/bus/*/report.md; do [ -s "$f" ] && echo "=== $f ===" && cat "$f"; done` (or platform equivalent). This discovers non-empty buses, reads their content, and includes path markers for cross-referencing against active dispatches. If any unexpected bus has content (beyond the actively dispatched Workers), include it and inform the User. If no buses have content, inform User that no pending reports are available. Await next invocation. If one or more have content, continue to step 3 for each.

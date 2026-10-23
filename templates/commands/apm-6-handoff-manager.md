@@ -1,6 +1,6 @@
 ---
 command_name: handoff-manager
-description: Perform a Handoff with an APM Manager.
+description: Perform a Handoff with an APM Manager. Use only when the User runs this command.
 ---
 
 # APM {VERSION} - Manager Handoff Command
@@ -44,7 +44,7 @@ Perform the following actions:
 
 Perform the following actions:
 1. Write handoff prompt to the Handoff Bus: `.apm/bus/manager/handoff.md`.
-2. Present both artifacts to User: Handoff Log (file path) and handoff prompt (bus path). Request review and direct User to start a new chat and run `/apm-2-initiate-manager` - the incoming Manager will auto-detect the handoff prompt.
+2. Present both artifacts to User: Handoff Log (file path) and handoff prompt (bus path). Request review and direct User to start a new chat and run `apm-2-initiate-manager` - the incoming Manager will auto-detect the handoff prompt.
 3. If modifications requested, update accordingly. This completes the outgoing Manager's duties.
 
 ---

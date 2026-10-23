@@ -1,6 +1,6 @@
 ---
 command_name: summarize-session
-description: Summarize and optionally archive an APM session.
+description: Summarize and optionally archive an APM session. Use only when the User runs this command.
 ---
 
 # APM {VERSION} - Summarize Session Command
@@ -23,7 +23,7 @@ This command summarizes the current APM session and optionally archives it. You 
 6. Run `apm archive --force` or `apm archive --force --name <name>` if a custom name was provided. The CLI snapshots all `.apm/` contents except `archives/` (planning documents, Tracker, Memory, Message Bus files, metadata, session summary) into `.apm/archives/<name>/`, writes archival metadata to `metadata.json` inside the archive, then removes the active session files, installed templates, and `.apm/metadata.json` - leaving it clean for a new session while preserving archives.
 7. Read `.apm/archives/index.md`. If it does not exist or is malformed, create it per the archive index format below.
 8. Append an entry for the newly archived session to the index table.
-9. Confirm to the User that archival is complete. To start a new APM session, the User runs `apm init` (or `apm custom`) in the terminal - this is a CLI command, not an assistant command. The CLI downloads and extracts fresh templates (commands, guides, skills, agents) and scaffolds a new `.apm/` directory with blank planning documents (Spec, Plan, Tracker, Memory Index) and a new `metadata.json` tracking the installation. After init completes, the User starts a new Planner with `/apm-1-initiate-planner` in their assistant. Archives from previous sessions remain in `.apm/archives/` and are accessible to the new Planner during Context Gathering.
+9. Confirm to the User that archival is complete. To start a new APM session, the User runs `apm init` (or `apm custom`) in the terminal - this is a CLI command, not an assistant command. The CLI downloads and extracts fresh templates (commands, guides, skills, agents) and scaffolds a new `.apm/` directory with blank planning documents (Spec, Plan, Tracker, Memory Index) and a new `metadata.json` tracking the installation. After init completes, the User starts a new Planner with `apm-1-initiate-planner` in their assistant. Archives from previous sessions remain in `.apm/archives/` and are accessible to the new Planner during Context Gathering.
 
 **Session summary structure:**
 

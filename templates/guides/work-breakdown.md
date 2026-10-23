@@ -10,7 +10,7 @@ This guide defines the process for Work Breakdown, which transforms gathered con
 
 - *Spec:* Design decisions and constraints that define what is being built. Free-form structure determined by project needs.
 - *Plan:* Stage and Task breakdown with Worker assignments, validation criteria, dependency chains, and Dependency Graph.
-- *`{RULES_FILE}`:* Universal execution-level Rules applied during Task execution.
+- *Rules file:* Universal execution-level Rules applied during Task execution.
 
 All context gathered during Context Gathering must be captured across these three artifacts. If you omit gathered context from all three, justify why it is not needed for execution - the Manager and Workers operate from these documents alone. How context maps to each document is governed by §2.1 Workflow Context. Decomposition granularity adapts to project size and complexity - smaller projects warrant lighter breakdown, larger projects may need more detail.
 
@@ -72,17 +72,17 @@ The Plan defines how work is organized - Stages, Tasks, Worker assignments, depe
 
 **Dispatch-aware structuring:** The Manager dispatches work in three modes (single Tasks, batches of sequential same-Worker Tasks grouped together, and parallel dispatch units sent to different Workers simultaneously). When assignments and Task ordering could go multiple ways, prefer arrangements that maximize dispatch opportunities - Tasks that can proceed independently, groups that chain naturally within a domain, work that can happen in parallel across domains. The Manager determines which mode to use at runtime based on the Plan's structure.
 
-### 2.5 `{RULES_FILE}` Standards
+### 2.5 Rules File Standards
 
-`{RULES_FILE}` defines how work is performed - execution patterns that apply across all or most Tasks. Workers receive the entire file during Task execution, not just the APM Rules block. The block is a namespace to separate APM-managed standards from pre-existing content.
+The Rules file defines how work is performed - execution patterns that apply across all or most Tasks. Workers receive the entire file during Task execution, not just the APM Rules block. The block is a namespace to separate APM-managed standards from pre-existing content.
 
 **Content placement:** Rules capture how work is performed - not what is being built. Output formats, response strings, data schemas, and interface contracts define what is being built and belong in the Spec even when multiple Workers need them. Execution patterns belong here when they apply to all or most Tasks - narrowly domain-specific patterns are better placed in Task guidance. When uncertain, prefer Task guidance - easier to promote later than to demote.
 
 **Writing style:** All Workers read the same Rules file. Write rules so any Worker can determine whether a rule applies to its current work. Frame rules conditionally on the work being performed rather than on a specific Worker or domain - a Worker touching multiple domains should apply the right rules to each naturally.
 
-**Pre-existing content:** When `{RULES_FILE}` already contains User standards, reference relevant pre-existing rules from the APM Rules block rather than duplicating. Do not modify pre-existing content unless the User explicitly requests it.
+**Pre-existing content:** When the Rules file already contains User standards, reference relevant pre-existing rules from the APM Rules block rather than duplicating. Do not modify pre-existing content unless the User explicitly requests it.
 
-**Self-containedness:** Workers' working context is intentionally scoped to their Task Prompt and `{RULES_FILE}` - the Spec, Plan, and external design artifacts are omitted by design. Standards referencing those documents undermine that scoping. Embed content directly.
+**Self-containedness:** Workers' working context is intentionally scoped to their Task Prompt and the Rules file - the Spec, Plan, and external design artifacts are omitted by design. Standards referencing those documents undermine that scoping. Embed content directly.
 
 ---
 
@@ -101,7 +101,7 @@ Present reasoning under the header **Spec Analysis:** addressing the aspects bel
    - *Boundary calls.* For each candidate, determine its primary location per §2.1 Workflow Context: Spec (project-level design decisions), Task guidance (Task-scoped details, single-domain constraints), or Rules (universal execution patterns). Each item belongs in one primary location.
    - *Decision relationships:* decisions that cascade, constrain, or cluster naturally together.
    - *Structure rationale:* how to organize decisions by project concerns so the Manager can extract relevant content.
-   - *Workspace.* From the workspace assessment during Context Gathering, document the project environment: directory structure, working repositories, reference repositories, authoritative document locations, existing `{RULES_FILE}` content that was found.
+   - *Workspace.* From the workspace assessment during Context Gathering, document the project environment: directory structure, working repositories, reference repositories, authoritative document locations, existing Rules file content that was found.
 2. Read `.apm/spec.md`, then write the full Spec per §4.1 Spec Format. Set `title` to the project name, `modified` to "Spec creation by the Planner.", and fill `## Overview` with 3-5 sentences (project type, core problem, essential scope, success criteria). Let content structure follow the decisions identified.
 3. Pause for User review:
    - State the Spec is complete and the artifact is created.
@@ -142,19 +142,19 @@ Present reasoning under the header **Plan Analysis:** with sub-headers **Domain 
 
 Present reasoning under the header **Rules Analysis:** addressing the aspects below.
 
-Perform the following actions per §2.5 `{RULES_FILE}` Standards:
+Perform the following actions per §2.5 Rules File Standards:
 1. Analyze for universal execution patterns across all planning sources:
    - **From the Spec:** execution patterns implied by design decisions, not the design content itself. Specific outputs, formats, values, and schemas defined by design decisions remain in the Spec - they reach Workers through Task Prompts.
    - **From the Plan:** patterns recurring across multiple Task guidance fields.
    - **From gathered context:** workflow preferences, conventions, or quality requirements from Context Gathering not yet captured in the Spec or the Plan. Version control conventions are excluded - the Manager handles those and appends content to Rules during the start of the Implementation Phase.
-   - **Classification:** Separate patterns that apply to all or most Tasks from narrowly Task-specific ones per §2.5 `{RULES_FILE}` Standards. Most projects produce few genuinely universal rules - project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
-   - **Existing standards:** what `{RULES_FILE}` already contains; reference rather than duplicate.
-2. Read `{RULES_FILE}` (or confirm it does not exist), then write the APM_RULES block per §4.3 APM_RULES Block:
+   - **Classification:** Separate patterns that apply to all or most Tasks from narrowly Task-specific ones per §2.5 Rules File Standards. Most projects produce few genuinely universal rules - project-specific constraints and output specifications belong in the Spec or Task guidance even when they apply to multiple Workers.
+   - **Existing standards:** what the Rules file already contains; reference rather than duplicate.
+2. Read the Rules file (or confirm it does not exist), then write the APM_RULES block per §4.3 APM_RULES Block:
    - If file exists: preserve existing content outside block, append APM_RULES block.
    - If creating new: create file with APM_RULES block only.
 3. Pause for User review:
    - State Rules are complete.
-   - Ask User to review `{RULES_FILE}` for accuracy.
+   - Ask User to review the Rules file for accuracy.
    - If modifications needed, apply and repeat step 3.
    - If approved, state Work Breakdown is complete and all planning documents are created. Proceed to `{COMMAND_PATH:apm-1-initiate-planner}` §4 Planning Phase Completion.
 
@@ -174,7 +174,7 @@ modified: <last modification note>
 ---
 ```
 
-Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, authoritative document locations, and existing `{RULES_FILE}` content). A single horizontal rule separates the header from the design decision content below. No horizontal rules within the content sections - `##` headings provide sufficient visual separation.
+Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, authoritative document locations, and existing Rules file content). A single horizontal rule separates the header from the design decision content below. No horizontal rules within the content sections - `##` headings provide sufficient visual separation.
 
 - *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Use the format `> **Notes:** <prose or unordered list>`. These cover the project environment the Manager will encounter per §2.1 Workflow Context - version control observations, workspace constraints, and User preferences that affect execution.
 
@@ -257,7 +257,7 @@ The graph makes dispatch patterns visible to the Manager: same-agent chains indi
 
 ### 4.3 APM_RULES Block
 
-The namespace block structure for `{RULES_FILE}`:
+The namespace block structure for the Rules file:
 
 ```text
 APM_RULES {

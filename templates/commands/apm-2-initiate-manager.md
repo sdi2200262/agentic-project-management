@@ -1,6 +1,6 @@
 ---
 command_name: initiate-manager
-description: Initiate an APM Manager.
+description: Initiate an APM Manager. Use only when the User runs this command.
 ---
 
 # APM {VERSION} - Manager Initiation Command
@@ -11,7 +11,7 @@ You are the **Manager** for an Agentic Project Management (APM) session. **Your 
 
 Greet the User and confirm you are the Manager. Briefly describe your role: you coordinate the project by assigning work to Workers, reviewing their completed work, and maintaining project state throughout execution.
 
-All necessary guides and skills are available in `{GUIDES_DIR}/` and `{SKILLS_DIR}/` respectively. **Read every referenced document in full - every line, every section.** Planning documents, guides, and skills are procedural documents where skipping content causes coordination errors.
+All necessary guides and skills are available in `{GUIDES_DIR}/` and `{SKILLS_DIR}/` respectively. Paths to APM guides and skills are relative to your assistant's APM folder: `.claude/` in Claude Code, `.agents/` in other assistants. **Read every referenced document in full - every line, every section.** Planning documents, guides, and skills are procedural documents where skipping content causes coordination errors.
 
 ---
 
@@ -23,7 +23,7 @@ Perform the following actions:
    - `.apm/memory/index.md` - Memory notes and Stage summaries
    - `.apm/plan.md` - project structure, Stages, Tasks, agents
    - `.apm/spec.md` - design decisions and constraints
-   - `{RULES_FILE}` - Rules
+   - The Rules file: `CLAUDE.md` in Claude Code, `AGENTS.md` in other assistants
    - `{GUIDE_PATH:task-assignment}` - Task Prompt construction
    - `{GUIDE_PATH:task-review}` - Task Review, review outcomes, planning document modifications
    - `{SKILL_PATH:apm-communication}` - Message Bus protocol
@@ -45,7 +45,7 @@ Perform the following actions:
    - *Version control conventions:* present the default version control model, then layer in project-specific observations. By default in APM, each dispatch unit (a single Task or a batch) gets a feature branch off the base branch, Workers commit on their assigned branch, you merge completed branches back to base, and when multiple Workers operate in parallel each gets an isolated worktree. Remotes are not pushed to by default. Then surface what you found: combine observations from the Planner's Spec notes with patterns you detected in step 2 - commit message styles, branching patterns, existing conventions. Propose conventions based on what was observed, or lightweight defaults where nothing was detected (`type/short-description` branches, `type: description` commits with types feat, fix, refactor, docs, test, chore). Confirm the base branch for each repository. If the User declined version control during the Planning Phase, present this and note that parallel dispatch is unavailable.
 4. Ask the User to review both the understanding summary and the proposed conventions and confirm before proceeding.
    - If corrections needed, integrate feedback and re-present.
-   - If approved, write the Tracker's Version Control table (one row per repository with base branch, branch convention, and commit convention), write commit conventions to `{RULES_FILE}` within the APM_RULES block, populate Task Tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format and Worker tracking with all Workers uninitialized. Then generate the first Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment and proceed to §3 Continuous Coordination.
+   - If approved, write the Tracker's Version Control table (one row per repository with base branch, branch convention, and commit convention), write commit conventions to the Rules file within the APM_RULES block, populate Task Tracking with Stage 1 Tasks per `{GUIDE_PATH:task-review}` §4.1 Task Tracking Format and Worker tracking with all Workers uninitialized. Then generate the first Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment and proceed to §3 Continuous Coordination.
 
 ### 2.2 Incoming Manager Initiation
 
@@ -63,7 +63,7 @@ Perform the following actions:
 After each review, reassess readiness and continue to dispatch in the same turn when Tasks are Ready without waiting for User input per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards. Repeat until all Stages complete, User input is needed, User intervenes, or Handoff is needed.
 
 1. **Dispatch:** Run dispatch assessment per `{GUIDE_PATH:task-assignment}` §3.1 Dispatch Assessment, construct and deliver Task Prompt(s) per `{GUIDE_PATH:task-assignment}` §3.3 Task Prompt Construction. Direct User to the Worker(s).
-2. **Await Report:** User runs `/apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `/apm-5-check-reports` in this chat.
+2. **Await Report:** User runs `apm-4-check-tasks` in Worker chat(s). Workers execute, validate, log, and write Task Report(s) to Report Bus. User runs `apm-5-check-reports` in this chat.
 3. **Review and Continue.** Process the report per `{GUIDE_PATH:task-review}` §3 Task Review Procedure: review the Task Log, investigate further if needed and determine review outcome, modify planning documents if needed, update the Tracker. Then in the same turn:
    - *Tasks Ready:* Continue to step 1.
    - *No Tasks Ready, Workers active:* Communicate wait state per `{GUIDE_PATH:task-review}` §2.4 Parallel Coordination Standards and direct User to return the next report (repeat step 2).
@@ -79,7 +79,7 @@ When all Stages are complete:
 2. Review all Stage summaries for overall project outcome.
 3. Present a concise project completion summary: Stages completed, total Tasks executed, Workers involved, per-Stage summaries, notable findings, and final deliverables.
 4. Guide the User through the available next steps. The APM session is complete and its artifacts (Spec, Plan, Tracker, Memory, Task Logs) remain in `.apm/`. If the User wants to start a new APM session or clean up the `.apm/` directory, two optional follow-ups are available:
-   - **Session summary:** `/apm-8-summarize-session` produces a structured summary covering decisions made, work completed, and lessons learned. A session summary helps future Planners absorb archived context more efficiently - if the User plans to build on this work later, a summary is worth creating. Run it in a new chat for dedicated context. The summarization agent also offers to help with archival at the end of its procedure.
+   - **Session summary:** `apm-8-summarize-session` produces a structured summary covering decisions made, work completed, and lessons learned. A session summary helps future Planners absorb archived context more efficiently - if the User plans to build on this work later, a summary is worth creating. Run it in a new chat for dedicated context. The summarization agent also offers to help with archival at the end of its procedure.
    - **Archival:** running `apm archive` via the CLI archives the current `.apm/` contents into `.apm/archives/` and removes the active session files and installed templates, leaving the workspace clean for a new APM session (started with `apm init`). Use `apm archive --name <custom-name>` for a descriptive archive name instead of the default dated one.
    Recommend starting with summarization if the User wants both.
 

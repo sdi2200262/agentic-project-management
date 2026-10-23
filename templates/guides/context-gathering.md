@@ -84,7 +84,7 @@ Archive and workspace context setup (building on initiation), three progressive 
 
 **Deep exploration:** When the workspace contains codebases relevant to the project, explore all of them before entering question rounds - not selectively. Questions asked without baseline knowledge of a relevant codebase will be poorly targeted. {PLANNER_SUBAGENT_GUIDANCE}
 
-**`{RULES_FILE}`:** If `{RULES_FILE}` was found during initiation, present its contents to the User. Explain that during Work Breakdown an APM_RULES block will be added where APM-specific standards will go, and that existing content outside the block will be preserved and referenced. Ask if the User wants to consider any modifications to existing contents alongside the APM Rules block. If not found, note its absence for the Rules configuration step in Round 1.
+**Rules file:** If the Rules file was found during initiation, present its contents to the User. Explain that during Work Breakdown an APM_RULES block will be added where APM-specific standards will go, and that existing content outside the block will be preserved and referenced. Ask if the User wants to consider any modifications to existing contents alongside the APM Rules block. If not found, note its absence for the Rules configuration step in Round 1.
 
 Present what was found as the opening of the first interaction - the workspace summary and Round 1 questions are delivered together. Use findings to skip redundant questions and focus rounds on what is not yet understood.
 
@@ -117,7 +117,7 @@ Combine related questions naturally in conversation. Track what has been answere
 6. What is your current plan or vision?
 7. If there is an existing codebase or previous work, what are the important files or documentation?
 
-**Rules configuration:** If `{RULES_FILE}` was not found during §3.1 Pre-Round Context, ask the User - "I didn't find an existing `{RULES_FILE}` in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If `{RULES_FILE}` was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
+**Rules configuration:** If the Rules file was not found during §3.1 Pre-Round Context, ask the User - "I didn't find an existing Rules file in your workspace. Do you have one elsewhere, or should we create one during Work Breakdown?" If the User provides a file, read it and note contents for integration. If the Rules file was found during the workspace assessment, it has already been discussed with the User - no need to revisit here.
 
 **Round completion:** Present a round completion summary per §2.4 Round Advancement. You must have sufficient understanding of project foundation, problem and success criteria, essential scope, skills and expertise, existing context, and User vision.
 
@@ -216,7 +216,7 @@ The understanding summary is presented per §3.6 Finalize Understanding for User
 - *Work structure signals:* identified domains, dependency relationships, complexity indicators, parallelism or sequencing constraints the User specified. Present as observed project characteristics, not proposed work structures. Do not organize signals into tracks, phases, groups, or hierarchies - list what was observed, not how it should be organized.
 - *Technical context:* environments, resources, constraints, access needs
 - *Process and quality:* workflow preferences, coordination requirements, approval gates, validation approach
-- *Execution conventions:* broadly applicable patterns or coding standards the User has specified; note whether an existing `{RULES_FILE}` was found.
+- *Execution conventions:* broadly applicable patterns or coding standards the User has specified; note whether an existing Rules file was found.
 - *Observed preferences:* version control patterns, coordination preferences, or other factual observations that surfaced during exploration or User responses.
 
 The understanding summary captures what was gathered - not how it will be decomposed. Decomposition happens in the next procedure. Use diagrams for relationships, tables for structured comparisons, prose for narrative context. Do not force entries for categories where nothing emerged. The summary should be something the User can review and say "yes, you understand my project" or point out what's wrong.

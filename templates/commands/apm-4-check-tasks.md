@@ -1,6 +1,6 @@
 ---
 command_name: check-tasks
-description: Deliver a Task Prompt to an APM Worker.
+description: Deliver a Task Prompt to an APM Worker. Use only when the User runs this command.
 ---
 
 # APM {VERSION} - Worker Check Tasks Command
@@ -12,9 +12,9 @@ Accepts an optional `[agent-id]` argument. If registered, ignore it (bus path al
 **Procedure:**
 1. Determine registration state:
    - If registered, resolve bus path from registration. Continue to step 3.
-   - If not registered, `{ARGS}` is required. If no argument provided, inform User that an agent-id is required.
+   - If not registered, the command argument (an agent-id) is required. If no argument was provided, inform User that an agent-id is required.
 
-2. Resolve agent-id (unregistered Workers only): resolve `{ARGS}` against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. Initialize per `{COMMAND_PATH:apm-3-initiate-worker}` §2 Initiation.
+2. Resolve agent-id (unregistered Workers only): resolve the command argument against `.apm/bus/` directory names per `{SKILL_PATH:apm-communication}` §4.2 Agent ID Resolution. Initialize per `{COMMAND_PATH:apm-3-initiate-worker}` §2 Initiation.
 
 3. Read Task Bus at `.apm/bus/<agent-slug>/task.md`.
    - If empty, inform User that no pending Task is available. Await next invocation.
