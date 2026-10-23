@@ -57,6 +57,7 @@ After the single Task or the entire batch finishes/stops:
 **Location:** `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`
 
 **Naming Convention:**
+
 - `<NN>`: Stage number, zero-padded (e.g., 01, 02).
 - `<MM>`: Task number within Stage, zero-padded (e.g., 01, 02).
 
@@ -75,6 +76,7 @@ compatibility_issues: true | false
 ```
 
 **Field Descriptions:**
+
 - `stage`: Stage number from the Task Prompt.
 - `task`: Task number from the Task Prompt.
 - `title`: Task title from the Task Prompt.
@@ -136,6 +138,7 @@ compatibility_issues: true | false
 ```
 
 **Field Descriptions:**
+
 - `stage`: Stage number from the Task Prompt.
 - `task`: Task number from the Task Prompt.
 - `agent`: Your agent identifier.
@@ -176,6 +179,7 @@ tasks:
 ```
 
 **Field Descriptions:**
+
 - `batch`: Always `true` for batch reports.
 - `batch_size`: Total Tasks in the batch.
 - `completed`: Tasks that were executed (excludes unstarted).

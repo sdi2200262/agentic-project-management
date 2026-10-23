@@ -38,7 +38,7 @@ Use one H1 title, H2 major sections and H3 subsections; add deeper structure onl
 
 Use horizontal rules only when they clarify a document boundary or a required artifact layout. End markers are optional prose conventions, not delimiters used by the build. Bus batch separators and YAML delimiters remain required parts of their formats.
 
-All six assistants receive the same commands, guides and skills. Build-resolved paths are relative to the assistant's APM folder, given in the communication skill's Assistant Reference. Commands are installed as skills; shared prose names them without an invocation prefix. Native agent locations and calls are resolved through that reference rather than interpolated into shared text.
+All six assistants receive the same commands, guides and skills. Guides live at project-root `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder, given in the communication skill's Assistant Reference. Commands are installed as skills; shared prose names them without an invocation prefix. Native agent locations and calls are resolved through that reference rather than interpolated into shared text.
 
 ## 4. Artifact contracts
 
@@ -59,9 +59,9 @@ Build placeholders resolve identically for every assistant. Match their implemen
 |---|---|
 | `{VERSION}` | Template version |
 | `{SKILL_PATH:name}` | `skills/<name>/SKILL.md` |
-| `{GUIDE_PATH:name}` | `apm-guides/<name>.md` |
+| `{GUIDE_PATH:name}` | `.agents/apm-guides/<name>.md` |
 | `{COMMAND_PATH:name}` | `skills/<name>/SKILL.md` |
-| `{SKILLS_DIR}`, `{GUIDES_DIR}` | `skills`, `apm-guides` |
+| `{SKILLS_DIR}`, `{GUIDES_DIR}` | `skills`, `.agents/apm-guides` |
 | `{PLANNER_SUBAGENT_GUIDANCE}` | Shared Planner research instructions referring to the Assistant Reference |
 | `{MANAGER_SUBAGENT_GUIDANCE}` | Shared Manager investigation instructions referring to the Assistant Reference |
 | `{WORKER_SUBAGENT_GUIDANCE}` | Shared Worker exploration instructions referring to the Assistant Reference |

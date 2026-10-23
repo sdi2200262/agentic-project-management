@@ -7,6 +7,8 @@ description: Summarize and optionally archive an APM session. Use only when the 
 
 Summarize the session and optionally archive it. Run as a standalone agent; Planners, Managers and Workers decline without action.
 
+Read `{SKILL_PATH:apm-communication}` for communication and your assistant's native calls/invocations.
+
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Follow references to Task Logs when a particular claim needs verification rather than reading every log yourself.
 2. {SUBAGENT_GUIDANCE} Ask it to inspect all `.apm/` artifacts, including Task Logs, against the codebase. Have it verify deliverables, expected commits/branches and key validation results, returning Stage outcomes, stale artifact/code differences and consequential findings.
 3. Write `.apm/session-summary.md` using the format below. Ground claims in artifacts and verification; distinguish completed, partial and missing work and state the snapshot's date.
@@ -33,6 +35,7 @@ outcome: <complete | partial | incomplete>
 ```
 
 *Field descriptions:*
+
 - `date`: string, required, ISO 8601 datetime of summary creation (includes date and time).
 - `project`: string, required, project name from the Spec.
 - `stages_completed`: integer, required, number of completed Stages.
@@ -40,6 +43,7 @@ outcome: <complete | partial | incomplete>
 - `outcome`: enum, required, derived from session state. `complete` when the Tracker's YAML frontmatter contains `completed_at` (Manager has authoritatively confirmed). `partial` when `stages_completed >= 1` (at least one Stage finished). `incomplete` when `stages_completed == 0` (no Stages finished).
 
 *Body sections* (order as listed):
+
 - *Project Scope:* What was being built and why, from the Spec.
 - *Stages and Outcomes.* Per-Stage summary: objective, Tasks completed, notable results.
 - *Key Deliverables:* Primary outputs with file paths or descriptions.
@@ -60,6 +64,7 @@ outcome: <complete | partial | incomplete>
 ```
 
 *Field descriptions:*
+
 - *Archive:* directory name (e.g., `session-2026-03-04-001`).
 - *Date:* ISO date of archival.
 - *Scope:* brief project description (from session summary or Spec title).

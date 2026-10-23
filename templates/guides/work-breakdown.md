@@ -108,6 +108,7 @@ Below the frontmatter, the document starts with `# APM Plan` followed by the Pla
 - *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Use the format `> **Notes:** <prose or unordered list>`. These cover what you observed about the work structure per §2.1 Workflow Context - why boundaries exist, natural groupings or sequencing patterns, critical path, convergence points, and Stage boundaries where holistic verification may be valuable.
 
 **Stage Format.** Each Stage in the Plan:
+
 - *Header:* `## Stage N: [Name]`
 - *Naming:* Stage names reflect domain(s), objectives, and main deliverables.
 - *Contents:* Tasks per **Task Format**, each containing steps per **Step Format**.

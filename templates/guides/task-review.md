@@ -132,6 +132,7 @@ The Task Tracking section within the Tracker tracks Task statuses, agent assignm
 **Task statuses:** `Ready`, `Active`, `Done`, `Waiting: <deps>`.
 
 **Task lifecycle:**
+
 - `Waiting: N.M` - dependencies not met. May list multiple dependencies.
 - `Ready` - all dependencies complete, can be dispatched.
 - `Active | branch-name` - dispatched, Worker is on a branch.
@@ -159,6 +160,7 @@ completed_at: <datetime>  # set by Manager at project completion - absence means
 ```
 
 **Tracker sections:**
+
 - *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
 - *`## Worker Tracking`:* Records Worker states, instance numbers, and coordination notes. Update Worker tracking when Workers are first dispatched to, when Handoffs are detected, and when a Worker recovery is reported. Cross-agent overrides are recorded below the Worker table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
 - *`## Version Control`:* Per-repository base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.4 Tracker VC Entry Format. Branch state is tracked per-Task in the Task table's Branch column.
@@ -190,6 +192,7 @@ title: <project name>
 ```
 
 **Index sections:**
+
 - *`## Memory Notes`:* Durable observations per §2.7 Note-Taking Standards. Patterns, preferences, and insights that persist across Handoffs.
 - *`## Stage Summaries`:* Appended after each Stage completion. Each entry:
 ```markdown
@@ -214,6 +217,7 @@ modified: Task 2.3 scope clarified based on task-02-02.log.md findings. Modified
 **Spec:** Maintain existing section structure. Add content under relevant headings. Use `##` for top-level categories. Keep specifications concrete and actionable - design decisions that affect what is being built and apply across multiple Tasks. Task-specific details belong in Task guidance, not here.
 
 **Plan:**
+
 - *Adding Tasks:* Insert under the appropriate Stage, maintain numbering sequence, specify all fields (Objective, Output, Validation, Guidance, Dependencies, Steps).
 - *Modifying Tasks:* Preserve existing structure, update only affected fields.
 - *Removing Tasks:* Delete the Task section AND update any other Tasks that referenced it as a dependency.

@@ -47,6 +47,7 @@ stage: <N>
 ```
 
 **Field Descriptions:**
+
 - `agent`: Worker identifier (kebab-case).
 - `outgoing`: Current instance number.
 - `incoming`: Next instance number.
@@ -54,6 +55,7 @@ stage: <N>
 - `stage`: Current Stage number.
 
 **Body:**
+
 - *Title:* `# <Display Name> Handoff <N> (<Display Name> <N> → <Display Name> <N+1>)`. Each section uses `##` heading. The display name is the Title Case form of the agent identifier (e.g., `frontend-agent` → `Frontend Agent`).
 - *Summary:* Tasks completed count, current Stage, Stage progress for this Worker.
 - *Working Context:* Patterns, approaches, or context established during this instance.
@@ -66,11 +68,13 @@ stage: <N>
 Written to `.apm/bus/<agent-slug>/handoff.md`. The incoming Worker processes this prompt during auto-detection in the init command.
 
 **Required content:**
+
 - *Identity:* Outgoing and incoming instance numbers.
 - *Rebuilding context:*
   1. Read Handoff Log - note working context and technical notes.
   2. Read current Stage Task Logs (this Worker's logs only).
   3. Do not load previous-Stage logs - the Manager provides comprehensive context via Task Prompts for cross-Stage dependencies.
+
 - *Current State:* Current Stage, Tasks completed this instance, notes.
 - *Continuation guidance:* Specific guidance for the incoming Worker about in-progress patterns or upcoming work.
 - *Incoming Worker indication:* Remind incoming Worker to include Handoff status in first Task Report - state instance number, list specific Task Log files loaded, and when previous Stages exist note that previous-Stage logs were not loaded. This triggers Manager Handoff detection.

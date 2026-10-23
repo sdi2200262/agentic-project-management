@@ -55,7 +55,7 @@ Use explicit file paths and section references where they help navigation. Repai
 
 All six assistants receive identical template text. Refer to commands by name without a prefix. Assistant-specific paths, invocation syntax, argument handling, subagent calls and new-chat steps belong in `apm-communication` §5 Assistant Reference. Shared prose refers to “the Rules file” and “the command argument”; do not restore the removed `{RULES_FILE}` or `{ARGS}` placeholders.
 
-Runtime file paths produced by the build are relative to the assistant's APM folder. Use the reference table to resolve that folder and assistant-specific actions. Keep project artifact paths rooted at `.apm/` as their contracts require.
+Guide paths resolve from the project root to `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder. Use the reference table to resolve that folder and assistant-specific actions. Keep project artifact paths rooted at `.apm/` as their contracts require.
 
 ## 6. Formatting
 

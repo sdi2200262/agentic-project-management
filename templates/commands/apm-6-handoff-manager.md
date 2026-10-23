@@ -41,6 +41,7 @@ stage: <N>
 ```
 
 **Field Descriptions:**
+
 - `agent`: Always `manager`.
 - `outgoing`: Current instance number.
 - `incoming`: Next instance number.
@@ -48,6 +49,7 @@ stage: <N>
 - `stage`: Current Stage number.
 
 **Body:**
+
 - *Title:* `# Manager Handoff <N> (Manager <N> → Manager <N+1>)`. Each section uses `##` heading.
 - *Summary:* Stages coordinated, Tasks reviewed, dispatch cycles completed.
 - *Working Context.* Tracked Worker Handoffs table (Agent, Handoff Stage, current-Stage logs loaded, notes) with dependency context implication. VC state: active branches, worktrees, pending merges, base branch. Dispatch patterns.
@@ -60,11 +62,13 @@ stage: <N>
 Written to `.apm/bus/manager/handoff.md`. The incoming Manager processes this prompt during auto-detection in the init command.
 
 **Required content:**
+
 - *Identity:* Outgoing and incoming instance numbers.
 - *Rebuilding context:*
   1. Read Handoff Log - note tracked Worker Handoffs and VC state.
   2. Read current-Stage Task Logs (all agents).
   3. For previous-Stage dependency context encountered later: read the specific Task Log on demand. If the Task Log is insufficient, read referenced files to reconstruct context.
+
 - *Current State:* Current Stage, Stage progress, next Task, blockers, working notes.
 - *Immediate Next Action:* Specific coordination action to resume.
 - *Closing instruction:* Output a concise understanding summary (project state, Worker Handoffs and implications, VC state, next action) then proceed with coordination.

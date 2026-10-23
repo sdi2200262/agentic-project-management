@@ -9,7 +9,7 @@ description: Agent communication standards and file-based Message Bus protocol f
 
 **Reading agents:** Planner, Manager, Worker
 
-Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Paths to guides and skills are relative to your assistant's APM folder; resolve paths, command invocations and native calls through §5 Assistant Reference.
+Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Guide paths start at the project root; skill paths are relative to your assistant's APM folder. Resolve locations, command invocations and native calls through §5 Assistant Reference.
 
 Non-APM agents can use the bus without joining the full workflow. See `bus-integration.md` alongside this skill.
 

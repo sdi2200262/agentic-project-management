@@ -110,6 +110,7 @@ has_dependencies: true
 ```
 
 **Field Descriptions:**
+
 - `stage`: Stage number.
 - `task`: Task number within Stage.
 - `agent`: Worker identifier (kebab-case).
@@ -117,6 +118,7 @@ has_dependencies: true
 - `has_dependencies`: Whether dependency context is present.
 
 **Prompt Body Sections:**
+
 - *Title.* `#` heading using Task ID and title. Each section uses `##` heading:
 - *Task Reference:* Task ID and assigned agent.
 - *Context from Dependencies.* Included when `has_dependencies: true`. Format depends on dependency type per §2.1 Dependency Context Standards.
@@ -135,6 +137,7 @@ has_dependencies: true
 ### 4.2 Follow-Up Format
 
 Follow-up Task Prompts use the same structure as §4.1 Task Prompt Format with these modifications:
+
 - *Title:* `APM Follow-Up Task: <Task Title>`
 - *Follow-up context section* after Task Reference - previous issue, investigation findings, required refinement, additional guidance.
 - *All content sections* refined based on what went wrong, not copied from the previous attempt.
@@ -178,6 +181,7 @@ tasks:
 ```
 
 **Field Descriptions:**
+
 - `batch`: Always `true` for batch envelopes.
 - `batch_size`: Total Tasks in the batch.
 - `tasks[].stage`: Stage number.
