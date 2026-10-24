@@ -1,6 +1,8 @@
 # APM Terminology
 
-This document defines the formal vocabulary of the APM workflow. This is a development-time specification: agents do not read this file or any `_standards/` document during runtime. The vocabulary defined here takes effect through the commands, guides, and skills that use these terms consistently. Template authors use terms exactly as defined here; agents inherit correct terminology through the templates they read.
+This document defines the formal vocabulary of the APM workflow. This is a development-time specification: agents do not read this file or any `_standards/` document during runtime. The vocabulary defined here takes effect through the command skills, shared skills and guides that use these terms consistently. Template authors use terms exactly as defined here; agents inherit correct terminology through the templates they read.
+
+For template files, **command skills** are the `apm-N-...` skills that the User invokes. The **shared skill**, `apm-communication`, provides communication guidance and the Message Bus protocol across roles.
 
 Formal terms are always capitalized and carry defined meaning. Use ordinary English capitalization for other language, including headings, labels and proper nouns. Workflow definitions follow `WORKFLOW.md`.
 
@@ -27,7 +29,7 @@ Formal terms are always capitalized and carry defined meaning. Use ordinary Engl
 
 ## 3. Planning Documents
 
-The Planner produces three documents in order: Spec (what to build), Plan (how work is organized), then Rules (how work is performed). Each requires User approval before proceeding. The Rules filename is given in the communication skill’s §5 Assistant Reference.
+The Planner produces three documents in order: Spec (what to build), Plan (how work is organized), then Rules (how work is performed). Each requires User approval before proceeding. The Rules filename is given in the `apm-communication` shared skill’s §5 Assistant Reference.
 
 | Term | Definition | Location |
 | ------ | ------------ | ---------- |
@@ -138,15 +140,15 @@ These concepts guide workflow decisions. Their labels use ordinary English capit
 
 **Worker states.** Workers in the Tracker are either uninitialized (defined in the Plan but no instance started) or on a specific instance (Instance N). An instance number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
 
-**Recovery.** Context reconstruction after platform auto-compaction, manual compaction, or a cleared or lost conversation within a Manager or Worker instance. The recovered agent re-reads the initiation command and follows its document loading instructions to rebuild procedural knowledge and project state. Recovery does not increment the instance number or constitute a Handoff. The agent notes the recovery in its next communication (Task Report for Workers, Tracker for the Manager) and in its eventual Handoff Log.
+**Recovery.** Context reconstruction after platform auto-compaction, manual compaction, or a cleared or lost conversation within a Manager or Worker instance. The recovered agent re-reads the initiation command skill and follows its document loading instructions to rebuild procedural knowledge and project state. Recovery does not increment the instance number or constitute a Handoff. The agent notes the recovery in its next communication (Task Report for Workers, Tracker for the Manager) and in its eventual Handoff Log.
 
 **APM session.** One complete workflow cycle operating on a single set of `.apm/` artifacts. Multiple agent instances participate across Handoffs, and the artifact set remains continuous until archival. An APM session spans at least three chat conversations (Planner, Manager, and one or more Workers); a chat conversation hosts one agent instance at a time.
 
-**Session continuation.** Archiving the current session's artifacts and reinitializing for a new session. The summarization command produces an optional session summary, then the `apm archive` CLI command moves artifacts into `.apm/archives/` and removes the current installation. The user runs `apm init` (or `apm custom`) to begin a new session with fresh templates while retaining read access to archived context.
+**Session continuation.** Archiving the current session's artifacts and reinitializing for a new session. The summarization command skill produces an optional session summary, then the `apm archive` CLI command moves artifacts into `.apm/archives/` and removes the current installation. The user runs `apm init` (or `apm custom`) to begin a new session with fresh templates while retaining read access to archived context.
 
 **Session archive.** A snapshot of a session's artifacts stored as a directory in `.apm/archives/` (default name `session-YYYY-MM-DD-NNN`, or a custom name). Contains all `.apm/` contents except `archives/`, including planning documents, Tracker, Memory, Message Bus files, metadata, and an optional session summary. The snapshot captures whatever state the session was in at archival time - completed, partial, or in-progress. The `metadata.json` file is the canonical archive marker.
 
-**Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command - not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
+**Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command skill - not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
 
 **Understanding summary.** A consolidated presentation of gathered context for User review and approval. The Planner presents one at the end of Context Gathering, covering requirements, design decisions, work structure signals, and technical context. The Manager presents one during first initiation, covering project scope, design decisions, and proposed version control conventions. Both serve as approval gates - the User reviews and approves before the agent proceeds.
 

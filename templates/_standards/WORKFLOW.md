@@ -1,16 +1,16 @@
 # APM Workflow
 
-This specification defines APM's workflow for template authors. Runtime guides and skills implement it. Terms follow `TERMINOLOGY.md`; prose follows `WRITING.md`.
+This specification defines APM's workflow for template authors. Runtime guides, command skills and shared skills implement it. Terms follow `TERMINOLOGY.md`; prose follows `WRITING.md`.
 
 ## 1. Design
 
-APM coordinates agents through planning documents, structured Memory and a file-based Message Bus. The User initiates agents, delivers messages with trigger commands, approves decisions and initiates Handoffs. Agents never communicate directly.
+APM coordinates agents through planning documents, structured Memory and a file-based Message Bus. The User initiates agents, delivers messages by invoking command skills, approves decisions and initiates Handoffs. Agents never communicate directly.
 
-All assistants receive identical instructions. The communication skill's §5 Assistant Reference supplies assistant-specific paths, command prefixes, arguments, subagent calls and new-chat steps.
+All assistants receive identical instructions. The `apm-communication` shared skill's §5 Assistant Reference supplies assistant-specific paths, command prefixes, arguments, subagent calls and new-chat steps.
 
 Roles are scoped through instructions, not file permissions. The Planner gathers project context and plans; the Manager holds coordination context; Workers use self-contained Task Prompts, Rules and accumulated working context. Workers do not read Spec, Plan, Tracker or Index. The Manager embeds relevant coordination content in assignments. Explicit User requests may extend Worker scope.
 
-Agents use subagents for focused work, with read-only access for research and execution access for debugging. Delegation instructions state the condition, required action, inputs and findings, and refer to the communication skill’s §5 for the call. Spawning agents verify and integrate findings; Workers record subagent usage in Task Logs.
+Agents use subagents for focused work, with read-only access for research and execution access for debugging. Delegation instructions state the condition, required action, inputs and findings, and refer to the `apm-communication` shared skill’s §5 for the call. Spawning agents verify and integrate findings; Workers record subagent usage in Task Logs.
 
 ## 2. Phases
 
@@ -62,7 +62,7 @@ User collaboration is required for changes affecting multiple Tasks, design dire
 
 ### 4.1 Communication Models
 
-User-facing messages lead with the answer, outcome, finding, proposal or question. They provide the evidence, material trade-offs, limits and action needed to proceed. Shared writing and reply-length defaults live in the communication skill; procedures specify their own output content.
+User-facing messages lead with the answer, outcome, finding, proposal or question. They provide the evidence, material trade-offs, limits and action needed to proceed. Shared writing and reply-length defaults live in the `apm-communication` shared skill; procedures specify their own output content.
 
 When action is required, agents identify the command, target chat and arguments, using §5 Assistant Reference for invocation details. Commands to run use fenced blocks; paths and values use inline code. Artifacts and messages follow their defined schemas.
 
@@ -189,7 +189,7 @@ In batches, each Task is validated and logged before the next begins. Failed sto
 
 User corrections are applied immediately and recorded as important findings at completion. After logging/reporting/delivery instructions, the Worker offers to add a correction as a Rule for all Workers; this is optional for the User and does not block delivery. Approval updates Rules and the log.
 
-Completion includes commits under Rules conventions, a Task Log, incoming-bus clearing and an outgoing report. Delivery guidance offers both targeted and general report-check commands for concurrent results. Large Tasks may have coherent intermediate commits.
+Completion includes commits under Rules conventions, a Task Log, incoming-bus clearing and an outgoing report. Delivery guidance offers both targeted and general invocations of the report-check command skill for concurrent results. Large Tasks may have coherent intermediate commits.
 
 ### 7.3 Task Review
 
@@ -227,7 +227,7 @@ Recovery rebuilds an initiated Manager/Worker's context after compaction or conv
 
 **Runtime:** `apm-8-summarize-session` and `guides/context-gathering.md`.
 
-A standalone summarization agent may create `.apm/session-summary.md` at any session state. It records scope, outcomes, deliverables, findings, issues and verified codebase/artifact differences as a dated snapshot. The Manager recommends this command in a new chat at completion; it offers optional archival, which is also directly available through the CLI.
+A standalone summarization agent may create `.apm/session-summary.md` at any session state. It records scope, outcomes, deliverables, findings, issues and verified codebase/artifact differences as a dated snapshot. The Manager recommends this command skill in a new chat at completion; it offers optional archival, which is also directly available through the CLI.
 
 With User approval, archival snapshots all `.apm/` except `archives/` into `.apm/archives/<name>/`, then removes active files, templates and metadata while preserving archives. Default names are `session-YYYY-MM-DD-NNN`; custom names are supported. Archive `metadata.json` is the canonical marker and contains installation metadata plus archival time. The optional session summary accompanies the raw artifacts. The summarizer creates/repairs the archive index and adds date, scope, Stage/Task counts and name.
 
