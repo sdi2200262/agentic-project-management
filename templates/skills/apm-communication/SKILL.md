@@ -70,13 +70,13 @@ APM installs the same commands, guides and skills for every assistant. Where ass
 
 Guides are in `.agents/apm-guides/` for every assistant. Skills, including the commands, are in `skills/` inside the APM folder. The User types any command argument after the command name, such as `/apm-3-initiate-worker frontend-agent`.
 
-**Explorer subagent.** Spawn it with:
-- Claude Code: `Agent(subagent_type="Explore", description="...", prompt="...")`
-- Codex CLI: `spawn_agent(task_name="explore_<topic>", agent_type="explorer", fork_turns="none", message="...")`
-- Cursor: `Task(subagent_type="explore", description="...", prompt="...")`
-- GitHub Copilot: `runSubagent` with `agentName: "Explore"` in VS Code, or `task` with `agent_type: "explore"` in Copilot CLI
-- Antigravity: the `invoke_subagent` tool with the `research` agent
-- OpenCode: `subagent(agent="explore", description="...", prompt="...")`
+**Subagents.** Spawn a general-purpose subagent with:
+- Claude Code: `Agent(subagent_type="general-purpose", description="...", prompt="...")`
+- Codex CLI: `spawn_agent(task_name="<topic>", fork_turns="none", message="...")`
+- Cursor: `Task(description="...", prompt="...")`
+- GitHub Copilot: `runSubagent` in VS Code, or `task` with `agent_type: "general-purpose"` in Copilot CLI
+- Antigravity: the `invoke_subagent` tool
+- OpenCode: `subagent(agent="general", description="...", prompt="...")`
 
 **New chat.** Tell the User to:
 - Claude Code: open a new terminal and run `claude`, or open a new Claude Code tab in VS Code or a new session in the desktop app
