@@ -1,6 +1,6 @@
 # APM Writing Standards
 
-These standards guide template authors. Authors implement them in the commands, guides and skills agents read at runtime. Apply them to both the instructions and the output those instructions request. Terms follow `TERMINOLOGY.md`; document and artifact structure follows `STRUCTURE.md`.
+These standards guide template authors. Authors implement them in the command skills, shared skills and guides agents read at runtime. Apply them to both the instructions and the output those instructions request. Terms follow `TERMINOLOGY.md`; document and artifact structure follows `STRUCTURE.md`.
 
 ## 1. Write for the reader
 
@@ -34,7 +34,7 @@ Give a rule's reason when it helps the reader apply it correctly. Keep examples 
 
 Agents explain decisions through conclusions, supporting evidence, material trade-offs and uncertainty. Proposals provide a concrete result for User review, with approval at the required workflow gates.
 
-Put shared communication principles in `apm-communication`; add only situation-specific guidance in each procedure:
+Put shared communication principles in the `apm-communication` shared skill; add only situation-specific guidance in each procedure:
 
 | Situation | What the output should convey |
 |---|---|
@@ -45,7 +45,7 @@ Put shared communication principles in `apm-communication`; add only situation-s
 | Review | Findings against objectives and evidence, their implications, and the resulting action. |
 | Continuity | Current state, decisions and reasons, unresolved issues, source paths and concrete resumption steps. |
 
-Lead with the substance the reader needs. Apply the reply-length defaults in `apm-communication` §2.1, with User-specified length and detail taking precedence. Supporting artifacts carry the detail required by their schemas. Before sending, check the opening and total reply length.
+Lead with the substance the reader needs. Apply the reply-length defaults in the `apm-communication` shared skill §2.1, with User-specified length and detail taking precedence. Supporting artifacts carry the detail required by their schemas. Before sending, check the opening and total reply length.
 
 Artifacts provide self-contained context for future readers. Follow their schemas and verify concrete claims against source. Logs record the outcome, evidence and context needed for review and continuation.
 
@@ -53,7 +53,7 @@ Artifacts provide self-contained context for future readers. Follow their schema
 
 Use explicit file paths and section references where they help navigation. Repair references when headings or numbers change. Cross-file template references use supported build placeholders: `{SKILL_PATH:name}` and `{GUIDE_PATH:name}`.
 
-All six assistants receive identical template text. Refer to commands by name. Assistant-specific paths, invocation syntax, argument handling, subagent calls and new-chat steps belong in `apm-communication` §5 Assistant Reference. Shared prose refers to “the Rules file” and “the command argument”.
+All six assistants receive identical template text. Refer to command skills by name. Assistant-specific paths, invocation syntax, argument handling, subagent calls and new-chat steps belong in the `apm-communication` shared skill §5 Assistant Reference. Shared prose refers to “the Rules file” and “the command argument”.
 
 Guide paths resolve from the project root to `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder. Use the reference table to resolve that folder and assistant-specific actions. Keep project artifact paths rooted at `.apm/` as their contracts require.
 

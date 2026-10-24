@@ -8,13 +8,13 @@ Identify the reader, purpose and outputs near the beginning. Put prerequisites b
 
 | Document | Content |
 |---|---|
-| Initiation skill | Role and scope, identity and loading sequence, first/incoming-instance behavior, duties and boundaries. The Planner has one instance and no Handoff. |
-| Utility or recovery skill | Purpose, applicability, arguments, procedure and completion behavior. |
-| Handoff skill | Applicable role, transfer procedure, Handoff Log and prompt formats. |
+| Initiation command skill | Role and scope, identity and loading sequence, first/incoming-instance behavior, duties and boundaries. The Planner has one instance and no Handoff. |
+| Utility or recovery command skill | Purpose, applicability, arguments, procedure and completion behavior. |
+| Handoff command skill | Applicable role, transfer procedure, Handoff Log and prompt formats. |
 | Guide | Reading role, operational rules, procedure and output formats as needed. |
 | Shared skill | Reading roles and purpose, followed by procedures and reference content. |
 
-Delegation instructions state when to use a subagent, its purpose, inputs and required findings. They refer to `apm-communication` §5 Assistant Reference for the call. The reference remains the last section and supplies assistant-specific behavior for the shared text.
+Delegation instructions state when to use a subagent, its purpose, inputs and required findings. They refer to the `apm-communication` shared skill §5 Assistant Reference for the call. The reference remains the last section and supplies assistant-specific behavior for the shared text.
 
 ## 2. Source layout and frontmatter
 
@@ -31,7 +31,7 @@ Sources live under `templates/`:
 
 Names use kebab-case; each skill's `name` matches its directory. Descriptions briefly identify purpose and activation. YAML frontmatter begins on the first line between `---` delimiters, with valid field names, types and quoting.
 
-The build resolves placeholders and copies skills with their source frontmatter. All six assistants receive identical runtime text. Guides install at project-root `.agents/apm-guides/`; skills install under `skills/` in the assistant's APM folder. The Assistant Reference identifies that folder and invocation details. Shared prose names commands by their skill names.
+The build resolves placeholders and copies skills with their source frontmatter. All six assistants receive identical runtime text. Guides install at project-root `.agents/apm-guides/`; skills install under `skills/` in the assistant's APM folder. The Assistant Reference identifies that folder and invocation details. Shared prose refers to command skills by name.
 
 ## 3. Navigation and references
 
