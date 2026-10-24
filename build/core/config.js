@@ -49,7 +49,6 @@ export function validateConfig(config) {
       if (!target.directories) {
         errors.push(`${prefix}: missing "directories"`);
       } else {
-        if (!target.directories.commands) errors.push(`${prefix}: missing "directories.commands"`);
         if (!target.directories.skills) errors.push(`${prefix}: missing "directories.skills"`);
         if (!target.directories.guides) errors.push(`${prefix}: missing "directories.guides"`);
       }

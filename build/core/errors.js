@@ -23,7 +23,6 @@ export const BuildErrorCode = {
   TEMPLATE_READ_FAILED: 'TEMPLATE_READ_FAILED',
 
   // Build errors
-  DUPLICATE_COMMAND: 'DUPLICATE_COMMAND',
   ARCHIVE_FAILED: 'ARCHIVE_FAILED',
   SHARED_FILES_DIFFER: 'SHARED_FILES_DIFFER',
   WRITE_FAILED: 'WRITE_FAILED'
@@ -133,20 +132,6 @@ export class BuildError extends Error {
     );
   }
 
-  /**
-   * Creates a BuildError for duplicate command names.
-   *
-   * @param {string} name - Duplicate command name.
-   * @param {string[]} files - Files containing the duplicate.
-   * @returns {BuildError} Formatted error instance.
-   */
-  static duplicateCommand(name, files) {
-    return new BuildError(
-      `Duplicate command_name "${name}" in: ${files.join(', ')}`,
-      BuildErrorCode.DUPLICATE_COMMAND,
-      { name, files }
-    );
-  }
 
   /**
    * Creates a BuildError for archive creation failure.

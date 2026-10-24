@@ -1,6 +1,7 @@
 ---
-command_name: check-reports
+name: apm-5-check-reports
 description: Deliver a Task Report to an APM Manager. Use only when the User runs this command.
+disable-model-invocation: true
 ---
 
 # APM {VERSION} - Manager Check Reports Command

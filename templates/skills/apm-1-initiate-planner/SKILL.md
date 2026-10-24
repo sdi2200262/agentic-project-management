@@ -1,6 +1,7 @@
 ---
-command_name: initiate-planner
+name: apm-1-initiate-planner
 description: Initiate an APM Planner. Use only when the User runs this command.
+disable-model-invocation: true
 ---
 
 # APM {VERSION} - Planner Initiation Command

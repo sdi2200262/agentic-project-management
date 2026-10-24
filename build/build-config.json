@@ -13,10 +13,8 @@
       "format": "markdown",
       "configDir": ".claude",
       "directories": {
-        "commands": ".claude/skills",
         "skills": ".claude/skills",
-        "guides": ".agents/apm-guides",
-        "agents": ".claude/agents"
+        "guides": ".agents/apm-guides"
       },
       "postInstallNote": null
     },
@@ -27,10 +25,8 @@
       "format": "markdown",
       "configDir": ".codex",
       "directories": {
-        "commands": ".agents/skills",
         "skills": ".agents/skills",
-        "guides": ".agents/apm-guides",
-        "agents": ".codex/agents"
+        "guides": ".agents/apm-guides"
       },
       "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm-1-initiate-planner) instead of /slash-commands."
     },
@@ -41,10 +37,8 @@
       "format": "markdown",
       "configDir": ".cursor",
       "directories": {
-        "commands": ".agents/skills",
         "skills": ".agents/skills",
-        "guides": ".agents/apm-guides",
-        "agents": ".cursor/agents"
+        "guides": ".agents/apm-guides"
       },
       "postInstallNote": null
     },
@@ -55,13 +49,8 @@
       "format": "markdown",
       "configDir": ".github",
       "directories": {
-        "commands": ".agents/skills",
         "skills": ".agents/skills",
-        "guides": ".agents/apm-guides",
-        "agents": ".github/agents"
-      },
-      "agentFrontmatter": {
-        "user-invocable": false
+        "guides": ".agents/apm-guides"
       },
       "postInstallNote": null
     },
@@ -72,19 +61,8 @@
       "format": "markdown",
       "configDir": ".agents",
       "directories": {
-        "commands": ".agents/skills",
         "skills": ".agents/skills",
-        "guides": ".agents/apm-guides",
-        "agents": ".agents/agents"
-      },
-      "agentFrontmatter": {
-        "tools": [
-          "view_file",
-          "grep_search",
-          "run_command"
-        ],
-        "subagent": true,
-        "mainAgent": false
+        "guides": ".agents/apm-guides"
       },
       "postInstallNote": null
     },
@@ -95,13 +73,8 @@
       "format": "markdown",
       "configDir": ".opencode",
       "directories": {
-        "commands": ".agents/skills",
         "skills": ".agents/skills",
-        "guides": ".agents/apm-guides",
-        "agents": ".opencode/agents"
-      },
-      "agentFrontmatter": {
-        "mode": "subagent"
+        "guides": ".agents/apm-guides"
       },
       "postInstallNote": "OpenCode runs APM commands as skills: type @ and the command name (e.g., @apm-1-initiate-planner)."
     }

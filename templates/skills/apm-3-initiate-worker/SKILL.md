@@ -1,6 +1,7 @@
 ---
-command_name: initiate-worker
+name: apm-3-initiate-worker
 description: Initiate an APM Worker. Use only when the User runs this command.
+disable-model-invocation: true
 ---
 
 # APM {VERSION} - Worker Initiation Command
@@ -48,7 +49,7 @@ Continue while assigned work remains, until User intervention or Handoff.
 
 ## 4. Handoff Procedure
 
-On User-initiated Handoff, follow `{COMMAND_PATH:apm-7-handoff-worker}`.
+On User-initiated Handoff, follow `{SKILL_PATH:apm-7-handoff-worker}`.
 
 ## 5. Operating Rules
 

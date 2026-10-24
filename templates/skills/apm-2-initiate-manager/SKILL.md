@@ -1,6 +1,7 @@
 ---
-command_name: initiate-manager
+name: apm-2-initiate-manager
 description: Initiate an APM Manager. Use only when the User runs this command.
+disable-model-invocation: true
 ---
 
 # APM {VERSION} - Manager Initiation Command
@@ -61,7 +62,7 @@ After each review, reassess and dispatch in the same turn when work is Ready. Co
 
 ## 5. Handoff Procedure
 
-Monitor reports/logs for degrading output or reported compaction; inform the User when Worker Handoff or recovery is needed. On User-initiated Manager Handoff, follow `{COMMAND_PATH:apm-6-handoff-manager}`.
+Monitor reports/logs for degrading output or reported compaction; inform the User when Worker Handoff or recovery is needed. On User-initiated Manager Handoff, follow `{SKILL_PATH:apm-6-handoff-manager}`.
 
 ## 6. Operating Rules
 

@@ -67,7 +67,7 @@ For each document, present the proposal and material choices before writing. Rea
 
 1. Propose execution patterns that apply across all or most work, drawing from the approved documents and gathered context. Keep design/output content in Spec or Task guidance; leave version control conventions to the Manager. Explain consequential inclusions or exclusions and identify existing standards to reference.
 2. Read the Rules file or confirm its absence. Write the APM_RULES block per §4.3, preserving outside content. If creating the file, write only the block.
-3. Ask the User to review. Apply corrections and request approval again as needed. After approval, continue to `{COMMAND_PATH:apm-1-initiate-planner}` §5 Planning Phase Completion.
+3. Ask the User to review. Apply corrections and request approval again as needed. After approval, continue to `{SKILL_PATH:apm-1-initiate-planner}` §5 Planning Phase Completion.
 
 ## 4. Structural Specifications
 

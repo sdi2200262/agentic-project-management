@@ -1,6 +1,7 @@
 ---
-command_name: handoff-manager
+name: apm-6-handoff-manager
 description: Perform a Handoff with an APM Manager. Use only when the User runs this command.
+disable-model-invocation: true
 ---
 
 # APM {VERSION} - Manager Handoff Command

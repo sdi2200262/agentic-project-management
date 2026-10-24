@@ -36,7 +36,7 @@ Briefly summarize what was established or corrected and any remaining limits. Af
 
 ### 2.5 Exploration and Research Standards
 
-Establish authority during initiation before deep exploration. When relevant material or User responses point to code, explore proactively before continuing questions. Read relevant repositories, including their history and branch structure as project signals. Focused lookups can be direct; use subagents for substantial research. {PLANNER_SUBAGENT_GUIDANCE}
+Establish authority during initiation before deep exploration. When relevant material or User responses point to code, explore proactively before continuing questions. Read relevant repositories, including their history and branch structure as project signals. Focused lookups can be direct; use subagents for substantial research. Spawn your assistant's explorer subagent for substantial research - it runs in its own context window, preserving yours for planning; the call for your assistant is in the `apm-communication` skill §5 Assistant Reference. Structure the prompt with specific research questions and expected sources. Verify findings against the codebase, then present a summary to the User before using them in the round.
 
 Verify critical subagent claims against the referenced files or commands. If verification finds a contradiction or consequential gap, dispatch a focused follow-up and verify its findings too. Present verified findings and implications to the User before relying on them. Include them in the next follow-up when gaps remain, or in the round summary when they complete its coverage.
 
@@ -48,7 +48,7 @@ Complete pre-round setup, three rounds with follow-ups, and the final understand
 
 ### 3.1 Pre-Round Context
 
-If archives were confirmed relevant during initiation, {ARCHIVE_EXPLORER_GUIDANCE}. Verify consequential archived claims against current code using the returned paths/handles.
+If archives were confirmed relevant during initiation, spawn your assistant's explorer subagent and pass it the archive path(s) to explore; the call for your assistant is in the `apm-communication` skill §5 Assistant Reference. Verify consequential archived claims against current code using the returned paths/handles.
 
 Explore all codebases relevant to the project before the rounds, not just selected ones. Use §2.5 Exploration and Research Standards. Present findings with the opening Round 1 questions or confirmations, keeping them relevant to what the User must answer.
 

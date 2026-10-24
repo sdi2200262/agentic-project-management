@@ -7,29 +7,15 @@
  */
 
 import fs from 'fs-extra';
-import yaml from 'js-yaml';
 import path from 'path';
 import logger from '../utils/logger.js';
 import { findMdFiles } from '../utils/files.js';
-import { parseFrontmatter } from './frontmatter.js';
 import crypto from 'crypto';
 import { replacePlaceholders } from './placeholders.js';
 import { generateReleaseManifest } from '../generators/manifest.js';
 import { createZipArchive } from '../generators/archive.js';
 import { getVersion } from '../core/config.js';
 import { BuildError } from '../core/errors.js';
-
-/**
- * Determines if a template file is a command based on its source directory.
- *
- * @param {string} templatePath - Path to template file.
- * @param {string} sourceDir - Source templates directory.
- * @returns {boolean} True if file is in commands/ directory.
- */
-function isCommandTemplate(templatePath, sourceDir) {
-  const relativePath = path.relative(sourceDir, templatePath);
-  return relativePath.startsWith('commands' + path.sep);
-}
 
 /**
  * Determines if a template file is a guide based on its source directory.
@@ -44,18 +30,6 @@ function isGuideTemplate(templatePath, sourceDir) {
 }
 
 /**
- * Determines if a template file is an agent based on its source directory.
- *
- * @param {string} templatePath - Path to template file.
- * @param {string} sourceDir - Source templates directory.
- * @returns {boolean} True if file is in agents/ directory.
- */
-function isAgentTemplate(templatePath, sourceDir) {
-  const relativePath = path.relative(sourceDir, templatePath);
-  return relativePath.startsWith('agents' + path.sep);
-}
-
-/**
  * Processes a single template file.
  *
  * @param {string} templatePath - Path to template file.
@@ -63,70 +37,25 @@ function isAgentTemplate(templatePath, sourceDir) {
  * @returns {Promise<void>}
  */
 async function processTemplate(templatePath, options) {
-  const { target, version, commandsDir, skillsDir, guidesDir, agentsDir, targetBuildDir, sourceDir } = options;
+  const { version, skillsDir, guidesDir, targetBuildDir, sourceDir } = options;
 
-  const content = await fs.readFile(templatePath, 'utf8');
-
-  const isCommand = isCommandTemplate(templatePath, sourceDir);
-  const isGuide = isGuideTemplate(templatePath, sourceDir);
-  const isAgent = isAgentTemplate(templatePath, sourceDir);
-  const category = isCommand ? 'command' : (isGuide ? 'guide' : (isAgent ? 'agent' : 'skill'));
-
-  const context = { version };
-  const basename = path.basename(templatePath, '.md');
-  let finalContent;
+  const content = replacePlaceholders(await fs.readFile(templatePath, 'utf8'), { version });
+  const relativePath = path.relative(sourceDir, templatePath);
   let outputPath;
 
-  if (isGuide) {
-    // Guides: plain markdown, no frontmatter, flat files
-    finalContent = replacePlaceholders(content, context);
-    outputPath = path.join(guidesDir, `${basename}.md`);
+  if (isGuideTemplate(templatePath, sourceDir)) {
+    // Guides: flat files
+    outputPath = path.join(guidesDir, path.basename(templatePath));
   } else {
-    // Commands, agents and skills: parse frontmatter
-    const { frontmatter, content: body } = parseFrontmatter(content);
-    const processedBody = replacePlaceholders(body, context);
-    const processedFull = replacePlaceholders(content, context);
-
-    if (isCommand) {
-      // Commands are skills for every assistant (skills/<name>/SKILL.md). disable-model-invocation keeps
-      // them user-triggered where the assistant honours it; Codex ignores it, so descriptions say so too.
-      const skillFrontmatter = `---\nname: ${basename}\ndescription: ${frontmatter.description || 'APM command'}\ndisable-model-invocation: true\n---\n`;
-      finalContent = skillFrontmatter + processedBody;
-      const skillDir = path.join(commandsDir, basename);
-      await fs.ensureDir(skillDir);
-      outputPath = path.join(skillDir, 'SKILL.md');
-    } else if (isAgent) {
-      if (target.id === 'codex') {
-        // Codex: agents are TOML files with developer_instructions
-        const name = frontmatter.name || basename;
-        const description = (frontmatter.description || '').replace(/"/g, '\\"');
-        finalContent = `name = "${name}"\ndescription = "${description}"\n\ndeveloper_instructions = """\n${processedBody}\n"""\n`;
-        outputPath = path.join(agentsDir, `${basename}.toml`);
-      } else {
-        // Agents: flat files (agents/<agent-name>.md, Copilot: <agent-name>.agent.md)
-        // Targets may add platform-specific frontmatter (e.g. OpenCode mode, Antigravity tools)
-        finalContent = target.agentFrontmatter
-          ? `---\n${yaml.dump({ ...frontmatter, ...target.agentFrontmatter }, { lineWidth: -1 })}---\n${processedBody}`
-          : processedFull;
-        const agentExt = target.id === 'copilot' ? '.agent.md' : '.md';
-        outputPath = path.join(agentsDir, `${basename}${agentExt}`);
-      }
-    } else {
-      // Skills: directory-based structure (skills/<skill-name>/SKILL.md + optional files)
-      finalContent = processedFull;
-      const relativePath = path.relative(sourceDir, templatePath);
-      const pathParts = relativePath.split(path.sep);
-      // pathParts: ['skills', '<skill-name>', '<file>.md']
-      const skillName = pathParts[1];
-      const fileName = pathParts[pathParts.length - 1];
-      const skillDir = path.join(skillsDir, skillName);
-      await fs.ensureDir(skillDir);
-      outputPath = path.join(skillDir, fileName);
-    }
+    // Skills, including the commands: skills/<skill-name>/<file>.md, copied as they are
+    const [, skillName, ...rest] = relativePath.split(path.sep);
+    const skillDir = path.join(skillsDir, skillName);
+    await fs.ensureDir(skillDir);
+    outputPath = path.join(skillDir, ...rest);
   }
 
-  await fs.writeFile(outputPath, finalContent);
-  logger.info(`${category}: ${basename}.md → ${path.relative(targetBuildDir, outputPath)}`);
+  await fs.writeFile(outputPath, content);
+  logger.info(`${relativePath} → ${path.relative(targetBuildDir, outputPath)}`);
 }
 
 /**
@@ -214,17 +143,13 @@ async function buildTarget(target, config, version) {
   const { outputDir, sourceDir } = buildConfig;
 
   const targetBuildDir = path.join(outputDir, `${target.id}-build`);
-  const commandsDir = path.join(targetBuildDir, target.directories.commands);
   const skillsDir = path.join(targetBuildDir, target.directories.skills);
   const guidesDir = path.join(targetBuildDir, target.directories.guides);
-  const agentsDir = path.join(targetBuildDir, target.directories.agents);
 
   logger.info(`\nProcessing target: ${target.name} (${target.id})`);
 
-  await fs.ensureDir(commandsDir);
   await fs.ensureDir(skillsDir);
   await fs.ensureDir(guidesDir);
-  await fs.ensureDir(agentsDir);
 
   // Copy apm/ → .apm/ (common to all targets)
   await copyApmDirectory(sourceDir, targetBuildDir);
@@ -238,10 +163,8 @@ async function buildTarget(target, config, version) {
     await processTemplate(templatePath, {
       target,
       version,
-      commandsDir,
       skillsDir,
       guidesDir,
-      agentsDir,
       targetBuildDir,
       sourceDir
     });

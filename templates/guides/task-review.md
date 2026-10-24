@@ -16,7 +16,7 @@ Interpret scoped flags with project context. `important_findings` can affect oth
 
 ### 2.2 Review Outcome Standards
 
-Accept a supported Success with no flags. Investigate flags, non-Success or inconsistency before deciding. Use direct checks for contained issues and subagents for context-intensive or unclear ones; verify critical claims against source. {MANAGER_SUBAGENT_GUIDANCE}
+Accept a supported Success with no flags. Investigate flags, non-Success or inconsistency before deciding. Use direct checks for contained issues and subagents for context-intensive or unclear ones; verify critical claims against source. Spawn your assistant's explorer subagent for investigation - it runs in its own context window, preserving yours for coordination; the call for your assistant is in the `apm-communication` skill §5 Assistant Reference. Structure the prompt with the investigation goal, files to examine, and what to report back.
 
 After investigation, proceed if nothing actionable remains, send a refined follow-up if retry is needed, or modify planning documents when their content is wrong. Note uncommitted changes in a non-Success follow-up. For successful work left uncommitted, commit on the Worker's branch using Rules conventions; no follow-up is needed for that alone.
 

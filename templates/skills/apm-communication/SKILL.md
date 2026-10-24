@@ -78,8 +78,6 @@ Guides are in `.agents/apm-guides/` for every assistant. Skills, including the c
 - Antigravity: the `invoke_subagent` tool with the `research` agent
 - OpenCode: `subagent(agent="explore", description="...", prompt="...")`
 
-The `apm-archive-explorer` subagent is installed with APM. Spawn it by name with the same tool.
-
 **New chat.** Tell the User to:
 - Claude Code: open a new terminal and run `claude`, or open a new Claude Code tab in VS Code or a new session in the desktop app
 - Codex CLI: open a new terminal and run `codex`, or start a new chat in the Codex IDE extension or app

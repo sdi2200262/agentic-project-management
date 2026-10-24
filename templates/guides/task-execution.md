@@ -51,7 +51,7 @@ Execute batched Tasks sequentially, fully validating and logging each at its `lo
 
 ### 3.2 Context Integration
 
-Read Context from Dependencies and follow §2.1. For cross-agent work, complete the reading/integration steps; for same-agent work, refresh referenced context as needed. {WORKER_SUBAGENT_GUIDANCE} Verify critical findings and resolve integration issues before continuing.
+Read Context from Dependencies and follow §2.1. For cross-agent work, complete the reading/integration steps; for same-agent work, refresh referenced context as needed. For complex cross-agent dependencies or multi-file exploration, spawn your assistant's explorer subagent rather than inline searching - it runs in its own context window and returns consolidated findings; the call for your assistant is in the `apm-communication` skill §5 Assistant Reference. Structure the prompt with specific files to read and questions to answer. Verify critical findings and resolve integration issues before continuing.
 
 ### 3.3 Task Execution
 

@@ -1,6 +1,7 @@
 ---
-command_name: handoff-worker
+name: apm-7-handoff-worker
 description: Perform a Handoff with an APM Worker. Use only when the User runs this command.
+disable-model-invocation: true
 ---
 
 # APM {VERSION} - Worker Handoff Command
