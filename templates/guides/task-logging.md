@@ -4,7 +4,7 @@
 
 **Reading agent:** Worker
 
-Write a Task Log at the prompt's `log_path`, then a concise Report Bus message. The Manager uses the log to assess outcomes and coordinate further work without the chat history.
+Write a Task Log at the prompt's `log_path`, then a concise Report Bus message. The Manager uses the log to assess outcomes and coordinate further work from the recorded evidence.
 
 ## 2. Operational Standards
 
@@ -19,7 +19,7 @@ When uncertain whether a flag applies, set it to true. Explain the finding in it
 
 ### 2.2 Outcome Standards
 
-Select status from results, not effort:
+Select status from results:
 
 - Success: objective achieved and all validation passed.
 - Partial: progress made but incomplete; guidance is needed.
@@ -29,9 +29,9 @@ Use Partial for ambiguous validation, important findings that could affect other
 
 ### 2.3 Detail Level Standards
 
-Write for the Manager's next decision and future continuation. Lead with the outcome; give concrete deliverables, checks/results, limits, consequential decisions and unresolved issues. Reference paths instead of copying artifacts. Use snippets only for novel, complex or critical logic, at most 20 lines. Include diagnostic output needed to understand errors.
+Write for the Manager's next decision and future continuation. Lead with the outcome; give concrete deliverables, checks/results, limits, consequential decisions and unresolved issues. Provide paths to the relevant artifacts. Use snippets only for novel, complex or critical logic, at most 20 lines. Include diagnostic output needed to understand errors.
 
-Keep required sections, but omit duplicated narrative and a step-by-step account that adds no review value. Distinguish performed checks from unverified claims.
+Use the required sections to present the evidence needed for review. Distinguish performed checks from unverified claims.
 
 ## 3. Task Logging Procedure
 

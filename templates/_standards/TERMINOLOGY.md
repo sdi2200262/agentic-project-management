@@ -2,7 +2,7 @@
 
 This document defines the formal vocabulary of the APM workflow. This is a development-time specification: agents do not read this file or any `_standards/` document during runtime. The vocabulary defined here takes effect through the commands, guides, and skills that use these terms consistently. Template authors use terms exactly as defined here; agents inherit correct terminology through the templates they read.
 
-Formal terms are always capitalized and carry defined meaning. All other language is natural - standard English capitalization applies (headings, labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language. Workflow definitions follow `WORKFLOW.md`.
+Formal terms are always capitalized and carry defined meaning. Use ordinary English capitalization for other language, including headings, labels and proper nouns. Workflow definitions follow `WORKFLOW.md`.
 
 ---
 
@@ -121,7 +121,7 @@ Memory resides in `.apm/memory/` and captures project history for progress track
 
 ## 8. Defined Concepts
 
-These concepts are not formal capitalized terms but are clearly defined because they drive real workflow decisions.
+These concepts guide workflow decisions. Their labels use ordinary English capitalization.
 
 **Task dependencies.** A Task may depend on outputs from a prior Task. The dependency context provided depends on the Worker's familiarity with the producer's work:
 

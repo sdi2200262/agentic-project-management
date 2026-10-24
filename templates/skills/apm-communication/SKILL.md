@@ -17,7 +17,7 @@ Non-APM agents can use the bus without joining the full workflow. See `bus-integ
 
 ### 2.1 Direct Communication
 
-Write plain English for the User, who already has the conversation as context. Lead with the answer, outcome, finding, proposal or question they need. Give the reasons and details needed to understand or act. State each point once; omit filler, repeated recaps and closing summaries that add nothing.
+Write plain English for the User, who already has the conversation as context. Lead with the answer, outcome, finding, proposal or question they need. Give the reasons and details needed to understand or act. State each point once and end with the last useful detail.
 
 Use a casually formal tone, concrete subjects and active verbs. Keep sentences to one main thought and related words together. Use short paragraphs, lists for parallel items or steps, and tables for comparisons. Explain unfamiliar concepts before relying on their names. State claims at the certainty the evidence supports, with consequential limits beside them. Before sending a substantial reply, check that its opening and length fit the request.
 
@@ -25,7 +25,7 @@ When the User must act, specify the command, target chat and argument or the art
 
 ### 2.2 Decisions and Evidence
 
-Present decisions and proposals with the supporting evidence, material trade-offs and uncertainty the User needs to assess them. Explain consequential choices; do not narrate a derivation of every decision. Match detail to complexity and the User's request.
+Present decisions and proposals with the supporting evidence, material trade-offs and uncertainty the User needs to assess them. Explain consequential choices. Match detail to complexity and the User's request.
 
 Questions name the understanding or gap and ask for a focused answer or correction. Proposals state the intended result and any approval needed. Progress updates communicate a meaningful change or blocker. Completion reports lead with the outcome, then deliverables, validation, limits and any required action. Reviews connect findings to evidence and the next step.
 
@@ -33,11 +33,11 @@ A proposal does not replace a required approval. Pause at the gates defined by t
 
 ### 2.3 Terminology Boundaries
 
-Use formal APM terms such as Task, Stage, Worker and Manager naturally. Describe procedure transitions and decisions in ordinary language rather than announcing guide section numbers, step labels or internal decision categories. Choose headings when they help the User navigate the content; no prescribed thinking headers are needed.
+Use formal APM terms such as Task, Stage, Worker and Manager naturally. Describe procedure transitions and decisions in ordinary language. Choose headings that help the User find relevant information.
 
 ## 3. Agent-to-System Communication
 
-Follow the artifact schemas in the relevant guide and the bus protocol below. Write free-text content for its reader and purpose: a future agent must understand it without the chat. Keep outcomes, evidence, paths, decisions and reasons, unresolved issues and continuation steps concrete. Verify claims against source and distinguish recorded state from assumptions. Keep drafting history out of finished artifacts.
+Follow the artifact schemas in the relevant guide and the bus protocol below. Write free-text content for its reader and purpose: a future agent needs self-contained context. Keep outcomes, evidence, paths, decisions and reasons, unresolved issues and continuation steps concrete. Verify claims against source and distinguish recorded state from assumptions. Describe the subject and the decisions its reader needs.
 
 ## 4. Message Bus Protocol
 

@@ -18,13 +18,13 @@ Trace upstream when ancestors established required patterns, schemas or contract
 
 ### 2.2 Task Prompt Content Standards
 
-Embed exact design decisions, constraints, Task definitions, relevant coordination findings and authoritative User-document content. Present them as direct context without references to Spec, Plan, Tracker, Index or Memory. The Worker must not need those documents. Exclude unrelated background and duplicate guidance.
+Embed exact design decisions, constraints, Task definitions, relevant coordination findings and authoritative User-document content. Present them as direct context without references to Spec, Plan, Tracker, Index or Memory. The Worker must not need those documents. Include the context and guidance relevant to the assigned work.
 
-For codebase content, give targeted paths and what to inspect instead of copying files. Keep objectives, instructions and validation within Worker scope. Producer Task IDs may identify dependency context; do not put Stage structure, other Task IDs or coordination concepts into execution instructions.
+For codebase content, give targeted paths and what to inspect. Keep objectives, instructions and validation within Worker scope. Producer Task IDs may identify dependency context; do not put Stage structure, other Task IDs or coordination concepts into execution instructions.
 
 ### 2.3 Follow-Up Standards
 
-Create a refined prompt from review/investigation findings, not a copy of the prior attempt. Explain the issue and update Objective, Instructions, Output and Validation to bridge the Worker's scoped context with what you learned. Preserve the original `log_path`; the Worker overwrites that log. Capture useful iteration patterns in Stage summaries.
+Create a refined prompt from review/investigation findings. Explain the issue and update Objective, Instructions, Output and Validation to bridge the Worker's scoped context with what you learned. Preserve the original `log_path`; the Worker overwrites that log. Capture useful iteration patterns in Stage summaries.
 
 ### 2.4 Dispatch Standards
 
@@ -54,7 +54,7 @@ For a participating non-APM agent, write a plain assignment to its Task Bus with
 
 ## 3. Task Assignment Procedure
 
-Assess dispatch, prepare context and construct prompts. Follow-ups use the separate path below. Explain the selected work, material dependency/isolation considerations and next User action without a fixed analytical header.
+Assess dispatch, prepare context and construct prompts. Follow-ups use the separate path below. Explain the selected work, material dependency/isolation considerations and next User action.
 
 ### 3.1 Dispatch Assessment
 
@@ -69,7 +69,7 @@ Assess dispatch, prepare context and construct prompts. Follow-ups use the separ
 1. Read the Plan's Dependencies field; skip dependency preparation for “None.”
 2. Apply §2.1, checking Handoff/recovery notes and overrides, and trace relevant upstream contracts.
 3. Read unique cross-agent producer logs for outputs, paths and integration details.
-4. Extract relevant Spec and authoritative source content per §2.2. Refresh the Spec at the first dispatch of a Stage or after modification, rather than rereading an unchanged Spec for each Task.
+4. Extract relevant Spec and authoritative source content per §2.2. Refresh the Spec at the first dispatch of a Stage or after modification.
 5. Extract Plan Objective, Steps, Guidance, Output and Validation. Resolve source references and turn steps into actionable instructions with the needed context.
 
 ### 3.3 Task Prompt Construction
@@ -96,7 +96,7 @@ Assess dispatch, prepare context and construct prompts. Follow-ups use the separ
 
 ### 4.1 Task Prompt Format
 
-Task Prompts are markdown files. Adapt based on Task needs - not all sections are required for every Task.
+Task Prompts are markdown files. Choose the sections needed for the Task.
 
 **YAML Frontmatter Schema:**
 ```yaml
@@ -129,7 +129,7 @@ has_dependencies: true
 - *Workspace:* Working directory and branch name for sequential dispatch, or worktree path and project root for parallel dispatch. For worktree dispatch, instruct the Worker to perform code work in the worktree but resolve all `.apm/` paths (Task Log, bus files) from the project root. Worker operates in the specified workspace, commits there, and notes it in the Task Log. Workers do not merge.
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field.
-- *Instruction Accuracy:* The objective and expected output are authoritative. Verify instructions against the codebase when details, prerequisites or assumptions appear inaccurate; use the actual state rather than persist with a contradicted step.
+- *Instruction Accuracy:* The objective and expected output are authoritative. Verify instructions against the codebase when details, prerequisites or assumptions appear inaccurate; base execution on the verified state.
 - *Task Iteration:* Follow `{GUIDE_PATH:task-execution}` §2.3 Iteration Standards, including debug delegation after an unsuccessful correction. Add only Task-specific investigation or validation guidance here.
 - *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
 - *Task Report:* Instruction to output a Task Report for User to return to Manager.
@@ -140,7 +140,7 @@ Follow-up Task Prompts use the same structure as §4.1 Task Prompt Format with t
 
 - *Title:* `APM Follow-Up Task: <Task Title>`
 - *Follow-up context section* after Task Reference - previous issue, investigation findings, required refinement, additional guidance.
-- *All content sections* refined based on what went wrong, not copied from the previous attempt.
+- *All content sections* refined to address the issue and investigation findings.
 - *Same `log_path`* as the original Task Prompt.
 
 ### 4.3 Branch and Worktree Standards

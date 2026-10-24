@@ -9,7 +9,7 @@ Summarize the session and optionally archive it. Run as a standalone agent; Plan
 
 Read `{SKILL_PATH:apm-communication}` for communication and your assistant's native calls/invocations.
 
-1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Follow references to Task Logs when a particular claim needs verification rather than reading every log yourself.
+1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Read the Task Logs referenced for claims that need verification; the subagent in the next step reviews the full log set.
 2. {SUBAGENT_GUIDANCE} Ask it to inspect all `.apm/` artifacts, including Task Logs, against the codebase. Have it verify deliverables, expected commits/branches and key validation results, returning Stage outcomes, stale artifact/code differences and consequential findings.
 3. Write `.apm/session-summary.md` using the format below. Ground claims in artifacts and verification; distinguish completed, partial and missing work and state the snapshot's date.
 4. Present the summary for review. Apply additions, corrections or emphasis the User requests before finalizing.

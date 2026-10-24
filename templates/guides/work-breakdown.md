@@ -14,7 +14,7 @@ Capture gathered context where execution will use it: Spec for design decisions 
 
 The Manager reads Spec and Plan, extracts their content into self-contained Task Prompts, and adds runtime workspace/dependency findings. Workers read their prompts and Rules. They do not read coordination documents.
 
-Put project decisions in locatable Spec sections. Task guidance adds domain-specific constraints and implementation context; reference relevant Spec or authoritative User-document sections rather than restating them in the Plan. The Manager embeds that content when assigning work. Rules must stand alone without references to Spec, Plan or external design documents.
+Put project decisions in locatable Spec sections. Task guidance adds domain-specific constraints and implementation context; reference relevant Spec or authoritative User-document sections. The Manager embeds that content when assigning work. Rules must stand alone without references to Spec, Plan or external design documents.
 
 The Manager handles dispatch, version control conventions and holistic verification. Record observations for its judgment in blockquote notes after the Spec/Plan header separator. Spec notes cover environment, working/reference repositories, version control observations, workspace constraints and User preferences. Plan notes cover boundaries, sequencing, critical paths, convergence and Stage verification opportunities. Notes explain observations and reasons, not runtime directives.
 
@@ -31,7 +31,7 @@ The Manager handles dispatch, version control conventions and holistic verificat
 
 The Spec defines what is built and why: choices where alternatives existed, constraints and requirements shaping the project. Its decisions must be implemented by corresponding Plan work. Keep single-scope implementation details in Task guidance and broadly applicable execution patterns in Rules.
 
-Reference authoritative requirement documents with paths/sections instead of duplicating their contents. Record the workspace structure, distinguishing working targets from read-only references. Organize decisions so the Manager can find and extract relevant content.
+Reference authoritative requirement documents with paths/sections. Record the workspace structure, distinguishing working targets from read-only references. Organize decisions so the Manager can find and extract relevant content.
 
 ### 2.4 Plan Standards
 
@@ -43,7 +43,7 @@ Keep guidance separate from ordered steps. Reference relevant Spec/source sectio
 
 Rules describe how to work across all or most Tasks. Output strings, formats, schemas and interface contracts describe what is built and belong in Spec or Task guidance, even when several Workers need them. When uncertain whether a pattern is broadly applicable, keep it in Task guidance.
 
-Write rules conditionally on the work being done, not on Worker identity. All Workers read the same file. Preserve pre-existing content outside APM_RULES unless the User requests changes; reference relevant existing standards rather than duplicating them. Keep APM rules self-contained within the Worker's normal context.
+Write rules conditionally on the work being done. All Workers read the same file. Preserve pre-existing content outside APM_RULES unless the User requests changes; reference relevant existing standards. Keep APM rules self-contained within the Worker's normal context.
 
 ## 3. Work Breakdown Procedure
 
@@ -57,7 +57,7 @@ For each document, present the proposal and material choices before writing. Rea
 
 ### 3.2 Plan Proposal
 
-1. Propose Workers and their domains, sequential Stages and deliverables, and the Tasks needed for each. Explain material boundaries, sequencing and dependencies so the User can assess the breakdown without a narrated derivation of every Task.
+1. Propose Workers and their domains, sequential Stages and deliverables, and the Tasks needed for each. Explain material boundaries, sequencing and dependencies so the User can assess the breakdown.
 2. Define each Task's Worker, objective/scope, guidance, output, validation, dependencies and ordered steps. Include needed User involvement. Reference Spec/source sections for design content and add Task-specific implementation context. Identify the deliverable at each dependency boundary.
 3. Verify coverage against gathered context and the approved Spec, independent Task validation, reasonable workload distribution and dependency consistency. A producer with a different Worker is a cross-agent dependency. Correct misclassifications and missing work; prepare useful Plan notes.
 4. Read `.apm/plan.md` and write it per §4.2, including the Dependency Graph. Match the Spec's `title`; set `modified` to “Plan creation by the Planner.” Bold cross-agent dependencies and use the prescribed graph edges.
@@ -89,7 +89,7 @@ Below the frontmatter, the document starts with `# APM Spec` followed by two hea
 
 **Content structure:** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. The Spec should read as a coherent description of what is being built and why, shaped by the project's unique requirements.
 
-**Content rules:** Use markdown headings (`##`) to organize decision groups. Each specification must be concrete and actionable. Structure for extraction - the Manager distills relevant content into individual Task Prompts, so decisions should be locatable and separable. Reference existing User documents rather than duplicating - include file paths and specific sections so the Manager can locate source material during Task Assignment. Use tables for enumerated values, mermaid diagrams for relationships, code blocks for schemas, prose for rationale.
+**Content rules:** Use markdown headings (`##`) to organize decision groups. Each specification must be concrete and actionable. Structure for extraction - the Manager distills relevant content into individual Task Prompts, so decisions should be locatable and separable. Reference existing User documents with paths and specific sections so the Manager can locate source material during Task Assignment. Use tables for enumerated values, mermaid diagrams for relationships, code blocks for schemas, prose for rationale.
 
 ### 4.2 Plan Format
 
@@ -177,6 +177,6 @@ APM_RULES {
 } //APM_RULES
 ```
 
-**Content rules:** Write APM content inside the block; preserve pre-existing content outside it unless the User requests changes. Use markdown headings (`##`) for categories. Each standard must be concrete and actionable. Only universal execution-level patterns - not architecture decisions, Task-specific guidance, or coordination decisions. Reference existing standards outside the block rather than duplicating.
+**Content rules:** Write APM content inside the block; preserve pre-existing content outside it unless the User requests changes. Use markdown headings (`##`) for categories. Each standard must be concrete and actionable. Only universal execution-level patterns - not architecture decisions, Task-specific guidance, or coordination decisions. Reference relevant existing standards outside the block.
 
 ---
