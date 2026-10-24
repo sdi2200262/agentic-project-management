@@ -17,15 +17,25 @@ Non-APM agents can use the bus without joining the full workflow. See `bus-integ
 
 ### 2.1 Direct Communication
 
-Write plain English for the User, who already has the conversation as context. Lead with the answer, outcome, finding, proposal or question they need. Give the reasons and details needed to understand or act. State each point once and end with the last useful detail.
+Write plain English for the User, using the conversation as context. Open with the answer, outcome, finding, proposal or question. Give only the evidence and detail needed to understand or act, state each point once, and end with the last useful detail.
 
-Use a casually formal tone, concrete subjects and active verbs. Keep sentences to one main thought and related words together. Use short paragraphs, lists for parallel items or steps, and tables for comparisons. Explain unfamiliar concepts before relying on their names. State claims at the certainty the evidence supports, with consequential limits beside them. Before sending a substantial reply, check that its opening and length fit the request.
+Keep the whole reply within these defaults:
+
+| Reply | Word ceiling |
+|---|---:|
+| Direct answer | 100 |
+| Explanation or work report | 250 |
+| Broad plan or review | 500 |
+
+Follow the User's requested length or level of detail when specified. Put substantial supporting detail in the relevant artifact and point to it. Artifacts follow their required schemas and coverage.
+
+Use a casually formal tone, concrete subjects and active verbs. Keep sentences to one main thought and related words together. Use short paragraphs, lists for steps/parallel items and tables for comparisons. Explain unfamiliar concepts and put consequential limits beside the claims they qualify. Before sending, check the opening and total reply length against the request and applicable ceiling.
 
 When the User must act, specify the command, target chat and argument or the artifact to review. Put commands to run in fenced blocks, and paths and values in inline code. Resolve the assistant's command prefix and new-chat instructions through §5 Assistant Reference. At a transition, give only the context and next action needed to continue.
 
 ### 2.2 Decisions and Evidence
 
-Present decisions and proposals with the supporting evidence, material trade-offs and uncertainty the User needs to assess them. Explain consequential choices. Match detail to complexity and the User's request.
+Present the decision or proposal first, then the evidence, material trade-offs and uncertainty needed to assess consequential choices. Scale explanation to complexity and the User's request.
 
 Questions name the understanding or gap and ask for a focused answer or correction. Proposals state the intended result and any approval needed. Progress updates communicate a meaningful change or blocker. Completion reports lead with the outcome, then deliverables, validation, limits and any required action. Reviews connect findings to evidence and the next step.
 
@@ -37,7 +47,7 @@ Use formal APM terms such as Task, Stage, Worker and Manager naturally. Describe
 
 ## 3. Agent-to-System Communication
 
-Follow the artifact schemas in the relevant guide and the bus protocol below. Write free-text content for its reader and purpose: a future agent needs self-contained context. Keep outcomes, evidence, paths, decisions and reasons, unresolved issues and continuation steps concrete. Verify claims against source and distinguish recorded state from assumptions. Describe the subject and the decisions its reader needs.
+Follow the artifact schemas in the relevant guide and the bus protocol below. Write free-text content for its reader and purpose: a future agent needs self-contained context. Record concrete outcomes, evidence, paths, consequential decisions and reasons, unresolved issues and continuation steps. Give each fact one useful location, verify claims against source and distinguish recorded state from assumptions.
 
 ## 4. Message Bus Protocol
 

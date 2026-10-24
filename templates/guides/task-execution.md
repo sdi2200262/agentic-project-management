@@ -10,7 +10,7 @@ Receive assignments, integrate their context, execute, validate, log and report.
 
 ### 2.1 Context Integration Standards
 
-Complete cross-agent integration instructions before implementation. Read known files directly; use subagents for broad investigation where context isolation helps. Verify critical subagent findings against source. Use same-agent paths as recall anchors.
+Complete cross-agent integration instructions before implementation. Read known files directly. For broad investigation where context isolation helps, use a subagent with a focused question and relevant paths; resolve the call through `apm-communication` §5 Assistant Reference. Verify critical subagent findings against source. Use same-agent paths as recall anchors.
 
 Pause for User guidance on cross-agent integration problems or missing expected same-agent files. For minor same-agent ambiguities, continue with the best supported interpretation and note uncertainty. Do not build on an unstable foundation.
 
@@ -22,7 +22,7 @@ When all autonomous checks pass, request any required User judgment or external 
 
 ### 2.3 Iteration Standards
 
-Investigate before fixing: read the error, trace its origin and identify the cause. Apply one targeted change and revalidate. When a correction fails, introduces new problems or leaves the cause unclear, spawn a debug subagent. Give it the error output, investigation and attempted fix, relevant paths, and expected/actual behavior. Ask it to trace the cause, form a specific hypothesis and propose a targeted fix. Use parallel debug subagents when independent areas may be responsible.
+Investigate before fixing: read the error, trace its origin and identify the cause. Apply one targeted change and revalidate. When a correction fails, introduces new problems or leaves the cause unclear, use a subagent to investigate the cause. Give it the error output, investigation and attempted fix, relevant paths, and expected/actual behavior. Ask it to trace the cause, form a specific hypothesis and propose a targeted fix. When independent areas may be responsible, use subagents in parallel to investigate them.
 
 Verify findings before applying a fix. If investigation remains unresolved, prefer Partial and seek guidance; inaccurate Task instructions may also justify stopping. When uncertain or ending without Success, explain the failure, attempts, current state and options to the User before finalizing. Continue autonomously while the cause is clear, within scope and checks are available. Use `{SKILL_PATH:apm-communication}` §5 Assistant Reference for native calls.
 
@@ -51,13 +51,13 @@ Execute batched Tasks sequentially, fully validating and logging each at its `lo
 
 ### 3.2 Context Integration
 
-Read Context from Dependencies and follow §2.1. For cross-agent work, complete the reading/integration steps; for same-agent work, refresh referenced context as needed. For complex cross-agent dependencies or multi-file exploration, spawn your assistant's explorer subagent rather than inline searching - it runs in its own context window and returns consolidated findings; the call for your assistant is in the `apm-communication` skill §5 Assistant Reference. Structure the prompt with specific files to read and questions to answer. Verify critical findings and resolve integration issues before continuing.
+Read Context from Dependencies and follow §2.1. For cross-agent work, complete the reading/integration steps; for same-agent work, refresh referenced context as needed. For complex cross-agent dependencies or multi-file exploration, use a subagent to read the relevant files and answer specific integration questions. Use `apm-communication` §5 Assistant Reference for the call. Verify critical findings and resolve integration issues before continuing.
 
 ### 3.3 Task Execution
 
 1. Follow Detailed Instructions in order, applying Guidance and Rules toward the Objective. If a step contradicts the codebase, verify the actual state and follow the prompt's accuracy guidance.
 2. For explicit User actions, state what is needed and why, offer relevant options and await completion.
-3. Carry out specified subagent steps with a focused task description and verify critical findings before using them.
+3. For each specified subagent step, use a subagent with a focused task description and verify critical findings before using them. Resolve the call through `apm-communication` §5 Assistant Reference.
 4. Briefly state that implementation is ready for validation and continue to the checks.
 
 ### 3.4 Task Validation
@@ -66,7 +66,7 @@ Run autonomous criteria per §2.2. Failed or ambiguous results enter the correct
 
 ### 3.5 Correction Loop
 
-Apply §2.3: investigate, make one targeted correction and revalidate. If unsuccessful, delegate debugging and verify its findings before applying a fix. If still unresolved, present the situation and options for User guidance. Continue under that guidance or select the outcome per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and complete the Task.
+Apply §2.3: investigate, make one targeted correction and revalidate. If unsuccessful, use a subagent to investigate per §2.3 and verify its findings before applying a fix. If still unresolved, present the situation and options for User guidance. Continue under that guidance or select the outcome per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and complete the Task.
 
 ### 3.6 Task Completion
 

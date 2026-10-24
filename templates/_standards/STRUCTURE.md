@@ -1,71 +1,63 @@
 # APM Structure Standards
 
-These standards guide authors of commands, guides, skills and agents. Runtime agents read the resulting templates. Writing follows `WRITING.md`; terms follow `TERMINOLOGY.md`.
+These standards define source layout, navigation and artifact contracts for template authors. `WRITING.md` covers prose and Markdown presentation; `TERMINOLOGY.md` defines APM terms.
 
 ## 1. Organize for use
 
-Identify each document's reader, purpose and outputs near its beginning. Put prerequisites before dependent steps. Give each procedure a clear entry point, sequence, branches and completion condition. Give formats and reference material clear locations readers can consult directly.
+Identify the reader, purpose and outputs near the beginning. Put prerequisites before dependent steps. Give procedures a clear entry point, sequence, branches and completion condition. Place formats and reference material where readers can consult them directly.
 
-Organize each document around its purpose and the information its readers need. Use headings that help them find that information. Retain section numbers where references depend on them and update affected references when reorganizing. Keep artifact contracts precise.
-
-| Document | Structure |
+| Document | Content |
 |---|---|
-| Initiation command | Role and scope, identity/loading sequence, first/incoming-instance behavior where applicable, duties and boundaries. Planner has one instance and no Handoff. |
-| Utility or recovery command | Purpose and applicability, arguments, procedure and completion behavior. |
-| Handoff command | Applicable role, transfer procedure and formats for the Handoff Log and prompt. |
-| Guide | Reading role, operational rules, procedure and output formats as needed. Group related material in one place. |
-| Skill | Reading roles and purpose, then procedures or reference content suited to its use. |
-| Agent | Spawning roles, purpose, input expectations and output requirements. |
+| Initiation skill | Role and scope, identity and loading sequence, first/incoming-instance behavior, duties and boundaries. The Planner has one instance and no Handoff. |
+| Utility or recovery skill | Purpose, applicability, arguments, procedure and completion behavior. |
+| Handoff skill | Applicable role, transfer procedure, Handoff Log and prompt formats. |
+| Guide | Reading role, operational rules, procedure and output formats as needed. |
+| Shared skill | Reading roles and purpose, followed by procedures and reference content. |
 
-The communication skill's §5 Assistant Reference stays last. It defines assistant-specific behavior for the otherwise identical shared text.
+Delegation instructions state when to use a subagent, its purpose, inputs and required findings. They refer to `apm-communication` §5 Assistant Reference for the call. The reference remains the last section and supplies assistant-specific behavior for the shared text.
 
-## 2. Template files and frontmatter
+## 2. Source layout and frontmatter
 
-| Source | Naming | Required frontmatter |
+Sources live under `templates/`:
+
+| Source | Path | Frontmatter |
 |---|---|---|
-| Command | `commands/apm-<N>-<action>.md` | `command_name`, `description` |
+| Command skill | `skills/apm-<N>-<action>/SKILL.md` | `name`, `description`, `disable-model-invocation: true` |
+| Shared skill | `skills/<skill-name>/SKILL.md` | `name`, `description` |
+| Skill support file | Alongside its `SKILL.md` | As its format requires |
 | Guide | `guides/<guide-name>.md` | None |
-| Skill | `skills/<skill-name>/SKILL.md` | `name`, `description` |
-| Agent | `agents/<agent-name>.md` | `name`, `description` |
+| Initial artifact | `apm/<artifact-path>.md` | As its runtime schema requires |
+| Authoring standard | `_standards/<NAME>.md` | None |
 
-Names use kebab-case. Skill names match their directory; agent names match their filename. Descriptions briefly identify purpose and activation. Supporting skill files need no frontmatter. Build processing adapts source frontmatter to the installed file type without changing shared instruction text.
+Names use kebab-case; each skill's `name` matches its directory. Descriptions briefly identify purpose and activation. YAML frontmatter begins on the first line between `---` delimiters, with valid field names, types and quoting.
 
-Frontmatter starts at the beginning of the file, between `---` lines. Use valid YAML, consistent field names and types, and quotes where YAML requires them. Runtime artifact schemas are defined by their guides and commands.
+The build resolves placeholders and copies skills with their source frontmatter. All six assistants receive identical runtime text. Guides install at project-root `.agents/apm-guides/`; skills install under `skills/` in the assistant's APM folder. The Assistant Reference identifies that folder and invocation details. Shared prose names commands by their skill names.
 
-## 3. Markdown and references
+## 3. Navigation and references
 
-Use one H1 title, H2 major sections and H3 subsections; add deeper structure only when readers need it. Number referenced sections as `## 1. Title` and `### 1.1 Title`. A reference such as `§3.2 Title` must resolve to the intended section.
+Use one H1 title, H2 major sections and H3 subsections, adding deeper levels when needed. Number referenced sections as `## 1. Title` and `### 1.1 Title`. Keep numbers used by cross-references stable, or update every affected reference during reorganization. A reference such as `§3.2 Title` resolves to its intended section.
 
-Use horizontal rules only when they clarify a document boundary or a required artifact layout. Bus batch separators and YAML delimiters remain required parts of their formats.
-
-All six assistants receive the same commands, guides and skills. Guides live at project-root `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder, given in the communication skill's Assistant Reference. Commands are installed as skills; shared prose uses their names. The Assistant Reference provides native agent locations and calls.
+Cross-file references use explicit paths or supported placeholders. Resolve guide paths from the project root and skill paths from the assistant's APM folder. Describe native actions through the Assistant Reference.
 
 ## 4. Artifact contracts
 
-Each format definition specifies its location, naming, frontmatter or body schema, allowed values, required/conditional fields and the meaning of non-obvious fields. Use fenced YAML or Markdown examples and concise explanations. Preserve distinctions between literals and values the agent fills in.
+Each format definition specifies its location, naming, schema, allowed values, required/conditional fields and the meaning of non-obvious fields. Fenced examples distinguish literal content from values the agent fills in.
 
 - `<value>` marks a value to fill; `[optional]` marks conditional content; `...` shows continuation.
 - `<N>` and `<M>` are integers; `<NN>` and `<MM>` are zero-padded identifiers in paths.
-- Task identifiers in prose use `N.M`, such as Task 2.3. YAML uses integers (`stage: 2`, `task: 3`). Paths use zero padding, such as `stage-02/task-02-03.log.md`.
-- APM artifact paths use kebab-case. Task and Handoff Logs use `.log.md`. Their locations, fields and body sections are defined by their runtime guides/commands.
+- Prose Task IDs use `N.M`, such as Task 2.3. YAML uses integers (`stage: 2`, `task: 3`). Paths use zero padding, such as `stage-02/task-02-03.log.md`.
+- APM artifact paths use kebab-case. Task and Handoff Logs use `.log.md`; their runtime guides and skills define the fields and body sections.
 
-Preserve the schemas, field names, allowed values, bus separators, identity rules and artifact paths used by other roles or the CLI.
+Preserve schemas, field names, allowed values, bus separators, identity rules and artifact paths used by other roles or the CLI. Artifact contracts govern required formatting, including YAML delimiters and batch separators.
 
-## 5. Supported build placeholders
+## 5. Build placeholders and validation
 
-Build placeholders resolve identically for every assistant. Match their implementation in `build/processors/placeholders.js`.
+Supported placeholders match `build/processors/placeholders.js` and resolve identically for every assistant:
 
 | Placeholder | Result |
 |---|---|
 | `{VERSION}` | Template version |
 | `{SKILL_PATH:name}` | `skills/<name>/SKILL.md` |
 | `{GUIDE_PATH:name}` | `.agents/apm-guides/<name>.md` |
-| `{COMMAND_PATH:name}` | `skills/<name>/SKILL.md` |
-| `{SKILLS_DIR}`, `{GUIDES_DIR}` | `skills`, `.agents/apm-guides` |
-| `{PLANNER_SUBAGENT_GUIDANCE}` | Shared Planner research instructions referring to the Assistant Reference |
-| `{MANAGER_SUBAGENT_GUIDANCE}` | Shared Manager investigation instructions referring to the Assistant Reference |
-| `{WORKER_SUBAGENT_GUIDANCE}` | Shared Worker exploration instructions referring to the Assistant Reference |
-| `{SUBAGENT_GUIDANCE}` | Shared standalone subagent instructions referring to the Assistant Reference |
-| `{ARCHIVE_EXPLORER_GUIDANCE}` | Instruction to spawn the archive explorer by name |
 
-Use “the Rules file” and “the command argument” in shared text, with assistant-specific details in the reference. Validate the six generated bundles and their shared-file identity after changes.
+Shared text uses “the Rules file” and “the command argument”; the Assistant Reference supplies their assistant-specific details. Validate references, artifact contracts, resolved placeholders and shared-file identity in all six generated bundles after changes.

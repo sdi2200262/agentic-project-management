@@ -45,13 +45,13 @@ Put shared communication principles in `apm-communication`; add only situation-s
 | Review | Findings against objectives and evidence, their implications, and the resulting action. |
 | Continuity | Current state, decisions and reasons, unresolved issues, source paths and concrete resumption steps. |
 
-Lead with the substance the reader needs. Choose a format and level of detail suited to the content and request. Before sending a substantial reply, check that its opening and length serve that purpose.
+Lead with the substance the reader needs. Apply the reply-length defaults in `apm-communication` §2.1, with User-specified length and detail taking precedence. Supporting artifacts carry the detail required by their schemas. Before sending, check the opening and total reply length.
 
 Artifacts provide self-contained context for future readers. Follow their schemas and verify concrete claims against source. Logs record the outcome, evidence and context needed for review and continuation.
 
 ## 5. References and shared text
 
-Use explicit file paths and section references where they help navigation. Repair references when headings or numbers change. Cross-file template references use supported build placeholders: `{SKILL_PATH:name}`, `{GUIDE_PATH:name}` and `{COMMAND_PATH:name}`.
+Use explicit file paths and section references where they help navigation. Repair references when headings or numbers change. Cross-file template references use supported build placeholders: `{SKILL_PATH:name}` and `{GUIDE_PATH:name}`.
 
 All six assistants receive identical template text. Refer to commands by name. Assistant-specific paths, invocation syntax, argument handling, subagent calls and new-chat steps belong in `apm-communication` §5 Assistant Reference. Shared prose refers to “the Rules file” and “the command argument”.
 
