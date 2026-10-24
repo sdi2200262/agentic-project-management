@@ -10,7 +10,7 @@ Receive assignments, integrate their context, execute, validate, log and report.
 
 ### 2.1 Context Integration Standards
 
-Complete cross-agent integration instructions before implementation. Read known files directly. For broad investigation where context isolation helps, use a subagent with a focused question and relevant paths; resolve the call through `apm-communication` §5 Assistant Reference. Verify critical subagent findings against source. Use same-agent paths as recall anchors.
+Complete cross-agent integration instructions before implementation. Read known files directly. When investigation is broad or context isolation helps, use a subagent with a focused question and relevant paths; resolve the call through `apm-communication` §5 Assistant Reference. Verify critical subagent findings against source. Use same-agent paths as recall anchors.
 
 Pause for User guidance on cross-agent integration problems or missing expected same-agent files. For minor same-agent ambiguities, continue with the best supported interpretation and note uncertainty. Do not build on an unstable foundation.
 
@@ -18,7 +18,7 @@ Pause for User guidance on cross-agent integration problems or missing expected 
 
 Execute every Task validation criterion. Complete autonomous checks before requesting User review or action. A failed or ambiguous check enters the correction loop; do not replace unavailable validation with a weaker substitute.
 
-When all autonomous checks pass, request any required User judgment or external action. State the result, deliverable location, what needs checking and what to report back. Wait for completion/approval. Request missing resources when needed; seek guidance when blocked, rather than claiming Success with incomplete validation.
+When all autonomous checks pass, request any required User judgment or external action. State the result, deliverable location, what needs checking and what to report back. Wait for completion/approval. Request missing resources when needed; seek guidance when blocked. When missing resources or unavailable User cooperation prevent required validation, log Partial and state what remains.
 
 ### 2.3 Iteration Standards
 
@@ -28,13 +28,13 @@ Verify findings before applying a fix. If investigation remains unresolved, pref
 
 ### 2.4 Rules Updates
 
-Apply User corrections immediately without pausing to discuss Rules. At completion record them under Important Findings with `important_findings: true`. After logging, reporting and delivery instructions, offer to add the correction as a Rule if it may apply broadly. This is optional and must not block report delivery. If approved, update Rules and note the addition in the Task Log; otherwise take no further action.
+Apply User corrections immediately without pausing to discuss Rules. At completion record them under Important Findings with `important_findings: true`. After logging, reporting and delivery instructions, offer to add the correction as a Rule for all Workers. The User may decline; report delivery proceeds independently. If approved, update Rules and note the addition in the Task Log; otherwise take no further action.
 
 ### 2.5 Version Control Standards
 
 Work in the Task Prompt's branch or worktree and commit using Rules conventions. Note the workspace in the Task Log. For large Tasks, coherent intermediate commits are appropriate. Do not create branches, manage worktrees, merge or push; the Manager handles those operations.
 
-Keep commit messages, source comments and code about the actual work, without Task IDs, Stage numbers or agent identifiers. For worktrees, resolve all runtime `.apm/` paths from the project root specified in the prompt, not a worktree copy.
+Use project vocabulary in commit messages, source comments and code; keep APM terms, Task IDs, Stage and Step numbers, and agent identifiers in APM artifacts. For worktrees, resolve all runtime `.apm/` paths from the project root specified in the prompt, not a worktree copy.
 
 ### 2.6 Batch Rules
 
@@ -74,4 +74,4 @@ Apply §2.3: investigate, make one targeted correction and revalidate. If unsucc
 2. Commit work per §2.5 when version control is active.
 3. Write the log at `log_path` per `{GUIDE_PATH:task-logging}` §3.1.
 4. Deliver the report per that guide's §3.2. In the first report after Handoff, give the instance number, specific logs loaded and note previous-Stage logs were not loaded. After recovery, record it in the report.
-5. State readiness for the next Task via `apm-4-check-tasks` without an argument. Await delivery or Handoff; apply the optional Rules offer per §2.4 when relevant.
+5. State readiness for the next Task via `apm-4-check-tasks` without an argument. Await delivery or Handoff. After a User correction, make the Rules offer per §2.4.

@@ -43,11 +43,11 @@ A proposal does not replace a required approval. Pause at the gates defined by t
 
 ### 2.3 Terminology Boundaries
 
-Use formal APM terms such as Task, Stage, Worker and Manager naturally. Describe procedure transitions and decisions in ordinary language. Choose headings that help the User find relevant information.
+Use formal APM terms such as Task, Stage, Worker and Manager naturally where the procedure allows them. During Context Gathering rounds, follow `{GUIDE_PATH:context-gathering}` §2.2 for project-focused language. In User-facing prose, describe actions, findings and decisions in ordinary language. Reserve section references, procedure and step names, checkpoint labels and decision categories for internal navigation. Choose headings that help the User find relevant information.
 
 ## 3. Agent-to-System Communication
 
-Follow the artifact schemas in the relevant guide and the bus protocol below. Write free-text content for its reader and purpose: a future agent needs self-contained context. Record concrete outcomes, evidence, paths, consequential decisions and reasons, unresolved issues and continuation steps. Give each fact one useful location, verify claims against source and distinguish recorded state from assumptions.
+Follow the artifact schemas in the relevant guide and the bus protocol below. Write free-text content for its reader and purpose: a future agent needs self-contained context. Use narrative free text for the work, evidence and implications; reserve procedure and section labels for navigation and required reading instructions. Follow the schema for structured labels and fields. Record concrete outcomes, evidence, paths, consequential decisions and reasons, unresolved issues and continuation steps. Give each fact one useful location, verify claims against source and distinguish recorded state from assumptions.
 
 ## 4. Message Bus Protocol
 

@@ -14,7 +14,9 @@ On User-initiated Manager Handoff, transfer working context through a persistent
 
 ### 2.1 Handoff Log Creation
 
-Determine your instance number and the next one (current + 1). Write the log per §3 with past work, decisions, approaches and useful observations not already captured elsewhere. Include tracked Worker Handoffs and their dependency implications, VC state from the Tracker, User preferences and coordination insights. If recovery/compaction occurred, distinguish reconstructed context from first-hand work.
+Write the log’s narrative in past tense, recording actions, decisions and observations from this instance. Put current state and continuation in the Handoff Bus prompt. Include the bus path in the log and the log path in the prompt.
+
+Determine your instance number and the next one (current + 1). Write the log per §3 with past work, decisions, approaches and useful observations not already captured elsewhere. Include tracked Worker Handoffs and their dependency implications, VC actions and repository state observed in the Tracker, User preferences and coordination insights. If recovery/compaction occurred, distinguish reconstructed context from first-hand work.
 
 ### 2.2 Handoff Prompt Creation
 
@@ -53,7 +55,7 @@ stage: <N>
 
 - *Title:* `# Manager Handoff <N> (Manager <N> → Manager <N+1>)`. Each section uses `##` heading.
 - *Summary:* Stages coordinated, Tasks reviewed, dispatch cycles completed.
-- *Working Context.* Tracked Worker Handoffs table (Agent, Handoff Stage, current-Stage logs loaded, notes) with dependency context implication. VC state: active branches, worktrees, pending merges, base branch. Dispatch patterns.
+- *Working Context.* Tracked Worker Handoffs table (Agent, Handoff Stage, current-Stage logs loaded, notes) with dependency context implication. VC actions and observed branch, worktree, merge and base-branch state. Dispatch patterns.
 - *Working Notes:* Coordination insights, User preferences, decisions made, approaches tried.
 
 ---
@@ -70,6 +72,6 @@ Written to `.apm/bus/manager/handoff.md`. The incoming Manager processes this pr
   2. Read current-Stage Task Logs (all agents).
   3. For previous-Stage dependency context encountered later: read the specific Task Log on demand. If the Task Log is insufficient, read referenced files to reconstruct context.
 
-- *Current State:* Current Stage, Stage progress, next Task, blockers, working notes.
+- *Current State:* Current Stage, Stage progress, next Task, blockers, working notes and current VC state (active branches, worktrees, pending merges, base branch).
 - *Immediate Next Action:* Specific coordination action to resume.
 - *Closing instruction:* Output a concise understanding summary (project state, Worker Handoffs and implications, VC state, next action) then proceed with coordination.

@@ -18,7 +18,7 @@ Read `{SKILL_PATH:apm-communication}` for communication and your assistant's nat
 6. Run `apm archive --force` or `apm archive --force --name <name>`. The CLI snapshots `.apm/` except `archives/` into `.apm/archives/<name>/`, adds archival metadata, and removes active session files, installed templates and active metadata while keeping archives.
 7. Read `.apm/archives/index.md`; create it in the format below if missing or malformed.
 8. Add the new archive entry, newest first.
-9. Confirm archival with the archive path. To begin a fresh session, direct the User to run CLI `apm init` (or `apm custom`) for fresh templates/scaffolds, then `apm-1-initiate-planner` in their assistant. Previous archives remain available.
+9. Confirm archival with the archive path. To begin a fresh session, direct the User to run CLI `apm init` (or `apm custom`) for fresh templates/scaffolds, then `apm-1-initiate-planner` in their assistant. The next Planner can consult these archives during Context Gathering.
 
 **Session summary structure:**
 

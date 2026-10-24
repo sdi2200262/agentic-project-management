@@ -6,7 +6,7 @@
 
 Turn approved project context into the Spec, Plan and Rules, in that order. Present concrete proposals with consequential choices and reasons, write each artifact, and obtain its approval before starting the next.
 
-Capture gathered context where execution will use it: Spec for design decisions and constraints, Plan for work structure and Task detail, Rules for broadly applicable execution standards. Explain any consequential omission. Match detail to project complexity.
+Capture all gathered context where execution will use it: Spec for design decisions and constraints, Plan for work structure and Task detail, Rules for broadly applicable execution standards. Explain any omission. Match detail to project complexity.
 
 ## 2. Operational Standards
 
@@ -25,11 +25,11 @@ The Manager handles dispatch, version control conventions and holistic verificat
 - Each Task produces a meaningful, independently validatable deliverable within one Worker's domain. Split cross-domain or unrelated work; combine micro-tasks when separation adds only overhead. Include scoped subagent steps for necessary investigation or research.
 - Steps are ordered operations sharing the Task's validation. If a step needs independent validation, split the Task.
 - Worker work is executable in the development environment. Identify external actions, credentials or human judgment as explicit User coordination needs.
-- Validation gives concrete pass/fail measures for each deliverable. Separate autonomous checks from User-dependent criteria. Keep criteria within the Worker's scope; record holistic verification observations in Plan notes for the Manager.
+- Validation gives concrete pass/fail measures for each deliverable. Separate autonomous checks from User-dependent criteria and instruct the Worker to pause for required User action or judgment. Keep criteria within the Worker's scope; record holistic verification observations in Plan notes for the Manager.
 
 ### 2.3 Spec Standards
 
-The Spec defines what is built and why: choices where alternatives existed, constraints and requirements shaping the project. Its decisions must be implemented by corresponding Plan work. Keep single-scope implementation details in Task guidance and broadly applicable execution patterns in Rules.
+The Spec defines what is built and why: choices where alternatives existed, constraints and requirements shaping the project. Its decisions must be implemented by corresponding Plan work. Place supporting implementation detail that leaves a design decision unchanged in Task guidance, and broadly applicable execution patterns in Rules. Decide Worker, Stage and Task structure during the Plan proposal in §3.2.
 
 Reference authoritative requirement documents with paths/sections. Record the workspace structure, distinguishing working targets from read-only references. Organize decisions so the Manager can find and extract relevant content.
 
@@ -43,7 +43,7 @@ Keep guidance separate from ordered steps. Reference relevant Spec/source sectio
 
 Rules describe how to work across all or most Tasks. Output strings, formats, schemas and interface contracts describe what is built and belong in Spec or Task guidance, even when several Workers need them. When uncertain whether a pattern is broadly applicable, keep it in Task guidance.
 
-Write rules conditionally on the work being done. All Workers read the same file. Preserve pre-existing content outside APM_RULES unless the User requests changes; reference relevant existing standards. Keep APM rules self-contained within the Worker's normal context.
+Write rules conditionally on the work being done. All Workers read the whole Rules file, including content outside APM_RULES. Preserve pre-existing content outside APM_RULES unless the User requests changes; reference relevant existing standards. Keep APM rules self-contained within the Worker's normal context.
 
 ## 3. Work Breakdown Procedure
 
@@ -103,7 +103,7 @@ modified: <last modification note>
 ---
 ```
 
-Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). A single horizontal rule separates the header from Stage sections below. Use headings to separate Stages and Tasks.
+Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). The Plan’s only horizontal rule separates the header from Stage sections below. Use headings to separate Stages and Tasks.
 
 - *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Use the format `> **Notes:** <prose or unordered list>`. These cover what you observed about the work structure per §2.1 Workflow Context - why boundaries exist, natural groupings or sequencing patterns, critical path, convergence points, and Stage boundaries where holistic verification may be valuable.
 

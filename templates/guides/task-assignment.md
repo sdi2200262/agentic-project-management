@@ -10,7 +10,7 @@ Construct self-contained Task Prompts, prepare branches/workspaces and deliver w
 
 ### 2.1 Dependency Context Standards
 
-Use Plan dependencies and Tracker overrides to determine context depth. Same-agent dependencies need recall anchors and key paths; cross-agent dependencies need explicit reading instructions, producer outputs, interfaces and integration guidance. Increase detail with complexity.
+Use Plan dependencies and Tracker overrides to determine context depth. For same-agent dependencies, give recall anchors and key paths, increasing detail with complexity. For cross-agent dependencies, assume the Worker has no familiarity with the producer’s work: always provide comprehensive reading instructions, producer outputs, interfaces and integration guidance, regardless of perceived simplicity.
 
 After Worker Handoff, current-Stage same-agent dependencies remain same-agent; previous-Stage ones require cross-agent context. Check the Tracker's specific overrides. Recovery can also reduce familiarity, so expand same-agent context where notes indicate reconstructed knowledge.
 
@@ -18,17 +18,17 @@ Trace upstream when ancestors established required patterns, schemas or contract
 
 ### 2.2 Task Prompt Content Standards
 
-Embed exact design decisions, constraints, Task definitions, relevant coordination findings and authoritative User-document content. Present them as direct context without references to Spec, Plan, Tracker, Index or Memory. The Worker must not need those documents. Include the context and guidance relevant to the assigned work.
+Embed exact design decisions, constraints, Task definitions, relevant coordination findings and authoritative User-document content. Present them as direct context without references to Spec, Plan, Tracker, Index or Memory. The Worker must not need those documents. Select source content with actionable requirements for this Worker’s domain. Integrate requirements already in Task Guidance once, alongside the context needed to execute them.
 
-For codebase content, give targeted paths and what to inspect. Keep objectives, instructions and validation within Worker scope. Producer Task IDs may identify dependency context; do not put Stage structure, other Task IDs or coordination concepts into execution instructions.
+For codebase content, name the path and concrete operation, such as “Read `src/api/routes.py` and use its error response schema.” Keep objectives, instructions and validation within Worker scope. Producer Task IDs may identify dependency context; do not put Stage structure, other Task IDs or coordination concepts into execution instructions.
 
 ### 2.3 Follow-Up Standards
 
-Create a refined prompt from review/investigation findings. Explain the issue and update Objective, Instructions, Output and Validation to bridge the Worker's scoped context with what you learned. Preserve the original `log_path`; the Worker overwrites that log. Capture useful iteration patterns in Stage summaries.
+Rewrite affected prompt sections from review/investigation findings. Explain the issue and update Objective, Instructions, Output and Validation to bridge the Worker's scoped context with what you learned. Preserve the original `log_path`; the Worker overwrites that log. Capture useful iteration patterns in Stage summaries.
 
 ### 2.4 Dispatch Standards
 
-Read readiness from the Tracker and cross-check the Dependency Graph. For dispatch readiness, dependencies outside a batch must be Done; a batch may contain a sequential chain whose internal dependencies are completed by preceding Tasks. Form units from single Tasks or same-Worker batches; independent batch candidates must all be Ready. Prefer 2–3 Tasks per batch, and dispatch individually when intermediate results would unblock other Workers sooner.
+At each dispatch cycle, reassess readiness and work groupings from the current Tracker and Dependency Graph. For dispatch readiness, dependencies outside a batch must be Done; a batch may contain a sequential chain whose internal dependencies are completed by preceding Tasks. Form units from single Tasks or same-Worker batches; independent batch candidates must all be Ready. Prefer 2–3 Tasks per batch, and dispatch individually when intermediate results would unblock other Workers sooner.
 
 Dispatch units to different Workers in parallel when there are no unresolved cross-agent dependencies and version control provides workspace isolation. Otherwise dispatch sequentially. Recommend appropriate platform tool approvals for parallel Workers to reduce waits.
 
@@ -36,7 +36,7 @@ A pending report may unlock a better combination. Wait when it is the only outst
 
 ### 2.5 Version Control Standards
 
-Use the Tracker's per-repository conventions and base branch; identify working repositories from the Spec. Each dispatch unit gets a feature branch off base; a batch shares one branch. Merge required producer branches before creating a dependent branch. Workers commit; you manage branches, worktrees, merges and cleanup.
+Use the Tracker's per-repository conventions and base branch; identify working repositories from the Spec. Include the applicable repository’s commit conventions in the Task Prompt. Each dispatch unit gets a feature branch off base; a batch shares one branch. Merge required producer branches before creating a dependent branch. Workers commit; you manage branches, worktrees, merges and cleanup.
 
 Use the main working directory for sequential work. For parallel work, give every unit a separate short-lived worktree under `.apm/worktrees/`, keeping the main directory on base. Limit concurrent worktrees to 3–4. Worktrees contain tracked files only; identify any needed untracked assets in the prompt. All runtime `.apm/` paths target the project root, even if a worktree has its own tracked copy.
 

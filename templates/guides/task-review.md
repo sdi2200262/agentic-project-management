@@ -20,7 +20,7 @@ Accept a supported Success with no flags. Investigate flags, non-Success or inco
 
 After investigation, proceed if nothing actionable remains, send a refined follow-up if retry is needed, or modify planning documents when their content is wrong. Note uncommitted changes in a non-Success follow-up. For successful work left uncommitted, commit on the Worker's branch using Rules conventions; no follow-up is needed for that alone.
 
-Done is terminal. If previously-Done work needs correction, create a new Task through Plan modification, referencing the original and discovery context. Keep a Task Active while investigation, follow-up or a coordination decision is pending. A terminal decision can accept Success, accept a non-Success outcome or restructure work.
+When validation is incomplete or deliverables are partial, issue a follow-up before accepting the outcome. Done is terminal. If previously-Done work needs correction, create a new Task through Plan modification, referencing the original and discovery context. Keep a Task Active while investigation, follow-up or a coordination decision is pending. A terminal decision can accept Success, accept a non-Success outcome or restructure work.
 
 Act on small contained follow-ups/corrections and inform the User. Pause for approval when changes exceed your authority per §2.3.
 
@@ -38,15 +38,15 @@ In a wait state, state what was processed, what remains pending and which report
 
 ### 2.5 Merge Standards
 
-After successful review, merge the completed dispatch unit's branch into base. Merge required outputs before dependent dispatch and sweep all current-Stage branches at Stage end. Use the recorded base branch, merge and verify autonomously for clean merges.
+After successful review, merge the completed dispatch unit's branch into base. Merge required outputs before dependent dispatch and sweep all current-Stage branches at Stage end. Switch to the recorded base branch before merging; merge and verify autonomously for clean merges.
 
-Resolve conflicts using Task objectives, project design and Spec; for complex conflicts, use a subagent to investigate or seek User help. Resolve the call through `apm-communication` §5 Assistant Reference. If branch protection blocks direct merging, adapt through a PR, intermediate branch or User guidance and record the constraint.
+Resolve conflicts using Task objectives, project design and Spec; for complex conflicts, use a subagent to investigate or seek User help. Resolve the call through `apm-communication` §5 Assistant Reference. If branch protection blocks direct merging, adapt through a PR, intermediate branch or User guidance and record the constraint in Tracker working notes.
 
 After a successful merge, remove its worktree with `git worktree remove .apm/worktrees/<branch-slug>` before deleting the merged branch with `git branch -d <branch-name>`. For a multi-branch sweep, batch removals first, then deletions in one terminal invocation.
 
 ### 2.6 Stage Summary Standards
 
-Write for future Managers and retrospectives: outcome, Workers, consequential findings, decisions and patterns, with useful commit references. Include historically important implementation events from working notes, but leave detailed implementation in Task Logs. Finish with log references. Store durable observations in Index Memory notes per §2.7.
+Keep Stage summaries concise for future Managers and retrospectives: outcome, Workers, consequential findings, decisions and patterns, with useful commit references. Refer to Memory notes for enduring guidance and summarize Stage-specific history once. Include historically important implementation events from working notes, but leave detailed implementation in Task Logs. Finish with log references. Store durable observations in Index Memory notes per §2.7.
 
 ### 2.7 Note-Taking Standards
 
@@ -73,7 +73,7 @@ On `apm-5-check-reports` or a delivered report:
 1. Read `.apm/bus/<agent-slug>/report.md`. Handle non-APM agents per §2.9.
 2. For `batch: true`, process each executed outcome through log review and outcome determination; return `Not started` Tasks to dispatch assessment.
 3. If a Worker reports a new instance, verify its Handoff Log, increment Worker tracking and compare its loaded log list with all work it previously completed. Record overrides for completed Tasks whose logs were not loaded; these dependencies now need cross-agent context.
-4. Record reported recovery in Worker Notes, without incrementing identity or reclassifying dependencies. Supply more comprehensive context when future same-agent dependencies need it.
+4. Record reported recovery in Worker Notes, without incrementing identity or reclassifying dependencies. Check the report against the Task Log for evidence recovery may have omitted and request missing details. Supply more comprehensive context when future same-agent dependencies need it.
 5. Note Worker availability and completed items for readiness assessment. Continue to log review before merging or accepting the result.
 
 ### 3.2 Task Log Review

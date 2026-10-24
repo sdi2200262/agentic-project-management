@@ -22,7 +22,7 @@ Use any command argument as initial project context. It may establish document a
 Before reading the Context Gathering guide:
 
 1. Scan root directories, git repositories, recent history/branches and potential planning materials. Check `.apm/archives/` and read an existing Rules file. Read READMEs and general documentation for orientation. Note working targets, references and whether the workspace has one, several or no repositories. Defer source-code exploration and subagent research until the guide is loaded.
-2. Establish which materials and archives are current and relevant. When initiation context directly identifies them or implies their authority, read them and continue. For other discovered materials, ask the User before reading. Without initiation context, confirm discovered materials with the User even if one document claims another is authoritative.
+2. If the workspace is empty, proceed to Context Gathering and treat project details as unknown until the User supplies or confirms them. Otherwise establish which materials and archives are current and relevant. When initiation context directly identifies them or implies their authority, read them and continue. For other discovered materials, ask the User before reading. Without initiation context, confirm discovered materials with the User even if one document claims another is authoritative.
 
 ## 3. Context Gathering Procedure
 

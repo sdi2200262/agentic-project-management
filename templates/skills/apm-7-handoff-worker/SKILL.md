@@ -14,6 +14,8 @@ On User-initiated Worker Handoff, write a persistent Handoff Log and a current c
 
 ### 2.1 Handoff Log Creation
 
+Write the log’s narrative in past tense, recording actions, decisions and observations from this instance. Put current state and continuation in the Handoff Bus prompt. Include the bus path in the log and the log path in the prompt.
+
 Determine your instance number and the next one (current + 1). Write the log per §3 with completed work, approaches tried, established patterns and technical context not in Task Logs. Include completed steps for a mid-Task transfer. If recovery/compaction occurred, identify reconstructed context rather than presenting it as first-hand.
 
 ### 2.2 Handoff Prompt Creation
@@ -58,7 +60,7 @@ stage: <N>
 **Body:**
 
 - *Title:* `# <Display Name> Handoff <N> (<Display Name> <N> → <Display Name> <N+1>)`. Each section uses `##` heading. The display name is the Title Case form of the agent identifier (e.g., `frontend-agent` → `Frontend Agent`).
-- *Summary:* Tasks completed count, current Stage, Stage progress for this Worker.
+- *Summary:* Tasks completed and Stage progress during this instance.
 - *Working Context:* Patterns, approaches, or context established during this instance.
 - *Working Notes:* Technical details, environment observations, or other context not captured in Task Logs.
 

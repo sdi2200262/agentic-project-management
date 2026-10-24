@@ -20,7 +20,7 @@ Use authoritative materials and workspace findings before asking questions. Adap
 
 Keep all three rounds in order. Within each round, ask about missing context and present already gathered information as focused confirmation questions. A whole round or part of it can confirm an understanding: state the relevant facts and invite correction. Use supplied documents to focus each round’s interaction on confirmations and gaps.
 
-Keep questions about project substance. Record domains, dependencies and complexity as observed characteristics; do not present proposed tracks, phases, Stages, Tasks, Workers or assignments. Those decisions follow the understanding approval.
+Use project and domain language throughout the rounds, including questions, summaries and subagent prompts. Reserve Stages, Tasks, Workers, agent names, tracks, phases and task sizing for Work Breakdown. Record domains, dependencies and complexity as observed project characteristics.
 
 ### 2.3 Response and Gap Assessment
 
@@ -36,7 +36,7 @@ Briefly summarize what was established or corrected and any remaining limits. Af
 
 ### 2.5 Exploration and Research Standards
 
-Establish authority during initiation before deep exploration. When relevant material or User responses point to code, explore before continuing questions. Read relevant repositories, including history and branches as project signals. Read focused sources directly. For substantial research, use a subagent with specific questions and expected sources; use `apm-communication` §5 Assistant Reference for the call.
+Follow User requests to defer research and record the resulting limits in your understanding summary. Otherwise, establish authority during initiation before deep exploration. When relevant material or User responses point to code, explore before continuing questions. Read relevant repositories, including history and branches as project signals. Read focused sources directly. For substantial research, use a subagent with specific questions and expected sources; use `apm-communication` §5 Assistant Reference for the call.
 
 Verify critical subagent claims against the referenced files or commands. If verification finds a contradiction or consequential gap, use a subagent for a focused follow-up and verify its findings too. Present verified findings and implications to the User before relying on them. Include them in the next follow-up when gaps remain, or in the round summary when they complete its coverage.
 

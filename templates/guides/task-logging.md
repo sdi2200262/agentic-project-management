@@ -25,7 +25,7 @@ Select status from results:
 - Partial: progress made but incomplete; guidance is needed.
 - Failed: objective not achieved despite attempts to resolve it.
 
-Use Partial for ambiguous validation, important findings that could affect other Tasks, recurring failures or uncertainty beyond your scope. Keep iterating before logging when a failure is clear and fixable, no findings require Manager attention and progress continues.
+Use Partial for ambiguous or unavailable required validation, important findings that could affect other Tasks, recurring failures or uncertainty beyond your scope. State remaining work and unmet criteria. When the outcome classification is unclear, prefer Partial. Keep iterating before logging when a failure is clear and fixable, no findings require Manager attention and progress continues.
 
 ### 2.3 Detail Level Standards
 
