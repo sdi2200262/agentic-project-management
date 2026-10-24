@@ -26,7 +26,7 @@ Act on small contained follow-ups/corrections and inform the User. Pause for app
 
 ### 2.3 Planning Document Modification Standards
 
-Assess cascade effects between Spec and Plan before changing either; Rules are usually independent. Distinguish implementation adjustments within design intent from invalid design assumptions. When uncertain, inspect related documents and fix the source of the problem rather than adding a workaround elsewhere.
+Assess cascade effects between Spec and Plan before changing either; Rules are usually independent. Distinguish implementation adjustments within design intent from invalid design assumptions. When uncertain, inspect related documents and correct the document where the problem originates.
 
 You may clarify one Task, add a missing dependency, make an isolated Spec addition or adjust Rules narrowly. Multiple affected Tasks, design/scope changes, new Stages or major restructuring require User collaboration. Several small changes can collectively exceed your authority. When unclear, ask the User.
 
@@ -46,7 +46,7 @@ After a successful merge, remove its worktree with `git worktree remove .apm/wor
 
 ### 2.6 Stage Summary Standards
 
-Write for future Managers and retrospectives: outcome, Workers, consequential findings, decisions and patterns, with useful commit references. Include historically important implementation events from working notes, but leave detailed implementation in Task Logs. Finish with log references; do not duplicate Memory notes as a separate summary section.
+Write for future Managers and retrospectives: outcome, Workers, consequential findings, decisions and patterns, with useful commit references. Include historically important implementation events from working notes, but leave detailed implementation in Task Logs. Finish with log references. Store durable observations in Index Memory notes per §2.7.
 
 ### 2.7 Note-Taking Standards
 
@@ -78,7 +78,7 @@ On `apm-5-check-reports` or a delivered report:
 
 ### 3.2 Task Log Review
 
-Read the referenced Task Log and apply §2.1. Explain the material findings, consistency with evidence, relevant flags and proposed next action. Use the detail needed for the User to assess that conclusion, without a fixed analysis format.
+Read the referenced Task Log and apply §2.1. Explain the material findings, consistency with evidence, relevant flags and proposed next action. Use the detail needed for the User to assess that conclusion.
 
 ### 3.3 Review Outcome
 

@@ -16,9 +16,9 @@ Gather requirements, domain knowledge, technical choices and constraints, and co
 
 ### 2.2 Guiding Principles
 
-Use authoritative materials and workspace findings before asking questions. Adapt language and depth to the project and User's expertise. Derive technical requirements from natural descriptions rather than requiring technical formalization from the User.
+Use authoritative materials and workspace findings before asking questions. Adapt language and depth to the project and User's expertise. Derive technical requirements from the User’s natural descriptions.
 
-Keep all three rounds in order. Within each round, ask about missing context and present already gathered information as focused confirmation questions. A whole round or part of it can confirm an understanding: state the relevant facts and invite correction. Do not repeat questions whose answers are known or treat supplied documents as a substitute for the round's interaction.
+Keep all three rounds in order. Within each round, ask about missing context and present already gathered information as focused confirmation questions. A whole round or part of it can confirm an understanding: state the relevant facts and invite correction. Use supplied documents to focus each round’s interaction on confirmations and gaps.
 
 Keep questions about project substance. Record domains, dependencies and complexity as observed characteristics; do not present proposed tracks, phases, Stages, Tasks, Workers or assignments. Those decisions follow the understanding approval.
 
@@ -32,7 +32,7 @@ For vague answers offer concrete interpretations; for incomplete answers ask for
 
 Each round requires at least one User exchange before advancement. Advance when its focus areas are sufficiently covered by questions, confirmed context, exploration or an explicit statement that they do not apply. Resolve consequential gaps within the current round; do not declare unheld rounds complete.
 
-Briefly summarize what was established or corrected and any remaining limits. Avoid repeating the full project context or explaining the procedure. After Rounds 1 and 2 begin the next round; after Round 3 present the consolidated understanding summary.
+Briefly summarize what was established or corrected and any remaining limits. After Rounds 1 and 2 begin the next round; after Round 3 present the consolidated understanding summary.
 
 ### 2.5 Exploration and Research Standards
 
@@ -62,13 +62,13 @@ For each round:
 2. After each response, incorporate corrections and assess remaining gaps. Research on relevant signals and verify findings as above.
 3. Follow up until coverage is sufficient, then summarize briefly and advance.
 
-Before each round's completion, include an open question about aspects its focused questions may have missed. Tailor it to uncovered areas, not a fixed list of topics. It need not block advancement: the User may answer it alongside the next round's questions. Keep that distinct from the required exchange and consequential gaps, which must be resolved before advancing.
+Before each round's completion, include an open question about aspects its focused questions may have missed. Tailor it to uncovered areas. It need not block advancement: the User may answer it alongside the next round's questions. Keep that distinct from the required exchange and consequential gaps, which must be resolved before advancing.
 
 ### 3.3 Question Round 1: Existing Materials and Vision
 
 Cover project type and deliverables, problem and purpose, scope and essential features, skills needed, existing materials, User vision, and prior work/codebase context. Use what exploration already established to ask for confirmation and gaps.
 
-If no Rules file was found, ask whether the User has one elsewhere or wants it created during Work Breakdown. Read a supplied file and note its content for integration. Do not revisit this question if already answered during setup.
+If no Rules file was found, ask whether the User has one elsewhere or wants it created during Work Breakdown. Read a supplied file and note its content for integration. Use the answer from setup when available.
 
 Advance when the project's foundation, intended success, scope and existing context are understood.
 
@@ -107,8 +107,8 @@ Confirm settled topics and resolve remaining gaps before the final summary.
 
 ### 4.1 Understanding Summary Format
 
-Use Markdown suited to the project. The User must be able to assess whether you understand it, with enough detail to catch errors and no repeated round-by-round account.
+Use Markdown suited to the project. The User must be able to assess whether you understand it, with enough detail to catch errors.
 
 Cover relevant requirements, deliverables and success criteria; design decisions and reasons; scope and constraints; observed domains, dependencies and complexity; environments, resources and access; process, quality and approval needs; execution conventions and existing Rules; and coordination/version control preferences that surfaced as observations.
 
-Do not force empty categories. Describe work structure signals as facts rather than proposed tracks, groups, phases, hierarchies or assignments. Keep the final approval explicit.
+Include categories relevant to the project. Describe work structure signals as observed facts; decomposition follows the understanding approval. Keep the final approval explicit.

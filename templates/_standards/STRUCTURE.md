@@ -4,16 +4,16 @@ These standards guide authors of commands, guides, skills and agents. Runtime ag
 
 ## 1. Organize for use
 
-Identify each document's reader, purpose and outputs near its beginning. Put prerequisites before dependent steps. Give each procedure a clear entry point, sequence, branches and completion condition. Keep formats and reference material where readers can find them without rereading a procedure.
+Identify each document's reader, purpose and outputs near its beginning. Put prerequisites before dependent steps. Give each procedure a clear entry point, sequence, branches and completion condition. Give formats and reference material clear locations readers can consult directly.
 
-Document structure is flexible; artifact contracts are precise. Do not require empty sections, mirrored Common Mistakes, fixed section counts or end markers. Retain section numbers where references depend on them and update all affected references when reorganizing. A heading should help navigation rather than announce a thinking stage.
+Organize each document around its purpose and the information its readers need. Use headings that help them find that information. Retain section numbers where references depend on them and update affected references when reorganizing. Keep artifact contracts precise.
 
 | Document | Structure |
 |---|---|
 | Initiation command | Role and scope, identity/loading sequence, first/incoming-instance behavior where applicable, duties and boundaries. Planner has one instance and no Handoff. |
 | Utility or recovery command | Purpose and applicability, arguments, procedure and completion behavior. |
 | Handoff command | Applicable role, transfer procedure and formats for the Handoff Log and prompt. |
-| Guide | Reading role, operational rules, procedure and output formats as needed. Combine related material when this avoids repetition and extra navigation. |
+| Guide | Reading role, operational rules, procedure and output formats as needed. Group related material in one place. |
 | Skill | Reading roles and purpose, then procedures or reference content suited to its use. |
 | Agent | Spawning roles, purpose, input expectations and output requirements. |
 
@@ -30,15 +30,15 @@ The communication skill's §5 Assistant Reference stays last. It defines assista
 
 Names use kebab-case. Skill names match their directory; agent names match their filename. Descriptions briefly identify purpose and activation. Supporting skill files need no frontmatter. Build processing adapts source frontmatter to the installed file type without changing shared instruction text.
 
-Frontmatter starts at the beginning of the file, between `---` lines. Use valid YAML, consistent field names and types, and quotes where YAML requires them. These are source formats, not permission to change runtime artifact schemas.
+Frontmatter starts at the beginning of the file, between `---` lines. Use valid YAML, consistent field names and types, and quotes where YAML requires them. Runtime artifact schemas are defined by their guides and commands.
 
 ## 3. Markdown and references
 
 Use one H1 title, H2 major sections and H3 subsections; add deeper structure only when readers need it. Number referenced sections as `## 1. Title` and `### 1.1 Title`. A reference such as `§3.2 Title` must resolve to the intended section.
 
-Use horizontal rules only when they clarify a document boundary or a required artifact layout. End markers are optional prose conventions, not delimiters used by the build. Bus batch separators and YAML delimiters remain required parts of their formats.
+Use horizontal rules only when they clarify a document boundary or a required artifact layout. Bus batch separators and YAML delimiters remain required parts of their formats.
 
-All six assistants receive the same commands, guides and skills. Guides live at project-root `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder, given in the communication skill's Assistant Reference. Commands are installed as skills; shared prose names them without an invocation prefix. Native agent locations and calls are resolved through that reference rather than interpolated into shared text.
+All six assistants receive the same commands, guides and skills. Guides live at project-root `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder, given in the communication skill's Assistant Reference. Commands are installed as skills; shared prose uses their names. The Assistant Reference provides native agent locations and calls.
 
 ## 4. Artifact contracts
 
@@ -49,7 +49,7 @@ Each format definition specifies its location, naming, frontmatter or body schem
 - Task identifiers in prose use `N.M`, such as Task 2.3. YAML uses integers (`stage: 2`, `task: 3`). Paths use zero padding, such as `stage-02/task-02-03.log.md`.
 - APM artifact paths use kebab-case. Task and Handoff Logs use `.log.md`. Their locations, fields and body sections are defined by their runtime guides/commands.
 
-Formatting simplification must not alter a schema, field name, allowed value, bus separator, identity rule or artifact path relied on by another role or the CLI.
+Preserve the schemas, field names, allowed values, bus separators, identity rules and artifact paths used by other roles or the CLI.
 
 ## 5. Supported build placeholders
 
@@ -68,4 +68,4 @@ Build placeholders resolve identically for every assistant. Match their implemen
 | `{SUBAGENT_GUIDANCE}` | Shared standalone subagent instructions referring to the Assistant Reference |
 | `{ARCHIVE_EXPLORER_GUIDANCE}` | Instruction to spawn the archive explorer by name |
 
-Use “the Rules file” and “the command argument” in shared text, with assistant-specific details in the reference. Do not add per-assistant replacements. Validate the six generated bundles and their shared-file identity after changes.
+Use “the Rules file” and “the command argument” in shared text, with assistant-specific details in the reference. Validate the six generated bundles and their shared-file identity after changes.
