@@ -34,7 +34,10 @@ export const CLIErrorCode = {
   DOWNLOAD_FAILED: 'DOWNLOAD_FAILED',
 
   // Archive errors
-  ARCHIVE_FAILED: 'ARCHIVE_FAILED'
+  ARCHIVE_FAILED: 'ARCHIVE_FAILED',
+
+  // Prompt errors
+  NOT_INTERACTIVE: 'NOT_INTERACTIVE'
 };
 
 /**
@@ -210,6 +213,21 @@ export class CLIError extends Error {
       `Failed to archive session: ${reason}`,
       CLIErrorCode.ARCHIVE_FAILED,
       { reason }
+    );
+  }
+
+  /**
+   * Creates an error for a prompt that cannot run without an interactive terminal.
+   *
+   * @param {string} question - The question the CLI would have asked.
+   * @param {string} [hint] - How to run the command without the prompt.
+   * @returns {CLIError} Formatted error instance.
+   */
+  static notInteractive(question, hint) {
+    return new CLIError(
+      `Cannot ask "${question}" without an interactive terminal. ${hint || 'Run the command in an interactive terminal.'}`,
+      CLIErrorCode.NOT_INTERACTIVE,
+      { question, hint }
     );
   }
 

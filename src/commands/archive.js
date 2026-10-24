@@ -10,7 +10,8 @@ import fs from 'fs-extra';
 import path from 'path';
 import { METADATA_FILE, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
-import { readMetadata, getInstalledFiles } from '../core/metadata.js';
+import { readMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
+import { formatAssistantList } from '../core/assistants.js';
 import { createArchive, listArchivesWithInfo, removeArchive, clearArchives, generateArchiveName } from '../services/archive.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
 import { confirmDestructiveAction } from '../ui/prompts.js';
@@ -59,7 +60,7 @@ async function listMode() {
   for (const { name, metadata } of archives) {
     console.log(chalk.bold(name));
     console.log(`  Version:     ${metadata.releaseVersion || 'unknown'}`);
-    console.log(`  Assistants:  ${(metadata.assistants || []).join(', ') || 'unknown'}`);
+    console.log(`  Assistants:  ${formatAssistantList(metadata.assistants || [], getAssistantNames(metadata)) || 'unknown'}`);
     console.log(`  Archived:    ${metadata.archivedAt || 'unknown'}`);
     if (metadata.reason) {
       console.log(`  Reason:      ${metadata.reason}`);
@@ -143,7 +144,7 @@ async function createMode(force, archiveName) {
 
   // Confirm destructive action
   if (!force) {
-    const assistantList = metadata.assistants.join(', ');
+    const assistantList = formatAssistantList(metadata.assistants, getAssistantNames(metadata));
     const proceed = await confirmDestructiveAction(
       [
         `Snapshot all .apm/ contents (except archives/) into .apm/archives/${resolvedName}`,

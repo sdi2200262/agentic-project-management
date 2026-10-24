@@ -12,7 +12,8 @@ import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js
 import { getCustomRepos, addCustomRepo, removeCustomRepo, getRepoSettings, updateRepoSettings } from '../core/config.js';
 import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer } from '../ui/prompts.js';
+import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
+import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -128,7 +129,7 @@ export async function customCommand(options = {}) {
     for (const arg of assistantList) {
       const found = manifest.assistants.find(a => a.id === arg);
       if (!found) {
-        const available = manifest.assistants.map(a => a.id).join(', ');
+        const available = formatAssistantList(manifest.assistants.map(a => a.id), assistantNamesFromManifest(manifest));
         warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
         continue;
       }
@@ -155,7 +156,7 @@ export async function customCommand(options = {}) {
     const bundleAsset = findBundleAsset(release, assistant.bundle);
 
     if (!bundleAsset) {
-      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' not found in release, skipping.` });
+      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' for ${formatAssistant(id, assistant.name)} not found in release, skipping.` });
       continue;
     }
 
@@ -180,13 +181,14 @@ export async function customCommand(options = {}) {
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION,
     assistants: assistantIds,
+    assistantNames: assistantNamesFromManifest(manifest, assistantIds),
     installedFiles
   });
   await writeMetadata(metadata);
 
-  // Offer to save repo
+  // Offer to save repo (optional, so skipped without a terminal)
   let repoSaved = false;
-  if (!repoSettings) {
+  if (!repoSettings && isInteractive()) {
     const saveRepo = await confirmAction('Save this repository for future use?', {
       header: `Initialized from ${repoString} — repository is not in your saved list`
     });
@@ -207,7 +209,7 @@ export async function customCommand(options = {}) {
   for (const w of warnings) logger[w.level](w.msg);
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (installedFiles[id]) logger.success(`Installed ${assistant.name}`);
+    if (installedFiles[id]) logger.success(`Installed ${formatAssistant(id, assistant.name)}`);
   }
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
