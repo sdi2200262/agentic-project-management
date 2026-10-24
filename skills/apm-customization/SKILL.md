@@ -32,13 +32,9 @@ Explore the repository to understand the layout. The key directories are:
 
 **`templates/`** - The source files that become the APM installation. Everything the User receives when running `apm init` or `apm custom` originates here. Changes to APM's workflow, procedures, communication patterns, or agent behavior happen in this directory.
 
-**`templates/commands/`** - Slash commands the User sends to the model. These are the entry points for each Agent role (Planner, Manager, Worker) and for workflow actions (check-tasks, check-reports, handoff, recover, summarize).
-
 **`templates/guides/`** - Procedural files Agents read autonomously. Each guide contains a single procedure with operational standards, step-by-step actions, output specifications, and content guidelines. Guides are the most detailed procedural documents in the system.
 
-**`templates/skills/`** - Shared capabilities read by multiple Agent roles. Each skill lives in its own directory with a `SKILL.md` file and optional supporting files.
-
-**`templates/agents/`** - Subagent configurations shipped with APM bundles.
+**`templates/skills/`** - Skills, each in its own directory with a `SKILL.md` file and optional supporting files. The `apm-N-…` skills are the commands the User runs: the entry points for each Agent role (Planner, Manager, Worker) and for workflow actions (check-tasks, check-reports, handoff, recover, summarize). Their frontmatter sets `disable-model-invocation: true`. `apm-communication` is read by every Agent role.
 
 **`templates/apm/`** - Artifact templates that become the `.apm/` directory (Spec, Plan, Tracker, Memory Index templates).
 
@@ -59,19 +55,15 @@ Explore the repository to understand the layout. The key directories are:
 
 ## 3. How Templates Become Installations
 
-Templates use placeholders that the build system resolves per platform at build time. Understanding this is essential for making changes.
+Every assistant installs the same files. The build resolves a few placeholders the same way for every target, and fails if a shared file differs between bundles. What differs per assistant (APM folder, command prefix, Rules file, subagent calls, new-chat steps) lives only in §5 Assistant Reference of `templates/skills/apm-communication/SKILL.md`.
 
-Explore `build/processors/placeholders.js` to see all supported placeholders. Common ones include:
+The placeholders, defined in `build/processors/placeholders.js`, are:
 
 - `{VERSION}` - Release version
-- `{RULES_FILE}` - Platform-specific rules file name (e.g. `CLAUDE.md`, `AGENTS.md`)
-- `{SKILL_PATH:name}` - Resolved path to a skill file
-- `{GUIDE_PATH:name}` - Resolved path to a guide file
-- `{COMMAND_PATH:name}` - Resolved path to a command file
-- `{ARGS}` - Platform-specific argument syntax
-- `{SUBAGENT_GUIDANCE}` - Platform-native subagent invocation
+- `{SKILL_PATH:name}` - Path to a skill file, relative to the assistant's APM folder
+- `{GUIDE_PATH:name}` - Path to a guide file in `.agents/apm-guides/`
 
-Explore `build/build-config.json` to see each target’s directory layout, output format, and platform-specific values. All current targets use Markdown.
+Explore `build/build-config.json` to see each target's skills and guides folders.
 
 **Building locally:**
 

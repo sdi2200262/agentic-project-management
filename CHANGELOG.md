@@ -20,7 +20,8 @@ Every assistant now installs the same commands, guides and communication skill. 
 
 ### Changed
 
-* **One layout for every assistant.** Guides install to `.agents/apm-guides/` for every assistant, Claude Code included. Claude Code installs skills to `.claude/skills/`. Codex, Cursor, Copilot, Antigravity and OpenCode share `.agents/skills/`. Each assistant keeps one explorer agent file in its own folder, such as `.codex/agents/` or `.github/agents/`.
+* **One layout for every assistant.** Guides install to `.agents/apm-guides/` for every assistant, Claude Code included. Claude Code installs skills to `.claude/skills/`. Codex, Cursor, Copilot, Antigravity and OpenCode share `.agents/skills/`.
+* **No custom subagent.** The `apm-archive-explorer` agent is gone. Agents explore archives with their assistant's own explorer subagent, and `apm update` removes the old agent file.
 * **Assistant Reference.** What differs between assistants is listed in §5 of the `apm-communication` skill: the APM folder, how to run a command (`/` for most, `$` for Codex, `@` for OpenCode), the Rules file, the explorer subagent call and how to start a new chat. Commands and guides point to it instead of carrying per-assistant text.
 * **Command descriptions.** Each command's description now says to use it only when you run it, and every command skill sets `disable-model-invocation: true` for assistants that support it.
 * **Prompts need a terminal.** `apm remove` and other commands that ask for confirmation stop with an error when no terminal is attached, instead of doing nothing.

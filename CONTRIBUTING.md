@@ -77,13 +77,13 @@ APM uses a build system that processes source templates into platform-specific b
 
 #### File Locations
 
-- **Templates (commands, guides, skills, agents):** Edit files in `templates/`. This is the core deliverable. All template changes must comply with `templates/_standards/`.
+- **Templates (skills, including the commands, and guides):** Edit files in `templates/`. This is the core deliverable. All template changes must comply with `templates/_standards/`.
 - **Build system:** Edit files in `build/` for processors, config, and generators.
 - **CLI source:** Edit files in `src/` for CLI command behavior.
 - **Standalone skills:** Edit files in `skills/` for independently installable skills.
 - **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed. See the apm-website README for details.
 
-**Assistant differences:** Every assistant installs the same commands, guides, and skills; only the explorer agent file differs. Placeholders in `build/processors/placeholders.js` resolve the same way for every assistant, and the build fails if the shared files differ between assistants. Put anything that differs per assistant, such as command prefixes or subagent calls, in §5 Assistant Reference of `templates/skills/apm-communication/SKILL.md`.
+**Assistant differences:** Every assistant installs the same skills and guides. Placeholders in `build/processors/placeholders.js` resolve the same way for every assistant, and the build fails if the shared files differ between assistants. Put anything that differs per assistant, such as command prefixes or subagent calls, in §5 Assistant Reference of `templates/skills/apm-communication/SKILL.md`.
 
 **Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected commands, guides, and skills. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
 
