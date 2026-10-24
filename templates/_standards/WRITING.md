@@ -8,7 +8,7 @@ Before writing, identify the reader, the decision or action they need to take, a
 
 Trust capable models to apply clear criteria. Define the result and constraints rather than prescribing a thinking process, invented classification system or exhaustive decision tree. Keep enumerated values where artifact schemas require them.
 
-Give each rule one primary home. Refer to it elsewhere instead of repeating its full procedure or listing its inverse as a Common Mistake. A reference is sufficient only when the reading role can load it within its normal access boundaries. Task Prompts remain self-contained; Workers do not need coordination documents to execute them.
+Give each rule one primary home. Refer to it elsewhere instead of repeating its full procedure or listing its inverse as a Common Mistake. A reference is sufficient only when the reading role can load it within its normal access boundaries.
 
 Remove padding, repeated warnings and generic reinforcement. Choose prose, lists or tables for the content, not for a token quota or fixed file length. Preserve conditions, authority, approval gates and artifact contracts when shortening instructions.
 

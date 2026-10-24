@@ -87,7 +87,3 @@ The `apm-archive-explorer` subagent is installed with APM. Spawn it by name with
 - GitHub Copilot: start a new chat in the VS Code Chat view, or open a new terminal and run `copilot`
 - Antigravity: start a new conversation in the Antigravity app or IDE agent panel, or open a new terminal and run `agy`
 - OpenCode: open a new terminal and run `opencode`, or start a new session in the OpenCode desktop app
-
----
-
-**End of Skill**
