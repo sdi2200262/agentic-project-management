@@ -69,7 +69,7 @@ Convert Plan Worker names to lowercase with hyphens in place of spaces: `Fronten
 
 APM installs the same commands, guides and skills for every assistant. Where assistants differ, use the entry for the assistant you are running in.
 
-| Assistant | APM folder | Run a command | Rules file |
+| Assistant | APM folder | Run a command | Rules file (project root) |
 |---|---|---|---|
 | Claude Code | `.claude/` | `/apm-1-initiate-planner` | `CLAUDE.md` |
 | Codex CLI | `.agents/` | `$apm-1-initiate-planner` | `AGENTS.md` |
@@ -87,6 +87,8 @@ Guides are in `.agents/apm-guides/` for every assistant. Skills, including the c
 - GitHub Copilot: `runSubagent` in VS Code, or `task` with `agent_type: "general-purpose"` in Copilot CLI
 - Antigravity: the `invoke_subagent` tool
 - OpenCode: `subagent(agent="general", description="...", prompt="...")`
+
+For research and investigation, tell the subagent to read files and run checks without modifying anything. Debugging subagents may change files to test fixes.
 
 **New chat.** Tell the User to:
 - Claude Code: open a new terminal and run `claude`, or open a new Claude Code tab in VS Code or a new session in the desktop app
