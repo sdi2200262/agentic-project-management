@@ -47,7 +47,7 @@ async function processTemplate(templatePath, options) {
     // Guides: flat files
     outputPath = path.join(guidesDir, path.basename(templatePath));
   } else {
-    // Skills, including the commands: skills/<skill-name>/<file>.md, copied as they are
+    // Command skills and shared skills: skills/<skill-name>/<file>.md, copied as they are
     const [, skillName, ...rest] = relativePath.split(path.sep);
     const skillDir = path.join(skillsDir, skillName);
     await fs.ensureDir(skillDir);

@@ -77,7 +77,7 @@ APM uses a build system that processes source templates into platform-specific b
 
 #### File Locations
 
-- **Templates (skills, including the commands, and guides):** Edit files in `templates/`. This is the core deliverable. All template changes must comply with `templates/_standards/`.
+- **Templates (command skills, shared skills and guides):** Edit files in `templates/`. This is the core deliverable. All template changes must comply with `templates/_standards/`.
 - **Build system:** Edit files in `build/` for processors, config, and generators.
 - **CLI source:** Edit files in `src/` for CLI command behavior.
 - **Standalone skills:** Edit files in `skills/` for independently installable skills.
@@ -85,7 +85,7 @@ APM uses a build system that processes source templates into platform-specific b
 
 **Assistant differences:** Every assistant installs the same skills and guides. Placeholders in `build/processors/placeholders.js` resolve the same way for every assistant, and the build fails if the shared files differ between assistants. Put anything that differs per assistant, such as command prefixes or subagent calls, in §5 Assistant Reference of `templates/skills/apm-communication/SKILL.md`.
 
-**Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected commands, guides, and skills. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
+**Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected command skills, shared skills and guides. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
 
 #### Building
 

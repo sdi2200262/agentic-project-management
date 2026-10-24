@@ -14,7 +14,7 @@ This skill guides an assistant working inside a forked or templated APM reposito
 ### 1.1 Objectives
 
 - Navigate the APM repository structure and understand what each part does
-- Make targeted changes to templates, commands, guides, skills, or agent configurations
+- Make targeted changes to command skills, shared skills or guides
 - Build and test changes locally
 - Produce releases that can be installed via `apm custom`
 
@@ -34,7 +34,7 @@ Explore the repository to understand the layout. The key directories are:
 
 **`templates/guides/`** - Procedural files Agents read autonomously. Each guide contains a single procedure with operational standards, step-by-step actions, output specifications, and content guidelines. Guides are the most detailed procedural documents in the system.
 
-**`templates/skills/`** - Skills, each in its own directory with a `SKILL.md` file and optional supporting files. The `apm-N-…` skills are the commands the User runs: the entry points for each Agent role (Planner, Manager, Worker) and for workflow actions (check-tasks, check-reports, handoff, recover, summarize). Their frontmatter sets `disable-model-invocation: true`. `apm-communication` is read by every Agent role.
+**`templates/skills/`** - Skills, each in its own directory with a `SKILL.md` file and optional supporting files. There are two kinds. **Command skills** (`apm-N-…`) are the commands the User runs: the entry points for each Agent role (Planner, Manager, Worker) and for workflow actions (check-tasks, check-reports, handoff, recover, summarize). Their frontmatter sets `disable-model-invocation: true`. **Shared skills**, such as `apm-communication`, are read by the Agent roles and have no `disable-model-invocation`.
 
 **`templates/apm/`** - Artifact templates that become the `.apm/` directory (Spec, Plan, Tracker, Memory Index templates).
 
@@ -99,10 +99,10 @@ Read the relevant `_standards/` file before making changes to understand the con
 
 ### Adding New Files
 
-When adding a new guide, skill, command, or agent:
+When adding a new guide, command skill or shared skill:
 
 1. Follow the structural conventions from `STRUCTURE.md` for that file type
-2. Add YAML frontmatter where required (commands and skills require it, guides do not)
+2. Add YAML frontmatter where required (skills require it, guides do not; command skills also set `disable-model-invocation: true`)
 3. Use placeholders for any paths, rules file references, or platform-specific values
 4. Update cross-references in other files if the new file should be loaded by an Agent
 
@@ -145,7 +145,7 @@ When the User's custom repository diverges from the official APM release, change
 
 - Update the repository's README to describe what was customized and why
 - If the changes affect the workflow (new procedures, modified coordination patterns), note how the customization differs from the official documentation
-- If adding new commands or skills, document their purpose and usage
+- If adding new command skills or shared skills, document their purpose and usage
 
 Custom repositories carry trust implications for anyone who installs from them. Bundles can write files anywhere within the project directory, and the templates define how AI assistants behave. When publishing a custom repository, document what the customization changes so users can make informed trust decisions. If the customization adds files outside the standard assistant config directory (e.g., source files, configuration), note this explicitly in the README.
 
