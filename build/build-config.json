@@ -3,7 +3,7 @@
     "sourceDir": "templates",
     "outputDir": "dist",
     "cleanOutput": true,
-    "postInstallNote": "If apm --version shows a version below 1.0.2, run npm install -g agentic-pm@latest to update it. Older versions can delete shared files when you remove an assistant."
+    "postInstallNote": "Known issue in CLI versions before 1.0.2: apm remove deletes files that other assistants still use. Check your version with apm --version, and update with npm install -g agentic-pm@latest."
   },
   "targets": [
     {
