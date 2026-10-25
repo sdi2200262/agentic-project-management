@@ -132,7 +132,7 @@ export async function removeCommand(options = {}) {
       const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))].map(label));
       const others = affected.join(' ');
       const affectedList = logger.list(affected.map(label));
-      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${affectedList} also ${affected.length === 1 ? 'uses' : 'use'}. These files have ${writers}'s instructions. To restore ${affectedList}'s, run "apm remove -a ${others}", then "apm add -a ${others}". This is a known issue, pending a fix.`);
+      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${affectedList} also ${affected.length === 1 ? 'uses' : 'use'}. These files have ${writers}'s instructions. To restore ${affectedList}'s, run "apm remove -a ${others}", then "apm add -a ${others}".`);
     }
   }
 }
