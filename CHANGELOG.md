@@ -33,6 +33,7 @@ Every assistant now installs the same commands, guides and communication skill. 
 * **Failed commands exit with an error status.** Any command that prints an error, such as for an unknown `-a` id, now exits with status 1.
 * **Smaller release manifest.** `apm-release.json` no longer lists each assistant's folder or a description. CLI v1.0.3 accepts manifests with or without them.
 * **No overwrite warning on remove.** Assistants now install identical shared files, so `apm remove` no longer warns that one assistant overwrote another's files.
+* **Rate-limit errors explained.** When GitHub's API limit runs out, the error says so and suggests `GITHUB_TOKEN` or signing in with the `gh` CLI.
 
 ### Fixed
 
