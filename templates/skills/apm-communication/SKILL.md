@@ -9,7 +9,7 @@ description: Agent communication standards and file-based Message Bus protocol f
 
 **Reading agents:** Planner, Manager, Worker
 
-Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Guide paths start at the project root; skill paths are relative to your assistant's APM folder. Resolve locations, command invocations and native calls through §5 Assistant Reference.
+Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Guide paths start at the project root; skill paths are relative to your assistant's APM folder. Guides are in `.agents/apm-guides/` for every assistant. Use your assistant's own way to run commands, spawn subagents and start new chats. Tell research subagents to read files and run checks without modifying anything; debugging subagents may change files to test fixes.
 
 Non-APM agents can use the bus without joining the full workflow. See `bus-integration.md` alongside this skill.
 
@@ -31,7 +31,7 @@ Follow the User's requested length or level of detail when specified. Put substa
 
 Use a casually formal tone, concrete subjects and active verbs. Keep sentences to one main thought and related words together. Use short paragraphs, lists for steps/parallel items and tables for comparisons. Explain unfamiliar concepts and put consequential limits beside the claims they qualify. Before sending, check the opening and total reply length against the request and applicable ceiling.
 
-When the User must act, specify the command, target chat and argument or the artifact to review. Put commands to run in fenced blocks, and paths and values in inline code. Resolve the assistant's command prefix and new-chat instructions through §5 Assistant Reference. At a transition, give only the context and next action needed to continue.
+When the User must act, specify the command, target chat and argument or the artifact to review. Put commands to run in fenced blocks, and paths and values in inline code. Write the command the way the User's assistant runs it, and say how to start a new chat in that assistant. At a transition, give only the context and next action needed to continue.
 
 ### 2.2 Decisions and Evidence
 
@@ -64,36 +64,3 @@ Resolve an `[agent-id]` argument to `apm-4-check-tasks` or `apm-5-check-reports`
 ### 4.3 Agent Slug Format
 
 Convert Plan Worker names to lowercase with hyphens in place of spaces: `Frontend Agent` becomes `frontend-agent`. The Manager directory is `manager`.
-
-## 5. Assistant Reference
-
-APM installs the same commands, guides and skills for every assistant. Where assistants differ, use the entry for the assistant you are running in.
-
-| Assistant | APM folder | Run a command | Rules file (project root) |
-|---|---|---|---|
-| Claude Code | `.claude/` | `/apm-1-initiate-planner` | `CLAUDE.md` |
-| Codex CLI | `.agents/` | `$apm-1-initiate-planner` | `AGENTS.md` |
-| Cursor | `.agents/` | `/apm-1-initiate-planner` | `AGENTS.md` |
-| GitHub Copilot | `.agents/` | `/apm-1-initiate-planner` | `AGENTS.md` |
-| Antigravity | `.agents/` | `/apm-1-initiate-planner` | `AGENTS.md` |
-| OpenCode | `.agents/` | `@apm-1-initiate-planner` | `AGENTS.md` |
-
-Guides are in `.agents/apm-guides/` for every assistant. Skills, including the commands, are in `skills/` inside the APM folder. The User types any command argument after the command name, such as `/apm-3-initiate-worker frontend-agent`.
-
-**Subagents.** Spawn a subagent with the call below. Choose whichever subagent type suits the work.
-- Claude Code: `Agent(description="...", prompt="...")`
-- Codex CLI: `spawn_agent(task_name="<topic>", fork_turns="none", message="...")`
-- Cursor: `Task(description="...", prompt="...")`
-- GitHub Copilot: `runSubagent` in VS Code, or `task` in Copilot CLI
-- Antigravity: the `invoke_subagent` tool
-- OpenCode: `subagent(agent="<agent>", description="...", prompt="...")`
-
-For research and investigation, tell the subagent to read files and run checks without modifying anything. Debugging subagents may change files to test fixes.
-
-**New chat.** Tell the User to:
-- Claude Code: open a new terminal and run `claude`, or open a new Claude Code tab in VS Code or a new session in the desktop app
-- Codex CLI: open a new terminal and run `codex`, or start a new chat in the Codex IDE extension or app
-- Cursor: start a new Agent chat in the Cursor editor, or open a new terminal in the project root and run `agent`
-- GitHub Copilot: start a new chat in the VS Code Chat view, or open a new terminal and run `copilot`
-- Antigravity: start a new conversation in the Antigravity app or IDE agent panel, or open a new terminal and run `agy`
-- OpenCode: open a new terminal and run `opencode`, or start a new session in the OpenCode desktop app

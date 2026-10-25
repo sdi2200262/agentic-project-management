@@ -15,7 +15,7 @@ Follow the communication skill's §4 Message Bus Protocol: read a bus before wri
 ## 3. Reporting Your Work
 
 1. Write `.apm/bus/<your-agent-slug>/report.md`. In your first report identify yourself, the work and why you are contributing. Give the outcome, evidence, implications and limits needed for the Manager's decision; keep later reports concise.
-2. Direct the User to run `apm-5-check-reports <your-agent-slug>` in the Manager's chat, using their assistant's invocation from the communication skill's §5 Assistant Reference.
+2. Direct the User to run `apm-5-check-reports <your-agent-slug>` in the Manager's chat, the way their assistant runs commands.
 
 ## 4. Receiving Follow-Up Assignments
 

@@ -36,7 +36,7 @@ Briefly summarize what was established or corrected and any remaining limits. Af
 
 ### 2.5 Exploration and Research Standards
 
-Follow User requests to defer research and record the resulting limits in your understanding summary. Otherwise, establish authority during initiation before deep exploration. When relevant material or User responses point to code, explore before continuing questions. Read relevant repositories, including history and branches as project signals. Read focused sources directly. For substantial research, use a subagent with specific questions and expected sources; use `apm-communication` §5 Assistant Reference for the call.
+Follow User requests to defer research and record the resulting limits in your understanding summary. Otherwise, establish authority during initiation before deep exploration. When relevant material or User responses point to code, explore before continuing questions. Read relevant repositories, including history and branches as project signals. Read focused sources directly. For substantial research, use a subagent with specific questions and expected sources.
 
 Verify critical subagent claims against the referenced files or commands. If verification finds a contradiction or consequential gap, use a subagent for a focused follow-up and verify its findings too. Present verified findings and implications to the User before relying on them. Include them in the next follow-up when gaps remain, or in the round summary when they complete its coverage.
 
@@ -48,7 +48,7 @@ Complete pre-round setup, three rounds with follow-ups, and the final understand
 
 ### 3.1 Pre-Round Context
 
-If archives were confirmed relevant during initiation, use a subagent to examine them; use `apm-communication` §5 Assistant Reference for the call. Give it the confirmed archive paths, research questions and these instructions:
+If archives were confirmed relevant during initiation, use a subagent to examine them. Give it the confirmed archive paths, research questions and these instructions:
 
 - Read each archive's `session-summary.md` first when present. For missing or deeper detail, read `spec.md` and `plan.md` for decisions and work structure.
 - Consult `memory/index.md` for outcomes and patterns, and `tracker.md` when Task statuses or Worker states matter. Check `metadata.json` for archival date and installation context.

@@ -16,7 +16,7 @@ Interpret scoped flags with project context. `important_findings` can affect oth
 
 ### 2.2 Review Outcome Standards
 
-Accept a supported Success with no flags. Investigate flags, non-Success or inconsistency before deciding. Check contained issues directly. For context-intensive or unclear issues, use a subagent to investigate; use `apm-communication` §5 Assistant Reference for the call. Give it the investigation goal, files to examine and required findings. Verify critical claims against source.
+Accept a supported Success with no flags. Investigate flags, non-Success or inconsistency before deciding. Check contained issues directly. For context-intensive or unclear issues, use a subagent to investigate. Give it the investigation goal, files to examine and required findings. Verify critical claims against source.
 
 After investigation, proceed if nothing actionable remains, send a refined follow-up if retry is needed, or modify planning documents when their content is wrong. Note uncommitted changes in a non-Success follow-up. For successful work left uncommitted, commit on the Worker's branch using Rules conventions; no follow-up is needed for that alone.
 
@@ -40,7 +40,7 @@ In a wait state, state what was processed, what remains pending and which report
 
 After successful review, merge the completed dispatch unit's branch into base. Merge required outputs before dependent dispatch and sweep all current-Stage branches at Stage end. Switch to the recorded base branch before merging; merge and verify autonomously for clean merges.
 
-Resolve conflicts using Task objectives, project design and Spec; for complex conflicts, use a subagent to investigate or seek User help. Resolve the call through `apm-communication` §5 Assistant Reference. If branch protection blocks direct merging, adapt through a PR, intermediate branch or User guidance and record the constraint in Tracker working notes.
+Resolve conflicts using Task objectives, project design and Spec; for complex conflicts, use a subagent to investigate or seek User help. If branch protection blocks direct merging, adapt through a PR, intermediate branch or User guidance and record the constraint in Tracker working notes.
 
 After a successful merge, remove its worktree with `git worktree remove .apm/worktrees/<branch-slug>` before deleting the merged branch with `git branch -d <branch-name>`. For a multi-branch sweep, batch removals first, then deletions in one terminal invocation.
 
@@ -58,7 +58,7 @@ At Stage end, promote observations with lasting impact on future work to Index M
 
 After all Tasks are Done, assess holistic verification before the summary. Use User-confirmed needs, review difficulties/flags/follow-ups, edge cases, compatibility concerns, Planner notes and accumulated observations. A simple Stage with clean evidence may need none.
 
-When warranted, rerun key checks, examine source/artifacts and exercise integration/edge cases at the project's established validation level. For context-intensive checks, use a subagent and verify its findings; use `apm-communication` §5 Assistant Reference for the call. Fix contained issues, delegate focused investigation, create a new Task for Worker-level work, or seek User direction when scope is unclear. Pause for required User judgment or action.
+When warranted, rerun key checks, examine source/artifacts and exercise integration/edge cases at the project's established validation level. For context-intensive checks, use a subagent and verify its findings. Fix contained issues, delegate focused investigation, create a new Task for Worker-level work, or seek User direction when scope is unclear. Pause for required User judgment or action.
 
 ### 2.9 Non-APM Agent Reports
 
