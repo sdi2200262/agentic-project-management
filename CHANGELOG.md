@@ -14,16 +14,19 @@ Every assistant now installs the same commands, guides and communication skill. 
 ### Breaking Changes
 
 * **CLI v1.0.2 or later is required.** CLI v1.0.1 and older ignore `minCliVersion` and delete shared files when you remove an assistant, which breaks the other assistants that use them. Check with `apm --version` and update with `npm install -g agentic-pm@latest`. After `apm init`, `apm add` or `apm update`, older CLIs show a note saying this.
-* **Claude Code commands are skills, and guides are shared.** Commands install to `.claude/skills/` instead of `.claude/commands/`; you still run them as `/apm-…`. Guides install to `.agents/apm-guides/` instead of `.claude/apm-guides/`, so a Claude Code install also creates an `.agents/` folder.
-* **OpenCode commands are skills.** Commands install to `.agents/skills/`, and `.opencode/commands/` is no longer used. Run them as `@apm-…` instead of `/apm-…`.
+* **Commands are skills for every assistant.** Claude Code, Cursor and OpenCode join Codex, Copilot and Antigravity, which already used skills. Claude Code commands install to `.claude/skills/` instead of `.claude/commands/`, and Cursor's to `.agents/skills/` instead of `.cursor/commands/`; you still run both as `/apm-…`. OpenCode's install to `.agents/skills/` instead of `.opencode/commands/`, and you run them as `@apm-…` instead of `/apm-…`.
+* **Claude Code guides are shared.** Guides install to `.agents/apm-guides/` instead of `.claude/apm-guides/`, so a Claude Code install also creates an `.agents/` folder.
 * **Shared folder for Codex, Cursor, Copilot and OpenCode.** Commands, guides and skills install to `.agents/skills/` and `.agents/apm-guides/`, as Antigravity's already did. They previously lived in each assistant's own folder: `.codex/apm-guides/`, `.cursor/`, `.github/` and `.opencode/`.
 
 ### Changed
 
 * **One layout for every assistant.** Guides install to `.agents/apm-guides/` for every assistant, Claude Code included. Claude Code installs skills to `.claude/skills/`. Codex, Cursor, Copilot, Antigravity and OpenCode share `.agents/skills/`.
-* **No custom subagent.** The `apm-archive-explorer` agent is gone. Agents explore archives with their assistant's own explorer subagent, and `apm update` removes the old agent file.
-* **Assistant Reference.** What differs between assistants is listed in §5 of the `apm-communication` skill: the APM folder, how to run a command (`/` for most, `$` for Codex, `@` for OpenCode), the Rules file, the explorer subagent call and how to start a new chat. Commands and guides point to it instead of carrying per-assistant text.
-* **Command descriptions.** Each command's description now says to use it only when you run it, and every command skill sets `disable-model-invocation: true` for assistants that support it.
+* **No custom subagent.** The `apm-archive-explorer` agent is gone. Agents explore archives, research and debug with their assistant's general-purpose subagent, and `apm update` removes the old agent file.
+* **Assistant Reference.** What differs between assistants is listed in §5 of the `apm-communication` skill: the APM folder, how to run a command (`/` for most, `$` for Codex, `@` for OpenCode), the Rules file, the general-purpose subagent call and how to start a new chat. Commands and guides point to it instead of carrying per-assistant text.
+* **Command descriptions.** Each command's description now says to use it only when you run it, and every command skill sets `disable-model-invocation: true`. Codex doesn't read that setting, so its model can still see the commands; their descriptions tell it to wait for you.
+* **Shorter agent replies.** Agents keep chat replies short by default and present proposals, evidence and trade-offs instead of writing out their reasoning step by step. Logs, prompts and reports keep their full structure.
+* **Shorter instructions.** Commands, guides and skills are about 40% shorter, with the same roles, steps and approval points.
+* **Faster Context Gathering.** All three rounds remain. The Planner can present what it already knows as statements for you to confirm or correct, and asks questions only about what is missing.
 * **Prompts need a terminal.** `apm remove` and other commands that ask for confirmation stop with an error when no terminal is attached, instead of doing nothing.
 * **`apm status` names missing files.** It lists each missing file by name.
 * **Consistent assistant names.** Every command shows assistants as name and id, such as "Codex CLI (codex)".
@@ -31,6 +34,7 @@ Every assistant now installs the same commands, guides and communication skill. 
 
 ### Fixed
 
+* **The Manager merges after review.** A Task's branch is merged only after its Task Log has been reviewed. Before, one step merged it while the report was still being processed.
 * **Codex and Antigravity no longer overwrite each other's skills.** Both now install identical files to `.agents/skills/`, so installing, updating or removing one leaves the other's instructions intact. This resolves the Templates v1.0.3 known issue. Run `apm update` to apply the fix.
 
 ## CLI v1.0.2 + Templates v1.0.3 - 2026-10-15
