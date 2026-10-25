@@ -2,8 +2,7 @@
   "build": {
     "sourceDir": "templates",
     "outputDir": "dist",
-    "cleanOutput": true,
-    "postInstallNote": "Known issue in CLI versions before 1.0.2: apm remove deletes files that other assistants still use. Check your version with apm --version, and update with npm install -g agentic-pm@latest."
+    "cleanOutput": true
   },
   "targets": [
     {
@@ -11,7 +10,6 @@
       "name": "Claude Code",
       "bundleName": "claude.zip",
       "format": "markdown",
-      "configDir": ".claude",
       "directories": {
         "skills": ".claude/skills",
         "guides": ".agents/apm-guides"
@@ -23,7 +21,6 @@
       "name": "Codex CLI",
       "bundleName": "codex.zip",
       "format": "markdown",
-      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -35,7 +32,6 @@
       "name": "Cursor",
       "bundleName": "cursor.zip",
       "format": "markdown",
-      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -47,7 +43,6 @@
       "name": "GitHub Copilot",
       "bundleName": "copilot.zip",
       "format": "markdown",
-      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -59,7 +54,6 @@
       "name": "Antigravity",
       "bundleName": "antigravity.zip",
       "format": "markdown",
-      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -71,7 +65,6 @@
       "name": "OpenCode",
       "bundleName": "opencode.zip",
       "format": "markdown",
-      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"

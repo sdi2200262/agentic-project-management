@@ -14,19 +14,14 @@
  * @returns {Object} Release manifest object.
  */
 export function generateReleaseManifest(config, version) {
-  // Optional build-level note, shown after every assistant's own note
-  const buildNote = config.build?.postInstallNote;
   const assistants = config.targets.map(target => {
     const entry = {
       id: target.id,
       name: target.name,
-      bundle: target.bundleName,
-      description: `Optimised for ${target.name}`,
-      configDir: target.configDir
+      bundle: target.bundleName
     };
-    const note = [target.postInstallNote, buildNote].filter(Boolean).join(' ');
-    if (note) {
-      entry.postInstallNote = note;
+    if (target.postInstallNote) {
+      entry.postInstallNote = target.postInstallNote;
     }
     return entry;
   });

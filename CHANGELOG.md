@@ -13,7 +13,7 @@ Every assistant now installs the same commands, guides and communication skill. 
 
 ### Breaking Changes
 
-* **CLI v1.0.2 or later is required.** CLI v1.0.1 and older ignore `minCliVersion` and delete shared files when you remove an assistant, which breaks the other assistants that use them. Check with `apm --version` and update with `npm install -g agentic-pm@latest`. After `apm init`, `apm add` or `apm update`, older CLIs show a note saying this.
+* **CLI v1.0.3 or later is required.** Older CLIs refuse Templates v1.1.0 with `Invalid apm-release.json in v1.1.0: assistants[0].configDir: required string, …` and change nothing. Check with `apm --version` and update with `npm install -g agentic-pm@latest`. CLI v1.0.1 and older delete shared files when you remove an assistant, so they can't install releases where assistants share files.
 * **Commands are skills for every assistant.** Claude Code, Cursor and OpenCode join Codex, Copilot and Antigravity, which already used skills. Claude Code commands install to `.claude/skills/` instead of `.claude/commands/`, and Cursor's to `.agents/skills/` instead of `.cursor/commands/`; you still run both as `/apm-…`. OpenCode's install to `.agents/skills/` instead of `.opencode/commands/`, and you run them as `@apm-…` instead of `/apm-…`.
 * **Claude Code guides are shared.** Guides install to `.agents/apm-guides/` instead of `.claude/apm-guides/`, so a Claude Code install also creates an `.agents/` folder.
 * **Shared folder for Codex, Cursor, Copilot and OpenCode.** Commands, guides and skills install to `.agents/skills/` and `.agents/apm-guides/`, as Antigravity's already did. They previously lived in each assistant's own folder: `.codex/apm-guides/`, `.cursor/`, `.github/` and `.opencode/`.
@@ -31,6 +31,8 @@ Every assistant now installs the same commands, guides and communication skill. 
 * **`apm status` names missing files.** It lists each missing file by name.
 * **Consistent assistant names.** Every command shows assistants as name and id, such as "Codex CLI (codex)".
 * **Failed commands exit with an error status.** Any command that prints an error, such as for an unknown `-a` id, now exits with status 1.
+* **Smaller release manifest.** `apm-release.json` no longer lists each assistant's folder or a description. CLI v1.0.3 accepts manifests with or without them.
+* **No overwrite warning on remove.** Assistants now install identical shared files, so `apm remove` no longer warns that one assistant overwrote another's files.
 
 ### Fixed
 
