@@ -87,20 +87,6 @@ export async function removeCommand(options = {}) {
   // Clean tracked files for removed assistants
   const installedFiles = getInstalledFiles(metadata);
 
-  // Shared files hold the text of the last assistant installed (metadata keeps install order).
-  // Find kept files that a removed assistant overwrote last: the remaining assistants have the wrong text in them.
-  const lastWriter = new Map();
-  for (const id of metadata.assistants) {
-    for (const file of installedFiles[id] || []) lastWriter.set(file, id);
-  }
-  const remainingIds = metadata.assistants.filter(id => !assistantIds.includes(id));
-  const overwritten = [...lastWriter].filter(([file, writer]) =>
-    assistantIds.includes(writer) && remainingIds.some(id => (installedFiles[id] || []).includes(file))
-  );
-  const affected = remainingIds.filter(id =>
-    overwritten.some(([file]) => (installedFiles[id] || []).includes(file))
-  );
-
   await removeInstalledFiles(process.cwd(), installedFiles, assistantIds);
 
   // Update metadata
@@ -128,12 +114,6 @@ export async function removeCommand(options = {}) {
     logger.info('Run "apm archive" to archive, or "apm add" to add new assistants.');
   } else {
     logger.success(`Removed ${formatAssistantList(assistantIds, names)}. ${logger.plural(remaining.length, 'assistant')} remaining.`);
-    if (overwritten.length) {
-      const writers = logger.list([...new Set(overwritten.map(([, writer]) => writer))].map(label));
-      const others = affected.join(' ');
-      const affectedList = logger.list(affected.map(label));
-      logger.warn(`${writers} had overwritten ${logger.plural(overwritten.length, 'file')} that ${affectedList} also ${affected.length === 1 ? 'uses' : 'use'}. These files have ${writers}'s instructions. To restore ${affectedList}'s, run "apm remove -a ${others}", then "apm add -a ${others}".`);
-    }
   }
 }
 

@@ -33,15 +33,7 @@ function validateAssistant(assistant, index) {
     errors.push(`${prefix}.bundle: required string`);
   }
 
-  if (typeof assistant.configDir !== 'string' || !assistant.configDir) {
-    errors.push(`${prefix}.configDir: required string`);
-  }
-
   // Defense-in-depth: reject path traversal patterns
-  if (typeof assistant.configDir === 'string' && assistant.configDir.includes('..')) {
-    errors.push(`${prefix}.configDir: must not contain path traversal sequences`);
-  }
-
   if (typeof assistant.bundle === 'string' && assistant.bundle.includes('..')) {
     errors.push(`${prefix}.bundle: must not contain path traversal sequences`);
   }
