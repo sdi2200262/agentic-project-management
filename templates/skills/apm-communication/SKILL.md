@@ -80,13 +80,13 @@ APM installs the same commands, guides and skills for every assistant. Where ass
 
 Guides are in `.agents/apm-guides/` for every assistant. Skills, including the commands, are in `skills/` inside the APM folder. The User types any command argument after the command name, such as `/apm-3-initiate-worker frontend-agent`.
 
-**Subagents.** Spawn a general-purpose subagent with:
-- Claude Code: `Agent(subagent_type="general-purpose", description="...", prompt="...")`
+**Subagents.** Spawn a subagent with the call below. Choose whichever subagent type suits the work.
+- Claude Code: `Agent(description="...", prompt="...")`
 - Codex CLI: `spawn_agent(task_name="<topic>", fork_turns="none", message="...")`
 - Cursor: `Task(description="...", prompt="...")`
-- GitHub Copilot: `runSubagent` in VS Code, or `task` with `agent_type: "general-purpose"` in Copilot CLI
+- GitHub Copilot: `runSubagent` in VS Code, or `task` in Copilot CLI
 - Antigravity: the `invoke_subagent` tool
-- OpenCode: `subagent(agent="general", description="...", prompt="...")`
+- OpenCode: `subagent(agent="<agent>", description="...", prompt="...")`
 
 For research and investigation, tell the subagent to read files and run checks without modifying anything. Debugging subagents may change files to test fixes.
 

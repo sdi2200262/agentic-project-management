@@ -21,8 +21,8 @@ Every assistant now installs the same commands, guides and communication skill. 
 ### Changed
 
 * **One layout for every assistant.** Guides install to `.agents/apm-guides/` for every assistant, Claude Code included. Claude Code installs skills to `.claude/skills/`. Codex, Cursor, Copilot, Antigravity and OpenCode share `.agents/skills/`.
-* **No custom subagent.** The `apm-archive-explorer` agent is gone. Agents explore archives, research and debug with their assistant's general-purpose subagent, and `apm update` removes the old agent file.
-* **Assistant Reference.** What differs between assistants is listed in §5 of the `apm-communication` skill: the APM folder, how to run a command (`/` for most, `$` for Codex, `@` for OpenCode), the Rules file, the general-purpose subagent call and how to start a new chat. Commands and guides point to it instead of carrying per-assistant text.
+* **No custom subagent.** The `apm-archive-explorer` agent is gone. Agents explore archives, research and debug with whichever subagent their assistant offers, and `apm update` removes the old agent file.
+* **Assistant Reference.** What differs between assistants is listed in §5 of the `apm-communication` skill: the APM folder, how to run a command (`/` for most, `$` for Codex, `@` for OpenCode), the Rules file, the subagent call and how to start a new chat. Commands and guides point to it instead of carrying per-assistant text.
 * **Command descriptions.** Each command's description now says to use it only when you run it, and every command skill sets `disable-model-invocation: true`. Codex doesn't read that setting, so its model can still see the commands; their descriptions tell it to wait for you.
 * **Shorter agent replies.** Agents keep chat replies short by default and present proposals, evidence and trade-offs instead of writing out their reasoning step by step. Logs, prompts and reports keep their full structure.
 * **Shorter instructions.** Commands, guides and skills are about 40% shorter, with the same roles, steps and approval points.
