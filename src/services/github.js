@@ -67,9 +67,12 @@ export async function fetchJSON(path) {
     const response = await client.get(path);
     return response.data;
   } catch (err) {
-    const reason = err.response?.status
-      ? `HTTP ${err.response.status}`
-      : err.message;
+    const status = err.response?.status;
+    let reason = status ? `HTTP ${status}` : err.message;
+    // GitHub allows 60 requests an hour without a token
+    if ((status === 403 || status === 429) && err.response.headers?.['x-ratelimit-remaining'] === '0') {
+      reason += '. GitHub\'s API rate limit is used up. Wait an hour, or set GITHUB_TOKEN or sign in with the gh CLI for a higher limit';
+    }
     const error = CLIError.networkError(`${GITHUB_API_BASE}${path}`, reason);
     error.status = err.response?.status;
     throw error;
