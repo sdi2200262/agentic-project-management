@@ -23,7 +23,7 @@
       "name": "Codex CLI",
       "bundleName": "codex.zip",
       "format": "markdown",
-      "configDir": ".codex",
+      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -35,7 +35,7 @@
       "name": "Cursor",
       "bundleName": "cursor.zip",
       "format": "markdown",
-      "configDir": ".cursor",
+      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -47,7 +47,7 @@
       "name": "GitHub Copilot",
       "bundleName": "copilot.zip",
       "format": "markdown",
-      "configDir": ".github",
+      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -71,7 +71,7 @@
       "name": "OpenCode",
       "bundleName": "opencode.zip",
       "format": "markdown",
-      "configDir": ".opencode",
+      "configDir": ".agents",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
