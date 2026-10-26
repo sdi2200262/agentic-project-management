@@ -227,7 +227,7 @@ Recovery rebuilds an initiated Manager/Worker's context after compaction or conv
 
 **Runtime:** `apm-8-summarize-session` and `guides/context-gathering.md`.
 
-A summarization agent may create `.apm/session-summary.md` at any session state. It records scope, outcomes, deliverables, findings, issues and verified codebase/artifact differences as a dated snapshot, and marks which parts are first-hand and which are reconstructed from artifacts. At project completion, the Manager offers to run the summary in its own chat or to have the User run this command skill in a new chat; elsewhere it runs in a new chat. It offers optional archival, which is also directly available through the CLI.
+A summarization agent may create `.apm/session-summary.md` at any session state. It records scope, outcomes, deliverables, findings, issues and verified codebase/artifact differences as a dated snapshot, and says which parts the writer remembers doing and which come from files. At project completion, the Manager offers to run the summary in its own chat or to have the User run this command skill in a new chat; elsewhere it runs in a new chat. It offers optional archival, which is also directly available through the CLI.
 
 With User approval, archival snapshots all `.apm/` except `archives/` into `.apm/archives/<name>/`, then removes active files, templates and metadata while preserving archives. Default names are `session-YYYY-MM-DD-NNN`; custom names are supported. Archive `metadata.json` is the canonical marker and contains installation metadata plus archival time. The optional session summary accompanies the raw artifacts. The summarizer creates/repairs the archive index and adds date, scope, Stage/Task counts and name.
 
