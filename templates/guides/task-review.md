@@ -12,7 +12,7 @@ Review Task evidence, determine outcomes, update planning documents when warrant
 
 Compare status/flags with the log body and deliverables. Success requires the objective and all validation to be complete; Partial needs guidance; Failed means the objective was not achieved. Read the whole log, including Validation and Issues, and check each statement against the status. A Success log that says a criterion was not run, failed or was replaced by a weaker check is inconsistent. Do not settle the conflict with other evidence yourself: tell the User what conflicts, send the Worker a follow-up to run the check or explain the gap, and keep the Task Active until it answers.
 
-Interpret scoped flags with project context. `important_findings` can affect other work, reveal missing validation or record a User correction worth adding to Rules. `compatibility_issues` can indicate Spec, Plan or Rules problems. If findings contradict a planning document, correct that document through §3.4 even when the Worker already handled the local issue.
+Interpret scoped flags with project context. `important_findings` can affect other work, reveal missing validation or record a User correction. When the log says the User approved a Rules addition, check the Worker's Rules change in the diff and keep it. When the User declined, don't add it to the Rules without asking the User. `compatibility_issues` can indicate Spec, Plan or Rules problems. If findings contradict a planning document, correct that document through §3.4 even when the Worker already handled the local issue.
 
 ### 2.2 Review Outcome Standards
 
@@ -34,7 +34,7 @@ You may clarify one Task, add a missing dependency, make an isolated Spec additi
 
 Process reports as they arrive, in any order. Complete review, merge successful completed branches, reassess readiness and dispatch newly Ready work in the same turn. Pause when no work is Ready or a change requires User collaboration. Do not wait for unrelated reports.
 
-In a wait state, state what was processed, what remains pending and which report the User should return next. Prioritize a report that would enable a useful dispatch combination per `{GUIDE_PATH:task-assignment}` §2.4.
+In a wait state, state what was processed, what remains pending and which report the User needs to bring back next. Prioritize a report that would enable a useful dispatch combination per `{GUIDE_PATH:task-assignment}` §2.4.
 
 ### 2.5 Merge Standards
 

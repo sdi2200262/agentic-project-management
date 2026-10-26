@@ -46,7 +46,7 @@ Every assistant now installs the same commands, guides and communication skill. 
   * The Planner scans the workspace itself, then uses subagents for broader research and checks their findings before relying on them.
   * The Planner waits for your reply after each Context Gathering round, and asks for each planning approval even after you say to skip reviews or run straight through during implementation.
   * The Manager asks the Worker about a Task Log that contradicts its own status before accepting it.
-  * A Worker you corrected asks whether to add the correction to the Rules file, and records your approval in its Task Log.
+  * A Worker you corrected asks, before writing its Task Log, whether to add the correction to the Rules file. It records your answer in the log and commits an approved Rules change with the Task.
   * An outgoing agent checks git and the Message Bus before writing a handoff, and the incoming agent checks what the handoff says before acting on it.
   * Agents give you the project reason for a step instead of citing APM's own procedures.
 * **The Manager merges after review.** A Task's branch is merged only after its Task Log has been reviewed. Before, one step merged it while the report was still being processed.

@@ -26,6 +26,8 @@ Runtime instructions address the reading agent as “you”; use third person fo
 
 Use numbered steps for ordered actions and lists for independent items. State the trigger, prerequisites, decisions, actions and completion condition. Include response handling whenever the agent must pause for the User: what approval allows, how corrections are applied, and when to ask again.
 
+Write actions as imperatives. Use “must” only for hard requirements on artifacts or conditions, where an imperative doesn't fit. Avoid “should”, which reads as optional.
+
 Use natural conditions with a clear action. When an action is required, say so directly and say when it applies; avoid qualifiers such as “substantial” or “when helpful” that leave a required step to the agent's judgement. State a default when it resolves a consequential edge case. Examples follow the workflow's validation and authority rules.
 
 Give a rule's reason when it helps the reader apply it correctly. Keep examples for non-obvious cases. Describe ordinary sequential transitions naturally; use section references for navigation and non-sequential jumps.

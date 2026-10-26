@@ -56,7 +56,7 @@ If archives were confirmed relevant during initiation, use a subagent to examine
 
 Verify consequential findings against current code before using them in the rounds.
 
-Explore all codebases relevant to the project before the rounds, not just selected ones. Use §2.5 Exploration and Research Standards. Present findings with the opening Round 1 questions or confirmations, keeping them relevant to what the User must answer.
+Explore all codebases relevant to the project before the rounds, not just selected ones. Use §2.5 Exploration and Research Standards. Present findings with the opening Round 1 questions or confirmations, keeping them relevant to what the User needs to answer.
 
 If a Rules file exists, present its contents, explain that Work Breakdown will add an APM_RULES block while preserving and referencing existing content, and ask whether the User wants changes to that existing content. If absent, address its creation in Round 1.
 
@@ -113,7 +113,7 @@ Confirm settled topics and resolve remaining gaps before the final summary.
 
 ### 4.1 Understanding Summary Format
 
-Use Markdown suited to the project. The User must be able to assess whether you understand it, with enough detail to catch errors.
+Use Markdown suited to the project. Give the User enough detail to judge whether you understand the project and to catch errors.
 
 Cover relevant requirements, deliverables and success criteria; design decisions and reasons; scope and constraints; observed domains, dependencies and complexity; environments, resources and access; process, quality and approval needs; execution conventions and existing Rules; and coordination/version control preferences that surfaced as observations.
 

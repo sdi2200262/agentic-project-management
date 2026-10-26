@@ -28,7 +28,7 @@ Verify findings before applying a fix. If investigation remains unresolved, pref
 
 ### 2.4 Rules Updates
 
-A User correction is any instruction from the User that changes how you work, such as which data to use, what to check or how to name things. Apply it immediately without pausing to discuss Rules. At completion, record it under Important Findings with `important_findings: true`. Then, in your completion message, ask the User whether to add the correction to the Rules file so every Worker follows it. Ask every time the User corrected you during the Task; the User may decline, and report delivery does not wait for the answer. If the User approves, update the Rules file and note in the Task Log that the User approved the addition, so the Manager can see the approval.
+A User correction is any instruction from the User that changes how you work, such as which data to use, what to check or how to name things. Apply it immediately without pausing to discuss Rules. When the Task is done and before you write the Task Log, ask the User whether to add the correction to the Rules file so every Worker follows it, and wait for the answer. Ask every time the User corrected you during the Task. If the User approves, add it to the Rules file in your Task workspace and commit it with the Task, so it merges with your work after review. Record the correction and the User's answer under Important Findings with `important_findings: true`.
 
 ### 2.5 Version Control Standards
 
@@ -70,8 +70,9 @@ Apply §2.3: investigate, make one targeted correction and revalidate. If unsucc
 
 ### 3.6 Task Completion
 
-1. Report the outcome, deliverables, validation and consequential findings or limits. Select status per `{GUIDE_PATH:task-logging}` §2.2. If the User corrected you during the Task, include the Rules question per §2.4.
-2. Commit work per §2.5 when version control is active.
-3. Write the log at `log_path` per `{GUIDE_PATH:task-logging}` §3.1.
-4. Deliver the report per that guide's §3.2. In the first report after Handoff, give the instance number, specific logs loaded and note previous-Stage logs were not loaded. After recovery, record it in the report.
-5. State readiness for the next Task via `apm-4-check-tasks` without an argument. Await delivery or Handoff.
+1. Report the outcome, deliverables, validation and consequential findings or limits. Select status per `{GUIDE_PATH:task-logging}` §2.2.
+2. If the User corrected you during the Task, ask the Rules question per §2.4 and wait for the answer.
+3. Commit work per §2.5 when version control is active.
+4. Write the log at `log_path` per `{GUIDE_PATH:task-logging}` §3.1.
+5. Deliver the report per that guide's §3.2. In the first report after Handoff, give the instance number, specific logs loaded and note previous-Stage logs were not loaded. After recovery, record it in the report.
+6. State readiness for the next Task via `apm-4-check-tasks` without an argument. Await delivery or Handoff.

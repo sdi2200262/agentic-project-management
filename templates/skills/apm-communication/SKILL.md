@@ -31,7 +31,7 @@ Follow the User's requested length or level of detail when specified. Put substa
 
 Use a casually formal tone, concrete subjects and active verbs. Keep sentences to one main thought and related words together. Use short paragraphs, lists for steps/parallel items and tables for comparisons. Explain unfamiliar concepts and put consequential limits beside the claims they qualify. Before sending, check the opening and total reply length against the request and applicable ceiling.
 
-When the User must act, specify the command, target chat and argument or the artifact to review. Put commands to run in fenced blocks, and paths and values in inline code. Write the command the way the User's assistant runs it, and say how to start a new chat in that assistant. At a transition, give only the context and next action needed to continue.
+When the User needs to act, specify the command, target chat and argument or the artifact to review. Put commands to run in fenced blocks, and paths and values in inline code. Write the command the way the User's assistant runs it, and say how to start a new chat in that assistant. At a transition, give only the context and next action needed to continue.
 
 ### 2.2 Decisions and Evidence
 
