@@ -20,7 +20,7 @@ Before writing either artifact, check the current state yourself: read your Task
 
 Write the log’s narrative in past tense, recording actions, decisions and observations from this instance. Put current state and continuation in the Handoff Bus prompt. Include the bus path in the log and the log path in the prompt.
 
-Determine your instance number and the next one (current + 1). Write the log per §3 with completed work, approaches tried, established patterns and technical context not in Task Logs. Include completed steps for a mid-Task transfer. Mark reconstructed context per `{SKILL_PATH:apm-communication}` §3.
+Determine your instance number and the next one (current + 1). Write the log per §3 with completed work, approaches tried, established patterns and technical context not in Task Logs. Include completed steps for a mid-Task transfer. If your context was compacted or recovered in this conversation, say which parts of the log you rebuilt from a summary or from files rather than remember yourself, and name where they came from.
 
 ### 2.2 Handoff Prompt Creation
 

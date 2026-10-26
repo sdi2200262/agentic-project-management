@@ -20,7 +20,7 @@ Every assistant now installs the same commands, guides and communication skill. 
 
 ### Added
 
-* **Summarize and archive from the Manager.** When the project is complete, the Manager offers two ways to summarize and archive the session: in its own chat, or in a new chat with `apm-8-summarize-session`. Summaries say which parts the writer saw first-hand and which come from logs and earlier agents' handoffs.
+* **Summarize and archive from the Manager.** When the project is complete, the Manager offers two ways to summarize and archive the session: in its own chat, or in a new chat with `apm-8-summarize-session`. Summaries say which parts the writer remembers doing and which come from files such as Task Logs and Handoff Logs.
 
 ### Changed
 

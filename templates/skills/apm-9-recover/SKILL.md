@@ -13,5 +13,5 @@ Rebuild context after compaction or a cleared/lost conversation. Applies only to
 1. Determine role from the command argument, or infer it from conversation/initiation context. Ask the User if unknown.
 2. Reread `{SKILL_PATH:apm-2-initiate-manager}` or `{SKILL_PATH:apm-3-initiate-worker}` and every file it lists in §2: guides, skills and artifacts. Skip identity determination and the greeting.
 3. Reconstruct progress from those artifacts and the codebase. Ask focused User questions for gaps the files cannot resolve.
-4. Keep the same instance number. Record recovery in the Tracker for Managers or the next Task Report for Workers. What you rebuilt here is reconstructed context; mark it as such per `{SKILL_PATH:apm-communication}` §3 in any later Handoff or summary.
+4. Keep the same instance number. Record recovery in the Tracker for Managers or the next Task Report for Workers. In any later Handoff Log or summary, say that your work before this recovery was rebuilt from files, not remembered.
 5. Resume duties.

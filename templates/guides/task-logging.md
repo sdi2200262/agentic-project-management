@@ -39,7 +39,7 @@ Use the required sections to present the evidence needed for review. Distinguish
 
 1. Capture the completion outcome and evidence.
 2. Set `stage`, `task`, `title` and `agent` from the prompt; select status and flags per §2.
-3. Fill Summary, Details, Output, Validation and Issues per §4.1. Add Compatibility Concerns and Important Findings only when their flags are true. For a User correction, Important Findings states the correction and whether the User approved adding it to the Rules file. Note subagent usage when applicable.
+3. Fill Summary, Details, Output, Validation and Issues per §4.1. Add Compatibility Concerns and Important Findings only when their flags are true. For a User correction, Important Findings states the correction and whether the User approved adding it to the Rules file. If your context was compacted or recovered during the Task, say in Details which parts you rebuilt from files rather than remember yourself. Note subagent usage when applicable.
 4. Write to `log_path`. For a batch, do this after each Task, before the next begins.
 
 ### 3.2 Task Report Delivery

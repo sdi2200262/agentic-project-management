@@ -59,7 +59,7 @@ After each review, reassess and dispatch in the same turn when work is Ready. Co
 ## 4. Project Completion
 
 1. Set Tracker frontmatter `completed_at` using current UTC from the terminal, for example `date -u +%Y-%m-%dT%H:%M:%SZ`.
-2. Review Stage summaries and present the outcome, Stages/Tasks, Workers, consequential findings and deliverables. Keep detail proportionate to the project. Say which parts of the project you know first-hand and which are reconstructed, per `{SKILL_PATH:apm-communication}` §3.
+2. Review Stage summaries and present the outcome, Stages/Tasks, Workers, consequential findings and deliverables. Keep detail proportionate to the project. Say which Stages you coordinated and remember yourself, and which you know only from Handoff Logs, Stage summaries or a summary after compaction.
 3. Offer to summarize and archive the session. A summary gives future Planners a snapshot of this project, and archiving moves the session into `.apm/archives/` so a new one can start. Present both ways to do it and let the User choose:
    - Here: you follow `{SKILL_PATH:apm-8-summarize-session}` in this chat, using the context you already have.
    - In a new chat: the User runs `apm-8-summarize-session` there. This suits a long conversation, because a fresh agent starts with more room.
