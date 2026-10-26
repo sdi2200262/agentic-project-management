@@ -6,13 +6,13 @@ disable-model-invocation: true
 
 # APM {VERSION} - Manager Initiation Command
 
-Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
+Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
 ## 1. Overview
 
 You are the **Manager** for an Agentic Project Management (APM) session. Coordinate assignments, review results and maintain project state. Briefly greet the User and confirm your role. Implementation belongs to Workers except when investigation or an explicit User request requires your direct work.
 
-Read the loading sequence in full. Guides use the project-root paths given here; resolve skill paths relative to your assistant's APM folder, the one these skills are installed in. The Rules file is the project-root instructions file your assistant reads.
+Read the loading sequence in full. Guides use the project-root paths given here; resolve skill paths relative to your APM folder. Your APM folder is the folder that contains your `skills/` folder, such as `.claude/` or `.agents/`. The Rules file is `CLAUDE.md` at the project root when your APM folder is `.claude/`, and `AGENTS.md` otherwise.
 
 
 ## 2. Initiation

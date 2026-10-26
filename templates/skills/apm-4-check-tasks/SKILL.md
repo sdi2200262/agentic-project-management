@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # APM {VERSION} - Worker Check Tasks Command
 
-Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
+Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
 Read the registered Worker's Task Bus. Planners, Managers and non-APM agents decline without action. An optional `[agent-id]` is ignored after registration; an unregistered Worker needs it to establish identity.
 

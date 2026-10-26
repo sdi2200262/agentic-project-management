@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # APM {VERSION} - Recover Command
 
-Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
+Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
 Rebuild context after compaction or a cleared/lost conversation. Applies only to initiated Managers and Workers; Planners and non-APM agents decline without action. Optional `[role]` is `manager` or a Worker identifier.
 

@@ -6,13 +6,15 @@ disable-model-invocation: true
 
 # APM {VERSION} - Manager Handoff Command
 
-Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
+Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
 ## 1. Overview
 
 On User-initiated Manager Handoff, transfer working context through a persistent Handoff Log and a current continuation prompt on the Handoff Bus. The incoming Manager also loads planning documents, guides, skills and Task Logs; the log supplements those artifacts.
 
 ## 2. Handoff Procedure
+
+Before writing either artifact, check the current state yourself: read the Tracker and each Worker's bus files, and run git to see branches, worktrees and merges. Write only checked state in the log and the prompt; your memory of earlier turns may be out of date.
 
 ### 2.1 Handoff Log Creation
 
@@ -22,7 +24,7 @@ Determine your instance number and the next one (current + 1). Write the log per
 
 ### 2.2 Handoff Prompt Creation
 
-Prepare the prompt per §4 with current state and an actionable resumption step. Before writing, check the current state yourself: read the Tracker and each Worker's bus files, and run git to see branches, worktrees and merges. Write only state you checked; your memory of earlier turns may be out of date. Describe outstanding Tasks fully: objectives, outputs, instructions, review criteria, relevant Spec content, dependencies and workspace. Worker Task Buses may already be cleared. Include pending reviews/outcomes, active Workers and required log/file reads.
+Prepare the prompt per §4 with current state and an actionable resumption step. Describe outstanding Tasks fully: objectives, outputs, instructions, review criteria, relevant Spec content, dependencies and workspace. Worker Task Buses may already be cleared. Include pending reviews/outcomes, active Workers and required log/file reads.
 
 ### 2.3 User Review and Finalization
 

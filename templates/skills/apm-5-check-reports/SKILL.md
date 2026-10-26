@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # APM {VERSION} - Manager Check Reports Command
 
-Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
+Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
 Read pending Report Buses as Manager. Planners, Workers and non-APM agents decline without action. Optional `[agent-id ...]` arguments select Workers; without them, scan all buses and check for unexpected content beyond active dispatches.
 

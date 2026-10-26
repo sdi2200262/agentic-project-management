@@ -10,7 +10,7 @@ All assistants receive identical instructions in plain English. Each agent carri
 
 Roles are scoped through instructions, not file permissions. The Planner gathers project context and plans; the Manager holds coordination context; Workers use self-contained Task Prompts, Rules and accumulated working context. Workers do not read Spec, Plan, Tracker or Index. The Manager embeds relevant coordination content in assignments. Explicit User requests may extend Worker scope.
 
-Agents use subagents for focused work, with read-only access for research and execution access for debugging. Delegation instructions state the condition, required action, inputs and findings, and refer to the `apm-communication` shared skill’s §5 for the call. Spawning agents verify and integrate findings; Workers record subagent usage in Task Logs.
+Agents use subagents for focused work, with read-only access for research and execution access for debugging. Delegation instructions state the condition, required action, inputs and findings, in plain English; each agent makes the call with its own assistant's tools. Spawning agents verify and integrate findings; Workers record subagent usage in Task Logs.
 
 ## 2. Phases
 

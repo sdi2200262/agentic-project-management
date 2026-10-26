@@ -47,7 +47,7 @@ Write rules conditionally on the work being done. All Workers read the whole Rul
 
 ## 3. Work Breakdown Procedure
 
-For each document, present the proposal and material choices before writing. Read the target file to preserve its existing state, then write it. After writing, request review and approval, explaining what comes next. Corrections repeat that document's review; do not begin the next until approved. Ask for each approval even when the User has said to skip reviews or to run straight through: those instructions apply to implementation, not to planning. Skip a document's approval only when the User says to skip that approval.
+For each document, present the proposal and material choices before writing. Read the target file to preserve its existing state, then write it. After writing, request review and approval, explaining what comes next. Corrections repeat that document's review; do not begin the next until approved.
 
 ### 3.1 Spec Proposal
 

@@ -9,7 +9,7 @@ description: Agent communication standards and file-based Message Bus protocol f
 
 **Reading agents:** Planner, Manager, Worker
 
-Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Guide paths start at the project root; skill paths are relative to your assistant's APM folder. Guides are in `.agents/apm-guides/` for every assistant. Use your assistant's own way to run commands, spawn subagents and start new chats. When you use a subagent for research, tell it to read files and run checks without changing anything. A subagent used for debugging may change files to test fixes.
+Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Use your assistant's own way to run commands, spawn subagents and start new chats. When you use a subagent for research, tell it to read files and run checks without changing anything. A subagent used for debugging may change files to test fixes.
 
 Non-APM agents can use the bus without joining the full workflow. See `bus-integration.md` alongside this skill.
 
@@ -40,6 +40,8 @@ Present the decision or proposal first, then the evidence, material trade-offs a
 Questions name the understanding or gap and ask for a focused answer or correction. Proposals state the intended result and any approval needed. Progress updates communicate a meaningful change or blocker. Completion reports lead with the outcome, then deliverables, validation, limits and any required action. Reviews connect findings to evidence and the next step.
 
 A proposal does not replace a required approval. Pause at the gates defined by the relevant procedure, incorporate corrections, and obtain approval before proceeding.
+
+Give the User the project reason for what you do or ask, such as a risk, a dependency or what later work needs. Don't cite APM guides, procedures or rules to the User as the reason.
 
 ### 2.3 Terminology Boundaries
 

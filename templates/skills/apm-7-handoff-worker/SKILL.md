@@ -6,13 +6,15 @@ disable-model-invocation: true
 
 # APM {VERSION} - Worker Handoff Command
 
-Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
+Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
 ## 1. Overview
 
 On User-initiated Worker Handoff, write a persistent Handoff Log and a current continuation prompt on the Handoff Bus. The successor loads these and its own current-Stage Task Logs. Its first report must identify the new instance and loaded logs so the Manager can adjust future dependency context.
 
 ## 2. Handoff Procedure
+
+Before writing either artifact, check the current state yourself: read your Task Bus and Report Bus files, and run git to see your branch, its commits and whether the Manager has merged it. Write only checked state in the log and the prompt; your memory of earlier turns may be out of date.
 
 ### 2.1 Handoff Log Creation
 
@@ -22,7 +24,7 @@ Determine your instance number and the next one (current + 1). Write the log per
 
 ### 2.2 Handoff Prompt Creation
 
-Write current state and concrete continuation instructions per §4. Before writing, check the current state yourself: read your Task Bus and Report Bus files, and run git to see your branch, its commits and whether the Manager has merged it. Write only state you checked; your memory of earlier turns may be out of date.
+Write current state and concrete continuation instructions per §4.
 
 - Mid-Task: the original prompt remains in Task Bus. Identify completed work and where to resume; direct the successor to read it.
 - Mid-batch: the envelope remains in Task Bus. Identify each completed/logged Task, current progress and unstarted work, with the exact continuation point.

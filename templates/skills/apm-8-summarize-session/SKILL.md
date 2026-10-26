@@ -6,11 +6,11 @@ disable-model-invocation: true
 
 # APM {VERSION} - Summarize Session Command
 
-Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
+Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
 Summarize the session and optionally archive it. Run in a new chat, or as the active Manager after project completion when the User chooses to summarize there. Other Planners, Managers and Workers decline without action.
 
-Read `{SKILL_PATH:apm-communication}` for communication and your assistant's native calls/invocations.
+Read `{SKILL_PATH:apm-communication}`. Skill paths are relative to your APM folder, the folder that contains your `skills/` folder, such as `.claude/` or `.agents/`.
 
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Read the Task Logs referenced for claims that need verification; the subagent in the next step reviews the full log set.
 2. Use a subagent to check all `.apm/` artifacts, including Task Logs, against the codebase. Ask it to verify deliverables, expected commits/branches and key validation results, and return Stage outcomes, stale artifact/code differences and consequential findings. Verify critical claims against the referenced sources.

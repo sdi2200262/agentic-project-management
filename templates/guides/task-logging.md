@@ -48,7 +48,7 @@ After the single Task or the entire batch finishes/stops:
 
 1. Clear `.apm/bus/<agent-slug>/task.md` via terminal.
 2. Read and write `.apm/bus/<agent-slug>/report.md` with the outcome, status, log path and flags per §4.2, or one batch report per §4.3. Keep detail in the logs.
-3. Direct the User to the Manager with both `apm-5-check-reports <agent-id>` for targeted delivery and `apm-5-check-reports` for multiple concurrent results. Use the assistant's invocation from the communication skill.
+3. Direct the User to the Manager with both `apm-5-check-reports <agent-id>` for targeted delivery and `apm-5-check-reports` for multiple concurrent results. Write each command the way the User runs it in their assistant.
 
 ## 4. Structural Specifications
 

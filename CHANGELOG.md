@@ -27,7 +27,7 @@ Every assistant now installs the same commands, guides and communication skill. 
 * **One layout for every assistant.** Guides install to `.agents/apm-guides/` for every assistant, Claude Code included. Claude Code installs skills to `.claude/skills/`. Codex, Cursor, Copilot, Antigravity and OpenCode share `.agents/skills/`.
 * **No custom subagent.** The `apm-archive-explorer` agent is gone. Agents explore archives, research and debug with whichever subagent their assistant offers, and `apm update` removes the old agent file.
 * **Plain-English instructions.** Commands, guides and skills describe each action in plain English, such as "use a subagent to research…" or "run this command in a new chat", and each assistant carries it out with its own tools. They no longer carry per-assistant syntax.
-* **Commands run only when you invoke them.** Each command's description says to use it only when you invoke it manually, and each command starts by telling an agent that you didn't invoke it to stop. Every command skill also sets `disable-model-invocation: true`. Codex doesn't read that setting, so its model can still see the commands.
+* **Commands run only when you invoke them.** Each command's description says to use it only when you invoke it manually, and each command tells an agent to continue only if you invoked it, asked it to follow it, or another APM step sent it there. Every command skill also sets `disable-model-invocation: true`. Codex doesn't read that setting, so its model can still see the commands.
 * **Shorter agent replies.** Agents keep chat replies short by default and present proposals, evidence and trade-offs instead of writing out their reasoning step by step. Logs, prompts and reports keep their full structure.
 * **Shorter instructions.** Commands, guides and skills are about 40% shorter, with the same roles, steps and approval points.
 * **Faster Context Gathering.** All three rounds remain. The Planner can present what it already knows as statements for you to confirm or correct, and asks questions only about what is missing.
@@ -36,18 +36,19 @@ Every assistant now installs the same commands, guides and communication skill. 
 * **Consistent assistant names.** Every command shows assistants as name and id, such as "Codex CLI (codex)".
 * **Failed commands exit with an error status.** Any command that prints an error, such as for an unknown `-a` id, now exits with status 1.
 * **Smaller release manifest.** `apm-release.json` no longer lists a description for each assistant. It keeps each assistant's folder (`configDir`) in v1.1.x only, so CLI v1.0.2 can read the manifest and tell you to update; the next minor release drops it. CLI v1.0.3 accepts manifests with or without these fields.
-* **The CLI checks the required version first.** CLI v1.0.3 reads `minCliVersion` before it validates the rest of the manifest, so a release made for a newer CLI asks you to update instead of reporting an invalid manifest.
+* **The CLI checks the required version first.** CLI v1.0.3 reads `minCliVersion` before it validates the rest of the manifest, so a release made for a newer CLI asks you to update instead of reporting an invalid manifest. A `minCliVersion` that isn't a version such as `1.0.3` is reported as invalid instead of being ignored.
 * **No overwrite warning on remove.** Assistants now install identical shared files, so `apm remove` no longer warns that one assistant overwrote another's files.
 * **Rate-limit errors explained.** When GitHub's API limit runs out, the error says so and suggests `GITHUB_TOKEN` or signing in with the `gh` CLI.
 
 ### Fixed
 
 * **Required steps are stated directly.** Agents often skipped these steps in v1.0.3 as well, so each instruction now says what to do and when:
-  * The Planner uses a subagent to research the codebase.
-  * The Planner asks for each planning approval, even after you say to skip reviews or run straight through during implementation.
+  * The Planner scans the workspace itself, then uses subagents for broader research and checks their findings before relying on them.
+  * The Planner waits for your reply after each Context Gathering round, and asks for each planning approval even after you say to skip reviews or run straight through during implementation.
   * The Manager asks the Worker about a Task Log that contradicts its own status before accepting it.
   * A Worker you corrected asks whether to add the correction to the Rules file, and records your approval in its Task Log.
   * An outgoing agent checks git and the Message Bus before writing a handoff, and the incoming agent checks what the handoff says before acting on it.
+  * Agents give you the project reason for a step instead of citing APM's own procedures.
 * **The Manager merges after review.** A Task's branch is merged only after its Task Log has been reviewed. Before, one step merged it while the report was still being processed.
 * **Codex and Antigravity no longer overwrite each other's skills.** Both now install identical files to `.agents/skills/`, so installing, updating or removing one leaves the other's instructions intact. This resolves the Templates v1.0.3 known issue. Run `apm update` to apply the fix.
 

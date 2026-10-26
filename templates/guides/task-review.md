@@ -16,7 +16,7 @@ Interpret scoped flags with project context. `important_findings` can affect oth
 
 ### 2.2 Review Outcome Standards
 
-Accept a supported Success with no flags. Investigate flags, non-Success or inconsistency before deciding. Check contained issues directly. For context-intensive or unclear issues, use a subagent to investigate. Give it the investigation goal, files to examine and required findings. Verify critical claims against source.
+Accept a supported Success with no flags. Investigate flags and non-Success outcomes before deciding. A Success log that contradicts its own validation is not yours to resolve: follow §2.1 and wait for the Worker's answer, even if other evidence looks sufficient. Check contained issues directly. For context-intensive or unclear issues, use a subagent to investigate. Give it the investigation goal, files to examine and required findings. Verify critical claims against source.
 
 After investigation, proceed if nothing actionable remains, send a refined follow-up if retry is needed, or modify planning documents when their content is wrong. Note uncommitted changes in a non-Success follow-up. For successful work left uncommitted, commit on the Worker's branch using Rules conventions; no follow-up is needed for that alone.
 
@@ -83,7 +83,7 @@ Read the referenced Task Log and apply §2.1. Explain the material findings, con
 ### 3.3 Review Outcome
 
 1. Assess deliverables against objectives and validation per §2.2. Commit successful uncommitted work when needed.
-2. Investigate issues. Proceed if resolved, construct a follow-up per `{GUIDE_PATH:task-assignment}` §3.4, or apply §3.4 below for document changes.
+2. Investigate issues; for a Success log that contradicts its own validation, follow §2.1 instead. Proceed if resolved, construct a follow-up per `{GUIDE_PATH:task-assignment}` §3.4, or apply §3.4 below for document changes.
 3. Update the Tracker per §4.1 after review/decisions. Keep unresolved work Active and mark terminal outcomes Done. Merge per §2.5 before reassessing dependencies. Update readiness, branch state and working notes; batch review/dispatch changes into one Tracker edit.
 4. If the Stage is Done and merged, collapse its tracking and continue to §3.5. Otherwise dispatch Ready Tasks in the same turn per `{GUIDE_PATH:task-assignment}` §3.1, or state the wait condition and next report needed.
 
