@@ -181,8 +181,14 @@ export async function fetchReleaseManifest(release) {
 
   // Check minCliVersion first: a release made for a newer CLI may have a manifest this CLI
   // can't validate, and "update the CLI" is the useful message in that case.
-  if (typeof manifest?.minCliVersion === 'string' && compareVersions(CLI_VERSION, manifest.minCliVersion) < 0) {
-    throw CLIError.cliTooOld(release.tag_name, manifest.minCliVersion);
+  if (typeof manifest?.minCliVersion === 'string') {
+    // An unparseable version would compare as equal and pass silently.
+    if (!parseVersion(manifest.minCliVersion)) {
+      throw CLIError.manifestInvalid(release.tag_name, [`minCliVersion: "${manifest.minCliVersion}" is not a version such as 1.0.3`]);
+    }
+    if (compareVersions(CLI_VERSION, manifest.minCliVersion) < 0) {
+      throw CLIError.cliTooOld(release.tag_name, manifest.minCliVersion);
+    }
   }
 
   const validation = validateReleaseManifest(manifest);
