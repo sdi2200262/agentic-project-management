@@ -51,7 +51,7 @@ The [documentation](https://agentic-project-management.dev) covers the three age
 |---------|-------------|
 | `apm init` | Install an official release |
 | `apm custom` | Install from a custom repository |
-| `apm update` | Update to the latest compatible release |
+| `apm update` | Update to the newest stable release (from a pre-release, choose stable or pre-release) |
 | `apm archive` | Archive a session or manage archives |
 | `apm add` / `apm remove` | Add or remove assistants |
 | `apm status` | Show installation state |

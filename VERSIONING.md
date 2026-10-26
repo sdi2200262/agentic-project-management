@@ -32,7 +32,7 @@ The `build/` directory, CI/CD workflows, and configuration files are not version
 
 The CLI and template releases are decoupled but tied by **major version**. CLI v1.x will only fetch v1.x.x releases from the official repository, ensuring template compatibility. Minor and patch versions can differ between CLI and templates.
 
-A template release can also require a minimum CLI version: set `build.minCliVersion` in `build/build-config.json`, and the build writes it to the release's `apm-release.json`. From CLI v1.0.2 on, the CLI refuses such a release and asks the user to update the CLI. Earlier CLIs ignore the field, so only a major version bump keeps them away from an incompatible release.
+A template release can also require a minimum CLI version: set `build.minCliVersion` in `build/build-config.json`, and the build writes it to the release's `apm-release.json`. From CLI v1.0.3 on, the CLI checks this field first and refuses a release that needs a newer CLI, asking the user to update. CLI v1.0.2 does the same only when the rest of the manifest passes its own checks; otherwise it reports an invalid manifest. Earlier CLIs ignore the field, so only a major version bump keeps them away from an incompatible release.
 
 ## `agentic-pm` CLI Behavior
 
@@ -46,7 +46,7 @@ By default, `apm init` fetches the latest stable release matching the CLI's majo
 
 ### Updating Templates (`apm update`)
 
-For official installs, `apm update` fetches the latest compatible release. For custom installs, `apm update` fetches newer releases from the same custom repository.
+For official installs, `apm update` moves to the newest stable release; from a stable install it never offers a pre-release. To try a pre-release, install it with `apm init --tag <tag>`. From a pre-release install, `apm update` offers the latest stable and the latest pre-release. For custom installs, `apm update` fetches newer releases from the same custom repository.
 
 ## Metadata Tracking
 
