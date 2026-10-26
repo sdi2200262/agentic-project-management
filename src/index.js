@@ -46,7 +46,7 @@ function displayHelp() {
   console.log(chalk.cyan.bold('Commands:'));
   console.log(`  ${chalk.bold('init')}              Initialize APM with official releases`);
   console.log(`  ${chalk.bold('custom')}            Install from a custom repository`);
-  console.log(`  ${chalk.bold('update')}            Update installed assistant templates`);
+  console.log(`  ${chalk.bold('update')}            Update templates to the newest stable release`);
   console.log(`  ${chalk.bold('archive')}           Archive the current session or manage archives`);
   console.log(`  ${chalk.bold('add')}               Add assistant(s) to existing installation`);
   console.log(`  ${chalk.bold('remove')}            Remove assistant(s) from installation`);
@@ -166,7 +166,7 @@ program
 
 program
   .command('update')
-  .description('Update installed assistant templates')
+  .description('Update templates to the newest stable release')
   .option('-f, --force', 'Skip destructive action confirmations')
   .option('-n, --name <name>', 'Custom archive name')
   .action(async (options) => {
