@@ -18,7 +18,10 @@ export function generateReleaseManifest(config, version) {
     const entry = {
       id: target.id,
       name: target.name,
-      bundle: target.bundleName
+      bundle: target.bundleName,
+      // Kept for v1.1.x only: CLI 1.0.2 rejects a manifest without configDir before it reads
+      // minCliVersion. Remove in the next minor template release.
+      configDir: target.directories.skills.split('/')[0]
     };
     if (target.postInstallNote) {
       entry.postInstallNote = target.postInstallNote;

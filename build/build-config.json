@@ -2,7 +2,8 @@
   "build": {
     "sourceDir": "templates",
     "outputDir": "dist",
-    "cleanOutput": true
+    "cleanOutput": true,
+    "minCliVersion": "1.0.3"
   },
   "targets": [
     {
