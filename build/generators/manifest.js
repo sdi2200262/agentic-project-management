@@ -32,6 +32,10 @@ export function generateReleaseManifest(config, version) {
   const manifest = { version, assistants };
   // Optional: CLI versions older than this refuse the release (only CLI v1.0.2 and later read it)
   if (config.build?.minCliVersion) {
+    // CLI 1.0.2 ignores a version it can't parse, so fail the build instead
+    if (!/^\d+\.\d+\.\d+$/.test(config.build.minCliVersion)) {
+      throw new Error(`build.minCliVersion "${config.build.minCliVersion}" must be a version such as 1.0.3`);
+    }
     manifest.minCliVersion = config.build.minCliVersion;
   }
   return manifest;
