@@ -1,10 +1,12 @@
 ---
 name: apm-6-handoff-manager
-description: Perform a Handoff with an APM Manager. Use only when the User runs this command.
+description: Perform a Handoff with an APM Manager. Use only when the User manually invokes this skill.
 disable-model-invocation: true
 ---
 
 # APM {VERSION} - Manager Handoff Command
+
+Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
 
 ## 1. Overview
 
@@ -20,7 +22,7 @@ Determine your instance number and the next one (current + 1). Write the log per
 
 ### 2.2 Handoff Prompt Creation
 
-Prepare the prompt per §4 with current state and an actionable resumption step. Describe outstanding Tasks fully: objectives, outputs, instructions, review criteria, relevant Spec content, dependencies and workspace. Worker Task Buses may already be cleared. Include pending reviews/outcomes, active Workers and required log/file reads.
+Prepare the prompt per §4 with current state and an actionable resumption step. Before writing, check the current state yourself: read the Tracker and each Worker's bus files, and run git to see branches, worktrees and merges. Write only state you checked; your memory of earlier turns may be out of date. Describe outstanding Tasks fully: objectives, outputs, instructions, review criteria, relevant Spec content, dependencies and workspace. Worker Task Buses may already be cleared. Include pending reviews/outcomes, active Workers and required log/file reads.
 
 ### 2.3 User Review and Finalization
 

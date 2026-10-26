@@ -83,7 +83,7 @@ APM uses a build system that processes source templates into platform-specific b
 - **Standalone skills:** Edit files in `skills/` for independently installable skills.
 - **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed. See the apm-website README for details.
 
-**Assistant differences:** Every assistant installs the same skills and guides. Placeholders in `build/processors/placeholders.js` resolve the same way for every assistant, and the build fails if the shared files differ between assistants. Put anything that differs per assistant, such as command prefixes or subagent calls, in §5 Assistant Reference of `templates/skills/apm-communication/SKILL.md`.
+**Assistant differences:** Every assistant installs the same skills and guides. Placeholders in `build/processors/placeholders.js` resolve the same way for every assistant, and the build fails if the shared files differ between assistants. Keep assistant-specific syntax, such as command prefixes or subagent calls, out of the templates: describe the action in plain English and let each assistant carry it out its own way.
 
 **Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected command skills, shared skills and guides. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
 

@@ -6,7 +6,7 @@ This specification defines APM's workflow for template authors. Runtime guides, 
 
 APM coordinates agents through planning documents, structured Memory and a file-based Message Bus. The User initiates agents, delivers messages by invoking command skills, approves decisions and initiates Handoffs. Agents never communicate directly.
 
-All assistants receive identical instructions. The `apm-communication` shared skill's §5 Assistant Reference supplies assistant-specific paths, command prefixes, arguments, subagent calls and new-chat steps.
+All assistants receive identical instructions in plain English. Each agent carries them out with its own assistant's commands, subagents and new-chat steps.
 
 Roles are scoped through instructions, not file permissions. The Planner gathers project context and plans; the Manager holds coordination context; Workers use self-contained Task Prompts, Rules and accumulated working context. Workers do not read Spec, Plan, Tracker or Index. The Manager embeds relevant coordination content in assignments. Explicit User requests may extend Worker scope.
 
@@ -64,7 +64,7 @@ User collaboration is required for changes affecting multiple Tasks, design dire
 
 User-facing messages lead with the answer, outcome, finding, proposal or question. They provide the evidence, material trade-offs, limits and action needed to proceed. Shared writing and reply-length defaults live in the `apm-communication` shared skill; procedures specify their own output content.
 
-When action is required, agents identify the command, target chat and arguments, using §5 Assistant Reference for invocation details. Commands to run use fenced blocks; paths and values use inline code. Artifacts and messages follow their defined schemas.
+When action is required, agents identify the command, target chat and arguments, and tell the User how to run it in their assistant. Commands to run use fenced blocks; paths and values use inline code. Artifacts and messages follow their defined schemas.
 
 ### 4.2 Message Bus
 
@@ -227,7 +227,7 @@ Recovery rebuilds an initiated Manager/Worker's context after compaction or conv
 
 **Runtime:** `apm-8-summarize-session` and `guides/context-gathering.md`.
 
-A standalone summarization agent may create `.apm/session-summary.md` at any session state. It records scope, outcomes, deliverables, findings, issues and verified codebase/artifact differences as a dated snapshot. The Manager recommends this command skill in a new chat at completion; it offers optional archival, which is also directly available through the CLI.
+A summarization agent may create `.apm/session-summary.md` at any session state. It records scope, outcomes, deliverables, findings, issues and verified codebase/artifact differences as a dated snapshot, and marks which parts are first-hand and which are reconstructed from artifacts. At project completion, the Manager offers to run the summary in its own chat or to have the User run this command skill in a new chat; elsewhere it runs in a new chat. It offers optional archival, which is also directly available through the CLI.
 
 With User approval, archival snapshots all `.apm/` except `archives/` into `.apm/archives/<name>/`, then removes active files, templates and metadata while preserving archives. Default names are `session-YYYY-MM-DD-NNN`; custom names are supported. Archive `metadata.json` is the canonical marker and contains installation metadata plus archival time. The optional session summary accompanies the raw artifacts. The summarizer creates/repairs the archive index and adds date, scope, Stage/Task counts and name.
 

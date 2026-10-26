@@ -9,7 +9,7 @@ description: Agent communication standards and file-based Message Bus protocol f
 
 **Reading agents:** Planner, Manager, Worker
 
-Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Guide paths start at the project root; skill paths are relative to your assistant's APM folder. Guides are in `.agents/apm-guides/` for every assistant. Use your assistant's own way to run commands, spawn subagents and start new chats. Tell research subagents to read files and run checks without modifying anything; debugging subagents may change files to test fixes.
+Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Guide paths start at the project root; skill paths are relative to your assistant's APM folder. Guides are in `.agents/apm-guides/` for every assistant. Use your assistant's own way to run commands, spawn subagents and start new chats. When you use a subagent for research, tell it to read files and run checks without changing anything. A subagent used for debugging may change files to test fixes.
 
 Non-APM agents can use the bus without joining the full workflow. See `bus-integration.md` alongside this skill.
 

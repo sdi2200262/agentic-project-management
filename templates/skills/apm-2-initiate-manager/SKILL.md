@@ -1,10 +1,12 @@
 ---
 name: apm-2-initiate-manager
-description: Initiate an APM Manager. Use only when the User runs this command.
+description: Initiate an APM Manager. Use only when the User manually invokes this skill.
 disable-model-invocation: true
 ---
 
 # APM {VERSION} - Manager Initiation Command
+
+Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
 
 ## 1. Overview
 
@@ -38,7 +40,7 @@ Read the loading sequence in full. Guides use the project-root paths given here;
 
 1. Summarize current state from Tracker and Index: completed/current Stages, issues and relevant notes.
 2. Read the Handoff Bus prompt.
-3. Resolve instance identity and load the Handoff Log and Task Logs it specifies.
+3. Resolve instance identity and load the Handoff Log and Task Logs it specifies. Check what they say about branches, merges, Worker buses and pending reviews against git, the Tracker and the bus files before acting on it. Where they differ, follow the current files and git.
 4. Clear the Handoff Bus after processing.
 5. Confirm the resumed state and next action, then continue coordination.
 
@@ -57,8 +59,12 @@ After each review, reassess and dispatch in the same turn when work is Ready. Co
 ## 4. Project Completion
 
 1. Set Tracker frontmatter `completed_at` using current UTC from the terminal, for example `date -u +%Y-%m-%dT%H:%M:%SZ`.
-2. Review Stage summaries and present the outcome, Stages/Tasks, Workers, consequential findings and deliverables. Keep detail proportionate to the project.
-3. Explain optional next steps. `apm-8-summarize-session` in a new chat creates a snapshot useful to future Planners and offers archival afterward. CLI `apm archive` snapshots `.apm/` into `.apm/archives/` and removes active files/templates; `--name <custom-name>` selects a name. CLI `apm init` begins a fresh session while retaining archives. Recommend summarization first if the User wants both.
+2. Review Stage summaries and present the outcome, Stages/Tasks, Workers, consequential findings and deliverables. Keep detail proportionate to the project. If you are not the first Manager instance, say which Stages you managed yourself and which you know only from Handoff Logs and Stage summaries.
+3. Offer to summarize and archive the session. A summary gives future Planners a snapshot of this project, and archiving moves the session into `.apm/archives/` so a new one can start. Present both ways to do it and let the User choose:
+   - Here: you follow `{SKILL_PATH:apm-8-summarize-session}` in this chat, using the context you already have.
+   - In a new chat: the User runs `apm-8-summarize-session` there. This suits a long conversation, because a fresh agent starts with more room.
+   The User can also skip both, or archive without a summary with CLI `apm archive`. CLI `apm init` then begins a fresh session while keeping archives.
+4. If the User chooses to summarize here, read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
 
 ## 5. Handoff Procedure
 

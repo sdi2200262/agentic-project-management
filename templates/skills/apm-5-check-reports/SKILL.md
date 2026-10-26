@@ -1,10 +1,12 @@
 ---
 name: apm-5-check-reports
-description: Deliver a Task Report to an APM Manager. Use only when the User runs this command.
+description: Deliver a Task Report to an APM Manager. Use only when the User manually invokes this skill.
 disable-model-invocation: true
 ---
 
 # APM {VERSION} - Manager Check Reports Command
+
+Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
 
 Read pending Report Buses as Manager. Planners, Workers and non-APM agents decline without action. Optional `[agent-id ...]` arguments select Workers; without them, scan all buses and check for unexpected content beyond active dispatches.
 

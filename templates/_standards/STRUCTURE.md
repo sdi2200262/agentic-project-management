@@ -14,7 +14,7 @@ Identify the reader, purpose and outputs near the beginning. Put prerequisites b
 | Guide | Reading role, operational rules, procedure and output formats as needed. |
 | Shared skill | Reading roles and purpose, followed by procedures and reference content. |
 
-Delegation instructions state when to use a subagent, its purpose, inputs and required findings. They refer to the `apm-communication` shared skill §5 Assistant Reference for the call. The reference remains the last section and supplies assistant-specific behavior for the shared text.
+Delegation instructions state when to use a subagent, its purpose, inputs and required findings, in plain English. Each agent makes the call with its own assistant's tools.
 
 ## 2. Source layout and frontmatter
 
@@ -31,13 +31,13 @@ Sources live under `templates/`:
 
 Names use kebab-case; each skill's `name` matches its directory. Descriptions briefly identify purpose and activation. YAML frontmatter begins on the first line between `---` delimiters, with valid field names, types and quoting.
 
-The build resolves placeholders and copies skills with their source frontmatter. All six assistants receive identical runtime text. Guides install at project-root `.agents/apm-guides/`; skills install under `skills/` in the assistant's APM folder. The Assistant Reference identifies that folder and invocation details. Shared prose refers to command skills by name.
+The build resolves placeholders and copies skills with their source frontmatter. All six assistants receive identical runtime text. Guides install at project-root `.agents/apm-guides/`; skills install under `skills/` in the assistant's APM folder. Each agent finds that folder as the one its skills are installed in. Shared prose refers to command skills by name.
 
 ## 3. Navigation and references
 
 Use one H1 title, H2 major sections and H3 subsections, adding deeper levels when needed. Number referenced sections as `## 1. Title` and `### 1.1 Title`. Keep numbers used by cross-references stable, or update every affected reference during reorganization. A reference such as `§3.2 Title` resolves to its intended section.
 
-Cross-file references use explicit paths or supported placeholders. Resolve guide paths from the project root and skill paths from the assistant's APM folder. Describe native actions through the Assistant Reference.
+Cross-file references use explicit paths or supported placeholders. Resolve guide paths from the project root and skill paths from the assistant's APM folder. Describe native actions in plain English.
 
 ## 4. Artifact contracts
 
@@ -60,4 +60,4 @@ Supported placeholders match `build/processors/placeholders.js` and resolve iden
 | `{SKILL_PATH:name}` | `skills/<name>/SKILL.md` |
 | `{GUIDE_PATH:name}` | `.agents/apm-guides/<name>.md` |
 
-Shared text uses “the Rules file” and “the command argument”; the Assistant Reference supplies their assistant-specific details. Validate references, artifact contracts, resolved placeholders and shared-file identity in all six generated bundles after changes.
+Shared text uses “the Rules file” and “the command argument”; each agent resolves them for its own assistant. Validate references, artifact contracts, resolved placeholders and shared-file identity in all six generated bundles after changes.

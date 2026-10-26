@@ -29,7 +29,7 @@ Formal terms are always capitalized and carry defined meaning. Use ordinary Engl
 
 ## 3. Planning Documents
 
-The Planner produces three documents in order: Spec (what to build), Plan (how work is organized), then Rules (how work is performed). Each requires User approval before proceeding. The Rules filename is given in the `apm-communication` shared skill’s §5 Assistant Reference.
+The Planner produces three documents in order: Spec (what to build), Plan (how work is organized), then Rules (how work is performed). Each requires User approval before proceeding. The Rules file is the project-root instructions file the assistant reads, such as `CLAUDE.md` or `AGENTS.md`.
 
 | Term | Definition | Location |
 | ------ | ------------ | ---------- |
@@ -148,7 +148,7 @@ These concepts guide workflow decisions. Their labels use ordinary English capit
 
 **Session archive.** A snapshot of a session's artifacts stored as a directory in `.apm/archives/` (default name `session-YYYY-MM-DD-NNN`, or a custom name). Contains all `.apm/` contents except `archives/`, including planning documents, Tracker, Memory, Message Bus files, metadata, and an optional session summary. The snapshot captures whatever state the session was in at archival time - completed, partial, or in-progress. The `metadata.json` file is the canonical archive marker.
 
-**Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command skill - not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
+**Session summary.** Optional artifact (`.apm/session-summary.md`) produced through the summarization command skill, by a new agent or, at project completion, by the active Manager if the User chooses. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, current codebase state including how deliverables relate to the `.apm/` artifacts, and which parts are first-hand or reconstructed. Can be produced at any point during a session, not only after completion.
 
 **Understanding summary.** A consolidated presentation of gathered context for User review and approval. The Planner presents one at the end of Context Gathering, covering requirements, design decisions, work structure signals, and technical context. The Manager presents one during first initiation, covering project scope, design decisions, and proposed version control conventions. Both serve as approval gates - the User reviews and approves before the agent proceeds.
 

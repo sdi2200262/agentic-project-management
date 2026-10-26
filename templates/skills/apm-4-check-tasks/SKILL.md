@@ -1,10 +1,12 @@
 ---
 name: apm-4-check-tasks
-description: Deliver a Task Prompt to an APM Worker. Use only when the User runs this command.
+description: Deliver a Task Prompt to an APM Worker. Use only when the User manually invokes this skill.
 disable-model-invocation: true
 ---
 
 # APM {VERSION} - Worker Check Tasks Command
+
+Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
 
 Read the registered Worker's Task Bus. Planners, Managers and non-APM agents decline without action. An optional `[agent-id]` is ignored after registration; an unregistered Worker needs it to establish identity.
 

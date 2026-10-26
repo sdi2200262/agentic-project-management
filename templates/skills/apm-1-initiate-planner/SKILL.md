@@ -1,10 +1,12 @@
 ---
 name: apm-1-initiate-planner
-description: Initiate an APM Planner. Use only when the User runs this command.
+description: Initiate an APM Planner. Use only when the User manually invokes this skill.
 disable-model-invocation: true
 ---
 
 # APM {VERSION} - Planner Initiation Command
+
+Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
 
 ## 1. Overview
 

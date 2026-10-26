@@ -10,7 +10,7 @@ Review Task evidence, determine outcomes, update planning documents when warrant
 
 ### 2.1 Task Log Review Standards
 
-Compare status/flags with the log body and deliverables. Success requires the objective and all validation to be complete; Partial needs guidance; Failed means the objective was not achieved. Inconsistent evidence requires investigation, even if the status says Success.
+Compare status/flags with the log body and deliverables. Success requires the objective and all validation to be complete; Partial needs guidance; Failed means the objective was not achieved. Read the whole log, including Validation and Issues, and check each statement against the status. A Success log that says a criterion was not run, failed or was replaced by a weaker check is inconsistent. Do not settle the conflict with other evidence yourself: tell the User what conflicts, send the Worker a follow-up to run the check or explain the gap, and keep the Task Active until it answers.
 
 Interpret scoped flags with project context. `important_findings` can affect other work, reveal missing validation or record a User correction worth adding to Rules. `compatibility_issues` can indicate Spec, Plan or Rules problems. If findings contradict a planning document, correct that document through §3.4 even when the Worker already handled the local issue.
 

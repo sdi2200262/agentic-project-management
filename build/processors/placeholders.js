@@ -14,8 +14,7 @@ const GUIDES_DIR = '.agents/apm-guides';
  *
  * Every assistant installs the same text, so placeholders resolve the same way for all targets.
  * Guides are in `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's
- * skills folder (`.claude/skills/` for Claude Code, `.agents/skills/` for the others); the communication
- * skill's Assistant Reference lists it and everything else that differs between assistants.
+ * skills folder (`.claude/skills/` for Claude Code, `.agents/skills/` for the others).
  *
  * Supported placeholders:
  * - {VERSION}: Package version

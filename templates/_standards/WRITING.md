@@ -26,7 +26,7 @@ Runtime instructions address the reading agent as “you”; use third person fo
 
 Use numbered steps for ordered actions and lists for independent items. State the trigger, prerequisites, decisions, actions and completion condition. Include response handling whenever the agent must pause for the User: what approval allows, how corrections are applied, and when to ask again.
 
-Use natural conditions with a clear action. State a default when it resolves a consequential edge case. Examples follow the workflow's validation and authority rules.
+Use natural conditions with a clear action. When an action is required, say so directly and say when it applies; avoid qualifiers such as “substantial” or “when helpful” that leave a required step to the agent's judgement. State a default when it resolves a consequential edge case. Examples follow the workflow's validation and authority rules.
 
 Give a rule's reason when it helps the reader apply it correctly. Keep examples for non-obvious cases. Describe ordinary sequential transitions naturally; use section references for navigation and non-sequential jumps.
 
@@ -53,9 +53,9 @@ Artifacts provide self-contained context for future readers. Follow their schema
 
 Use explicit file paths and section references where they help navigation. Repair references when headings or numbers change. Cross-file template references use supported build placeholders: `{SKILL_PATH:name}` and `{GUIDE_PATH:name}`.
 
-All six assistants receive identical template text. Refer to command skills by name. Assistant-specific paths, invocation syntax, argument handling, subagent calls and new-chat steps belong in the `apm-communication` shared skill §5 Assistant Reference. Shared prose refers to “the Rules file” and “the command argument”.
+All six assistants receive identical template text. Refer to command skills by name. Keep assistant-specific syntax out of templates: describe the action in plain English, such as “use a subagent to research…” or “run `apm-3-initiate-worker` in a new chat”, and let each agent use its own assistant's way of doing it. Name a subagent by its purpose, never by type. Shared prose refers to “the Rules file” and “the command argument”.
 
-Guide paths resolve from the project root to `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder. Use the reference table to resolve that folder and assistant-specific actions. Keep project artifact paths rooted at `.apm/` as their contracts require.
+Guide paths resolve from the project root to `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder, the one the skills are installed in. Keep project artifact paths rooted at `.apm/` as their contracts require.
 
 ## 6. Formatting
 

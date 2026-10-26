@@ -1,18 +1,20 @@
 ---
 name: apm-8-summarize-session
-description: Summarize and optionally archive an APM session. Use only when the User runs this command.
+description: Summarize and optionally archive an APM session. Use only when the User manually invokes this skill.
 disable-model-invocation: true
 ---
 
 # APM {VERSION} - Summarize Session Command
 
-Summarize the session and optionally archive it. Run as a standalone agent; Planners, Managers and Workers decline without action.
+Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
+
+Summarize the session and optionally archive it. Run in a new chat, or as the active Manager after project completion when the User chooses to summarize there. Other Planners, Managers and Workers decline without action.
 
 Read `{SKILL_PATH:apm-communication}` for communication and your assistant's native calls/invocations.
 
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Read the Task Logs referenced for claims that need verification; the subagent in the next step reviews the full log set.
 2. Use a subagent to check all `.apm/` artifacts, including Task Logs, against the codebase. Ask it to verify deliverables, expected commits/branches and key validation results, and return Stage outcomes, stale artifact/code differences and consequential findings. Verify critical claims against the referenced sources.
-3. Write `.apm/session-summary.md` using the format below. Ground claims in artifacts and verification; distinguish completed, partial and missing work and state the snapshot's date.
+3. Write `.apm/session-summary.md` using the format below. Ground claims in artifacts and verification; distinguish completed, partial and missing work and state the snapshot's date. Mark what you know first-hand and what you reconstructed from artifacts. As the active Manager, only the work of your own instance is first-hand; earlier Manager instances, Workers' reasoning and anything before your Handoff come from Handoff Logs, Stage summaries and Task Logs. In a new chat, everything is reconstructed from artifacts.
 4. Present the summary for review. Apply additions, corrections or emphasis the User requests before finalizing.
 5. Ask whether to archive. If declined, stop. If approved, ask for a custom name or the default dated name.
 6. Run `apm archive --force` or `apm archive --force --name <name>`. The CLI snapshots `.apm/` except `archives/` into `.apm/archives/<name>/`, adds archival metadata, and removes active session files, installed templates and active metadata while keeping archives.
@@ -51,6 +53,7 @@ outcome: <complete | partial | incomplete>
 - *Codebase State.* Compare the actual codebase against the planning artifacts: which planned deliverables exist as code, which are partial or missing, whether the code evolved past what the Spec and Plan describe, and any gaps between what was planned and what was implemented.
 - *Notable Findings:* Operational lessons and patterns - issues encountered and how they were resolved, self-corrections during execution, recovery events, coordination insights. Draw from Memory notes, working notes, and Task Logs.
 - *Known Issues:* Unresolved problems, open questions, or caveats.
+- *Sources:* Who wrote the summary (a new chat, or Manager instance N) and which sections or Stages are first-hand and which are reconstructed from artifacts, naming them.
 - *Snapshot Notice:* "This summary reflects the session state as of `<datetime>`. The codebase may have diverged since this summary was created."
 
 **Archive index format:**

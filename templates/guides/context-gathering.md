@@ -36,7 +36,7 @@ Briefly summarize what was established or corrected and any remaining limits. Af
 
 ### 2.5 Exploration and Research Standards
 
-Follow User requests to defer research and record the resulting limits in your understanding summary. Otherwise, establish authority during initiation before deep exploration. When relevant material or User responses point to code, explore before continuing questions. Read relevant repositories, including history and branches as project signals. Read focused sources directly. For substantial research, use a subagent with specific questions and expected sources.
+Follow User requests to defer research and record the resulting limits in your understanding summary. Otherwise, establish authority during initiation before deep exploration. When relevant material or User responses point to code, explore before continuing questions. Read a single document or a few known files yourself. Use a subagent to research repositories, their history and branches, and any question that spans many files. Give it specific questions and the sources to check, and ask for findings with file references.
 
 Verify critical subagent claims against the referenced files or commands. If verification finds a contradiction or consequential gap, use a subagent for a focused follow-up and verify its findings too. Present verified findings and implications to the User before relying on them. Include them in the next follow-up when gaps remain, or in the round summary when they complete its coverage.
 
@@ -106,7 +106,7 @@ Confirm settled topics and resolve remaining gaps before the final summary.
 ### 3.6 Finalize Understanding
 
 1. Present the consolidated understanding summary per §4.1. Include consequential limits that remain genuinely unresolved for implementation.
-2. Ask the User to review and approve it before planning documents are generated. If corrections are needed, follow up, update the summary and request approval again.
+2. Ask the User to review and approve it before planning documents are generated. Ask even when the User has said to skip reviews or to run straight through: those instructions apply to implementation. If corrections are needed, follow up, update the summary and request approval again.
 3. After approval, read `{GUIDE_PATH:work-breakdown}` and continue with that procedure.
 
 ## 4. Structural Specifications

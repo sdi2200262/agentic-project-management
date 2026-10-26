@@ -1,10 +1,12 @@
 ---
 name: apm-9-recover
-description: Recover an APM agent's working context. Use only when the User runs this command.
+description: Recover an APM agent's working context. Use only when the User manually invokes this skill.
 disable-model-invocation: true
 ---
 
 # APM {VERSION} - Recover Command
+
+Continue only if the User manually invoked this skill or asked you to follow it. Otherwise, tell the User that this skill exists and stop.
 
 Rebuild context after compaction or a cleared/lost conversation. Applies only to initiated Managers and Workers; Planners and non-APM agents decline without action. Optional `[role]` is `manager` or a Worker identifier.
 

@@ -55,7 +55,7 @@ Explore the repository to understand the layout. The key directories are:
 
 ## 3. How Templates Become Installations
 
-Every assistant installs the same files. The build resolves a few placeholders the same way for every target, and fails if a shared file differs between bundles. What differs per assistant (APM folder, command prefix, Rules file, subagent calls, new-chat steps) lives only in §5 Assistant Reference of `templates/skills/apm-communication/SKILL.md`.
+Every assistant installs the same files. The build resolves a few placeholders the same way for every target, and fails if a shared file differs between bundles. The templates describe actions in plain English (run a command, use a subagent, start a new chat), and each assistant carries them out its own way, so they hold no per-assistant syntax.
 
 The placeholders, defined in `build/processors/placeholders.js`, are:
 

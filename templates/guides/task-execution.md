@@ -28,7 +28,7 @@ Verify findings before applying a fix. If investigation remains unresolved, pref
 
 ### 2.4 Rules Updates
 
-Apply User corrections immediately without pausing to discuss Rules. At completion record them under Important Findings with `important_findings: true`. After logging, reporting and delivery instructions, offer to add the correction as a Rule for all Workers. The User may decline; report delivery proceeds independently. If approved, update Rules and note the addition in the Task Log; otherwise take no further action.
+A User correction is any instruction from the User that changes how you work, such as which data to use, what to check or how to name things. Apply it immediately without pausing to discuss Rules. At completion, record it under Important Findings with `important_findings: true`. Then, in your completion message, ask the User whether to add the correction to the Rules file so every Worker follows it. Ask every time the User corrected you during the Task; the User may decline, and report delivery does not wait for the answer. If the User approves, update the Rules file and note in the Task Log that the User approved the addition, so the Manager can see the approval.
 
 ### 2.5 Version Control Standards
 
@@ -70,8 +70,8 @@ Apply §2.3: investigate, make one targeted correction and revalidate. If unsucc
 
 ### 3.6 Task Completion
 
-1. Report the outcome, deliverables, validation and consequential findings or limits. Select status per `{GUIDE_PATH:task-logging}` §2.2.
+1. Report the outcome, deliverables, validation and consequential findings or limits. Select status per `{GUIDE_PATH:task-logging}` §2.2. If the User corrected you during the Task, include the Rules question per §2.4.
 2. Commit work per §2.5 when version control is active.
 3. Write the log at `log_path` per `{GUIDE_PATH:task-logging}` §3.1.
 4. Deliver the report per that guide's §3.2. In the first report after Handoff, give the instance number, specific logs loaded and note previous-Stage logs were not loaded. After recovery, record it in the report.
-5. State readiness for the next Task via `apm-4-check-tasks` without an argument. Await delivery or Handoff. After a User correction, make the Rules offer per §2.4.
+5. State readiness for the next Task via `apm-4-check-tasks` without an argument. Await delivery or Handoff.
