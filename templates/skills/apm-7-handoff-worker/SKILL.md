@@ -20,7 +20,7 @@ Before writing either artifact, check the current state yourself: read your Task
 
 Write the log’s narrative in past tense, recording actions, decisions and observations from this instance. Put current state and continuation in the Handoff Bus prompt. Include the bus path in the log and the log path in the prompt.
 
-Determine your instance number and the next one (current + 1). Write the log per §3 with completed work, approaches tried, established patterns and technical context not in Task Logs. Include completed steps for a mid-Task transfer. If recovery/compaction occurred, identify reconstructed context rather than presenting it as first-hand.
+Determine your instance number and the next one (current + 1). Write the log per §3 with completed work, approaches tried, established patterns and technical context not in Task Logs. Include completed steps for a mid-Task transfer. Mark reconstructed context per `{SKILL_PATH:apm-communication}` §3.
 
 ### 2.2 Handoff Prompt Creation
 
@@ -34,7 +34,7 @@ Include the Handoff Log path and current-Stage log reads. Require the first repo
 
 ### 2.3 User Review and Finalization
 
-Read and write `.apm/bus/<agent-slug>/handoff.md`. Give the User both artifact paths, request review and direct them to run `apm-3-initiate-worker <agent-id>` in a new chat using their assistant's instructions. The next Worker detects the handoff automatically. Apply corrections; your outgoing duties then end.
+Read and write `.apm/bus/<agent-slug>/handoff.md`. Give the User both artifact paths and ask them to review both files. Apply corrections and ask again. After the User approves, direct them to run `apm-3-initiate-worker <agent-id>` in a new chat. The next Worker detects the handoff automatically. Your outgoing duties then end.
 
 ## 3. Handoff Log Structure
 
@@ -86,4 +86,4 @@ Written to `.apm/bus/<agent-slug>/handoff.md`. The incoming Worker processes thi
 - *Continuation guidance:* Specific guidance for the incoming Worker about in-progress patterns or upcoming work.
 - *Incoming Worker indication:* Remind incoming Worker to include Handoff status in first Task Report - state instance number, list specific Task Log files loaded, and when previous Stages exist note that previous-Stage logs were not loaded. This triggers Manager Handoff detection.
 - *Immediate Next Action:* For mid-Task or mid-batch, instruct the incoming Worker to read the Task Bus and continue. For between-Tasks, state readiness to await `apm-4-check-tasks`.
-- *Closing instruction:* Confirm to User that Handoff Log and Stage context have been read, then state readiness.
+- *Closing instruction:* Tell the User which files you read and what you'll do next.

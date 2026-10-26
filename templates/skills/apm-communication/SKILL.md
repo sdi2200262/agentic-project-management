@@ -49,6 +49,8 @@ Use formal APM terms such as Task, Stage, Worker and Manager naturally where the
 
 ## 3. Agent-to-System Communication
 
+First-hand means work you did in this conversation and remember in detail, not through a summary from an earlier compaction or recovery. Everything else is reconstructed: work by earlier instances of your role or other agents, and anything you know only from a summary or an artifact. When an artifact asks you to separate the two, mark the reconstructed parts and name their source.
+
 Follow the artifact schemas in the relevant guide and the bus protocol below. Write free-text content for its reader and purpose: a future agent needs self-contained context. Use narrative free text for the work, evidence and implications; reserve procedure and section labels for navigation and required reading instructions. Follow the schema for structured labels and fields. Record concrete outcomes, evidence, paths, consequential decisions and reasons, unresolved issues and continuation steps. Give each fact one useful location, verify claims against source and distinguish recorded state from assumptions.
 
 ## 4. Message Bus Protocol
@@ -61,7 +63,7 @@ Identity comes from `.apm/bus/<agent-slug>/`. Workers confirm that this director
 
 ### 4.2 Agent ID Resolution
 
-Resolve an `[agent-id]` argument to `apm-4-check-tasks` or `apm-5-check-reports` against bus directory names: exact match, then prefix, then best plausible match. Use a unique candidate; list multiple plausible candidates and ask the User. If no directories exist, report that the Message Bus is not initialized.
+Resolve an `[agent-id]` argument to `apm-4-check-tasks` or `apm-5-check-reports` against bus directory names: exact match, then prefix, then best plausible match. Use a unique exact or prefix match. Confirm any other single match with the User before using it, and list multiple plausible candidates for the User to choose. If no directories exist, report that the Message Bus is not initialized.
 
 ### 4.3 Agent Slug Format
 

@@ -20,7 +20,7 @@ Accept a supported Success with no flags. Investigate flags and non-Success outc
 
 After investigation, proceed if nothing actionable remains, send a refined follow-up if retry is needed, or modify planning documents when their content is wrong. Note uncommitted changes in a non-Success follow-up. For successful work left uncommitted, commit on the Worker's branch using Rules conventions; no follow-up is needed for that alone.
 
-When validation is incomplete or deliverables are partial, issue a follow-up before accepting the outcome. Done is terminal. If previously-Done work needs correction, create a new Task through Plan modification, referencing the original and discovery context. Keep a Task Active while investigation, follow-up or a coordination decision is pending. A terminal decision can accept Success, accept a non-Success outcome or restructure work.
+When validation is incomplete or deliverables are partial, issue a follow-up, or, if the User agrees, accept the Partial outcome and record what remains in working notes. Done is terminal. If previously-Done work needs correction, create a new Task through Plan modification, referencing the original and discovery context. Keep a Task Active while investigation, follow-up or a coordination decision is pending. A terminal decision can accept Success, accept a non-Success outcome or restructure work.
 
 Act on small contained follow-ups/corrections and inform the User. Pause for approval when changes exceed your authority per §2.3.
 
@@ -56,9 +56,9 @@ At Stage end, promote observations with lasting impact on future work to Index M
 
 ### 2.8 Stage Verification Standards
 
-After all Tasks are Done, assess holistic verification before the summary. Use User-confirmed needs, review difficulties/flags/follow-ups, edge cases, compatibility concerns, Planner notes and accumulated observations. A simple Stage with clean evidence may need none.
+After all Tasks are Done, assess holistic verification before the summary. Use User-confirmed needs, review difficulties/flags/follow-ups, edge cases, compatibility concerns, Planner notes and accumulated observations. Verify when the User asked for it, the Plan's notes name this Stage, or any Task in the Stage needed a follow-up or set a flag. Otherwise you may skip it; say so in the Stage summary.
 
-When warranted, rerun key checks, examine source/artifacts and exercise integration/edge cases at the project's established validation level. For context-intensive checks, use a subagent and verify its findings. Fix contained issues, delegate focused investigation, create a new Task for Worker-level work, or seek User direction when scope is unclear. Pause for required User judgment or action.
+When verifying, rerun key checks, examine source/artifacts and exercise integration/edge cases at the project's established validation level. For context-intensive checks, use a subagent and verify its findings. Fix contained issues, delegate focused investigation, create a new Task for Worker-level work, or seek User direction when scope is unclear. Pause for required User judgment or action.
 
 ### 2.9 Non-APM Agent Reports
 
@@ -73,7 +73,7 @@ On `apm-5-check-reports` or a delivered report:
 1. Read `.apm/bus/<agent-slug>/report.md`. Handle non-APM agents per §2.9.
 2. For `batch: true`, process each executed outcome through log review and outcome determination; return `Not started` Tasks to dispatch assessment.
 3. If a Worker reports a new instance, verify its Handoff Log, increment Worker tracking and compare its loaded log list with all work it previously completed. Record overrides for completed Tasks whose logs were not loaded; these dependencies now need cross-agent context.
-4. Record reported recovery in Worker Notes, without incrementing identity or reclassifying dependencies. Check the report against the Task Log for evidence recovery may have omitted and request missing details. Supply more comprehensive context when future same-agent dependencies need it.
+4. Record reported recovery in the Notes column of the Worker Tracking table, without incrementing identity or reclassifying dependencies. Check the report against the Task Log for evidence recovery may have omitted and request missing details. Supply more comprehensive context when future same-agent dependencies need it.
 5. Note Worker availability and completed items for readiness assessment. Continue to log review before merging or accepting the result.
 
 ### 3.2 Task Log Review
@@ -85,7 +85,7 @@ Read the referenced Task Log and apply §2.1. Explain the material findings, con
 1. Assess deliverables against objectives and validation per §2.2. Commit successful uncommitted work when needed.
 2. Investigate issues; for a Success log that contradicts its own validation, follow §2.1 instead. Proceed if resolved, construct a follow-up per `{GUIDE_PATH:task-assignment}` §3.4, or apply §3.4 below for document changes.
 3. Update the Tracker per §4.1 after review/decisions. Keep unresolved work Active and mark terminal outcomes Done. Merge per §2.5 before reassessing dependencies. Update readiness, branch state and working notes; batch review/dispatch changes into one Tracker edit.
-4. If the Stage is Done and merged, collapse its tracking and continue to §3.5. Otherwise dispatch Ready Tasks in the same turn per `{GUIDE_PATH:task-assignment}` §3.1, or state the wait condition and next report needed.
+4. If the Stage is Done and merged, continue to §3.5. Otherwise dispatch Ready Tasks in the same turn per `{GUIDE_PATH:task-assignment}` §3.1, or state the wait condition and next report needed.
 
 ### 3.4 Planning Document Modification
 
@@ -105,6 +105,7 @@ After all Tasks are Done with no outstanding follow-ups:
 2. Assess and perform warranted verification per §2.8 before continuing.
 3. Distill working notes per §2.7.
 4. Append the summary per §4.3. Memory notes and the summary can be written in one Index edit.
+5. Collapse the Stage's tracking per §4.1, now that verification can no longer add Tasks to it.
 
 ## 4. Structural Specifications
 
@@ -143,7 +144,7 @@ Write the end state of each Task for the review-dispatch cycle. When a Task is u
 
 **Branch cleanup:** After merging a completed branch per §2.5 Merge Standards, clear the Branch column for that Task row.
 
-**Stage collapse:** When all Tasks in a Stage are Done with no branches remaining, replace all Task rows with `**Stage N:** Complete`.
+**Stage collapse:** When all Tasks in a Stage are Done, no branches remain and its Stage summary is written, replace all Task rows with `**Stage N:** Complete`.
 
 **Batch edits:** Task ID column guarantees edit tool uniqueness for targeting individual rows. When multiple rows or working notes change in the same review-dispatch cycle, batch all Tracker updates into a single edit.
 

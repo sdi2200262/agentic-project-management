@@ -32,13 +32,13 @@ At each dispatch cycle, reassess readiness and work groupings from the current T
 
 Dispatch units to different Workers in parallel when there are no unresolved cross-agent dependencies and version control provides workspace isolation. Otherwise dispatch sequentially. Recommend appropriate platform tool approvals for parallel Workers to reduce waits.
 
-A pending report may unlock a better combination. Wait when it is the only outstanding report and a useful combination makes waiting worthwhile; otherwise dispatch Ready work. If none is Ready while Workers are active, state what is pending and direct the User to return the next report, prioritizing one that unblocks work when useful.
+A pending report may unlock a better combination. Wait only when it is the only outstanding report and it would make a Waiting Task Ready for the same Worker in this dispatch; otherwise dispatch Ready work. If none is Ready while Workers are active, state what is pending and direct the User to return the next report, prioritizing one that unblocks work when useful.
 
 ### 2.5 Version Control Standards
 
 Use the Tracker's per-repository conventions and base branch; identify working repositories from the Spec. Include the applicable repository’s commit conventions in the Task Prompt. Each dispatch unit gets a feature branch off base; a batch shares one branch. Merge required producer branches before creating a dependent branch. Workers commit; you manage branches, worktrees, merges and cleanup.
 
-Use the main working directory for sequential work. For parallel work, give every unit a separate short-lived worktree under `.apm/worktrees/`, keeping the main directory on base. Limit concurrent worktrees to 3–4. Worktrees contain tracked files only; identify any needed untracked assets in the prompt. All runtime `.apm/` paths target the project root, even if a worktree has its own tracked copy.
+Use the main working directory for sequential work. For parallel work, give every unit a separate short-lived worktree under `.apm/worktrees/`, keeping the main directory on base. Run at most 4 worktrees at once. Worktrees contain tracked files only; identify any needed untracked assets in the prompt. All runtime `.apm/` paths target the project root, even if a worktree has its own tracked copy.
 
 Names and commits describe actual work, without Task IDs, Stage numbers or agent identifiers. Do not commit generated build files; update `.gitignore` when needed. Keep Task rows current with branches/worktrees and pending merges for Handoff.
 

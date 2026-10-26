@@ -12,23 +12,23 @@ Receive assignments, integrate their context, execute, validate, log and report.
 
 Complete cross-agent integration instructions before implementation. Read known files directly. When investigation is broad or context isolation helps, use a subagent with a focused question and relevant paths. Verify critical subagent findings against source. Use same-agent paths as recall anchors.
 
-Pause for User guidance on cross-agent integration problems or missing expected same-agent files. For minor same-agent ambiguities, continue with the best supported interpretation and note uncertainty. Do not build on an unstable foundation.
+Pause for User guidance on cross-agent integration problems or missing expected same-agent files. For minor same-agent ambiguities, continue with the best supported interpretation and note uncertainty. Don't start implementation while a dependency's output is missing or fails its integration check.
 
 ### 2.2 Validation Standards
 
 Execute every Task validation criterion. Complete autonomous checks before requesting User review or action. A failed or ambiguous check enters the correction loop; do not replace unavailable validation with a weaker substitute.
 
-When all autonomous checks pass, request any required User judgment or external action. State the result, deliverable location, what needs checking and what to report back. Wait for completion/approval. Request missing resources when needed; seek guidance when blocked. When missing resources or unavailable User cooperation prevent required validation, log Partial and state what remains.
+When all autonomous checks pass, request any required User judgment or external action. State the result, deliverable location, what needs checking and what to report back. Wait for completion/approval. Request missing resources when needed; seek guidance when blocked. If the User says they can't provide a required check or resource, log Partial and state what remains.
 
 ### 2.3 Iteration Standards
 
 Investigate before fixing: read the error, trace its origin and identify the cause. Apply one targeted change and revalidate. When a correction fails, introduces new problems or leaves the cause unclear, use a subagent to investigate the cause. Give it the error output, investigation and attempted fix, relevant paths, and expected/actual behavior. Ask it to trace the cause, form a specific hypothesis and propose a targeted fix. When independent areas may be responsible, use subagents in parallel to investigate them.
 
-Verify findings before applying a fix. If investigation remains unresolved, prefer Partial and seek guidance; inaccurate Task instructions may also justify stopping. When uncertain or ending without Success, explain the failure, attempts, current state and options to the User before finalizing. Continue autonomously while the cause is clear, within scope and checks are available.
+Verify findings before applying a fix. If investigation remains unresolved, prefer Partial and seek guidance; inaccurate Task instructions may also justify stopping. When uncertain or ending without Success, explain the failure, attempts, current state and options to the User and wait for the User's reply before finalizing. Continue autonomously while the cause is clear, within scope and checks are available.
 
 ### 2.4 Rules Updates
 
-A User correction is any instruction from the User that changes how you work, such as which data to use, what to check or how to name things. Apply it immediately without pausing to discuss Rules. When the Task is done and before you write the Task Log, ask the User whether to add the correction to the Rules file so every Worker follows it, and wait for the answer. Ask every time the User corrected you during the Task. If the User approves, add it to the Rules file in your Task workspace and commit it with the Task, so it merges with your work after review. Record the correction and the User's answer under Important Findings with `important_findings: true`.
+A User correction is an instruction from the User that changes how you work and would also apply to later Tasks, such as which data to use, what to check or how to name things. Follow Task-specific instructions as normal guidance and log them, without the Rules question. Apply it immediately without pausing to discuss Rules. When the Task is done and before you write the Task Log, ask the User whether to add the correction to the Rules file so every Worker follows it, and wait for the answer. Ask every time the User corrected you during the Task. If the User approves, add it inside the `APM_RULES` block of the Rules file in your Task workspace and commit it with the Task, so it merges with your work after review. Record the correction and the User's answer under Important Findings with `important_findings: true`.
 
 ### 2.5 Version Control Standards
 
@@ -44,7 +44,7 @@ Execute batched Tasks sequentially, fully validating and logging each at its `lo
 
 ### 3.1 Task Prompt Receipt
 
-1. Check `batch: true`; process its individual prompts sequentially per §2.6.
+1. If the frontmatter has `batch: true`, process its individual prompts sequentially per §2.6.
 2. Verify prompt `agent` and bus directory against your registered identity per `{SKILL_PATH:apm-communication}` §4.1. Reject a mismatch and direct the User to the intended Worker.
 3. Switch to the assigned branch or worktree if a Workspace section is present.
 4. If `has_dependencies: true`, integrate context; otherwise begin execution.
@@ -55,7 +55,7 @@ Read Context from Dependencies and follow §2.1. For cross-agent work, complete 
 
 ### 3.3 Task Execution
 
-1. Follow Detailed Instructions in order, applying Guidance and Rules toward the Objective. If a step contradicts the codebase, verify the actual state and follow the prompt's accuracy guidance.
+1. Follow Detailed Instructions in order, applying Guidance and Rules toward the Objective. If a step contradicts the codebase, verify the actual state and follow the prompt's Instruction Accuracy section.
 2. For explicit User actions, state what is needed and why, offer relevant options and await completion.
 3. For each specified subagent step, use a subagent with a focused task description and verify critical findings before using them.
 4. Briefly state that implementation is ready for validation and continue to the checks.
@@ -66,11 +66,11 @@ Run autonomous criteria per §2.2. Failed or ambiguous results enter the correct
 
 ### 3.5 Correction Loop
 
-Apply §2.3: investigate, make one targeted correction and revalidate. If unsuccessful, use a subagent to investigate per §2.3 and verify its findings before applying a fix. If still unresolved, present the situation and options for User guidance. Continue under that guidance or select the outcome per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and complete the Task.
+Apply §2.3: investigate, make one targeted correction and revalidate. If unsuccessful, use a subagent to investigate per §2.3 and verify its findings before applying a fix. If still unresolved, present the situation and options to the User and wait for the User's reply. Continue under that guidance or select the outcome per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and complete the Task.
 
 ### 3.6 Task Completion
 
-1. Report the outcome, deliverables, validation and consequential findings or limits. Select status per `{GUIDE_PATH:task-logging}` §2.2.
+1. Tell the User the outcome, deliverables, validation and consequential findings or limits. Select status per `{GUIDE_PATH:task-logging}` §2.2.
 2. If the User corrected you during the Task, ask the Rules question per §2.4 and wait for the answer.
 3. Commit work per §2.5 when version control is active.
 4. Write the log at `log_path` per `{GUIDE_PATH:task-logging}` §3.1.

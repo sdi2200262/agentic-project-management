@@ -20,7 +20,7 @@ Before writing either artifact, check the current state yourself: read the Track
 
 Write the log’s narrative in past tense, recording actions, decisions and observations from this instance. Put current state and continuation in the Handoff Bus prompt. Include the bus path in the log and the log path in the prompt.
 
-Determine your instance number and the next one (current + 1). Write the log per §3 with past work, decisions, approaches and useful observations not already captured elsewhere. Include tracked Worker Handoffs and their dependency implications, VC actions and repository state observed in the Tracker, User preferences and coordination insights. If recovery/compaction occurred, distinguish reconstructed context from first-hand work.
+Determine your instance number and the next one (current + 1). Write the log per §3 with past work, decisions, approaches and useful observations not already captured elsewhere. Include tracked Worker Handoffs and their dependency implications, VC actions and repository state observed in the Tracker, User preferences and coordination insights. Mark reconstructed context per `{SKILL_PATH:apm-communication}` §3.
 
 ### 2.2 Handoff Prompt Creation
 
@@ -28,7 +28,7 @@ Prepare the prompt per §4 with current state and an actionable resumption step.
 
 ### 2.3 User Review and Finalization
 
-Read and write `.apm/bus/manager/handoff.md`. Give the User both artifact paths, request review and direct them to run `apm-2-initiate-manager` in a new chat using their assistant's instructions. The next Manager detects the bus automatically. Apply requested corrections; your outgoing duties then end.
+Read and write `.apm/bus/manager/handoff.md`. Give the User both artifact paths and ask them to review both files. Apply corrections and ask again. After the User approves, direct them to run `apm-2-initiate-manager` in a new chat. The next Manager detects the bus automatically. Your outgoing duties then end.
 
 ## 3. Handoff Log Structure
 

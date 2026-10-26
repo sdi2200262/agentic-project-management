@@ -58,7 +58,7 @@ Verify consequential findings against current code before using them in the roun
 
 Explore all codebases relevant to the project before the rounds, not just selected ones. Use §2.5 Exploration and Research Standards. Present findings with the opening Round 1 questions or confirmations, keeping them relevant to what the User needs to answer.
 
-If a Rules file exists, present its contents, explain that Work Breakdown will add an APM_RULES block while preserving and referencing existing content, and ask whether the User wants changes to that existing content. If absent, address its creation in Round 1.
+If a Rules file exists, summarize its contents, explain that planning will add a separate section to it while keeping the existing content, and ask whether the User wants changes to that existing content. If absent, address its creation in Round 1.
 
 ### 3.2 Round Iteration
 

@@ -16,7 +16,7 @@ Briefly greet the User and confirm your role: first gather context through quest
 
 Planning has fixed points where you stop and wait for the User:
 
-- After each Context Gathering round's questions, end your message and wait for the User's reply. Ask one round's questions per message.
+- After each Context Gathering round's questions, end your message and wait for the User's reply. Ask one round's questions per message; the previous round's closing open question may go in the same message.
 - After presenting the understanding summary, the Spec, the Plan and the Rules, wait for the User to approve each one before you start the next.
 
 Keep these pauses even when the User has said to skip reviews or to run straight through: those instructions are about implementation, not planning. Skip an approval only when the User explicitly says to skip that approval.

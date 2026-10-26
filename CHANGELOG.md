@@ -46,9 +46,13 @@ Every assistant now installs the same commands, guides and communication skill. 
   * The Planner scans the workspace itself, then uses subagents for broader research and checks their findings before relying on them.
   * The Planner waits for your reply after each Context Gathering round, and asks for each planning approval even after you say to skip reviews or run straight through during implementation.
   * The Manager asks the Worker about a Task Log that contradicts its own status before accepting it.
-  * A Worker you corrected asks, before writing its Task Log, whether to add the correction to the Rules file. It records your answer in the log and commits an approved Rules change with the Task.
+  * A Worker you corrected in a way that applies to later Tasks asks, before writing its Task Log, whether to add the correction to the Rules file. It records your answer in the log and commits an approved Rules change with the Task.
   * An outgoing agent checks git and the Message Bus before writing a handoff, and the incoming agent checks what the handoff says before acting on it.
   * Agents give you the project reason for a step instead of citing APM's own procedures.
+  * Workers log Partial only when required work or validation is incomplete, not for findings alone.
+  * The Manager asks before initializing git, can accept a Partial outcome when you agree, and verifies a Stage when you asked for it or a Task needed a follow-up.
+  * After a handoff, agents give you the command for the new chat only once you have approved the handoff files.
+  * Agents wait for your reply after presenting options when they are stuck.
 * **The Manager merges after review.** A Task's branch is merged only after its Task Log has been reviewed. Before, one step merged it while the report was still being processed.
 * **Codex and Antigravity no longer overwrite each other's skills.** Both now install identical files to `.agents/skills/`, so installing, updating or removing one leaves the other's instructions intact. This resolves the Templates v1.0.3 known issue. Run `apm update` to apply the fix.
 

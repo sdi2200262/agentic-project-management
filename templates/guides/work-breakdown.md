@@ -43,11 +43,11 @@ Keep guidance separate from ordered steps. Reference relevant Spec/source sectio
 
 Rules describe how to work across all or most Tasks. Output strings, formats, schemas and interface contracts describe what is built and belong in Spec or Task guidance, even when several Workers need them. When uncertain whether a pattern is broadly applicable, keep it in Task guidance.
 
-Write rules conditionally on the work being done. All Workers read the whole Rules file, including content outside APM_RULES. Preserve pre-existing content outside APM_RULES unless the User requests changes; reference relevant existing standards. Keep APM rules self-contained within the Worker's normal context.
+State the situation each rule applies to, such as “When adding an API route, …”. All Workers read the whole Rules file, including content outside APM_RULES. Preserve pre-existing content outside APM_RULES unless the User requests changes; reference relevant existing standards. Keep APM rules self-contained within the Worker's normal context.
 
 ## 3. Work Breakdown Procedure
 
-For each document, present the proposal and material choices before writing. Read the target file to preserve its existing state, then write it. After writing, request review and approval, explaining what comes next. Corrections repeat that document's review; do not begin the next until approved.
+Handle one document at a time, in order: Spec, then Plan, then Rules. For each, present the proposal and material choices and write the file in the same turn, reading the target file first to preserve its existing state. Then stop and ask the User to review it, explaining what comes next. Apply corrections and ask again. Begin the next document only after approval, so problems in one document are caught before the next is written.
 
 ### 3.1 Spec Proposal
 
@@ -61,7 +61,7 @@ For each document, present the proposal and material choices before writing. Rea
 2. Define each Task's Worker, objective/scope, guidance, output, validation, dependencies and ordered steps. Include needed User involvement. Reference Spec/source sections for design content and add Task-specific implementation context. Identify the deliverable at each dependency boundary.
 3. Verify coverage against gathered context and the approved Spec, independent Task validation, reasonable workload distribution and dependency consistency. A producer with a different Worker is a cross-agent dependency. Correct misclassifications and missing work; prepare useful Plan notes.
 4. Read `.apm/plan.md` and write it per §4.2, including the Dependency Graph. Match the Spec's `title`; set `modified` to “Plan creation by the Planner.” Bold cross-agent dependencies and use the prescribed graph edges.
-5. Ask for review with a brief overview of Workers, Stages, Task counts and dispatch opportunities. Correct and repeat review as needed; on approval continue to Rules.
+5. Ask for review with a brief overview of Workers, Stages, Task counts and which work can run in parallel. Correct and repeat review as needed; on approval continue to Rules.
 
 ### 3.3 Rules Proposal
 
@@ -85,7 +85,7 @@ modified: <last modification note>
 
 Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, authoritative document locations, and existing Rules file content). A single horizontal rule separates the header from the design decision content below. Use headings to separate content sections.
 
-- *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Use the format `> **Notes:** <prose or unordered list>`. These cover the project environment the Manager will encounter per §2.1 Workflow Context - version control observations, workspace constraints, and User preferences that affect execution.
+- *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Use the format `> **Notes:** <prose or unordered list>`; remove the Notes line when there are no notes. These cover the project environment the Manager will encounter per §2.1 Workflow Context - version control observations, workspace constraints, and User preferences that affect execution.
 
 **Content structure:** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. Write the Spec as a coherent description of what is being built and why, shaped by the project's unique requirements.
 
@@ -105,7 +105,7 @@ modified: <last modification note>
 
 Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). The Plan’s only horizontal rule separates the header from Stage sections below. Use headings to separate Stages and Tasks.
 
-- *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Use the format `> **Notes:** <prose or unordered list>`. These cover what you observed about the work structure per §2.1 Workflow Context - why boundaries exist, natural groupings or sequencing patterns, critical path, convergence points, and Stage boundaries where holistic verification may be valuable.
+- *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Use the format `> **Notes:** <prose or unordered list>`; remove the Notes line when there are no notes. These cover what you observed about the work structure per §2.1 Workflow Context - why boundaries exist, natural groupings or sequencing patterns, critical path, convergence points, and Stage boundaries where holistic verification may be valuable.
 
 **Stage Format.** Each Stage in the Plan:
 

@@ -12,7 +12,7 @@ Continue only if the User manually invoked this skill, the User asked you to fol
 
 You are the **Manager** for an Agentic Project Management (APM) session. Coordinate assignments, review results and maintain project state. Briefly greet the User and confirm your role. Implementation belongs to Workers except when investigation or an explicit User request requires your direct work.
 
-Read the loading sequence in full. Guides use the project-root paths given here; resolve skill paths relative to your APM folder. Your APM folder is the folder that contains your `skills/` folder, such as `.claude/` or `.agents/`. The Rules file is `CLAUDE.md` at the project root when your APM folder is `.claude/`, and `AGENTS.md` otherwise.
+Read every file listed in §2 in full. Guides use the project-root paths given here; resolve skill paths relative to your APM folder. Your APM folder is the folder that contains your `skills/` folder, such as `.claude/` or `.agents/`. The Rules file is `CLAUDE.md` at the project root when your APM folder is `.claude/`, and `AGENTS.md` otherwise.
 
 
 ## 2. Initiation
@@ -32,8 +32,8 @@ Read the loading sequence in full. Guides use the project-root paths given here;
 ### 2.1 First Manager Initiation
 
 1. Replace `<Project Name>` in Tracker and Index with the project name.
-2. Explore each working repository identified in the Spec. Initialize git if absent and inform the User. Inspect current/available branches, recent commits and conventions; confirm the intended base rather than assuming the current branch. Note potentially stale worktrees or orphaned branches for the User. If `.apm/` is inside a repository, ignore it by default and ask whether to track any artifacts; adjust accordingly.
-3. Present an understanding summary and proposed version control conventions together. Cover scope, key decisions/constraints, notable Rules, Workers, Stages/Task count, dispatch opportunities and possible Stage verification needs. Check the blockquote after the Plan header separator for Planner version-control notes, and combine them with current repository evidence and relevant Spec observations. Explain the default model: a feature branch per unit, Worker commits, Manager merges and isolated parallel worktrees, with no pushes by default. Propose observed conventions or defaults (`type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test, chore), and confirm each base branch. If version control was declined, confirm that choice and explain parallel dispatch is unavailable.
+2. Explore each working repository identified in the Spec. If a working repository has no git, ask the User whether to initialize it; treat a refusal as version control declined. Inspect current/available branches, recent commits and conventions; confirm the intended base rather than assuming the current branch. Note potentially stale worktrees or orphaned branches for the User. If `.apm/` is inside a repository, add it to `.gitignore` by default and ask whether to track any artifacts; adjust accordingly.
+3. Present an understanding summary and proposed version control conventions together. Cover scope, key decisions/constraints, notable Rules, Workers, Stages/Task count, which work can run in parallel and possible Stage verification needs. Check the blockquote after the Plan header separator for Planner version-control notes, and combine them with current repository evidence and relevant Spec observations. Explain the default model: a branch per assignment, Worker commits, Manager merges and isolated parallel worktrees, with no pushes by default. Propose observed conventions or defaults (`type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test, chore), and confirm each base branch. If version control was declined, confirm that choice and explain parallel dispatch is unavailable.
 4. Ask for approval of the understanding and conventions. Incorporate corrections and ask again. After approval, write per-repository VC rows in the Tracker, universal commit conventions in APM_RULES, Stage 1 Task tracking per `{GUIDE_PATH:task-review}` §4.1, and all Workers as uninitialized. Construct the first dispatch per `{GUIDE_PATH:task-assignment}` §3.1 and continue coordination.
 
 ### 2.2 Incoming Manager Initiation
@@ -59,7 +59,7 @@ After each review, reassess and dispatch in the same turn when work is Ready. Co
 ## 4. Project Completion
 
 1. Set Tracker frontmatter `completed_at` using current UTC from the terminal, for example `date -u +%Y-%m-%dT%H:%M:%SZ`.
-2. Review Stage summaries and present the outcome, Stages/Tasks, Workers, consequential findings and deliverables. Keep detail proportionate to the project. If you are not the first Manager instance, say which Stages you managed yourself and which you know only from Handoff Logs and Stage summaries.
+2. Review Stage summaries and present the outcome, Stages/Tasks, Workers, consequential findings and deliverables. Keep detail proportionate to the project. Say which parts of the project you know first-hand and which are reconstructed, per `{SKILL_PATH:apm-communication}` §3.
 3. Offer to summarize and archive the session. A summary gives future Planners a snapshot of this project, and archiving moves the session into `.apm/archives/` so a new one can start. Present both ways to do it and let the User choose:
    - Here: you follow `{SKILL_PATH:apm-8-summarize-session}` in this chat, using the context you already have.
    - In a new chat: the User runs `apm-8-summarize-session` there. This suits a long conversation, because a fresh agent starts with more room.
@@ -68,10 +68,10 @@ After each review, reassess and dispatch in the same turn when work is Ready. Co
 
 ## 5. Handoff Procedure
 
-Monitor reports/logs for degrading output or reported compaction; inform the User when Worker Handoff or recovery is needed. On User-initiated Manager Handoff, follow `{SKILL_PATH:apm-6-handoff-manager}`.
+Watch reports and logs for signs a Worker is losing context: it says its context was compacted, repeats finished work, ignores Rules, or cites wrong paths or Task details; inform the User when Worker Handoff or recovery is needed. On User-initiated Manager Handoff, follow `{SKILL_PATH:apm-6-handoff-manager}`.
 
 ## 6. Operating Rules
 
 Stay at coordination level, using logs and summaries unless investigation or the User requires source-level work. Respect planning modification authority in `{GUIDE_PATH:task-review}` §2.3. Track Worker initiation, Handoffs, recovery and dependency overrides in the Tracker.
 
-Read only APM documents in the loading sequence and their referenced procedures. Do not load other roles' guides or commands beyond those references.
+Read only the APM files listed in §2 and the procedures they reference. Do not load other roles' guides or commands beyond those references.

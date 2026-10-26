@@ -14,7 +14,7 @@ Read `{SKILL_PATH:apm-communication}`. Skill paths are relative to your APM fold
 
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Read the Task Logs referenced for claims that need verification; the subagent in the next step reviews the full log set.
 2. Use a subagent to check all `.apm/` artifacts, including Task Logs, against the codebase. Ask it to verify deliverables, expected commits/branches and key validation results, and return Stage outcomes, stale artifact/code differences and consequential findings. Verify critical claims against the referenced sources.
-3. Write `.apm/session-summary.md` using the format below. Ground claims in artifacts and verification; distinguish completed, partial and missing work and state the snapshot's date. Mark what you know first-hand and what you reconstructed from artifacts. As the active Manager, only the work of your own instance is first-hand; earlier Manager instances, Workers' reasoning and anything before your Handoff come from Handoff Logs, Stage summaries and Task Logs. In a new chat, everything is reconstructed from artifacts.
+3. Write `.apm/session-summary.md` using the format below. Ground claims in artifacts and verification; distinguish completed, partial and missing work and state the snapshot's date. Mark which parts are first-hand and which are reconstructed, per `{SKILL_PATH:apm-communication}` §3. In a new chat, everything is reconstructed.
 4. Present the summary for review. Apply additions, corrections or emphasis the User requests before finalizing.
 5. Ask whether to archive. If declined, stop. If approved, ask for a custom name or the default dated name.
 6. Run `apm archive --force` or `apm archive --force --name <name>`. The CLI snapshots `.apm/` except `archives/` into `.apm/archives/<name>/`, adds archival metadata, and removes active session files, installed templates and active metadata while keeping archives.
@@ -53,7 +53,7 @@ outcome: <complete | partial | incomplete>
 - *Codebase State.* Compare the actual codebase against the planning artifacts: which planned deliverables exist as code, which are partial or missing, whether the code evolved past what the Spec and Plan describe, and any gaps between what was planned and what was implemented.
 - *Notable Findings:* Operational lessons and patterns - issues encountered and how they were resolved, self-corrections during execution, recovery events, coordination insights. Draw from Memory notes, working notes, and Task Logs.
 - *Known Issues:* Unresolved problems, open questions, or caveats.
-- *Sources:* Who wrote the summary (a new chat, or Manager instance N) and which sections or Stages are first-hand and which are reconstructed from artifacts, naming them.
+- *Sources:* Who wrote the summary (an agent in a new chat, or the active Manager) and which sections or Stages are first-hand and which are reconstructed from artifacts, naming them.
 - *Snapshot Notice:* "This summary reflects the session state as of `<datetime>`. The codebase may have diverged since this summary was created."
 
 **Archive index format:**
