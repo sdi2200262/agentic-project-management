@@ -33,7 +33,7 @@ APM (Agentic Project Management) is an open-source framework for managing ambiti
 
 An APM session runs in two phases, with three agent roles:
 
-- **Planner** - Explores the codebase and questions the user about purpose, requirements, and constraints. Once the user approves its understanding, it writes the Spec (what to build), the Plan (how the work is divided into Stages and Tasks), and the Rules (how the work is carried out). One instance per session.
+- **Planner** - Explores the codebase and questions the user about purpose, requirements, and constraints. Once the user approves its understanding, it writes the Spec (what to build), the Plan (how the work is divided into Stages and Tasks), and the Rules (how the work is carried out). A single conversation per session.
 - **Manager** - Hands out self-contained Task Prompts, reviews what comes back, and keeps the Tracker (the session's progress) and Memory (its work history) up to date.
 - **Workers** - Each takes the Tasks of one area of the project (frontend, backend, etc.), completes and validates them, logs the outcome to Memory, and reports back. A Worker sees its Task Prompt and the Rules, not the full project scope.
 
