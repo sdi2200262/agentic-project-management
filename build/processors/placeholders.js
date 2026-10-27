@@ -1,37 +1,35 @@
 /**
  * Placeholder Replacement Module
  *
- * Resolves template placeholders. The output is the same for every target.
+ * Resolves template placeholders with target-specific values.
  *
  * @module build/processors/placeholders
  */
 
-const SKILLS_DIR = 'skills';
-const GUIDES_DIR = '.agents/apm-guides';
-
 /**
- * Replaces template placeholders.
- *
- * Every assistant installs the same text, so placeholders resolve the same way for all targets.
- * Guides are in `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's
- * skills folder (`.claude/skills/` for Claude Code, `.agents/skills/` for the others).
+ * Replaces template placeholders with target-specific values.
  *
  * Supported placeholders:
  * - {VERSION}: Package version
- * - {SKILL_PATH:name}: Skill file (skills/<name>/SKILL.md)
- * - {GUIDE_PATH:name}: Guide file (.agents/apm-guides/<name>.md)
+ * - {SKILL_PATH:name}: Skill file (<skills dir>/<name>/SKILL.md)
+ * - {SKILL_DIR:name}: Skill folder (<skills dir>/<name>)
+ * - {GUIDE_PATH:name}: Guide file (<guides dir>/<name>.md)
+ * - {CLAUDE_ONLY:text}: Text kept for the claude target and removed for the others
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
  * @param {string} context.version - Version string.
+ * @param {Object} context.target - Target configuration object.
  * @returns {string} Content with placeholders replaced.
  */
 export function replacePlaceholders(content, context) {
-  const { version } = context;
+  const { version, target } = context;
+  const { directories, id } = target;
 
   return content
     .replace(/{VERSION}/g, version)
-    .replace(/{SKILL_PATH:([^}]+)}/g, (_match, name) => `${SKILLS_DIR}/${name}/SKILL.md`)
-    .replace(/{GUIDE_PATH:([^}]+)}/g, (_match, name) => `${GUIDES_DIR}/${name}.md`);
+    .replace(/{CLAUDE_ONLY:([^}]*)}/g, (_match, text) => (id === 'claude' ? text : ''))
+    .replace(/{SKILL_PATH:([^}]+)}/g, (_match, name) => `${directories.skills}/${name}/SKILL.md`)
+    .replace(/{SKILL_DIR:([^}]+)}/g, (_match, name) => `${directories.skills}/${name}`)
+    .replace(/{GUIDE_PATH:([^}]+)}/g, (_match, name) => `${directories.guides}/${name}.md`);
 }
-

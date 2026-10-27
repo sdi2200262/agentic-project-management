@@ -18,7 +18,6 @@ export const BuildErrorCode = {
 
   // Build errors
   ARCHIVE_FAILED: 'ARCHIVE_FAILED',
-  SHARED_FILES_DIFFER: 'SHARED_FILES_DIFFER',
 };
 
 /**
@@ -93,20 +92,6 @@ export class BuildError extends Error {
       `Failed to create archive for ${target}: ${reason}`,
       BuildErrorCode.ARCHIVE_FAILED,
       { target, reason }
-    );
-  }
-
-  /**
-   * Creates an error for shared files that differ between targets.
-   *
-   * @param {string[]} problems - One description per differing or missing file.
-   * @returns {BuildError}
-   */
-  static sharedFilesDiffer(problems) {
-    return new BuildError(
-      `Shared files differ between targets:\n  ${problems.join('\n  ')}`,
-      BuildErrorCode.SHARED_FILES_DIFFER,
-      { problems }
     );
   }
 }

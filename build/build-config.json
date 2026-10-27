@@ -29,7 +29,7 @@
       "bundleName": "claude.zip",
       "directories": {
         "skills": ".claude/skills",
-        "guides": ".agents/apm-guides"
+        "guides": ".claude/apm-guides"
       },
       "postInstallNote": null
     }
