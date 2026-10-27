@@ -4,7 +4,7 @@
 
 **Reading agent:** Non-APM participant
 
-Use the Message Bus to contribute work without becoming an APM Worker. Receive assignments and report results; do not write Memory logs, perform Handoff or join Worker tracking. Your reports carry your contribution to the Manager.
+Use the Message Bus to contribute work without becoming an APM Worker. Receive assignments and report results; do not write Memory logs, perform Handoff or join the Tracker's Workers table. Your reports carry your contribution to the Manager.
 
 ## 2. Setup
 

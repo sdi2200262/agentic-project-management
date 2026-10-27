@@ -4,23 +4,23 @@
 
 **Reading agent:** Manager
 
-Review Task evidence, determine outcomes, update planning documents when warranted, and maintain the Tracker. After a Stage finishes, verify it when needed and append its summary to the Index.
+Review Task evidence, determine outcomes, update planning documents when warranted, and maintain the Tracker. After a Stage finishes, verify it when needed and write its summary and add it to the Memory Index.
 
 ## 2. Operational Standards
 
 ### 2.1 Task Log Review Standards
 
-Compare status/flags with the log body and deliverables. Success requires the objective and all validation to be complete; Partial needs guidance; Failed means the objective was not achieved. Read the whole log, including Validation and Issues, and check each statement against the status. A Success log that says a criterion was not run, failed or was replaced by a weaker check is inconsistent. Do not settle the conflict with other evidence yourself: tell the User what conflicts, send the Worker a follow-up to run the check or explain the gap, and keep the Task Active until it answers.
+Compare the status and `important_findings` with the log body and deliverables. Success requires the objective and all validation to be complete; Partial needs guidance; Failed means the objective was not achieved. Read the whole log, including Validation and Important Findings, and check each statement against the status. A Success log that says a criterion was not run, failed or was replaced by a weaker check is inconsistent. Do not settle the conflict with other evidence yourself: tell the User what conflicts, send the Worker a follow-up to run the check or explain the gap, and keep the Task Active until it answers.
 
-Interpret scoped flags with project context. `important_findings` can affect other work, reveal missing validation or record a User correction. When the log says the User approved a Rules addition, check the Worker's `AGENTS.md` change in the diff and keep it. When the User declined, don't add it to the Rules without asking the User. `compatibility_issues` can indicate Spec, Plan or Rules problems. If findings contradict a planning document, correct that document through §3.4 even when the Worker already handled the local issue.
+Interpret Important Findings with project context. They can affect other work, reveal missing validation, record a User correction, or show conflicts that point to Spec, Plan or Rules problems. When the log says the User approved a Rules addition, check the Worker's `AGENTS.md` change in the diff and keep it. When the User declined, don't add it to the Rules without asking the User. If findings contradict a planning document, correct that document through §3.4 even when the Worker already handled the local issue.
 
 ### 2.2 Review Outcome Standards
 
-Accept a supported Success with no flags. Investigate flags and non-Success outcomes before deciding. A Success log that contradicts its own validation is not yours to resolve: follow §2.1 and wait for the Worker's answer, even if other evidence looks sufficient. Check contained issues directly. For context-intensive or unclear issues, use a subagent to investigate. Give it the investigation goal, files to examine and required findings. Verify critical claims against source.
+Accept a supported Success without Important Findings. Investigate Important Findings and non-Success outcomes before deciding. A Success log that contradicts its own validation is not yours to resolve: follow §2.1 and wait for the Worker's answer, even if other evidence looks sufficient. Check contained issues directly. For context-intensive or unclear issues, use a subagent to investigate. Give it the investigation goal, files to examine and required findings. Verify critical claims against source.
 
 After investigation, proceed if nothing actionable remains, send a refined follow-up if retry is needed, or modify planning documents when their content is wrong. Note uncommitted changes in a non-Success follow-up. When version control is active, commit successful uncommitted work on the Worker's branch using Rules conventions; no follow-up is needed for that alone.
 
-When validation is incomplete or deliverables are partial, issue a follow-up, or, if the User agrees, accept the Partial outcome and record what remains in working notes. Done is terminal. If previously-Done work needs correction, create a new Task through Plan modification, referencing the original and discovery context. Keep a Task Active while investigation, follow-up or a coordination decision is pending. A terminal decision can accept Success, accept a non-Success outcome or restructure work.
+When validation is incomplete or deliverables are partial, issue a follow-up, or, if the User agrees, accept the Partial outcome and record what remains in the Tracker's Notes. Done is terminal. If previously-Done work needs correction, create a new Task through Plan modification, referencing the original and discovery context. Keep a Task Active while investigation, follow-up or a coordination decision is pending. A terminal decision can accept Success, accept a non-Success outcome or restructure work.
 
 Act on small contained follow-ups/corrections and inform the User. Pause for approval when changes exceed your authority per §2.3.
 
@@ -40,29 +40,29 @@ In a wait state, state what was processed, what remains pending and which report
 
 When version control is active, merge the completed dispatch unit's branch into base after successful review. Merge required outputs before dependent dispatch and sweep all current-Stage branches at Stage end. Switch to the recorded base branch before merging; merge and verify autonomously for clean merges.
 
-Resolve conflicts using Task objectives, project design and Spec; for complex conflicts, use a subagent to investigate or seek User help. If branch protection blocks direct merging, adapt through a PR, intermediate branch or User guidance and record the constraint in Tracker working notes.
+Resolve conflicts using Task objectives, project design and Spec; for complex conflicts, use a subagent to investigate or seek User help. If branch protection blocks direct merging, adapt through a PR, intermediate branch or User guidance and record the constraint in the Tracker's Notes.
 
 After a successful merge, remove the assignment’s worktree with `git worktree remove .apm/worktrees/<branch-slug>` if it used one, then delete the merged branch with `git branch -d <branch-name>`. For a multi-branch sweep, batch removals first, then deletions in one terminal invocation.
 
 ### 2.6 Stage Summary Standards
 
-Keep Stage summaries concise for future Managers and retrospectives: outcome, Workers, consequential findings, decisions and patterns, with useful commit references. Refer to Memory notes for enduring guidance and summarize Stage-specific history once. Include historically important implementation events from working notes, but leave detailed implementation in Task Logs. Finish with log references. Store durable observations in Index Memory notes per §2.7.
+Keep Stage summaries concise for future Managers and retrospectives: outcome, Workers, consequential findings, decisions and patterns, with useful commit references. Refer to the Index's Notes for lasting guidance and summarize Stage-specific history once, including changes to the Spec or Plan. Include important implementation events from the Tracker's Notes, but leave detailed implementation in Task Logs. Finish with log references. Store lasting observations in the Index's Notes per §2.7.
 
 ### 2.7 Note-Taking Standards
 
-Use self-contained bullets. Tracker working notes hold current coordination context: pending considerations, preferences, constraints, observations and review patterns. Add useful findings and remove stale notes throughout the Stage.
+Use self-contained bullets. The Tracker's Notes hold current coordination context: pending considerations, preferences, constraints, observations and review patterns. Add useful findings and remove stale notes throughout the Stage.
 
-At Stage end, promote observations with lasting impact on future work to Index Memory notes. Put historical Stage-specific details into summary prose. Retain working notes still needed for the next Stage. New findings from the final review can go directly to these destinations.
+At Stage end, move observations with lasting impact on future work to the Index's Notes. Put historical Stage-specific details into the Stage summary. Keep the Tracker's Notes still needed for the next Stage. New findings from the final review can go directly to these destinations.
 
 ### 2.8 Stage Verification Standards
 
-After all Tasks are Done, assess holistic verification before the summary. Use User-confirmed needs, review difficulties/flags/follow-ups, edge cases, compatibility concerns, Planner notes and accumulated observations. Verify when the User asked for it, the Plan's notes name this Stage, or any Task in the Stage needed a follow-up or set a flag. Otherwise you may skip it; say so in the Stage summary.
+After all Tasks are Done, assess holistic verification before the summary. Use User-confirmed needs, review difficulties, Important Findings, follow-ups, edge cases, the Plan's Notes and accumulated observations. Verify when the User asked for it, the Plan's notes name this Stage, or any Task in the Stage needed a follow-up or reported Important Findings. Otherwise you may skip it; say so in the Stage summary.
 
 When verifying, rerun key checks, examine source/artifacts and exercise integration/edge cases at the project's established validation level. For context-intensive checks, use a subagent and verify its findings. Fix contained issues, delegate focused investigation, create a new Task for Worker-level work, or seek User direction when scope is unclear. Pause for required User judgment or action.
 
 ### 2.9 Non-APM Agent Reports
 
-Reports from agents absent from Worker tracking have no Task Log or dispatch state to update. Assess the contribution and its effect on planning/dispatch, record the agent and contribution in working notes, and inform the User. Assign follow-ups per `{GUIDE_PATH:task-assignment}` §2.7.
+Reports from agents absent from the Workers table have no Task Log or dispatch state to update. Assess the contribution and its effect on planning/dispatch, record the agent and contribution in the Tracker's Notes, and inform the User. Assign follow-ups per `{GUIDE_PATH:task-assignment}` §2.7.
 
 ## 3. Task Review Procedure
 
@@ -71,31 +71,29 @@ Reports from agents absent from Worker tracking have no Task Log or dispatch sta
 On `apm-5-check-reports` or a delivered report:
 
 1. Read `.apm/bus/<agent-slug>/report.md`. Handle non-APM agents per §2.9.
-2. For `batch: true`, process each executed outcome through log review and outcome determination; return `Not started` Tasks to dispatch assessment.
-3. If a Worker reports a new instance, verify its Handoff Log, increment Worker tracking and compare its loaded log list with all work it previously completed. Record overrides for completed Tasks whose logs were not loaded; these dependencies now need cross-agent context.
-4. Record reported recovery in the Notes column of the Worker Tracking table, without incrementing identity or reclassifying dependencies. Check the report against the Task Log for evidence recovery may have omitted and request missing details. Supply more comprehensive context when future same-agent dependencies need it.
+2. For a batch Task Report, process each executed outcome through log review and outcome determination; return `Not started` Tasks to dispatch assessment.
+3. If the report's `conversation` is higher than the Worker's number in the Workers table, the Worker had a Handoff. Verify its Handoff Log and update the number. The new conversation read only current-Stage Task Logs, so list the Worker's Tasks from earlier Stages under Not Read Since Handoff per §4.2.
+4. Record a reported recovery in the Notes column of the Workers table, without changing its Conversation number or reclassifying dependencies. Check the report against the Task Log for evidence recovery may have omitted and request missing details. Supply more comprehensive context when future Same-Worker dependencies need it.
 5. Note Worker availability and completed items for readiness assessment. Continue to log review before merging or accepting the result.
 
 ### 3.2 Task Log Review
 
-Read the referenced Task Log and apply §2.1. Explain the material findings, consistency with evidence, relevant flags and proposed next action. Use the detail needed for the User to assess that conclusion.
+Read the referenced Task Log and apply §2.1. Explain the material findings, consistency with evidence, relevant Important Findings and proposed next action. Use the detail needed for the User to assess that conclusion.
 
 ### 3.3 Review Outcome
 
 1. Assess deliverables against objectives and validation per §2.2. Commit successful uncommitted work when version control is active.
 2. Investigate issues; for a Success log that contradicts its own validation, follow §2.1 instead. Proceed if resolved, construct a follow-up per `{GUIDE_PATH:task-assignment}` §3.4, or apply §3.4 below for document changes.
-3. Update the Tracker per §4.1 after review/decisions. Keep unresolved work Active and mark terminal outcomes Done. Merge per §2.5 before reassessing dependencies. Update readiness, branch state and working notes; batch review/dispatch changes into one Tracker edit.
+3. Update the Tracker per §4.1 after review/decisions. Keep unresolved work Active and mark terminal outcomes Done. Merge per §2.5 before reassessing dependencies. Update readiness, branch state and the Tracker's Notes; batch review/dispatch changes into one Tracker edit.
 4. If the Stage is Done and merged, continue to §3.5. Otherwise dispatch Ready Tasks in the same turn per `{GUIDE_PATH:task-assignment}` §3.1, or state the wait condition and next report needed.
 
 ### 3.4 Planning Document Modification
 
-1. Capture the triggering log, findings, status/flags and investigation result.
+1. Capture the triggering log, findings, status, Important Findings and investigation result.
 2. Assess affected documents, cascade effects and authority per §2.3.
 3. For significant changes, present the problem, proposed change, reasons, material options and recommendation; wait for User guidance before modifying.
-4. Update documents per §4.5 and check source references, terminology and scope consistency. When changing Spec content, check and update Plan references as needed.
-5. Update the Dependency Graph for changed Tasks/dependencies.
-6. Update Spec/Plan `modified` fields per §4.4.
-7. Return to §3.3 step 3 for tracking and readiness updates.
+4. Update documents per §4.4 and check source references, terminology and scope consistency. When changing Spec content, check and update Plan references as needed.
+5. Return to §3.3 step 3 for tracking and readiness updates.
 
 ### 3.5 Stage Summary Creation
 
@@ -103,128 +101,104 @@ After all Tasks are Done with no outstanding follow-ups:
 
 1. List the Stage's Task Logs. Use reviewed logs still in context; reread when changed or unavailable.
 2. Assess and perform warranted verification per §2.8 before continuing.
-3. Distill working notes per §2.7.
-4. Append the summary per §4.3. Memory notes and the summary can be written in one Index edit.
+3. Sort the Tracker's Notes per §2.7.
+4. Write the Stage summary and add its row to the Memory Index per §4.3, with any lasting notes in the same Index edit.
 5. Collapse the Stage's tracking per §4.1, now that verification can no longer add Tasks to it.
 
 ## 4. Structural Specifications
 
 ### 4.1 Task Tracking Format
 
-The Task Tracking section within the Tracker tracks Task statuses, agent assignments, and branch state per Stage. Update after each review cycle.
+The `## Tasks` section of the Tracker holds each Stage's Task states. Update it after each review cycle.
 
-**Location:** `## Task Tracking` section of `.apm/tracker.md`.
-
-**Format:**
 ```markdown
 **Stage 1:** Complete
 
 **Stage 2:**
 
-| Task | Status | Agent | Branch |
-|------|--------|-------|--------|
-| 2.1 | Done | frontend-agent | |
-| 2.2 | Active | backend-agent | feat/backend-models |
-| 2.3 | Active | frontend-agent | feat/frontend-auth |
-| 2.4 | Waiting: 2.1 | backend-agent | |
-| 2.5 | Ready | frontend-agent | |
+| Task | Agent | Status | Branch | Worktree |
+|------|-------|--------|--------|----------|
+| 2.1 | frontend-agent | Done | | |
+| 2.2 | backend-agent | Active | feat/backend-models | .apm/worktrees/feat-backend-models |
+| 2.3 | frontend-agent | Done | feat/frontend-auth | |
+| 2.4 | backend-agent | Waiting: 2.1 | | |
+| 2.5 | frontend-agent | Ready | | |
 ```
 
-**Task statuses:** `Ready`, `Active`, `Done`, `Waiting: <deps>`.
+Task statuses:
 
-**Task lifecycle:**
+- `Waiting: N.M`: dependencies are not met. It may list several.
+- `Ready`: all dependencies are complete and the Task can be dispatched.
+- `Active`: dispatched; the Worker is on the Task.
+- `Done`: reviewed. A Branch value means the branch still awaits merging.
 
-- `Waiting: N.M` - dependencies not met. May list multiple dependencies.
-- `Ready` - all dependencies complete, can be dispatched.
-- `Active | branch-name` - dispatched, Worker is on a branch.
-- `Done | branch-name` - reviewed, branch pending merge.
-- `Done` (no branch) - merged.
+Write each Task's state at the end of the review and dispatch cycle. When a Task is unblocked and dispatched in the same turn, write it from Waiting straight to Active. When it is unblocked but cannot be dispatched yet, because its Worker has an Active Task or a pending report would allow a better dispatch per `{GUIDE_PATH:task-assignment}` §2.4, write Ready.
 
-Write the end state of each Task for the review-dispatch cycle. When a Task is unblocked and dispatched in the same turn, write directly from Waiting to Active. When a Task is unblocked but cannot be dispatched - the assigned Worker has an Active Task or a pending report would unlock a better dispatch per `{GUIDE_PATH:task-assignment}` §2.4 Dispatch Standards - write Ready.
-
-**Branch cleanup:** After merging a completed branch per §2.5 Merge Standards, clear the Branch column for that Task row.
-
-**Stage collapse:** When all Tasks in a Stage are Done, no branches remain and its Stage summary is written, replace all Task rows with `**Stage N:** Complete`.
-
-**Batch edits:** Batch related Tracker rows and working-note updates into one edit.
+After merging a branch per §2.5, clear the Task's Branch and Worktree. When all Tasks in a Stage are Done, no branches remain and its Stage summary is written, replace the Stage's rows with `**Stage N:** Complete`. Make related Tracker changes in one edit.
 
 ### 4.2 Tracker Format
 
-**Location:** `.apm/tracker.md`
+The Tracker is `.apm/tracker.md`:
 
-**YAML Frontmatter Schema:**
-```yaml
----
-title: <project name>
-completed_at: <datetime>  # set by Manager at project completion - absence means in-progress, ISO 8601 UTC
----
-```
-
-**Tracker sections:**
-
-- *`## Task Tracking`:* Per-Stage Task state per §4.1 Task Tracking Format.
-- *`## Worker Tracking`:* Records Worker states, instance numbers, and coordination notes. Update Worker tracking when Workers are first dispatched to, when Handoffs are detected, and when a Worker recovery is reported. Cross-agent overrides are recorded below the Worker table when Worker Handoffs reclassify dependencies, listing the specific Tasks affected and referencing the Handoff that triggered the reclassification.
-- *`## Version Control`:* Per-repository base branch, branch convention, and commit convention per `{GUIDE_PATH:task-assignment}` §4.4 Tracker VC Entry Format. Branch state is tracked per-Task in the Task table's Branch column.
-- *`## Working Notes`:* Ephemeral coordination context per §2.7 Note-Taking Standards. Contents are inserted and removed as context evolves.
-
-**Worker Tracking Table:**
 ```markdown
-| Agent | Instance | Notes |
-|-------|----------|-------|
-| frontend-agent | 2 | Handoff after Stage 1 |
-| backend-agent | 1 | |
+# APM Tracker
+
+## Tasks
+<Per §4.1>
+
+## Workers
+
+| Agent | Conversation | Not Read Since Handoff | Notes |
+|-------|--------------|------------------------|-------|
+| frontend-agent | 2 | 1.1, 1.3 | |
+| backend-agent | 1 | | Recovered during Task 2.2 |
+
+## Notes
+<The Tracker's notes: current coordination context, per §2.7>
 ```
 
-**Cross-Agent Overrides** (below Worker Tracking table, when applicable):
+Add a Worker row when you first dispatch to it. Update its Conversation when a report shows a Handoff, and record a recovery in Notes. Not Read Since Handoff lists the Worker's Tasks from earlier Stages, whose logs its current conversation has not read; treat dependencies on them as Cross-Worker.
+
+### 4.3 Memory Index Format
+
+The Memory Index is `.apm/memory/index.md`:
+
 ```markdown
-**Cross-Agent Overrides:**
-- frontend-agent: Tasks 1.1, 1.3 (pre-Handoff) - treat as cross-agent
+# APM Memory Index
+
+## Notes
+<The Index's notes: lasting observations for later Stages and conversations, per §2.7>
+
+## Stage Summaries
+
+| Stage | Summary | Folder |
+|-------|---------|--------|
+| 1 - <Stage Name> | <The Stage's outcome in one or two sentences> | `stage-01/` |
 ```
 
-### 4.3 Index Format
+Each Stage's full summary is `.apm/memory/stage-<NN>/stage-<NN>.summary.md`, beside its Task Logs:
 
-**Location:** `.apm/memory/index.md`
-
-**YAML Frontmatter Schema:**
-```yaml
----
-title: <project name>
----
-```
-
-**Index sections:**
-
-- *`## Memory Notes`:* Durable observations per §2.7 Note-Taking Standards. Patterns, preferences, and insights that persist across Handoffs.
-- *`## Stage Summaries`:* Appended after each Stage completion. Each entry:
 ```markdown
-### Stage <N> - <Stage Name>
+# Stage <N> - <Stage Name>
 
-[Prose summary: outcome, agents involved, notable findings, patterns, key commits]
+<The outcome, the Workers involved, consequential findings, decisions and patterns, and useful commits>
 
-**Task Logs:**
-- task-<NN>-<MM>.log.md
-- task-<NN>-<MM>.log.md
+## Task Logs
+- `task-<NN>-<MM>.log.md`
 ```
 
-### 4.4 Modification Log Format
+### 4.4 Planning Document Changes
 
-Update the `modified` field in YAML frontmatter when modifying the Spec or Plan:
-```yaml
-modified: Task 2.3 scope clarified based on task-02-02.log.md findings. Modified by the Manager.
-```
-
-### 4.5 Planning Document Modification Guidelines
-
-**Spec:** Maintain existing section structure. Add content under relevant headings. Use `##` for top-level categories. Keep specifications concrete and actionable - design decisions that affect what is being built and apply across multiple Tasks. Task-specific details belong in Task guidance, not here.
+**Spec:** keep the existing sections and add content under the relevant heading. Keep specifications concrete design decisions that apply across Tasks; Task-specific details belong in the Task's Guidance.
 
 **Plan:**
 
-- *Adding Tasks:* Insert under the appropriate Stage, maintain numbering sequence, specify all fields (Objective, Output, Validation, Guidance, Dependencies, Steps).
-- *Modifying Tasks:* Preserve existing structure, update only affected fields.
-- *Removing Tasks:* Delete the Task section AND update any other Tasks that referenced it as a dependency.
+- Adding a Task: insert it under its Stage, keep the numbering, and give every field per `{GUIDE_PATH:work-breakdown}` §4.2.
+- Changing a Task: update only the affected fields.
+- Removing a Task: delete it and update every Task that lists it as a dependency.
 
-**Rules:** Modifications stay within the `APM_RULES {}` block of `AGENTS.md`. Use `##` headings for categories. Only add genuinely universal patterns.
+**Rules:** change only the inside of the `APM_RULES` block in `AGENTS.md`, under `##` category headings, and add only patterns that apply to all Workers.
 
-**Dependency Graph:** When Task dependencies change, regenerate the relevant graph section. Same-agent dependencies use `-->`, cross-agent use `-.->`. Update node styles if agents change.
+**Notes:** keep the Spec's and the Plan's Notes current. They describe the present situation: update the Plan's Notes when dispatch paths, blockers or the work's structure change, and the Spec's Notes when assumptions or constraints change.
 
----
+Record each change to the Spec or Plan, and why, in the Tracker's Notes. The Stage summary keeps it.

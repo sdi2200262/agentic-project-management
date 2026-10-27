@@ -65,4 +65,4 @@ Resolve an `[agent-id]` argument to `apm-4-check-tasks` or `apm-5-check-reports`
 
 ### 4.3 Agent Slug Format
 
-Convert Plan Worker names to lowercase with hyphens in place of spaces: `Frontend Agent` becomes `frontend-agent`. The Manager directory is `manager`.
+Agent slugs are lowercase and hyphenated, such as `frontend-agent`; the Plan names every Worker by its slug. The Manager's bus folder is `manager`.

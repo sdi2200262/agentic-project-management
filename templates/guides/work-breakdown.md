@@ -16,7 +16,7 @@ The Manager reads Spec and Plan, extracts their content into self-contained Task
 
 Put project decisions in locatable Spec sections. Task guidance adds domain-specific constraints and implementation context; reference relevant Spec or authoritative User-document sections. The Manager embeds that content when assigning work. Rules must stand alone without references to Spec, Plan or external design documents.
 
-The Manager handles dispatch, version control conventions and holistic verification. Record observations for its judgment in blockquote notes after the Spec/Plan header separator. Spec notes cover environment, working/reference repositories, version control observations, workspace constraints and User preferences. Plan notes cover boundaries, sequencing, critical paths, convergence and Stage verification opportunities. Notes explain observations and reasons, not runtime directives.
+The Manager handles dispatch, version control conventions and holistic verification. Record observations for its judgment in the Notes sections of the Spec and the Plan; the Manager keeps both current during implementation. The Spec's Notes cover what shapes the design without being a decision: version control observations, workspace constraints, User preferences, and assumptions or open questions. The Plan's Notes cover the work's structure: good dispatch paths, likely blockers, the critical path, convergence points and Stages that may need verification as a whole. Notes explain observations and reasons, not runtime directives.
 
 ### 2.2 Decomposition Principles
 
@@ -37,7 +37,7 @@ Reference authoritative requirement documents with paths/sections. Record the wo
 
 The Plan defines Stages, Tasks, Workers, dependencies, guidance, steps, outputs and validation. Task definitions must supply enough planning substance for the Manager to construct self-contained assignments.
 
-Keep guidance separate from ordered steps. Reference relevant Spec/source sections for design content and add domain-specific context. Prefer boundaries and ordering that support independent work, same-Worker chains and cross-Worker parallelism where appropriate; the Manager chooses dispatch modes at runtime.
+Keep guidance separate from ordered steps. Reference relevant Spec/source sections for design content and add domain-specific context. Prefer boundaries and ordering that support independent work, Same-Worker chains and Cross-Worker parallelism where appropriate; the Manager chooses dispatch modes at runtime.
 
 ### 2.5 Rules Standards
 
@@ -52,20 +52,20 @@ Handle one document at a time, in order: Spec, then Plan, then Rules. For each, 
 ### 3.1 Spec Proposal
 
 1. Propose the design decisions, constraints, source references and organization needed for the Spec. Explain consequential choices, assumptions and content-placement boundaries. Include workspace structure from Context Gathering.
-2. Read `.apm/spec.md` and write the Spec per §4.1. Set `title` to the project name and `modified` to “Spec creation by the Planner.” Keep the Overview to 3–5 sentences covering project type, problem, scope and success criteria.
+2. Read `.apm/spec.md` and write the Spec per §4.1.
 3. Ask the User to review the artifact. Apply requested corrections and ask again; on approval continue to the Plan.
 
 ### 3.2 Plan Proposal
 
 1. Propose Workers and their domains, sequential Stages and deliverables, and the Tasks needed for each. Explain material boundaries, sequencing and dependencies so the User can assess the breakdown.
 2. Define each Task's Worker, objective/scope, guidance, output, validation, dependencies and ordered steps. Include needed User involvement. Reference Spec/source sections for design content and add Task-specific implementation context. Identify the deliverable at each dependency boundary.
-3. Verify coverage against gathered context and the approved Spec, independent Task validation, reasonable workload distribution and dependency consistency. A producer with a different Worker is a cross-agent dependency. Correct misclassifications and missing work; prepare useful Plan notes.
-4. Read `.apm/plan.md` and write it per §4.2, including the Dependency Graph. Match the Spec's `title`; set `modified` to “Plan creation by the Planner.” Bold cross-agent dependencies and use the prescribed graph edges.
+3. Verify coverage against gathered context and the approved Spec, independent Task validation, reasonable workload distribution and dependency consistency. A producer with a different Worker is a Cross-Worker dependency. Correct misclassifications and missing work; prepare useful Plan notes.
+4. Read `.apm/plan.md` and write it per §4.2.
 5. Ask for review with a brief overview of Workers, Stages, Task counts and which work can run in parallel. Correct and repeat review as needed; on approval continue to Rules.
 
 ### 3.3 Rules Proposal
 
-1. Propose execution patterns that apply across all or most work, drawing from the approved documents and gathered context. Keep design/output content in Spec or Task guidance; leave version control conventions to the Manager. Explain consequential inclusions or exclusions and identify existing standards to reference.
+1. Propose execution patterns that apply across all or most work, drawing from the approved documents and gathered context. Keep design/output content in Spec or Task guidance; leave version control conventions to the Manager, which adds them to the Rules at its first start. Explain consequential inclusions or exclusions and identify existing standards to reference.
 2. Read `AGENTS.md` or confirm its absence. Write the APM_RULES block per §4.3, preserving outside content. If creating the file, write only the block.{CLAUDE_ONLY: If the project has a `CLAUDE.md`, add `@AGENTS.md` at its top so Claude Code loads the Rules.}
 3. Ask the User to review. Apply corrections and request approval again as needed. After approval, continue to `{SKILL_PATH:apm-1-initiate-planner}` §5 Planning Phase Completion.
 
@@ -73,97 +73,69 @@ Handle one document at a time, in order: Spec, then Plan, then Rules. For each, 
 
 ### 4.1 Spec Format
 
-**Location:** `.apm/spec.md`
+The Spec is `.apm/spec.md`. An APM session may build a whole project or one part of it, so the Spec describes what this session builds.
 
-**YAML Frontmatter Schema:**
-```yaml
----
-title: <project name>
-modified: <last modification note>
----
+```markdown
+# APM Spec
+
+## Overview
+<In three to five sentences: what this APM session builds, the problem it solves, its scope and its success criteria>
+
+## Workspace
+<The directory structure, working and reference repositories, authoritative documents and existing `AGENTS.md` content. The Manager later adds each repository's base branch.>
+
+## <Design Section>
+<Design decisions for one part of the work>
+...
+
+## Notes
+<Observations for the Manager per §2.1: version control, workspace constraints, User preferences, assumptions and open questions>
 ```
 
-Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, authoritative document locations, and existing `AGENTS.md` content). A single horizontal rule separates the header from the design decision content below. Use headings to separate content sections.
-
-- *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Use the format `> **Notes:** <prose or unordered list>`; remove the Notes line when there are no notes. These cover the project environment the Manager will encounter per §2.1 Workflow Context - version control observations, workspace constraints, and User preferences that affect execution.
-
-**Content structure:** Free-form below the header. Organize into sections that reflect the project's natural structure - its domains, components, boundaries, or technical concerns. Related design decisions share a section; cross-cutting choices get their own. Write the Spec as a coherent description of what is being built and why, shaped by the project's unique requirements.
-
-**Content rules:** Use markdown headings (`##`) to organize decision groups. Each specification must be concrete and actionable. Structure for extraction - the Manager distills relevant content into individual Task Prompts, so make decisions locatable and separable. Reference existing User documents with paths and specific sections so the Manager can locate source material during Task Assignment. Use tables for enumerated values, mermaid diagrams for relationships, code blocks for schemas, prose for rationale.
+Between Workspace and Notes, organize the decisions into sections that follow the work's natural structure: its domains, components, boundaries or technical concerns. Related decisions share a section; cross-cutting choices get their own. Make each decision concrete and easy to find, since the Manager extracts it into Task Prompts. Reference User documents by path and section. Use tables for enumerated values, code blocks for schemas and prose for reasons.
 
 ### 4.2 Plan Format
 
-**Location:** `.apm/plan.md`
+The Plan is `.apm/plan.md`. Name Workers by agent slug, such as `frontend-agent`, everywhere in the Plan.
 
-**YAML Frontmatter Schema:**
-```yaml
----
-title: <project name>
-modified: <last modification note>
----
-```
-
-Below the frontmatter, the document starts with `# APM Plan` followed by the Plan header: `## Workers` (table with `| Worker | Domain | Description |`), `## Stages` (table with `| Stage | Name | Tasks | Agents |`), and `## Dependency Graph` (mermaid diagram per **Dependency Graph Format** below). The Plan’s only horizontal rule separates the header from Stage sections below. Use headings to separate Stages and Tasks.
-
-- *Planner notes:* Placed immediately after the horizontal rule separator, before Stage sections. Use the format `> **Notes:** <prose or unordered list>`; remove the Notes line when there are no notes. These cover what you observed about the work structure per §2.1 Workflow Context - why boundaries exist, natural groupings or sequencing patterns, critical path, convergence points, and Stage boundaries where holistic verification may be valuable.
-
-**Stage Format.** Each Stage in the Plan:
-
-- *Header:* `## Stage N: [Name]`
-- *Naming:* Stage names reflect domain(s), objectives, and main deliverables.
-- *Contents:* Tasks per **Task Format**, each containing steps per **Step Format**.
-
-**Task Format.** Each Task in the Plan:
-
-*Header:* `### Task <N>.<M>: <Title> - <Domain> Agent`
-
-*Contents:*
 ```markdown
-* **Objective:** [Single-sentence Task goal.]
-* **Output:** [Concrete deliverables - files, components, artifacts produced.]
-* **Validation:** [Concrete pass/fail criteria. Note where User involvement is needed.]
-* **Guidance:** [Technical constraints, approach specifications, references to existing patterns, User collaboration patterns.]
-* **Dependencies:** [Prior Task outputs required. Use `Task N.M by <Domain> Agent, ...` format. Bold cross-agent dependencies. Use "None" when no dependencies exist.]
+# APM Plan
 
-1. [Step description]
-2. [Step description]
+<One or two sentences on what this APM session builds>
+
+## Workers
+
+| Agent | Domain | Description |
+|-------|--------|-------------|
+| frontend-agent | <Domain> | <What it works on> |
+
+## Stages
+
+| Stage | Name | Tasks | Agents |
+|-------|------|-------|--------|
+| 1 | <Name> | 1.1–1.3 | frontend-agent, backend-agent |
+
+## Notes
+<Observations for the Manager per §2.1: good dispatch paths, likely blockers, the critical path, convergence points and Stages that may need verification as a whole>
+
+## Stage 1: <Name>
+
+### Task 1.1: <Title>
+
+- **Agent:** <agent-slug>
+- **Objective:** <The Task's goal in one sentence>
+- **Dependencies:** <Task N.M (Same-Worker); Task N.M by <agent-slug> (Cross-Worker); or None>
+- **Output:** <Concrete deliverables: files, components, artifacts>
+- **Validation:** <Concrete pass/fail checks, and where the User is needed>
+- **Guidance:** <Technical constraints, approach, references to existing patterns and Spec sections>
+
+1. <Step>
+2. <Step>
 ```
 
-**Step Format:** Each step is a numbered instruction describing a discrete operation. Steps are sequential operations; Guidance is context and constraints that inform how those operations are performed. Keep them separate - steps reference Guidance implicitly, not by embedding it. Include clear, specific instructions that a Worker can execute directly. Reference patterns, files, or prior work when relevant. When investigation, exploration or research is needed, include a step directing the Worker to use a subagent, with its purpose, scope and expected findings. For example: “Use a subagent to isolate the rendering issue” or “Use a subagent to verify the current API authentication patterns.”
+Stage names reflect the Stage's domains, objectives and main deliverables. List only direct dependencies.
 
-**Dependency Graph Format:** The Dependency Graph is a mermaid diagram in the Plan header that visualizes Task dependencies, agent assignments, and execution flow. It enables the Manager to identify batch candidates, parallel dispatch opportunities, critical path bottlenecks, and coordination points.
-
-*Graph structure:*
-```mermaid
-graph TB
-
-subgraph S1["Stage 1: <Name>"]
-  direction LR
-  T1_1["1.1 <Title><br/><i><Agent A></i>"] --> T1_2["1.2 <Title><br/><i><Agent A></i>"]
-end
-
-subgraph S2["Stage 2: <Name>"]
-  direction LR
-  T2_1["2.1 <Title><br/><i><Agent B></i>"]
-  T2_2["2.2 <Title><br/><i><Agent C></i>"]
-end
-
-T1_2 -.-> T2_1
-T1_2 -.-> T2_2
-
-style T1_1 fill:#2d6a4f,color:#000
-style T1_2 fill:#2d6a4f,color:#000
-style T2_1 fill:#f4a261,color:#000
-style T2_2 fill:#a8dadc,color:#000
-```
-
-The graph makes dispatch patterns visible to the Manager: same-agent chains indicate batch candidates, independent cross-agent nodes indicate parallel candidates, and dotted edges mark cross-agent coordination points where one Worker's output feeds another's input.
-
-*Node format:* `T<Stage>_<Task>["<Task ID> <Title><br/><i><Agent Name></i>"]`
-
-*Edge rules.* Same-agent dependencies use `-->` (solid). Cross-agent dependencies use `-.->` (dotted). Only direct dependencies - do not draw transitive closure.
-
-*Styling:* Assign each agent a consistent fill color across all its Task nodes. Apply colors via `style T<S>_<T> fill:<color>` statements after all subgraphs, ordered by Worker appearance in the Plan Workers field. Use text color #000 and select fill colors with sufficient contrast for readability.
+Each step is one operation, in order. Guidance holds the context and constraints that shape the steps; keep it out of the steps themselves. Write steps a Worker can carry out directly, referring to patterns, files or earlier work where relevant. When the Task needs investigation or research, include a step that uses a subagent and states its purpose, scope and expected findings, such as "Use a subagent to verify the current API authentication patterns."
 
 ### 4.3 APM_RULES Block
 

@@ -30,7 +30,6 @@ Read `{SKILL_PATH:apm-communication}`.
 ```yaml
 ---
 date: <YYYY-MM-DDTHH:MM:SSZ>
-project: <project name>
 stages_completed: <number>
 total_tasks: <number>
 outcome: <complete | partial | incomplete>
@@ -40,18 +39,17 @@ outcome: <complete | partial | incomplete>
 *Field descriptions:*
 
 - `date`: string, required, ISO 8601 datetime of summary creation (includes date and time).
-- `project`: string, required, project name from the Spec.
 - `stages_completed`: integer, required, number of completed Stages.
 - `total_tasks`: integer, required, total Tasks across all Stages.
-- `outcome`: enum, required, derived from session state. `complete` when the Tracker's YAML frontmatter contains `completed_at` (Manager has authoritatively confirmed). `partial` when `stages_completed >= 1` (at least one Stage finished). `incomplete` when `stages_completed == 0` (no Stages finished).
+- `outcome`: enum, required, derived from session state. `complete` when the Tracker marks every Stage in the Plan Complete. `partial` when `stages_completed >= 1` (at least one Stage finished). `incomplete` when `stages_completed == 0` (no Stages finished).
 
 *Body sections* (order as listed):
 
-- *Project Scope:* What was being built and why, from the Spec.
+- *Scope:* What this APM session built and why, from the Spec.
 - *Stages and Outcomes.* Per-Stage summary: objective, Tasks completed, notable results.
 - *Key Deliverables:* Primary outputs with file paths or descriptions.
 - *Codebase State.* Compare the actual codebase against the planning artifacts: which planned deliverables exist as code, which are partial or missing, whether the code evolved past what the Spec and Plan describe, and any gaps between what was planned and what was implemented.
-- *Notable Findings:* Operational lessons and patterns - issues encountered and how they were resolved, self-corrections during execution, recovery events, coordination insights. Draw from Memory notes, working notes, and Task Logs.
+- *Notable Findings:* Operational lessons and patterns - issues encountered and how they were resolved, self-corrections during execution, recovery events, coordination insights. Draw from the Index's and the Tracker's Notes and the Task Logs.
 - *Known Issues:* Unresolved problems, open questions, or caveats.
 - *Sources:* Who wrote the summary (an agent in a new chat, or the active Manager) and which sections or Stages come from its own memory of the work and which from files, naming the files.
 - *Snapshot Notice:* "This summary reflects the session state as of `<datetime>`. The codebase may have diverged since this summary was created."
@@ -71,7 +69,7 @@ outcome: <complete | partial | incomplete>
 
 - *Archive:* directory name (e.g., `session-2026-03-04-001`).
 - *Date:* ISO date of archival.
-- *Scope:* brief project description (from session summary or Spec title).
+- *Scope:* what the session built, in brief (from the session summary or the Spec's Overview).
 - *Stages:* number of completed Stages.
 - *Tasks:* total Tasks.
 

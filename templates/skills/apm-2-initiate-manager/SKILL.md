@@ -31,18 +31,16 @@ Read every file listed in §2 in full.
 
 ### 2.1 First Manager Initiation
 
-1. Replace `<Project Name>` in Tracker and Index with the project name.
-2. Explore each working repository identified in the Spec. If a working repository has no git, ask the User whether to initialize it; treat a refusal as version control declined. Inspect current/available branches, recent commits and conventions; confirm the intended base rather than assuming the current branch. Note potentially stale worktrees or orphaned branches for the User. If `.apm/` is inside a repository, add it to `.gitignore` by default and ask whether to track any artifacts; adjust accordingly.
-3. Present an understanding summary and proposed version control conventions together. Cover scope, key decisions/constraints, notable Rules, Workers, Stages/Task count, which work can run in parallel and possible Stage verification needs. Check the blockquote after the Plan header separator for Planner version-control notes, and combine them with current repository evidence and relevant Spec observations. Explain the default model: a branch per assignment, Worker commits, Manager merges and isolated parallel worktrees, with no pushes by default. Propose observed conventions or defaults (`type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test, chore), and confirm each base branch. If version control was declined, confirm that choice and explain parallel dispatch is unavailable.
-4. Ask for approval of the understanding and conventions. Incorporate corrections and ask again. After approval, write per-repository VC rows in the Tracker, universal commit conventions in the `APM_RULES` block of `AGENTS.md`, Stage 1 Task tracking per `{GUIDE_PATH:task-review}` §4.1, and all Workers as uninitialized. Construct the first dispatch per `{GUIDE_PATH:task-assignment}` §3.1 and continue coordination.
+1. Explore each working repository identified in the Spec. If a working repository has no git, ask the User whether to initialize it; treat a refusal as version control declined. Inspect current/available branches, recent commits and conventions; confirm the intended base rather than assuming the current branch. Note potentially stale worktrees or orphaned branches for the User. If `.apm/` is inside a repository, add it to `.gitignore` by default and ask whether to track any artifacts; adjust accordingly.
+2. Present an understanding summary and proposed version control conventions together. Cover scope, key decisions/constraints, notable Rules, Workers, Stages/Task count, which work can run in parallel and possible Stage verification needs. Read the version control observations in the Spec's Notes and combine them with current repository evidence. Explain the default model: a branch per assignment, Worker commits, Manager merges and isolated parallel worktrees, with no pushes by default. Propose observed conventions or defaults (`type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test, chore), and confirm each base branch. If version control was declined, confirm that choice and explain parallel dispatch is unavailable.
+3. Ask for approval of the understanding and conventions. Incorporate corrections and ask again. After approval, add each repository's base branch to the Spec's Workspace section, write the branch and commit conventions in the `APM_RULES` block of `AGENTS.md`, and write Stage 1 Task tracking per `{GUIDE_PATH:task-review}` §4.1. Construct the first dispatch per `{GUIDE_PATH:task-assignment}` §3.1 and continue coordination.
 
 ### 2.2 Incoming Manager Initiation
 
 1. Summarize current state from Tracker and Index: completed/current Stages, issues and relevant notes.
-2. Read the Handoff Bus prompt.
-3. Resolve instance identity and load the Handoff Log and Task Logs it specifies. Check what they say about branches, merges, Worker buses and pending reviews against the Tracker, bus files and, when version control is active, git before acting on it. Where they differ, follow the current files and git state.
-4. Clear the Handoff Bus after processing.
-5. Confirm the resumed state and next action, then continue coordination.
+2. Take your conversation number from the Handoff Prompt, and read the Handoff Log and Task Logs it names. Check what they say about branches, merges, Worker buses and pending reviews against the Tracker, bus files and, when version control is active, git before acting on it. Where they differ, follow the current files and git state.
+3. Clear the Handoff Bus after processing.
+4. Confirm the resumed state and next action, then continue coordination.
 
 ## 3. Continuous Coordination
 
@@ -58,13 +56,12 @@ After each review, reassess and dispatch in the same turn when work is Ready. Co
 
 ## 4. Project Completion
 
-1. Set Tracker frontmatter `completed_at` using current UTC from the terminal, for example `date -u +%Y-%m-%dT%H:%M:%SZ`.
-2. Review Stage summaries and present the outcome, Stages/Tasks, Workers, consequential findings and deliverables. Keep detail proportionate to the project. Say which Stages you coordinated and remember yourself, and which you know only from Handoff Logs, Stage summaries or a summary after compaction.
-3. Offer to summarize and archive the session. A summary gives future Planners a snapshot of this project, and archiving moves the session into `.apm/archives/` so a new one can start. Present both ways to do it and let the User choose:
+1. Review Stage summaries and present the outcome, Stages/Tasks, Workers, consequential findings and deliverables. Keep detail proportionate to the project. Say which Stages you coordinated and remember yourself, and which you know only from Handoff Logs, Stage summaries or a summary after compaction.
+2. Offer to summarize and archive the session. A summary gives future Planners a snapshot of this project, and archiving moves the session into `.apm/archives/` so a new one can start. Present both ways to do it and let the User choose:
    - Here: you follow `{SKILL_PATH:apm-8-summarize-session}` in this chat, using the context you already have.
    - In a new chat: the User invokes `apm-8-summarize-session` there. This suits a long conversation, because a fresh agent starts with more room.
    The User can also skip both, or archive without a summary with CLI `apm archive`. CLI `apm init` then begins a fresh session while keeping archives.
-4. If the User chooses to summarize here, read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
+3. If the User chooses to summarize here, read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
 
 ## 5. Handoff Procedure
 
@@ -72,6 +69,6 @@ Watch reports and logs for signs a Worker is losing context: it says its context
 
 ## 6. Operating Rules
 
-Stay at coordination level, using logs and summaries unless investigation or the User requires source-level work. Respect planning modification authority in `{GUIDE_PATH:task-review}` §2.3. Track Worker initiation, Handoffs, recovery and dependency overrides in the Tracker.
+Stay at coordination level, using logs and summaries unless investigation or the User requires source-level work. Respect planning modification authority in `{GUIDE_PATH:task-review}` §2.3. Track each Worker's conversation, recoveries and Not Read Since Handoff in the Tracker's Workers table.
 
 Read only the APM files listed in §2 and the procedures they reference. Do not load other roles' guides or commands beyond those references.

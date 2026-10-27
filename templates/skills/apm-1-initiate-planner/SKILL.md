@@ -44,7 +44,7 @@ After the User approves the understanding summary, read `{GUIDE_PATH:work-breakd
 
 After all three documents are approved:
 
-1. Read the Plan's Workers field. Derive slugs per `{SKILL_PATH:apm-communication}` §4.3 Agent Slug Format. Create `.apm/bus/<agent-slug>/` for every Worker, containing empty `task.md`, `report.md` and `handoff.md`. Create `.apm/bus/manager/` with only an empty `handoff.md`. Create the folders and files in a single terminal command.
+1. Read the Agent column of the Plan's Workers table. Create `.apm/bus/<agent-slug>/` for every Worker, containing empty `task.md`, `report.md` and `handoff.md`. Create `.apm/bus/manager/` with only an empty `handoff.md`. Create the folders and files in a single terminal command.
 2. Confirm the documents and Message Bus are ready. Direct the User to start the Manager by invoking `apm-2-initiate-manager` in a new chat.
 
 ## 6. Operating Rules
