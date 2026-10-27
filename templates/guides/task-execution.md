@@ -2,7 +2,16 @@
 
 This guide covers Task Execution, from receiving a Task Prompt through integrating its dependencies, doing the work, validating it and fixing failures. `{GUIDE_PATH:task-logging}` covers the Task Log and Task Report that follow.
 
-A Task Prompt has these sections: Objective, the Task's goal; Instructions, the steps to take; Context from Dependencies, when the Task builds on earlier Tasks; Workspace, where to work; Output, the deliverables; and Validation, the checks the work must pass. The Objective and Output are authoritative. When an instruction, prerequisite or assumption in the prompt looks wrong, check it against the codebase or other relevant sources, such as documentation. If that does not settle it, ask the User for direction. Then use what you learn to reach the Objective.
+A Task Prompt has these sections:
+
+- **Objective:** the Task's goal.
+- **Instructions:** the steps to take.
+- **Context from Dependencies:** only when the Task builds on earlier Tasks.
+- **Workspace:** where to work.
+- **Output:** the deliverables.
+- **Validation:** the checks the work must pass.
+
+The Objective and Output are authoritative. When an instruction, prerequisite or assumption in the prompt looks wrong, check it against the codebase or other relevant sources, such as documentation. If that does not settle it, ask the User for direction. Then use what you learn to reach the Objective.
 
 ## 1. Task Receipt
 

@@ -43,20 +43,16 @@ Use your assistant's own way to start subagents and new chats. When you use a su
 
 ## 4. Message Bus
 
-The Message Bus is a set of files in `.apm/bus/`, one folder per agent. The Planner creates it at the end of planning. A Worker's folder holds `task.md` for Task Prompts, `report.md` for Task Reports and `handoff.md` for a Handoff Prompt; the Manager's folder, `manager/`, holds only `handoff.md`.
+The Message Bus is a set of files in `.apm/bus/`, one folder per agent. The Planner creates it at the end of planning. Each folder is named by the agent's slug, lowercase and hyphenated, such as `frontend-agent`; the Plan names every Worker by its slug, and a Worker's folder is its identity. A Worker's folder holds `task.md` for Task Prompts, `report.md` for Task Reports and `handoff.md` for a Handoff Prompt; the Manager's folder, `manager/`, holds only `handoff.md`.
 
 A bus file is either empty or holds one message waiting for delivery. After you process an incoming message, clear its file before you write your outgoing one. Read a bus file before writing it, so your file tools accept the write.
 
 An agent outside APM can join the bus without joining the workflow; `{SKILL_DIR:apm-communication}/bus-integration.md` describes how.
 
-### 4.1 Bus Identity
+### 4.1 Agent Slugs
 
-A Worker's identity is its bus folder, `.apm/bus/<agent-slug>/`, set when it registers. Every Task Prompt names the Worker it is for in its `agent` field.
+Every Task Prompt and Task Report names its Worker by slug in its `agent` field. The Manager's folder is `manager`.
 
 ### 4.2 Agent ID Resolution
 
 When the User gives an agent ID with `apm-3-initiate-worker`, `apm-4-check-tasks`, `apm-5-check-reports` or `apm-9-recover`, match it against the bus folder names: an exact match first, then a prefix, then the closest plausible name. Use a unique exact or prefix match directly. Confirm any other single match with the User, and list several plausible matches for the User to choose from. If `.apm/bus/` does not exist, tell the User that planning has not created the Message Bus yet.
-
-### 4.3 Agent Slugs
-
-Agent slugs are lowercase and hyphenated, such as `frontend-agent`. The Plan names every Worker by its slug, and the Manager's folder is `manager`.
