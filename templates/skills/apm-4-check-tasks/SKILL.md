@@ -4,7 +4,7 @@ description: Deliver a Task Prompt to an APM Worker. Use only when the User manu
 disable-model-invocation: true
 ---
 
-# APM {VERSION} - Worker Check Tasks Command
+# APM {VERSION} - Check Tasks
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 

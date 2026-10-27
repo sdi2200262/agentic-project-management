@@ -4,7 +4,7 @@ description: Deliver a Task Report to an APM Manager. Use only when the User man
 disable-model-invocation: true
 ---
 
-# APM {VERSION} - Manager Check Reports Command
+# APM {VERSION} - Check Reports
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 

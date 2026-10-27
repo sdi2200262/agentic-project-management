@@ -2,14 +2,14 @@
 
 These standards guide template authors. Authors implement them in the command skills, shared skills and guides agents read at runtime. Apply them to both the instructions and the output those instructions request. Terms follow `TERMINOLOGY.md`; document and artifact structure follows `STRUCTURE.md`.
 
-## 1. Relation to Elements of Style
+## 1. Principles
 
-APM follows the plain-English rules of the Elements of Style skill for agents: open with the substance, say each point once in everyday words, keep sentences to one main thought, state claims at the certainty the evidence supports, and choose prose, lists or tables by the content. APM adapts those rules where its work needs something else:
+Write plain English: open with the substance, say each point once in everyday words, keep sentences to one main thought, state claims at the certainty the evidence supports, and choose prose, lists or tables by the content. APM text also has needs of its own:
 
-- **Formal terms.** Elements of Style keeps invented terms out. APM defines a small set of formal terms in `TERMINOLOGY.md` so agents can find each part of the workflow and choose between explicit options. Use them exactly as defined and add no other labels.
+- **Formal terms.** `TERMINOLOGY.md` defines a small set of terms so agents can find each part of the workflow and choose between explicit options. Use them exactly as defined and add no other labels.
 - **Fixed formats.** Artifacts and messages follow their contracts, because other agents and the CLI rely on their fields, paths and sections.
 - **Agent readers.** Most runtime text is read by an agent that has the files and the workspace but not the writer's conversation. It needs exact paths, conditions and completion criteria.
-- **Runtime copy.** Agents never read these standards. The rules agents apply when they write live in the `apm-communication` shared skill, so that skill must stay consistent with this file.
+- **Runtime copy.** Agents never read these standards. The writing rules agents apply live in the `apm-communication` shared skill, which stays consistent with this file.
 
 ## 2. Write for the Reader
 
@@ -43,7 +43,7 @@ Give a rule's reason when it helps the reader apply it correctly. Keep examples 
 
 Agents write for three readers. Instructions say what each output must contain for its reader; the shared rules live in `apm-communication`, and each procedure adds only what its own messages need.
 
-- **The User.** Replies follow the Elements of Style chat rules: open with the answer, outcome, finding, proposal or question, give only the details needed to understand or act, and stay within the default reply lengths in `apm-communication` §2 unless the User asks otherwise. Explain an APM term the first time the User meets it, and give reasons about the work rather than citing APM procedures.
+- **The User.** Replies open with the answer, outcome, finding, proposal or question, give only the details needed to understand or act, and stay within the default reply lengths in `apm-communication` §2 unless the User asks otherwise. Explain an APM term the first time the User meets it, and give reasons about the work rather than citing APM procedures.
 - **Other agents.** Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are self-contained for a reader without the writer's conversation. Free text is about the work, not the writer's process: outcomes, decisions with reasons, evidence, open issues and paths. Each fact has one home.
 - **The system.** Bus files, frontmatter and paths follow their contracts exactly, because the CLI, the bus protocol and other agents parse them.
 

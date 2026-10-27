@@ -33,11 +33,11 @@ Sources live under `templates/`:
 
 Names use kebab-case; each skill's `name` matches its directory. Descriptions briefly identify purpose and activation. YAML frontmatter begins on the first line between `---` delimiters, with valid field names, types and quoting.
 
-The build resolves placeholders and copies skills with their source frontmatter. Each target installs into its own folder at the project root, `.claude/` for Claude Code and `.agents/` for the `agents` target, with skills under `skills/` and guides under `apm-guides/`. The build resolves paths for each target, so templates name exact paths and never ask the agent to work out its folder. The Rules live in `AGENTS.md` for every target; Claude Code-only instructions, such as importing `AGENTS.md` into an existing `CLAUDE.md`, go in `{CLAUDE_ONLY:text}`. Prose refers to command skills by name.
+The build resolves placeholders and copies skills with their source frontmatter. Each target installs into its own folder at the workspace root, `.claude/` for Claude Code and `.agents/` for the `agents` target, with skills under `skills/` and guides under `apm-guides/`. The build resolves paths for each target, so templates name exact paths and never ask the agent to work out its folder. The Rules live in `AGENTS.md` for every target; Claude Code-only instructions, such as importing `AGENTS.md` into an existing `CLAUDE.md`, go in `{CLAUDE_ONLY:text}`. Prose refers to command skills by name.
 
 ## 3. Navigation and references
 
-Use one H1 title, H2 major sections and H3 subsections, adding deeper levels when needed. Number sections as `## 1. Title` and `### 1.1 Title`. Headings are short Title Case noun phrases that name the subject, such as `Validation`, `Dependency Context` or `Task Log Format`. Prefer a name that fits any kind of project over a coding-only one, such as `Troubleshooting` over `Debugging`. References give the number only: `§4` within a file, or `{GUIDE_PATH:task-logging} §5.1` across files. When sections are renumbered, update every reference to them.
+Title each runtime file `APM {VERSION} - <Name>`, where the name says what the file is, such as `Worker Initiation`, `Check Reports` or `Task Review Guide`; skill titles do not say "Command". Use one H1 title, H2 major sections and H3 subsections, adding deeper levels when needed. Number sections as `## 1. Title` and `### 1.1 Title`. Headings are short Title Case noun phrases that name the subject, such as `Validation`, `Dependency Context` or `Task Log Format`. Prefer a name that fits any kind of work over a coding-only one, such as `Troubleshooting` over `Debugging`. References give the number only: `§4` within a file, or `{GUIDE_PATH:task-logging} §5.1` across files. When sections are renumbered, update every reference to them.
 
 Use explicit file paths and section references where they help navigation. Cross-file references use the placeholders in §5. A reference is enough only when the reading role can load the target within its normal access boundaries; otherwise state the rule where that role reads it.
 
@@ -50,7 +50,7 @@ Each format definition specifies its location, naming, schema, allowed values, r
 - Prose Task IDs use `N.M`, such as Task 2.3. YAML uses integers (`stage: 2`, `task: 3`). Paths use zero padding, such as `stage-02/task-02-03.log.md`.
 - APM artifact paths use kebab-case. Task and Handoff Logs use `.log.md`; their runtime guides and skills define the fields and body sections.
 
-Keep project artifact paths rooted at `.apm/`. Preserve schemas, field names, allowed values, bus separators, identity rules and artifact paths used by other roles or the CLI. Artifact contracts govern required formatting, including YAML delimiters and batch separators.
+Keep APM artifact paths rooted at `.apm/`. Preserve schemas, field names, allowed values, bus separators, identity rules and artifact paths used by other roles or the CLI. Artifact contracts govern required formatting, including YAML delimiters and batch separators.
 
 ## 5. Build placeholders and validation
 

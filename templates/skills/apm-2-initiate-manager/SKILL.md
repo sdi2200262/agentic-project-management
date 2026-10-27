@@ -4,7 +4,7 @@ description: Initiate an APM Manager. Use only when the User manually invokes th
 disable-model-invocation: true
 ---
 
-# APM {VERSION} - Manager Initiation Command
+# APM {VERSION} - Manager Initiation
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 

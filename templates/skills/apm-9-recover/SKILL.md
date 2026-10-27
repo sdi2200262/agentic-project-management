@@ -4,7 +4,7 @@ description: Recover an APM agent's working context. Use only when the User manu
 disable-model-invocation: true
 ---
 
-# APM {VERSION} - Recover Command
+# APM {VERSION} - Recovery
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
