@@ -39,7 +39,7 @@ Use the required sections to present the evidence needed for review. Distinguish
 
 1. Capture the completion outcome and evidence.
 2. Set `stage`, `task`, `title` and `agent` from the prompt; select status and flags per §2.
-3. Fill Summary, Details, Output, Validation and Issues per §4.1. Add Compatibility Concerns and Important Findings only when their flags are true. For a User correction, Important Findings states the correction and whether the User approved adding it to the Rules file. If your context was compacted or recovered during the Task, say in Details which parts you rebuilt from files rather than remember yourself. Note subagent usage when applicable.
+3. Fill Summary, Details, Output, Validation and Issues per §4.1. Add Compatibility Concerns and Important Findings only when their flags are true. For a User correction, Important Findings states the correction and whether the User approved adding it to the Rules. If your context was compacted or recovered during the Task, say in Details which parts you rebuilt from files rather than remember yourself. Note subagent usage when applicable.
 4. Write to `log_path`. For a batch, do this after each Task, before the next begins.
 
 ### 3.2 Task Report Delivery
@@ -48,7 +48,7 @@ After the single Task or the entire batch finishes/stops:
 
 1. Clear `.apm/bus/<agent-slug>/task.md` via terminal.
 2. Read and write `.apm/bus/<agent-slug>/report.md` with the outcome, status, log path and flags per §4.2, or one batch report per §4.3. Keep detail in the logs.
-3. Direct the User to the Manager with both `apm-5-check-reports <agent-id>` for targeted delivery and `apm-5-check-reports` for multiple concurrent results. Write each command the way the User runs it in their assistant.
+3. Direct the User to the Manager with both `apm-5-check-reports <agent-id>` for targeted delivery and `apm-5-check-reports` for multiple concurrent results.
 
 ## 4. Structural Specifications
 

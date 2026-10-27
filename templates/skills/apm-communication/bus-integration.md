@@ -10,12 +10,12 @@ Use the Message Bus to contribute work without becoming an APM Worker. Receive a
 
 Choose a lowercase, hyphenated slug that does not conflict with existing `.apm/bus/` directories. Create `.apm/bus/<your-agent-slug>/` with `task.md` and `report.md`. The slug identifies your messages.
 
-Follow the communication skill's §4 Message Bus Protocol: read a bus before writing and clear processed incoming content before an outgoing report.
+Follow `{SKILL_PATH:apm-communication}` §4: read a bus before writing and clear processed incoming content before an outgoing report.
 
 ## 3. Reporting Your Work
 
 1. Write `.apm/bus/<your-agent-slug>/report.md`. In your first report identify yourself, the work and why you are contributing. Give the outcome, evidence, implications and limits needed for the Manager's decision; keep later reports concise.
-2. Direct the User to run `apm-5-check-reports <your-agent-slug>` in the Manager's chat, the way their assistant runs commands.
+2. Direct the User to invoke `apm-5-check-reports <your-agent-slug>` in the Manager's chat.
 
 ## 4. Receiving Follow-Up Assignments
 

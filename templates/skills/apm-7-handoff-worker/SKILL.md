@@ -34,7 +34,7 @@ Include the Handoff Log path and current-Stage log reads. Require the first repo
 
 ### 2.3 User Review and Finalization
 
-Read and write `.apm/bus/<agent-slug>/handoff.md`. Give the User both artifact paths and ask them to review both files. Apply corrections and ask again. After the User approves, direct them to run `apm-3-initiate-worker <agent-id>` in a new chat. The next Worker detects the handoff automatically. Your outgoing duties then end.
+Read and write `.apm/bus/<agent-slug>/handoff.md`. Give the User both artifact paths and ask them to review both files. Apply corrections and ask again. After the User approves, direct them to invoke `apm-3-initiate-worker <agent-id>` in a new chat. The next Worker detects the handoff automatically. Your outgoing duties then end.
 
 ## 3. Handoff Log Structure
 

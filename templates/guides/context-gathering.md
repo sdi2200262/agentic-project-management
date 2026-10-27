@@ -44,7 +44,7 @@ When research reveals several viable architectural or design approaches, present
 
 ## 3. Context Gathering Procedure
 
-Complete pre-round setup, three rounds with follow-ups, and the final understanding approval. Follow the communication skill's guidance for focused questions and evidence-based proposals.
+Complete pre-round setup, three rounds with follow-ups, and the final understanding approval. Follow `{SKILL_PATH:apm-communication}` §2 for focused questions and evidence-based proposals.
 
 ### 3.1 Pre-Round Context
 
@@ -58,7 +58,7 @@ Verify consequential findings against current code before using them in the roun
 
 Explore all codebases relevant to the project before the rounds, not just selected ones. Use §2.5 Exploration and Research Standards. Present findings with the opening Round 1 questions or confirmations, keeping them relevant to what the User needs to answer.
 
-If a Rules file exists, summarize its contents, explain that planning will add a separate section to it while keeping the existing content, and ask whether the User wants changes to that existing content. If absent, address its creation in Round 1.
+If `AGENTS.md` exists, summarize its contents, explain that planning will add a separate section to it while keeping the existing content, and ask whether the User wants changes to that existing content. If absent, address its creation in Round 1.{CLAUDE_ONLY: If the project has a `CLAUDE.md`, summarize it too and ask about changes in the same way; its content stays in `CLAUDE.md`, and the Rules go in `AGENTS.md`.}
 
 ### 3.2 Round Iteration
 
@@ -74,7 +74,7 @@ Before each round's completion, include an open question about aspects its focus
 
 Cover project type and deliverables, problem and purpose, scope and essential features, skills needed, existing materials, User vision, and prior work/codebase context. Use what exploration already established to ask for confirmation and gaps.
 
-If no Rules file was found, ask whether the User has one elsewhere or wants it created during Work Breakdown. Read a supplied file and note its content for integration. Use the answer from setup when available.
+If no `AGENTS.md` was found, ask whether the User has one elsewhere or wants it created during Work Breakdown. Read a supplied file and note its content for integration. Use the answer from setup when available.
 
 Advance when the project's foundation, intended success, scope and existing context are understood.
 

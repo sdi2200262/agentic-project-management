@@ -39,11 +39,11 @@ The Plan defines Stages, Tasks, Workers, dependencies, guidance, steps, outputs 
 
 Keep guidance separate from ordered steps. Reference relevant Spec/source sections for design content and add domain-specific context. Prefer boundaries and ordering that support independent work, same-Worker chains and cross-Worker parallelism where appropriate; the Manager chooses dispatch modes at runtime.
 
-### 2.5 Rules File Standards
+### 2.5 Rules Standards
 
 Rules describe how to work across all or most Tasks. Output strings, formats, schemas and interface contracts describe what is built and belong in Spec or Task guidance, even when several Workers need them. When uncertain whether a pattern is broadly applicable, keep it in Task guidance.
 
-State the situation each rule applies to, such as “When adding an API route, …”. All Workers read the whole Rules file, including content outside APM_RULES. Preserve pre-existing content outside APM_RULES unless the User requests changes; reference relevant existing standards. Keep APM rules self-contained within the Worker's normal context.
+State the situation each rule applies to, such as “When adding an API route, …”. All Workers read the whole `AGENTS.md`, including content outside APM_RULES. Preserve pre-existing content outside APM_RULES unless the User requests changes; reference relevant existing standards. Keep APM rules self-contained within the Worker's normal context.
 
 ## 3. Work Breakdown Procedure
 
@@ -66,7 +66,7 @@ Handle one document at a time, in order: Spec, then Plan, then Rules. For each, 
 ### 3.3 Rules Proposal
 
 1. Propose execution patterns that apply across all or most work, drawing from the approved documents and gathered context. Keep design/output content in Spec or Task guidance; leave version control conventions to the Manager. Explain consequential inclusions or exclusions and identify existing standards to reference.
-2. Read the Rules file or confirm its absence. Write the APM_RULES block per §4.3, preserving outside content. If creating the file, write only the block.
+2. Read `AGENTS.md` or confirm its absence. Write the APM_RULES block per §4.3, preserving outside content. If creating the file, write only the block.{CLAUDE_ONLY: If the project has a `CLAUDE.md`, add `@AGENTS.md` at its top so Claude Code loads the Rules.}
 3. Ask the User to review. Apply corrections and request approval again as needed. After approval, continue to `{SKILL_PATH:apm-1-initiate-planner}` §5 Planning Phase Completion.
 
 ## 4. Structural Specifications
@@ -83,7 +83,7 @@ modified: <last modification note>
 ---
 ```
 
-Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, authoritative document locations, and existing Rules file content). A single horizontal rule separates the header from the design decision content below. Use headings to separate content sections.
+Below the frontmatter, the document starts with `# APM Spec` followed by two header sections: `## Overview` (3-5 sentences covering project type, core problem, essential scope, and success criteria) and `## Workspace` (project environment from the workspace assessment: directory structure, working repositories, reference repositories, authoritative document locations, and existing `AGENTS.md` content). A single horizontal rule separates the header from the design decision content below. Use headings to separate content sections.
 
 - *Planner notes:* Placed immediately after the horizontal rule separator, before content sections. Use the format `> **Notes:** <prose or unordered list>`; remove the Notes line when there are no notes. These cover the project environment the Manager will encounter per §2.1 Workflow Context - version control observations, workspace constraints, and User preferences that affect execution.
 
@@ -167,7 +167,7 @@ The graph makes dispatch patterns visible to the Manager: same-agent chains indi
 
 ### 4.3 APM_RULES Block
 
-The namespace block structure for the Rules file:
+The namespace block structure for `AGENTS.md`:
 
 ```text
 APM_RULES {

@@ -28,7 +28,7 @@ Prepare the prompt per §4 with current state and an actionable resumption step.
 
 ### 2.3 User Review and Finalization
 
-Read and write `.apm/bus/manager/handoff.md`. Give the User both artifact paths and ask them to review both files. Apply corrections and ask again. After the User approves, direct them to run `apm-2-initiate-manager` in a new chat. The next Manager detects the bus automatically. Your outgoing duties then end.
+Read and write `.apm/bus/manager/handoff.md`. Give the User both artifact paths and ask them to review both files. Apply corrections and ask again. After the User approves, direct them to invoke `apm-2-initiate-manager` in a new chat. The next Manager detects the bus automatically. Your outgoing duties then end.
 
 ## 3. Handoff Log Structure
 

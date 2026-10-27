@@ -10,7 +10,7 @@ Continue only if the User manually invoked this skill, the User asked you to fol
 
 Summarize the session and optionally archive it. Run in a new chat, or as the active Manager after project completion when the User chooses to summarize there. Other Planners, Managers and Workers decline without action.
 
-Read `{SKILL_PATH:apm-communication}`. Skill paths are relative to your APM folder, the folder that contains your `skills/` folder, such as `.claude/` or `.agents/`.
+Read `{SKILL_PATH:apm-communication}`.
 
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Read the Task Logs referenced for claims that need verification; the subagent in the next step reviews the full log set.
 2. Use a subagent to check the active session’s Spec, Plan, Tracker, Index, Task Logs and Handoff Logs against relevant current deliverables. Exclude `.apm/archives/` and worktree contents from the artifact sweep. Ask it to verify deliverables and key validation results, and commits/branches when version control was used. Have it return Stage outcomes, stale artifact/code differences and consequential findings. Verify critical claims against the referenced sources.
@@ -20,7 +20,7 @@ Read `{SKILL_PATH:apm-communication}`. Skill paths are relative to your APM fold
 6. Run `apm archive --force` or `apm archive --force --name <name>`. The CLI snapshots `.apm/` except `archives/` into `.apm/archives/<name>/`, adds archival metadata, and removes active session files, installed templates and active metadata while keeping archives.
 7. Read `.apm/archives/index.md`; create it in the format below if missing or malformed.
 8. Add the new archive entry, newest first.
-9. Confirm archival with the archive path. To begin a fresh session, direct the User to run CLI `apm init` (or `apm custom`) for fresh templates/scaffolds, then `apm-1-initiate-planner` in their assistant. The next Planner can consult these archives during Context Gathering.
+9. Confirm archival with the archive path. To begin a fresh session, direct the User to run CLI `apm init` (or `apm custom`) for fresh templates/scaffolds, then invoke `apm-1-initiate-planner` in a new chat. The next Planner can consult these archives during Context Gathering.
 
 **Session summary structure:**
 

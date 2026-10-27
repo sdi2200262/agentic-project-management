@@ -80,7 +80,7 @@ Assess dispatch, prepare context and construct prompts. Follow-ups use the separ
 4. Record the branch in the Task row's Branch column.
 5. Clear the incoming Report Bus per §2.6.
 6. Read and write `.apm/bus/<agent-slug>/task.md`; use §4.5 for batches.
-7. Direct the User to an uninitialized Worker's new chat with `apm-3-initiate-worker <agent-id>`; it will detect the pending prompt. For initialized Workers, use `apm-4-check-tasks` in their chat. Identify the number/order of batched Tasks, or each Worker's required action for parallel dispatch. Write commands and new-chat steps for the User's assistant.
+7. Direct the User to an uninitialized Worker's new chat with `apm-3-initiate-worker <agent-id>`; it will detect the pending prompt. For initialized Workers, direct the User to invoke `apm-4-check-tasks` in their chat. Identify the number/order of batched Tasks, or each Worker's required action for parallel dispatch.
 
 ### 3.4 Follow-Up Task Prompt Construction
 

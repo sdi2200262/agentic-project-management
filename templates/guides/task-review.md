@@ -12,7 +12,7 @@ Review Task evidence, determine outcomes, update planning documents when warrant
 
 Compare status/flags with the log body and deliverables. Success requires the objective and all validation to be complete; Partial needs guidance; Failed means the objective was not achieved. Read the whole log, including Validation and Issues, and check each statement against the status. A Success log that says a criterion was not run, failed or was replaced by a weaker check is inconsistent. Do not settle the conflict with other evidence yourself: tell the User what conflicts, send the Worker a follow-up to run the check or explain the gap, and keep the Task Active until it answers.
 
-Interpret scoped flags with project context. `important_findings` can affect other work, reveal missing validation or record a User correction. When the log says the User approved a Rules addition, check the Worker's Rules change in the diff and keep it. When the User declined, don't add it to the Rules without asking the User. `compatibility_issues` can indicate Spec, Plan or Rules problems. If findings contradict a planning document, correct that document through §3.4 even when the Worker already handled the local issue.
+Interpret scoped flags with project context. `important_findings` can affect other work, reveal missing validation or record a User correction. When the log says the User approved a Rules addition, check the Worker's `AGENTS.md` change in the diff and keep it. When the User declined, don't add it to the Rules without asking the User. `compatibility_issues` can indicate Spec, Plan or Rules problems. If findings contradict a planning document, correct that document through §3.4 even when the Worker already handled the local issue.
 
 ### 2.2 Review Outcome Standards
 
@@ -223,7 +223,7 @@ modified: Task 2.3 scope clarified based on task-02-02.log.md findings. Modified
 - *Modifying Tasks:* Preserve existing structure, update only affected fields.
 - *Removing Tasks:* Delete the Task section AND update any other Tasks that referenced it as a dependency.
 
-**Rules:** Modifications stay within the `APM_RULES {}` block. Use `##` headings for categories. Only add genuinely universal patterns.
+**Rules:** Modifications stay within the `APM_RULES {}` block of `AGENTS.md`. Use `##` headings for categories. Only add genuinely universal patterns.
 
 **Dependency Graph:** When Task dependencies change, regenerate the relevant graph section. Same-agent dependencies use `-->`, cross-agent use `-.->`. Update node styles if agents change.
 

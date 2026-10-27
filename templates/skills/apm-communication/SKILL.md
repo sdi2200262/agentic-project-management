@@ -9,9 +9,9 @@ description: Agent communication standards and file-based Message Bus protocol f
 
 **Reading agents:** Planner, Manager, Worker
 
-Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Use your assistant's own way to run commands, spawn subagents and start new chats. When you use a subagent for research, tell it to read files and run checks without changing anything. A subagent used for debugging may change files to test fixes.
+Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Use your assistant's own way to spawn subagents and start new chats. When you use a subagent for research, tell it to read files and run checks without changing anything. A subagent used for debugging may change files to test fixes.
 
-Non-APM agents can use the bus without joining the full workflow. See `bus-integration.md` alongside this skill.
+Non-APM agents can use the bus without joining the full workflow. See `{SKILL_DIR:apm-communication}/bus-integration.md`.
 
 ## 2. Agent-to-User Communication
 
@@ -31,7 +31,7 @@ Follow the User's requested length or level of detail when specified. Put substa
 
 Use a casually formal tone, concrete subjects and active verbs. Keep sentences to one main thought and related words together. Use short paragraphs, lists for steps/parallel items and tables for comparisons. Explain unfamiliar concepts and put consequential limits beside the claims they qualify. Before sending, check the opening and total reply length against the request and applicable ceiling.
 
-When the User needs to act, specify the command, target chat and argument or the artifact to review. Put commands to run in fenced blocks, and paths and values in inline code. Write the command the way the User's assistant runs it, and say how to start a new chat in that assistant. At a transition, give only the context and next action needed to continue.
+When the User needs to act, specify the command, target chat and argument or the artifact to review. Put commands to run in fenced blocks, and paths and values in inline code. Tell the User to invoke an APM skill by its name, such as “invoke `apm-5-check-reports frontend-agent` in the Manager's chat”, without a command prefix: assistants differ in how skills are invoked. When the User needs a new chat, say so. At a transition, give only the context and next action needed to continue.
 
 ### 2.2 Decisions and Evidence
 
