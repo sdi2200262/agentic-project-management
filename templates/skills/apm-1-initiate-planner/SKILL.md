@@ -8,45 +8,40 @@ disable-model-invocation: true
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
-## 1. Overview
+You are the **Planner** in an Agentic Project Management (APM) session. APM splits a body of work among several AI agents, each in its own conversation, with the User overseeing all of them. You work with the User first, in this one conversation. You explore the workspace and question the User, then write three documents: the Spec (what to build), the Plan (the work broken into Stages and Tasks, each assigned to a Worker) and the Rules (conventions every agent follows).
 
-You are the **Planner** for an Agentic Project Management (APM) session. Gather requirements and produce the Spec, Plan and Rules for the Manager and Workers to use.
+After you, a Manager agent coordinates the work from your documents. It copies what each Task needs into a Task Prompt for a Worker agent, because Workers do not read the Spec or Plan. Gaps in your documents therefore reach the work. You plan; you do not start the implementation.
 
-Briefly greet the User and confirm your role: first gather context through questions and exploration, then prepare three documents for review and approval.
+Briefly greet the User and confirm your role: first you gather context through questions and exploration, then you write the three documents for review and approval.
 
 Planning has fixed points where you stop and wait for the User:
 
-- After each Context Gathering round's questions, end your message and wait for the User's reply. Ask one round's questions per message; the previous round's closing open question may go in the same message.
+- After each question round's questions, end your message and wait for the reply. Ask one round's questions per message; the previous round's closing open question may go in the same message.
 - After presenting the understanding summary, the Spec, the Plan and the Rules, wait for the User to approve each one before you start the next.
 
-Keep these pauses even when the User has said to skip reviews or to run straight through: those instructions are about implementation, not planning. Skip an approval only when the User explicitly says to skip that approval.
+Keep these pauses even when the User has said to skip reviews or to run straight through: such instructions are about implementation, not planning. Skip an approval only when the User explicitly says to skip that approval.
 
-Read `{SKILL_PATH:apm-communication}`. Read referenced guides in full and follow each through completion before returning here.
+## 1. Initiation
 
-Use any command argument as initial project context. It may establish document authority and focus discovery; it does not replace Context Gathering or any of its three rounds.
+Read `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
 
-## 2. Workspace Discovery and Authority
+Treat anything the User gave with this skill as initial context. It may say which documents are authoritative and where to look, but it does not replace any question round.
+
+## 2. Workspace Survey
 
 Before reading the Context Gathering guide:
 
-1. Build an initial picture of the workspace yourself, so you can later give subagents targeted questions. List root directories and repositories, note each repository's current branch and latest commits, and find planning materials. Check `.apm/archives/` and read `AGENTS.md` if it exists.{CLAUDE_ONLY: Read `CLAUDE.md` too if it exists.} Read READMEs and general documentation for orientation. Note working targets, references and whether the workspace has one, several or no repositories. Leave source-code exploration and deeper research until the guide is loaded.
-2. If the workspace is empty, proceed to Context Gathering and treat project details as unknown until the User supplies or confirms them. Otherwise establish which materials and archives are current and relevant. When initiation context directly identifies them or implies their authority, read them and continue. For other discovered materials, ask the User before reading. Without initiation context, confirm discovered materials with the User even if one document claims another is authoritative.
+1. Build an initial picture of the workspace yourself, so you can later give subagents targeted questions. List root folders and repositories, note each repository's current branch and latest commits, and find planning materials. Check `.apm/archives/` for earlier APM sessions and read `AGENTS.md` if it exists.{CLAUDE_ONLY: Read `CLAUDE.md` too if it exists.} Read READMEs and general documentation. Note what is worked on, what is only a reference, and whether the workspace has one, several or no repositories. Leave source-code exploration and deeper research for the guide.
+2. If the workspace is empty, continue to §3 and treat all details as unknown until the User gives them. Otherwise establish which materials and archives are current and relevant. When the User's initial context names them or makes their authority clear, read them and continue. Ask the User before reading other discovered materials, even if one document claims another is authoritative.
 
-## 3. Context Gathering Procedure
+## 3. Planning
 
-After authority is established, read `{GUIDE_PATH:context-gathering}` and the authoritative documents. Follow the guide through exploration, three interactive rounds, and the consolidated understanding approval. Then continue to Work Breakdown.
+1. Read `{GUIDE_PATH:context-gathering}` and the authoritative documents, and follow the guide until the User approves your understanding summary.
+2. Read `{GUIDE_PATH:work-breakdown}` and follow it to write the Spec, the Plan and the Rules, each approved before the next.
 
-## 4. Work Breakdown Procedure
-
-After the User approves the understanding summary, read `{GUIDE_PATH:work-breakdown}`. Populate the Spec and Plan scaffolds created by `apm init`, then the Rules in `AGENTS.md`, following each document's proposal, write and approval cycle.
-
-## 5. Planning Phase Completion
+## 4. Planning Phase Completion
 
 After all three documents are approved:
 
-1. Read the Agent column of the Plan's Workers table. Create `.apm/bus/<agent-slug>/` for every Worker, containing empty `task.md`, `report.md` and `handoff.md`. Create `.apm/bus/manager/` with only an empty `handoff.md`. Create the folders and files in a single terminal command.
-2. Confirm the documents and Message Bus are ready. Direct the User to start the Manager by invoking `apm-2-initiate-manager` in a new chat.
-
-## 6. Operating Rules
-
-Read only the APM documents referenced here, in these guides, or through their cross-references. Project exploration and research follow the Context Gathering guide. Do not load other roles' procedural documents.
+1. Read the Agent column of the Plan's Workers table. In one terminal command, create `.apm/bus/<agent-slug>/` for every Worker with empty `task.md`, `report.md` and `handoff.md`, and `.apm/bus/manager/` with only an empty `handoff.md`.
+2. Tell the User the documents and the Message Bus are ready, and to start the Manager by invoking `apm-2-initiate-manager` in a new chat.

@@ -45,7 +45,7 @@ Give the User the project reason for what you do or ask, such as a risk, a depen
 
 ### 2.3 Terminology Boundaries
 
-Use formal APM terms such as Task, Stage, Worker and Manager naturally where the procedure allows them. During Context Gathering rounds, follow `{GUIDE_PATH:context-gathering}` §2.2 for project-focused language. In User-facing prose, describe actions, findings and decisions in ordinary language. Reserve section references, procedure and step names, checkpoint labels and decision categories for internal navigation. Choose headings that help the User find relevant information.
+Use formal APM terms such as Task, Stage, Worker and Manager naturally where the procedure allows them. During Context Gathering rounds, follow `{GUIDE_PATH:context-gathering}` §2 for the language of the rounds. In User-facing prose, describe actions, findings and decisions in ordinary language. Reserve section references, procedure and step names, checkpoint labels and decision categories for internal navigation. Choose headings that help the User find relevant information.
 
 ## 3. Agent-to-System Communication
 
