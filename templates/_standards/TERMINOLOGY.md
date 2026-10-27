@@ -10,9 +10,9 @@ A term is defined when it names a part of the workflow an agent must find, or on
 
 | Term | Definition |
 |---|---|
-| **Planner** | The agent that plans the project with the User. It works in a single conversation. |
-| **Manager** | The agent that coordinates implementation: it assigns work, reviews results and keeps the project records. One Manager works at a time. |
-| **Worker** | An agent that carries out the work the Manager assigns in one area of the project. Each area has its own Worker. |
+| **Planner** | The agent that plans the work with the User. It works in a single conversation. |
+| **Manager** | The agent that coordinates implementation: it assigns work, reviews results and keeps the APM files current. One Manager works at a time. |
+| **Worker** | An agent that carries out the work the Manager assigns in one area of the work. Each area has its own Worker. |
 
 ---
 
@@ -20,9 +20,9 @@ A term is defined when it names a part of the workflow an agent must find, or on
 
 | Term | Definition |
 |---|---|
-| **Planning Phase** | The Planner works with the User to define the project and plan its work. |
-| **Implementation Phase** | The Manager and Workers carry out the planned work until the project is complete. |
-| **APM session** | One run of both phases on one set of `.apm/` files, from planning until the implementation is complete. |
+| **Planning Phase** | The Planner works with the User to define the work and plan it. |
+| **Implementation Phase** | The Manager and Workers carry out the planned work until it is complete or the User stops. |
+| **APM session** | One APM run of both phases on one body of work. It ends when the work is complete or the User stops early. The Spec states what the session builds, which may be one part of a larger goal. |
 
 ---
 
@@ -32,12 +32,12 @@ Each procedure is a part of the workflow. The first six each have their own guid
 
 | Term | Performed by | Definition |
 |---|---|---|
-| **Context Gathering** | Planner | Exploring the project and questioning the User in three rounds, ending with a summary that the User approves. |
+| **Context Gathering** | Planner | Exploring the workspace and questioning the User in three rounds, settling how much of the User's goal this APM session covers, and ending with a summary that the User approves. |
 | **Work Breakdown** | Planner | Turning the gathered context into the documents that define what to build, how the work is divided and how it is performed. |
 | **Task Assignment** | Manager | Choosing which work to send next and to which Worker, and writing its instructions. |
 | **Task Execution** | Worker | Carrying out assigned work, validating it and fixing what fails. |
 | **Task Logging** | Worker | Recording the outcome of assigned work and reporting it to the Manager. |
-| **Task Review** | Manager | Reviewing reported work, deciding the next action and updating the project records. |
+| **Task Review** | Manager | Reviewing reported work, deciding the next action and updating the APM files. |
 | **Handoff** | Manager, Worker | Moving a role from its current conversation to a new one when context runs low or the User asks. The outgoing agent records what the incoming agent needs to continue. Each role's conversations are numbered, so a Handoff goes from Manager conversation 1 to Manager conversation 2. |
 
 ---
@@ -50,7 +50,7 @@ The Planner writes these during Work Breakdown, in this order.
 |---|---|---|
 | **Spec** | What to build: design decisions and constraints. | `.apm/spec.md` |
 | **Plan** | How the work is divided, ordered and assigned to Workers, with validation criteria and dependencies. | `.apm/plan.md` |
-| **Rules** | Conventions that apply to all or most of the work. They are kept in the `APM_RULES` block of `AGENTS.md`. | Project root |
+| **Rules** | Conventions that apply to all or most of the work. They are kept in the `APM_RULES` block of `AGENTS.md`. | Workspace root |
 
 ---
 
@@ -59,7 +59,7 @@ The Planner writes these during Work Breakdown, in this order.
 | Term | Definition |
 |---|---|
 | **Task** | A bounded unit of work in the Plan, assigned to one Worker, with an objective, deliverables, validation criteria and dependencies. Its steps are ordered but not validated separately. |
-| **Stage** | A group of related Tasks that delivers a coherent part of the project. Stages run in order. |
+| **Stage** | A group of related Tasks that delivers a coherent part of the work. Stages run in order. |
 
 ### Task dependencies
 
@@ -133,7 +133,8 @@ These terms keep ordinary lowercase but have a fixed meaning in APM templates.
 
 | Term | Definition |
 |---|---|
+| **conversation** | One chat with a Manager, Worker or the Planner. It continues through compaction and recovery; only a Handoff starts the role's next numbered conversation. |
 | **recovery** | Rebuilding a Manager's or Worker's working context after compaction or a lost conversation. It does not start the role's next numbered conversation. |
 | **follow-up Task** | A Task that Task Review sends back to the same Worker with a revised Task Prompt. It keeps its Task ID and stays Active. |
-| **archive** | A snapshot of an APM session's `.apm/` files, stored in `.apm/archives/`. |
+| **archive** | A snapshot of an APM session's `.apm/` files, stored in `.apm/archives/`. Archiving is optional; later sessions can use archives as context. |
 | **session summary** | An optional document, `.apm/session-summary.md`, describing an APM session's scope, outcomes, findings, open issues and current state. |

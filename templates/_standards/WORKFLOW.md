@@ -4,11 +4,13 @@ This specification describes APM's workflow for template authors and maintainers
 
 ## 1. Design
 
-APM coordinates agents through planning documents, Memory and the Message Bus. Agents never communicate directly. The User starts each agent, delivers every message by running a command skill in the receiving agent's chat, approves decisions and starts Handoffs.
+APM coordinates agents through planning documents, Memory and the Message Bus. Agents never communicate directly. The User starts each agent, delivers every message by invoking a skill in the receiving agent's chat, approves decisions and starts Handoffs.
+
+An APM session is one APM run of both phases on one body of work. It ends when that work is complete or the User stops early. The User may then summarise the session and archive its `.apm/` files, and later sessions can use the archives as context. A large goal can take several sessions, one after another: the Planner settles with the User how much of it the current session covers (§6.1).
 
 All assistants receive the same instructions in plain English. Each agent carries them out with its own assistant's commands, subagents and way of starting a new chat.
 
-Instructions, not file permissions, keep each role to its scope. The Planner holds the project context gathered during planning. The Manager holds the coordination context: the planning documents, the Tracker and Memory. A Worker works from its Task Prompts, the Rules and what it has learned in its own conversation. Workers do not read the Spec, Plan, Tracker or Index. Instead, the Manager copies what a Task needs into its Task Prompt. The User can widen a Worker's scope with an explicit request.
+Instructions, not file permissions, keep each role to its scope. The Planner holds the context gathered during planning. The Manager holds the coordination context: the planning documents, the Tracker and Memory. A Worker works from its Task Prompts, the Rules and what it has learned in its own conversation. Workers do not read the Spec, Plan, Tracker or Index. Instead, the Manager copies what a Task needs into its Task Prompt. The User can widen a Worker's scope with an explicit request.
 
 Agents use subagents for focused work: read-only subagents for research, and subagents that may change files for debugging. An instruction to use a subagent says when to use one, what to give it and what findings to return. The agent that starts a subagent verifies its findings before using them.
 
@@ -20,9 +22,9 @@ The Planner runs Context Gathering, and the User approves its summary of underst
 
 ### 2.2 Implementation Phase
 
-The Manager first reads its Handoff Bus. If the bus holds a Handoff Prompt, the Manager continues after a Handoff; if it is empty, this is the first Manager. The first Manager reads the planning documents and inspects the git state of each working repository. It combines what it finds with the Spec's and Plan's Notes and presents its understanding of the project, proposed version control conventions and any Stages that may need verification. Once the User approves, it records the base branches in the Spec's Workspace section and the conventions in the Rules, sets up Task tracking and begins.
+The Manager first reads its Handoff Bus. If the bus holds a Handoff Prompt, the Manager continues after a Handoff; if it is empty, this is the first Manager. The first Manager reads the planning documents and inspects the git state of each working repository. It combines what it finds with the Spec's and Plan's Notes and presents its understanding of the work, proposed version control conventions and any Stages that may need verification. Once the User approves, it records the base branches in the Spec's Workspace section and the conventions in the Rules, sets up Task tracking and begins.
 
-Each Task then passes through Task Assignment, Task Execution, Task Logging and Task Review. Stages run in order. Within a Stage, the Manager uses single, batch or parallel dispatch. It keeps reviewing reports and dispatching Ready Tasks until every Stage is complete, then presents the project's outcome and offers a session summary and archive. At any point, the User can start a Handoff to move the Manager or a Worker to its next conversation.
+Each Task then passes through Task Assignment, Task Execution, Task Logging and Task Review. Stages run in order. Within a Stage, the Manager uses single, batch or parallel dispatch. It keeps reviewing reports and dispatching Ready Tasks until every Stage is complete, then presents the session's outcome and offers a session summary and archive. At any point, the User can start a Handoff to move the Manager or a Worker to its next conversation.
 
 ## 3. Planning Documents
 
@@ -30,11 +32,11 @@ Each Task then passes through Task Assignment, Task Execution, Task Logging and 
 |---|---|---|
 | Spec | `.apm/spec.md` | What to build: design decisions and constraints. The Manager reads it and copies what each Task needs into its Task Prompt. |
 | Plan | `.apm/plan.md` | How the work is organised: Stages, Tasks, Workers, dependencies and validation. The Manager reads it and builds Task Prompts from it. |
-| Rules | `APM_RULES` block in `AGENTS.md` at the project root | How work is performed. Every agent reads the Rules directly. |
+| Rules | `APM_RULES` block in `AGENTS.md` at the workspace root | How work is performed. Every agent reads the Rules directly. |
 
 ### 3.1 Spec
 
-The Spec records what is built, in a Markdown structure that suits the project. It also records the workspace: which repositories and folders are worked on, which are only references, and which User documents are authoritative. The Manager adds each repository's base branch to the workspace description. The Spec's Notes hold the Planner's observations for the Manager: version control observations, constraints, User preferences, assumptions and open questions. The Plan is written from the Spec. The Manager may update the Spec, and keeps its Notes current, when findings during implementation require it.
+The Spec records what is built, in a Markdown structure that suits the work. It also records the workspace: which repositories and folders are worked on, which are only references, and which User documents are authoritative. The Manager adds each repository's base branch to the workspace description. The Spec's Notes hold the Planner's observations for the Manager: version control observations, constraints, User preferences, assumptions, open questions and any parts of the User's goal left for later sessions. The Plan is written from the Spec. The Manager may update the Spec, and keeps its Notes current, when findings during implementation require it.
 
 ### 3.2 Plan
 
@@ -60,17 +62,23 @@ A change to the Spec can affect the Plan, and the reverse. The Rules are usually
 
 The Manager may make small, contained changes on its own: clarifying or correcting one Task, adding a missing dependency, adding an isolated point to the Spec, or adjusting a Rule. Larger changes need the User: changes to several Tasks, to the design direction or scope, a new Stage, or a major restructuring. Several small changes together can also need the User.
 
+Some findings go beyond what a Plan change can handle: a fix needs design decisions the Spec does not cover, a change would rewrite the Spec's Overview or several Stages, or follow-up Tasks keep failing for the same reason. The Manager does not plan the solution itself. It presents the options with a recommendation, such as changing the Plan and continuing, or pausing the session to summarise it, archive it and plan again with a new Planner, and the User decides.
+
 ## 4. Communication
 
 **Runtime:** `skills/apm-communication/SKILL.md` and its `bus-integration.md`.
 
 ### 4.1 Communicating with the User
 
-A message to the User opens with what the User needs: the answer, outcome, finding, proposal or question. It then gives the evidence, trade-offs, limits and next action the User needs to understand it or act. The communication skill holds the shared writing rules and default reply lengths; each procedure adds only what its own messages must contain.
+A message to the User opens with what the User needs: the answer, outcome, finding, proposal or question. It then gives the evidence, trade-offs, limits and next action the User needs to understand it or act. Replies stay short by default, and the User's requested length or detail takes precedence. An agent explains an APM term the first time the User meets it in the conversation, and gives the User reasons about the work rather than citing APM procedures. The communication skill holds these shared rules; each procedure adds only what its own messages must contain.
 
 When the User has to act, the agent names the skill to invoke, the chat to invoke it in and any argument. Commands go in code blocks; paths and values go in inline code.
 
-### 4.2 Message Bus
+### 4.2 Writing for Other Agents
+
+Messages and APM files are read by an agent that has the files and the workspace but not the writer's conversation. They follow their formats exactly, because other agents and the CLI rely on the field names and paths. Free text is about the work, not the writer's process: what was done, decisions with their reasons, evidence, open issues and the paths the reader needs. Each fact has one home, and claims are checked against their source.
+
+### 4.3 Message Bus
 
 The Planner creates the Message Bus in `.apm/bus/`. Each Worker's folder holds a Task Bus (`task.md`), a Report Bus (`report.md`) and a Handoff Bus (`handoff.md`). The Manager's folder holds only a Handoff Bus.
 
@@ -84,17 +92,17 @@ A bus file is either empty or holds one message waiting for delivery. Before wri
 
 `apm-4-check-tasks` delivers a Task Prompt to a Worker, and `apm-5-check-reports` delivers Task Reports to the Manager. Both accept an optional agent ID to target one agent. A batch Task Prompt lists its Tasks in one shared frontmatter, and each Task keeps the body sections of a single Task Prompt.
 
-### 4.3 Message Flow
+### 4.4 Message Flow
 
 1. The Manager writes the Task Bus and tells the User how to start or reach the Worker.
-2. The User runs that command in the Worker's chat.
+2. The User invokes that skill in the Worker's chat.
 3. The Worker executes, validates and logs the Task, writes the Report Bus and tells the User how to deliver the report.
-4. The User runs `apm-5-check-reports` in the Manager's chat.
+4. The User invokes `apm-5-check-reports` in the Manager's chat.
 5. The Manager reviews the Task, updates the Tracker and continues.
 
 Each agent tells the User only what to do at its own end of the exchange.
 
-### 4.4 Agents Outside APM
+### 4.5 Agents Outside APM
 
 An agent that is not part of APM can join the Message Bus by creating its own bus folder. It receives plain assignments and reports results. It does not write Task Logs, perform Handoffs or appear in the Tracker's Workers table. The Manager reviews its reports, notes its contribution in the Tracker's notes and sends further assignments through its Task Bus. `bus-integration.md` describes the setup.
 
@@ -140,7 +148,9 @@ Each round needs at least one exchange with the User. Where the Planner already 
 
 The Planner researches what the conversation raises, using subagents for broad exploration. It checks important findings against the files or commands they cite, follows up on contradictions and gaps, and shows the User what it verified before relying on it. When several designs are viable, it presents the options with a recommendation and the User chooses. For each requirement it records how success will be checked, proposing concrete measures when the User has none.
 
-Questions stay on the project itself. The Planner notes any version control or coordination preferences for later, and does not yet propose Stages, Tasks or Workers. Research needed to understand the project happens now; research that is itself a deliverable becomes planned work.
+Questions stay on the work itself. The Planner notes any version control or coordination preferences for later, and does not yet propose Stages, Tasks or Workers. Research needed to understand the work happens now; research that is itself a deliverable becomes planned work.
+
+As context grows, the Planner judges how large the User's goal is. If it is too large for one session, for example because later parts depend on decisions that only earlier work can settle, the Planner proposes how far this session goes. Once the User agrees, it plans around that scope and keeps the rest as notes for later sessions in the Spec and Plan.
 
 After the three rounds, the Planner presents a summary of its understanding. The User corrects it until it is right, and approval starts Work Breakdown.
 
@@ -154,7 +164,7 @@ The Planner proposes, writes and gets approval for each document in turn:
 2. **Plan:** Workers and their areas, Stages in order, Tasks, guidance, dependencies and validation. The Planner checks coverage and dependencies before writing. Its Notes section covers dispatch paths, likely blockers, the critical path, where work converges and which Stages may need verification.
 3. **Rules:** execution patterns that apply to all or most work, keeping any existing content outside `APM_RULES`. Version control conventions are left to the Manager, which adds them to the Rules at its first start.
 
-Each document needs the User's approval before the next begins. Each Task produces a meaningful deliverable that can be validated on its own, within one Worker's area. Its steps share the Task's validation and help locate failures. Where research or investigation is needed, the Plan includes a step that uses a subagent for it. The level of detail matches the project's complexity.
+Each document needs the User's approval before the next begins. Each Task produces a meaningful deliverable that can be validated on its own, within one Worker's area. Its steps share the Task's validation and help locate failures. Where research or investigation is needed, the Plan includes a step that uses a subagent for it. The level of detail matches the work's complexity.
 
 ## 7. Implementation Phase
 
@@ -174,7 +184,7 @@ A Task Prompt contains the Task's definition, the exact constraints from the Spe
 
 The kind of dependency sets how much context the Task Prompt gives. For a Same-Worker dependency, it points to the earlier output and its paths. For a Cross-Worker dependency, it summarises the earlier output and gives reading and integration steps and any relevant upstream contracts. Tasks listed in the Tracker as unread since a Worker's Handoff count as Cross-Worker. A Worker that recovered after compaction may need more detail, because its rebuilt context is thinner. Tracing upstream stops where an intermediate output fully captures the earlier contracts.
 
-Each Task Prompt carries the Task's metadata and log path, and gives the objective, instructions, output and validation, with Context from Dependencies only when the Task builds on earlier Tasks. It adds execution, logging or reporting guidance only when that guidance is specific to the Task; general rules live in the Worker's guides. Its Workspace section names the working directory; with version control, it names the branch or worktree and tells the Worker to use the project root for all `.apm/` paths.
+Each Task Prompt carries the Task's metadata and log path, and gives the objective, instructions, output and validation, with Context from Dependencies only when the Task builds on earlier Tasks. It adds execution, logging or reporting guidance only when that guidance is specific to the Task; general rules live in the Worker's guides. Its Workspace section names the working directory; with version control, it names the branch or worktree and tells the Worker to use the workspace root for all `.apm/` paths.
 
 The Manager writes the Task Bus and tells the User what to do: start a new chat for a Worker that has not started, or deliver to an existing one. For a batch it gives the Tasks and their order; for parallel dispatch it gives each Worker's action. A follow-up Task refines the objective, instructions, output and validation using what review found, and keeps the original log path so the new log replaces the old one.
 
@@ -200,7 +210,7 @@ The Manager reads each report and its Task Log, and checks the outcome against t
 
 Every Task Report gives the Worker's conversation number. When the number rises, the Manager checks the Handoff Log, updates the Workers table, and lists the Worker's Tasks from earlier Stages, whose logs the new conversation did not load. A recovery note keeps the conversation number and tells the Manager that later Task Prompts may need more context.
 
-A Success that the log supports is accepted. If the work succeeded but was not committed, the Manager commits it under the Rules' conventions. Important Findings, an outcome other than Success, or a log that contradicts itself lead to investigation: directly for contained checks, or through a subagent when the issue needs a lot of context. The result is one of three decisions: accept the outcome, send a follow-up Task, or change the planning documents within the limits in §3.5. A follow-up Task after an outcome other than Success notes any uncommitted work.
+A Success that the log supports is accepted. If the work succeeded but was not committed, the Manager commits it under the Rules' conventions. Important Findings, an outcome other than Success, or a log that contradicts itself lead to investigation: directly for contained checks, or through a subagent when the issue needs a lot of context. The result is one of three decisions: accept the outcome, send a follow-up Task, or change the planning documents within the limits in §3.5. When a finding needs more than a Plan change, the Manager proposes how the session continues, as §3.5 describes. A follow-up Task after an outcome other than Success notes any uncommitted work.
 
 Every decision updates the Tracker. With version control, the Manager merges a reviewed branch before dispatching Tasks that depend on it, and merges every branch of a Stage before the next Stage begins. Reports can arrive in any order. Where possible, the Manager reviews, merges, reassesses readiness and dispatches in the same turn.
 
@@ -228,13 +238,13 @@ An incoming Manager reads the Handoff Log, the Tracker, the Index and relevant r
 
 **Runtime:** `apm-9-recover`.
 
-Recovery rebuilds a started Manager's or Worker's context after compaction or a lost conversation. The User runs the recovery command, optionally naming the role; otherwise the agent works out its role from the conversation or asks. The agent rereads its initiation command skill and the files it lists, then rebuilds the current state from the project files and code. Its conversation number does not change. It records the recovery in the Tracker or in its next Task Report, and mentions it in any later Handoff Log.
+Recovery rebuilds a started Manager's or Worker's context after compaction or a lost conversation. The User invokes `apm-9-recover`, optionally naming the role; otherwise the agent works out its role from the conversation or asks. The agent rereads its initiation command skill and the files it lists, then rebuilds the current state from the APM files and code. Its conversation number does not change. It records the recovery in the Tracker or in its next Task Report, and mentions it in any later Handoff Log.
 
 ### 8.3 Session Summary and Archive
 
 **Runtime:** `apm-8-summarize-session`.
 
-An agent can write a session summary, `.apm/session-summary.md`, at any point in an APM session. It is a dated snapshot of the scope, outcomes, deliverables, findings, open issues and verified differences between the code and the APM files. It also says which parts the writer remembers doing and which it took from files. At project completion, the Manager offers to write the summary in its own chat or to have the User run the command skill in a new chat; at other times, a new chat writes it. The summarising agent then offers to archive the session, which the CLI can also do directly.
+An agent can write a session summary, `.apm/session-summary.md`, at any point in an APM session, usually when the work is complete or the User stops early. It is a dated snapshot of the scope, outcomes, deliverables, findings, open issues and verified differences between the code and the APM files. It also says which parts the writer remembers doing and which it took from files. When the work is complete, the Manager offers to write the summary in its own chat or to have the User invoke the skill in a new chat; at other times, a new chat writes it. The summarising agent then offers to archive the session, which the CLI can also do directly. Archiving is optional.
 
 With the User's approval, archiving copies everything in `.apm/` except `archives/` into `.apm/archives/<name>/`, then removes the active files, installed templates and installation metadata. Existing archives are kept. The default name is `session-YYYY-MM-DD-NNN`; the User may choose another. Each archive's `metadata.json` marks it as an archive and holds the installation metadata and archive time. The summarising agent also creates or repairs `.apm/archives/index.md` and adds the new archive's date, scope, Stage and Task counts and name.
 
