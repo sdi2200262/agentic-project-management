@@ -2,7 +2,6 @@
 build/
 scripts/
 test/
-tests/
 *.test.js
 dist/
 tmp/
