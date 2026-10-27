@@ -11,7 +11,7 @@ import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, ARCHIVES_DIR } from '../
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, createMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
 import { formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
-import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion, isStableRelease } from '../services/releases.js';
+import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion, isStableRelease } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { createArchive, generateArchiveName } from '../services/archive.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
@@ -67,13 +67,7 @@ export async function updateCommand(options = {}) {
     return;
   }
 
-  // Refuse an incomplete release before archiving or removing installed files.
-  for (const id of survivingAssistants) {
-    const target = manifest.assistants.find(a => a.id === id);
-    if (!findBundleAsset(release, target.bundle)) {
-      throw CLIError.bundleNotFound(target.bundle, release.tag_name);
-    }
-  }
+  const bundles = getRequiredBundles(release, manifest, survivingAssistants);
 
   // Pre-compute archive name for confirmation message
   const archivesDir = path.join(cwd, ARCHIVES_DIR);
@@ -108,35 +102,22 @@ export async function updateCommand(options = {}) {
   }
 
   // Archive current state
-  let archiveStop = logger.progress('Archiving current session');
-  const { archivePath } = await createArchive(cwd, { reason: 'update', name: resolvedName });
+  const archiveStop = logger.progress('Archiving current session');
+  await createArchive(cwd, { reason: 'update', name: resolvedName });
   archiveStop();
 
   // Clean all tracked files
   const installedFiles = getInstalledFiles(metadata);
-  const { removed, keptDirs } = await removeInstalledFiles(cwd, installedFiles);
+  await removeInstalledFiles(cwd, installedFiles);
 
   // Download new bundles for all assistants
   const newInstalledFiles = {};
   let apmExtracted = false;
-  const skippedAssistants = [...droppedAssistants];
-
-  for (const assistantId of survivingAssistants) {
-    const assistant = manifest.assistants.find(a => a.id === assistantId);
-    if (!assistant) {
-      skippedAssistants.push(assistantId);
-      continue;
-    }
-
-    const bundleAsset = findBundleAsset(release, assistant.bundle);
-    if (!bundleAsset) {
-      skippedAssistants.push(assistantId);
-      continue;
-    }
-
+  for (const { assistant, asset } of bundles) {
+    const assistantId = assistant.id;
     stop = logger.progress(`Downloading ${assistant.bundle}`);
     const writtenFiles = await downloadAndExtract(
-      bundleAsset.browser_download_url,
+      asset.browser_download_url,
       cwd,
       { skipApm: apmExtracted }
     );
@@ -148,17 +129,14 @@ export async function updateCommand(options = {}) {
     apmExtracted = true;
   }
 
-  // Compute surviving assistant list
-  const updatedAssistants = survivingAssistants.filter(id => !skippedAssistants.includes(id));
-
   // Write fresh metadata
   const newMetadata = createMetadata({
     source: metadata.source,
     repository: metadata.repository,
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION,
-    assistants: updatedAssistants,
-    assistantNames: assistantNamesFromManifest(manifest, updatedAssistants),
+    assistants: survivingAssistants,
+    assistantNames: assistantNamesFromManifest(manifest, survivingAssistants),
     installedFiles: newInstalledFiles
   });
   await writeMetadata(newMetadata, cwd);
@@ -187,17 +165,17 @@ export async function updateCommand(options = {}) {
   if (migrations.length) {
     logger.info(`Consolidated ${formatAssistantList(migrations.map(m => m.from), names)} into ${formatAssistantList([...new Set(migrations.map(m => m.to))], names)}.`);
   }
-  if (skippedAssistants.length > 0) {
-    logger.warn(`Dropped ${logger.plural(skippedAssistants.length, 'installation target')} not in ${release.tag_name}: ${formatAssistantList(skippedAssistants, names)}`);
+  if (droppedAssistants.length > 0) {
+    logger.warn(`Dropped ${logger.plural(droppedAssistants.length, 'installation target')} not in ${release.tag_name}: ${formatAssistantList(droppedAssistants, names)}`);
   }
-  for (const id of updatedAssistants) {
+  for (const id of survivingAssistants) {
     logger.success(`Updated ${formatAssistant(id, names[id])}`);
   }
-  for (const id of updatedAssistants) {
+  for (const id of survivingAssistants) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
-  logger.success(`Updated to ${release.tag_name} (${logger.plural(updatedAssistants.length, 'installation target')})!`);
+  logger.success(`Updated to ${release.tag_name} (${logger.plural(survivingAssistants.length, 'installation target')})!`);
 }
 
 /**

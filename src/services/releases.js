@@ -211,6 +211,16 @@ export function findBundleAsset(release, bundleName) {
   return release.assets.find(a => a.name === bundleName) || null;
 }
 
+/** Resolves selected targets and requires every bundle before installation starts. */
+export function getRequiredBundles(release, manifest, ids) {
+  return ids.map(id => {
+    const assistant = manifest.assistants.find(a => a.id === id);
+    const asset = findBundleAsset(release, assistant.bundle);
+    if (!asset) throw CLIError.bundleNotFound(assistant.bundle, release.tag_name);
+    return { assistant, asset };
+  });
+}
+
 /**
  * Fetches releases from official repo, filtered to CLI major version.
  *

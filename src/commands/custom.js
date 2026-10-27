@@ -10,7 +10,7 @@ import { CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
 import { getCustomRepos, addCustomRepo, removeCustomRepo, getRepoSettings, updateRepoSettings } from '../core/config.js';
-import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
+import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, getRequiredBundles } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
 import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
@@ -147,22 +147,16 @@ export async function customCommand(options = {}) {
     assistantIds = [selected];
   }
 
-  // Download and extract each assistant
+  const bundles = getRequiredBundles(release, manifest, assistantIds);
+
   const installedFiles = {};
   let apmExtracted = false;
 
-  for (const id of assistantIds) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    const bundleAsset = findBundleAsset(release, assistant.bundle);
-
-    if (!bundleAsset) {
-      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' for ${formatAssistant(id, assistant.name)} not found in release, skipping.` });
-      continue;
-    }
-
+  for (const { assistant, asset } of bundles) {
+    const id = assistant.id;
     stop = logger.progress(`Downloading ${assistant.bundle}`);
     const writtenFiles = await downloadAndExtract(
-      bundleAsset.browser_download_url,
+      asset.browser_download_url,
       process.cwd(),
       { skipApm: apmExtracted }
     );

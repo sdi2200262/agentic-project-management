@@ -1,12 +1,4 @@
-/**
- * Assistant Names Module
- *
- * Formats assistants the same way in every command: the display name from
- * the release manifest, followed by the ID the user types in -a flags,
- * e.g. "Codex CLI (codex)".
- *
- * @module src/core/assistants
- */
+/** Formats installation targets using manifest names or known names for older metadata. */
 
 /**
  * Display names of the official assistants, used when metadata written by
@@ -43,7 +35,7 @@ export function formatAssistant(id, name) {
  */
 export function assistantNamesFromManifest(manifest, ids = null) {
   const names = {};
-  for (const a of manifest?.assistants || []) {
+  for (const a of manifest.assistants) {
     if (!ids || ids.includes(a.id)) names[a.id] = a.name;
   }
   return names;
@@ -59,12 +51,6 @@ export function assistantNamesFromManifest(manifest, ids = null) {
 export function formatAssistantList(ids, names = {}) {
   return ids.map(id => formatAssistant(id, names[id])).join(', ');
 }
-
-export default {
-  formatAssistant,
-  formatAssistantList,
-  assistantNamesFromManifest
-};
 
 /**
  * Resolves installed IDs against a new release, consolidating explicitly replaced
