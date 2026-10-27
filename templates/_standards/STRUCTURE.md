@@ -14,7 +14,7 @@ Place artifact contracts in a final Formats section of the file that owns them, 
 |---|---|
 | Initiation command skill | An opening that places the role in the system: the other agents, what the role receives and from whom, what it produces and for whom, how messages travel, and its scope. Then identity and loading sequence, behavior at first start and after Handoff, duties and boundaries. The Planner has one conversation and no Handoff. |
 | Utility or recovery command skill | Purpose, applicability, arguments, procedure and completion behavior. |
-| Handoff command skill | Applicable role, transfer procedure, Handoff Log and prompt formats. |
+| Handoff command skill | Applicable role, transfer procedure, Handoff Log and Handoff Prompt formats. |
 | Guide | Opening paragraph saying what the guide covers, followed by brief context the steps rely on, such as the sections of the input it works from; one numbered section per step of the procedure, in the order the agent acts, each holding its own rules, with subsections for work that happens within a step (troubleshooting and batches within execution); a final Formats section for the contracts the guide owns. A guide stops where the next guide's procedure begins and points to it. |
 | Shared skill | Reading roles and purpose, followed by procedures and reference content. |
 

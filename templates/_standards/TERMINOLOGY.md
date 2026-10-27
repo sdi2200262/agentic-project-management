@@ -50,7 +50,7 @@ The Planner writes these during Work Breakdown, in this order.
 |---|---|---|
 | **Spec** | What to build: design decisions and constraints. | `.apm/spec.md` |
 | **Plan** | How the work is divided, ordered and assigned to Workers, with validation criteria and dependencies. | `.apm/plan.md` |
-| **Rules** | Conventions that apply to all or most of the work. They are kept in the `APM_RULES` block of `CLAUDE.md` for Claude Code, or of `AGENTS.md` for other assistants. | Project root |
+| **Rules** | Conventions that apply to all or most of the work. They are kept in the `APM_RULES` block of `AGENTS.md`. | Project root |
 
 ---
 
@@ -106,10 +106,10 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 | Term | Definition | Location |
 |---|---|---|
 | **Task Log** | The Worker's record of one Task: outcome, validation, deliverables and findings. | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` |
-| **Handoff Log** | The outgoing agent's record, during Handoff, of working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent>/handoff-<NN>.log.md` |
-| **Index** | The overview of project history: durable notes and a summary of each completed Stage. | `.apm/memory/index.md` |
-| **Memory** | The folder of project history: the Index, Task Logs and Handoff Logs. | `.apm/memory/` |
-| **Tracker** | The Manager's live record of the project: Task states, each Worker's current conversation, version control and short-lived notes. | `.apm/tracker.md` |
+| **Handoff Log** | The record a Manager or Worker conversation writes at its Handoff: what it did and the working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md` |
+| **Index** | The overview of the APM session's history: lasting notes and a table of Stage summaries. Each summary is a file in its Stage folder. | `.apm/memory/index.md` |
+| **Memory** | The folder of the APM session's history: the Index, Stage summaries, Task Logs and Handoff Logs. | `.apm/memory/` |
+| **Tracker** | The Manager's live record of the APM session: Task states with branches and worktrees, each Worker's current conversation, and short-lived notes. | `.apm/tracker.md` |
 
 ---
 
@@ -119,11 +119,11 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 |---|---|---|
 | **Message Bus** | The file-based system through which agents exchange messages. Each agent has its own folder, each file holds at most one message, and the User delivers every message. | `.apm/bus/` |
 | **Task Prompt** | The Manager's message giving a Worker everything needed to execute and validate a Task or batch. | |
-| **Task Report** | The Worker's short message to the Manager with a Task's outcome and the path to its Task Log. | |
+| **Task Report** | The Worker's short message to the Manager with a Task's outcome and the path to its Task Log, or with the outcomes of a batch. | |
 | **Handoff Prompt** | The outgoing agent's message telling the incoming agent the current state, what to read and what to do next. | |
 | **Task Bus** | The file that carries Task Prompts to a Worker. | `<worker>/task.md` |
 | **Report Bus** | The file that carries a Worker's Task Reports to the Manager. | `<worker>/report.md` |
-| **Handoff Bus** | The file that carries a Handoff Prompt to the incoming agent. | `<agent>/handoff.md` |
+| **Handoff Bus** | The file that carries a Handoff Prompt to the incoming agent. | `<agent-slug>/handoff.md` |
 
 ---
 
@@ -134,7 +134,6 @@ These terms keep ordinary lowercase but have a fixed meaning in APM templates.
 | Term | Definition |
 |---|---|
 | **recovery** | Rebuilding a Manager's or Worker's working context after compaction or a lost conversation. It does not start the role's next numbered conversation. |
-| **dependency graph** | The diagram in the Plan showing Tasks, their Workers and their dependencies. |
 | **follow-up Task** | A Task that Task Review sends back to the same Worker with a revised Task Prompt. It keeps its Task ID and stays Active. |
 | **archive** | A snapshot of an APM session's `.apm/` files, stored in `.apm/archives/`. |
 | **session summary** | An optional document, `.apm/session-summary.md`, describing an APM session's scope, outcomes, findings, open issues and current state. |
