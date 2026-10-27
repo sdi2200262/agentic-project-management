@@ -1,7 +1,5 @@
 # Contributing to Agentic Project Management (APM)
 
-Thank you for considering contributing to APM! Your contributions help build a better framework for AI-assisted project management.
-
 ## Ways to Contribute
 
 ### Reporting Bugs & Workflow Issues
@@ -73,7 +71,7 @@ Community extensions are not officially supported, may lag behind releases, and 
 
 ### Making Changes
 
-APM uses a build system that processes source templates into platform-specific bundles. Understanding where to make changes is important:
+Edit the source files for the part you are changing:
 
 #### File Locations
 
@@ -85,29 +83,30 @@ APM uses a build system that processes source templates into platform-specific b
 
 **Assistant differences:** Every assistant installs the same skills and guides. Placeholders in `build/processors/placeholders.js` resolve the same way for every assistant, and the build fails if the shared files differ between assistants. Keep assistant-specific syntax, such as command prefixes or subagent calls, out of the templates: describe the action in plain English and let each assistant carry it out its own way.
 
-**Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected command skills, shared skills and guides. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
+Start workflow changes in `WORKFLOW.md`, then update the affected command skills, shared skills and guides. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
 
 #### Building
 
 After modifying files in `templates/` or `build/`, run:
 
 ```bash
-npm run build:release
+VERSION=1.1.0 npm run build:release
 ```
 
-This processes templates and creates platform-specific bundles in `dist/`.
+This creates the two template bundles and release manifest in `dist/`.
 
 ### Testing Your Changes
 
 **For template changes** (`templates/`):
-- Run `npm run build:release` to verify the build completes
+- Run `VERSION=1.1.0 npm run build:release` to verify the build completes
 - Test with actual AI assistants in a real project
 - Include example interactions or observations in your PR to speed review
 
 **For CLI or build system changes** (`src/` or `build/`):
-- Run `npm run build:release` to verify build output
-- Test CLI commands manually
-- Verify generated output in `dist/` is correct
+- Build templates with the explicit version above and inspect the bundles and manifest
+- Exercise affected CLI commands and check the generated files
+
+Use the template version you intend to test. CLI packages can be built locally with `npm pack`; GitHub Releases contain only template ZIPs and `apm-release.json`.
 
 ### Pull Requests
 
@@ -133,7 +132,3 @@ APM uses Mozilla Public License 2.0 (MPL-2.0). By contributing, you agree that:
 - Technical questions: open a GitHub issue
 - General inquiries: reach out on Discord at `cobuter_man`
 - Collaboration: mention @sdi2200262 in relevant issues or PRs
-
----
-
-Your contributions help make APM better for everyone. Thank you for being part of the community!

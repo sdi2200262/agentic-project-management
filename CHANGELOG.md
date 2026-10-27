@@ -44,6 +44,11 @@ Both installation targets now install the same commands, guides and communicatio
 
 ### Fixed
 
+* **Incomplete releases are refused before installation.** `apm init` and `apm custom` check every selected bundle before writing files, so missing bundles cannot leave targets recorded as installed.
+* **Local template builds require their own version.** Supply `VERSION` instead of inheriting the CLI version. The build also checks its generated manifest against the CLI's validator before writing output.
+* **Narrower workflow instructions.** Worktree cleanup applies only when an assignment used one, git operations require active version control, and session summaries verify the active session rather than sweeping archives and worktree contents.
+* **Less repeated guidance.** Task Prompts carry Task-specific additions; general execution and reporting instructions remain in the Worker guides. Customization and release instructions now match the current build.
+
 * **Required steps are stated directly.** Agents often skipped these steps in v1.0.3 as well, so each instruction now says what to do and when:
   * The Planner scans the workspace itself, then uses subagents for broader research and checks their findings before relying on them.
   * The Planner waits for your reply after each Context Gathering round, and asks for each planning approval even after you say to skip reviews or run straight through during implementation.

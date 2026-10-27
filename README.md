@@ -27,17 +27,15 @@ APM supports Claude Code and agents that read project instructions from `AGENTS.
 npm install -g agentic-pm
 ```
 
-In your project directory, choose one of the commands below to install APM's commands, guides, skills, and document templates. Choose the `agents` installation target for those agents, or `claude` for Claude Code. Select one when prompted, or pass one or both with `-a`:
+In your project directory, run:
 
 ```bash
-apm init -a agents
-
-# Claude Code, or both layouts in the same project:
-apm init -a claude
-apm init -a agents claude
+apm init
 ```
 
-Open your assistant in the project and invoke the `apm-1-initiate-planner` skill using its skill menu or invocation syntax. In Claude Code, run `/apm-1-initiate-planner`. Describe what you want to build or change. The Planner works with you on the planning documents, then directs you to start the Manager in a new conversation. From there, each agent tells you what to run next and where. For the full walkthrough, see [Getting Started](https://agentic-project-management.dev/docs/getting-started).
+Choose `agents` for agents using `.agents/skills/` and `AGENTS.md`, or `claude` for Claude Code. To install APM for both, use `apm init -a agents claude`.
+
+Invoke the `apm-1-initiate-planner` skill in your assistant and describe what you want to build or change. Each agent guides you through the next steps. See [Getting Started](https://agentic-project-management.dev/docs/getting-started) for the full walkthrough.
 
 ## Documentation
 

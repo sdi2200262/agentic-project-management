@@ -69,7 +69,7 @@ Explore `build/build-config.json` to see each target's skills and guides folders
 
 ```bash
 npm ci
-npm run build:release
+VERSION=1.1.0 npm run build:release
 ```
 
 This produces a `dist/` directory with ZIP bundles per installation target and an `apm-release.json` manifest. The User can test locally by extracting a bundle into a project.
@@ -81,21 +81,13 @@ This produces a `dist/` directory with ZIP bundles per installation target and a
 When the User requests a change, identify which layer it affects. All workflow changes follow a top-down propagation:
 
 1. **Update `WORKFLOW.md` first** - Any change that affects APM's behavior, procedures, or coordination patterns must be reflected in the workflow specification before modifying runtime files. `WORKFLOW.md` is the source of truth.
-2. **Propagate to runtime files** - Commands, guides, skills, and agent configurations implement the workflow spec. Update these to match the changes made in `WORKFLOW.md`, following the conventions in `STRUCTURE.md`, `WRITING.md`, and `TERMINOLOGY.md`.
+2. **Propagate to runtime files** - Command skills, shared skills and guides implement the workflow spec. Update these to match the changes made in `WORKFLOW.md`, following the conventions in `STRUCTURE.md`, `WRITING.md`, and `TERMINOLOGY.md`.
 
 Changes that do not affect the workflow (e.g. adjusting wording within existing procedures, adding examples to guidance fields) can be made directly in runtime files without updating `WORKFLOW.md`.
 
 ### Template Content Changes
 
-Most customizations involve modifying template files in `templates/`. The `_standards/` files define the conventions:
-
-- Commands follow structural profiles defined in `STRUCTURE.md` (strict for initiation, lightweight for utility)
-- Guides follow a five-section pattern (Overview, Operational Standards, Procedure, Structural Specifications, Content Guidelines)
-- Skills have a required Overview section and free-form internal organization
-- All files use the terminology defined in `TERMINOLOGY.md`
-- Writing follows the patterns in `WRITING.md` (imperative mood, token efficiency, de-duplication)
-
-Read the relevant `_standards/` file before making changes to understand the conventions in play.
+Most customizations involve modifying template files in `templates/`. Read the relevant `_standards/` files: `STRUCTURE.md` defines each file type’s content, `TERMINOLOGY.md` defines workflow terms, and `WRITING.md` guides prose. Follow the current profiles rather than imposing the same sections on every file.
 
 ### Adding New Files
 
@@ -103,7 +95,7 @@ When adding a new guide, command skill or shared skill:
 
 1. Follow the structural conventions from `STRUCTURE.md` for that file type
 2. Add YAML frontmatter where required (skills require it, guides do not; command skills also set `disable-model-invocation: true`)
-3. Use placeholders for any paths, rules file references, or platform-specific values
+3. Use `{VERSION}`, `{SKILL_PATH:name}` and `{GUIDE_PATH:name}` where needed; describe the Rules file and assistant actions in plain English
 4. Update cross-references in other files if the new file should be loaded by an Agent
 
 ### Build Configuration Changes
@@ -120,10 +112,10 @@ Changes to `src/` affect the CLI tool. These require their own release cycle (np
 
 After making changes, the User creates a release that can be installed via `apm custom`.
 
-1. **Build** - Run `npm run build:release` to generate bundles in `dist/`
+1. **Build** - Run `VERSION=<template-version> npm run build:release` with the version intended for the new tag
 2. **Test** - Extract a bundle into a test project and verify the changes work
 3. **Tag** - Create a git tag following the versioning convention
-4. **Release** - Create a GitHub Release and attach all files from `dist/` (the ZIP bundles and `apm-release.json`)
+4. **Release** - Create a GitHub Release and attach only the template ZIP bundles and `apm-release.json` from `dist/`
 
 The `apm-release.json` manifest is what the CLI reads to discover available assistants in the release. A release without it cannot be installed. Explore `build/generators/manifest.js` to understand its structure.
 
