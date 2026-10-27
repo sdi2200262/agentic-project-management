@@ -14,7 +14,7 @@ On User-initiated Manager Handoff, transfer working context through a persistent
 
 ## 2. Handoff Procedure
 
-Before writing either artifact, check the current state yourself: read the Tracker and each Worker's bus files, and run git to see branches, worktrees and merges. Write only checked state in the log and the prompt; your memory of earlier turns may be out of date.
+Before writing either artifact, check the current state yourself: read the Tracker and each Worker's bus files. When version control is active, check branches, worktrees and merges with git. Write only checked state in the log and the prompt; your memory of earlier turns may be out of date.
 
 ### 2.1 Handoff Log Creation
 

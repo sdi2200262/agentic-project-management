@@ -36,11 +36,11 @@ A pending report may unlock a better combination. Wait only when it is the only 
 
 ### 2.5 Version Control Standards
 
-Use the Tracker's per-repository conventions and base branch; identify working repositories from the Spec. Include the applicable repository’s commit conventions in the Task Prompt. Each dispatch unit gets a feature branch off base; a batch shares one branch. Merge required producer branches before creating a dependent branch. Workers commit; you manage branches, worktrees, merges and cleanup.
+When version control is active, use the Tracker's per-repository conventions and base branch; identify working repositories from the Spec. Include the applicable repository’s commit conventions in the Task Prompt. Each dispatch unit gets a feature branch off base; a batch shares one branch. Merge required producer branches before creating a dependent branch. Workers commit; you manage branches, worktrees, merges and cleanup.
 
 Use the main working directory for sequential work. For parallel work, give every unit a separate short-lived worktree under `.apm/worktrees/`, keeping the main directory on base. Run at most 4 worktrees at once. Worktrees contain tracked files only; identify any needed untracked assets in the prompt. All runtime `.apm/` paths target the project root, even if a worktree has its own tracked copy.
 
-Names and commits describe actual work, without Task IDs, Stage numbers or agent identifiers. Do not commit generated build files; update `.gitignore` when needed. Keep Task rows current with branches/worktrees and pending merges for Handoff.
+Names and commits describe actual work, without Task IDs, Stage numbers or agent identifiers. Derive worktree directory names from branch names, replacing `/` with `-`; a batch name reflects its combined scope. Do not commit generated build files; update `.gitignore` when needed. Keep Task rows current with branches/worktrees and pending merges for Handoff.
 
 If the User later enables version control, initialize git where needed, confirm base/conventions, update Rules and Tracker, then use branch-based dispatch. Without version control, parallel dispatch is unavailable.
 
@@ -126,13 +126,11 @@ has_dependencies: true
   - *Cross-agent.* "This Task depends on work completed by [Producer Agent]:" intro - `**Integration Steps:**` numbered file reading instructions - `**Producer Output Summary:**` key features, files, interfaces, constraints - `**Upstream Context:**` for relevant ancestors.
 - *Objective:* Single-sentence Task goal, optionally enhanced with coordination-level context.
 - *Detailed Instructions:* Plan steps transformed into actionable instructions with integrated Spec content and guidance.
-- *Workspace:* Working directory and branch name for sequential dispatch, or worktree path and project root for parallel dispatch. For worktree dispatch, instruct the Worker to perform code work in the worktree but resolve all `.apm/` paths (Task Log, bus files) from the project root. Worker operates in the specified workspace, commits there, and notes it in the Task Log. Workers do not merge.
+- *Workspace:* Working directory; include the branch when version control is active. For parallel dispatch, give the worktree path and project root, directing code work to the worktree and all runtime `.apm/` paths to the project root. The Worker records its workspace in the Task Log and commits there when version control is active. Workers do not merge.
 - *Expected Output:* Deliverables from Plan Output field.
 - *Validation Criteria:* From Plan Validation field.
-- *Instruction Accuracy:* The objective and expected output are authoritative. Verify instructions against the codebase when details, prerequisites or assumptions appear inaccurate; base execution on the verified state.
-- *Task Iteration:* Follow `{GUIDE_PATH:task-execution}` §2.3 Iteration Standards, including debug delegation after an unsuccessful correction. Add only Task-specific investigation or validation guidance here.
-- *Task Logging:* Path and reference to `{GUIDE_PATH:task-logging}` §3.1 Task Log Procedure.
-- *Task Report:* Instruction to output a Task Report for User to return to Manager.
+
+Add investigation, validation, logging or reporting guidance only when it is specific to this Task. The Worker already follows the execution and logging guides; `log_path` identifies its log.
 
 ### 4.2 Follow-Up Format
 
@@ -145,7 +143,7 @@ Follow-up Task Prompts use the same structure as §4.1 Task Prompt Format with t
 
 ### 4.3 Branch and Worktree Standards
 
-Branch naming follows the convention recorded in the Tracker Version Control table. Branch names are descriptive of the actual work; for batches, the name reflects the batch scope. Worktrees are placed under `.apm/worktrees/`. Each subdirectory name is derived from the branch name (e.g., replacing `/` with `-`). Each worktree directory contains a full checkout of all tracked files. Untracked files are not present.
+Use the version control conventions and worktree rules in §2.5.
 
 ### 4.4 Tracker VC Entry Format
 

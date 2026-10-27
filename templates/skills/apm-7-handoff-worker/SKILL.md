@@ -14,7 +14,7 @@ On User-initiated Worker Handoff, write a persistent Handoff Log and a current c
 
 ## 2. Handoff Procedure
 
-Before writing either artifact, check the current state yourself: read your Task Bus and Report Bus files, and run git to see your branch, its commits and whether the Manager has merged it. Write only checked state in the log and the prompt; your memory of earlier turns may be out of date.
+Before writing either artifact, check the current state yourself: read your Task Bus and Report Bus files. When version control is active, use git to check your branch, its commits and whether the Manager has merged it. Write only checked state in the log and the prompt; your memory of earlier turns may be out of date.
 
 ### 2.1 Handoff Log Creation
 

@@ -33,7 +33,7 @@ Read these independently:
 ### 2.2 Incoming Worker Initiation
 
 1. Read `.apm/bus/<agent-slug>/handoff.md`.
-2. Extract instance number and read the specified Handoff Log and your current-Stage Task Logs. Check what they say about branches, merges and pending work against git and your Task Bus before acting on it. Where they differ, follow git and the bus.
+2. Extract instance number and read the specified Handoff Log and your current-Stage Task Logs. Check what they say about branches, merges and pending work against your Task Bus and, when version control is active, git before acting on it. Where they differ, follow the current bus and git state.
 3. Clear the Handoff Bus after processing.
 4. Confirm instance, specific logs loaded and next action. When previous Stages exist, state that their logs were not loaded.
 5. If Task Bus has content, resume its mid-Task/batch state. Otherwise await `apm-4-check-tasks`.

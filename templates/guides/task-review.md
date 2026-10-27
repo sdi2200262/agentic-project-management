@@ -18,7 +18,7 @@ Interpret scoped flags with project context. `important_findings` can affect oth
 
 Accept a supported Success with no flags. Investigate flags and non-Success outcomes before deciding. A Success log that contradicts its own validation is not yours to resolve: follow §2.1 and wait for the Worker's answer, even if other evidence looks sufficient. Check contained issues directly. For context-intensive or unclear issues, use a subagent to investigate. Give it the investigation goal, files to examine and required findings. Verify critical claims against source.
 
-After investigation, proceed if nothing actionable remains, send a refined follow-up if retry is needed, or modify planning documents when their content is wrong. Note uncommitted changes in a non-Success follow-up. For successful work left uncommitted, commit on the Worker's branch using Rules conventions; no follow-up is needed for that alone.
+After investigation, proceed if nothing actionable remains, send a refined follow-up if retry is needed, or modify planning documents when their content is wrong. Note uncommitted changes in a non-Success follow-up. When version control is active, commit successful uncommitted work on the Worker's branch using Rules conventions; no follow-up is needed for that alone.
 
 When validation is incomplete or deliverables are partial, issue a follow-up, or, if the User agrees, accept the Partial outcome and record what remains in working notes. Done is terminal. If previously-Done work needs correction, create a new Task through Plan modification, referencing the original and discovery context. Keep a Task Active while investigation, follow-up or a coordination decision is pending. A terminal decision can accept Success, accept a non-Success outcome or restructure work.
 
@@ -38,11 +38,11 @@ In a wait state, state what was processed, what remains pending and which report
 
 ### 2.5 Merge Standards
 
-After successful review, merge the completed dispatch unit's branch into base. Merge required outputs before dependent dispatch and sweep all current-Stage branches at Stage end. Switch to the recorded base branch before merging; merge and verify autonomously for clean merges.
+When version control is active, merge the completed dispatch unit's branch into base after successful review. Merge required outputs before dependent dispatch and sweep all current-Stage branches at Stage end. Switch to the recorded base branch before merging; merge and verify autonomously for clean merges.
 
 Resolve conflicts using Task objectives, project design and Spec; for complex conflicts, use a subagent to investigate or seek User help. If branch protection blocks direct merging, adapt through a PR, intermediate branch or User guidance and record the constraint in Tracker working notes.
 
-After a successful merge, remove its worktree with `git worktree remove .apm/worktrees/<branch-slug>` before deleting the merged branch with `git branch -d <branch-name>`. For a multi-branch sweep, batch removals first, then deletions in one terminal invocation.
+After a successful merge, remove the assignment’s worktree with `git worktree remove .apm/worktrees/<branch-slug>` if it used one, then delete the merged branch with `git branch -d <branch-name>`. For a multi-branch sweep, batch removals first, then deletions in one terminal invocation.
 
 ### 2.6 Stage Summary Standards
 
@@ -82,7 +82,7 @@ Read the referenced Task Log and apply §2.1. Explain the material findings, con
 
 ### 3.3 Review Outcome
 
-1. Assess deliverables against objectives and validation per §2.2. Commit successful uncommitted work when needed.
+1. Assess deliverables against objectives and validation per §2.2. Commit successful uncommitted work when version control is active.
 2. Investigate issues; for a Success log that contradicts its own validation, follow §2.1 instead. Proceed if resolved, construct a follow-up per `{GUIDE_PATH:task-assignment}` §3.4, or apply §3.4 below for document changes.
 3. Update the Tracker per §4.1 after review/decisions. Keep unresolved work Active and mark terminal outcomes Done. Merge per §2.5 before reassessing dependencies. Update readiness, branch state and working notes; batch review/dispatch changes into one Tracker edit.
 4. If the Stage is Done and merged, continue to §3.5. Otherwise dispatch Ready Tasks in the same turn per `{GUIDE_PATH:task-assignment}` §3.1, or state the wait condition and next report needed.
@@ -146,7 +146,7 @@ Write the end state of each Task for the review-dispatch cycle. When a Task is u
 
 **Stage collapse:** When all Tasks in a Stage are Done, no branches remain and its Stage summary is written, replace all Task rows with `**Stage N:** Complete`.
 
-**Batch edits:** Task ID column guarantees edit tool uniqueness for targeting individual rows. When multiple rows or working notes change in the same review-dispatch cycle, batch all Tracker updates into a single edit.
+**Batch edits:** Batch related Tracker rows and working-note updates into one edit.
 
 ### 4.2 Tracker Format
 

@@ -4,7 +4,7 @@
 
 **Reading agent:** Worker
 
-Receive assignments, integrate their context, execute, validate, log and report. Follow Task Prompt instructions and Rules; otherwise use the codebase's conventions, descriptive names and comments for non-obvious behavior. Build incrementally and validate meaningful changes.
+Receive assignments, integrate their context, execute, validate, log and report. The Task objective and expected output are authoritative. When instructions, prerequisites or assumptions appear inaccurate, verify them against the codebase and use the verified state to achieve that objective. Follow Task Prompt instructions and Rules; otherwise use the codebase's conventions, descriptive names and comments for non-obvious behavior. Build incrementally and validate meaningful changes.
 
 ## 2. Operational Standards
 
@@ -28,11 +28,11 @@ Verify findings before applying a fix. If investigation remains unresolved, pref
 
 ### 2.4 Rules Updates
 
-A User correction is an instruction from the User that changes how you work and would also apply to later Tasks, such as which data to use, what to check or how to name things. Follow Task-specific instructions as normal guidance and log them, without the Rules question. Apply it immediately without pausing to discuss Rules. When the Task is done and before you write the Task Log, ask the User whether to add the correction to the Rules file so every Worker follows it, and wait for the answer. Ask every time the User corrected you during the Task. If the User approves, add it inside the `APM_RULES` block of the Rules file in your Task workspace and commit it with the Task, so it merges with your work after review. Record the correction and the User's answer under Important Findings with `important_findings: true`.
+A User correction is an instruction from the User that changes how you work and would also apply to later Tasks, such as which data to use, what to check or how to name things. Follow Task-specific instructions as normal guidance and log them, without the Rules question. Apply it immediately without pausing to discuss Rules. When the Task is done and before you write the Task Log, ask the User whether to add the correction to the Rules file so every Worker follows it, and wait for the answer. Ask every time the User corrected you during the Task. If the User approves, add it inside the `APM_RULES` block of the Rules file in your Task workspace. When version control is active, commit it with the Task so it merges with your work after review. Record the correction and the User's answer under Important Findings with `important_findings: true`.
 
 ### 2.5 Version Control Standards
 
-Work in the Task Prompt's branch or worktree and commit using Rules conventions. Note the workspace in the Task Log. For large Tasks, coherent intermediate commits are appropriate. Do not create branches, manage worktrees, merge or push; the Manager handles those operations.
+Work in the assigned workspace and note it in the Task Log. When version control is active, use the assigned branch or worktree and commit using Rules conventions. For large Tasks, coherent intermediate commits are appropriate. Do not create branches, manage worktrees, merge or push; the Manager handles those operations.
 
 Use project vocabulary in commit messages, source comments and code; keep APM terms, Task IDs, Stage and Step numbers, and agent identifiers in APM artifacts. For worktrees, resolve all runtime `.apm/` paths from the project root specified in the prompt, not a worktree copy.
 
@@ -55,7 +55,7 @@ Read Context from Dependencies and follow §2.1. For cross-agent work, complete 
 
 ### 3.3 Task Execution
 
-1. Follow Detailed Instructions in order, applying Guidance and Rules toward the Objective. If a step contradicts the codebase, verify the actual state and follow the prompt's Instruction Accuracy section.
+1. Follow Detailed Instructions in order, applying Guidance and Rules toward the Objective. Resolve inaccurate instructions against the codebase as described in §1.
 2. For explicit User actions, state what is needed and why, offer relevant options and await completion.
 3. For each specified subagent step, use a subagent with a focused task description and verify critical findings before using them.
 4. Briefly state that implementation is ready for validation and continue to the checks.

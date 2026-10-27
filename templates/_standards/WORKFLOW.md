@@ -46,7 +46,7 @@ The Manager may modify the Plan during implementation and keeps the graph consis
 
 APM execution standards occupy the APM_RULES block in the Rules file. Existing outside content is preserved and referenced where relevant. Rules apply to all or most work and are conditional on the work performed. Domain-specific patterns reach Workers through Task Prompts. Manager and Workers may update Rules during implementation under their respective procedures.
 
-The Manager owns version control conventions. Each dispatch unit gets a feature branch; parallel units use isolated worktrees; Workers commit on assigned branches. Initial conventions require User confirmation. Where none exist, defaults are `type/short-description` branches and `type: description` commits, using feat, fix, refactor, docs, test or chore. APM does not push by default.
+The Manager owns version control conventions. When version control is active, each dispatch unit gets a feature branch; parallel units use isolated worktrees; Workers commit on assigned branches. Initial conventions require User confirmation. Where none exist, defaults are `type/short-description` branches and `type: description` commits, using feat, fix, refactor, docs, test or chore. APM does not push by default.
 
 When `.apm/` is inside a repository, it is ignored by default; the Manager asks which artifacts the User wants tracked and adjusts entries accordingly. If the User declines version control, parallel dispatch is unavailable. Tracker records per-repository base branches and conventions; only universal commit conventions belong in Rules.
 
@@ -173,7 +173,7 @@ Prompts embed Task definitions, exact Spec/authoritative-source constraints and 
 
 Same-agent dependencies get recall anchors and paths; cross-agent dependencies get producer output summaries, reading/integration instructions and relevant upstream contracts. Tracker overrides account for Handoffs; reconstructed recovery context may need more detail. Upstream tracing stops where an intermediate output fully abstracts earlier contracts.
 
-Each prompt includes identity/Task metadata, log path, dependency indicator and the objective, instructions, output, validation and necessary execution/logging/reporting guidance. Branch/worktree instructions identify the working location and project-root `.apm/` paths. Workers commit and record their workspace; the Manager creates branches, merges and cleans up.
+Each prompt includes identity/Task metadata, log path, dependency indicator and the objective, instructions, output, validation and any Task-specific execution/logging/reporting guidance. Generic execution rules live in the Worker guides. Branch/worktree instructions identify the working location and project-root `.apm/` paths. Workers commit and record their workspace; the Manager creates branches, merges and cleans up.
 
 The Manager writes the Task Bus and gives each User action: new-chat initiation for an uninitialized Worker, delivery for an existing one, batch scope/order or each parallel Worker's action. Follow-ups refine objectives, instructions, outputs and validation with investigation findings, retaining the original log path for overwrite.
 
@@ -187,7 +187,7 @@ The Worker integrates dependencies, executes sequentially and validates autonomo
 
 In batches, each Task is validated and logged before the next begins. Failed stops the batch. One final batch report covers executed outcomes and unstarted Tasks.
 
-User corrections are applied immediately and recorded as important findings at completion. After logging/reporting/delivery instructions, the Worker offers to add a correction as a Rule for all Workers; this is optional for the User and does not block delivery. Approval updates Rules and the log.
+User corrections are applied immediately. At completion, before writing the Task Log, the Worker asks whether a correction that applies to later Tasks belongs in Rules and waits for the answer. When version control is active, an approved addition is committed with the Task. The log records the correction and the User’s answer as important findings.
 
 Completion includes commits under Rules conventions, a Task Log, incoming-bus clearing and an outgoing report. Delivery guidance offers both targeted and general invocations of the report-check command skill for concurrent results. Large Tasks may have coherent intermediate commits.
 
@@ -201,7 +201,7 @@ The first report after Handoff identifies instance and loaded logs. The Manager 
 
 Supported Success proceeds; successful uncommitted work can be committed by the Manager under Rules conventions. Flags, non-Success or inconsistencies require investigation, directly for contained checks or through subagents for context-intensive issues. Results lead to acceptance, a refined follow-up or document modification under §3.4. Non-Success follow-ups identify uncommitted work. Deficiencies in Done work create new Tasks; Done is terminal.
 
-Every path updates Tracker. Successful reviewed branches merge before dependent dispatch, and all current-Stage branches merge before the next Stage. Reports are processed asynchronously; review, merge, readiness and new dispatch continue in one turn when possible.
+Every path updates Tracker. When version control is active, successful reviewed branches merge before dependent dispatch, and all current-Stage branches merge before the next Stage. Reports are processed asynchronously; review, merge, readiness and new dispatch continue in one turn when possible.
 
 After Stage Tasks are Done, the Manager assesses holistic verification using User agreement, review findings and Planner notes. It resolves contained issues, delegates investigation, creates Tasks for Worker-level work or seeks User direction as appropriate. After verification concludes, it appends an Index Stage summary with outcome, Workers, findings and Task Log references, distilling working notes per §5.1.
 

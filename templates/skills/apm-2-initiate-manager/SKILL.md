@@ -40,7 +40,7 @@ Read every file listed in §2 in full. Guides use the project-root paths given h
 
 1. Summarize current state from Tracker and Index: completed/current Stages, issues and relevant notes.
 2. Read the Handoff Bus prompt.
-3. Resolve instance identity and load the Handoff Log and Task Logs it specifies. Check what they say about branches, merges, Worker buses and pending reviews against git, the Tracker and the bus files before acting on it. Where they differ, follow the current files and git.
+3. Resolve instance identity and load the Handoff Log and Task Logs it specifies. Check what they say about branches, merges, Worker buses and pending reviews against the Tracker, bus files and, when version control is active, git before acting on it. Where they differ, follow the current files and git state.
 4. Clear the Handoff Bus after processing.
 5. Confirm the resumed state and next action, then continue coordination.
 
