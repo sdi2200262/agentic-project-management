@@ -1,159 +1,159 @@
 # APM Workflow
 
-This specification defines APM's workflow for template authors. Runtime guides, command skills and shared skills implement it. Terms follow `TERMINOLOGY.md`; prose follows `WRITING.md`.
+This specification describes APM's workflow for template authors and maintainers. The command skills, shared skills and guides that agents read at runtime implement it. A change to the workflow is made here first, then carried into those files. Terms follow `TERMINOLOGY.md`; prose follows `WRITING.md`.
 
 ## 1. Design
 
-APM coordinates agents through planning documents, structured Memory and a file-based Message Bus. The User initiates agents, delivers messages by invoking command skills, approves decisions and initiates Handoffs. Agents never communicate directly.
+APM coordinates agents through planning documents, Memory and the Message Bus. Agents never communicate directly. The User starts each agent, delivers every message by running a command skill in the receiving agent's chat, approves decisions and starts Handoffs.
 
-All assistants receive identical instructions in plain English. Each agent carries them out with its own assistant's commands, subagents and new-chat steps.
+All assistants receive the same instructions in plain English. Each agent carries them out with its own assistant's commands, subagents and way of starting a new chat.
 
-Roles are scoped through instructions, not file permissions. The Planner gathers project context and plans; the Manager holds coordination context; Workers use self-contained Task Prompts, Rules and accumulated working context. Workers do not read Spec, Plan, Tracker or Index. The Manager embeds relevant coordination content in assignments. Explicit User requests may extend Worker scope.
+Instructions, not file permissions, keep each role to its scope. The Planner holds the project context gathered during planning. The Manager holds the coordination context: the planning documents, the Tracker and Memory. A Worker works from its Task Prompts, the Rules and what it has learned in its own conversation. Workers do not read the Spec, Plan, Tracker or Index. Instead, the Manager copies what a Task needs into its Task Prompt. The User can widen a Worker's scope with an explicit request.
 
-Agents use subagents for focused work, with read-only access for research and execution access for debugging. Delegation instructions state the condition, required action, inputs and findings, in plain English; each agent makes the call with its own assistant's tools. Spawning agents verify and integrate findings; Workers record subagent usage in Task Logs.
+Agents use subagents for focused work: read-only subagents for research, and subagents that may change files for debugging. An instruction to use a subagent says when to use one, what to give it and what findings to return. The agent that starts a subagent verifies its findings before using them. Workers note subagent use in their Task Logs.
 
 ## 2. Phases
 
 ### 2.1 Planning Phase
 
-The Planner completes Context Gathering, obtains understanding approval, then produces Spec, Plan and Rules with separate approvals. It initializes the Message Bus and directs the User to start a Manager.
+The Planner runs Context Gathering, and the User approves its summary of understanding. The Planner then runs Work Breakdown and writes the Spec, Plan and Rules, each approved separately. Finally it creates the Message Bus and tells the User to start the Manager in a new chat.
 
 ### 2.2 Implementation Phase
 
-The Manager reads its Handoff Bus: content selects incoming-instance initiation; an empty bus selects first initiation. The first Manager reads project documents, inspects git state and combines detected conventions with Planner observations. It presents scope, proposed VC conventions and possible Stage verification needs for User approval. On approval it records conventions in Tracker/Rules, initializes Task/Worker tracking and begins coordination.
+The Manager first reads its Handoff Bus. If the bus holds a Handoff Prompt, the Manager continues after a Handoff; if it is empty, this is the first Manager. The first Manager reads the planning documents and inspects the git state of each working repository. It combines what it finds with the Planner's notes and presents its understanding of the project, proposed version control conventions and any Stages that may need verification. Once the User approves, it records the conventions in the Tracker and Rules, sets up Task and Worker tracking and begins.
 
-Work proceeds through Task Assignment, Execution, Logging and Review. Stages are sequential; Tasks within a Stage support single, batch or isolated parallel dispatch. Review and readiness assessment continue until all Stages finish. The Manager then presents project completion and follow-up options. User-initiated Handoff transfers an instance's context when needed.
+Each Task then passes through Task Assignment, Task Execution, Task Logging and Task Review. Stages run in order. Within a Stage, the Manager uses single, batch or parallel dispatch. It keeps reviewing reports and dispatching Ready Tasks until every Stage is complete, then presents the project's outcome and offers a session summary and archive. At any point, the User can start a Handoff to move the Manager or a Worker to its next conversation.
 
 ## 3. Planning Documents
 
-| Document | Location | Purpose and access |
+| Document | Location | Purpose and readers |
 |---|---|---|
-| Spec | `.apm/spec.md` | Project design decisions and constraints; Manager reads and extracts relevant content into assignments. |
-| Plan | `.apm/plan.md` | Stages, Tasks, Workers, dependencies and validation; Manager reads and constructs assignments. |
-| Rules | Rules file at workspace root | Shared execution standards; all agents read directly. |
+| Spec | `.apm/spec.md` | What to build: design decisions and constraints. The Manager reads it and copies what each Task needs into its Task Prompt. |
+| Plan | `.apm/plan.md` | How the work is organised: Stages, Tasks, Workers, dependencies and validation. The Manager reads it and builds Task Prompts from it. |
+| Rules | `APM_RULES` block in `AGENTS.md` or `CLAUDE.md` at the project root | How work is performed. Every agent reads the Rules directly. |
 
 ### 3.1 Spec
 
-The Spec defines what is built in a project-appropriate Markdown structure. It informs the Plan and records workspace structure, including working targets, references and authoritative materials. The Manager may update it when execution findings warrant changes.
+The Spec records what is built, in a Markdown structure that suits the project. It also records the workspace: which repositories and folders are worked on, which are only references, and which User documents are authoritative. The Plan is written from the Spec. The Manager may update the Spec when findings during implementation require it.
 
 ### 3.2 Plan
 
-The Plan header identifies the project, Workers, Stages and a Mermaid Dependency Graph. Stage sections contain Tasks with objectives, outputs, validation, guidance, dependencies and ordered steps. Dependencies between different Workers are bolded. The graph supports dispatch and critical-path assessment.
+The Plan's header names the project, its Workers and Stages, and shows a Mermaid dependency graph. Each Stage section lists its Tasks. Each Task has an objective, output, validation criteria, guidance, dependencies and ordered steps. Cross-Worker dependencies are written in bold. The dependency graph helps the Manager see which Tasks can go in a batch, which can run in parallel and which lie on the critical path.
 
-The Manager may modify the Plan during implementation and keeps the graph consistent with Task dependencies and assignments.
+The Manager may change the Plan during implementation. When it does, it keeps the dependency graph consistent with the Tasks.
 
 ### 3.3 Rules
 
-APM execution standards occupy the APM_RULES block in the Rules file. Existing outside content is preserved and referenced where relevant. Rules apply to all or most work and are conditional on the work performed. Domain-specific patterns reach Workers through Task Prompts. Manager and Workers may update Rules during implementation under their respective procedures.
+The Rules sit in the `APM_RULES` block of `AGENTS.md` or `CLAUDE.md`. Content outside the block belongs to the User and is kept; the Rules refer to it where relevant. Every Worker reads the whole file, whatever its area of work, so each Rule applies to all or most work and says when it applies. Patterns specific to one area reach Workers through their Task Prompts. The Manager and Workers may add Rules during implementation, each through its own procedure.
 
-The Manager owns version control conventions. When version control is active, each dispatch unit gets a feature branch; parallel units use isolated worktrees; Workers commit on assigned branches. Initial conventions require User confirmation. Where none exist, defaults are `type/short-description` branches and `type: description` commits, using feat, fix, refactor, docs, test or chore. APM does not push by default.
+### 3.4 Version Control
 
-When `.apm/` is inside a repository, it is ignored by default; the Manager asks which artifacts the User wants tracked and adjusts entries accordingly. If the User declines version control, parallel dispatch is unavailable. Tracker records per-repository base branches and conventions; only universal commit conventions belong in Rules.
+Version control belongs to the Manager. At its first start, the Manager confirms the conventions with the User. Without existing conventions, it proposes `type/short-description` branch names and `type: description` commit messages, using feat, fix, refactor, docs, test or chore. APM never pushes to a remote unless the User asks.
 
-### 3.4 Document Modification
+When version control is active, each single or batch dispatch gets its own branch. In parallel dispatch, each Worker also gets its own worktree. Workers commit on their assigned branch; the Manager creates branches, merges them and cleans up. The Tracker records each repository's base branch and conventions. Only commit conventions shared by every repository go into the Rules.
 
-The Manager assesses cascade effects between Spec and Plan; Rules are generally independent. Contained changes are within Manager authority: one Task clarification/correction, a missing dependency, an isolated Spec addition or a minor Rules adjustment.
+When `.apm/` sits inside a repository, the Manager adds it to `.gitignore` by default and asks whether the User wants any APM files tracked. If the User declines version control, the workflow still runs, but parallel dispatch is unavailable.
 
-User collaboration is required for changes affecting multiple Tasks, design direction, scope, a new Stage or major restructuring. Several small modifications can collectively require collaboration.
+### 3.5 Changing Planning Documents
 
-## 4. Communication System
+A change to the Spec can affect the Plan, and the reverse. The Rules are usually independent of both. Before changing any of them, the Manager checks what else the change affects.
+
+The Manager may make small, contained changes on its own: clarifying or correcting one Task, adding a missing dependency, adding an isolated point to the Spec, or adjusting a Rule. Larger changes need the User: changes to several Tasks, to the design direction or scope, a new Stage, or a major restructuring. Several small changes together can also need the User.
+
+## 4. Communication
 
 **Runtime:** `skills/apm-communication/SKILL.md` and its `bus-integration.md`.
 
-### 4.1 Communication Models
+### 4.1 Communicating with the User
 
-User-facing messages lead with the answer, outcome, finding, proposal or question. They provide the evidence, material trade-offs, limits and action needed to proceed. Shared writing and reply-length defaults live in the `apm-communication` shared skill; procedures specify their own output content.
+A message to the User opens with what the User needs: the answer, outcome, finding, proposal or question. It then gives the evidence, trade-offs, limits and next action the User needs to understand it or act. The communication skill holds the shared writing rules and default reply lengths; each procedure adds only what its own messages must contain.
 
-When action is required, agents identify the command, target chat and arguments, and tell the User how to run it in their assistant. Commands to run use fenced blocks; paths and values use inline code. Artifacts and messages follow their defined schemas.
+When the User has to act, the agent names the skill to invoke, the chat to invoke it in and any argument. Commands go in code blocks; paths and values go in inline code.
 
 ### 4.2 Message Bus
 
-The Planner initializes `.apm/bus/`. Every Worker directory contains `task.md`, `report.md` and `handoff.md`; the Manager directory contains only `handoff.md`.
+The Planner creates the Message Bus in `.apm/bus/`. Each Worker's folder holds a Task Bus (`task.md`), a Report Bus (`report.md`) and a Handoff Bus (`handoff.md`). The Manager's folder holds only a Handoff Bus.
 
-| File | Direction | Content |
+| File | From → to | Message |
 |---|---|---|
-| `task.md` | Manager → Worker | Single or batched Task Prompts |
-| `report.md` | Worker → Manager | Task or batch reports |
-| `handoff.md` | Outgoing → incoming instance | Handoff prompt |
+| `task.md` | Manager → Worker | Task Prompt, single or batch |
+| `report.md` | Worker → Manager | Task Report, single or batch |
+| `handoff.md` | Outgoing → incoming conversation | Handoff Prompt |
 
-A file is empty or contains a pending message. Before writing an outgoing message, the agent clears its processed incoming message. Agents read a bus before writing so file tools recognize it.
+A bus file is either empty or holds one message waiting for delivery. Before writing its outgoing message, an agent clears the incoming message it has processed. Agents read a bus file before writing it, so that their file tools accept the write.
 
-`apm-4-check-tasks` delivers pending work to a Worker; `apm-5-check-reports` delivers reports to the Manager. Optional agent identifiers target delivery. Batched prompts retain each Task's standalone structure.
+`apm-4-check-tasks` delivers a Task Prompt to a Worker, and `apm-5-check-reports` delivers Task Reports to the Manager. Both accept an optional agent ID to target one agent. In a batch, each Task Prompt keeps the full structure it would have on its own.
 
-### 4.3 Communication Flow
+### 4.3 Message Flow
 
-1. Manager writes the Task Bus and gives the User the Worker initiation/delivery action.
-2. User invokes it in the intended Worker chat.
-3. Worker executes, validates, logs and writes a Report Bus message, then gives report-delivery instructions.
-4. User invokes `apm-5-check-reports` in the Manager chat.
-5. Manager reviews evidence, updates state and continues coordination.
+1. The Manager writes the Task Bus and tells the User how to start or reach the Worker.
+2. The User runs that command in the Worker's chat.
+3. The Worker executes, validates and logs the Task, writes the Report Bus and tells the User how to deliver the report.
+4. The User runs `apm-5-check-reports` in the Manager's chat.
+5. The Manager reviews the Task, updates the Tracker and continues.
 
-Each agent gives actionable guidance for its end of the User-mediated exchange.
+Each agent tells the User only what to do at its own end of the exchange.
 
-### 4.4 Non-APM Agent Participation
+### 4.4 Agents Outside APM
 
-An independent agent can create its own bus directory and receive plain assignments or report contributions. It does not log to Memory, perform Handoff or join Worker tracking. The Manager assesses its reports, records its contribution in working notes and sends follow-ups through its Task Bus. The bus integration guide defines setup.
+An agent that is not part of APM can join the Message Bus by creating its own bus folder. It receives plain assignments and reports results. It does not write Task Logs, perform Handoffs or appear in Worker tracking. The Manager reviews its reports, notes its contribution in the Tracker's working notes and sends further assignments through its Task Bus. `bus-integration.md` describes the setup.
 
-## 5. Memory
+## 5. Memory and the Tracker
 
-### 5.1 Structure
+### 5.1 Files
 
-| Artifact | Location | Content and maintenance |
+| File | Location | Content |
 |---|---|---|
-| Tracker | `.apm/tracker.md` | Live Task/Worker state, VC state and working notes; maintained by Manager. |
-| Index | `.apm/memory/index.md` | Durable Memory notes followed by Stage summaries. |
-| Task Logs | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` | Worker outcomes, deliverables, validation and flags; written at assignment `log_path`. |
-| Handoff Logs | `.apm/memory/handoffs/<agent>/handoff-<NN>.log.md` | Instance history and working context. |
+| Tracker | `.apm/tracker.md` | The Manager's live record: Task states, Worker conversations, version control and working notes. |
+| Index | `.apm/memory/index.md` | Durable notes, followed by a summary of each completed Stage. |
+| Task Logs | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` | Each Task's outcome, deliverables, validation and flags, written at the `log_path` its Task Prompt gives. Writing a log creates its Stage folder. |
+| Handoff Logs | `.apm/memory/handoffs/<agent>/handoff-<NN>.log.md` | The history and working context of each Manager or Worker conversation. |
 
-Task tracking uses Waiting, Ready, Active and Done as defined in `TERMINOLOGY.md` §4. Worker tracking records slugs, uninitialized/Instance N state, Handoffs and recovery. Cross-agent overrides below the Worker table identify dependencies affected by Handoff.
+### 5.2 Tracking Tasks and Workers
 
-Working notes hold evolving coordination context. Stale notes are removed. At Stage end, durable findings become Index Memory notes and historical observations become Stage-summary prose; notes still needed for the next Stage remain active. Task Log writes create Stage directories as needed.
+The Tracker records each Task's state: Waiting, Ready, Active or Done. A Worker's outcome informs the Manager's decision but does not set the state. A Task stays Active while the Manager investigates or a follow-up Task is pending. It becomes Done when the Manager accepts the outcome or restructures the work. Done is final: if later findings need a fix, the Manager adds a new Task that refers to the original. A Stage is complete when all its Tasks are Done and their work is merged.
 
-### 5.2 Task Log Flags
+Worker tracking records each Worker's ID and current conversation number, or that it has not started yet, together with its Handoffs and recoveries. Below the Worker table, the Manager lists the earlier Tasks each Worker has not read since its last Handoff. Dependencies on those Tasks count as cross-Worker.
 
-Workers set `important_findings` for potentially project-relevant discoveries beyond Task scope and `compatibility_issues` for dependency/system conflicts. When uncertain, they set the flag true. The Manager assesses implications for planning documents and other work.
+Working notes hold coordination context that is still changing; the Manager removes notes once they are stale. At the end of a Stage, findings with lasting value move to the Index's notes, and details about the Stage become part of its summary. Notes the next Stage still needs stay in the Tracker.
 
-### 5.3 Task Outcome Status
+### 5.3 Task Log Flags
 
-| Status | Result |
-|---|---|
-| Success | Objective achieved and all validation passed. |
-| Partial | Progress made; guidance needed to continue. |
-| Failed | Objective not achieved despite attempts to resolve it. |
+Workers set `important_findings` when they find something that may matter beyond the Task, and `compatibility_issues` when they find a conflict with existing code, dependencies or systems. When unsure, they set the flag. The Manager decides what each flagged finding means for the planning documents and other work.
 
 ## 6. Planning Phase
 
 ### 6.1 Context Gathering
 
-**Runtime:** Planner initiation and `guides/context-gathering.md`.
+**Runtime:** `apm-1-initiate-planner` and `guides/context-gathering.md`.
 
-The Planner first scans directory/repository structure, history, branches, materials and archives, and reads Rules for orientation. Initiation context can establish document authority; otherwise the User confirms discovered materials/archives before their content is read. Once authority and the Context Gathering guide are established, the Planner explores all relevant codebases and confirmed archives before the rounds.
+The Planner first surveys the workspace: its folders and repositories, their history and branches, existing materials and archives. It reads any existing `AGENTS.md` or `CLAUDE.md` for orientation. The User's opening message can establish which documents are authoritative. Otherwise, the User confirms which discovered materials and archives are current before the Planner reads them. The Planner then loads the Context Gathering guide and explores every relevant codebase and confirmed archive before asking questions.
 
-Three ordered rounds cover:
+Three rounds follow, in order:
 
-1. Existing materials and vision: deliverables, purpose, success, scope, skills, documentation and prior work.
-2. Technical requirements: design/constraints, dependencies, resources, complexity, risks and validation.
-3. Implementation approach and quality: technical preferences, quality, external approvals/coordination, domain characteristics and documentation.
+1. **Existing materials and vision:** deliverables, purpose, what success looks like, scope, required skills, documentation and prior work.
+2. **Technical requirements:** design decisions and constraints, dependencies, resources, complexity, risks and validation.
+3. **Implementation approach and quality:** technical preferences, quality standards, external approvals and coordination, domain characteristics and documentation.
 
-Each round requires at least one User exchange. Known context becomes focused confirmation questions; gaps receive questions and follow-ups. Consequential gaps are resolved before advancement. A brief round summary records established facts and limits. An open question addresses overlooked areas; the User may answer it alongside the next round. Supplied context does not skip rounds or make silence approval.
+Each round needs at least one exchange with the User. Where the Planner already knows something, it asks the User to confirm it; where it does not, it asks. It resolves important gaps before moving to the next round, then summarises what the round established and what remains open. Each round ends with an open question about anything the focused questions missed; the User may answer it together with the next round. Context the User supplies up front does not skip a round, and silence is not approval.
 
-The Planner researches on relevant signals, uses subagents for substantial exploration and verifies consequential findings against referenced files/commands. Contradictions or gaps prompt focused follow-up research and verification. Verified findings are presented before use. Multiple viable architectural/design approaches require alternatives, a recommendation and User choice. Validation criteria are captured per requirement, with concrete measures proposed when missing.
+The Planner researches what the conversation raises, using subagents for broad exploration. It checks important findings against the files or commands they cite, follows up on contradictions and gaps, and shows the User what it verified before relying on it. When several designs are viable, it presents the options with a recommendation and the User chooses. For each requirement it records how success will be checked, proposing concrete measures when the User has none.
 
-Questions cover project substance. Version control and coordination observations are recorded for later placement. The Planner does not propose decomposition, Stages, Tasks or Worker assignments here. Technical research needed for accurate understanding is resolved during Context Gathering; research deliverables are planned later.
+Questions stay on the project itself. The Planner notes any version control or coordination preferences for later, and does not yet propose Stages, Tasks or Workers. Research needed to understand the project happens now; research that is itself a deliverable becomes planned work.
 
-After three rounds, the Planner presents a consolidated understanding summary. Corrections receive follow-ups and a revised summary; User approval permits Work Breakdown.
+After the three rounds, the Planner presents a summary of its understanding. The User corrects it until it is right, and approval starts Work Breakdown.
 
 ### 6.2 Work Breakdown
 
-**Runtime:** Planner initiation and `guides/work-breakdown.md`.
+**Runtime:** `apm-1-initiate-planner` and `guides/work-breakdown.md`.
 
-The Planner proposes, writes and obtains approval for each document in order:
+The Planner proposes, writes and gets approval for each document in turn:
 
-1. Spec: design decisions, constraints, source references and workspace context. Optional blockquote notes after the header separator describe environment, VC observations and User preferences for the Manager.
-2. Plan: domains/Workers, sequential Stages, Tasks, guidance, dependencies and validation. Coverage and dependencies are checked before writing. Optional notes explain boundaries, sequencing, critical paths, convergence and useful Stage verification points.
-3. Rules: universal execution patterns, preserving existing content outside APM_RULES. Initial version control conventions remain the Manager's responsibility.
+1. **Spec:** design decisions, constraints, references to source documents and the workspace. Optional notes after the header describe the environment, version control observations and User preferences for the Manager.
+2. **Plan:** Workers and their areas, Stages in order, Tasks, guidance, dependencies and validation. The Planner checks coverage and dependencies before writing. Optional notes explain boundaries, sequencing, the critical path, where work converges and which Stages may need verification.
+3. **Rules:** execution patterns that apply to all or most work, keeping any existing content outside `APM_RULES`. Version control conventions are left to the Manager.
 
-Each completed document requires approval before the next begins. Tasks produce meaningful, independently validatable deliverables within one Worker's domain. Their ordered steps share Task-level validation and support failure tracing. Necessary research/investigation has scoped subagent steps. Detail and granularity match project complexity.
+Each document needs the User's approval before the next begins. Each Task produces a meaningful deliverable that can be validated on its own, within one Worker's area. Its steps share the Task's validation and help locate failures. Where research or investigation is needed, the Plan includes a step that uses a subagent for it. The level of detail matches the project's complexity.
 
 ## 7. Implementation Phase
 
@@ -161,49 +161,49 @@ Each completed document requires approval before the next begins. Tasks produce 
 
 **Runtime:** `guides/task-assignment.md` and `apm-4-check-tasks`.
 
-The Manager reads readiness from Tracker and the graph, groups work by Worker and forms dispatch units:
+The Manager finds Ready Tasks from the Tracker and the dependency graph, groups them by Worker and chooses the dispatch:
 
-- Single: one Ready Task.
-- Batch: sequential same-Worker Tasks with internal/already-complete dependencies, or independent same-Worker Tasks all Ready. Intermediate results needed by other Workers may favor individual dispatch.
-- Parallel: independent units assigned to different Workers, with no unresolved cross-agent dependencies and VC workspace isolation. The Manager recommends suitable tool approvals to reduce execution waits.
+- **Single dispatch:** one Ready Task.
+- **Batch dispatch:** several Tasks for the same Worker. They either form a chain whose dependencies are inside the batch or already complete, or are independent and all Ready. Batches usually hold 2–3 Tasks. When other Workers wait on a chain's intermediate results, the Manager sends those Tasks one at a time instead.
+- **Parallel dispatch:** Tasks or batches for different Workers at the same time, when no unresolved cross-Worker dependencies exist between them and version control gives each Worker its own workspace. The Manager suggests tool approvals that reduce the Workers' waiting time.
 
-A pending report may justify waiting when it would unlock a useful combination at little cost. Otherwise Ready work is dispatched. When none is Ready but Workers remain active, the Manager explains the wait and next report needed.
+Waiting for a pending report is worthwhile only when it would unlock a useful combination at little cost; otherwise the Manager dispatches what is Ready. When nothing is Ready but Workers are busy, the Manager tells the User what it is waiting for and which report to bring next.
 
-Prompts embed Task definitions, exact Spec/authoritative-source constraints and relevant runtime findings. Workers read Rules directly; Rules are not included in prompts. Coordination-document paths are excluded. Codebase material is supplied through targeted file reads.
+A Task Prompt contains the Task's definition, the exact constraints from the Spec and authoritative documents, and relevant findings from earlier work. It never refers the Worker to the coordination documents. The Rules are not copied in, because Workers read them directly. Code is supplied as instructions to read specific files.
 
-Same-agent dependencies get recall anchors and paths; cross-agent dependencies get producer output summaries, reading/integration instructions and relevant upstream contracts. Tracker overrides account for Handoffs; reconstructed recovery context may need more detail. Upstream tracing stops where an intermediate output fully abstracts earlier contracts.
+The kind of dependency sets how much context the Task Prompt gives. For a same-Worker dependency, it points to the earlier output and its paths. For a cross-Worker dependency, it summarises the earlier output and gives reading and integration steps and any relevant upstream contracts. Tasks listed in the Tracker as unread since a Worker's Handoff count as cross-Worker. A Worker that recovered after compaction may need more detail, because its rebuilt context is thinner. Tracing upstream stops where an intermediate output fully captures the earlier contracts.
 
-Each prompt includes identity/Task metadata, log path, dependency indicator and the objective, instructions, output, validation and any Task-specific execution/logging/reporting guidance. Generic execution rules live in the Worker guides. Branch/worktree instructions identify the working location and project-root `.apm/` paths. Workers commit and record their workspace; the Manager creates branches, merges and cleans up.
+Each Task Prompt carries the Task's metadata and log path, says whether it has dependencies, and gives the objective, instructions, expected output and validation criteria. It adds execution, logging or reporting guidance only when that guidance is specific to the Task; general rules live in the Worker's guides. With version control, it names the branch or worktree and tells the Worker to use the project root for all `.apm/` paths.
 
-The Manager writes the Task Bus and gives each User action: new-chat initiation for an uninitialized Worker, delivery for an existing one, batch scope/order or each parallel Worker's action. Follow-ups refine objectives, instructions, outputs and validation with investigation findings, retaining the original log path for overwrite.
+The Manager writes the Task Bus and tells the User what to do: start a new chat for a Worker that has not started, or deliver to an existing one. For a batch it gives the Tasks and their order; for parallel dispatch it gives each Worker's action. A follow-up Task refines the objective, instructions, output and validation using what review found, and keeps the original log path so the new log replaces the old one.
 
-### 7.2 Task Execution
+### 7.2 Task Execution and Logging
 
-**Runtime:** Worker initiation, `guides/task-execution.md` and `guides/task-logging.md`.
+**Runtime:** `apm-3-initiate-worker`, `guides/task-execution.md` and `guides/task-logging.md`.
 
-The Worker binds identity from the initiation argument resolved against bus directories. Assignment metadata cross-validates that identity. Handoff content is processed first; pending Task Bus content then starts/resumes execution, otherwise the Worker awaits delivery.
+A Worker takes its identity from the agent ID it was started with, matched against the bus folders. The `agent` field of each Task Prompt is checked against that identity. At start, the Worker first processes any Handoff Prompt. It then executes a Task Prompt already waiting in its Task Bus, or waits for one.
 
-The Worker integrates dependencies, executes sequentially and validates autonomously before requesting User-dependent checks. Failure prompts investigation, one targeted correction and revalidation. After an unsuccessful correction, the Worker uses a subagent to investigate and verifies findings before applying them. Specified subagent steps are executed and verified too.
+The Worker integrates its dependencies, follows the steps in order and runs every check it can on its own before asking the User for a check that needs them. When a check fails, it investigates, makes one targeted fix and checks again. If the fix does not work, it uses a subagent to investigate and verifies the findings before applying them. It also runs any subagent steps the Task specifies and verifies their findings.
 
-In batches, each Task is validated and logged before the next begins. Failed stops the batch. One final batch report covers executed outcomes and unstarted Tasks.
+In a batch, the Worker validates and logs each Task before starting the next, and stops at the first Failed outcome. One batch report covers every Task executed and lists those not started.
 
-User corrections are applied immediately. At completion, before writing the Task Log, the Worker asks whether a correction that applies to later Tasks belongs in Rules and waits for the answer. When version control is active, an approved addition is committed with the Task. The log records the correction and the User’s answer as important findings.
+When the User corrects how the Worker works, the Worker applies the correction at once. When the Task is done, and before writing the Task Log, it asks whether a correction that applies to later Tasks should become a Rule, and waits for the answer. With version control, an approved Rule is committed with the Task. The Task Log records the correction and the User's answer under important findings.
 
-Completion includes commits under Rules conventions, a Task Log, incoming-bus clearing and an outgoing report. Delivery guidance offers both targeted and general invocations of the report-check command skill for concurrent results. Large Tasks may have coherent intermediate commits.
+To finish, the Worker commits under the Rules' conventions, writes the Task Log with the workspace it used, clears its Task Bus and writes its Task Report. It gives the User both the targeted and the general command to deliver the report, since several Workers may finish at once. A large Task may also have intermediate commits, each a coherent unit of change.
 
 ### 7.3 Task Review
 
 **Runtime:** `guides/task-review.md` and `apm-5-check-reports`.
 
-The Manager reads reports and logs, assessing objectives, validation, flags and consistency. Each executed batch outcome is reviewed individually; unstarted Tasks return to dispatch assessment.
+The Manager reads each report and its Task Log, and checks the outcome against the objective, validation and flags. It reviews each executed Task of a batch on its own; Tasks a batch did not start return to dispatch.
 
-The first report after Handoff identifies instance and loaded logs. The Manager verifies the Handoff Log, updates Worker tracking and compares loaded logs with prior completed work, recording overrides for omitted context. Recovery notes retain the instance and call for suitable future context depth.
+A Worker's first report after a Handoff gives its conversation number and the logs it loaded. The Manager checks the Handoff Log, updates Worker tracking, and lists the Worker's earlier Tasks whose logs it did not load. A recovery note keeps the conversation number and tells the Manager that later Task Prompts may need more context.
 
-Supported Success proceeds; successful uncommitted work can be committed by the Manager under Rules conventions. Flags, non-Success or inconsistencies require investigation, directly for contained checks or through subagents for context-intensive issues. Results lead to acceptance, a refined follow-up or document modification under §3.4. Non-Success follow-ups identify uncommitted work. Deficiencies in Done work create new Tasks; Done is terminal.
+A Success that the log supports is accepted. If the work succeeded but was not committed, the Manager commits it under the Rules' conventions. Flags, an outcome other than Success, or a log that contradicts itself lead to investigation: directly for contained checks, or through a subagent when the issue needs a lot of context. The result is one of three decisions: accept the outcome, send a follow-up Task, or change the planning documents within the limits in §3.5. A follow-up Task after an outcome other than Success notes any uncommitted work.
 
-Every path updates Tracker. When version control is active, successful reviewed branches merge before dependent dispatch, and all current-Stage branches merge before the next Stage. Reports are processed asynchronously; review, merge, readiness and new dispatch continue in one turn when possible.
+Every decision updates the Tracker. With version control, the Manager merges a reviewed branch before dispatching Tasks that depend on it, and merges every branch of a Stage before the next Stage begins. Reports can arrive in any order. Where possible, the Manager reviews, merges, reassesses readiness and dispatches in the same turn.
 
-After Stage Tasks are Done, the Manager assesses holistic verification using User agreement, review findings and Planner notes. It resolves contained issues, delegates investigation, creates Tasks for Worker-level work or seeks User direction as appropriate. After verification concludes, it appends an Index Stage summary with outcome, Workers, findings and Task Log references, distilling working notes per §5.1.
+When every Task in a Stage is Done, the Manager decides whether the Stage needs verification as a whole. It considers what the User asked for, what reviews found and the Planner's notes. It fixes contained issues, has a subagent investigate, adds Tasks for work that needs a Worker, or asks the User for direction. After verification, it appends the Stage summary to the Index, with the outcome, Workers, findings and Task Log references, and sorts the Stage's working notes as described in §5.2.
 
 ## 8. Handoff and Continuity
 
@@ -211,26 +211,32 @@ After Stage Tasks are Done, the Manager assesses holistic verification using Use
 
 **Runtime:** `apm-6-handoff-manager` and `apm-7-handoff-worker`.
 
-Handoff is User-initiated and applies to Manager/Workers. It creates a persistent Handoff Log of history, decisions and approaches, plus an ephemeral Handoff Bus prompt with identity, current state, required reads and a concrete next action. The incoming instance processes and clears the bus.
+The User starts a Handoff for the Manager or a Worker. The outgoing agent first checks the current state in the bus files and, with version control, in git. It then writes a Handoff Log with the history, decisions and approaches of its conversation, which stays in Memory. It also writes a Handoff Prompt with its identity, the current state, what to read and the next action. The incoming agent processes the Handoff Prompt and clears the Handoff Bus.
 
-Mid-Task Worker prompts point to the intact Task Bus and completed/resume steps. Mid-batch prompts account for completed/logged, active and unstarted work. Between Tasks, the Worker awaits new delivery. Manager handoffs describe outstanding assignments fully because Worker Task Buses may be cleared.
+What a Worker's Handoff Prompt says depends on when the Handoff happens:
 
-Incoming Managers read Handoff Log, Tracker, Index and relevant recent Task Logs. Incoming Workers read Handoff Log and only their current-Stage logs, identifying unloaded previous-Stage context for Manager dependency treatment.
+- **During a Task:** the Task Prompt is still in the Task Bus. The Handoff Prompt says what is done and where to resume.
+- **During a batch:** the batch is still in the Task Bus. The Handoff Prompt lists the Tasks already logged, the one in progress and those not started.
+- **Between Tasks:** the incoming Worker waits for the next delivery.
+
+A Manager's Handoff Prompt describes outstanding Tasks in full, because Workers may already have cleared their Task Buses.
+
+An incoming Manager reads the Handoff Log, the Tracker, the Index and relevant recent Task Logs. An incoming Worker reads the Handoff Log and only its own Task Logs from the current Stage. Its first report names the logs it did not load, so the Manager can treat dependencies on them as cross-Worker.
 
 ### 8.2 Recovery
 
 **Runtime:** `apm-9-recover`.
 
-Recovery rebuilds an initiated Manager/Worker's context after compaction or conversation loss. The User invokes recovery with an optional role argument; otherwise context or a User question resolves the role. The agent rereads initiation and its loading sequence, then reconstructs state from artifacts/code. Identity retains its instance number. Recovery is recorded in Tracker or the next Worker report and in eventual Handoff context.
+Recovery rebuilds a started Manager's or Worker's context after compaction or a lost conversation. The User runs the recovery command, optionally naming the role; otherwise the agent works out its role from the conversation or asks. The agent rereads its initiation command skill and the files it lists, then rebuilds the current state from the project files and code. Its conversation number does not change. It records the recovery in the Tracker or in its next Task Report, and mentions it in any later Handoff Log.
 
-### 8.3 Session Continuation
+### 8.3 Session Summary and Archive
 
 **Runtime:** `apm-8-summarize-session` and `guides/context-gathering.md`.
 
-A summarization agent may create `.apm/session-summary.md` at any session state. It records scope, outcomes, deliverables, findings, issues and verified codebase/artifact differences as a dated snapshot, and says which parts the writer remembers doing and which come from files. At project completion, the Manager offers to run the summary in its own chat or to have the User run this command skill in a new chat; elsewhere it runs in a new chat. It offers optional archival, which is also directly available through the CLI.
+An agent can write a session summary, `.apm/session-summary.md`, at any point in an APM session. It is a dated snapshot of the scope, outcomes, deliverables, findings, open issues and verified differences between the code and the APM files. It also says which parts the writer remembers doing and which it took from files. At project completion, the Manager offers to write the summary in its own chat or to have the User run the command skill in a new chat; at other times, a new chat writes it. The summarising agent then offers to archive the session, which the CLI can also do directly.
 
-With User approval, archival snapshots all `.apm/` except `archives/` into `.apm/archives/<name>/`, then removes active files, templates and metadata while preserving archives. Default names are `session-YYYY-MM-DD-NNN`; custom names are supported. Archive `metadata.json` is the canonical marker and contains installation metadata plus archival time. The optional session summary accompanies the raw artifacts. The summarizer creates/repairs the archive index and adds date, scope, Stage/Task counts and name.
+With the User's approval, archiving copies everything in `.apm/` except `archives/` into `.apm/archives/<name>/`, then removes the active files, installed templates and installation metadata. Existing archives are kept. The default name is `session-YYYY-MM-DD-NNN`; the User may choose another. Each archive's `metadata.json` marks it as an archive and holds the installation metadata and archive time. The summarising agent also creates or repairs `.apm/archives/index.md` and adds the new archive's date, scope, Stage and Task counts and name.
 
-A fresh CLI `apm init` or `apm custom` starts another session with archives retained. During discovery, the Planner asks about relevant archives, uses a subagent to explore confirmed ones and verifies findings against current code before use. The dispatch prompt defines the archive inputs and required findings.
+`apm init` or `apm custom` then starts a new APM session, keeping the archives. While surveying the workspace, the next Planner asks which archives are relevant, has a subagent explore the confirmed ones and checks the findings against the current code before using them.
 
-Archives accumulate directly under `.apm/archives/`. Cleanup uses `apm archive --delete <name>`, `apm archive --clear` or manual removal.
+Archives stay in `.apm/archives/` until the User removes them with `apm archive --delete <name>`, `apm archive --clear` or by hand.

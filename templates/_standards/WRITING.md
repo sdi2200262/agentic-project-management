@@ -8,9 +8,7 @@ Before writing, identify the reader, the decision or action they need to take, a
 
 Define required results, constraints and decision criteria. Use the enumerated values required by artifact schemas.
 
-Give each rule one primary home and reference that location where needed. A reference is sufficient only when the reading role can load it within its normal access boundaries.
-
-Choose prose, lists or tables to suit the content. State each requirement once, with the conditions and detail needed to apply it. Preserve authority, approval gates and artifact contracts.
+Choose prose, lists or tables to suit the content. State each requirement with the conditions and detail needed to apply it; `STRUCTURE.md` says where it goes. Preserve authority, approval gates and artifact contracts.
 
 ## 2. Use plain, precise language
 
@@ -18,7 +16,7 @@ Keep each sentence to one main thought. Prefer concrete subjects, active verbs a
 
 Use a casually formal tone in chat and match authored prose to its reader and purpose. State claims at the certainty the evidence supports; identify consequential uncertainty and its cause.
 
-Use formal APM terms consistently as defined in `TERMINOLOGY.md`. Use ordinary English capitalization for other labels and section names. Explain unfamiliar concepts before relying on their names.
+Use formal APM terms consistently as defined in `TERMINOLOGY.md`. Use ordinary English capitalization for other labels and section names. Explain unfamiliar concepts before relying on their names. Where the agent first meets an APM concept, such as a Handoff, a batch or a follow-up Task, explain it in a sentence or two so the agent understands the system it works in, and leave the full detail to the file that owns the concept.
 
 Runtime instructions address the reading agent as “you”; use third person for other roles. Shared skills distinguish role responsibilities explicitly. Standards describe the workflow in third person and may address maintainers directly.
 
@@ -51,13 +49,11 @@ Lead with the substance the reader needs. Apply the reply-length defaults in the
 
 Artifacts provide self-contained context for future readers. Follow their schemas and verify concrete claims against source. Logs record the outcome, evidence and context needed for review and continuation.
 
-## 5. References and shared text
+## 5. Skills and native actions
 
-Use explicit file paths and section references where they help navigation. Repair references when headings or numbers change. Cross-file template references use supported build placeholders: `{SKILL_PATH:name}` and `{GUIDE_PATH:name}`.
+Refer to command skills by name, and tell the User to invoke them without a command prefix, such as “invoke `apm-3-initiate-worker` in a new chat”. Refer to what the User gives with a skill by what it is, such as “the agent ID the User gave with this skill”.
 
-Both installation targets receive identical template text. Refer to command skills by name. Keep assistant-specific syntax out of templates: describe the action in plain English, such as “use a subagent to research…” or “run `apm-3-initiate-worker` in a new chat”, and let each agent use its own assistant's way of doing it. Name a subagent by its purpose, never by type. Shared prose refers to “the Rules file” and “the command argument”.
-
-Guide paths resolve from the project root to `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder, the one the skills are installed in. Keep project artifact paths rooted at `.apm/` as their contracts require.
+Keep assistant-specific syntax out of templates: describe the action in plain English, such as “use a subagent to research…”, and let each agent use its own assistant's way of doing it. Delegation instructions state when to use a subagent, its purpose, inputs and required findings. Name a subagent by its purpose, never by type. Claude Code-only instructions use the `{CLAUDE_ONLY:text}` placeholder in `STRUCTURE.md` §5.
 
 ## 6. Formatting
 
