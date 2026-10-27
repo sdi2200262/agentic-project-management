@@ -13,4 +13,4 @@ Choose a lowercase, hyphenated slug that no folder in `.apm/bus/` already uses. 
 
 ## 3. Further Assignments
 
-When the User points you to your Task Bus, read `.apm/bus/<your-slug>/task.md`, do the assignment, clear the file, then report as in §2.
+When the User says a new assignment is waiting, read `.apm/bus/<your-slug>/task.md`, do the assignment, clear the file, then report as in §2.

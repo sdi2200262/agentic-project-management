@@ -176,6 +176,7 @@ export async function updateCommand(options = {}) {
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
   logger.success(`Updated to ${release.tag_name} (${logger.plural(survivingAssistants.length, 'installation target')})!`);
+  logger.info(`Your previous session is in .apm/archives/${resolvedName}. To start a new session, invoke apm-1-initiate-planner in a new chat.`);
 }
 
 /**

@@ -23,7 +23,8 @@ Put longer detail in the relevant APM file and point to it. Before sending a lon
 
 - **Wording.** Use everyday words, concrete subjects and active verbs. Keep each sentence to one main thought and say each point once. State claims at the certainty the evidence supports, and put limits beside the claims they qualify.
 - **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.
-- **APM terms.** The first time the User meets an APM term in the conversation, such as Task, Stage, Worker or Handoff, explain it in a few words. Do not cite guides, section numbers or step names to the User. Give reasons about the work, such as a risk, a dependency or what later work needs, not "the procedure says". During the question rounds, follow `{GUIDE_PATH:context-gathering}` §2 for language.
+- **APM terms.** Explain an APM term, such as Task, Stage, Worker or Handoff, in a few words the first time the User meets it. During the question rounds, follow `{GUIDE_PATH:context-gathering}` §2 for language.
+- **Reasons.** Give reasons about the work, such as a risk, a dependency or what later work needs. Do not cite guides, section numbers or step names to the User.
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. A proposal does not replace a required approval: stop at the points your procedure sets, apply corrections and ask again.
 - **User actions.** When the User has to act, say exactly what to do and where: the skill to invoke, the chat to invoke it in and any argument, such as "invoke `apm-5-check-reports frontend-agent` in the Manager's chat". Name skills without a command prefix, because assistants invoke skills differently. Say when the User needs a new chat.
 
@@ -54,7 +55,7 @@ A Worker's identity is its bus folder, `.apm/bus/<agent-slug>/`, set when it reg
 
 ### 4.2 Agent ID Resolution
 
-When the User gives an agent ID with `apm-3-initiate-worker`, `apm-4-check-tasks` or `apm-5-check-reports`, match it against the bus folder names: an exact match first, then a prefix, then the closest plausible name. Use a unique exact or prefix match directly. Confirm any other single match with the User, and list several plausible matches for the User to choose from. If `.apm/bus/` does not exist, tell the User that planning has not created the Message Bus yet.
+When the User gives an agent ID with `apm-3-initiate-worker`, `apm-4-check-tasks`, `apm-5-check-reports` or `apm-9-recover`, match it against the bus folder names: an exact match first, then a prefix, then the closest plausible name. Use a unique exact or prefix match directly. Confirm any other single match with the User, and list several plausible matches for the User to choose from. If `.apm/bus/` does not exist, tell the User that planning has not created the Message Bus yet.
 
 ### 4.3 Agent Slugs
 

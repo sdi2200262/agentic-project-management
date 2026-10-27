@@ -34,9 +34,8 @@ export async function statusCommand() {
     const archiveCount = await countArchives(cwd);
     if (archiveCount > 0) {
       logger.info(`${logger.plural(archiveCount, 'archived session')} found. Use "apm archive -l" to list.`);
-    } else {
-      logger.info('Run "apm init" to get started.');
     }
+    logger.info('Run "apm init" to start a new session.');
     return;
   }
 

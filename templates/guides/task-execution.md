@@ -8,7 +8,7 @@ A Task Prompt has these sections: Objective, the Task's goal; Instructions, the 
 
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
-3. If the title starts with `APM Follow-Up Task`, this is a follow-up Task: the Manager reviewed your earlier attempt and sent the same Task back with a revised prompt that says what to change. It keeps the same Task ID and `log_path`, and the Task Log you write replaces the earlier one.
+3. If the title starts with `APM Follow-Up Task`, this is a follow-up Task: the Manager reviewed your earlier attempt and sent the same Task back with a revised prompt that says what to change. It keeps the same Task ID and `log_path`.
 4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the workspace root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
@@ -41,7 +41,7 @@ Keep going on your own while the cause is clear, the fix stays within the Task a
 
 A batch Task Prompt sends several of your Tasks in one file, to run in order. Its frontmatter lists each Task with its own `log_path`, and the body holds the Tasks one after another, each starting at its `# Task` heading.
 
-Execute the Tasks in order, following §2 onward for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch at the first Failed outcome. When all Tasks are done or the batch stops, report per `{GUIDE_PATH:task-logging}` §4.
+Execute the Tasks in order, following §1 steps 3–5 for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch at the first Failed outcome. When all Tasks are done or the batch stops, report per `{GUIDE_PATH:task-logging}` §4.
 
 ## 4. Validation
 

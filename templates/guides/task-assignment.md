@@ -63,7 +63,7 @@ A follow-up Task sends a Task back to the same Worker after review, with a revis
 
 ## 6. Agents Outside APM
 
-An agent outside APM can join the Message Bus with its own bus folder. Write it a plain assignment in its Task Bus with the objective, the expected output and how to report back. Leave out Task Log paths, Handoff details and the Tracker's Workers table.
+An agent outside APM can join the Message Bus with its own bus folder. Write it a plain assignment in its Task Bus with the objective, the expected output and how to report back. Leave out Task Log paths, Handoff details and the Tracker's Workers table. Tell the User to ask that agent to read `.apm/bus/<slug>/task.md`.
 
 ## 7. Formats
 

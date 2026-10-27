@@ -37,7 +37,7 @@ An APM session runs in two phases, with three agent roles:
 - **Manager** - Hands out self-contained Task Prompts, reviews what comes back, and keeps the Tracker (the session's progress) and Memory (its work history) up to date.
 - **Workers** - Each takes the Tasks of one area of the work (frontend, backend, etc.), completes and validates them, logs the outcome to Memory, and reports back. A Worker sees its Task Prompts and the Rules, not the Spec or Plan.
 
-Agents exchange messages through a file-based Message Bus in `.apm/bus/`, and the user delivers each one by invoking a skill in the receiving agent's chat. The session's state lives in `.apm/`, outside any conversation. When an agent's context fills, a Handoff moves its role to a fresh conversation. A session may cover only part of a larger goal. When it ends, it can optionally be archived for the next session's Planner to build on.
+Agents exchange messages through a file-based Message Bus in `.apm/bus/`, and the user delivers each one by invoking a skill in the receiving agent's chat. The session's state lives in `.apm/`, outside any conversation. When a Manager's or Worker's context fills, a Handoff moves its role to a fresh conversation. A session may cover only part of a larger goal. When it ends, it can optionally be archived for the next session's Planner to build on.
 
 APM is installed via the `agentic-pm` CLI (`npm install -g agentic-pm`) and supports Claude Code and agents that discover `.agents/skills/` and read `AGENTS.md`, such as Codex, Cursor and GitHub Copilot. Install with `-a agents`, `-a claude`, or `-a agents claude`.
 

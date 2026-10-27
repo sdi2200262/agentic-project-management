@@ -37,7 +37,7 @@ Give the User both file paths and ask them to review the two files. Apply their 
 
 ### 5.1 Handoff Log Format
 
-The Handoff Log is written at `.apm/memory/handoffs/manager/handoff-<NN>.log.md`, where `<NN>` is your conversation number.
+The Handoff Log is written at `.apm/memory/handoffs/manager/handoff-<NN>.log.md`, where `<NN>` is your conversation number, zero-padded, such as `handoff-01.log.md`.
 
 ```markdown
 ---

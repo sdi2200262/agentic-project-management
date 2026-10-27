@@ -36,7 +36,7 @@ Both installation targets install the same skills and guides, each in its own fo
 * **Shorter agent replies.** Agents keep chat replies short by default and present proposals, evidence and trade-offs instead of writing out their reasoning step by step. Logs, prompts and reports keep their full structure.
 * **Shorter instructions.** Skills and guides are about half as long, with the same roles, steps and approval points. Each guide lists its steps in the order the agent acts and states each rule once. Skill titles no longer say "Command", and you invoke skills by name, such as `apm-5-check-reports` in the Manager's chat.
 * **Numbered conversations.** Each Manager and Worker conversation has a number. A Handoff moves a role from one conversation to the next and writes a Handoff Log for that conversation; recovery after compaction keeps the same conversation.
-* **The CLI names the next step.** After `apm init` and `apm archive`, the CLI tells you to invoke `apm-1-initiate-planner` in a new chat.
+* **The CLI names the next step.** After `apm init`, `apm archive` and `apm update`, the CLI tells you to invoke `apm-1-initiate-planner` in a new chat. The help text and README now say that `apm update` archives the current session before installing the new release.
 * **Faster Context Gathering.** All three rounds remain. The Planner can present what it already knows as statements for you to confirm or correct, and asks questions only about what is missing.
 * **Prompts need a terminal.** `apm remove` and other commands that ask for confirmation stop with an error when no terminal is attached, instead of doing nothing.
 * **`apm status` names missing files.** It lists each missing file by name.
