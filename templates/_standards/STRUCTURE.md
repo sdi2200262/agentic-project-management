@@ -31,7 +31,7 @@ Sources live under `templates/`:
 
 Names use kebab-case; each skill's `name` matches its directory. Descriptions briefly identify purpose and activation. YAML frontmatter begins on the first line between `---` delimiters, with valid field names, types and quoting.
 
-The build resolves placeholders and copies skills with their source frontmatter. All six assistants receive identical runtime text. Guides install at project-root `.agents/apm-guides/`; skills install under `skills/` in the assistant's APM folder. Each agent finds that folder as the one its skills are installed in. Shared prose refers to command skills by name.
+The build resolves placeholders and copies skills with their source frontmatter. Both installation targets receive identical runtime text. Guides install at project-root `.agents/apm-guides/`; skills install under `skills/` in the assistant's APM folder. Each agent finds that folder as the one its skills are installed in. Shared prose refers to command skills by name.
 
 ## 3. Navigation and references
 
@@ -60,4 +60,4 @@ Supported placeholders match `build/processors/placeholders.js` and resolve iden
 | `{SKILL_PATH:name}` | `skills/<name>/SKILL.md` |
 | `{GUIDE_PATH:name}` | `.agents/apm-guides/<name>.md` |
 
-Shared text uses “the Rules file” and “the command argument”; each agent resolves them for its own assistant. Validate references, artifact contracts, resolved placeholders and shared-file identity in all six generated bundles after changes.
+Shared text uses “the Rules file” and “the command argument”; each agent resolves them for its own assistant. Validate references, artifact contracts, resolved placeholders and shared-file identity in both generated bundles after changes.

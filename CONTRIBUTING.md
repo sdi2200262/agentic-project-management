@@ -10,7 +10,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 - **For new bug reports**, include:
   - APM CLI version (run `apm --version` or `npm list -g agentic-pm`)
   - Node.js and npm versions (run `node --version` and `npm --version`)
-  - AI assistant used (Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, or OpenCode)
+  - AI assistant used and installation target (`agents` or `claude`)
   - Agent role experiencing issues (Planner, Manager, or Worker)
   - Step-by-step reproduction of the issue (if possible, otherwise a detailed description)
   - Expected vs actual behavior
@@ -20,7 +20,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 - Workflow improvements: procedures, coordination patterns, memory system optimisations
 - Documentation improvements: clearer explanations, additional examples, missing use cases
 - Platform support: better integration with supported assistants
-- Build system: placeholder additions, support for new assistants
+- Build system: shared templates and installation layouts
 
 ### High-Priority Areas
 
@@ -47,7 +47,7 @@ Thank you for considering contributing to APM! Your contributions help build a b
 
 ### Community Extensions
 
-APM officially supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, and OpenCode. For other assistants (e.g. Windsurf, Kilo Code, Roo Code), community members may develop and maintain unofficial extensions.
+APM supports Claude Code and agents that discover `.agents/skills/` and read `AGENTS.md`, such as Codex, Cursor and GitHub Copilot. The build has two targets: `agents` and `claude`. An agent using the shared layout does not need its own target.
 
 Community extensions are not officially supported, may lag behind releases, and should be tested thoroughly before use. If you're interested in developing or maintaining an extension, please open an issue to discuss.
 

@@ -23,6 +23,7 @@ export function generateReleaseManifest(config, version) {
       // minCliVersion. Remove in the next minor template release.
       configDir: target.directories.skills.split('/')[0]
     };
+    if (target.replaces) entry.replaces = target.replaces;
     if (target.postInstallNote) {
       entry.postInstallNote = target.postInstallNote;
     }

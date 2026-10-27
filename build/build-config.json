@@ -7,6 +7,24 @@
   },
   "targets": [
     {
+      "id": "agents",
+      "name": "Agents supporting .agents/skills/ and AGENTS.md",
+      "bundleName": "agents.zip",
+      "format": "markdown",
+      "directories": {
+        "skills": ".agents/skills",
+        "guides": ".agents/apm-guides"
+      },
+      "replaces": [
+        "codex",
+        "cursor",
+        "copilot",
+        "antigravity",
+        "opencode"
+      ],
+      "postInstallNote": null
+    },
+    {
       "id": "claude",
       "name": "Claude Code",
       "bundleName": "claude.zip",
@@ -16,61 +34,6 @@
         "guides": ".agents/apm-guides"
       },
       "postInstallNote": null
-    },
-    {
-      "id": "codex",
-      "name": "Codex CLI",
-      "bundleName": "codex.zip",
-      "format": "markdown",
-      "directories": {
-        "skills": ".agents/skills",
-        "guides": ".agents/apm-guides"
-      },
-      "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm-1-initiate-planner) instead of /slash-commands."
-    },
-    {
-      "id": "cursor",
-      "name": "Cursor",
-      "bundleName": "cursor.zip",
-      "format": "markdown",
-      "directories": {
-        "skills": ".agents/skills",
-        "guides": ".agents/apm-guides"
-      },
-      "postInstallNote": null
-    },
-    {
-      "id": "copilot",
-      "name": "GitHub Copilot",
-      "bundleName": "copilot.zip",
-      "format": "markdown",
-      "directories": {
-        "skills": ".agents/skills",
-        "guides": ".agents/apm-guides"
-      },
-      "postInstallNote": null
-    },
-    {
-      "id": "antigravity",
-      "name": "Antigravity",
-      "bundleName": "antigravity.zip",
-      "format": "markdown",
-      "directories": {
-        "skills": ".agents/skills",
-        "guides": ".agents/apm-guides"
-      },
-      "postInstallNote": null
-    },
-    {
-      "id": "opencode",
-      "name": "OpenCode",
-      "bundleName": "opencode.zip",
-      "format": "markdown",
-      "directories": {
-        "skills": ".agents/skills",
-        "guides": ".agents/apm-guides"
-      },
-      "postInstallNote": "OpenCode runs APM commands as skills: type @ and the command name (e.g., @apm-1-initiate-planner)."
     }
   ]
 }

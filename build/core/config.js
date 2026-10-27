@@ -46,6 +46,10 @@ export function validateConfig(config) {
       if (!target.name) errors.push(`${prefix}: missing "name"`);
       if (!target.bundleName) errors.push(`${prefix}: missing "bundleName"`);
       if (!target.format) errors.push(`${prefix}: missing "format"`);
+      if (target.replaces !== undefined && (!Array.isArray(target.replaces)
+        || target.replaces.some(id => typeof id !== 'string' || !id))) {
+        errors.push(`${prefix}: "replaces" must be an array of non-empty IDs`);
+      }
       if (!target.directories) {
         errors.push(`${prefix}: missing "directories"`);
       } else {

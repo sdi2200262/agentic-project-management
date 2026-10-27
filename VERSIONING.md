@@ -12,7 +12,7 @@ Pre-release versions use the `-test-N` suffix (e.g., `1.0.0-test-1`). NPM's `lat
 
 ### 2. APM Template Releases (GitHub Releases)
 
-Templates live in `templates/` and are processed by the build system in `build/`. Running `npm run build:release` generates ZIP bundles for each supported AI assistant plus an `apm-release.json` manifest. These artifacts are published as GitHub Releases.
+Templates live in `templates/` and are processed by the build system in `build/`. Running `npm run build:release` generates ZIP bundles for the `agents` and `claude` installation targets plus an `apm-release.json` manifest. These artifacts are published as GitHub Releases.
 
 Template releases are fully decoupled from CLI versioning. The release workflow auto-increments patch versions (1.0.0 → 1.0.1) based on the latest stable release tag. For minor/major bumps, provide a version override when triggering the workflow. Never override with a version that is already tagged: the workflow then replaces that release's assets in place, and installs already on it are not offered an update.
 
@@ -50,4 +50,10 @@ For official installs, `apm update` moves to the newest stable release; from a s
 
 ## Metadata Tracking
 
-Installed template information is stored in `.apm/metadata.json`, including the source (official or custom), repository, release version, installed assistants, and timestamps. This allows `apm update` to determine the current state and available updates.
+Installed template information is stored in `.apm/metadata.json`, including the source (official or custom), repository, release version, installed targets, and timestamps. This allows `apm update` to determine the current state and available updates.
+The manifest and metadata retain the `assistants` key for compatibility. Official
+v1.1.0 installs record only `agents` and/or `claude`, with their installed file lists.
+A manifest target may declare `replaces` to migrate old IDs during update. Exact
+IDs take precedence, and multiple replaced IDs consolidate into one target. The
+old file lists remain authoritative for cleanup; archived metadata stays unchanged.
+Custom repositories can retain their own IDs or explicitly declare replacements.

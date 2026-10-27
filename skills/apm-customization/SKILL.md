@@ -45,7 +45,7 @@ Explore the repository to understand the layout. The key directories are:
 - `WRITING.md` - Writing patterns, tone, formatting
 - `NOTES.md` - Proposed future work for the official repository. These proposals do not describe current behaviour.
 
-**`build/`** - The build system that processes templates into platform-specific bundles. `build-config.json` defines the supported targets (assistants) and their directory layouts.
+**`build/`** - The build system that processes templates into installation bundles. `build-config.json` defines the installation targets (`agents` and `claude`) and their directory layouts.
 
 **`src/`** - The `agentic-pm` CLI source code. Changes here affect the CLI tool itself, not the templates.
 
@@ -72,7 +72,7 @@ npm ci
 npm run build:release
 ```
 
-This produces a `dist/` directory with ZIP bundles per assistant and an `apm-release.json` manifest. The User can test locally by extracting a bundle into a project.
+This produces a `dist/` directory with ZIP bundles per installation target and an `apm-release.json` manifest. The User can test locally by extracting a bundle into a project.
 
 ---
 
@@ -108,7 +108,7 @@ When adding a new guide, command skill or shared skill:
 
 ### Build Configuration Changes
 
-A new target (assistant) needs entries in `build/build-config.json` and `build/processors/placeholders.js`: the directory layout and target values in the first, and placeholder resolution and assistant-specific rules in the second. Explore existing targets as examples.
+Agents using `.agents/skills/` and `AGENTS.md` use the existing `agents` target. Add a target in `build/build-config.json` only when a different directory layout is needed. Keep instructions shared and in plain English; no assistant-specific placeholder rules are needed. A target can declare `replaces`, an array of old target IDs that `apm update` consolidates into it. Custom repositories opt into migration through this field; IDs still present in the new release keep their exact match.
 
 ### CLI Changes
 

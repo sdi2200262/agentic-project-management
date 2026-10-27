@@ -21,25 +21,23 @@ The session's state lives in shared files outside any conversation: the planning
 
 ## Getting started
 
-APM supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, and OpenCode. It installs through `agentic-pm`, a command-line tool on npm that needs Node.js 18 or later:
+APM supports Claude Code and agents that read project instructions from `AGENTS.md` and discover skills in `.agents/skills/`, such as Codex, Cursor and GitHub Copilot. It installs through `agentic-pm`, a command-line tool on npm that needs Node.js 18 or later:
 
 ```bash
 npm install -g agentic-pm
 ```
 
-In your project directory, run the command below to install APM's commands, guides, skills, and document templates. Select your assistant when the CLI prompts you, or pass it with `-a`:
+In your project directory, choose one of the commands below to install APM's commands, guides, skills, and document templates. Choose the `agents` installation target for those agents, or `claude` for Claude Code. Select one when prompted, or pass one or both with `-a`:
 
 ```bash
-apm init
+apm init -a agents
+
+# Claude Code, or both layouts in the same project:
+apm init -a claude
+apm init -a agents claude
 ```
 
-Open your assistant in the project and run:
-
-```text
-/apm-1-initiate-planner
-```
-
-In Codex CLI, type `$apm-1-initiate-planner`; in OpenCode, `@apm-1-initiate-planner`. Describe what you want to build or change. The Planner works with you on the planning documents, then directs you to start the Manager in a new conversation. From there, each agent tells you what to run next and where. For the full walkthrough, see [Getting Started](https://agentic-project-management.dev/docs/getting-started).
+Open your assistant in the project and invoke the `apm-1-initiate-planner` skill using its skill menu or invocation syntax. In Claude Code, run `/apm-1-initiate-planner`. Describe what you want to build or change. The Planner works with you on the planning documents, then directs you to start the Manager in a new conversation. From there, each agent tells you what to run next and where. For the full walkthrough, see [Getting Started](https://agentic-project-management.dev/docs/getting-started).
 
 ## Documentation
 
@@ -53,7 +51,7 @@ The [documentation](https://agentic-project-management.dev) covers the three age
 | `apm custom` | Install from a custom repository |
 | `apm update` | Update to the newest stable release (from a pre-release, choose stable or pre-release) |
 | `apm archive` | Archive a session or manage archives |
-| `apm add` / `apm remove` | Add or remove assistants |
+| `apm add` / `apm remove` | Add or remove installation targets |
 | `apm status` | Show installation state |
 
 See the [CLI Guide](https://agentic-project-management.dev/docs/cli) for options and examples.

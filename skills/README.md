@@ -21,7 +21,7 @@ The skill file is the same across all platforms - only the destination directory
 | Platform | Skill directory |
 |---|---|
 | Claude Code | `.claude/skills/apm-assist/` |
-| Codex CLI, Cursor, GitHub Copilot, Antigravity, OpenCode | `.agents/skills/apm-assist/` |
+| Agents supporting `.agents/skills/` and `AGENTS.md` | `.agents/skills/apm-assist/` |
 
 ### apm-customization
 

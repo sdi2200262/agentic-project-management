@@ -9,9 +9,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## CLI v1.0.3 + Templates v1.1.0 - Unreleased
 
-Every assistant now installs the same commands, guides and communication skill. Run `apm update` to move an existing install to the new layout; it removes the old files and installs the new ones.
+Both installation targets now install the same commands, guides and communication skill. Run `apm update` to move an existing install to the new layout; it removes the old files and installs the new ones.
 
 ### Breaking Changes
+
+* **Two installation targets.** Choose `agents` for agents that discover `.agents/skills/` and read `AGENTS.md`, or `claude` for Claude Code. Install both with `apm init -a agents claude`. APM no longer needs a separate bundle for each agent using the shared layout. `apm update` consolidates existing Codex, Cursor, Copilot, Antigravity and OpenCode installations into `agents`, preserving `claude` and cleaning up tracked old files. New installs and `add`/`remove` use the new IDs.
 
 * **CLI v1.0.3 or later is required.** CLI v1.0.2 refuses Templates v1.1.0 with `v1.1.0 requires agentic-pm 1.0.3 or later. Update with: npm update -g agentic-pm` and changes nothing. CLI v1.0.1 and older don't check the required version, and they delete shared files when you remove an assistant, so update the CLI before you install. Check with `apm --version`.
 * **Commands are skills for every assistant.** Claude Code, Cursor and OpenCode join Codex, Copilot and Antigravity, which already used skills. Claude Code commands install to `.claude/skills/` instead of `.claude/commands/`, and Cursor's to `.agents/skills/` instead of `.cursor/commands/`; you still run both as `/apm-…`. OpenCode's install to `.agents/skills/` instead of `.opencode/commands/`, and you run them as `@apm-…` instead of `/apm-…`.
@@ -24,7 +26,7 @@ Every assistant now installs the same commands, guides and communication skill. 
 
 ### Changed
 
-* **One layout for every assistant.** Guides install to `.agents/apm-guides/` for every assistant, Claude Code included. Claude Code installs skills to `.claude/skills/`. Codex, Cursor, Copilot, Antigravity and OpenCode share `.agents/skills/`.
+* **One layout for every assistant.** Guides install to `.agents/apm-guides/` for every assistant, Claude Code included. Claude Code installs skills to `.claude/skills/`. The `agents` target uses `.agents/skills/`.
 * **No custom subagent.** The `apm-archive-explorer` agent is gone. Agents explore archives, research and debug with whichever subagent their assistant offers, and `apm update` removes the old agent file.
 * **Plain-English instructions.** Commands, guides and skills describe each action in plain English, such as "use a subagent to research…" or "run this command in a new chat", and each assistant carries it out with its own tools. They no longer carry per-assistant syntax.
 * **Commands run only when you invoke them.** Each command's description says to use it only when you invoke it manually, and each command tells an agent to continue only if you invoked it, asked it to follow it, or another APM step sent it there. Every command skill also sets `disable-model-invocation: true`. Codex doesn't read that setting, so its model can still see the commands.
@@ -33,7 +35,7 @@ Every assistant now installs the same commands, guides and communication skill. 
 * **Faster Context Gathering.** All three rounds remain. The Planner can present what it already knows as statements for you to confirm or correct, and asks questions only about what is missing.
 * **Prompts need a terminal.** `apm remove` and other commands that ask for confirmation stop with an error when no terminal is attached, instead of doing nothing.
 * **`apm status` names missing files.** It lists each missing file by name.
-* **Consistent assistant names.** Every command shows assistants as name and id, such as "Codex CLI (codex)".
+* **Consistent assistant names.** Every command shows assistants as name and id, such as "Claude Code (claude)".
 * **Failed commands exit with an error status.** Any command that prints an error, such as for an unknown `-a` id, now exits with status 1.
 * **Smaller release manifest.** `apm-release.json` no longer lists a description for each assistant. It keeps each assistant's folder (`configDir`) in v1.1.x only, so CLI v1.0.2 can read the manifest and tell you to update; the next minor release drops it. CLI v1.0.3 accepts manifests with or without these fields.
 * **The CLI checks the required version first.** CLI v1.0.3 reads `minCliVersion` before it validates the rest of the manifest, so a release made for a newer CLI asks you to update instead of reporting an invalid manifest. A `minCliVersion` that isn't a version such as `1.0.3` is reported as invalid instead of being ignored.

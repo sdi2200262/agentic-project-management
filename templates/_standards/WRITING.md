@@ -55,7 +55,7 @@ Artifacts provide self-contained context for future readers. Follow their schema
 
 Use explicit file paths and section references where they help navigation. Repair references when headings or numbers change. Cross-file template references use supported build placeholders: `{SKILL_PATH:name}` and `{GUIDE_PATH:name}`.
 
-All six assistants receive identical template text. Refer to command skills by name. Keep assistant-specific syntax out of templates: describe the action in plain English, such as “use a subagent to research…” or “run `apm-3-initiate-worker` in a new chat”, and let each agent use its own assistant's way of doing it. Name a subagent by its purpose, never by type. Shared prose refers to “the Rules file” and “the command argument”.
+Both installation targets receive identical template text. Refer to command skills by name. Keep assistant-specific syntax out of templates: describe the action in plain English, such as “use a subagent to research…” or “run `apm-3-initiate-worker` in a new chat”, and let each agent use its own assistant's way of doing it. Name a subagent by its purpose, never by type. Shared prose refers to “the Rules file” and “the command argument”.
 
 Guide paths resolve from the project root to `.agents/apm-guides/` for every assistant. Skill paths are relative to the assistant's APM folder, the one the skills are installed in. Keep project artifact paths rooted at `.apm/` as their contracts require.
 

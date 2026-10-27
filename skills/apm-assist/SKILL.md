@@ -39,7 +39,7 @@ An APM session runs in two phases, with three agent roles:
 
 Agents exchange messages through a file-based Message Bus in `.apm/bus/`, and the user delivers each one by running a command. The session's state lives in `.apm/`, outside any conversation. When an agent's context fills, a Handoff moves its role to a fresh conversation. When the session ends, it can be archived for the next session's Planner to build on.
 
-APM is installed via the `agentic-pm` CLI (`npm install -g agentic-pm`) and supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, and OpenCode.
+APM is installed via the `agentic-pm` CLI (`npm install -g agentic-pm`) and supports Claude Code and agents that discover `.agents/skills/` and read `AGENTS.md`, such as Codex, Cursor and GitHub Copilot. Install with `-a agents`, `-a claude`, or `-a agents claude`.
 
 ---
 
@@ -87,7 +87,7 @@ When the user asks about their APM installation, or when knowing the setup would
    - `repository`: e.g. `"sdi2200262/agentic-project-management"`
    - `releaseVersion`: e.g. `"v1.0.0"`
    - `cliVersion`: CLI version that performed the install
-   - `assistants`: Array of installed assistant IDs
+   - `assistants`: Array of installed target IDs (`agents` and/or `claude` in v1.1.0; named assistant IDs in earlier releases)
 
 2. **Check for old metadata formats** - If `metadata.json` exists but uses `templateVersion` instead of `releaseVersion`, or stores assistant names as full display names instead of short IDs, this is a pre-v1.0.0 installation. See §5 for migration.
 
@@ -190,7 +190,7 @@ Key differences from v1.0.0 metadata: v0.5.x uses `templateVersion` (with `+temp
 
 Archive metadata adds `archivedAt` and `reason` (e.g. `"migration"`) fields.
 
-**Guides and installed files:** In v0.5.x, procedural guides lived in `.apm/guides/`. In v1.0.0, guides, skills, agent configs, and commands are all installed into the platform-specific directory (e.g. `.claude/apm-guides/`, `.claude/skills/`, `.claude/agents/`, `.claude/commands/`). The `.apm/` directory in v1.0.0 contains only session artifacts (Spec, Plan, Tracker, Memory, Bus, metadata). From v1.1.0, every assistant installs the same files: guides in `.agents/apm-guides/` for every assistant, and skills, including the commands, in `.claude/skills/` for Claude Code (no longer `.claude/commands/`) and `.agents/skills/` for the others. Running `apm update` moves an install to this layout.
+**Guides and installed files:** In v0.5.x, procedural guides lived in `.apm/guides/`. In v1.0.0, guides, skills, agent configs, and commands are all installed into the platform-specific directory (e.g. `.claude/apm-guides/`, `.claude/skills/`, `.claude/agents/`, `.claude/commands/`). The `.apm/` directory in v1.0.0 contains only session artifacts (Spec, Plan, Tracker, Memory, Bus, metadata). From v1.1.0, every assistant installs the same files: guides in `.agents/apm-guides/` for every assistant, and skills, including the commands, in `.claude/skills/` for Claude Code (no longer `.claude/commands/`) and `.agents/skills/` for the others. Running `apm update` moves an install to this layout and consolidates the previous Codex, Cursor, Copilot, Antigravity and OpenCode IDs into `agents`, keeping `claude` separately.
 
 **Archives:** v0.5.x `apm update` created backup directories at `.apm/apm-backup-<tag>/` with optional zip files - no structured archive metadata. v1.0.0 uses `.apm/archives/session-YYYY-MM-DD-NNN/` with proper `metadata.json` inside each archive. During migration, old backup directories should be consolidated into the v1.0.0 archive format.
 
