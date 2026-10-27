@@ -170,7 +170,7 @@ async function createMode(force, archiveName) {
   // Clear content for final output
   logger.clearAndBanner();
   logger.success(`Archived to ${path.relative(cwd, archivePath)}`);
-  logger.info('Run "apm init" (or "apm custom") to install templates for a new session.');
+  logger.info('To start a new session, run "apm init" (or "apm custom"), then invoke apm-1-initiate-planner in a new chat.');
 }
 
 export default archiveCommand;

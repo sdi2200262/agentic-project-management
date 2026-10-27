@@ -152,10 +152,9 @@ export async function initCommand(options = {}) {
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
   logger.success('APM initialized!');
-  logger.info('Run "apm add" to add another installation target, or "apm update" to check for updates.');
+  logger.info('To start planning, invoke the apm-1-initiate-planner skill in a new chat with your assistant.');
   console.log('');
-  logger.info('New to APM? Install the apm-assist skill so your AI assistant can explain how APM works and answer questions outside of APM sessions.');
-  logger.info('See: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
+  logger.info('New to APM? The apm-assist skill lets your assistant explain how APM works: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
 }
 
 export default initCommand;
