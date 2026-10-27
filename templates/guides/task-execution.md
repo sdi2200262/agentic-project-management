@@ -1,78 +1,69 @@
 # APM {VERSION} - Task Execution Guide
 
-## 1. Overview
+This guide covers Task Execution, from receiving a Task Prompt through integrating its dependencies, doing the work, validating it and fixing failures. `{GUIDE_PATH:task-logging}` covers the Task Log and Task Report that follow.
 
-**Reading agent:** Worker
+A Task Prompt has these sections: Objective, the Task's goal; Instructions, the steps to take; Context from Dependencies, when the Task builds on earlier Tasks; Workspace, where to work; Output, the deliverables; and Validation, the checks the work must pass. The Objective and Output are authoritative. When an instruction, prerequisite or assumption in the prompt looks wrong, check it against the codebase or other relevant sources, such as documentation. If that does not settle it, ask the User for direction. Then use what you learn to reach the Objective.
 
-Receive assignments, integrate their context, execute, validate, log and report. The Task objective and expected output are authoritative. When instructions, prerequisites or assumptions appear inaccurate, verify them against the codebase and use the verified state to achieve that objective. Follow Task Prompt instructions and Rules; otherwise use the codebase's conventions, descriptive names and comments for non-obvious behavior. Build incrementally and validate meaningful changes.
+## 1. Task Receipt
 
-## 2. Operational Standards
+1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for. For a batch, check every Task Prompt in it.
+2. If the frontmatter has `batch: true`, execute its Tasks per §3.2.
+3. If the title starts with `APM Follow-Up Task`, this is a follow-up Task: the Manager reviewed your earlier attempt and sent the same Task back with a revised prompt that says what to change. It keeps the same Task ID and `log_path`, and the Task Log you write replaces the earlier one.
+4. If the prompt has a Workspace section, switch to its branch or worktree. In a worktree, do the work there but use the project root given in the prompt for every `.apm/` path.
+5. If `has_dependencies: true`, integrate the dependency context per §2. Otherwise start the work per §3.
 
-### 2.1 Context Integration Standards
+## 2. Dependency Context
 
-Complete cross-agent integration instructions before implementation. Read known files directly. When investigation is broad or context isolation helps, use a subagent with a focused question and relevant paths. Verify critical subagent findings against source. Use same-agent paths as recall anchors.
+Some Tasks build on the output of earlier Tasks. The prompt's Context from Dependencies section names that output and says how to use it. It treats each dependency in one of two ways:
 
-Pause for User guidance on cross-agent integration problems or missing expected same-agent files. For minor same-agent ambiguities, continue with the best supported interpretation and note uncertainty. Don't start implementation while a dependency's output is missing or fails its integration check.
+- **Same-Worker dependency:** your own earlier work, which you remember. The prompt points to its output; refresh what you need from the named paths.
+- **Cross-Worker dependency:** work you have not seen, by another Worker or by you before a Handoff. The prompt gives reading and integration steps. Complete them all before you start the work. Read known files yourself. When the integration needs broad investigation across many files, use a subagent with a focused question and the relevant paths.
 
-### 2.2 Validation Standards
+Do not start the work while a dependency's output is missing or fails its integration check. Ask the User for guidance when another Worker's output does not integrate as the prompt describes, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
 
-Execute every Task validation criterion. Complete autonomous checks before requesting User review or action. A failed or ambiguous check enters the correction loop; do not replace unavailable validation with a weaker substitute.
+## 3. Execution
 
-When all autonomous checks pass, request any required User judgment or external action. State the result, deliverable location, what needs checking and what to report back. Wait for completion/approval. Request missing resources when needed; seek guidance when blocked. If the User says they can't provide a required check or resource, log Partial and state what remains.
+Follow the Instructions in order, applying the Rules toward the Objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
 
-### 2.3 Iteration Standards
+When an instruction needs the User to act, say what is needed and why, offer the options and wait until the User has done it. When you use a subagent, give it a focused task and verify its key findings against the source before you rely on them.
 
-Investigate before fixing: read the error, trace its origin and identify the cause. Apply one targeted change and revalidate. When a correction fails, introduces new problems or leaves the cause unclear, use a subagent to investigate the cause. Give it the error output, investigation and attempted fix, relevant paths, and expected/actual behavior. Ask it to trace the cause, form a specific hypothesis and propose a targeted fix. When independent areas may be responsible, use subagents in parallel to investigate them.
+Use the project's own vocabulary in commits, code and comments. APM terms, Task IDs, Stage numbers and agent names belong only in APM files.
 
-Verify findings before applying a fix. If investigation remains unresolved, prefer Partial and seek guidance; inaccurate Task instructions may also justify stopping. When uncertain or ending without Success, explain the failure, attempts, current state and options to the User and wait for the User's reply before finalizing. Continue autonomously while the cause is clear, within scope and checks are available.
+### 3.1 Troubleshooting
 
-### 2.4 Rules Updates
+When a check fails or the work does not behave as expected, investigate before fixing: read the error, trace where it comes from and identify the cause. Make one targeted fix, then validate again.
 
-A User correction is an instruction from the User that changes how you work and would also apply to later Tasks, such as which data to use, what to check or how to name things. Follow Task-specific instructions as normal guidance and log them, without the Rules question. Apply it immediately without pausing to discuss Rules. When the Task is done and before you write the Task Log, ask the User whether to add the correction to the Rules file so every Worker follows it, and wait for the answer. Ask every time the User corrected you during the Task. If the User approves, add it inside the `APM_RULES` block of the Rules file in your Task workspace. When version control is active, commit it with the Task so it merges with your work after review. Record the correction and the User's answer under Important Findings with `important_findings: true`.
+If the fix fails, causes new problems or leaves the cause unclear, use a subagent to investigate. Give it the error output, what you investigated and tried, the relevant paths, and the expected and actual behaviour. Ask it to trace the cause, state a specific hypothesis and propose a targeted fix. When independent parts of the system could be at fault, use one subagent for each, in parallel.
 
-### 2.5 Version Control Standards
+Keep going on your own while the cause is clear, the fix stays within the Task and checks are available. Stop and ask the User when the investigation does not resolve the problem, or when the prompt's instructions turn out to be wrong. Explain the failure, what you tried, the current state and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §2.2.
 
-Work in the assigned workspace and note it in the Task Log. When version control is active, use the assigned branch or worktree and commit using Rules conventions. For large Tasks, coherent intermediate commits are appropriate. Do not create branches, manage worktrees, merge or push; the Manager handles those operations.
+### 3.2 Batch Execution
 
-Use project vocabulary in commit messages, source comments and code; keep APM terms, Task IDs, Stage and Step numbers, and agent identifiers in APM artifacts. For worktrees, resolve all runtime `.apm/` paths from the project root specified in the prompt, not a worktree copy.
+A batch is several of your Tasks sent in one file, to run in order. Each Task in it is a full Task Prompt with its own `log_path`.
 
-### 2.6 Batch Rules
+Execute the Tasks in order, following this guide for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch at the first Failed outcome. When all Tasks are done or the batch stops, write one batch report per `{GUIDE_PATH:task-logging}` §4.3, and keep the Tasks you did not start separate from those you executed.
 
-Execute batched Tasks sequentially, fully validating and logging each at its `log_path` before starting the next. Stop the batch on Failed status. After all Tasks finish or the batch stops, write one batch report per `{GUIDE_PATH:task-logging}` §4.3 Batch Report Format. Keep unstarted Tasks distinguishable from executed outcomes.
+## 4. Validation
 
-## 3. Task Execution Procedure
+Run every check in the prompt's Validation section. Never replace a check you cannot run with a weaker one.
 
-### 3.1 Task Prompt Receipt
+1. Run all checks you can do on your own first. A failed or unclear result goes to §3.1.
+2. When they pass, ask the User for any check that needs their judgement or an outside action. Say what the result is, where the deliverable is, what to check and what to report back. Wait for the answer, and handle any problem it reveals through §3.1.
+3. Ask for missing resources when you need them. If the User says a required check or resource is not available, the outcome is Partial; state what remains.
 
-1. If the frontmatter has `batch: true`, process its individual prompts sequentially per §2.6.
-2. Verify prompt `agent` and bus directory against your registered identity per `{SKILL_PATH:apm-communication}` §4.1. Reject a mismatch and direct the User to the intended Worker.
-3. Switch to the assigned branch or worktree if a Workspace section is present.
-4. If `has_dependencies: true`, integrate context; otherwise begin execution.
+The Task is a Success only when every check passes.
 
-### 3.2 Context Integration
+## 5. Rules Updates
 
-Read Context from Dependencies and follow §2.1. For cross-agent work, complete the reading/integration steps; for same-agent work, refresh referenced context as needed. For complex cross-agent dependencies or multi-file exploration, use a subagent to read the relevant files and answer specific integration questions. Verify critical findings and resolve integration issues before continuing.
+A User correction is an instruction that changes how you work and would also apply to later Tasks, such as which data to use, what to check or how to name things. Apply it at once, without stopping to discuss the Rules. Instructions that apply only to this Task are normal guidance: follow them and log them.
 
-### 3.3 Task Execution
+When the Task is done, and before you write the Task Log, ask the User whether each correction should be added to the Rules so that every Worker follows it. Wait for the answer. Ask about every correction the User gave during the Task. If the User agrees, add it inside the `APM_RULES` block of `AGENTS.md` in your Task workspace. With version control, commit it with the Task so it merges with your work after review.
 
-1. Follow Detailed Instructions in order, applying Guidance and Rules toward the Objective. Resolve inaccurate instructions against the codebase as described in §1.
-2. For explicit User actions, state what is needed and why, offer relevant options and await completion.
-3. For each specified subagent step, use a subagent with a focused task description and verify critical findings before using them.
-4. Briefly state that implementation is ready for validation and continue to the checks.
+## 6. Completion
 
-### 3.4 Task Validation
-
-Run autonomous criteria per §2.2. Failed or ambiguous results enter the correction loop. After those pass, obtain any required User validation; integrate feedback through the loop. Proceed with Success only when all criteria pass.
-
-### 3.5 Correction Loop
-
-Apply §2.3: investigate, make one targeted correction and revalidate. If unsuccessful, use a subagent to investigate per §2.3 and verify its findings before applying a fix. If still unresolved, present the situation and options to the User and wait for the User's reply. Continue under that guidance or select the outcome per `{GUIDE_PATH:task-logging}` §2.2 Outcome Standards and complete the Task.
-
-### 3.6 Task Completion
-
-1. Tell the User the outcome, deliverables, validation and consequential findings or limits. Select status per `{GUIDE_PATH:task-logging}` §2.2.
-2. If the User corrected you during the Task, ask the Rules question per §2.4 and wait for the answer.
-3. Commit work per §2.5 when version control is active.
-4. Write the log at `log_path` per `{GUIDE_PATH:task-logging}` §3.1.
-5. Deliver the report per that guide's §3.2. In the first report after Handoff, give the instance number, specific logs loaded and note previous-Stage logs were not loaded. After recovery, record it in the report.
-6. State readiness for the next Task via `apm-4-check-tasks` without an argument. Await delivery or Handoff.
+1. Tell the User the outcome, the deliverables, how you validated them, and any important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §2.2.
+2. If the User corrected you during the Task, ask the Rules question per §5 and wait for the answer.
+3. With version control, commit your work on the assigned branch, following the commit conventions in the Rules. A large Task may also have intermediate commits, each a coherent change. Do not create branches, manage worktrees, merge or push; the Manager does that.
+4. Write the Task Log at `log_path` per `{GUIDE_PATH:task-logging}` §3.1, including the workspace you used.
+5. Deliver the Task Report per `{GUIDE_PATH:task-logging}` §3.2. In your first report after a Handoff, give your conversation number and the Task Logs you loaded, and say that logs from earlier Stages were not loaded. After a recovery, say so in the report.
+6. Tell the User you are ready for the next Task, which they deliver by invoking `apm-4-check-tasks` with no argument. Wait for it or for a Handoff.
