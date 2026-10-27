@@ -12,4 +12,4 @@ Read the registered Worker's Task Bus. Planners, Managers and non-APM agents dec
 
 1. If registered, use that bus path. Otherwise, if the argument is missing, tell the User that an agent ID is required and ask for it. Once supplied, resolve it per `{SKILL_PATH:apm-communication}` §4.2, and initialize per `{SKILL_PATH:apm-3-initiate-worker}` §1.
 2. Read `.apm/bus/<agent-slug>/task.md`. If empty, state no Task is pending and await another invocation.
-3. Verify the prompt's `agent` against registration. Reject a mismatch and direct the User to the correct Worker. Process a valid prompt or batch per `{GUIDE_PATH:task-execution}` §1.
+3. Process the prompt or batch per `{GUIDE_PATH:task-execution}` §1, which starts by checking its `agent` against your identity.

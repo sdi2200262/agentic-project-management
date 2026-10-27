@@ -6,11 +6,11 @@ A Task Prompt has these sections: Objective, the Task's goal; Instructions, the 
 
 ## 1. Task Receipt
 
-1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for. For a batch, check every Task Prompt in it.
-2. If the frontmatter has `batch: true`, execute its Tasks per §3.2.
+1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
+2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
 3. If the title starts with `APM Follow-Up Task`, this is a follow-up Task: the Manager reviewed your earlier attempt and sent the same Task back with a revised prompt that says what to change. It keeps the same Task ID and `log_path`, and the Task Log you write replaces the earlier one.
-4. If the prompt has a Workspace section, switch to its branch or worktree. In a worktree, do the work there but use the project root given in the prompt for every `.apm/` path.
-5. If `has_dependencies: true`, integrate the dependency context per §2. Otherwise start the work per §3.
+4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the project root given in the prompt for every `.apm/` path.
+5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
 ## 2. Dependency Context
 
@@ -35,13 +35,13 @@ When a check fails or the work does not behave as expected, investigate before f
 
 If the fix fails, causes new problems or leaves the cause unclear, use a subagent to investigate. Give it the error output, what you investigated and tried, the relevant paths, and the expected and actual behaviour. Ask it to trace the cause, state a specific hypothesis and propose a targeted fix. When independent parts of the system could be at fault, use one subagent for each, in parallel.
 
-Keep going on your own while the cause is clear, the fix stays within the Task and checks are available. Stop and ask the User when the investigation does not resolve the problem, or when the prompt's instructions turn out to be wrong. Explain the failure, what you tried, the current state and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §2.2.
+Keep going on your own while the cause is clear, the fix stays within the Task and checks are available. Stop and ask the User when the investigation does not resolve the problem, or when the prompt's instructions turn out to be wrong. Lead with the likely cause, or say that it is still unclear, then give what you tried, the current state and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 
 ### 3.2 Batch Execution
 
-A batch is several of your Tasks sent in one file, to run in order. Each Task in it is a full Task Prompt with its own `log_path`.
+A batch Task Prompt sends several of your Tasks in one file, to run in order. Its frontmatter lists each Task with its own `log_path`, and the body holds the Tasks one after another, each starting at its `# Task` heading.
 
-Execute the Tasks in order, following this guide for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch at the first Failed outcome. When all Tasks are done or the batch stops, write one batch report per `{GUIDE_PATH:task-logging}` §4.3, and keep the Tasks you did not start separate from those you executed.
+Execute the Tasks in order, following §2 onward for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch at the first Failed outcome. When all Tasks are done or the batch stops, report per `{GUIDE_PATH:task-logging}` §4.
 
 ## 4. Validation
 
@@ -61,9 +61,8 @@ When the Task is done, and before you write the Task Log, ask the User whether e
 
 ## 6. Completion
 
-1. Tell the User the outcome, the deliverables, how you validated them, and any important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §2.2.
+1. Tell the User the outcome, the deliverables, how you validated them, and any important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 2. If the User corrected you during the Task, ask the Rules question per §5 and wait for the answer.
 3. With version control, commit your work on the assigned branch, following the commit conventions in the Rules. A large Task may also have intermediate commits, each a coherent change. Do not create branches, manage worktrees, merge or push; the Manager does that.
-4. Write the Task Log at `log_path` per `{GUIDE_PATH:task-logging}` §3.1, including the workspace you used.
-5. Deliver the Task Report per `{GUIDE_PATH:task-logging}` §3.2. In your first report after a Handoff, give your conversation number and the Task Logs you loaded, and say that logs from earlier Stages were not loaded. After a recovery, say so in the report.
-6. Tell the User you are ready for the next Task, which they deliver by invoking `apm-4-check-tasks` with no argument. Wait for it or for a Handoff.
+
+Then write the Task Log and Task Report per `{GUIDE_PATH:task-logging}`.

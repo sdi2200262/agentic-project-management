@@ -10,11 +10,11 @@ Construct self-contained Task Prompts, prepare branches/workspaces and deliver w
 
 ### 2.1 Dependency Context Standards
 
-Use Plan dependencies and Tracker overrides to determine context depth. For same-agent dependencies, give recall anchors and key paths, increasing detail with complexity. For cross-agent dependencies, assume the Worker has no familiarity with the producer’s work: always provide comprehensive reading instructions, producer outputs, interfaces and integration guidance, regardless of perceived simplicity.
+Use the Plan's dependencies and the Tracker's Not Read Since Handoff column to determine context depth. For Same-Worker dependencies, give recall anchors and key paths, increasing detail with complexity. For Cross-Worker dependencies, assume the Worker has no familiarity with the producer’s work: always provide comprehensive reading instructions, producer outputs, interfaces and integration guidance, regardless of perceived simplicity.
 
-After Worker Handoff, current-Stage same-agent dependencies remain same-agent; previous-Stage ones require cross-agent context. Check the Tracker's specific overrides. Recovery can also reduce familiarity, so expand same-agent context where notes indicate reconstructed knowledge.
+After a Worker's Handoff, current-Stage Same-Worker dependencies stay Same-Worker; earlier-Stage ones become Cross-Worker. Check the Workers table's Not Read Since Handoff column and Notes. Recovery can also reduce familiarity, so expand Same-Worker context where notes indicate reconstructed knowledge.
 
-Trace upstream when ancestors established required patterns, schemas or contracts. Stop where an intermediate output fully abstracts them; include uncertain but potentially important context. Read each unique cross-agent producer log once per dispatch cycle.
+Trace upstream when ancestors established required patterns, schemas or contracts. Stop where an intermediate output fully abstracts them; include uncertain but potentially important context. Read each unique Cross-Worker producer log once per dispatch cycle.
 
 ### 2.2 Task Prompt Content Standards
 
@@ -28,29 +28,29 @@ Rewrite affected prompt sections from review/investigation findings. Explain the
 
 ### 2.4 Dispatch Standards
 
-At each dispatch cycle, reassess readiness and work groupings from the current Tracker and Dependency Graph. For dispatch readiness, dependencies outside a batch must be Done; a batch may contain a sequential chain whose internal dependencies are completed by preceding Tasks. Form units from single Tasks or same-Worker batches; independent batch candidates must all be Ready. Prefer 2–3 Tasks per batch, and dispatch individually when intermediate results would unblock other Workers sooner.
+At each dispatch cycle, reassess readiness and work groupings from the current Tracker and the Plan's dependencies. For dispatch readiness, dependencies outside a batch must be Done; a batch may contain a sequential chain whose internal dependencies are completed by preceding Tasks. Form units from single Tasks or same-Worker batches; independent batch candidates must all be Ready. Prefer 2–3 Tasks per batch, and dispatch individually when intermediate results would unblock other Workers sooner.
 
-Dispatch units to different Workers in parallel when there are no unresolved cross-agent dependencies and version control provides workspace isolation. Otherwise dispatch sequentially. Recommend appropriate platform tool approvals for parallel Workers to reduce waits.
+Dispatch units to different Workers in parallel when there are no unresolved Cross-Worker dependencies and version control provides workspace isolation. Otherwise dispatch sequentially. Recommend appropriate platform tool approvals for parallel Workers to reduce waits.
 
 A pending report may unlock a better combination. Wait only when it is the only outstanding report and it would make a Waiting Task Ready for the same Worker in this dispatch; otherwise dispatch Ready work. If none is Ready while Workers are active, state what is pending and direct the User to return the next report, prioritizing one that unblocks work when useful.
 
 ### 2.5 Version Control Standards
 
-When version control is active, use the Tracker's per-repository conventions and base branch; identify working repositories from the Spec. Include the applicable repository’s commit conventions in the Task Prompt. Each dispatch unit gets a feature branch off base; a batch shares one branch. Merge required producer branches before creating a dependent branch. Workers commit; you manage branches, worktrees, merges and cleanup.
+When version control is active, use the branch and commit conventions in the Rules and the base branches in the Spec's Workspace section. When a repository's conventions differ from the others, name them in the Task Prompt. Each dispatch unit gets a feature branch off base; a batch shares one branch. Merge required producer branches before creating a dependent branch. Workers commit; you manage branches, worktrees, merges and cleanup.
 
 Use the main working directory for sequential work. For parallel work, give every unit a separate short-lived worktree under `.apm/worktrees/`, keeping the main directory on base. Run at most 4 worktrees at once. Worktrees contain tracked files only; identify any needed untracked assets in the prompt. All runtime `.apm/` paths target the project root, even if a worktree has its own tracked copy.
 
-Names and commits describe actual work, without Task IDs, Stage numbers or agent identifiers. Derive worktree directory names from branch names, replacing `/` with `-`; a batch name reflects its combined scope. Do not commit generated build files; update `.gitignore` when needed. Keep Task rows current with branches/worktrees and pending merges for Handoff.
+Names and commits describe actual work, without Task IDs, Stage numbers or agent identifiers. Derive worktree directory names from branch names, replacing `/` with `-`; a batch name reflects its combined scope. Do not commit generated build files; update `.gitignore` when needed. Keep each Task row's Branch and Worktree current, so a later Manager conversation can see pending merges.
 
-If the User later enables version control, initialize git where needed, confirm base/conventions, update Rules and Tracker, then use branch-based dispatch. Without version control, parallel dispatch is unavailable.
+If the User later enables version control, initialize git where needed, confirm base branches and conventions, update the Rules and the Spec's Workspace section, then use branch-based dispatch. Without version control, parallel dispatch is unavailable.
 
 ### 2.6 Delivery Standards
 
-Use the bus files the Planner created. Before outgoing delivery, clear the Worker's incoming Report Bus via terminal; skip this on its first dispatch when no report exists. Read the Task Bus before writing. Send a batch as one envelope per §4.5.
+Use the bus files the Planner created. Before outgoing delivery, clear the Worker's incoming Report Bus via terminal; skip this on its first dispatch when no report exists. Read the Task Bus before writing. Send a batch as one batch Task Prompt per §4.4.
 
 ### 2.7 Non-APM Agent Dispatch
 
-For a participating non-APM agent, write a plain assignment to its Task Bus with the objective, output and reporting instruction. Omit Memory logging, Handoff metadata and Worker tracking.
+For a participating non-APM agent, write a plain assignment to its Task Bus with the objective, output and reporting instruction. Omit Memory logging, Handoff metadata and the Workers table.
 
 ## 3. Task Assignment Procedure
 
@@ -58,7 +58,7 @@ Assess dispatch, prepare context and construct prompts. Follow-ups use the separ
 
 ### 3.1 Dispatch Assessment
 
-1. Identify Ready Tasks from the Tracker and graph.
+1. Identify Ready Tasks from the Tracker and the Plan's Dependencies fields.
 2. Consider whether a pending report makes waiting worthwhile per §2.4.
 3. Group work by Worker and evaluate single, batch and parallel opportunities.
 4. Select parallel dispatch where independent units and isolation permit it.
@@ -67,8 +67,8 @@ Assess dispatch, prepare context and construct prompts. Follow-ups use the separ
 ### 3.2 Per-Task Analysis
 
 1. Read the Plan's Dependencies field; skip dependency preparation for “None.”
-2. Apply §2.1, checking Handoff/recovery notes and overrides, and trace relevant upstream contracts.
-3. Read unique cross-agent producer logs for outputs, paths and integration details.
+2. Apply §2.1, checking the Workers table for Handoffs and recoveries, and trace relevant upstream contracts.
+3. Read unique Cross-Worker producer logs for outputs, paths and integration details.
 4. Extract relevant Spec and authoritative source content per §2.2. Refresh the Spec at the first dispatch of a Stage or after modification.
 5. Extract Plan Objective, Steps, Guidance, Output and Validation. Resolve source references and turn steps into actionable instructions with the needed context.
 
@@ -77,9 +77,9 @@ Assess dispatch, prepare context and construct prompts. Follow-ups use the separ
 1. Construct frontmatter per §4.1.
 2. Construct the relevant body sections, preserving the objective, exact constraints, dependency context, output and validation. Refer to loaded Worker guidance for generic execution rules.
 3. If version control is active, create the feature branch from the repository's recorded base. For parallel work use `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`. Include workspace/branch and project-root paths in the prompt.
-4. Record the branch in the Task row's Branch column.
+4. Record the branch and any worktree in the Task row.
 5. Clear the incoming Report Bus per §2.6.
-6. Read and write `.apm/bus/<agent-slug>/task.md`; use §4.5 for batches.
+6. Read and write `.apm/bus/<agent-slug>/task.md`; use §4.4 for batches.
 7. Direct the User to an uninitialized Worker's new chat with `apm-3-initiate-worker <agent-id>`; it will detect the pending prompt. For initialized Workers, direct the User to invoke `apm-4-check-tasks` in their chat. Identify the number/order of batched Tasks, or each Worker's required action for parallel dispatch.
 
 ### 3.4 Follow-Up Task Prompt Construction
@@ -96,48 +96,47 @@ Assess dispatch, prepare context and construct prompts. Follow-ups use the separ
 
 ### 4.1 Task Prompt Format
 
-Task Prompts are markdown files. Choose the sections needed for the Task.
+Task Prompts are Markdown files. Include Context from Dependencies only when the Task builds on earlier Tasks.
 
-**YAML Frontmatter Schema:**
-```yaml
+```markdown
 ---
-stage: 1
-task: 2
-agent: frontend-agent
-log_path: ".apm/memory/stage-01/task-01-02.log.md"
-has_dependencies: true
+agent: <agent-slug>
+stage: <N>
+task: <M>
+log_path: ".apm/memory/stage-<NN>/task-<NN>-<MM>.log.md"
 ---
+
+# Task <N>.<M> - <Title>
+
+## Objective
+<The Task's goal in one sentence, with coordination context when it helps>
+
+## Instructions
+<Plan steps turned into actionable instructions, with the Spec content and guidance they need>
+
+## Context from Dependencies
+<Per §2.1: for a Same-Worker dependency, the earlier Task, its key outputs and how to build on them; for a Cross-Worker dependency, numbered reading steps, the producer's outputs, interfaces and constraints, and relevant upstream context>
+
+## Workspace
+<The working directory; with version control, the branch, and for parallel dispatch the worktree path for the work and the project root for every `.apm/` path>
+
+## Output
+<Deliverables from the Plan's Output field>
+
+## Validation
+<Checks from the Plan's Validation field>
 ```
 
-**Field Descriptions:**
+`log_path` is the path where the Worker writes its Task Log. All Tasks in a Stage share its Stage folder.
 
-- `stage`: Stage number.
-- `task`: Task number within Stage.
-- `agent`: Worker identifier (kebab-case).
-- `log_path`: Pre-constructed path for the Task Log. Path pattern: `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` (relative to the project root). All Tasks in the same Stage share the same Stage directory. You construct the path; the Worker writes directly to it.
-- `has_dependencies`: Whether dependency context is present.
-
-**Prompt Body Sections:**
-
-- *Title.* `#` heading using Task ID and title. Each section uses `##` heading:
-- *Task Reference:* Task ID and assigned agent.
-- *Context from Dependencies.* Included when `has_dependencies: true`. Format depends on dependency type per §2.1 Dependency Context Standards.
-  - *Same-agent.* "Building on your previous work:" intro - `**From Task <N>.<M>:**` with key outputs and recall points - `**Integration Approach:**` with brief guidance.
-  - *Cross-agent.* "This Task depends on work completed by [Producer Agent]:" intro - `**Integration Steps:**` numbered file reading instructions - `**Producer Output Summary:**` key features, files, interfaces, constraints - `**Upstream Context:**` for relevant ancestors.
-- *Objective:* Single-sentence Task goal, optionally enhanced with coordination-level context.
-- *Detailed Instructions:* Plan steps transformed into actionable instructions with integrated Spec content and guidance.
-- *Workspace:* Working directory; include the branch when version control is active. For parallel dispatch, give the worktree path and project root, directing code work to the worktree and all runtime `.apm/` paths to the project root. The Worker records its workspace in the Task Log and commits there when version control is active. Workers do not merge.
-- *Expected Output:* Deliverables from Plan Output field.
-- *Validation Criteria:* From Plan Validation field.
-
-Add investigation, validation, logging or reporting guidance only when it is specific to this Task. The Worker already follows the execution and logging guides; `log_path` identifies its log.
+Add investigation, validation, logging or reporting guidance only when it is specific to this Task. The Worker already follows the execution and logging guides.
 
 ### 4.2 Follow-Up Format
 
 Follow-up Task Prompts use the same structure as §4.1 Task Prompt Format with these modifications:
 
 - *Title:* `APM Follow-Up Task: <Task Title>`
-- *Follow-up context section* after Task Reference - previous issue, investigation findings, required refinement, additional guidance.
+- *`## Follow-Up Context` section* before Objective: previous issue, investigation findings, required refinement, additional guidance.
 - *All content sections* refined to address the issue and investigation findings.
 - *Same `log_path`* as the original Task Prompt.
 
@@ -145,47 +144,27 @@ Follow-up Task Prompts use the same structure as §4.1 Task Prompt Format with t
 
 Use the version control conventions and worktree rules in §2.5.
 
-### 4.4 Tracker VC Entry Format
+### 4.4 Batch Task Prompt Format
 
-VC configuration recorded in the Version Control table within the Tracker, with one row per repository. Branch state is tracked per-Task in the Task table's Branch column - an incoming Manager reads Task rows to rebuild working VC context.
-
-**Format:**
+A batch Task Prompt sends several Tasks to one Worker in a single Task Bus file:
 
 ```markdown
-## Version Control
-
-| Repository | Base Branch | Branch Convention | Commit Convention |
-|-----------|-------------|-------------------|-------------------|
-| <repo-name> | <branch-name> | <convention> | <convention> |
-```
-
-### 4.5 Batch Envelope Format
-
-When sending multiple Tasks to a Worker in a batch, the Task Bus file uses this structure:
-
-**YAML Frontmatter Schema:**
-```yaml
 ---
-batch: true
-batch_size: <N>
+agent: <agent-slug>
 tasks:
-  - stage: 1
-    task: 1
-    log_path: ".apm/memory/stage-01/task-01-01.log.md"
-  - stage: 1
-    task: 2
-    log_path: ".apm/memory/stage-01/task-01-02.log.md"
+  - stage: <N>
+    task: <M>
+    log_path: ".apm/memory/stage-<NN>/task-<NN>-<MM>.log.md"
+  ...
 ---
+
+# Task <N>.<M> - <Title>
+
+## Objective
+...
+
+# Task <N>.<M> - <Title>
+...
 ```
 
-**Field Descriptions:**
-
-- `batch`: Always `true` for batch envelopes.
-- `batch_size`: Total Tasks in the batch.
-- `tasks[].stage`: Stage number.
-- `tasks[].task`: Task number within Stage.
-- `tasks[].log_path`: Pre-constructed path for the Task Log, following the same pattern as single Task Prompts.
-
-**Body:** Individual Task Prompts separated by `---` delimiters. Each Task Prompt retains its full structure (YAML frontmatter and body) as if standalone.
-
----
+Each Task in the body has the sections of §4.1, without its own frontmatter.
