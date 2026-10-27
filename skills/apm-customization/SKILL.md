@@ -55,15 +55,17 @@ Explore the repository to understand the layout. The key directories are:
 
 ## 3. How Templates Become Installations
 
-Every assistant installs the same files. The build resolves a few placeholders the same way for every target, and fails if a shared file differs between bundles. The templates describe actions in plain English (run a command, use a subagent, start a new chat), and each assistant carries them out its own way, so they hold no per-assistant syntax.
+Each target gets its own copy of the templates: Claude Code installs into `.claude/` and every other assistant into `.agents/`. The Rules live in `AGENTS.md` for both; Claude Code reads them through an `@AGENTS.md` import in `CLAUDE.md`. The build resolves a few placeholders for each target. The templates describe actions in plain English (run a command, use a subagent, start a new chat), and each assistant carries them out its own way, so they hold no per-assistant syntax.
 
 The placeholders, defined in `build/processors/placeholders.js`, are:
 
 - `{VERSION}` - Release version
-- `{SKILL_PATH:name}` - Path to a skill file, relative to the assistant's APM folder
-- `{GUIDE_PATH:name}` - Path to a guide file in `.agents/apm-guides/`
+- `{SKILL_PATH:name}` - Path to a skill file, such as `.claude/skills/<name>/SKILL.md`
+- `{SKILL_DIR:name}` - Path to a skill's folder, for its support files
+- `{GUIDE_PATH:name}` - Path to a guide file, such as `.claude/apm-guides/<name>.md`
+- `{CLAUDE_ONLY:text}` - Text that only the Claude Code bundle keeps, such as the `@AGENTS.md` import step
 
-Explore `build/build-config.json` to see each target's skills and guides folders.
+Explore `build/build-config.json` to see each target's `directories`.
 
 **Building locally:**
 
@@ -95,12 +97,12 @@ When adding a new guide, command skill or shared skill:
 
 1. Follow the structural conventions from `STRUCTURE.md` for that file type
 2. Add YAML frontmatter where required (skills require it, guides do not; command skills also set `disable-model-invocation: true`)
-3. Use `{VERSION}`, `{SKILL_PATH:name}` and `{GUIDE_PATH:name}` where needed; describe the Rules file and assistant actions in plain English
+3. Use `{VERSION}`, `{SKILL_PATH:name}`, `{SKILL_DIR:name}`, `{GUIDE_PATH:name}` and `{CLAUDE_ONLY:text}` where needed; describe assistant actions in plain English
 4. Update cross-references in other files if the new file should be loaded by an Agent
 
 ### Build Configuration Changes
 
-Agents using `.agents/skills/` and `AGENTS.md` use the existing `agents` target. Add a target in `build/build-config.json` only when a different directory layout is needed. Keep instructions shared and in plain English; no assistant-specific placeholder rules are needed. A target can declare `replaces`, an array of old target IDs that `apm update` consolidates into it. Custom repositories opt into migration through this field; IDs still present in the new release keep their exact match.
+Agents using `.agents/skills/` and `AGENTS.md` use the existing `agents` target. Add a target in `build/build-config.json` only when a different directory layout is needed, and give it `directories`. Keep assistant actions in plain English. A target can declare `replaces`, an array of old target IDs that `apm update` consolidates into it. Custom repositories opt into migration through this field; IDs still present in the new release keep their exact match.
 
 ### CLI Changes
 

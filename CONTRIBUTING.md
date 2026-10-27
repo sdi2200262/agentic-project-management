@@ -45,7 +45,7 @@
 
 ### Community Extensions
 
-APM supports Claude Code and agents that discover `.agents/skills/` and read `AGENTS.md`, such as Codex, Cursor and GitHub Copilot. The build has two targets: `agents` and `claude`. An agent using the shared layout does not need its own target.
+APM supports Claude Code and agents that discover `.agents/skills/` and read `AGENTS.md`, such as Codex, Cursor and GitHub Copilot. The build has two targets: `agents` and `claude`. An agent that reads `.agents/skills/` and `AGENTS.md` does not need its own target.
 
 Community extensions are not officially supported, may lag behind releases, and should be tested thoroughly before use. If you're interested in developing or maintaining an extension, please open an issue to discuss.
 
@@ -81,7 +81,7 @@ Edit the source files for the part you are changing:
 - **Standalone skills:** Edit files in `skills/` for independently installable skills.
 - **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed. See the apm-website README for details.
 
-**Assistant differences:** Every assistant installs the same skills and guides. Placeholders in `build/processors/placeholders.js` resolve the same way for every assistant, and the build fails if the shared files differ between assistants. Keep assistant-specific syntax, such as command prefixes or subagent calls, out of the templates: describe the action in plain English and let each assistant carry it out its own way.
+**Assistant differences:** Claude Code installs into `.claude/` and every other assistant into `.agents/`. Placeholders in `build/processors/placeholders.js` resolve skill and guide paths for each target, and `{CLAUDE_ONLY:…}` holds Claude Code-only text. The Rules live in `AGENTS.md` for every target. Keep assistant-specific syntax, such as command prefixes or subagent calls, out of the templates: describe the action in plain English and let each assistant carry it out its own way.
 
 Start workflow changes in `WORKFLOW.md`, then update the affected command skills, shared skills and guides. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
 
