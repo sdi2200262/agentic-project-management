@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## CLI v1.0.3 + Templates v1.1.0 - Unreleased
 
-Both installation targets now install the same commands, guides and communication skill. Run `apm update` to move an existing install to the new layout; it removes the old files and installs the new ones.
+Both installation targets install the same skills and guides, each in its own folder. Run `apm update` to move an existing install to the new layout; it removes the old files and installs the new ones.
 
 ### Breaking Changes
 
@@ -21,7 +21,8 @@ Both installation targets now install the same commands, guides and communicatio
 
 ### Added
 
-* **Summarize and archive from the Manager.** When the project is complete, the Manager offers two ways to summarize and archive the session: in its own chat, or in a new chat with `apm-8-summarize-session`. Summaries say which parts the writer remembers doing and which come from files such as Task Logs and Handoff Logs.
+* **An APM session can cover part of a larger goal.** When your goal is too large for one session, the Planner agrees with you during Context Gathering how far this session goes and keeps the rest as notes for later sessions. When the Manager meets a blocker that needs new design decisions, it proposes options, such as pausing to summarize, archive and plan again, instead of replanning on its own.
+* **Summarize and archive from the Manager.** When the work is complete or you stop early, the Manager offers two ways to summarize the session and, optionally, archive it: in its own chat, or in a new chat with `apm-8-summarize-session`. Summaries say which parts the writer remembers doing and which come from files such as Task Logs and Handoff Logs.
 
 ### Changed
 
@@ -33,7 +34,9 @@ Both installation targets now install the same commands, guides and communicatio
 * **Plain-English instructions.** Commands, guides and skills describe each action in plain English, such as "use a subagent to research…" or "run this command in a new chat", and each assistant carries it out with its own tools. They no longer carry per-assistant syntax.
 * **Commands run only when you invoke them.** Each command's description says to use it only when you invoke it manually, and each command tells an agent to continue only if you invoked it, asked it to follow it, or another APM step sent it there. Every command skill also sets `disable-model-invocation: true`. Codex doesn't read that setting, so its model can still see the commands.
 * **Shorter agent replies.** Agents keep chat replies short by default and present proposals, evidence and trade-offs instead of writing out their reasoning step by step. Logs, prompts and reports keep their full structure.
-* **Shorter instructions.** Commands, guides and skills are about 40% shorter, with the same roles, steps and approval points.
+* **Shorter instructions.** Skills and guides are about half as long, with the same roles, steps and approval points. Each guide lists its steps in the order the agent acts and states each rule once. Skill titles no longer say "Command", and you invoke skills by name, such as `apm-5-check-reports` in the Manager's chat.
+* **Numbered conversations.** Each Manager and Worker conversation has a number. A Handoff moves a role from one conversation to the next and writes a Handoff Log for that conversation; recovery after compaction keeps the same conversation.
+* **The CLI names the next step.** After `apm init` and `apm archive`, the CLI tells you to invoke `apm-1-initiate-planner` in a new chat.
 * **Faster Context Gathering.** All three rounds remain. The Planner can present what it already knows as statements for you to confirm or correct, and asks questions only about what is missing.
 * **Prompts need a terminal.** `apm remove` and other commands that ask for confirmation stop with an error when no terminal is attached, instead of doing nothing.
 * **`apm status` names missing files.** It lists each missing file by name.
@@ -57,7 +60,7 @@ Both installation targets now install the same commands, guides and communicatio
   * The Manager asks the Worker about a Task Log that contradicts its own status before accepting it.
   * A Worker you corrected in a way that applies to later Tasks asks, before writing its Task Log, whether to add the correction to the Rules. It records your answer in the log and commits an approved Rules change with the Task.
   * An outgoing agent checks git and the Message Bus before writing a handoff, and the incoming agent checks what the handoff says before acting on it.
-  * Agents give you the project reason for a step instead of citing APM's own procedures.
+  * Agents give you reasons about the work instead of citing APM's own procedures, and explain an APM term the first time you meet it.
   * Workers log Partial only when required work or validation is incomplete, not for findings alone.
   * The Manager asks before initializing git, can accept a Partial outcome when you agree, and verifies a Stage when you asked for it or a Task needed a follow-up.
   * After a handoff, agents give you the command for the new chat only once you have approved the handoff files.
