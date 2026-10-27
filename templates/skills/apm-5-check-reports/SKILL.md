@@ -8,8 +8,8 @@ disable-model-invocation: true
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
-Read pending Report Buses as Manager. Planners, Workers and non-APM agents decline without action. Optional `[agent-id ...]` arguments select Workers; without them, scan all buses and check for unexpected content beyond active dispatches.
+This skill delivers Task Reports to the Manager. If you are not the Manager, tell the User and stop. The User may give one or more agent IDs with this skill to read only those Workers' reports.
 
-1. With arguments, resolve each per `{SKILL_PATH:apm-communication}` §4.2 and batch-read targeted Report Buses in one terminal invocation. Without arguments, scan and read every non-empty `.apm/bus/*/report.md` in one invocation, identifying each source path. Include unexpected content and inform the User.
-2. If no content is found, state that no reports are pending and await another invocation.
-3. Process each report per `{GUIDE_PATH:task-review}` §3.
+1. With agent IDs, match each to a bus folder per `{SKILL_PATH:apm-communication}` §4.2 and read those Workers' `report.md` files. Without them, read every non-empty `.apm/bus/*/report.md`. Read them in one terminal command and note each file's path. Tell the User about any content you did not expect, such as a report from a Worker with no dispatched Task.
+2. If no report is waiting, say so and wait for the User to invoke this skill again.
+3. Review each report per `{GUIDE_PATH:task-review}`.
