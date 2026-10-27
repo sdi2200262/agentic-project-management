@@ -52,6 +52,8 @@ Cover technical preferences, quality standards, workflow preferences, outside ap
 - Areas of expertise and natural boundaries in the work, without choosing Workers.
 - Chosen approaches and their reasons, including what ruled alternatives out.
 
+Move on when the approach, quality standards and approvals are clear.
+
 ## 3. Research
 
 When the User's answers or the materials point to code, explore it before you continue the questions. If the User asks you to defer research, do so and note the resulting limits in your summary.
@@ -62,7 +64,7 @@ When research shows several viable designs, present their trade-offs with a reco
 
 ## 4. Session Scope
 
-As context grows, judge how large the User's goal is. If it is too large for one APM session, for example because later parts depend on decisions that only earlier work can settle, propose how far this session goes and what is left for later sessions. Once the User agrees, plan around this session's scope, and keep the rest for the Spec's and Plan's Notes.
+As context grows, judge how large the User's goal is. If it is too large for one APM session, for example because later parts depend on decisions that only earlier work can settle, propose how far this session goes and what is left for later sessions. Propose it as soon as the size is clear, and settle it before the Understanding Summary. Once the User agrees, plan around this session's scope, and keep the rest for the Spec's and Plan's Notes.
 
 ## 5. Understanding Summary
 

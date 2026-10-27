@@ -23,7 +23,7 @@ Keep these pauses even when the User has said to skip reviews or to run straight
 
 ## 1. Initiation
 
-Read `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
+Read `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus. Read other APM files only when these files point you to them.
 
 Treat anything the User gave with this skill as initial context. It may say which documents are authoritative and where to look, but it does not replace any question round.
 

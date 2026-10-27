@@ -172,7 +172,7 @@ Each document needs the User's approval before the next begins. Each Task produc
 
 **Runtime:** `guides/task-assignment.md` and `apm-4-check-tasks`.
 
-The Manager finds Ready Tasks from the Tracker and the Plan's dependencies, groups them by Worker and chooses the dispatch:
+The Manager finds Ready Tasks from the Tracker and the Plan's dependencies, groups them by Worker and chooses the dispatch. A Worker takes one dispatch at a time; its other Ready Tasks wait until the current one is reviewed.
 
 - **Single dispatch:** one Ready Task.
 - **Batch dispatch:** several Tasks for the same Worker. They either form a chain whose dependencies are inside the batch or already complete, or are independent and all Ready. Batches usually hold 2–3 Tasks. When other Workers wait on a chain's intermediate results, the Manager sends those Tasks one at a time instead.
@@ -212,7 +212,7 @@ Every Task Report gives the Worker's conversation number. When the number rises,
 
 A Success that the log supports is accepted. If the work succeeded but was not committed, the Manager commits it under the Rules' conventions. Important Findings, an outcome other than Success, or a log that contradicts itself lead to investigation: directly for contained checks, or through a subagent when the issue needs a lot of context. The result is one of three decisions: accept the outcome, send a follow-up Task, or change the planning documents within the limits in §3.5. When a finding needs more than a Plan change, the Manager proposes how the session continues, as §3.5 describes. A follow-up Task after an outcome other than Success notes any uncommitted work.
 
-Every decision updates the Tracker. With version control, the Manager merges a reviewed branch before dispatching Tasks that depend on it, and merges every branch of a Stage before the next Stage begins. Reports can arrive in any order. Where possible, the Manager reviews, merges, reassesses readiness and dispatches in the same turn.
+Once a report's review is decided, the Manager clears that Report Bus. Every decision updates the Tracker. When a Stage completes, the Manager adds the next Stage's Tasks to the Tracker. With version control, the Manager merges a reviewed branch before dispatching Tasks that depend on it, and merges every branch of a Stage before the next Stage begins. Reports can arrive in any order. Where possible, the Manager reviews, merges, reassesses readiness and dispatches in the same turn.
 
 When every Task in a Stage is Done, the Manager decides whether the Stage needs verification as a whole. It considers what the User asked for, what reviews found and the Plan's Notes. It fixes contained issues, has a subagent investigate, adds Tasks for work that needs a Worker, or asks the User for direction. After verification, it writes the Stage summary in the Stage folder, with the outcome, Workers, findings and Task Log references, adds a row for it to the Index, and sorts the Tracker's notes as described in §5.2.
 

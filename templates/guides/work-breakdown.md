@@ -22,7 +22,7 @@ The Spec says what is built and why: decisions where alternatives existed, and t
 
 1. Propose the design decisions, constraints, references to source documents and how you will organize them. Explain the choices and assumptions that matter.
 2. Write `.apm/spec.md` per §5.1:
-   - **Overview:** what this APM session builds. If Context Gathering left parts of the User's goal for later sessions, say so here.
+   - **Overview:** what this APM session builds.
    - **Workspace:** working targets and read-only references, authoritative documents with paths and sections, and existing `AGENTS.md` content.
    - **Design sections:** organized so the Manager can find each decision and copy it into Task Prompts.
    - **Notes:** what shapes the design without being a decision: version control observations, workspace constraints, User preferences, assumptions, open questions, and the work left for later sessions.
@@ -54,11 +54,11 @@ Prefer boundaries and order that allow independent work, Same-Worker chains and 
 
 The Rules describe how to work across all or most Tasks. Every Worker reads the whole of `AGENTS.md`, including content outside the `APM_RULES` block.
 
-1. Propose the conventions, drawn from the approved documents and the gathered context. Output strings, formats, schemas and interface contracts describe what is built, so they belong in the Spec or a Task's Guidance even when several Workers need them; when unsure, keep a pattern in Guidance. Leave version control conventions to the Manager, which adds them at its first start. Explain what you include or leave out, and which existing standards you refer to.
+1. Propose the conventions, drawn from the approved documents and the gathered context. Leave version control conventions to the Manager, which adds them at its first start. Explain what you include or leave out, and which existing standards you refer to.
 2. Read `AGENTS.md`, or confirm it does not exist, and write the `APM_RULES` block per §5.3. Keep content outside the block unless the User asks for changes. If you create the file, write only the block.{CLAUDE_ONLY: If a `CLAUDE.md` exists, add `@AGENTS.md` at its top so Claude Code loads the Rules.}
 3. After approval, continue with `{SKILL_PATH:apm-1-initiate-planner}` §4.
 
-Each Rule says when it applies, such as "When adding an API route, …", and stands alone without references to the Spec, Plan or design documents.
+Each Rule says when it applies, such as "When adding an API route, …", and stands alone without references to the Spec, Plan or design documents. Output strings, formats, schemas and interface contracts describe what is built, so they belong in the Spec or a Task's Guidance even when several Workers need them; when unsure, keep a pattern in Guidance.
 
 ## 5. Formats
 

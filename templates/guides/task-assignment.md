@@ -7,13 +7,13 @@ A Worker works only from its Task Prompts, the Rules and its own conversation. I
 ## 1. Dispatch
 
 1. Find the Ready Tasks from the Tracker and the Plan's Dependencies fields.
-2. Group them by Worker and choose the dispatch:
+2. Group them by Worker. A Worker takes one dispatch at a time: send it a new Task Prompt only after its current Task or batch has been reviewed. Then choose the dispatch:
    - **Single dispatch:** one Task to one Worker.
    - **Batch dispatch:** several Tasks to the same Worker, executed in order. A batch may be a chain whose dependencies are inside the batch or already Done, or independent Tasks that are all Ready. Keep batches to 2–3 Tasks. Send a chain's Tasks one at a time when other Workers wait on its intermediate results.
    - **Parallel dispatch:** Tasks or batches to different Workers at the same time, when no unresolved Cross-Worker dependency links them and version control gives each Worker its own worktree. Suggest tool approvals that keep parallel Workers from waiting on the User.
 3. Wait for a pending report only when it is the only one outstanding and would make a Waiting Task Ready for a Worker you are about to dispatch. Otherwise dispatch what is Ready.
 4. If nothing is Ready while Workers are busy, tell the User what you are waiting for and which report to bring next, preferring one that unblocks other work.
-5. Tell the User what you will send, to whom, and any dependency or isolation point that shaped the choice. Then prepare each Task per §2.
+5. Prepare each Task per §2.
 
 ## 2. Task Context
 
@@ -47,9 +47,8 @@ If the User enables version control later, initialize git where needed, confirm 
 
 ## 4. Delivery
 
-1. Clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`, unless this is its first dispatch.
-2. Read the Worker's Task Bus, `.apm/bus/<agent-slug>/task.md`, then write the Task Prompt to it.
-3. Tell the User how to deliver it:
+1. Read the Worker's Task Bus, `.apm/bus/<agent-slug>/task.md`, then write the Task Prompt to it.
+2. In one message, tell the User what you are sending, to whom, any dependency or isolation point that shaped the choice, and how to deliver it:
    - A Worker that has not started: invoke `apm-3-initiate-worker <agent-slug>` in a new chat. It finds the waiting prompt.
    - A Worker already running: invoke `apm-4-check-tasks` in its chat.
    - For a batch, give the number of Tasks and their order; for parallel dispatch, give each Worker's action.

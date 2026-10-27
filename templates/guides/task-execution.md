@@ -33,7 +33,7 @@ Use the work's own vocabulary in commits, code and comments. APM terms, Task IDs
 
 When a check fails or the work does not behave as expected, investigate before fixing: read the error, trace where it comes from and identify the cause. Make one targeted fix, then validate again.
 
-If the fix fails, causes new problems or leaves the cause unclear, use a subagent to investigate. Give it the error output, what you investigated and tried, the relevant paths, and the expected and actual behaviour. Ask it to trace the cause, state a specific hypothesis and propose a targeted fix. When independent parts of the system could be at fault, use one subagent for each, in parallel.
+If the fix fails, causes new problems or leaves the cause unclear, use a subagent to investigate. Give it the error output, what you investigated and tried, the relevant paths, and the expected and actual behavior. Ask it to trace the cause, state a specific hypothesis and propose a targeted fix. When independent parts of the system could be at fault, use one subagent for each, in parallel.
 
 Keep going on your own while the cause is clear, the fix stays within the Task and checks are available. Stop and ask the User when the investigation does not resolve the problem, or when the prompt's instructions turn out to be wrong. Lead with the likely cause, or say that it is still unclear, then give what you tried, the current state and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 

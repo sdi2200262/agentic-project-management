@@ -9,9 +9,9 @@ A Worker records one outcome per Task: Success, Partial or Failed. The outcome i
 For each report delivered with `apm-5-check-reports`:
 
 1. If the sender has no row in the Tracker's Workers table, it is an agent outside APM: assess its contribution and what it changes for planning or dispatch, record it in the Tracker's Notes, tell the User, and send any further work per `{GUIDE_PATH:task-assignment}` §6.
-2. If the report's `conversation` is higher than the Worker's number in the Workers table, the Worker had a Handoff. Read its Handoff Log, update the number, and list the Worker's Tasks from earlier Stages under Not Read Since Handoff: its new conversation did not read their logs.
+2. If the report's `conversation` is higher than the Worker's number in the Workers table, the Worker had a Handoff. Read its Handoff Logs, `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md`, for each conversation since the one you knew, update the number, and list the Worker's Tasks from earlier Stages under Not Read Since Handoff: its new conversation did not read their logs. Remove a Task from that list once a Task Prompt has given its context as a Cross-Worker dependency.
 3. If the report mentions a recovery, record it in the Workers table's Notes without changing the conversation number. Check the report against the Task Log for anything the recovery may have lost, and ask for missing details.
-4. For a batch Task Report, review each executed Task on its own per §2 and §3. Tasks the batch did not start return to dispatch.
+4. For a batch Task Report, review each executed Task on its own per §2 and §3. Set the Tasks the batch did not start back to Ready or Waiting, and return them to dispatch.
 
 ## 2. Log Review
 
@@ -35,9 +35,9 @@ Tell the User what the log shows, whether the evidence supports it, the Importan
    - **Accept:** the work is complete, or the User agrees to accept a Partial outcome; record what remains in the Tracker's Notes.
    - **Follow-up Task:** the Worker needs another attempt. Send one per `{GUIDE_PATH:task-assignment}` §5, noting any uncommitted work.
    - **Planning change:** a planning document is wrong. Change it per §4.
-4. Some findings need more than a Plan change: a fix needs design decisions the Spec does not cover, a change would rewrite the Spec's Overview or several Stages, or follow-up Tasks keep failing for the same reason. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarise it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
+4. Some findings need more than a Plan change: a fix needs design decisions the Spec does not cover, a change would rewrite the Spec's Overview or several Stages, or follow-up Tasks keep failing for the same reason. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
 5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
-6. Update the Tracker per §8.1 and §8.2, in one edit with the merge and dispatch changes that follow.
+6. Once the decision is made, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`. Update the Tracker per §8.1 and §8.2, in one edit with the merge and dispatch changes that follow.
 
 Make small follow-ups and corrections on your own and tell the User. Pause for approval when a change exceeds the limits in §4.
 
@@ -65,9 +65,7 @@ With version control, merge a dispatch's branch into its base branch after a suc
 
 ## 6. Next Dispatch
 
-Reports arrive in any order. Review each as it comes, without waiting for unrelated reports. In the same turn, merge, reassess readiness and dispatch newly Ready Tasks per `{GUIDE_PATH:task-assignment}` §1.
-
-Pause only when nothing is Ready or a change needs the User. When you wait, say what you processed, what is still pending and which report the User should bring next.
+Reports arrive in any order. Review each as it comes, without waiting for unrelated reports, and in the same turn dispatch newly Ready Tasks per `{GUIDE_PATH:task-assignment}` §1.
 
 ## 7. Stage Completion
 
@@ -79,7 +77,7 @@ When every Task in a Stage is Done and no follow-up Task is pending:
 4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
 5. Once its branches are merged, replace the Stage's rows in the Tracker with `**Stage N:** Complete`.
 
-Then dispatch the next Stage. When every Stage is complete, continue with `{SKILL_PATH:apm-2-initiate-manager}` §3.
+Then add the next Stage's Tasks to the Tracker per §8.1 and dispatch them per `{GUIDE_PATH:task-assignment}` §1. When every Stage is complete, continue with `{SKILL_PATH:apm-2-initiate-manager}` §3.
 
 ## 8. Formats
 
@@ -108,7 +106,7 @@ Status values:
 - `Active`: dispatched, under review or awaiting a follow-up Task.
 - `Done`: final decision made. A Branch value means the branch still awaits merging.
 
-Write each state at the end of the review and dispatch cycle. A Task unblocked and dispatched in the same turn goes straight from Waiting to Active.
+Write each state at the end of the review and dispatch cycle. A Task unblocked and dispatched in the same turn goes straight from Waiting to Active. A Task whose Worker is still busy, or that waits for a better dispatch, stays Ready.
 
 ### 8.2 Tracker Format
 
