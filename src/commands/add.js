@@ -56,7 +56,7 @@ export async function addCommand(options = {}) {
   const uninstalled = manifest.assistants.filter(a => !metadata.assistants.includes(a.id));
 
   if (!uninstalled.length) {
-    logger.info('All available assistants are already installed.');
+    logger.info('All available installation targets are already installed.');
     return;
   }
 
@@ -66,7 +66,7 @@ export async function addCommand(options = {}) {
   let assistantIds;
   if (assistantArgs && assistantArgs.length > 0) {
     assistantIds = [];
-    for (const arg of assistantArgs) {
+    for (const arg of new Set(assistantArgs)) {
       if (metadata.assistants.includes(arg)) {
         warnings.push({ level: 'warn', msg: `${formatAssistant(arg, names[arg])} is already installed, skipping.` });
         continue;
@@ -74,7 +74,7 @@ export async function addCommand(options = {}) {
       const found = uninstalled.find(a => a.id === arg);
       if (!found) {
         const available = formatAssistantList(uninstalled.map(a => a.id), names);
-        warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
+        warnings.push({ level: 'error', msg: `Installation target '${arg}' not found. Available: ${available}` });
         continue;
       }
       assistantIds.push(arg);
@@ -85,7 +85,7 @@ export async function addCommand(options = {}) {
       return;
     }
   } else {
-    const header = `Found ${logger.plural(uninstalled.length, 'uninstalled assistant')} in ${metadata.releaseVersion}`;
+    const header = `Found ${logger.plural(uninstalled.length, 'uninstalled target')} in ${metadata.releaseVersion}`;
     const selected = await selectAssistant(uninstalled, { header });
     assistantIds = [selected];
   }

@@ -13,6 +13,7 @@
  * an older CLI has no names recorded.
  */
 const KNOWN_ASSISTANT_NAMES = {
+  agents: 'Agents supporting .agents/skills/ and AGENTS.md',
   claude: 'Claude Code',
   codex: 'Codex CLI',
   cursor: 'Cursor',
@@ -64,3 +65,27 @@ export default {
   formatAssistantList,
   assistantNamesFromManifest
 };
+
+/**
+ * Resolves installed IDs against a new release, consolidating explicitly replaced
+ * IDs. Exact matches win; custom releases without replacements keep their IDs.
+ * Original metadata remains untouched so cleanup can remove the old files.
+ *
+ * @returns {{ ids: string[], dropped: string[], migrations: Object[] }}
+ */
+export function resolveUpdateTargets(installedIds, manifest) {
+  const ids = new Set();
+  const dropped = [];
+  const migrations = [];
+  for (const id of installedIds) {
+    const target = manifest.assistants.find(a => a.id === id)
+      || manifest.assistants.find(a => a.replaces?.includes(id));
+    if (!target) {
+      dropped.push(id);
+      continue;
+    }
+    ids.add(target.id);
+    if (target.id !== id) migrations.push({ from: id, to: target.id });
+  }
+  return { ids: [...ids], dropped, migrations };
+}

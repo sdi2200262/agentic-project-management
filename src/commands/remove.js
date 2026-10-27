@@ -33,7 +33,7 @@ export async function removeCommand(options = {}) {
   }
 
   if (!metadata.assistants.length) {
-    logger.info('No assistants installed.');
+    logger.info('No installation targets installed.');
     return;
   }
 
@@ -45,7 +45,7 @@ export async function removeCommand(options = {}) {
   let skipped = [];
   if (assistantArgs && assistantArgs.length > 0) {
     assistantIds = [];
-    for (const arg of assistantArgs) {
+    for (const arg of new Set(assistantArgs)) {
       if (!metadata.assistants.includes(arg)) {
         skipped.push(arg);
         continue;
@@ -53,17 +53,17 @@ export async function removeCommand(options = {}) {
       assistantIds.push(arg);
     }
     if (!assistantIds.length) {
-      logger.error(`None of the specified assistants are installed. Installed: ${formatAssistantList(metadata.assistants, names)}`);
+      logger.error(`None of the specified installation targets are installed. Installed: ${formatAssistantList(metadata.assistants, names)}`);
       return;
     }
   } else {
     const choices = metadata.assistants.map(id => ({ name: label(id), value: id }));
-    const header = `Found ${logger.plural(metadata.assistants.length, 'assistant')} installed from ${metadata.releaseVersion}`;
+    const header = `Found ${logger.plural(metadata.assistants.length, 'installation target')} installed from ${metadata.releaseVersion}`;
     const selected = await selectPrompt({
-      message: 'Select assistant to remove:',
+      message: 'Select an installation target to remove:',
       choices,
       header,
-      hint: 'Pass -a <id> to choose the assistant and -f to remove it without confirmation.'
+      hint: 'Pass -a <id> to choose the target and -f to remove it without confirmation.'
     });
     assistantIds = [selected];
   }
@@ -75,7 +75,7 @@ export async function removeCommand(options = {}) {
       actions.push(`Skip: ${skipped.join(', ')} (not installed)`);
     }
     if (assistantIds.length === metadata.assistants.length) {
-      actions.push('This removes all assistants — .apm/ session artifacts will remain');
+      actions.push('This removes all installation targets — .apm/ session artifacts will remain');
     }
     const proceed = await confirmDestructiveAction(actions, 'Remove?', { hint: 'Pass -f to remove without confirmation.' });
     if (!proceed) {
@@ -107,13 +107,13 @@ export async function removeCommand(options = {}) {
   // Clear content for final output
   logger.clearAndBanner();
   for (const id of skipped) {
-    logger.error(`Assistant '${id}' is not installed, skipped.`);
+    logger.error(`Installation target '${id}' is not installed, skipped.`);
   }
   if (remaining.length === 0) {
-    logger.success('All assistants removed.');
-    logger.info('Run "apm archive" to archive, or "apm add" to add new assistants.');
+    logger.success('All installation targets removed.');
+    logger.info('Run "apm archive" to archive, or "apm add" to add installation targets.');
   } else {
-    logger.success(`Removed ${formatAssistantList(assistantIds, names)}. ${logger.plural(remaining.length, 'assistant')} remaining.`);
+    logger.success(`Removed ${formatAssistantList(assistantIds, names)}. ${logger.plural(remaining.length, 'installation target')} remaining.`);
   }
 }
 

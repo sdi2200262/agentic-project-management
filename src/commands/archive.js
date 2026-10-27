@@ -60,7 +60,7 @@ async function listMode() {
   for (const { name, metadata } of archives) {
     console.log(chalk.bold(name));
     console.log(`  Version:     ${metadata.releaseVersion || 'unknown'}`);
-    console.log(`  Assistants:  ${formatAssistantList(metadata.assistants || [], getAssistantNames(metadata)) || 'unknown'}`);
+    console.log(`  Targets:     ${formatAssistantList(metadata.assistants || [], getAssistantNames(metadata)) || 'unknown'}`);
     console.log(`  Archived:    ${metadata.archivedAt || 'unknown'}`);
     if (metadata.reason) {
       console.log(`  Reason:      ${metadata.reason}`);

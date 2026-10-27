@@ -10,7 +10,7 @@
 import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, createMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
-import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
+import { formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
 import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion, isStableRelease } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { createArchive, generateArchiveName } from '../services/archive.js';
@@ -58,15 +58,21 @@ export async function updateCommand(options = {}) {
   const names = { ...getAssistantNames(metadata), ...assistantNamesFromManifest(manifest) };
 
   // Check if any current assistants exist in the target release
-  const survivingAssistants = metadata.assistants.filter(id =>
-    manifest.assistants.some(a => a.id === id)
-  );
+  const { ids: survivingAssistants, dropped: droppedAssistants, migrations } = resolveUpdateTargets(metadata.assistants, manifest);
   if (!survivingAssistants.length) {
     const available = formatAssistantList(manifest.assistants.map(a => a.id), names);
-    logger.error(`None of your assistants (${formatAssistantList(metadata.assistants, names)}) are available in ${release.tag_name}.`);
+    logger.error(`None of your installation targets (${formatAssistantList(metadata.assistants, names)}) are available in ${release.tag_name}.`);
     logger.info(`Available in ${release.tag_name}: ${available}`);
-    logger.info('Use "apm archive" then "apm init" to install with different assistants.');
+    logger.info('Use "apm archive" then "apm init" to install with different installation targets.');
     return;
+  }
+
+  // Refuse an incomplete release before archiving or removing installed files.
+  for (const id of survivingAssistants) {
+    const target = manifest.assistants.find(a => a.id === id);
+    if (!findBundleAsset(release, target.bundle)) {
+      throw CLIError.bundleNotFound(target.bundle, release.tag_name);
+    }
   }
 
   // Pre-compute archive name for confirmation message
@@ -77,15 +83,17 @@ export async function updateCommand(options = {}) {
   if (!force) {
     const currentList = formatAssistantList(metadata.assistants, names);
     const survivingList = formatAssistantList(survivingAssistants, names);
-    const droppedAssistants = metadata.assistants.filter(id => !survivingAssistants.includes(id));
 
     const bullets = [
       `Snapshot all .apm/ contents (except archives/) into .apm/archives/${resolvedName}`,
       `Remove active session files and installed templates for: ${currentList}`,
       `Download and install ${release.tag_name} for: ${survivingList}`
     ];
+    if (migrations.length) {
+      bullets.push(`Consolidate ${formatAssistantList(migrations.map(m => m.from), names)} into ${formatAssistantList([...new Set(migrations.map(m => m.to))], names)}`);
+    }
     if (droppedAssistants.length > 0) {
-      bullets.push(`Drop unsupported ${droppedAssistants.length === 1 ? 'assistant' : 'assistants'}: ${formatAssistantList(droppedAssistants, names)}`);
+      bullets.push(`Drop unsupported ${droppedAssistants.length === 1 ? 'installation target' : 'installation targets'}: ${formatAssistantList(droppedAssistants, names)}`);
     }
 
     const proceed = await confirmDestructiveAction(
@@ -111,9 +119,9 @@ export async function updateCommand(options = {}) {
   // Download new bundles for all assistants
   const newInstalledFiles = {};
   let apmExtracted = false;
-  const skippedAssistants = [];
+  const skippedAssistants = [...droppedAssistants];
 
-  for (const assistantId of metadata.assistants) {
+  for (const assistantId of survivingAssistants) {
     const assistant = manifest.assistants.find(a => a.id === assistantId);
     if (!assistant) {
       skippedAssistants.push(assistantId);
@@ -141,7 +149,7 @@ export async function updateCommand(options = {}) {
   }
 
   // Compute surviving assistant list
-  const updatedAssistants = metadata.assistants.filter(id => !skippedAssistants.includes(id));
+  const updatedAssistants = survivingAssistants.filter(id => !skippedAssistants.includes(id));
 
   // Write fresh metadata
   const newMetadata = createMetadata({
@@ -176,8 +184,11 @@ export async function updateCommand(options = {}) {
 
   // Clear content for final output
   logger.clearAndBanner();
+  if (migrations.length) {
+    logger.info(`Consolidated ${formatAssistantList(migrations.map(m => m.from), names)} into ${formatAssistantList([...new Set(migrations.map(m => m.to))], names)}.`);
+  }
   if (skippedAssistants.length > 0) {
-    logger.warn(`Dropped ${logger.plural(skippedAssistants.length, 'assistant')} not in ${release.tag_name}: ${formatAssistantList(skippedAssistants, names)}`);
+    logger.warn(`Dropped ${logger.plural(skippedAssistants.length, 'installation target')} not in ${release.tag_name}: ${formatAssistantList(skippedAssistants, names)}`);
   }
   for (const id of updatedAssistants) {
     logger.success(`Updated ${formatAssistant(id, names[id])}`);
@@ -186,7 +197,7 @@ export async function updateCommand(options = {}) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
-  logger.success(`Updated to ${release.tag_name} (${logger.plural(updatedAssistants.length, 'assistant')})!`);
+  logger.success(`Updated to ${release.tag_name} (${logger.plural(updatedAssistants.length, 'installation target')})!`);
 }
 
 /**

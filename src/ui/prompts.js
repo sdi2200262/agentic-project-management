@@ -67,8 +67,8 @@ function withSelectHint(choices) {
  * @param {string} assistants[].description - Description text.
  * @returns {Promise<string>} Selected assistant ID.
  */
-export async function selectAssistant(assistants, { header, hint = 'Pass -a <id> to choose the assistant.' } = {}) {
-  requireInteractive('Select an assistant:', hint);
+export async function selectAssistant(assistants, { header, hint = 'Pass -a <id> to choose the target.' } = {}) {
+  requireInteractive('Select an installation target:', hint);
   logger.clearAndBanner();
   if (header) {
     console.log('  ' + chalk.dim(header));
@@ -80,7 +80,7 @@ export async function selectAssistant(assistants, { header, hint = 'Pass -a <id>
   }));
 
   const result = await select({
-    message: 'Select an assistant:',
+    message: 'Select an installation target:',
     choices: withSelectHint(choices),
     pageSize: choices.length + HINT_LINES,
     clearPromptOnDone: true,
