@@ -199,6 +199,8 @@ async function buildTarget(target, config, version) {
 export async function buildAll(config) {
   const { build: buildConfig, targets } = config;
   const { outputDir, cleanOutput } = buildConfig;
+  const version = await getVersion();
+  const releaseManifest = generateReleaseManifest(config, version);
 
   if (cleanOutput) {
     await fs.emptyDir(outputDir);
@@ -206,7 +208,6 @@ export async function buildAll(config) {
     await fs.ensureDir(outputDir);
   }
 
-  const version = await getVersion();
   logger.info(`Building ${targets.length} targets to ${outputDir}...`);
 
   const sharedByTarget = new Map();
@@ -215,8 +216,7 @@ export async function buildAll(config) {
   }
   checkSharedFiles(sharedByTarget);
 
-  // Write release manifest
-  const releaseManifest = generateReleaseManifest(config, version);
+  // Write the validated release manifest
   const releaseManifestPath = path.join(outputDir, 'apm-release.json');
   await fs.writeFile(releaseManifestPath, JSON.stringify(releaseManifest, null, 2));
   logger.success(`Generated apm-release.json`);

@@ -45,11 +45,6 @@ export function validateConfig(config) {
       if (!target.id) errors.push(`${prefix}: missing "id"`);
       if (!target.name) errors.push(`${prefix}: missing "name"`);
       if (!target.bundleName) errors.push(`${prefix}: missing "bundleName"`);
-      if (!target.format) errors.push(`${prefix}: missing "format"`);
-      if (target.replaces !== undefined && (!Array.isArray(target.replaces)
-        || target.replaces.some(id => typeof id !== 'string' || !id))) {
-        errors.push(`${prefix}: "replaces" must be an array of non-empty IDs`);
-      }
       if (!target.directories) {
         errors.push(`${prefix}: missing "directories"`);
       } else {
@@ -86,21 +81,11 @@ export async function loadConfig() {
   return config;
 }
 
-/**
- * Gets the version for the release manifest.
- * Uses VERSION env var if set (for CI), otherwise reads from package.json.
- *
- * @returns {Promise<string>} Version string.
- */
+/** Reads the template version supplied by local builds or the release workflow. */
 export async function getVersion() {
-  // CI passes version via environment variable
-  if (process.env.VERSION) {
-    return process.env.VERSION.replace(/^v/, ''); // Strip leading 'v' if present
+  const version = process.env.VERSION?.replace(/^v/, '');
+  if (!version) {
+    throw BuildError.configInvalid(['Set VERSION to the template version, for example VERSION=1.1.0 npm run build']);
   }
-
-  // Fallback to package.json for local development
-  const packagePath = path.join(__dirname, '..', '..', 'package.json');
-  const packageContent = await fs.readFile(packagePath, 'utf8');
-  const { version } = JSON.parse(packageContent);
   return version;
 }

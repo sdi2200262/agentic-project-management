@@ -10,7 +10,6 @@
       "id": "agents",
       "name": "Agents supporting .agents/skills/ and AGENTS.md",
       "bundleName": "agents.zip",
-      "format": "markdown",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -28,7 +27,6 @@
       "id": "claude",
       "name": "Claude Code",
       "bundleName": "claude.zip",
-      "format": "markdown",
       "directories": {
         "skills": ".claude/skills",
         "guides": ".agents/apm-guides"
