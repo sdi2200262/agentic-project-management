@@ -56,9 +56,9 @@ export async function customCommand(options = {}) {
   // Fresh only — show info for existing installations
   const existing = await readMetadata();
   if (existing) {
-    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'assistant')}).`);
+    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'installation target')}).`);
     logger.blank();
-    logger.info('Use "apm add" to add assistants, "apm update" to update, or "apm archive" to start fresh.');
+    logger.info('Use "apm add" to add installation targets, "apm update" to update, or "apm archive" to start fresh.');
     return;
   }
 
@@ -126,11 +126,11 @@ export async function customCommand(options = {}) {
 
   if (assistantList) {
     assistantIds = [];
-    for (const arg of assistantList) {
+    for (const arg of new Set(assistantList)) {
       const found = manifest.assistants.find(a => a.id === arg);
       if (!found) {
         const available = formatAssistantList(manifest.assistants.map(a => a.id), assistantNamesFromManifest(manifest));
-        warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
+        warnings.push({ level: 'error', msg: `Installation target '${arg}' not found. Available: ${available}` });
         continue;
       }
       assistantIds.push(arg);
@@ -142,7 +142,7 @@ export async function customCommand(options = {}) {
     }
   } else {
     hadInteractivePrompt = true;
-    const header = `Found ${logger.plural(manifest.assistants.length, 'assistant')} available in ${release.tag_name}`;
+    const header = `Found ${logger.plural(manifest.assistants.length, 'installation target')} available in ${release.tag_name}`;
     const selected = await selectAssistant(manifest.assistants, { header });
     assistantIds = [selected];
   }

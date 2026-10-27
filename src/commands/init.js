@@ -32,9 +32,9 @@ export async function initCommand(options = {}) {
   // Fresh only — show info for existing installations
   const existing = await readMetadata();
   if (existing) {
-    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'assistant')}).`);
+    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'installation target')}).`);
     logger.blank();
-    logger.info('Use "apm add" to add assistants, "apm update" to update, or "apm archive" to start fresh.');
+    logger.info('Use "apm add" to add installation targets, "apm update" to update, or "apm archive" to start fresh.');
     return;
   }
 
@@ -87,11 +87,11 @@ export async function initCommand(options = {}) {
   if (assistantList) {
     // Validate all requested assistants
     assistantIds = [];
-    for (const arg of assistantList) {
+    for (const arg of new Set(assistantList)) {
       const found = manifest.assistants.find(a => a.id === arg);
       if (!found) {
         const available = formatAssistantList(manifest.assistants.map(a => a.id), assistantNamesFromManifest(manifest));
-        warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
+        warnings.push({ level: 'error', msg: `Installation target '${arg}' not found. Available: ${available}` });
         continue;
       }
       assistantIds.push(arg);
@@ -102,7 +102,7 @@ export async function initCommand(options = {}) {
       return;
     }
   } else {
-    const header = `Found ${logger.plural(manifest.assistants.length, 'assistant')} available in ${release.tag_name}`;
+    const header = `Found ${logger.plural(manifest.assistants.length, 'installation target')} available in ${release.tag_name}`;
     const selected = await selectAssistant(manifest.assistants, { header });
     assistantIds = [selected];
   }
@@ -158,14 +158,9 @@ export async function initCommand(options = {}) {
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
   logger.success('APM initialized!');
-  logger.info('Run "apm add" to add more assistants, or "apm update" to check for updates.');
+  logger.info('Run "apm add" to add another installation target, or "apm update" to check for updates.');
   console.log('');
-  const names = assistantIds
-    .map(id => manifest.assistants.find(a => a.id === id))
-    .filter(a => a && installedFiles[a.id])
-    .map(a => a.name);
-  const assistantLabel = names.length ? logger.list(names) : 'your AI assistant';
-  logger.info(`New to APM? Install the apm-assist skill so ${assistantLabel} can explain how APM works and answer questions outside of APM sessions.`);
+  logger.info('New to APM? Install the apm-assist skill so your AI assistant can explain how APM works and answer questions outside of APM sessions.');
   logger.info('See: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
 }
 

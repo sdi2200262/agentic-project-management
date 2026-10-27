@@ -38,6 +38,11 @@ function validateAssistant(assistant, index) {
     errors.push(`${prefix}.bundle: must not contain path traversal sequences`);
   }
 
+  if (assistant.replaces !== undefined && (!Array.isArray(assistant.replaces)
+    || assistant.replaces.some(id => typeof id !== 'string' || !id))) {
+    errors.push(`${prefix}.replaces: must be an array of non-empty IDs`);
+  }
+
   // description is optional
   if (assistant.description !== undefined && typeof assistant.description !== 'string') {
     errors.push(`${prefix}.description: must be a string if provided`);
@@ -80,8 +85,19 @@ export function validateReleaseManifest(manifest) {
   } else if (manifest.assistants.length === 0) {
     errors.push('assistants: must not be empty');
   } else {
+    const ids = new Set();
+    const replacements = new Set();
     manifest.assistants.forEach((assistant, index) => {
       errors.push(...validateAssistant(assistant, index));
+      if (!assistant || typeof assistant !== 'object') return;
+      if (ids.has(assistant.id)) errors.push(`assistants[${index}].id: duplicate ID`);
+      ids.add(assistant.id);
+      if (Array.isArray(assistant.replaces)) {
+        for (const id of assistant.replaces) {
+          if (replacements.has(id)) errors.push(`assistants[${index}].replaces: duplicate replacement ID`);
+          replacements.add(id);
+        }
+      }
     });
   }
 

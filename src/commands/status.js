@@ -51,7 +51,7 @@ export async function statusCommand() {
   console.log(`  Installed:   ${metadata.installedAt}`);
   console.log('');
 
-  console.log(chalk.cyan.bold('Assistants'));
+  console.log(chalk.cyan.bold('Installation targets'));
   const installedFiles = getInstalledFiles(metadata);
   if (!metadata.assistants.length) {
     console.log('  none (run "apm add" to add one)');
