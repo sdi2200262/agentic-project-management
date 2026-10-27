@@ -1,25 +1,17 @@
 ---
 name: apm-communication
-description: Agent communication standards and file-based Message Bus protocol for structured inter-agent messaging.
+description: How APM agents write to the User, to each other and through the file-based Message Bus.
 ---
 
 # APM {VERSION} - Communication
 
-## 1. Overview
+The Planner, the Manager and Workers read this skill. It covers how you write to the User, how you write messages and APM files for other agents, how you use subagents, and the Message Bus. Your role's guides define the formats of the files you write.
 
-**Reading agents:** Planner, Manager, Worker
+## 1. Communicating with the User
 
-Use this skill for User-facing communication and the file-based Message Bus. Role-specific guides define delivery, reporting and artifact formats. Use your assistant's own way to spawn subagents and start new chats. When you use a subagent for research, tell it to read files and run checks without changing anything. A subagent used for debugging may change files to test fixes.
+Write plain English for the User, with the conversation as their context. Use a casually formal tone, as with a colleague.
 
-Non-APM agents can use the bus without joining the full workflow. See `{SKILL_DIR:apm-communication}/bus-integration.md`.
-
-## 2. Agent-to-User Communication
-
-### 2.1 Direct Communication
-
-Write plain English for the User, using the conversation as context. Open with the answer, outcome, finding, proposal or question. Give only the evidence and detail needed to understand or act, state each point once, and end with the last useful detail.
-
-Keep the whole reply within these defaults:
+Open with what the User asked for or needs: the answer, outcome, finding, proposal or question. Then give only the reasons and details they need to understand it or act, most important first, and end on the last useful point. Keep the whole reply within these defaults, unless the User asks for a different length or level of detail:
 
 | Reply | Word ceiling |
 |---|---:|
@@ -27,42 +19,43 @@ Keep the whole reply within these defaults:
 | Explanation or work report | 250 |
 | Broad plan or review | 500 |
 
-Follow the User's requested length or level of detail when specified. Put substantial supporting detail in the relevant artifact and point to it. Artifacts follow their required schemas and coverage.
+Put longer detail in the relevant APM file and point to it. Before sending a longer reply, check that it opens with the substance and fits its ceiling.
 
-Use a casually formal tone, concrete subjects and active verbs. Keep sentences to one main thought and related words together. Use short paragraphs, lists for steps/parallel items and tables for comparisons. Explain unfamiliar concepts and put consequential limits beside the claims they qualify. Before sending, check the opening and total reply length against the request and applicable ceiling.
+- **Wording.** Use everyday words, concrete subjects and active verbs. Keep each sentence to one main thought and say each point once. State claims at the certainty the evidence supports, and put limits beside the claims they qualify.
+- **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.
+- **APM terms.** The first time the User meets an APM term in the conversation, such as Task, Stage, Worker or Handoff, explain it in a few words. Do not cite guides, section numbers or step names to the User. Give reasons about the work, such as a risk, a dependency or what later work needs, not "the procedure says". During the question rounds, follow `{GUIDE_PATH:context-gathering}` §2 for language.
+- **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. A proposal does not replace a required approval: stop at the points your procedure sets, apply corrections and ask again.
+- **User actions.** When the User has to act, say exactly what to do and where: the skill to invoke, the chat to invoke it in and any argument, such as "invoke `apm-5-check-reports frontend-agent` in the Manager's chat". Name skills without a command prefix, because assistants invoke skills differently. Say when the User needs a new chat.
 
-When the User needs to act, specify the command, target chat and argument or the artifact to review. Put commands to run in fenced blocks, and paths and values in inline code. Tell the User to invoke an APM skill by its name, such as “invoke `apm-5-check-reports frontend-agent` in the Manager's chat”, without a command prefix: assistants differ in how skills are invoked. When the User needs a new chat, say so. At a transition, give only the context and next action needed to continue.
+## 2. Writing for Other Agents
 
-### 2.2 Decisions and Evidence
+Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are read by an agent that has the files and the workspace, but not your conversation. Write them so they make sense on their own:
 
-Present the decision or proposal first, then the evidence, material trade-offs and uncertainty needed to assess consequential choices. Scale explanation to complexity and the User's request.
+- Follow their formats exactly. Other agents and the CLI rely on the field names, values, paths and sections.
+- Write about the work, not your process: what was done, decisions with their reasons, evidence, open issues and the paths the reader needs.
+- Give each fact one home, and check claims against their source. Separate what you verified from what you assume.
+- Keep free text short. Use plain words rather than procedure names or section labels, except where a format asks for them.
 
-Questions name the understanding or gap and ask for a focused answer or correction. Proposals state the intended result and any approval needed. Progress updates communicate a meaningful change or blocker. Completion reports lead with the outcome, then deliverables, validation, limits and any required action. Reviews connect findings to evidence and the next step.
+## 3. Subagents
 
-A proposal does not replace a required approval. Pause at the gates defined by the relevant procedure, incorporate corrections, and obtain approval before proceeding.
+Use your assistant's own way to start subagents and new chats. When you use a subagent for research, tell it to read files and run checks without changing anything. A subagent used for troubleshooting may change files to test fixes. Give each subagent a focused question, the paths it needs and the findings to return, and verify its key findings against the source before you rely on them.
 
-Give the User the project reason for what you do or ask, such as a risk, a dependency or what later work needs. Don't cite APM guides, procedures or rules to the User as the reason.
+## 4. Message Bus
 
-### 2.3 Terminology Boundaries
+The Message Bus is a set of files in `.apm/bus/`, one folder per agent. The Planner creates it at the end of planning. A Worker's folder holds `task.md` for Task Prompts, `report.md` for Task Reports and `handoff.md` for a Handoff Prompt; the Manager's folder, `manager/`, holds only `handoff.md`.
 
-Use formal APM terms such as Task, Stage, Worker and Manager naturally where the procedure allows them. During Context Gathering rounds, follow `{GUIDE_PATH:context-gathering}` §2 for the language of the rounds. In User-facing prose, describe actions, findings and decisions in ordinary language. Reserve section references, procedure and step names, checkpoint labels and decision categories for internal navigation. Choose headings that help the User find relevant information.
+A bus file is either empty or holds one message waiting for delivery. After you process an incoming message, clear its file before you write your outgoing one. Read a bus file before writing it, so your file tools accept the write.
 
-## 3. Agent-to-System Communication
+An agent outside APM can join the bus without joining the workflow; `{SKILL_DIR:apm-communication}/bus-integration.md` describes how.
 
-Follow the artifact schemas in the relevant guide and the bus protocol below. Write free-text content for its reader and purpose: a future agent needs self-contained context. Use narrative free text for the work, evidence and implications; reserve procedure and section labels for navigation and required reading instructions. Follow the schema for structured labels and fields. Record concrete outcomes, evidence, paths, consequential decisions and reasons, unresolved issues and continuation steps. Give each fact one useful location, verify claims against source and distinguish recorded state from assumptions.
+### 4.1 Bus Identity
 
-## 4. Message Bus Protocol
-
-Bus directories and files are initialized during planning. A bus file is empty or holds a message awaiting delivery. Before writing an outgoing message, clear the incoming bus file after processing it. Read a bus file before writing it so the file tools recognize empty or cleared files.
-
-### 4.1 Bus Identity Standards
-
-Identity comes from `.apm/bus/<agent-slug>/`. Workers confirm that this directory matches their registered `agent`. Reject a message for another identity and inform the User of the mismatch.
+A Worker's identity is its bus folder, `.apm/bus/<agent-slug>/`, set when it registers. Every Task Prompt names the Worker it is for in its `agent` field.
 
 ### 4.2 Agent ID Resolution
 
-Resolve an `[agent-id]` argument to `apm-4-check-tasks` or `apm-5-check-reports` against bus directory names: exact match, then prefix, then best plausible match. Use a unique exact or prefix match. Confirm any other single match with the User before using it, and list multiple plausible candidates for the User to choose. If no directories exist, report that the Message Bus is not initialized.
+When the User gives an agent ID with `apm-3-initiate-worker`, `apm-4-check-tasks` or `apm-5-check-reports`, match it against the bus folder names: an exact match first, then a prefix, then the closest plausible name. Use a unique exact or prefix match directly. Confirm any other single match with the User, and list several plausible matches for the User to choose from. If `.apm/bus/` does not exist, tell the User that planning has not created the Message Bus yet.
 
-### 4.3 Agent Slug Format
+### 4.3 Agent Slugs
 
-Agent slugs are lowercase and hyphenated, such as `frontend-agent`; the Plan names every Worker by its slug. The Manager's bus folder is `manager`.
+Agent slugs are lowercase and hyphenated, such as `frontend-agent`. The Plan names every Worker by its slug, and the Manager's folder is `manager`.

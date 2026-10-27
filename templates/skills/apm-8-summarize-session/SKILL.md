@@ -8,69 +8,69 @@ disable-model-invocation: true
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
-Summarize the session and optionally archive it. Run in a new chat, or as the active Manager after project completion when the User chooses to summarize there. Other Planners, Managers and Workers decline without action.
+This skill writes a session summary, a dated snapshot of an APM session for the User and for later sessions, and then offers to archive the session. Use it in a new chat, or as the Manager when the work is complete or the User stops early. If you are the Planner or a Worker, tell the User and stop.
 
 Read `{SKILL_PATH:apm-communication}`.
 
-1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md` directly; these reads are independent. Read the Task Logs referenced for claims that need verification; the subagent in the next step reviews the full log set.
-2. Use a subagent to check the active session’s Spec, Plan, Tracker, Index, Task Logs and Handoff Logs against relevant current deliverables. Exclude `.apm/archives/` and worktree contents from the artifact sweep. Ask it to verify deliverables and key validation results, and commits/branches when version control was used. Have it return Stage outcomes, stale artifact/code differences and consequential findings. Verify critical claims against the referenced sources.
-3. Write `.apm/session-summary.md` using the format below. Ground claims in artifacts and verification; distinguish completed, partial and missing work and state the snapshot's date. Say where each part comes from: work you did and remember yourself in this chat, or what you took from the Tracker, Index, Task Logs, Handoff Logs or a summary after compaction. In a new chat, all of it comes from those files.
-4. Present the summary for review. Apply additions, corrections or emphasis the User requests before finalizing.
-5. Ask whether to archive. If declined, stop. If approved, ask for a custom name or the default dated name.
-6. Run `apm archive --force` or `apm archive --force --name <name>`. The CLI snapshots `.apm/` except `archives/` into `.apm/archives/<name>/`, adds archival metadata, and removes active session files, installed templates and active metadata while keeping archives.
-7. Read `.apm/archives/index.md`; create it in the format below if missing or malformed.
-8. Add the new archive entry, newest first.
-9. Confirm archival with the archive path. To begin a fresh session, direct the User to run CLI `apm init` (or `apm custom`) for fresh templates/scaffolds, then invoke `apm-1-initiate-planner` in a new chat. The next Planner can consult these archives during Context Gathering.
+## 1. Summary and Archive
 
-**Session summary structure:**
+1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md`.
+2. Use a subagent to check the session's Spec, Plan, Tracker, Index, Task Logs and Handoff Logs against the current deliverables, leaving out `.apm/archives/` and worktrees. Ask it to verify deliverables, key validation results and, with version control, commits and branches, and to return each Stage's outcome, differences between the APM files and the code, and consequential findings. Verify the key claims against their sources, reading the Task Logs they cite.
+3. Write `.apm/session-summary.md` per §2.1. Separate completed, partial and missing work. Say where each part comes from: work you did and remember in this chat, or what you took from the files or a summary after compaction. In a new chat, all of it comes from the files.
+4. Present the summary and apply the User's corrections.
+5. Ask whether to archive the session. Archiving copies the session's `.apm/` files into `.apm/archives/` so a later session can use them as context, and clears the active files so a new session can start. It is optional; if the User declines, stop here.
+6. Ask for an archive name, or use the default dated name. Run `apm archive --force`, or `apm archive --force --name <name>`.
+7. Read `.apm/archives/index.md`, creating it per §2.2 if it is missing or malformed, and add the new archive at the top of its table.
+8. Tell the User the archive's path. To start a new session, the User runs `apm init` (or `apm custom`) and then invokes `apm-1-initiate-planner` in a new chat; the next Planner can use the archives.
 
-*Location:* `.apm/session-summary.md`
+## 2. Formats
 
-*YAML frontmatter schema:*
-```yaml
+### 2.1 Session Summary Format
+
+```markdown
 ---
 date: <YYYY-MM-DDTHH:MM:SSZ>
-stages_completed: <number>
-total_tasks: <number>
+stages_completed: <N>
+total_tasks: <N>
 outcome: <complete | partial | incomplete>
 ---
+
+# APM Session Summary
+
+## Scope
+<What this APM session built and why, from the Spec's Overview, and any work left for later sessions>
+
+## Stages and Outcomes
+<Per Stage: objective, Tasks completed, notable results>
+
+## Key Deliverables
+<Main outputs with paths>
+
+## Codebase State
+<Which planned deliverables exist, which are partial or missing, and where the code differs from the Spec and Plan>
+
+## Notable Findings
+<Problems met and how they were solved, corrections, recoveries and coordination lessons, from the Notes and Task Logs>
+
+## Known Issues
+<Unresolved problems, open questions and caveats>
+
+## Sources
+<Who wrote this summary, and which parts come from its own memory of the work and which from which files>
+
+This summary reflects the session as of <date>. The code may have changed since.
 ```
 
-*Field descriptions:*
+`outcome` is `complete` when the Tracker marks every Stage in the Plan Complete, `partial` when at least one Stage is complete, and `incomplete` when none is.
 
-- `date`: string, required, ISO 8601 datetime of summary creation (includes date and time).
-- `stages_completed`: integer, required, number of completed Stages.
-- `total_tasks`: integer, required, total Tasks across all Stages.
-- `outcome`: enum, required, derived from session state. `complete` when the Tracker marks every Stage in the Plan Complete. `partial` when `stages_completed >= 1` (at least one Stage finished). `incomplete` when `stages_completed == 0` (no Stages finished).
-
-*Body sections* (order as listed):
-
-- *Scope:* What this APM session built and why, from the Spec.
-- *Stages and Outcomes.* Per-Stage summary: objective, Tasks completed, notable results.
-- *Key Deliverables:* Primary outputs with file paths or descriptions.
-- *Codebase State.* Compare the actual codebase against the planning artifacts: which planned deliverables exist as code, which are partial or missing, whether the code evolved past what the Spec and Plan describe, and any gaps between what was planned and what was implemented.
-- *Notable Findings:* Operational lessons and patterns - issues encountered and how they were resolved, self-corrections during execution, recovery events, coordination insights. Draw from the Index's and the Tracker's Notes and the Task Logs.
-- *Known Issues:* Unresolved problems, open questions, or caveats.
-- *Sources:* Who wrote the summary (an agent in a new chat, or the active Manager) and which sections or Stages come from its own memory of the work and which from files, naming the files.
-- *Snapshot Notice:* "This summary reflects the session state as of `<datetime>`. The codebase may have diverged since this summary was created."
-
-**Archive index format:**
-
-*Location:* `.apm/archives/index.md`
+### 2.2 Archive Index Format
 
 ```markdown
 # APM Archive Index
 
 | Archive | Date | Scope | Stages | Tasks |
 |---------|------|-------|--------|-------|
+| session-2026-03-04-001 | 2026-03-04 | <What the session built, in brief> | <Stages completed> | <Total Tasks> |
 ```
 
-*Field descriptions:*
-
-- *Archive:* directory name (e.g., `session-2026-03-04-001`).
-- *Date:* ISO date of archival.
-- *Scope:* what the session built, in brief (from the session summary or the Spec's Overview).
-- *Stages:* number of completed Stages.
-- *Tasks:* total Tasks.
-
-Newest entries go at the top of the table.
+Newest archives go at the top.

@@ -43,7 +43,7 @@ Give a rule's reason when it helps the reader apply it correctly. Keep examples 
 
 Agents write for three readers. Instructions say what each output must contain for its reader; the shared rules live in `apm-communication`, and each procedure adds only what its own messages need.
 
-- **The User.** Replies open with the answer, outcome, finding, proposal or question, give only the details needed to understand or act, and stay within the default reply lengths in `apm-communication` §2 unless the User asks otherwise. Explain an APM term the first time the User meets it, and give reasons about the work rather than citing APM procedures.
+- **The User.** Replies open with the answer, outcome, finding, proposal or question, give only the details needed to understand or act, and stay within the default reply lengths in `apm-communication` §1 unless the User asks otherwise. Explain an APM term the first time the User meets it, and give reasons about the work rather than citing APM procedures.
 - **Other agents.** Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are self-contained for a reader without the writer's conversation. Free text is about the work, not the writer's process: outcomes, decisions with reasons, evidence, open issues and paths. Each fact has one home.
 - **The system.** Bus files, frontmatter and paths follow their contracts exactly, because the CLI, the bus protocol and other agents parse them.
 

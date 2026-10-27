@@ -9,7 +9,7 @@ A Task Prompt has these sections: Objective, the Task's goal; Instructions, the 
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
 3. If the title starts with `APM Follow-Up Task`, this is a follow-up Task: the Manager reviewed your earlier attempt and sent the same Task back with a revised prompt that says what to change. It keeps the same Task ID and `log_path`, and the Task Log you write replaces the earlier one.
-4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the project root given in the prompt for every `.apm/` path.
+4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the workspace root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
 ## 2. Dependency Context
@@ -27,7 +27,7 @@ Follow the Instructions in order, applying the Rules toward the Objective. Where
 
 When an instruction needs the User to act, say what is needed and why, offer the options and wait until the User has done it. When you use a subagent, give it a focused task and verify its key findings against the source before you rely on them.
 
-Use the project's own vocabulary in commits, code and comments. APM terms, Task IDs, Stage numbers and agent names belong only in APM files.
+Use the work's own vocabulary in commits, code and comments. APM terms, Task IDs, Stage numbers and agent names belong only in APM files.
 
 ### 3.1 Troubleshooting
 
