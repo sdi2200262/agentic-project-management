@@ -4,86 +4,79 @@ description: Perform a Handoff with an APM Worker. Use only when the User manual
 disable-model-invocation: true
 ---
 
-# APM {VERSION} - Worker Handoff Command
+# APM {VERSION} - Worker Handoff
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
-## 1. Overview
+This skill hands your work to a new conversation of the same Worker. You write two files. The Handoff Log is a lasting record of what this conversation did that the Task Logs do not hold. The Handoff Prompt, in your bus folder's `handoff.md`, tells the next conversation what to read and where to resume. The next conversation acts on them per `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
 
-On User-initiated Worker Handoff, write a persistent Handoff Log and a current continuation prompt on the Handoff Bus. The successor loads these and its own current-Stage Task Logs. Its first report must identify the new instance and loaded logs so the Manager can adjust future dependency context.
+Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
 
-## 2. Handoff Procedure
+## 1. Current State
 
-Before writing either artifact, check the current state yourself: read your Task Bus and Report Bus files. When version control is active, use git to check your branch, its commits and whether the Manager has merged it. Write only checked state in the log and the prompt; your memory of earlier turns may be out of date.
+Your memory of earlier turns may be out of date, so check the current state before writing either file:
 
-### 2.1 Handoff Log Creation
+- Read `task.md` and `report.md` in your bus folder.
+- With version control, use git to check your branch, its commits and whether the Manager has merged it.
 
-Write the log’s narrative in past tense, recording actions, decisions and observations from this instance. Put current state and continuation in the Handoff Bus prompt. Include the bus path in the log and the log path in the prompt.
+Write only checked state in the two files.
 
-Determine your instance number and the next one (current + 1). Write the log per §3 with completed work, approaches tried, established patterns and technical context not in Task Logs. Include completed steps for a mid-Task transfer. If your context was compacted or recovered in this conversation, say which parts of the log you rebuilt from a summary or from files rather than remember yourself, and name where they came from.
+## 2. Handoff Log
 
-### 2.2 Handoff Prompt Creation
+Write the Handoff Log per §5.1. Record in past tense what this conversation did: the Tasks you completed, and the patterns, conventions, decisions with their reasons and environment notes that the Task Logs do not hold. For a Handoff in the middle of a Task, include the steps already done. If your context was compacted or recovered in this conversation, say which parts you rebuilt from a summary or from files, and from where.
 
-Write current state and concrete continuation instructions per §4.
+## 3. Handoff Prompt
 
-- Mid-Task: the original prompt remains in Task Bus. Identify completed work and where to resume; direct the successor to read it.
-- Mid-batch: the envelope remains in Task Bus. Identify each completed/logged Task, current progress and unstarted work, with the exact continuation point.
-- Between Tasks: Task Bus is cleared. State readiness to await `apm-4-check-tasks`.
+Write the Handoff Prompt per §5.2 to `.apm/bus/<agent-slug>/handoff.md`. Its Next Action depends on where you stopped:
 
-Include the Handoff Log path and current-Stage log reads. Require the first report to state the new instance and specific logs loaded, noting when previous-Stage logs were not loaded.
+- In the middle of a Task: the Task Prompt stays in `task.md`. Say what is done and where to resume.
+- In the middle of a batch: the batch Task Prompt stays in `task.md`. Say which Tasks are done and logged, how far the current one got and where to resume.
+- Between Tasks: `task.md` is empty. The next conversation waits for the User to invoke `apm-4-check-tasks`.
 
-### 2.3 User Review and Finalization
+## 4. User Review
 
-Read and write `.apm/bus/<agent-slug>/handoff.md`. Give the User both artifact paths and ask them to review both files. Apply corrections and ask again. After the User approves, direct them to invoke `apm-3-initiate-worker <agent-id>` in a new chat. The next Worker detects the handoff automatically. Your outgoing duties then end.
+Give the User both file paths and ask them to review the two files. Apply their corrections and ask again. After they approve, tell them to invoke `apm-3-initiate-worker <agent-id>` in a new chat; it finds the Handoff Prompt on its own. Your work in this conversation then ends.
 
-## 3. Handoff Log Structure
+## 5. Formats
 
-Contains working context from this instance that supports the incoming Worker's execution. Task Logs contain Task-specific details - this file provides instance-level context.
+### 5.1 Handoff Log Format
 
-**Location:** `.apm/memory/handoffs/<agent>/handoff-<NN>.log.md`
+The Handoff Log is written at `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md`, where `<NN>` is your conversation number.
 
-**YAML Frontmatter Schema:**
-```yaml
+```markdown
 ---
 agent: <agent-slug>
-outgoing: <N>
-incoming: <N+1>
-handoff: <N>
+conversation: <number>
 stage: <N>
 ---
+
+# <agent-slug> Handoff Log - Conversation <number>
+
+## Summary
+<The Tasks completed in this conversation and the Stage's progress>
+
+## Working Context
+<Patterns, conventions, decisions with reasons and environment notes that the Task Logs do not hold; for a Handoff in the middle of a Task, the steps already done>
 ```
 
-**Field Descriptions:**
+### 5.2 Handoff Prompt Format
 
-- `agent`: Worker identifier (kebab-case).
-- `outgoing`: Current instance number.
-- `incoming`: Next instance number.
-- `handoff`: Handoff sequence number (equals the outgoing instance number).
-- `stage`: Current Stage number.
-
-**Body:**
-
-- *Title:* `# <Display Name> Handoff <N> (<Display Name> <N> → <Display Name> <N+1>)`. Each section uses `##` heading. The display name is the Title Case form of the agent identifier (e.g., `frontend-agent` → `Frontend Agent`).
-- *Summary:* Tasks completed and Stage progress during this instance.
-- *Working Context:* Patterns, approaches, or context established during this instance.
-- *Working Notes:* Technical details, environment observations, or other context not captured in Task Logs.
-
+```markdown
+---
+agent: <agent-slug>
+conversation: <number + 1>
+handoff_log: <path of the Handoff Log>
 ---
 
-## 4. Handoff Prompt Structure
+# <agent-slug> Handoff Prompt - Conversation <number + 1>
 
-Written to `.apm/bus/<agent-slug>/handoff.md`. The incoming Worker processes this prompt during auto-detection in the init command.
+<What to read: the Handoff Log and your Task Logs from the current Stage, by path>
 
-**Required content:**
+## Current State
+<Checked state: Tasks completed, the pending Task or batch, branches and merges>
 
-- *Identity:* Outgoing and incoming instance numbers.
-- *Rebuilding context:*
-  1. Read Handoff Log - note working context and technical notes.
-  2. Read current Stage Task Logs (this Worker's logs only).
-  3. Do not load previous-Stage logs - the Manager provides comprehensive context via Task Prompts for cross-Stage dependencies.
+## Next Action
+<Where to resume the Task or batch, or wait for the User to invoke apm-4-check-tasks>
+```
 
-- *Current State:* Current Stage, Tasks completed this instance, notes.
-- *Continuation guidance:* Specific guidance for the incoming Worker about in-progress patterns or upcoming work.
-- *Incoming Worker indication:* Remind incoming Worker to include Handoff status in first Task Report - state instance number, list specific Task Log files loaded, and when previous Stages exist note that previous-Stage logs were not loaded. This triggers Manager Handoff detection.
-- *Immediate Next Action:* For mid-Task or mid-batch, instruct the incoming Worker to read the Task Bus and continue. For between-Tasks, state readiness to await `apm-4-check-tasks`.
-- *Closing instruction:* Tell the User which files you read and what you'll do next.
+`conversation` is the next conversation's number, which it writes in every Task Log and Task Report.
