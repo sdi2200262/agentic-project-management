@@ -13,7 +13,7 @@ import { readMetadata, writeMetadata, createMetadata, getInstalledFiles, getAssi
 import { formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
 import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion, isStableRelease } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { createArchive, generateArchiveName } from '../services/archive.js';
+import { createArchive, generateArchiveName, archivePathFor } from '../services/archive.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
 import { confirmDestructiveAction, confirmAction, selectRelease, selectPrompt, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
 import { getRepoSettings, addCustomRepo, updateRepoSettings } from '../core/config.js';
@@ -73,13 +73,16 @@ export async function updateCommand(options = {}) {
   const archivesDir = path.join(cwd, ARCHIVES_DIR);
   const resolvedName = archiveName || await generateArchiveName(archivesDir);
 
+  archivePathFor(cwd, resolvedName);
+
   // Confirm destructive action
   if (!force) {
     const currentList = formatAssistantList(metadata.assistants, names);
     const survivingList = formatAssistantList(survivingAssistants, names);
 
     const bullets = [
-      `Snapshot all .apm/ contents (except archives/) into .apm/archives/${resolvedName}`,
+      `Snapshot session records into .apm/archives/${resolvedName} and move worktrees there with Git`,
+      `Agents must have stopped writing before archival starts`,
       `Remove active session files and installed templates for: ${currentList}`,
       `Download and install ${release.tag_name} for: ${survivingList}`
     ];
@@ -103,43 +106,48 @@ export async function updateCommand(options = {}) {
 
   // Archive current state
   const archiveStop = logger.progress('Archiving current session');
-  await createArchive(cwd, { reason: 'update', name: resolvedName });
+  const archived = await createArchive(cwd, { reason: 'update', name: archiveName });
   archiveStop();
 
-  // Clean all tracked files
-  const installedFiles = getInstalledFiles(metadata);
-  await removeInstalledFiles(cwd, installedFiles);
+  try {
+    // Clean all tracked files
+    const installedFiles = getInstalledFiles(metadata);
+    await removeInstalledFiles(cwd, installedFiles);
 
-  // Download new bundles for all assistants
-  const newInstalledFiles = {};
-  let apmExtracted = false;
-  for (const { assistant, asset } of bundles) {
-    const assistantId = assistant.id;
-    stop = logger.progress(`Downloading ${assistant.bundle}`);
-    const writtenFiles = await downloadAndExtract(
-      asset.browser_download_url,
-      cwd,
-      { skipApm: apmExtracted }
-    );
-    stop();
-    newInstalledFiles[assistantId] = writtenFiles.filter(f => !f.startsWith('.apm/'));
-    if (!apmExtracted) {
-      newInstalledFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
+    // Download new bundles for all assistants
+    const newInstalledFiles = {};
+    let apmExtracted = false;
+    for (const { assistant, asset } of bundles) {
+      const assistantId = assistant.id;
+      stop = logger.progress(`Downloading ${assistant.bundle}`);
+      const writtenFiles = await downloadAndExtract(
+        asset.browser_download_url,
+        cwd,
+        { skipApm: apmExtracted }
+      );
+      stop();
+      newInstalledFiles[assistantId] = writtenFiles.filter(f => !f.startsWith('.apm/'));
+      if (!apmExtracted) {
+        newInstalledFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
+      }
+      apmExtracted = true;
     }
-    apmExtracted = true;
-  }
 
-  // Write fresh metadata
-  const newMetadata = createMetadata({
-    source: metadata.source,
-    repository: metadata.repository,
-    releaseVersion: release.tag_name,
-    cliVersion: CLI_VERSION,
-    assistants: survivingAssistants,
-    assistantNames: assistantNamesFromManifest(manifest, survivingAssistants),
-    installedFiles: newInstalledFiles
-  });
-  await writeMetadata(newMetadata, cwd);
+    // Write fresh metadata
+    const newMetadata = createMetadata({
+      source: metadata.source,
+      repository: metadata.repository,
+      releaseVersion: release.tag_name,
+      cliVersion: CLI_VERSION,
+      assistants: survivingAssistants,
+      assistantNames: assistantNamesFromManifest(manifest, survivingAssistants),
+      installedFiles: newInstalledFiles
+    });
+    await writeMetadata(newMetadata, cwd);
+  } catch (error) {
+    const preserved = archived.worktrees.map(worktree => worktree.to).join(', ');
+    throw new Error(`Previous session preserved at ${archived.archivePath}${preserved ? `; worktrees: ${preserved}` : ''}, but updating the active installation failed: ${error.message}. Check its state before continuing.`);
+  }
 
   // Offer to save custom repo if not already saved (optional, so skipped without a terminal)
   if (metadata.source === 'custom' && isInteractive()) {
@@ -176,7 +184,11 @@ export async function updateCommand(options = {}) {
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
   logger.success(`Updated to ${release.tag_name} (${logger.plural(survivingAssistants.length, 'installation target')})!`);
-  logger.info(`Your previous session is in .apm/archives/${resolvedName}. To start a new session, invoke apm-1-initiate-planner in a new chat.`);
+  if (archived.worktrees.length) {
+    logger.info(`Preserved ${logger.plural(archived.worktrees.length, 'worktree')}; they remain attached to their source repositories.`);
+    for (const worktree of archived.worktrees) logger.info(`${worktree.from} -> ${worktree.to}${worktree.unfinished ? ' (unfinished work)' : ''}`);
+  }
+  logger.info(`Your previous session is in ${path.relative(cwd, archived.archivePath)}. To start a new session, invoke apm-1-initiate-planner in a new chat.`);
 }
 
 /**

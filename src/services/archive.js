@@ -9,6 +9,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { ARCHIVES_DIR } from '../core/constants.js';
+import { inspectWorktrees, moveWorktree, verifyMovedWorktree, restoreWorktree, checkWorktreeRemoval, removeWorktrees } from './worktrees.js';
 
 /**
  * Generates the next archive directory name for today.
@@ -25,9 +26,9 @@ export async function generateArchiveName(archivesDir) {
   if (await fs.pathExists(archivesDir)) {
     const entries = await fs.readdir(archivesDir, { withFileTypes: true });
     for (const entry of entries) {
-      if (entry.isDirectory() && entry.name.startsWith(prefix)) {
+      if (entry.name.startsWith(prefix)) {
         const suffix = entry.name.slice(prefix.length);
-        const num = parseInt(suffix, 10);
+        const num = /^\d+$/.test(suffix) ? Number(suffix) : NaN;
         if (!isNaN(num) && num > maxCounter) {
           maxCounter = num;
         }
@@ -87,111 +88,126 @@ export async function countArchives(cwd) {
   return archives.length;
 }
 
-/**
- * Creates an archive by snapshotting everything in .apm/ except archives/.
- * Copies all contents (template artifacts, runtime files, metadata) into
- * the archive directory, then cleans originals from .apm/.
- *
- * @param {string} cwd - Working directory.
- * @param {Object} [options={}] - Archive options.
- * @param {string} [options.name] - Custom archive name (auto-generated if omitted).
- * @param {string} [options.reason] - Reason for archival (e.g., 'update', 'archive').
- * @returns {Promise<{archivePath: string, runtimeEntries: string[]}>} Archive path and list of runtime entries not in _apm.
- */
+/** Validate a single archive directory name for creation and deletion. */
+export function archivePathFor(cwd, name) {
+  if (typeof name !== 'string' || !name || name === '.' || name === '..' || /[\\/\0]/.test(name)) {
+    throw new Error('Archive name must be a single directory name.');
+  }
+  return path.join(cwd, ARCHIVES_DIR, name);
+}
+
+async function reserveArchive(cwd, requestedName) {
+  const archivesDir = path.join(cwd, ARCHIVES_DIR);
+  await fs.ensureDir(archivesDir);
+  if ((await fs.lstat(archivesDir)).isSymbolicLink()) throw new Error(`Archive directory is a symbolic link: ${archivesDir}`);
+  while (true) {
+    const name = requestedName || await generateArchiveName(archivesDir);
+    const archivePath = archivePathFor(cwd, name);
+    try {
+      await fs.mkdir(archivePath);
+      return archivePath;
+    } catch (error) {
+      if (error.code !== 'EEXIST') throw error;
+      if (requestedName) throw new Error(`Archive "${name}" already exists. Choose another name.`);
+    }
+  }
+}
+
+/** Snapshot session records, relocate linked worktrees, then clear active records. */
 export async function createArchive(cwd, options = {}) {
   const apmDir = path.join(cwd, '.apm');
-  const archivesDir = path.join(cwd, ARCHIVES_DIR);
-
-  const archiveName = options.name || await generateArchiveName(archivesDir);
-  const archivePath = path.join(archivesDir, archiveName);
-
-  await fs.ensureDir(archivePath);
-
-  // Read metadata to determine which entries are tracked vs runtime-created
+  const worktreesDir = path.join(apmDir, 'worktrees');
+  const worktrees = await inspectWorktrees(worktreesDir, { repositoryHint: cwd });
+  const entries = (await fs.readdir(apmDir)).filter(entry => entry !== 'archives');
   const metadataSrc = path.join(apmDir, 'metadata.json');
-  let metadata = {};
-  if (await fs.pathExists(metadataSrc)) {
-    metadata = await fs.readJson(metadataSrc);
-  }
-
-  // Build set of top-level .apm/ entries that came from the template
-  const trackedTopLevel = new Set();
-  const apmFiles = metadata.installedFiles?._apm || [];
-  for (const file of apmFiles) {
-    // e.g. ".apm/plan.md" → "plan.md", ".apm/memory/index.md" → "memory"
-    const relative = file.replace(/^\.apm\//, '');
-    const topLevel = relative.split(/[\\/]/)[0];
-    trackedTopLevel.add(topLevel);
-  }
+  const metadata = await fs.pathExists(metadataSrc) ? await fs.readJson(metadataSrc) : {};
+  const trackedTopLevel = new Set((metadata.installedFiles?._apm || []).map(file => file.replace(/^\.apm\//, '').split(/[\\/]/)[0]));
   trackedTopLevel.add('metadata.json');
-
-  // Copy everything in .apm/ except archives/ into the archive snapshot
-  const entries = await fs.readdir(apmDir);
-  const runtimeEntries = [];
-  for (const entry of entries) {
-    if (entry === 'archives') continue;
-    const src = path.join(apmDir, entry);
-    const dest = path.join(archivePath, entry);
-    await fs.copy(src, dest);
-    if (!trackedTopLevel.has(entry)) {
-      runtimeEntries.push(entry);
+  const runtimeEntries = entries.filter(entry => !trackedTopLevel.has(entry));
+  const archivePath = await reserveArchive(cwd, options.name);
+  const moved = [];
+  try {
+    for (const entry of entries) {
+      if (entry !== 'worktrees') await fs.copy(path.join(apmDir, entry), path.join(archivePath, entry), { overwrite: false, errorOnExist: true });
     }
-  }
-
-  // Stamp archival info on the archived metadata copy
-  const archivedMetaPath = path.join(archivePath, 'metadata.json');
-  if (await fs.pathExists(archivedMetaPath)) {
-    metadata.archivedAt = new Date().toISOString();
-    if (options.reason) {
-      metadata.reason = options.reason;
+    for (const worktree of worktrees) {
+      const destination = path.join(archivePath, 'worktrees', path.relative(worktreesDir, worktree.from));
+      moved.push({ worktree, destination });
+      await moveWorktree(worktree, destination);
+      await verifyMovedWorktree(worktree, destination);
     }
-    await fs.writeJson(archivedMetaPath, metadata, { spaces: 2 });
+    const relocations = moved.map(({ worktree, destination }) => ({
+      from: worktree.from, to: destination, repository: worktree.repository,
+      branch: worktree.branch, unfinished: !!worktree.state.status
+    }));
+    await fs.writeJson(path.join(archivePath, 'metadata.json'), {
+      ...metadata, archivedAt: new Date().toISOString(),
+      ...(options.reason ? { reason: options.reason } : {}), archivedWorktrees: relocations
+    }, { spaces: 2 });
+  } catch (error) {
+    const failures = [];
+    for (const { worktree, destination } of [...moved].reverse()) {
+      try {
+        const sourceExists = await fs.pathExists(worktree.from);
+        const destinationExists = await fs.pathExists(destination);
+        if (destinationExists && !sourceExists) await restoreWorktree(worktree, destination);
+        else if (destinationExists || !sourceExists) {
+          throw new Error('Worktree locations need inspection; automatic rollback would risk overwriting files.');
+        }
+      } catch (rollbackError) { failures.push(`${worktree.from} -> ${destination}: ${rollbackError.message}`); }
+    }
+    if (!failures.length) {
+      await fs.remove(archivePath);
+      throw new Error(`Archive stopped; active session files were kept. ${error.message}`);
+    }
+    throw new Error(`Archive stopped; active session records were kept and the partial archive remains at ${archivePath}. Inspect and repair these worktree locations: ${failures.join('; ')}. Original error: ${error.message}`);
   }
 
-  // Clean originals from .apm/ (keep archives/ and metadata.json)
-  for (const entry of entries) {
-    if (entry === 'archives' || entry === 'metadata.json') continue;
-    await fs.remove(path.join(apmDir, entry));
+  // Preservation has succeeded. Keep the archive if clearing active files fails.
+  try {
+    for (const entry of entries) {
+      if (entry !== 'metadata.json') await fs.remove(path.join(apmDir, entry));
+    }
+  } catch (error) {
+    throw new Error(`Session preserved at ${archivePath}, but active-file cleanup failed: ${error.message}. Check both locations before continuing.`);
   }
-
-  return { archivePath, runtimeEntries };
+  return { archivePath, runtimeEntries, worktrees: moved.map(({ worktree, destination }) => ({ from: worktree.from, to: destination, unfinished: !!worktree.state.status })) };
 }
 
-/**
- * Removes a single archive by name.
- *
- * @param {string} cwd - Working directory.
- * @param {string} name - Archive directory name.
- * @returns {Promise<boolean>} Whether the archive was found and removed.
- */
-export async function removeArchive(cwd, name) {
-  const archivePath = path.join(cwd, ARCHIVES_DIR, name);
-  if (await fs.pathExists(archivePath)) {
-    await fs.remove(archivePath);
-    return true;
-  }
-  return false;
+async function deletionPlan(cwd, name, options) {
+  const archivePath = archivePathFor(cwd, name);
+  if (!await fs.pathExists(archivePath)) return null;
+  if ((await fs.lstat(path.join(cwd, ARCHIVES_DIR))).isSymbolicLink()) throw new Error('Archive directory is a symbolic link.');
+  if ((await fs.lstat(archivePath)).isSymbolicLink()) throw new Error(`Archive is a symbolic link: ${archivePath}`);
+  const worktrees = await inspectWorktrees(path.join(archivePath, 'worktrees'), { allowOtherFiles: true });
+  await checkWorktreeRemoval(worktrees, options.discardWorktrees);
+  return { archivePath, worktrees };
 }
 
-/**
- * Removes all archives.
- *
- * @param {string} cwd - Working directory.
- * @returns {Promise<number>} Number of archives removed.
- */
-export async function clearArchives(cwd) {
+/** Remove archived worktrees through Git before deleting their session records. */
+export async function removeArchive(cwd, name, options = {}) {
+  const plan = await deletionPlan(cwd, name, options);
+  if (!plan) return false;
+  await removeWorktrees(plan.worktrees, options.discardWorktrees);
+  await fs.remove(plan.archivePath);
+  return true;
+}
+
+/** Check every archive before deleting any, including explicit discard authorization. */
+export async function clearArchives(cwd, options = {}) {
   const archivesDir = path.join(cwd, ARCHIVES_DIR);
   if (!await fs.pathExists(archivesDir)) return 0;
-
+  if ((await fs.lstat(archivesDir)).isSymbolicLink()) throw new Error('Archive directory is a symbolic link.');
   const entries = await fs.readdir(archivesDir, { withFileTypes: true });
-  let count = 0;
+  const plans = [];
   for (const entry of entries) {
-    if (entry.isDirectory()) {
-      await fs.remove(path.join(archivesDir, entry.name));
-      count++;
-    }
+    if (entry.isDirectory()) plans.push(await deletionPlan(cwd, entry.name, options));
   }
-  return count;
+  for (const plan of plans) {
+    await removeWorktrees(plan.worktrees, options.discardWorktrees);
+    await fs.remove(plan.archivePath);
+  }
+  return plans.length;
 }
 
 export default {

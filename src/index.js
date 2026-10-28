@@ -72,6 +72,7 @@ function displayHelp() {
   console.log(`  ${chalk.bold('-l, --list')}                List archived sessions`);
   console.log(`  ${chalk.bold('--delete <name>')}           Delete a specific archive`);
   console.log(`  ${chalk.bold('--clear')}                   Delete all archives`);
+  console.log(`  ${chalk.bold('--discard-worktrees')}      Discard unfinished work in deleted archives`);
   console.log('');
   console.log(chalk.cyan.bold('Global:'));
   console.log(`  ${chalk.bold('-v, -V, --version')}         Show version number`);
@@ -84,7 +85,7 @@ function displayHelp() {
   console.log('');
   console.log(`  ${chalk.bold('Official APM Releases')} (v1.x.x):`);
   console.log(`            - Follows SemVer: ${chalk.blue.underline('https://semver.org/')}`);
-  console.log(`            - Compatible with v1.x.x agentic-pm CLI`);
+  console.log(`            - Requires a v1.x.x CLI meeting the release’s minimum CLI version`);
   console.log(`            - Update via: ${chalk.yellow('apm update')}`);
   console.log('');
   console.log(chalk.gray('Learn more:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management'));
@@ -187,6 +188,7 @@ program
   .option('-n, --name <name>', 'Custom archive name')
   .option('--delete <name>', 'Delete a specific archive')
   .option('--clear', 'Delete all archives')
+  .option('--discard-worktrees', 'Discard unfinished worktrees with --delete or --clear')
   .action(async (options) => {
     try {
       await archiveCommand(options);

@@ -12,7 +12,7 @@ import { METADATA_FILE, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
 import { formatAssistantList } from '../core/assistants.js';
-import { createArchive, listArchivesWithInfo, removeArchive, clearArchives, generateArchiveName } from '../services/archive.js';
+import { createArchive, listArchivesWithInfo, removeArchive, clearArchives, generateArchiveName, archivePathFor } from '../services/archive.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
 import { confirmDestructiveAction } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
@@ -29,13 +29,14 @@ import logger from '../ui/logger.js';
  * @returns {Promise<void>}
  */
 export async function archiveCommand(options = {}) {
-  const { list, force = false, name, delete: deleteArchive, clear } = options;
+  const { list, force = false, name, delete: deleteArchive, clear, discardWorktrees = false } = options;
 
   logger.clearAndBanner();
 
+  if (discardWorktrees && (list || (!deleteArchive && !clear))) throw new Error('--discard-worktrees applies only to --delete or --clear.');
   if (list) return listMode();
-  if (deleteArchive) return deleteMode(deleteArchive, force);
-  if (clear) return clearMode(force);
+  if (deleteArchive) return deleteMode(deleteArchive, force, discardWorktrees);
+  if (clear) return clearMode(force, discardWorktrees);
 
   return createMode(force, name);
 }
@@ -62,6 +63,7 @@ async function listMode() {
     console.log(`  Version:     ${metadata.releaseVersion || 'unknown'}`);
     console.log(`  Targets:     ${formatAssistantList(metadata.assistants || [], getAssistantNames(metadata)) || 'unknown'}`);
     console.log(`  Archived:    ${metadata.archivedAt || 'unknown'}`);
+    if (metadata.archivedWorktrees?.length) console.log(`  Worktrees:   ${metadata.archivedWorktrees.length} (attached to source repositories)`);
     if (metadata.reason) {
       console.log(`  Reason:      ${metadata.reason}`);
     }
@@ -72,9 +74,9 @@ async function listMode() {
 /**
  * Removes a single archive.
  */
-async function deleteMode(name, force) {
+async function deleteMode(name, force, discardWorktrees) {
   const cwd = process.cwd();
-  const archivePath = path.join(cwd, ARCHIVES_DIR, name);
+  const archivePath = archivePathFor(cwd, name);
 
   if (!await fs.pathExists(archivePath)) {
     logger.error(`Archive "${name}" not found.`);
@@ -83,7 +85,7 @@ async function deleteMode(name, force) {
 
   if (!force) {
     const proceed = await confirmDestructiveAction(
-      [`Delete archive "${name}" permanently`],
+      [`Delete archive "${name}" permanently${discardWorktrees ? ", including preserved unfinished worktrees" : " and its clean worktrees"}`],
       'Delete?'
     );
     if (!proceed) {
@@ -92,7 +94,7 @@ async function deleteMode(name, force) {
     }
   }
 
-  await removeArchive(cwd, name);
+  await removeArchive(cwd, name, { discardWorktrees });
   logger.clearAndBanner();
   logger.success(`Deleted archive: ${name}`);
 }
@@ -100,7 +102,7 @@ async function deleteMode(name, force) {
 /**
  * Clears all archives.
  */
-async function clearMode(force) {
+async function clearMode(force, discardWorktrees) {
   const cwd = process.cwd();
   const archives = await listArchivesWithInfo(cwd);
 
@@ -112,7 +114,7 @@ async function clearMode(force) {
   if (!force) {
     const actions = archives.map(a => {
       const date = a.metadata.archivedAt ? new Date(a.metadata.archivedAt).toLocaleString() : 'unknown';
-      return `Delete ${a.name} (archived ${date})`;
+      return `Delete ${a.name} (archived ${date})${discardWorktrees ? ", including preserved unfinished worktrees" : " and its clean worktrees"}`;
     });
     const proceed = await confirmDestructiveAction(actions, `Delete all ${archives.length} archives?`);
     if (!proceed) {
@@ -121,7 +123,7 @@ async function clearMode(force) {
     }
   }
 
-  const count = await clearArchives(cwd);
+  const count = await clearArchives(cwd, { discardWorktrees });
   logger.clearAndBanner();
   logger.success(`Deleted ${logger.plural(count, 'archive')}.`);
 }
@@ -140,14 +142,16 @@ async function createMode(force, archiveName) {
   // Determine archive name ahead of time for the confirmation message
   const archivesDir = path.join(cwd, ARCHIVES_DIR);
   const resolvedName = archiveName || await generateArchiveName(archivesDir);
-  const archiveOpts = { reason: 'archive', name: resolvedName };
+  archivePathFor(cwd, resolvedName);
+  const archiveOpts = { reason: 'archive', name: archiveName };
 
   // Confirm destructive action
   if (!force) {
     const assistantList = formatAssistantList(metadata.assistants, getAssistantNames(metadata));
     const proceed = await confirmDestructiveAction(
       [
-        `Snapshot all .apm/ contents (except archives/) into .apm/archives/${resolvedName}`,
+        `Snapshot session records into .apm/archives/${resolvedName} and move worktrees there with Git`,
+        `Agents must have stopped writing before archival starts`,
         `Remove active session files, installed templates for ${assistantList}, and active metadata (archives are kept)`
       ],
       'Archive and clean?'
@@ -157,19 +161,28 @@ async function createMode(force, archiveName) {
       return;
     }
   }
-  const { archivePath } = await createArchive(cwd, archiveOpts);
+  const { archivePath, worktrees } = await createArchive(cwd, archiveOpts);
 
-  // Clean tracked files
-  const installedFiles = getInstalledFiles(metadata);
-  await removeInstalledFiles(cwd, installedFiles);
+  try {
+    // Clean tracked files
+    const installedFiles = getInstalledFiles(metadata);
+    await removeInstalledFiles(cwd, installedFiles);
 
-  // Delete metadata
-  const metadataPath = path.join(cwd, METADATA_FILE);
-  await fs.remove(metadataPath);
+    // Delete metadata
+    const metadataPath = path.join(cwd, METADATA_FILE);
+    await fs.remove(metadataPath);
+  } catch (error) {
+    const preserved = worktrees.map(worktree => worktree.to).join(', ');
+    throw new Error(`Session preserved at ${archivePath}${preserved ? `; worktrees: ${preserved}` : ''}, but installed-file cleanup failed: ${error.message}. Check the active installation before continuing.`);
+  }
 
   // Clear content for final output
   logger.clearAndBanner();
   logger.success(`Archived to ${path.relative(cwd, archivePath)}`);
+  if (worktrees.length) {
+    logger.info(`Preserved ${logger.plural(worktrees.length, 'worktree')}; they remain attached to their source repositories.`);
+    for (const worktree of worktrees) logger.info(`${worktree.from} -> ${worktree.to}${worktree.unfinished ? ' (unfinished work)' : ''}`);
+  }
   logger.info('To start a new session, run "apm init" (or "apm custom"), then invoke apm-1-initiate-planner in a new chat.');
 }
 
