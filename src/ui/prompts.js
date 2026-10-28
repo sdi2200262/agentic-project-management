@@ -13,9 +13,7 @@ import { formatAssistant } from '../core/assistants.js';
 import logger from './logger.js';
 
 /**
- * Whether the CLI can prompt: both stdin and stdout must be a terminal.
- * Without one (piped, redirected, or run by an agent), a prompt would read
- * end-of-input and the process would exit without doing anything.
+ * Prompts require terminal input and output.
  *
  * @returns {boolean} True when prompts can run.
  */
@@ -216,7 +214,7 @@ export async function confirmSecurityDisclaimer({ hint } = {}) {
   logger.clearAndBanner();
   console.log('  ' + chalk.yellow.bold('Security Disclaimer'));
   console.log('');
-  console.log('  ' + chalk.yellow('Custom repositories are NOT verified by APM.'));
+  console.log('  ' + chalk.yellow('APM does not verify custom repositories.'));
   console.log('  ' + chalk.yellow('Only install from sources you trust.'));
   console.log('');
 

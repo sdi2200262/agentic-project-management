@@ -55,7 +55,7 @@ Explore the repository to understand the layout. The key directories are:
 
 ## 3. How Templates Become Installations
 
-Each target gets its own copy of the templates: Claude Code installs into `.claude/` and every other assistant into `.agents/`. The Rules live in `AGENTS.md` for both; Claude Code reads `AGENTS.md` when the project has no `CLAUDE.md`; when it has one, the Planner adds an `@AGENTS.md` import at its top. The build resolves a few placeholders for each target. The templates describe actions in plain English (run a command, use a subagent, start a new chat), and each assistant carries them out its own way, so they hold no per-assistant syntax.
+Each target gets its own copy of the templates: Claude Code installs into `.claude/` and every other assistant into `.agents/`. The Rules live in `AGENTS.md` for both. The Planner checks Claude Code's version and instruction-loading settings: root, local and ancestor Claude instruction files can block native `AGENTS.md` loading. When an import is needed, it uses an existing workspace `CLAUDE.md` or `.claude/CLAUDE.md`, or creates a one-line root `CLAUDE.md` only when neither exists. The Rules procedure in `templates/guides/work-breakdown.md` owns these checks. The build resolves a few placeholders for each target. The templates describe actions in plain English (run a command, use a subagent, start a new chat), and each assistant carries them out its own way, so they hold no per-assistant syntax.
 
 The placeholders, defined in `build/processors/placeholders.js`, are:
 

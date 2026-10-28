@@ -4,7 +4,7 @@ These standards define source layout, navigation and artifact contracts for temp
 
 ## 1. Organize for use
 
-Open each file with a short paragraph, without a heading, that says what the file covers and what it produces. Command skills establish the agent's role; guides and shared skills, like other skills, describe a procedure or protocol and leave the role to the command skill that loads them.
+Open each file directly with a short paragraph that says what the file covers and what it produces. Command skills establish the agent's role; guides and shared skills, like other skills, describe a procedure or protocol and leave the role to the command skill that loads them.
 
 State each rule once, in the section where the agent applies it. Each section covers one part of the work and holds the steps and rules for it. A rule appears a second time only where testing showed agents skipping it, as a one-sentence reminder at the point of use.
 
@@ -33,11 +33,11 @@ Sources live under `templates/`:
 
 Names use kebab-case; each skill's `name` matches its directory. Descriptions briefly identify purpose and activation. YAML frontmatter begins on the first line between `---` delimiters, with valid field names, types and quoting.
 
-The build resolves placeholders and copies skills with their source frontmatter. Each target installs into its own folder at the workspace root, `.claude/` for Claude Code and `.agents/` for the `agents` target, with skills under `skills/` and guides under `apm-guides/`. The build resolves paths for each target, so templates name exact paths and never ask the agent to work out its folder. The Rules live in `AGENTS.md` for every target; Claude Code-only instructions, such as importing `AGENTS.md` into an existing `CLAUDE.md`, go in `{CLAUDE_ONLY:text}`. Prose refers to command skills by name.
+The build resolves placeholders and copies skills with their source frontmatter. Each target installs into its own folder at the workspace root, `.claude/` for Claude Code and `.agents/` for the `agents` target, with skills under `skills/` and guides under `apm-guides/`. The build resolves placeholders to exact paths for each target. The Rules live in `AGENTS.md` for every target; Claude Code-only instructions, such as checking Rules discovery and adding a needed import, go in `{CLAUDE_ONLY:text}`. Prose refers to command skills by name.
 
 ## 3. Navigation and references
 
-Title each runtime file `APM {VERSION} - <Name>`, where the name says what the file is, such as `Worker Initiation`, `Check Reports` or `Task Review Guide`; skill titles do not say "Command". Use one H1 title, H2 major sections and H3 subsections, adding deeper levels when needed. Number sections as `## 1. Title` and `### 1.1 Title`. Headings are short Title Case noun phrases that name the subject, such as `Validation`, `Dependency Context` or `Task Log Format`. Prefer a name that fits any kind of work over a coding-only one, such as `Troubleshooting` over `Debugging`. References give the number only: `§4` within a file, or `{GUIDE_PATH:task-logging} §5.1` across files. When sections are renumbered, update every reference to them.
+Title each runtime file `APM {VERSION} - <Name>`, where the name says what the file is, such as `Worker Initiation`, `Check Reports` or `Task Review Guide`. Use one H1 title, H2 major sections and H3 subsections, adding deeper levels when needed. Number sections as `## 1. Title` and `### 1.1 Title`. Headings are short Title Case noun phrases that name the subject, such as `Validation`, `Dependency Context` or `Task Log Format`. Prefer a name that fits any kind of work over a coding-only one, such as `Troubleshooting` over `Debugging`. References give the number only: `§4` within a file, or `{GUIDE_PATH:task-logging} §5.1` across files. When sections are renumbered, update every reference to them.
 
 Use explicit file paths and section references where they help navigation. Cross-file references use the placeholders in §5. A reference is enough only when the reading role can load the target within its normal access boundaries; otherwise state the rule where that role reads it.
 

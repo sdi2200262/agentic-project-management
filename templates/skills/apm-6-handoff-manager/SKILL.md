@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
-This skill hands your coordination to a new Manager conversation. You write two files. The Handoff Log is a lasting record of what this conversation did that the Tracker, the Index and the Task Logs do not hold. The Handoff Prompt, in `.apm/bus/manager/handoff.md`, tells the next conversation what to read and where to resume. The next conversation also reads the planning documents, the Tracker and the Index at initiation, per `{SKILL_PATH:apm-2-initiate-manager}`.
+This skill hands your coordination to a new Manager conversation. You write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in `.apm/bus/manager/handoff.md`, tells the next conversation what to read and where to resume. The next conversation also reads the planning documents, the Tracker and the Index at initiation, per `{SKILL_PATH:apm-2-initiate-manager}`.
 
 Your conversation number is 1 if you started from first initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
 
@@ -19,7 +19,7 @@ Your memory of earlier turns may be out of date, so check the current state befo
 - Read the Tracker and each Worker's bus files.
 - With version control, use git to check branches, worktrees and merges.
 
-Bring the Tracker up to date with what you find. Write only checked state in the two files.
+Bring the Tracker up to date with the checked state before writing the two files.
 
 ## 2. Handoff Log
 

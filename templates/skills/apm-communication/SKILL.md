@@ -24,8 +24,8 @@ Put longer detail in the relevant APM file and point to it. Before sending a lon
 - **Wording.** Use everyday words, concrete subjects and active verbs. Keep each sentence to one main thought and say each point once. State claims at the certainty the evidence supports, and put limits beside the claims they qualify.
 - **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.
 - **APM terms.** Explain an APM term, such as Task, Stage, Worker or Handoff, in a few words the first time the User meets it. During the question rounds, follow `{GUIDE_PATH:context-gathering}` §2 for language.
-- **Reasons.** Give reasons about the work, such as a risk, a dependency or what later work needs. Do not cite guides, section numbers or step names to the User.
-- **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. A proposal does not replace a required approval: stop at the points your procedure sets, apply corrections and ask again.
+- **Reasons.** Explain decisions through the work's risks, dependencies and later needs.
+- **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. At each required approval, stop for the User's decision, apply corrections and ask again.
 - **User actions.** When the User has to act, say exactly what to do and where: the skill to invoke, the chat to invoke it in and any argument, such as "invoke `apm-5-check-reports frontend-agent` in the Manager's chat". Name skills without a command prefix, because assistants invoke skills differently. Say when the User needs a new chat.
 
 ## 2. Writing for Other Agents
@@ -33,9 +33,9 @@ Put longer detail in the relevant APM file and point to it. Before sending a lon
 Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are read by an agent that has the files and the workspace, but not your conversation. Write them so they make sense on their own:
 
 - Follow their formats exactly. Other agents and the CLI rely on the field names, values, paths and sections.
-- Write about the work, not your process: what was done, decisions with their reasons, evidence, open issues and the paths the reader needs.
+- Record the work: what was done, decisions with their reasons, evidence, open issues and the paths the reader needs.
 - Give each fact one home, and check claims against their source. Separate what you verified from what you assume.
-- Keep free text short. Use plain words rather than procedure names or section labels, except where a format asks for them.
+- Keep free text short and use plain words; follow the format where it requires specific labels.
 
 ## 3. Subagents
 

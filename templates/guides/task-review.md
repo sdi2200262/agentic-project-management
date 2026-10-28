@@ -2,7 +2,7 @@
 
 This guide covers Task Review: reading Task Reports and Task Logs, deciding each Task's outcome, changing the planning documents when findings require it, merging, and keeping the Tracker current. It ends each Stage with verification, a Stage summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the dispatch that follows.
 
-A Worker records one outcome per Task: Success, Partial or Failed. The outcome informs your decision but does not set the Task's state; only your final decision makes a Task Done.
+A Worker records one outcome per Task: Success, Partial or Failed. You decide whether to mark the Task Done after reviewing that outcome.
 
 ## 1. Report Intake
 

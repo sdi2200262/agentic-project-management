@@ -10,7 +10,7 @@ An APM session is one APM run of both phases on one body of work. It ends when t
 
 All assistants receive the same instructions in plain English. Each agent carries them out with its own assistant's commands, subagents and way of starting a new chat.
 
-Instructions, not file permissions, keep each role to its scope. The Planner holds the context gathered during planning. The Manager holds the coordination context: the planning documents, the Tracker and Memory. A Worker works from its Task Prompts, the Rules and what it has learned in its own conversation. Workers do not read the Spec, Plan, Tracker or Index. Instead, the Manager copies what a Task needs into its Task Prompt. The User can widen a Worker's scope with an explicit request.
+Role instructions define each agent's scope. The Planner holds the context gathered during planning. The Manager holds the coordination context: the planning documents, the Tracker and Memory. A Worker works from its Task Prompts, the Rules and what it has learned in its own conversation. Workers do not read the Spec, Plan, Tracker or Index. Instead, the Manager copies what a Task needs into its Task Prompt. The User can widen a Worker's scope with an explicit request.
 
 Agents use subagents for focused work: read-only subagents for research, and subagents that may change files for debugging. An instruction to use a subagent says when to use one, what to give it and what findings to return. The agent that starts a subagent verifies its findings before using them.
 
@@ -24,7 +24,7 @@ The Planner runs Context Gathering, and the User approves its summary of underst
 
 The Manager first reads its Handoff Bus. If the bus holds a Handoff Prompt, the Manager continues after a Handoff; if it is empty, this is the first Manager. The first Manager reads the planning documents and inspects the git state of each working repository. It combines what it finds with the Spec's and Plan's Notes and presents its understanding of the work, proposed version control conventions and any Stages that may need verification. Once the User approves, it records the base branches in the Spec's Workspace section and the conventions in the Rules, sets up Task tracking and begins.
 
-Each Task then passes through Task Assignment, Task Execution, Task Logging and Task Review. Stages run in order. Within a Stage, the Manager uses single, batch or parallel dispatch. It keeps reviewing reports and dispatching Ready Tasks until every Stage is complete, then presents the session's outcome and offers a session summary and archive. At any point, the User can start a Handoff to move the Manager or a Worker to its next conversation.
+Each Task then passes through Task Assignment, Task Execution, Task Logging and Task Review. Stages run in order. Within a Stage, the Manager uses single, batch or parallel dispatch. It keeps reviewing reports and dispatching Ready Tasks until every Stage is complete or the User stops early, then records the state, presents the session's outcome and offers a session summary and archive. At any point, the User can start a Handoff to move the Manager or a Worker to its next conversation.
 
 ## 3. Planning Documents
 
@@ -46,7 +46,7 @@ The Manager may change the Spec or the Plan during implementation. It records ea
 
 ### 3.3 Rules
 
-The Rules sit in the `APM_RULES` block of `AGENTS.md`; in Claude Code, an existing `CLAUDE.md` imports it with `@AGENTS.md`. Content outside the block belongs to the User and is kept; the Rules refer to it where relevant. Every Worker reads the whole file, whatever its area of work, so each Rule applies to all or most work and says when it applies. Patterns specific to one area reach Workers through their Task Prompts. The Manager and Workers may add Rules during implementation, each through its own procedure.
+The Rules sit in the `APM_RULES` block of `AGENTS.md`. Claude Code loads them natively or through an import, according to the discovery check in §6.2. Content outside the block belongs to the User and is kept; the Rules refer to it where relevant. Every Worker reads the whole file, whatever its area of work, so each Rule applies to all or most work and says when it applies. Patterns specific to one area reach Workers through their Task Prompts. The Manager and Workers may add Rules during implementation, each through its own procedure.
 
 ### 3.4 Version Control
 
@@ -76,7 +76,7 @@ When the User has to act, the agent names the skill to invoke, the chat to invok
 
 ### 4.2 Writing for Other Agents
 
-Messages and APM files are read by an agent that has the files and the workspace but not the writer's conversation. They follow their formats exactly, because other agents and the CLI rely on the field names and paths. Free text is about the work, not the writer's process: what was done, decisions with their reasons, evidence, open issues and the paths the reader needs. Each fact has one home, and claims are checked against their source.
+Messages and APM files are read by an agent that has the files and the workspace but not the writer's conversation. They follow their formats exactly, because other agents and the CLI rely on the field names and paths. Free text records the work: what was done, decisions with their reasons, evidence, open issues and the paths the reader needs. Each fact has one home, and claims are checked against their source.
 
 ### 4.3 Message Bus
 
@@ -108,6 +108,8 @@ An agent that is not part of APM can join the Message Bus by creating its own bu
 
 ## 5. Memory and the Tracker
 
+APM Memory records the session's work history and continuation context: Task outcomes, lasting findings, Stage summaries and role handoffs. Its artifacts belong under `.apm/memory/`. The Tracker holds live Task states.
+
 ### 5.1 Files
 
 | File | Location | Content |
@@ -136,7 +138,7 @@ Workers set `important_findings` when they find something that may matter beyond
 
 **Runtime:** `apm-1-initiate-planner` and `guides/context-gathering.md`.
 
-The Planner first surveys the workspace: its folders and repositories, their history and branches, existing materials and archives. It reads any existing `AGENTS.md` or `CLAUDE.md` for orientation. The User's opening message can establish which documents are authoritative. Otherwise, the User confirms which discovered materials and archives are current before the Planner reads them. The Planner then loads the Context Gathering guide and explores every relevant codebase and confirmed archive before asking questions.
+The Planner first surveys the workspace: its folders and repositories, their history and branches, existing materials and archives. It reads `AGENTS.md` and applicable Claude instructions at the workspace root and its ancestors, including `CLAUDE.md`, `.claude/CLAUDE.md` and `CLAUDE.local.md`, for orientation. The User's opening message can establish which documents are authoritative. Otherwise, the User confirms which discovered materials and archives are current before the Planner reads them. The Planner then loads the Context Gathering guide and explores every relevant codebase and confirmed archive before asking questions.
 
 Three rounds follow, in order:
 
@@ -163,6 +165,8 @@ The Planner proposes, writes and gets approval for each document in turn:
 1. **Spec:** design decisions, constraints, references to source documents and the workspace. Its Notes section describes version control observations, constraints, User preferences, assumptions and open questions for the Manager.
 2. **Plan:** Workers and their areas, Stages in order, Tasks, guidance, dependencies and validation. The Planner checks coverage and dependencies before writing. Its Notes section covers dispatch paths, likely blockers, the critical path, where work converges and which Stages may need verification.
 3. **Rules:** execution patterns that apply to all or most work, keeping any existing content outside `APM_RULES`. Version control conventions are left to the Manager, which adds them to the Rules at its first start.
+
+For Claude Code, the Planner checks Rules discovery against the installed version, Project instructions setting and applicable local or ancestor instructions. It preserves a setup that already loads `AGENTS.md`. Otherwise it imports `@AGENTS.md` in an existing workspace-root `CLAUDE.md`, or `@../AGENTS.md` in `.claude/CLAUDE.md`, preserving content and keeping imports outside code blocks. If neither exists and native loading is unavailable or blocked, it creates a workspace-root `CLAUDE.md` containing only `@AGENTS.md`. Disabled project instructions require the User to enable them. The Planner explains added imports or files at Rules review and asks the User to verify loading with `/memory` in a fresh chat.
 
 Each document needs the User's approval before the next begins. Each Task produces a meaningful deliverable that can be validated on its own, within one Worker's area. Its steps share the Task's validation and help locate failures. Where research or investigation is needed, the Plan includes a step that uses a subagent for it. The level of detail matches the work's complexity.
 
@@ -246,8 +250,14 @@ Recovery rebuilds a started Manager's or Worker's context after compaction or a 
 
 An agent can write a session summary, `.apm/session-summary.md`, at any point in an APM session, usually when the work is complete or the User stops early. It is a dated snapshot of the scope, outcomes, deliverables, findings, open issues and verified differences between the code and the APM files. It also says which parts the writer remembers doing and which it took from files. When the work is complete or the User stops early, the Manager offers to write the summary in its own chat or to have the User invoke the skill in a new chat; at other times, a new chat writes it. The summarising agent then offers to archive the session, which the CLI can also do directly. Archiving is optional.
 
-With the User's approval, archiving copies everything in `.apm/` except `archives/` into `.apm/archives/<name>/`, then removes the active files, installed templates and installation metadata. Existing archives are kept. The default name is `session-YYYY-MM-DD-NNN`; the User may choose another. Each archive's `metadata.json` marks it as an archive and holds the installation metadata and archive time. The summarising agent also creates or repairs `.apm/archives/index.md` and adds the new archive's date, scope, Stage and Task counts and name.
+Closing starts by stopping writes: the Manager asks the User to pause active Workers and waits for confirmation and their current state, then records unfinished Tasks, branches, worktrees and uncommitted work. A requested summary checks relevant unfinished deliverables and Git state in those worktrees, treating their copied APM artifacts as part of the same session. Direct CLI archival tells the User to stop writing agents before confirmation.
+
+With the User's approval, archiving reserves a new `.apm/archives/<name>/`, stages a snapshot of the session records, and uses `git worktree move` in each owning repository to preserve remaining worktrees under the archive's `worktrees/`. Staged, unstaged, untracked and ignored work and checked-out branches are preserved. The archive records old and new worktree locations and verifies the checkouts and Git registrations before clearing active files, installed templates and installation metadata. Finishing Tasks, committing unfinished work and merging branches are separate decisions.
+
+An existing custom name is rejected; default dated names advance on a collision. If preservation fails, active records stay available, moved worktrees are restored where possible, and the CLI reports any remaining locations and the obstacle. Locked worktrees, unsupported moves and unexpected contents require resolution before closure. Existing archives are kept. The default name is `session-YYYY-MM-DD-NNN`; the User may choose another. Each archive's `metadata.json` marks it as an archive and holds the installation metadata and archive time. The summarising agent also creates or repairs `.apm/archives/index.md` and adds the new archive's date, scope, Stage and Task counts and name.
+
+Preserved worktrees remain registered with their source repositories. An archive preserves the local session state; it relies on those repositories for Git history and branch operations.
 
 `apm init` or `apm custom` then starts a new APM session, keeping the archives. While surveying the workspace, the next Planner asks which archives are relevant, has a subagent explore the confirmed ones and checks the findings against the current code before using them.
 
-Archives stay in `.apm/archives/` until the User removes them with `apm archive --delete <name>`, `apm archive --clear` or by hand.
+Archives stay in `.apm/archives/` until the User removes them with `apm archive --delete <name>` or `apm archive --clear`. The CLI removes registered archived worktrees through Git before their containing archive. Discarding dirty preserved work needs explicit authorization, separate from the confirmation bypass supplied by `--force`.

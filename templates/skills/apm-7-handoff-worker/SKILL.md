@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
 
-This skill hands your work to a new conversation of the same Worker. You write two files. The Handoff Log is a lasting record of what this conversation did that the Task Logs do not hold. The Handoff Prompt, in your bus folder's `handoff.md`, tells the next conversation what to read and where to resume. The next conversation acts on them per `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
+This skill hands your work to a new conversation of the same Worker. You write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in your bus folder's `handoff.md`, tells the next conversation what to read and where to resume. The next conversation acts on them per `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
 
 Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
 
@@ -19,7 +19,7 @@ Your memory of earlier turns may be out of date, so check the current state befo
 - Read `task.md` and `report.md` in your bus folder.
 - With version control, use git to check your branch, its commits and whether the Manager has merged it.
 
-Write only checked state in the two files.
+Use the checked state in both files.
 
 ## 2. Handoff Log
 

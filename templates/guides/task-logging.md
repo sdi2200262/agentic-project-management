@@ -10,7 +10,7 @@ Choose the Task's status:
 - **Partial:** some work or validation remains and you need the Manager's guidance. For example, a check was unclear or unavailable, a failure keeps recurring, or the remaining problem is outside the Task.
 - **Failed:** the Objective is not reached despite your attempts to fix it.
 
-When you are unsure which status applies, choose Partial and state what remains. A finding alone does not change a Success; record it per §2.
+When you are unsure which status applies, choose Partial and state what remains. Keep Success when all its criteria passed, and record any findings per §2.
 
 ## 2. Important Findings
 
@@ -27,10 +27,10 @@ When you are unsure, set it to true. Write the findings in the Task Log's Import
 
 ## 3. Logging
 
-Write the Task Log at the prompt's `log_path` per §5.1. The Manager reads the log, not your conversation, so it must make sense on its own.
+Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense to the Manager with access to the workspace and files.
 
-- Describe the result and its evidence, not the order you worked in.
-- Point to deliverables by path instead of copying them. Include a code snippet only for new, complex or critical logic, at most 20 lines, and diagnostic output only where it explains an error.
+- Describe the result and its evidence.
+- Point to deliverables by path. Include a code snippet only for new, complex or critical logic, at most 20 lines, and diagnostic output only where it explains an error.
 - Keep the checks you ran apart from claims you did not verify.
 - If your context was compacted or recovered during the Task, say in the Summary which parts you rebuilt from files.
 

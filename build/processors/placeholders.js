@@ -10,7 +10,7 @@
  * Replaces template placeholders with target-specific values.
  *
  * Supported placeholders:
- * - {VERSION}: Package version
+ * - {VERSION}: Template version
  * - {SKILL_PATH:name}: Skill file (<skills dir>/<name>/SKILL.md)
  * - {SKILL_DIR:name}: Skill folder (<skills dir>/<name>)
  * - {GUIDE_PATH:name}: Guide file (<guides dir>/<name>.md)

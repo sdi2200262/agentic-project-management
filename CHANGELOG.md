@@ -21,6 +21,9 @@ Both installation targets install the same skills and guides, each in its own fo
 
 ### Added
 
+* **Preserve unfinished work when closing a session.** The Manager asks the User to pause active Workers and records their current state. Summaries include unfinished worktree outputs. Archival moves remaining worktrees with Git, preserving their uncommitted contents and registrations, and reports their new paths. These worktrees remain attached to their source repositories.
+* **Explicit worktree discard on archive deletion.** Deleting or clearing an archive with unfinished work requires `--discard-worktrees`; `--force` skips confirmation only. Worktrees are removed through Git before their archive is deleted.
+
 * **An APM session can cover part of a larger goal.** When your goal is too large for one session, the Planner agrees with you during Context Gathering how far this session goes and keeps the rest as notes for later sessions. When the Manager meets a blocker that needs new design decisions, it proposes options, such as pausing to summarize, archive and plan again, instead of replanning on its own.
 * **Summarize and archive from the Manager.** When the work is complete or you stop early, the Manager offers two ways to summarize the session and, optionally, archive it: in its own chat, or in a new chat with `apm-8-summarize-session`. Summaries say which parts the writer remembers doing and which come from files such as Task Logs and Handoff Logs.
 
@@ -48,6 +51,10 @@ Both installation targets install the same skills and guides, each in its own fo
 * **Rate-limit errors explained.** When GitHub's API limit runs out, the error says so and suggests `GITHUB_TOKEN` or signing in with the `gh` CLI.
 
 ### Fixed
+
+* **Archive names cannot overwrite earlier sessions.** Named collisions are refused, and automatic names reserve a new directory. Failed worktree moves restore prior locations where possible; uncertain rollback keeps the partial archive and reports recovery paths.
+* **Claude Code Rules loading handles existing instruction files.** The Planner checks root, local and ancestor instruction files and the loading configuration, preserves working setups, and adds the instruction-file import needed to load `AGENTS.md`.
+* **Less inherited corrective wording.** Templates and standards state intended actions directly while preserving role, approval and validation boundaries. CLI compatibility help now includes the release's minimum CLI version.
 
 * **Incomplete releases are refused before installation.** `apm init` and `apm custom` check every selected bundle before writing files, so missing bundles cannot leave targets recorded as installed.
 * **Local template builds require their own version.** Supply `VERSION` instead of inheriting the CLI version. The build also checks its generated manifest against the CLI's validator before writing output.

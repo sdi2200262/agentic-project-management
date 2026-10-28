@@ -6,10 +6,10 @@ These standards guide template authors. Authors implement them in the command sk
 
 Write plain English: open with the substance, say each point once in everyday words, keep sentences to one main thought, state claims at the certainty the evidence supports, and choose prose, lists or tables by the content. APM text also has needs of its own:
 
-- **Formal terms.** `TERMINOLOGY.md` defines a small set of terms so agents can find each part of the workflow and choose between explicit options. Use them exactly as defined and add no other labels.
+- **Formal terms.** `TERMINOLOGY.md` defines a small set of terms so agents can find each part of the workflow and choose between explicit options. Use these terms exactly as defined and ordinary words elsewhere.
 - **Fixed formats.** Artifacts and messages follow their contracts, because other agents and the CLI rely on their fields, paths and sections.
 - **Agent readers.** Most runtime text is read by an agent that has the files and the workspace but not the writer's conversation. It needs exact paths, conditions and completion criteria.
-- **Runtime copy.** Agents never read these standards. The writing rules agents apply live in the `apm-communication` shared skill, which stays consistent with this file.
+- **Runtime copy.** The writing rules agents apply live in the `apm-communication` shared skill, which stays consistent with these authoring standards.
 
 ## 2. Write for the Reader
 
@@ -25,7 +25,7 @@ Use a casually formal tone in chat and match authored prose to its reader and pu
 
 Use formal APM terms consistently as defined in `TERMINOLOGY.md`. Use ordinary English capitalization for other labels and section names. Where the agent first meets an APM concept, such as a Handoff, a batch or a follow-up Task, explain it in a sentence or two so the agent understands the system it works in, and leave the full detail to the file that owns the concept.
 
-Speak of the work and what the APM session builds, not of a "project": a session may cover only part of a larger goal.
+Speak of the work and what the APM session builds: a session may cover only part of a larger goal.
 
 Runtime instructions address the reading agent as "you"; use third person for other roles. Shared skills distinguish role responsibilities explicitly. Standards describe the workflow in third person and may address maintainers directly.
 
@@ -44,7 +44,7 @@ Give a rule's reason when it helps the reader apply it correctly. Keep examples 
 Agents write for three readers. Instructions say what each output must contain for its reader; the shared rules live in `apm-communication`, and each procedure adds only what its own messages need.
 
 - **The User.** Replies open with the answer, outcome, finding, proposal or question, give only the details needed to understand or act, and stay within the default reply lengths in `apm-communication` §1 unless the User asks otherwise. Explain an APM term the first time the User meets it, and give reasons about the work rather than citing APM procedures.
-- **Other agents.** Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are self-contained for a reader without the writer's conversation. Free text is about the work, not the writer's process: outcomes, decisions with reasons, evidence, open issues and paths. Each fact has one home.
+- **Other agents.** Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are self-contained for a reader without the writer's conversation. Free text records the work: outcomes, decisions with reasons, evidence, open issues and paths. Each fact has one home.
 - **The system.** Bus files, frontmatter and paths follow their contracts exactly, because the CLI, the bus protocol and other agents parse them.
 
 | Situation | What the output conveys |
@@ -60,7 +60,7 @@ Agents write for three readers. Instructions say what each output must contain f
 
 Refer to command skills by name, and tell the User to invoke them without a command prefix, such as "invoke `apm-3-initiate-worker` in a new chat". Refer to what the User gives with a skill by what it is, such as "the agent ID the User gave with this skill".
 
-Keep assistant-specific syntax out of templates: describe the action in plain English, such as "use a subagent to research…", and let each agent use its own assistant's way of doing it. Delegation instructions state when to use a subagent, its purpose, inputs and required findings. Name a subagent by its purpose, never by type. Claude Code-only instructions use the `{CLAUDE_ONLY:text}` placeholder in `STRUCTURE.md` §5.
+Keep assistant-specific syntax out of templates: describe the action in plain English, such as "use a subagent to research…", and let each agent use its own assistant's way of doing it. Delegation instructions state when to use a subagent, its purpose, inputs and required findings. Name a subagent by its purpose. Claude Code-only instructions use the `{CLAUDE_ONLY:text}` placeholder in `STRUCTURE.md` §5.
 
 ## 7. Formatting
 

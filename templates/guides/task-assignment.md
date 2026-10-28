@@ -2,7 +2,7 @@
 
 This guide covers Task Assignment: choosing which Ready Tasks to send and how, writing their Task Prompts, preparing branches and worktrees, and delivering the prompts through the Message Bus. `{GUIDE_PATH:task-review}` covers the reports that come back.
 
-A Worker works only from its Task Prompts, the Rules and its own conversation. It does not read the Spec, Plan, Tracker or Memory, so each Task Prompt must carry everything its Task needs.
+A Worker works from its Task Prompts, the Rules and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
 
 ## 1. Dispatch
 
@@ -19,7 +19,7 @@ A Worker works only from its Task Prompts, the Rules and its own conversation. I
 
 Write each Task Prompt per §7.1, or §7.2 for a batch, from the Plan's Task entry:
 
-1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Copy in the exact Spec decisions, constraints and authoritative User-document content the Task needs, as direct content. Never refer the Worker to the Spec, Plan, Tracker or Memory. Do not copy the Rules; Workers read them.
+1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Copy in the exact Spec decisions, constraints and authoritative User-document content the Task needs, as direct content. Never refer the Worker to the Spec, Plan, Tracker or Memory. Workers read the Rules directly.
 2. For code, name the path and what to do with it, such as "Read `src/api/routes.py` and use its error response schema."
 3. Keep the instructions on the Task. Leave out Stage structure, other Task IDs and coordination concepts, except a producer Task's ID where it identifies dependency context.
 4. If the Plan lists dependencies, write Context from Dependencies:
@@ -38,7 +38,7 @@ With version control, follow the branch and commit conventions in the Rules and 
 1. Merge any producer branch the Task needs before you create its branch.
 2. Create one branch per single or batch dispatch, from the repository's base branch. A batch shares one branch.
 3. For sequential work, use the main working directory. For parallel dispatch, give each Worker its own worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`, with `<branch-slug>` the branch name with `/` replaced by `-`. Keep the main directory on the base branch and run at most four worktrees at once. A worktree holds tracked files only, so name any untracked files the Worker needs.
-4. Name branches after the actual work, without Task IDs, Stage numbers or agent names.
+4. Name branches after the actual work.
 5. Record the branch and any worktree in the Task's row in the Tracker.
 
 Workers commit; you create branches and worktrees, merge them and clean up. Do not commit generated build files; update `.gitignore` when needed. In a worktree, every `.apm/` path still points to the workspace root, so the prompt's Workspace section says so.

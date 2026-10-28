@@ -1,6 +1,6 @@
 # APM Terminology
 
-This document defines APM's formal terms for template authors and maintainers. Agents never read `_standards/` files at runtime. They learn the terms from the command skills, shared skills and guides, so those files use each term exactly as defined here. `WORKFLOW.md` describes how the workflow uses the terms.
+This document defines APM's formal terms for template authors and maintainers. Runtime command skills, shared skills and guides teach agents these terms and use them exactly as defined here. `WORKFLOW.md` describes how the workflow uses the terms.
 
 A term is defined when it names a part of the workflow an agent must find, or one of several explicit options an agent must choose between. Formal terms are capitalized. Terms are ordered so that each definition uses only terms defined before it.
 
@@ -58,7 +58,7 @@ The Planner writes these during Work Breakdown, in this order.
 
 | Term | Definition |
 |---|---|
-| **Task** | A bounded unit of work in the Plan, assigned to one Worker, with an objective, deliverables, validation criteria and dependencies. Its steps are ordered but not validated separately. |
+| **Task** | A bounded unit of work in the Plan, assigned to one Worker, with an objective, deliverables, validation criteria and dependencies. Its ordered steps share the Task's validation. |
 | **Stage** | A group of related Tasks that delivers a coherent part of the work. Stages run in order. |
 
 ### Task dependencies
@@ -108,7 +108,7 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 | **Task Log** | The Worker's record of one Task: outcome, validation, deliverables and findings. | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` |
 | **Handoff Log** | The record a Manager or Worker conversation writes at its Handoff: what it did and the working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md` |
 | **Index** | The overview of the APM session's history: lasting notes and a table of Stage summaries. Each summary is a file in its Stage folder. | `.apm/memory/index.md` |
-| **Memory** | The folder of the APM session's history: the Index, Stage summaries, Task Logs and Handoff Logs. | `.apm/memory/` |
+| **Memory** | The APM session's work history and continuation context: Task outcomes, lasting findings, Stage summaries and Handoff Logs. | `.apm/memory/` |
 | **Tracker** | The Manager's live record of the APM session: Task states with branches and worktrees, each Worker's current conversation, and short-lived notes. | `.apm/tracker.md` |
 
 ---
@@ -134,7 +134,7 @@ These terms keep ordinary lowercase but have a fixed meaning in APM templates.
 | Term | Definition |
 |---|---|
 | **conversation** | One chat with a Manager, Worker or the Planner. It continues through compaction and recovery; only a Handoff starts the role's next numbered conversation. |
-| **recovery** | Rebuilding a Manager's or Worker's working context after compaction or a lost conversation. It does not start the role's next numbered conversation. |
+| **recovery** | Rebuilding a Manager's or Worker's working context after compaction or a lost conversation. It keeps the role's conversation number. |
 | **follow-up Task** | A Task that Task Review sends back to the same Worker with a revised Task Prompt. It keeps its Task ID and stays Active. |
 | **archive** | A snapshot of an APM session's `.apm/` files, stored in `.apm/archives/`. Archiving is optional; later sessions can use archives as context. |
 | **session summary** | An optional document, `.apm/session-summary.md`, describing an APM session's scope, outcomes, findings, open issues and current state. |

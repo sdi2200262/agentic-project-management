@@ -2,7 +2,6 @@
  * APM Build System Entry Point
  *
  * Generates installation bundles from shared Markdown templates.
- * Both installation targets use Markdown.
  *
  * Usage: node build/index.js
  *
