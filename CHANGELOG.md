@@ -2,7 +2,7 @@
 
 APM versions its CLI (npm) and templates (GitHub Releases) separately using [Semantic Versioning](https://semver.org/). Entries follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). See [VERSIONING.md](VERSIONING.md) for release rules.
 
-## CLI v1.0.3 + Templates v1.1.0 - Unreleased
+## CLI v1.0.3 + Templates v1.1.0 - 2026-10-29
 
 ### Breaking Changes
 
@@ -15,7 +15,7 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 * Runtime template files are about 42% shorter, with simpler instructions and replies. Native subagents are optional.
 * Planning adapts the work breakdown to the project, agrees Git conventions and can scope larger goals across sessions.
 * Clearer responsibilities and simpler formats for the Spec, Plan, Rules, Tracker and Memory. Removed the Plan's dependency graph; Stage summaries and follow-up attempts have separate linked records, and Task/Handoff records identify numbered conversations.
-* The Manager can run missing checks or make contained corrections during review, and summarize completed or stopped sessions with unfinished work and validation limits.
+* The Manager can complete small amounts of remaining work and run final validation during review, and summarize completed or stopped sessions with unfinished work and validation limits.
 * `apm status` lists missing files. CLI messages give clearer next steps and GitHub rate-limit guidance.
 * Builds require an explicit template `VERSION` and validate release manifests.
 
