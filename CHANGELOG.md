@@ -6,285 +6,202 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 
 ### Breaking Changes
 
-* **CLI v1.0.3 required.** Run `npm update -g agentic-pm`, then `apm update` to upgrade an existing installation.
-* **Two installation targets.** Choose `agents` for assistants that use `AGENTS.md` and `.agents/skills/`, or `claude` for Claude Code. Skills and guides install under `.agents/` or `.claude/`. Updating converts previous non-Claude targets to `agents`; Claude Code keeps `claude`.
-* **Commands install as skills.** Claude Code commands move from `.claude/commands/` to `.claude/skills/`.
-* **Shared Rules location.** All assistants use workspace-root `AGENTS.md`. For Claude Code, the Planner adds an import to an existing `CLAUDE.md`.
+* **CLI v1.0.3 required.** Run `npm update -g agentic-pm`, then `apm update`.
+* **Two installation targets.** `agents` supports assistants using `AGENTS.md` and `.agents/skills/`; `claude` supports Claude Code. Updates consolidate previous non-Claude targets into `agents`. Skills and guides install under `.agents/` or `.claude/`; Claude Code commands move to `.claude/skills/`.
+* **Shared Rules.** All targets use workspace-root `AGENTS.md`. For Claude Code, the Planner adds an import to an existing `CLAUDE.md`.
 
 ### Changed
 
-* **Lighter instructions.** Runtime template files are about 44% shorter. Agent replies are shorter and focus on results, evidence and decisions. Native subagents are optional.
-* **Planning.** The Planner discusses the work breakdown and agrees Git conventions during discovery. Larger goals can be divided across APM sessions.
-* **Simpler session files.** Spec, Plan, Tracker and Memory Index have simpler formats and Notes sections. The Plan no longer includes a dependency graph. Stage summaries are separate files linked from the Index; Task and Handoff records use numbered conversations.
-* **Session summaries.** The Manager can write a summary in its own chat at completion or early stopping. Summaries include unfinished work and validation limits, and are saved as `session.summary.md`.
-* **Worktree preservation.** `apm archive` and `apm update` move remaining worktrees into the archive with their uncommitted files and Git connections. Archive deletion warns about worktrees and unfinished changes before confirmation.
-* **CLI feedback.** `apm status` names missing files. Commands give next-step instructions and clearer GitHub rate-limit errors. Commands requiring input fail with guidance when no terminal is attached; errors return a nonzero status.
-* **Template builds.** Local builds require `VERSION` and validate the release manifest.
+* Runtime template files are about 44% shorter, with simpler instructions and replies. Native subagents are optional.
+* The Planner discusses the work breakdown and agrees Git conventions during discovery, and can scope larger goals across sessions.
+* Simplified Spec, Plan, Tracker and Memory formats. Removed the Plan's dependency graph; Stage summaries become separate linked files, and Task/Handoff records identify numbered conversations.
+* The Manager can summarize completed or stopped sessions in its own chat, including unfinished work and validation limits.
+* `apm status` lists missing files. CLI messages give clearer next steps and GitHub rate-limit guidance.
+* Builds require an explicit template `VERSION` and validate release manifests.
 
 ### Fixed
 
-* Conflicting assistant-specific instructions in shared skill files.
-* Incomplete release bundles are rejected before installation or update.
-* Archive names cannot overwrite existing sessions.
-* CLI packages exclude local assistant settings and development files.
+* Conflicting assistant instructions in shared skills.
+* Archival breaking worktree Git connections; archives now preserve worktrees and uncommitted files. Deletion confirmations identify worktrees and unfinished changes.
+* Missing bundle assets are detected before installation files change.
+* Archive names could overwrite existing sessions.
+* npm packages could include local assistant settings and development files.
+* Commands silently failing without a terminal or returning a successful exit status after errors.
 
 ## CLI v1.0.2 + Templates v1.0.3 - 2026-10-15
 
-### Changed
-
-* **Antigravity commands are skills.** Commands install to `.agents/skills/` instead of `.agents/workflows/`, because Antigravity CLI no longer runs workflows and the Antigravity app stops running them on October 19, 2026. Subagent guidance uses `invoke_subagent` and the built-in `research` agent. Run `apm update` to switch an existing install.
-* **Copilot commands are skills.** Commands install to `.github/skills/` instead of `.github/prompts/`. Skills work in Copilot CLI as well as VS Code, where prompt files are deprecated. Run `apm update` to switch an existing install.
-* **Codex commands use `$`.** Instructions in the Codex bundle now say `$apm-…` instead of `/apm-…`, which Codex rejects.
-* **Subagent and new-chat guidance per assistant.** Each assistant's subagent syntax and new-chat instructions now match its current tools and cover both its editor and CLI. The archive explorer is called by name, with `mode: subagent` for OpenCode, an explicit tool list for Antigravity, and `user-invocable: false` for Copilot. It no longer appears in agent pickers.
-* **Commands stay user-triggered in Copilot and Antigravity.** Command skills set `disable-model-invocation: true`. They appear in the `/` menu but not in the model's skill list.
-* **Assistant order.** `apm init` lists assistants as Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, OpenCode.
-* **Clearer prompts and messages.** The archive and update confirmations say exactly what is removed and that archives are kept. `apm update` names the version you're on, post-install notes show as information rather than warnings, and help says which command `--list` and `--clear` belong to. Help text, the release-not-found error and the skills link match current behaviour.
-* **`apm remove` keeps shared files.** When two assistants install the same file, such as Codex and Antigravity's `.agents/skills/`, removing one keeps the file for the other. A warning shows when the removed one had overwritten it. An assistant's folder is removed once it's empty.
-* **`apm status` checks files on disk.** It flags missing files and says how to restore them.
-* **Clearer counts and errors.** Messages say "1 assistant" rather than "1 assistant(s)", and `apm init --tag` says when a tag belongs to another major version.
-* **`--tag` finds any release.** Tags are looked up directly, and release lists cover the newest 100 releases.
-
 ### Added
 
-* **Minimum CLI version.** A template release can set `minCliVersion` in its manifest; the CLI refuses it and asks you to update when it's older.
+* Minimum CLI version requirements in template releases, checked before installation.
+
+### Changed
+
+* Antigravity commands move from `.agents/workflows/` to `.agents/skills/`; Copilot commands move from `.github/prompts/` to `.github/skills/`. Both remain user-invoked.
+* Updated assistant-specific subagent and new-chat instructions, archive-explorer definitions and Codex command invocations.
+* Clearer archive/update confirmations, version errors and CLI help.
+
+### Fixed
+
+* Removing an assistant retains shared files needed by remaining assistants and removes empty assistant directories. Warns when retained files contain the removed assistant's instructions.
+* `apm status` detects missing installed files and gives repair instructions.
+* Explicit release tags are looked up directly, including releases outside the latest listing. Release listings include up to 100 entries.
 
 ### Security
 
-* **Updated dependencies.** `axios` 1.20.0 and `adm-zip` 0.6.1 fix published advisories, including zip-bomb and symlink issues in extraction.
+* Updated `axios` to 1.20.0 and `adm-zip` to 0.6.1 for security fixes.
 
 ### Known Issues
 
-* **Codex and Antigravity overwrite each other's skills.** Both install their commands and the communication skill to the same 11 files in `.agents/skills/`, with different text: `$` or `/` commands, and `.codex/` or `.agents/` guide paths. The one installed or updated last overwrites the other's copy. Removing that one leaves the other with its instructions. To restore an assistant's instructions, run `apm remove -a <id>`, then `apm add -a <id>`. With both installed, this overwrites the other's. CLI v1.0.2 keeps these files on remove and warns in that case. Older CLIs delete them, and the same two commands restore them. Fixed in Templates v1.1.0; run `apm update`.
+* Codex and Antigravity overwrite each other's instructions in shared skill files when installed together; the last installation wins.
 
 ## Templates v1.0.2 - 2026-06-08
 
 ### Breaking Changes
 
-* **Gemini CLI Migration:** Transitioned support from Gemini CLI to the new Antigravity platform. The configuration directory has moved from `.gemini` to `.agents`, and the rules file has been renamed from `GEMINI.md` to `AGENTS.md`. Output format has been updated from TOML to Markdown.
-
-### Added
-
-* **Antigravity Support:** Support for Antigravity (CLI and IDE), with commands in `.agents/workflows/` and skills in `.agents/skills/`.
+* Replaced Gemini CLI with Antigravity CLI and IDE support. Configuration moves from `.gemini/` to `.agents/`, Rules from `GEMINI.md` to `AGENTS.md`, and TOML commands to Markdown workflows in `.agents/workflows/`.
 
 ## Templates v1.0.1 - 2026-04-23
 
 ### Fixed
 
-* **Codex CLI fixes:** Resolved issues with Codex CLI command invocation and path handling.
+* Codex commands and skills now install under `.agents/skills/` instead of `.codex/skills/`.
 
 ## CLI v1.0.0 + Templates v1.0.0 - 2026-04-09
 
-v1.0.0 is a complete redesign of the APM workflow. The scope of changes across both the codebase and the workflow itself is too large to cover exhaustively here. This is a concise summary of the most significant changes. For the full specification, see the [documentation](https://github.com/sdi2200262/apm-website/tree/main/docs).
+Complete redesign of the APM workflow, agent roles and session files.
 
 ### Breaking Changes
 
-* **Workflow redesigned.** Two-phase workflow: Planning Phase (Context Gathering + Work Breakdown) produces three planning documents (Spec, Plan, Rules). Implementation Phase cycles through Task Assignment, Task Execution, Task Logging, and Task Review, with support for batch and parallel dispatch across multiple Workers. All coordination is User-mediated through a file-based Message Bus, with Agents guiding the User at every step.
-
-* **Agent roles changed.** Setup Agent → Planner. Implementation Agent → Worker. Ad-Hoc Agents removed (subagents are now spawned natively by Planner, Manager, and Workers). Manager unchanged.
-
-* **9 commands** (up from 5): `apm-1-initiate-planner`, `apm-2-initiate-manager`, `apm-3-initiate-worker`, `apm-4-check-tasks`, `apm-5-check-reports`, `apm-6-handoff-manager`, `apm-7-handoff-worker`, `apm-8-summarize-session`, `apm-9-recover`.
-
-* **New artifact structure.** Spec (`.apm/spec.md`), Plan with dependency graphs (`.apm/plan.md`), Rules (platform rules file), Tracker (`.apm/tracker.md`), Memory hierarchy (`.apm/memory/` with Index, Task Logs, Handoff Logs). Replaces Implementation Plan and Memory Root.
-
-* **Platform support narrowed** to Claude Code, Cursor, GitHub Copilot, Gemini CLI, and OpenCode.
-
-* **Template file structure changed.** Commands in `templates/commands/`, guides in `templates/guides/`, skills in `templates/skills/`, agents in `templates/agents/`. Governed by `templates/_standards/` (WORKFLOW.md, TERMINOLOGY.md, STRUCTURE.md, WRITING.md).
-
-* **CLI redesigned.** New commands: `apm archive`, `apm add`, `apm remove`, `apm status`, `apm custom`. `apm init` is fresh-install only. Per-file install tracking via `installedFiles` in metadata.
-
-* **Decoupled versioning.** CLI and templates version independently. Template releases use standard SemVer. See [VERSIONING.md](VERSIONING.md).
+* **Planning and implementation.** The Planner replaces the Setup Agent, gathering context and producing a Spec, Plan and Rules before implementation. Workers replace Implementation Agents; the Manager coordinates their work. Native subagents replace Ad-Hoc Agents and Delegate commands.
+* **Session files.** Spec, Plan, Rules, Tracker and indexed Task/Handoff Logs replace the Implementation Plan and Memory Root. The Plan organises Stages, Tasks, dependencies and validation criteria; the Tracker records live progress.
+* **Installation and updates.** `apm init` is for fresh installations. `apm update` archives the active session and installs fresh templates. Metadata tracks individual installed files.
+* **Assistant support.** Six targets: Claude Code, Codex, Cursor, GitHub Copilot, Gemini CLI and OpenCode. Removed Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity and Qwen Code.
+* **Versioning.** CLI and templates version independently with a shared major version.
 
 ### Added
 
-* **Message Bus** (`.apm/bus/`): file-based Agent communication with Task Bus, Report Bus, and Handoff Bus per Worker.
-* **Session continuation:** archive completed sessions, start fresh with archived context carried forward via Planner detection.
-* **Recovery command** (`/apm-9-recover`): reconstructs working context after platform auto-compaction.
-* **Handoff system:** structured context transfer between Agent instances with Handoff Log (persistent) and Handoff Prompt (ephemeral).
-* **Standalone skills** (`skills/`): independently installable skills for migration and customization.
-* **Custom repository support** (`apm custom`): install templates from forked or third-party repositories.
-* **Build pipeline** (`build/`): processes templates into platform-specific bundles with placeholder system, TOML conversion for Gemini, and `apm-release.json` manifest.
-* **Modular CLI architecture** (`src/`): commands, services, core, UI, and schemas modules.
+* **Message Bus** in `.apm/bus/` for Task Prompts, Task Reports and Handoff Prompts. The User delivers messages between agent chats.
+* **Dispatch choices.** Single Tasks, batches and parallel Workers, with feature branches and isolated worktrees for parallel execution. Workers receive self-contained Task Prompts; the Manager retains planning and coordination context.
+* **Continuity.** Persistent Handoff Logs and temporary Handoff Prompts transfer context to successor agents. A recovery command rebuilds context after compaction. Session summaries and archives carry completed work into later planning.
+* Five CLI commands: `archive` for session archives, `add` and `remove` for assistants, `status` for installation checks, and `custom` for third-party template repositories.
+* Codex support, nine assistant commands, and standalone skills for APM help, migration and customisation.
 
-### Removed
+### Changed
 
-* Ad-Hoc Agents and Delegate commands.
-* Implementation Plan, Memory Root, and `guides/` directory format.
-* Support for Windsurf, Kilo Code, Roo Code, Auggie CLI, Google Antigravity, and Qwen Code.
-* Legacy build system (`scripts/build.js`).
-
----
+* Template sources separate commands, guides, skills and agent definitions under shared authoring standards. Guides install in assistant directories.
+* Replaced the build script with a modular pipeline producing assistant bundles and an `apm-release.json` manifest.
 
 ## CLI v0.5.4 + Templates v0.5.4 - 2026-01-24
 
 ### Added
 
-* **Google Antigravity Support:** Added support for Google Antigravity as the 11th AI assistant.
+* Google Antigravity as the eleventh assistant, with commands in `.agent/workflows/`.
 
-### Deprecated
+### Changed
 
-* **Bootstrap Prompt:** The Bootstrap Prompt has been deprecated and will be removed in v1.0.0.
+* Setup ends after plan approval or optional review. The Manager reads `Memory_Root.md` to distinguish first initialization from a handover, then loads the plan and guides.
+* Manager Handoffs include explicit instructions for reading prior Memory Logs.
 
----
+### Removed
+
+* The copy-paste Bootstrap Prompt between Setup and Manager. Users can start the Manager directly after Setup.
 
 ## CLI v0.5.3 - 2025-12-05
 
 ### Fixed
 
-* **NPM Package:** Fixed `.npmignore` to exclude `dist/` directory from published package. Previous releases (v0.5.2 and earlier) incorrectly included build artifacts (zip files) in the npm package.
-
----
+* Excluded generated `dist/` bundles from the npm package.
 
 ## CLI v0.5.2 + Templates v0.5.2 - 2025-12-04
 
 ### Added
 
-* **Header Templates:** CLI now creates `Implementation_Plan.md` and `Memory_Root.md` with pre-filled header templates containing placeholders. Setup Agent must fill Implementation Plan header before Project Breakdown, and Manager Agent must fill Memory Root header before first phase execution.
+* Initial `Implementation_Plan.md` and `Memory_Root.md` headers, populated by the Setup and Manager Agents.
+* Documentation website with search and setup videos.
 
 ### Changed
 
-* **Workflow Streamlining:** Removed Enhancement phase and `Implementation_Plan_Guide.md`. Setup workflow now consists of 4 steps instead of 5, with structured file format built directly into Project Breakdown Guide.
-* **Context Synthesis:** Renamed terminology from "Phase" to "Question Round" with stricter sequence enforcement and mandatory completion requirements.
-* **Error Handling:** Strengthened Implementation Agent error handling protocol with 3-attempt limit before mandatory delegation (increased from 2 attempts).
-* **Project Breakdown:** Added stricter instructions for interleaved Project Breakdown sequence with strict guardrails to prevent pattern matching and ensure quality task breakdown.
-* **Task Assignment:** Added Reporting Protocol requiring Implementation Agents to output Final Task Report code blocks for better UX.
-* **Agent Management:** Added Agent Name Registration & Assignment Validation protocol for Implementation Agents to prevent task assignment errors.
+* Setup uses four steps: Context Synthesis, Project Breakdown, optional Plan Review and Bootstrap Prompt creation. All four question rounds must finish before Project Breakdown.
+* Project Breakdown alternates phase analysis with writing that phase to the plan. Managers validate task fields and dependencies, maintain plan structure and update references when tasks change.
+* Implementation Agents register an identity, reject assignments for another agent and provide a copyable Task Report for the User to return to the Manager.
+* Managers inspect deliverables when logs flag important findings or compatibility issues. Debugging must delegate after three failed attempts.
 
 ### Removed
 
-* **Implementation_Plan_Guide.md:** Removed separate Enhancement guide. Structured format now integrated directly into Project Breakdown Guide workflow.
-
----
+* The separate Enhancement step and Implementation Plan guide.
 
 ## CLI v0.5.1 + Templates v0.5.1 - 2025-11-03
 
-First stable release of the CLI. Version 0.5.0 shipped only as pre-releases (`0.5.0-test-1` to `0.5.0-test-4`, from 2025-10-29).
+First stable CLI release, following the v0.5.0 pre-releases.
 
 ### Added
 
-* **NPM CLI Tool (`agentic-pm`):** Introduced a command-line interface for managing APM installations.
-* **`apm init` Command:** Automates project setup, including AI assistant selection, asset download from GitHub Releases, and creation of the `.apm` directory structure (`.apm/guides`, `.apm/Memory`, `.apm/Implementation_Plan.md`, `.apm/metadata.json`). By default, automatically finds and installs the latest template version compatible with the current CLI version. Supports `--tag <tag>` option for installing specific template versions (e.g., `apm init --tag v0.5.0+templates.1`).
-* **`apm update` Command:** Allows users to update their local APM installation to the latest compatible template version. Includes intelligent version compatibility checking that compares installed templates against available releases, only updating if a newer compatible build exists. Informs users when newer templates require a CLI update via `npm update -g agentic-pm`. Includes backup and restore functionality for safe updates.
-* **Version Compatibility System:** Dynamic CLI version reading from `package.json` with automatic template version matching. The CLI automatically finds templates compatible with the running CLI version and compares build numbers for update decisions.
-* **Support for 10 AI Assistants:** CLI downloads and installs specific bundles tailored for Cursor, GitHub Copilot, Claude Code, Gemini CLI, Qwen Code, OpenCode, Windsurf, Kilo Code, Auggie CLI, and Roo Code.
-* **Build Process (`npm run build`):** New script (`scripts/build.js`) processes source templates (`templates/`) into distributable bundles (`dist/`) for each assistant, handling formatting (Markdown/TOML) and placeholders.
-* **Metadata File (`.apm/metadata.json`):** Tracks the installed APM version (template tag) and selected AI assistant within the project.
-* **`Troubleshooting_Guide.md`:** Added a dedicated guide based on the v0.4 User Guide's troubleshooting section.
+* **npm CLI.** `agentic-pm` provides `apm init` and `apm update`. Installation selects assistants, downloads a compatible template release and creates session files. `--tag` selects a specific release.
+* **Template updates.** Compatibility checks select newer template builds, warn when a CLI update is needed, and back up installations with restoration on failure.
+* **Assistant bundles.** Ten targets: Cursor, GitHub Copilot, Claude Code, Gemini CLI, Qwen Code, OpenCode, Windsurf, Kilo Code, Auggie CLI and Roo Code.
+* **Build system.** `scripts/build.js` generates assistant-specific Markdown/TOML bundles from shared `templates/` sources, resolving paths and placeholders.
+* Installation metadata in `.apm/metadata.json` and a Troubleshooting Guide.
 
 ### Changed
 
-* **Installation Method:** APM is now installed via NPM (`npm install agentic-pm`) instead of Git clone or GitHub Template.
-* **Customization Workflow:** Customization is now done by editing files locally within the `.apm/guides/` directory or the assistant-specific command directory *after* running `apm init`. Acknowledged as a work-in-progress for improving flexibility.
-* **Source File Structure:** Core prompt and guide templates moved to the `templates/` directory in the repository. The `/prompts` directory is no longer the source or user-facing structure.
-* **Prompt/Guide Compliance:** Updated all agent initiation prompts, handover prompts, and core guides (`Memory_System`, `Memory_Log`, `Task_Assignment`, `Implementation_Plan`, `Project_Breakdown`, `Context_Synthesis`) to be v0.5 compliant:
-    * Removed all instructions related to actions now handled by the CLI (e.g., Asset Verification).
-    * Added CLI awareness to the Setup Agent.
-    * Removed all references to JSON assets.
-    * Removed all references to the Simple Memory system.
-* **File Re-branding & Relocation:**
-    * `Context_Synthesis_Prompt.md` re-branded to `Context_Synthesis_Guide.md` and moved conceptually to the guides directory.
-    * `Manager_Agent_Handover_Guide.md` re-branded to `Manager_Agent_Handover_Prompt.md` with command name `handover-manager`.
-    * `Implementation_Agent_Handover_Guide.md` re-branded to `Implementation_Agent_Handover_Prompt.md` with command name `handover-implementation`.
-* **Documentation Update:** Updated `README.md` (main), `docs/README.md`, `CONTRIBUTING.md`, `Getting_Started.md`, `Introduction.md`, `Workflow_Overview.md`, `Modifying_APM.md`, `Agent_Types.md`, and `Token_Consumption_Tips.md` to reflect all v0.5 changes, including CLI usage, new file structures, deprecations, and customization workflow. Removed references to now-obsolete PDF guides.
-
-### Deprecated
-
-* **JSON Asset Format:** No longer supported for Implementation Plans or Memory Logs.
-* **Simple Memory Bank:** The single-file `Memory_Bank.md` strategy is no longer supported. APM v0.5 exclusively uses the Dynamic-MD system.
+* CLI installation replaces cloning or using the repository as a template. Guides install into `.apm/guides/`, with commands in assistant directories; users customise those installed files.
+* Prompts and guides use Dynamic-MD memory and leave installation checks to the CLI. Handover guides become command prompts.
 
 ### Removed
 
-* **GitHub Template:** The "Use this template" approach for installation and customization is removed in favor of the CLI.
-* **User-facing `/prompts` Directory:** The structured `/prompts` directory is no longer part of the user installation; assets are placed directly by the CLI.
-* **PDF Guides:** `APM_Quick_Start_Guide.pdf` and `APM_User_Guide.pdf` are removed from the documentation set; relevant content integrated into Markdown files.
-
----
+* JSON planning/log formats and the single-file Simple Memory Bank.
+* The user-facing `/prompts/` layout and PDF guides.
 
 ## Templates v0.4.0 - 2025-08-19
 
-APM v0.4 represents a complete framework refinement. The v0.3 architecture is enhanced to provide a more sophisticated, scalable approach to multi-agent project management while maintaining the core principles that made APM effective.
+### Breaking Changes
 
-### Major Changes
+* Rebuilt the workflow around Setup and Task Loop phases. A new Setup Agent gathers requirements and writes the plan; the Manager coordinates implementation. Existing v0.3 projects require reinitialisation with the new assets.
+* Changed the license from MIT to MPL-2.0.
 
-**Architecture Enhancements**
-- **Expanded from 2 to 4 agent types**: Added Setup Agent for project initialization and Ad-Hoc Agents for specialized delegation
-- **Two-phase workflow**: Setup Phase for comprehensive planning, Task Loop Phase for execution
-- **Advanced memory system**: Dynamic Memory Bank with multiple variants and progressive creation
-- **Sophisticated dependency management**: Cross-agent coordination with comprehensive context integration
-- **Handovers are now practical context repair mechanisms** not just context dumps, with built-in safety and validation steps
+### Added
 
-**Complete File Structure Overhaul**
-- All prompts redesigned and reorganized under new directory structure
-- New `docs/` directory with comprehensive updated documentation
-- Added `schemas/` directory with experimental JSON asset format for testing/research preview
+* **Four agent roles.** Setup, Manager and Implementation Agents, plus Ad-Hoc Agents for debugging and research delegation.
+* **Project discovery and planning.** Four-round Context Synthesis, phase-by-phase task breakdown, agent assignments and dependency analysis, with optional systematic plan review.
+* **Memory variants.** Simple, Dynamic-MD and experimental Dynamic-JSON storage. Dynamic variants use a Memory Root, phase directories, per-task logs and phase summaries created as work progresses.
+* **Task execution.** Single-step and multi-step patterns, cross-agent dependency context and debugging delegation.
+* **Handovers.** Separate Manager and Implementation handover procedures with context validation and repair.
+* Rewritten documentation for workflow, customisation, context management and token costs, plus PDF user guides and experimental JSON schemas.
 
-**Enhanced Capabilities**
-- **Systematic project discovery**: 4-phase Context Synthesis with progression gates
-- **Advanced task execution**: Single-step and multi-step patterns with dependency context integration
-- **Error handling protocol**: Mandatory delegation system for complex debugging scenarios
-- **Token optimization**: Economic model proposals and cost-effective strategies
+### Changed
 
-### License Change
-- **Updated from MIT to Mozilla Public License 2.0 (MPL-2.0)**
-- Ensures community protection while maintaining full commercial compatibility
-
-### Migration Notes
-APM v0.4 is not backward compatible with v0.3. assets - **yet**. However:
-- **New users** will find v0.4 significantly easier to get started with using the comprehensive documentation
-- **v0.3 users** will find the core concepts familiar but greatly enhanced with more sophisticated workflows and capabilities
-
-> **Note:** Existing v0.3 projects should be re-initialized using the new Setup Agent methodology and all v0.3 assets should be removed..
-
-### **Getting Started**
-See the complete [documentation suite](docs/) for detailed setup instructions, concepts, and advanced usage. Read [Getting Started](docs/Getting_Started.md) for your first APM v0.4 session.
-
----
+* Reorganised prompts into role-specific directories and shared guides under `prompts/`.
 
 ## Templates v0.3.0 - 2025-05-21
 
 ### Added
-- New section in `prompts/02_Utility_Prompts_And_Format_Definitions/Handover_Artifact_Format.md` for "Recent Conversational Context & Key User Directives" in the `Handover_File.md`.
+
+* Recent conversation context and unlogged User directives in Handover artifacts.
 
 ### Changed
-- **Memory System Robustness (High Priority):**
-  - Updated `prompts/01_Manager_Agent_Core_Guides/02_Memory_Bank_Guide.md` to mandate strict adherence to `Implementation_Plan.md` for all directory/file naming and to include a validation step before creation. Phase and Task naming conventions clarified.
-  - Significantly revised `prompts/02_Utility_Prompts_And_Format_Definitions/Memory_Bank_Log_Format.md` to emphasize conciseness, provide clear principles for achieving it, and added concrete examples of good vs. overly verbose log entries.
-  - Updated `prompts/01_Manager_Agent_Core_Guides/03_Task_Assignment_Prompts_Guide.md` to instruct Manager Agents to explicitly remind specialized agents of their obligations regarding Memory Bank structure and log quality (this earlier change remains valid alongside the newer one below).
-- **Handover Protocol Enhancement:**
-  - Modified `prompts/01_Manager_Agent_Core_Guides/05_Handover_Protocol_Guide.md` to include a new mandatory step for the Outgoing Manager Agent: review recent conversational turns with the User and incorporate a summary of unlogged critical directives or contextual shifts into the handover artifacts.
-- **Implementation Plan and Task Assignment Process:**
-  - Enhanced `prompts/01_Manager_Agent_Core_Guides/01_Implementation_Plan_Guide.md` to:
-    - Emphasize and clarify the requirement for explicit agent assignment per task.
-    - Mandate the inclusion of brief "Guiding Notes" (e.g., key methods, libraries, parameters) within task action steps to ensure inter-task consistency and provide clearer direction.
-  - Updated `prompts/01_Manager_Agent_Core_Guides/03_Task_Assignment_Prompts_Guide.md` to ensure Manager Agents incorporate and expand upon these "Guiding Notes" from the `Implementation_Plan.md` when creating detailed task assignment prompts for Implementation Agents.
-- **Handover Artifacts Refinement:**
-  - Restructured and clarified `prompts/02_Utility_Prompts_And_Format_Definitions/Handover_Artifact_Format.md` for better usability and understanding.
 
-### Removed
-- Removed the `Complex_Task_Prompting_Best_Practices.md` guide to maintain a more general framework.
-- Removed explicit guidelines for Jupyter Notebook cell generation from `prompts/02_Utility_Prompts_And_Format_Definitions/Imlementation_Agent_Onboarding.md` to keep agent guidance general.
-
----
+* Memory Bank paths must match the current Implementation Plan and be checked before creation.
+* Plans assign agents explicitly and include task-specific guidance; assignment prompts carry that guidance to Implementation Agents.
+* Logs use concise summaries and artifact references. Managers include logging requirements in assignments.
+* Reorganised the Handover artifact format.
 
 ## Templates v0.2.0 - 2025-05-14
+
 ### Added
-- New Manager Agent Guide for dynamic Memory Bank setup (`02_Memory_Bank_Guide.md`).
-- Cursor Rules system with 3 initial rules and `rules/README.md` for MA reliability upon Initiation Phase.
-- Enhanced MA Initiation with improved asset verification, file structure display and more.
+
+* Manager initiation and codebase guidance, with guides for planning, Memory Bank setup, task assignment, review and Handover.
+* Standard formats for Memory Bank logs and Handover artifacts, plus Implementation Agent onboarding.
+* Three Cursor rules for discovery, Memory Bank structure and plan formats.
+* Workflow, Getting Started, core concepts, Cursor integration and troubleshooting documentation.
+* Code of Conduct and a bug-report issue template.
 
 ### Changed
-- Refined Manager Agent Initiation Flow (`01_Initiation_Prompt.md`) for Memory Bank, planning, and codebase guidance.
-- Comprehensive documentation updates across key files (Root `README.md`, `Getting Started`, `Cursor Integration`, `Core Concepts`, `Troubleshooting`) reflecting all v0.2.0 changes.
-- Renumbered core MA guides in `prompts/01_Manager_Agent_Core_Guides/` and updated framework references.
 
----
+* Manager initiation includes asset checks and Memory Bank setup.
 
 ## Templates v0.1.0 - 2025-05-12
+
 ### Added
-- Initial framework structure
-- Defined Memory Bank log format and Handover Artifact formats.
-- Created core documentation: Introduction, Workflow Overview, Getting Started, Glossary, Cursor Integration Guide, Troubleshooting.
-- Established basic repository files: README, LICENSE, CONTRIBUTING, CHANGELOG, CODE OF CONDUCT.
-- Added initial GitHub issue template for bug reports.
 
-
-
+* Initial framework overview: Managers plan and assign work, Implementation Agents execute and log it, and specialist agents support delegated tasks. Memory Banks and Handovers preserve project context.
+* README, MIT license, contributing guide and changelog.
