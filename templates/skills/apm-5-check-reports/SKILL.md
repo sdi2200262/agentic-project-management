@@ -11,5 +11,5 @@ Continue only if the User manually invoked this skill, the User asked you to fol
 This skill delivers Task Reports to the Manager. If you are not the Manager, tell the User and stop. The User may give one or more agent IDs with this skill to read only those Workers' reports.
 
 1. With agent IDs, match each to a bus folder per `{SKILL_PATH:apm-communication}` §3.2 and read those Workers' `report.md` files. Without them, read every non-empty `.apm/bus/*/report.md`. Read them in one terminal command and note each file's path. Tell the User about any content you did not expect, such as a report from a Worker with no dispatched Task.
-2. If no report is waiting, say so and wait for the User to invoke this skill again.
+2. If no Task Report is waiting, say so and wait for the User to invoke this skill again.
 3. Review each report per `{GUIDE_PATH:task-review}`.

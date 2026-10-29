@@ -7,7 +7,7 @@ A Worker works from its Task Prompts, the Rules and its own conversation. Each T
 ## 1. Dispatch
 
 1. Find the Ready Tasks from the Tracker and the Plan's Dependencies fields.
-2. Group them by Worker. A Worker takes one dispatch at a time: send it a new Task Prompt only after its current Task or batch has been reviewed. Then choose the dispatch:
+2. Group them by Worker. A Worker takes one dispatch at a time: send it a new dispatch only after its current Task or batch has been reviewed. Corrections to an active Task use §5.1 instead. Then choose the dispatch:
    - **Single dispatch:** one Task to one Worker.
    - **Batch dispatch:** several Tasks to the same Worker, executed in order. A batch may be a chain whose dependencies are inside the batch or already Done, or independent Tasks that are all Ready. Keep batches to 2–3 Tasks. Send a chain's Tasks one at a time when other Workers wait on its intermediate results.
    - **Parallel dispatch:** Tasks or batches to different Workers at the same time, when no unresolved Cross-Worker dependency links them and version control gives each Worker its own worktree. Suggest tool approvals that keep parallel Workers from waiting on the User.
@@ -62,6 +62,16 @@ A follow-up Task sends a Task back to the same Worker after review, with a revis
 1. Rewrite the prompt per §7.3. Explain what went wrong and what review or investigation found, and revise the Objective, Instructions, Output and Validation so the Worker can close the gap from its own context.
 2. Keep the original `log_path`; the new Task Log replaces the old one. Tell the Worker to retain consequential earlier findings and explain their resolution.
 3. Deliver it per §4.
+
+### 5.1 Active Task Corrections
+
+When a planning change affects an active Task whose attempt has not been reported, correct the existing dispatch:
+
+1. Ask the User to pause the affected Worker and confirm its current progress. Align the planning documents per `{GUIDE_PATH:task-review}` §4.
+2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and worktree. In Instructions, explain what changed, what completed work remains valid and where to resume. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
+3. Record the correction and next action in the Tracker, then deliver the revised prompt per §4. Tell the User to invoke `apm-4-check-tasks` in the paused Worker's chat. This updates the current dispatch; do not create a new branch or worktree.
+
+After a reported attempt, review it and use a follow-up Task per §5 instead.
 
 ## 6. Agents Outside APM
 

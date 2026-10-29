@@ -86,8 +86,8 @@ The Worker records one outcome when it finishes a Task.
 | Term | Definition |
 |---|---|
 | **Success** | The objective is achieved and every validation criterion passed. |
-| **Partial** | Some work or required validation remains, and the Worker needs guidance to continue. The deliverable may exist while a required check is unmet or unavailable. |
-| **Failed** | The Worker could not achieve the objective. |
+| **Partial** | Some work or required validation remains, and guidance is needed to continue. The deliverable may exist while a required check is unmet or unavailable. |
+| **Failed** | The objective was not achieved despite attempts to fix the problem. |
 
 ### Task Dispatch
 

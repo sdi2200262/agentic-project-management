@@ -6,9 +6,11 @@ This guide covers what you record when a Task ends: the Task Log, the full recor
 
 Choose the Task's status:
 
-- **Success:** the Objective is reached and every check in the prompt's Validation section passed.
-- **Partial:** some work or validation remains and you need the Manager's guidance. For example, a check was unclear or unavailable, a failure keeps recurring, or the remaining problem is outside the Task.
-- **Failed:** the Objective is not reached despite your attempts to fix it.
+- **Success:** the objective is achieved and every validation criterion passed.
+- **Partial:** some work or required validation remains, and guidance is needed to continue.
+- **Failed:** the objective was not achieved despite attempts to fix the problem.
+
+A Partial outcome can mean a check was unclear or unavailable, a failure keeps recurring, or the remaining problem is outside the Task.
 
 When you are unsure which status applies, choose Partial and state what remains. A deliverable can exist while a required check is unmet or unverified; a deliberate deviation does not make that check pass. Keep Success when all its criteria passed, and record any findings per §2.
 

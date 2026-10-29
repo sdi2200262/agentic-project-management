@@ -42,7 +42,7 @@ Then read `.apm/bus/manager/handoff.md`. If it has content, continue with §1.2;
 
 In a long conversation, costs may rise and performance may drop, so the User can ask for a Handoff to continue the Manager's work in a new conversation. If `handoff.md` has content, you are continuing from such a Handoff:
 
-1. Read the Handoff Prompt. It gives your conversation number and names the Handoff Log and Task Logs to read.
+1. Read the Handoff Prompt in `handoff.md`. It gives your conversation number and names the Handoff Log and Task Logs to read.
 2. Read the Handoff Log and those Task Logs.
 3. Check what they say about branches, merges, Worker buses and pending reviews against the Tracker, the bus files and, with version control, git. Where they differ, trust the current files and git.
 4. Clear `handoff.md`.

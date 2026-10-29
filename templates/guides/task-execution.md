@@ -21,6 +21,8 @@ The Objective and Output are authoritative. When an instruction, prerequisite or
 4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the workspace root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
+If the User delivers corrected instructions for your paused current Task, keep the same Task identity, branch and worktree. Check what changed and where the prompt says to resume. Preserve valid completed work and batch progress; do not restart logged Tasks. If the stated progress conflicts with your checked workspace, ask the User to resolve it before resuming.
+
 ## 2. Dependency Context
 
 Some Tasks build on the output of earlier Tasks. The prompt's Context from Dependencies section names that output and says how to use it. It treats each dependency in one of two ways:

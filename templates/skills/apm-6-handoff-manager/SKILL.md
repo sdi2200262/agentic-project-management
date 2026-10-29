@@ -10,7 +10,7 @@ Continue only if the User manually invoked this skill, the User asked you to fol
 
 This skill hands your coordination to a new Manager conversation. You write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in `.apm/bus/manager/handoff.md`, tells the next conversation what to read and where to resume. The next conversation also reads the planning documents, the Tracker and the Index at initiation, per `{SKILL_PATH:apm-2-initiate-manager}`.
 
-Your conversation number is 1 if you started from first initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
+Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
 
 ## 1. Current State
 

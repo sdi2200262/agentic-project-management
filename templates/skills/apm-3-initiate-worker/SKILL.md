@@ -36,11 +36,11 @@ The User gave you an agent ID with this skill. It tells you which Worker you are
 
 ### 1.2 Initiation After Handoff
 
-In a long conversation, costs may rise and performance may drop. When a Worker's conversation gets long, the User can ask for a Handoff to continue the same Worker's work in a new conversation. If `handoff.md` has content, you are continuing from such a Handoff:
+In a long conversation, costs may rise and performance may drop, so the User can ask for a Handoff to continue the Worker's work in a new conversation. If `handoff.md` has content, you are continuing from such a Handoff:
 
-1. Read the Handoff Prompt in `handoff.md`, written by the previous conversation. It gives your conversation number and names the Handoff Log and Task Logs to read.
+1. Read the Handoff Prompt in `handoff.md`. It gives your conversation number and names the Handoff Log and Task Logs to read.
 2. Read the Handoff Log and those Task Logs. The Task Logs cover the current Stage only.
-3. Compare what they say about branches, merges and pending work with `task.md` and, with version control, with git. Where they differ, trust the current files and git.
+3. Check what they say about branches, merges and pending work against `task.md` and, with version control, with git. Where they differ, trust the current files and git.
 4. Clear `handoff.md`.
 5. Tell the User your conversation number, the Task Logs you loaded and what you will do next. If there are earlier Stages, say that you did not load their logs.
 6. If `task.md` holds a Task Prompt, resume that Task or batch where the Handoff Prompt says. Otherwise wait for the User to invoke `apm-4-check-tasks`.

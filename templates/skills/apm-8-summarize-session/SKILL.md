@@ -24,6 +24,12 @@ Read `{SKILL_PATH:apm-communication}`.
 8. Read `.apm/archives/index.md`, creating it per §2.2 if it is missing or malformed, and add the new archive at the top of its table.
 9. Tell the User the archive's path and any relocated worktrees the CLI reported. To start a new session, the User runs `apm init` (or `apm custom`) and then invokes `apm-1-initiate-planner` in a new chat; the next Planner can use the archives.
 
+### 1.1 Subagents
+
+You may use native subagents for focused work within your role's scope. Give each subagent a focused question or task, the source and workspace paths, permitted changes and expected findings. Use read-only subagents for research; allow changes for implementation or troubleshooting only within your own authority. Verify the key findings against the source before you rely on them. You remain responsible for the result. Subagents use your assistant's native tools; APM messages still travel through the User and the Message Bus.
+
+Consider delegation for broad source review or an independent check of deliverables and Git state. You verify the evidence and write the summary, preserving consequential findings and limits.
+
 ## 2. Formats
 
 ### 2.1 Session Summary Format
@@ -75,9 +81,3 @@ This summary reflects the session as of <date>. The code may have changed since.
 ```
 
 Newest archives go at the top. Link the archive name to its session summary when one exists; otherwise link to the archive folder.
-
-## 3. Subagents
-
-You may use native subagents for focused work within your role's scope. Give each subagent a focused question or task, the source and workspace paths, permitted changes and expected findings. Use read-only subagents for research; allow changes for implementation or troubleshooting only within your own authority. Verify the key findings against the source before you rely on them. You remain responsible for the result. Subagents use your assistant's native tools; APM messages still travel through the User and the Message Bus.
-
-Consider delegation for broad source review or an independent check of deliverables and Git state. You verify the evidence and write the summary, preserving consequential findings and limits.

@@ -17,9 +17,9 @@ For each report delivered with `apm-5-check-reports`:
 
 Read the whole Task Log, then check its `status` and `important_findings` against the body and the deliverables:
 
-- **Success** needs the objective achieved and every validation check passed.
-- **Partial** means progress was made and the Worker needs guidance.
-- **Failed** means the objective was not achieved.
+- **Success:** the objective is achieved and every validation criterion passed.
+- **Partial:** some work or required validation remains, and guidance is needed to continue.
+- **Failed:** the objective was not achieved despite attempts to fix the problem.
 
 Check each validation criterion against its evidence, including counts, scope, deviations and unrun paths. A deliberate difference is still an unmet criterion unless the requirement has been changed with the required authority.
 
@@ -32,7 +32,7 @@ Tell the User what the log shows, whether the evidence supports it, the Importan
 ## 3. Review Outcomes
 
 1. Accept a Success that the log supports and that has no Important Findings. With version control, commit any successful work the Worker left uncommitted, on its branch and under the Rules' conventions.
-2. Investigate Important Findings and any outcome other than Success before deciding. Check contained issues yourself. Trace unclear causes against the relevant files and checks, and verify the findings before deciding.
+2. Investigate Important Findings and any outcome other than Success. Check contained issues yourself; trace unclear causes against the relevant files and checks. Verify the findings before deciding.
 3. Decide:
    - **Accept:** the work is complete, or the User agrees to accept a Partial outcome; record what remains and the basis for acceptance in the Tracker's Notes. Preserve the Worker's outcome and evidence; acceptance does not turn unmet checks into passing results.
    - **Follow-up Task:** the Worker needs another attempt. Send one per `{GUIDE_PATH:task-assignment}` §5, noting any uncommitted work.
@@ -55,7 +55,7 @@ For each change:
 1. Identify the finding or decision, its source and the authority needed to act on it.
 2. Inspect affected Spec, Plan and Rules sections, including Notes, Task guidance and validation. Check dependent Tasks and instructions already sent to Workers.
 3. Apply authorized changes together, removing stale or contradictory statements. When approval is needed, present the proposal and wait; record the affected work, source, pending decision and who needs to act in the Tracker's Notes. Keep affected work pending while unrelated work can continue.
-4. If an active Worker has affected instructions, ask the User to pause that work before sending corrected instructions through the existing Task delivery flow. Use a follow-up Task after a reported attempt. A changed coordination document alone does not deliver the correction.
+4. If an active Worker has affected instructions, send an in-place correction per `{GUIDE_PATH:task-assignment}` §5.1. Use a follow-up Task after a reported attempt. A changed coordination document alone does not deliver the correction.
 5. Record each change and its reason in the Tracker's Notes, and update Task next actions. Remove redundant Notes once the authoritative content carries the settled choice; preserve consequential decisions in the Stage summary.
 
 Use these homes for the changes:
@@ -85,7 +85,7 @@ Reports arrive in any order. Review each as it comes, without waiting for unrela
 When every Task in a Stage is Done and no follow-up Task is pending:
 
 1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes name this Stage, or any of its Tasks needed a follow-up Task or reported Important Findings. Otherwise you may skip it and say so in the Stage summary.
-2. To verify, rerun key checks, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Verify the findings against the checks and deliverables. Fix contained issues yourself, add a Task for work that needs a Worker, or ask the User when the scope is unclear.
+2. To verify, rerun key checks, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Fix contained issues yourself, add a Task for work that needs a Worker, or ask the User when the scope is unclear.
 3. Account for every consequential Important Finding: its resolution or acceptance, effects on other work, and source. Preserve unresolved or accepted limitations and unrun checks. Sort the Tracker's Notes: move findings with lasting value to the Index's Notes with sources, put Stage-specific findings and decisions into its summary, and keep notes the next Stage still needs.
 4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
 5. Once required Stage verification is resolved and, with version control, its branches are merged, replace the Stage's rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. Completion records accepted work; the summary preserves accepted Partial outcomes and limits.
