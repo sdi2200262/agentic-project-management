@@ -47,7 +47,7 @@ APM guides you through the next steps. See [Getting Started](https://agentic-pro
 
 ## Documentation
 
-The [documentation](https://agentic-project-management.dev) covers the three agent roles and how they coordinate, and describes the entire workflow end to end. It also details APM's prompt and context engineering while providing help on cost optimisation, troubleshooting, security, and customisation.
+The [documentation](https://agentic-project-management.dev) covers the workflow, agent roles, prompt and context engineering, and practical guides.
 
 ## CLI
 
@@ -55,7 +55,7 @@ The [documentation](https://agentic-project-management.dev) covers the three age
 |---------|-------------|
 | `apm init` | Install an official release |
 | `apm custom` | Install from a custom repository |
-| `apm update` | Archive the current session, then install the newest stable release (from a pre-release, choose stable or pre-release) |
+| `apm update` | Archive the current session and install the newest stable release |
 | `apm archive` | Archive a session or manage archives |
 | `apm add` / `apm remove` | Add or remove installation targets |
 | `apm status` | Show installation state |
@@ -72,7 +72,7 @@ Two official adaptations are available. [APM Auto](https://github.com/sdi2200262
 
 ## Help
 
-The [apm-assist skill](skills/apm-assist/) helps your assistant explain APM, answer questions from the documentation, check your installation and version, and help with migration from older versions. It works with every supported assistant. See the [skills README](skills/README.md) for installation instructions.
+The [apm-assist skill](skills/apm-assist/) helps with APM questions, installation checks and migration. See the [skills README](skills/README.md) for installation instructions.
 
 You can ask your assistant to install it:
 
@@ -81,7 +81,7 @@ Install the apm-assist skill into this project using the instructions at:
 https://github.com/sdi2200262/agentic-project-management/blob/main/skills/README.md
 ```
 
-For troubleshooting, including migration from older versions, see the [Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide).
+See the [Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide).
 
 ## Contributing
 
@@ -91,7 +91,7 @@ CLI and template releases are versioned independently. They share a major versio
 
 ## Licence
 
-Licensed under the [Mozilla Public License 2.0 (MPL-2.0)](LICENSE). Versions before v0.4.0 used the MIT licence.
+Licensed under the [Mozilla Public License 2.0 (MPL-2.0)](LICENSE).
 
 <div align="center">
   <a href="https://github.com/sdi2200262" target="_blank">
