@@ -35,7 +35,7 @@ Reread the Spec at the first dispatch of a Stage and after any change to it.
 
 ## 3. Version Control
 
-With version control, follow the branch and commit conventions in the Rules and the base branches in the Spec's Workspace section. Name a repository's conventions in the Task Prompt when they differ from the others.
+With version control, follow the base branches and branch naming in the Spec's Workspace section and commit conventions in the Rules. Name a repository's conventions in the Task Prompt when they differ from the others.
 
 1. Merge any producer branch the Task needs before you create its branch.
 2. Create one branch per single or batch dispatch, from the repository's base branch. A batch shares one branch.
@@ -43,9 +43,9 @@ With version control, follow the branch and commit conventions in the Rules and 
 4. Name branches after the actual work.
 5. Record the branch, any worktree and Next Action in the Task's row in the Tracker.
 
-Workers commit; you create branches and worktrees, merge them and clean up. Do not commit generated build files; update `.gitignore` when needed. In a worktree, every `.apm/` path still points to the workspace root, so the prompt's Workspace section says so.
+Workers commit; you create branches and worktrees, merge them and clean up. Push only when the User asks. Do not commit generated build files; update `.gitignore` when needed. In a worktree, every `.apm/` path still points to the workspace root, so the prompt's Workspace section says so.
 
-If the User enables version control later, initialize git where needed, confirm base branches and conventions, and record them in the Spec's Workspace section and the Rules. Without version control, parallel dispatch is unavailable.
+If the User enables version control later, agree Git setup and record it in the Spec's Workspace section, with commit conventions in the Rules. Initialize missing repositories with approval. Without version control, parallel dispatch is unavailable.
 
 ## 4. Delivery
 

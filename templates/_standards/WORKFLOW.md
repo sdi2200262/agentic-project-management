@@ -30,21 +30,23 @@ Implementation ends when every Stage is complete or the User stops early. The Ma
 
 ### 3.1 Spec
 
-`.apm/spec.md` defines scope, design decisions and constraints. It identifies working and reference repositories, authoritative User documents and base branches. The Manager maintains it and copies the relevant decisions into Task Prompts.
+`.apm/spec.md` defines scope, required behavior, design decisions and constraints. Its Workspace section identifies repositories, authoritative User documents and agreed Git setup; Notes hold design assumptions and context. The Manager maintains it and copies relevant requirements into Task Prompts.
 
 ### 3.2 Plan
 
-`.apm/plan.md` divides the work into Workers, ordered Stages and Tasks. Each Task has an objective, Worker, dependencies, output, validation, guidance and steps. Dependencies are marked Same-Worker or Cross-Worker. The Manager maintains the Plan and uses it to prepare dispatches.
+`.apm/plan.md` divides deliverables into Workers, ordered Stages and Tasks. Each Task has an objective, Worker, dependencies, output, validation, guidance and steps. Dependencies are marked Same-Worker or Cross-Worker. Its Notes hold coordination considerations and Stage verification needs. The Manager uses the Plan to prepare dispatches.
 
 ### 3.3 Rules
 
-The workspace-root `AGENTS.md` holds execution conventions shared by all or most work inside `APM_RULES`. Preserve User content outside that block. Area-specific design and output contracts belong in the Spec or Task guidance.
+The workspace-root `AGENTS.md` holds shared Worker execution conventions inside `APM_RULES`. Preserve User content outside that block. Design requirements belong in the Spec, Task-specific approach in Guidance, and APM coordination in the role guides.
 
-All roles read the Rules. The Planner records agreed version control conventions and adds an `AGENTS.md` import to an existing workspace `CLAUDE.md`, preserving its content. Workers may add User-approved corrections through Task Execution.
+All roles read the Rules. The Planner records agreed commit conventions there and adds an `AGENTS.md` import to an existing workspace `CLAUDE.md`, preserving its content. Workers may add User-approved execution conventions through Task Execution.
 
 ### 3.4 Version Control
 
-The Planner surveys Git state and agrees version control with the User during Context Gathering: whether to use it, base branches, conventions and APM file tracking. It proposes existing conventions, or `type/short-description` branches and `type: description` commits, records base branches in the Spec and conventions in the Rules, and initializes missing repositories only with approval. Each dispatch gets a branch; parallel Workers also get separate worktrees. Workers commit; the Manager creates branches, merges and cleans up under the agreed conventions. Push only when the User asks.
+The Planner surveys Git state and agrees Git use, base branches, branch and commit conventions, and APM file tracking during Context Gathering. It proposes existing conventions, or `type/short-description` branches and `type: description` commits. It records Git setup in the Spec's Workspace section and commit conventions in the Rules, and initializes repositories only with approval.
+
+Each dispatch gets a branch; parallel Workers also get separate worktrees. Workers commit; the Manager creates branches, merges and cleans up. Push only when the User asks.
 
 When `.apm/` is inside a repository, ignore it by default and ask whether the User wants APM files tracked. If version control is declined, parallel dispatch is unavailable.
 
@@ -96,19 +98,19 @@ The Planner surveys repositories, instructions and existing materials. The User'
 2. Technical requirements, constraints, dependencies and success criteria.
 3. Implementation approach, quality and coordination preferences.
 
-Each round includes an exchange with the User, follow-up research, a summary and an open question. Initial context does not skip a round. The Planner resolves important gaps and confirms consequential assumptions. When several designs are viable, it presents trade-offs and a recommendation for the User to choose.
+Each round includes an exchange with the User, follow-up research, a summary and an open question. Initial context does not skip a round. The Planner resolves gaps needed to define the work or agrees how planned work will settle them, and confirms consequential assumptions. When several designs are viable, it presents trade-offs and a recommendation for the User to choose.
 
 The Planner may propose tentative Stages, Tasks and Workers during questioning and ask about Task size, available agents, parallelism and review points. It revises the breakdown as it learns and agrees repository conventions with the User. The Manager chooses actual dispatches during implementation.
 
-Agree the session's scope before the understanding summary. Research needed to understand the work happens during planning; research that is itself a deliverable becomes planned work. Understanding approval starts document writing.
+Agree the session's scope before the understanding summary. Investigate enough to establish requirements and propose a credible breakdown. Substantial research may be planned work, with its questions and the decisions that depend on its results identified. Understanding approval starts document writing.
 
 ### 6.2 Work Breakdown
 
 Carry the gathered choices into the Spec, Plan and Rules. Propose, write and obtain approval for each before starting the next. Apply corrections to affected earlier documents.
 
-Workers follow expertise and context. Stages are coherent milestones in sequence. Tasks produce independently verifiable deliverables within one Worker's area; steps share the Task's validation. Prefer boundaries that allow independent work and useful dependency chains. Research steps define the question and evidence rather than requiring delegation.
+Workers group work by expertise and context, weighing specialization against the context sharing and coordination it requires. Stages mark milestones chosen around dependencies and review points. Each Task defines work one Worker can carry out and report for review, with a clear output and validation. Task boundaries depend on size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share a Task or need separate Tasks. Parallelism follows the work's dependencies and constraints. Steps are operations toward the Task's output.
 
-Record concrete validation and any outside resources, User actions or approvals needed. Rules cover shared execution conventions, not component design. Preserve existing workspace instructions and import `AGENTS.md` from an existing workspace `CLAUDE.md`.
+Validation names observable checks and expected results, including required User actions. Preserve existing workspace instructions and import `AGENTS.md` from an existing workspace `CLAUDE.md`.
 
 ## 7. Implementation
 
@@ -132,7 +134,7 @@ The Worker confirms its identity, handles any Handoff and starts its waiting pro
 
 Success requires the objective and every validation criterion to pass. A deliberate deviation or unrun check is not a pass. In a batch, validate and log each Task before the next; stop at the first Failed outcome and report unstarted Tasks.
 
-Apply User corrections immediately. At completion, ask whether corrections that apply to later Tasks should become Rules. Update the existing workspace Rules, using the assigned branch or worktree copy when tracked in the Task's repository. Commit those tracked additions with the Task; record every approved addition and its path in Important Findings.
+Apply User corrections immediately. At completion, ask whether corrections to shared execution practices should become Rules. Update the existing workspace Rules, using the assigned branch or worktree copy when tracked in the Task's repository. Commit those tracked additions with the Task; record every approved addition and its path in Important Findings.
 
 The Worker commits, writes the Task Log, clears its Task Bus and writes a Task Report. Reports surface consequential deviations and decisions; logs hold the detail. Follow-up logs replace earlier attempts while retaining consequential findings and their resolution. The Worker tells the User how to deliver the report, then waits.
 

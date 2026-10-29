@@ -23,7 +23,7 @@ Set `important_findings: true` when the status is Partial or Failed, or when the
 - a hard problem you solved or an approach that did not work, when it may matter to later work
 - information the prompt lacked that may affect other work, such as a new dependency, risk or constraint
 - a conflict with existing code or conventions, a breaking change or a needed migration
-- a User correction that would also apply to later Tasks; state the correction and whether the User approved adding it to the Rules
+- a User correction affecting later work; state the correction and any approved Rules update
 
 When you are unsure, set it to true. Write the findings in the Task Log's Important Findings section in whatever form explains them best.
 

@@ -2,7 +2,7 @@
 
 This guide covers Context Gathering: exploring the workspace, questioning the User in three rounds, settling how much of the User's goal this APM session covers, and getting the User's approval of your understanding. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
 
-Your findings feed three documents: the Spec holds design decisions and constraints, the Plan organizes the work, and the Rules hold conventions shared by all or most work. Gather requirements, domain knowledge, technical choices, constraints and concrete success criteria. Develop work-structure choices as you gather context. Agree coordination and version control preferences with the User; the Manager chooses actual dispatches within those agreements. Research needed to understand the work belongs here; research that is itself a deliverable becomes planned work.
+Your findings feed three documents: the Spec holds design decisions and constraints, the Plan organizes the work, and the Rules hold shared Worker execution conventions. Gather requirements, domain knowledge, technical choices, constraints and concrete success criteria. Develop work-structure choices as you gather context. Agree coordination and version control preferences with the User; the Manager chooses actual dispatches within those agreements.
 
 ## 1. Preparation
 
@@ -22,7 +22,7 @@ In each round:
 
 1. Ask about what is missing, and state what you already know from documents and exploration so the User can confirm or correct it.
 2. After each answer, apply corrections and research what it raises per §3. Separate what the User stated from what you inferred or assumed, and confirm the inferences that matter. For a vague answer, offer concrete interpretations; for an incomplete one, ask for the missing part. Point out contradictions neutrally. Propose concrete success measures for requirements that have none.
-3. Follow up until the round's topics are covered, by answers, confirmed context, exploration or the User saying they do not apply. Resolve gaps that would affect planning before you move on.
+3. Follow up until the round's topics are covered, by answers, confirmed context, exploration or the User saying they do not apply. Resolve gaps needed to define the work, or agree how planned work will settle them, before you move on.
 4. End the round with a short summary of what it established and what remains open, and an open question about anything the focused questions missed. The User may answer that question together with the next round's questions.
 
 Context the User gives up front does not skip a round, and silence is not approval.
@@ -38,7 +38,7 @@ Cover design decisions and constraints, technical and resource needs, dependenci
 - Existing structure and behavior to keep or change.
 - Environments, delivery targets, external resources and required access.
 - What can be done in the development environment and what needs outside action.
-- Dependencies, hard parts, deadlines and outside input or reviews.
+- Expected effort, uncertainties, dependencies, hard parts, deadlines and outside input or reviews.
 - Technical direction already chosen, choices still open, and what is in or out of scope.
 
 Move on when the core requirements have concrete success measures and the constraints and risks are clear.
@@ -66,11 +66,13 @@ When the User's answers or the materials point to code, explore it before you co
 
 Research specific questions against the relevant files, history, branches or other sources. Check each finding you will rely on against the files or commands it cites. If that turns up a contradiction or an important gap, investigate it and verify the result. Show the User what you verified before relying on it.
 
+Investigate enough to establish requirements and propose a credible breakdown. Substantial research may need planned Tasks. Identify their questions, required evidence and which later decisions or work depend on the results; make the resulting planning limits clear to the User.
+
 When research shows several viable designs, present their trade-offs with a recommendation and let the User choose. When one approach is clearly best, explain the evidence and continue unless the User redirects you.
 
 ## 4. Session Scope
 
-As context grows, judge how large the User's goal is. If it is too large for one APM session, for example because later parts depend on decisions that only earlier work can settle, propose how far this session goes and what is left for later sessions. Propose it as soon as the size is clear, and settle it before the Understanding Summary. Once the User agrees, plan around this session's scope, and keep the rest for the Spec's and Plan's Notes.
+As context grows, judge how large the User's goal is. If it is too large for one APM session, for example because later parts depend on decisions that only earlier work can settle, propose how far this session goes and what is left for later sessions. Propose it as soon as the size is clear, and settle it before the Understanding Summary. Once the User agrees, plan around this session's scope, and record that boundary in the Spec.
 
 ## 5. Understanding Summary
 

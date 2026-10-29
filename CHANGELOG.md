@@ -13,7 +13,8 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 ### Changed
 
 * Runtime template files are about 44% shorter, with simpler instructions and replies. Native subagents are optional.
-* The Planner discusses the work breakdown and agrees Git conventions during discovery, and can scope larger goals across sessions.
+* The Planner develops the work breakdown during discovery, choosing Task boundaries around the work's size, uncertainty, dependencies and expertise. It agrees Git conventions and can scope larger goals across sessions.
+* Clearer separation of Spec requirements, Plan assignments and shared Worker Rules, with concrete guidance and validation.
 * Simplified Spec, Plan, Tracker and Memory formats. Removed the Plan's dependency graph; Stage summaries become separate linked files, and Task/Handoff records identify numbered conversations.
 * The Manager can summarize completed or stopped sessions in its own chat, including unfinished work and validation limits.
 * `apm status` lists missing files. CLI messages give clearer next steps and GitHub rate-limit guidance.

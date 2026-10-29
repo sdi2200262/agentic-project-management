@@ -66,7 +66,7 @@ Success requires every check to pass, including required live checks and exact m
 
 ## 5. Rules Updates
 
-Apply User corrections immediately. At completion, ask whether corrections that also apply to later Tasks should become Rules, and wait for the answer. Add approved corrections inside `APM_RULES` in the workspace-root `AGENTS.md` you read at initiation. If that file is tracked in the Task's repository, update its copy on your assigned branch or worktree and commit it with the Task; otherwise update the shared file at its actual path. Reread it before editing and preserve other content. Log the correction, file path and User's decision under Important Findings.
+Apply User corrections immediately. At completion, ask whether corrections to shared execution practices should become Rules, and wait for the answer. Add approved corrections inside `APM_RULES` in the workspace-root `AGENTS.md` you read at initiation. If that file is tracked in the Task's repository, update its copy on your assigned branch or worktree and commit it with the Task; otherwise update the shared file at its actual path. Reread it before editing and preserve other content. Log the correction, file path and User's decision under Important Findings.
 
 ## 6. Completion
 

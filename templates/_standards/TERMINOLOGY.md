@@ -50,7 +50,7 @@ The Planner writes these during Work Breakdown, in this order.
 |---|---|---|
 | **Spec** | What to build: design decisions and constraints. | `.apm/spec.md` |
 | **Plan** | How the work is divided, ordered and assigned to Workers, with validation criteria and dependencies. | `.apm/plan.md` |
-| **Rules** | Conventions that apply to all or most of the work. They are kept in the `APM_RULES` block of `AGENTS.md`. | Workspace root |
+| **Rules** | Shared conventions for Worker execution. They are kept in the `APM_RULES` block of `AGENTS.md`. | Workspace root |
 
 ---
 

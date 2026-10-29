@@ -51,7 +51,7 @@ When a finding, correction or decision changes the Spec, Plan or Rules, update t
 You may correct one Task, add a dependency or an isolated Spec point, or adjust a Rule. Changes to several Tasks, design direction, scope, Stages or overall structure need the User's approval. Consider their combined effect when several small changes are involved.
 
 1. Identify the change, its evidence and any approval needed.
-2. Check the affected documents and dependent or active Tasks. Keep design decisions in the Spec, Task structure and guidance in the Plan, and shared execution conventions inside `APM_RULES`. Use the existing format for new Tasks and update affected dependencies. Notes hold current assumptions or coordination context; replace stale content rather than leaving a conflicting note.
+2. Check the affected documents and dependent or active Tasks. Keep design decisions in the Spec, Task structure and guidance in the Plan, and shared Worker execution conventions inside `APM_RULES`. Use the existing format for new Tasks and update affected dependencies. Keep Notes consistent with their document's purpose and replace stale content.
 3. Apply authorized changes together. If approval is needed, record the pending decision in the Tracker, ask the User to pause affected work and present the proposal. Wait for approval; unrelated work can continue.
 4. Update Task next actions and record the change and reason in the Tracker. Deliver corrections to active work per `{GUIDE_PATH:task-assignment}` §5.1; reported attempts use a follow-up Task. Preserve consequential decisions in the Stage summary.
 
@@ -74,7 +74,7 @@ Reports arrive in any order. Review each as it comes, without waiting for unrela
 
 When every Task in a Stage is Done and no follow-up Task is pending:
 
-1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes name this Stage, or any of its Tasks needed a follow-up Task or reported Important Findings. Otherwise you may skip it and say so in the Stage summary.
+1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes call for it, or any of its Tasks needed a follow-up Task or reported Important Findings. Otherwise you may skip it and say so in the Stage summary.
 2. To verify, rerun key checks, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Fix contained issues yourself, add a Task for work that needs a Worker, or ask the User when the scope is unclear.
 3. Account for every consequential Important Finding: its resolution or acceptance, effects on other work, and source. Preserve unresolved or accepted limitations and unrun checks. Sort the Tracker's Notes: move findings with lasting value to the Index's Notes with sources, put Stage-specific findings and decisions into its summary, and keep notes the next Stage still needs.
 4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
