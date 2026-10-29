@@ -32,7 +32,7 @@ When you are unsure, set it to true. Write the findings in the Task Log's Import
 Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense to the Manager with access to the workspace and files.
 
 - Describe the result and its evidence.
-- Point to deliverables by path. Include a code snippet only for new, complex or critical logic, at most 20 lines, and diagnostic output only where it explains an error.
+- Point to deliverables by path. Include code or diagnostic output only when it explains a consequential finding.
 - Keep the checks you ran apart from claims you did not verify. Preserve comparison counts and distinguish checks run live, run in isolation and not run. For example, 45 of 47 matching responses plus 13 matching probes is not full parity.
 - A follow-up log replaces the earlier attempt. Retain consequential earlier findings and explain their resolution, including any limits that remain.
 - If your context was compacted or recovered during the Task, say in the Summary which parts you rebuilt from files.
@@ -41,8 +41,8 @@ Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense
 
 After the Task, or the whole batch, has ended:
 
-1. Clear `.apm/bus/<agent-slug>/task.md` using the terminal.
-2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Keep the detail in the Task Logs, but surface consequential deviations, unmet checks and decisions the Manager needs to make. Do not say that nothing needs action when a required check remains unmet or unverified.
+1. Clear `.apm/bus/<agent-slug>/task.md`.
+2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Include deviations, unmet checks and decisions needed; keep the detail in the Task Logs.
 3. Tell the User the report is ready, with both ways to deliver it in the Manager's chat: invoke `apm-5-check-reports <agent-id>` for this report, or `apm-5-check-reports` with no agent ID to collect every pending report.
 4. Tell the User you are ready for the next Task, which they deliver by invoking `apm-4-check-tasks` in this chat. Wait for it or for a Handoff.
 

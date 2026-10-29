@@ -21,9 +21,9 @@ Read the whole Task Log, then check its `status` and `important_findings` agains
 - **Partial:** some work or required validation remains, and guidance is needed to continue.
 - **Failed:** the objective was not achieved despite attempts to fix the problem.
 
-Check each validation criterion against its evidence, including counts, scope, deviations and unrun paths. A deliberate difference is still an unmet criterion unless the requirement has been changed with the required authority.
+Check each validation criterion against its evidence, including counts, scope, deviations and unrun paths. A deliberate difference is an unmet criterion; record any accepted exception as a limitation.
 
-A Success log that says a check was not run, failed or was replaced by a weaker one contradicts itself. Tell the User what conflicts and keep the Task Active. Send the Worker a follow-up Task to run the check or explain the gap. If the requirement is wrong or the check is unavailable and an exception is proposed, resolve that decision per §4 rather than repeatedly requesting the same check.
+If a Success log includes a failed, unrun or weaker check, tell the User and keep the Task Active. Send a follow-up to close or explain the gap. Resolve incorrect requirements or proposed exceptions per §4.
 
 Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or Rules. If the log says the User approved a Rules addition, check the `AGENTS.md` change in the diff and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
 
@@ -39,33 +39,23 @@ Tell the User what the log shows, whether the evidence supports it, the Importan
    - **Planning change:** a planning document is wrong. Change it per §4.
 4. Some findings need more than a Plan change: a fix needs design decisions the Spec does not cover, a change would rewrite the Spec's Overview or several Stages, or follow-up Tasks keep failing for the same reason. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
 5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
-6. Record each consequential finding as fixed, accepted with the required authority, pending, or outside current scope, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
+6. Record how each consequential finding was resolved, accepted, deferred or left pending, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
 7. Once the decision is made, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`. Update the Tracker per §8.1 and §8.2, in one edit with the merge and dispatch changes that follow.
 
 Make small follow-ups and corrections on your own and tell the User. Pause for approval when a change exceeds the limits in §4.
 
 ## 4. Planning Document Changes
 
-A finding, User correction or change to the Spec, Plan or Rules can affect the others. Correct the document where the problem starts, then align the affected content. Apply this procedure at first start as well as during review.
+When a finding, correction or decision changes the Spec, Plan or Rules, update the related content and Task instructions.
 
-You may clarify or correct one Task, add a missing dependency, add an isolated point to the Spec or adjust a Rule. Changes to several Tasks, to the design or scope, a new Stage or a major restructuring need the User. Several small changes together can also need the User. For those, present the problem, the proposed change, the options and your recommendation, and wait for the User's answer.
+You may correct one Task, add a dependency or an isolated Spec point, or adjust a Rule. Changes to several Tasks, design direction, scope, Stages or overall structure need the User's approval. Consider their combined effect when several small changes are involved.
 
-For each change:
+1. Identify the change, its evidence and any approval needed.
+2. Check the affected documents and dependent or active Tasks. Keep design decisions in the Spec, Task structure and guidance in the Plan, and shared execution conventions inside `APM_RULES`. Use the existing format for new Tasks and update affected dependencies. Notes hold current assumptions or coordination context; replace stale content rather than leaving a conflicting note.
+3. Apply authorized changes together. If approval is needed, record the decision and affected work in the Tracker, present the proposal and wait. Unrelated work can continue.
+4. Update Task next actions and record the change and reason in the Tracker. Deliver corrections to active work per `{GUIDE_PATH:task-assignment}` §5.1; reported attempts use a follow-up Task. Preserve consequential decisions in the Stage summary.
 
-1. Identify the finding or decision, its source and the authority needed to act on it.
-2. Inspect affected Spec, Plan and Rules sections, including Notes, Task guidance and validation. Check dependent Tasks and instructions already sent to Workers.
-3. Apply authorized changes together, removing stale or contradictory statements. When approval is needed, present the proposal and wait; record the affected work, source, pending decision and who needs to act in the Tracker's Notes. Keep affected work pending while unrelated work can continue.
-4. If an active Worker has affected instructions, send an in-place correction per `{GUIDE_PATH:task-assignment}` §5.1. Use a follow-up Task after a reported attempt. A changed coordination document alone does not deliver the correction.
-5. Record each change and its reason in the Tracker's Notes, and update Task next actions. Remove redundant Notes once the authoritative content carries the settled choice; preserve consequential decisions in the Stage summary.
-
-Use these homes for the changes:
-
-- **Spec:** add content under the relevant heading. Keep it to design decisions that apply across Tasks; Task-specific detail goes in the Task's Guidance.
-- **Plan:** add a Task under its Stage with every field per `{GUIDE_PATH:work-breakdown}` §5.2, keeping the numbering; change only the affected fields of an existing Task; when removing a Task, update every Task that depends on it.
-- **Rules:** change only the inside of the `APM_RULES` block in `AGENTS.md`, under `##` category headings, and only for conventions shared by all or most work.
-- **Notes:** keep current assumptions and context in Spec Notes, and coordination judgement in Plan Notes. Settled requirements and constraints belong in the main content; explicit dependencies and validation belong in Task fields. Remove stale or redundant observations.
-
-Keep the Worker's recorded outcome and evidence intact when you accept work or change a requirement. Record the Manager's later decision separately. A follow-up log still replaces the earlier attempt; it retains consequential earlier findings and explains their resolution.
+Keep the Worker's recorded outcome and evidence. Manager acceptance is a separate decision. Follow-up logs retain consequential earlier findings and their resolution.
 
 ## 5. Merging
 
@@ -74,7 +64,7 @@ With version control, merge a dispatch's branch into its base branch after a suc
 1. Switch to the recorded base branch, merge and check the result. Clean merges need no approval.
 2. Resolve conflicts from the Task objectives and the Spec. Investigate complex conflicts against the affected contracts, or ask the User when a decision is needed.
 3. If branch protection blocks a direct merge, use a pull request, an intermediate branch or the User's guidance, and record the constraint in the Tracker's Notes.
-4. After the merge, remove the worktree with `git worktree remove .apm/worktrees/<branch-slug>` if there was one, delete the branch with `git branch -d <branch-name>`, and clear the Task's Branch and Worktree in the Tracker. When cleaning up several branches, run all removals and then all deletions in one terminal command.
+4. After the merge, remove the worktree with `git worktree remove .apm/worktrees/<branch-slug>` if there was one, delete the branch with `git branch -d <branch-name>`, and clear the Task's Branch and Worktree in the Tracker. When cleaning up several branches, remove their worktrees before deleting the branches.
 
 ## 6. Next Dispatch
 

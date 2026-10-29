@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # APM {VERSION} - Check Tasks
 
-Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
+Follow this skill only when the User manually invokes it, asks you to follow it, or an APM instruction directs you here. Otherwise, stop.
 
 This skill delivers a Task Prompt to a Worker. If you are the Planner, the Manager or an agent outside APM, tell the User and stop.
 

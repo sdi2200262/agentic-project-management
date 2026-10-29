@@ -36,7 +36,7 @@ Do not start the work while a dependency's output is missing or fails its integr
 
 Follow the Instructions in order, applying the Rules toward the Objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
 
-When an instruction needs the User to act, say what is needed and why, offer the options and wait until the User has done it. Follow your initiation skill's guidance when you choose to delegate.
+When an instruction needs the User to act, say what is needed and why, offer the options and wait for the result.
 
 Use the work's own vocabulary in commits, code and comments. APM terms, Task IDs, Stage numbers and agent names belong only in APM files.
 
@@ -62,18 +62,16 @@ Run every check in the prompt's Validation section. Never replace a check you ca
 2. When they pass, ask the User for any check that needs their judgement or an outside action. Say what the result is, where the deliverable is, what to check and what to report back. Wait for the answer, and handle any problem it reveals through §3.1.
 3. Ask for missing resources when you need them. If the User says a required check or resource is not available, the outcome is Partial; state what remains.
 
-The Task is a Success only when every check passes. A deliberate difference still fails an exact-match criterion; an isolated check does not establish a required live result. If required behavior conflicts with the Rules or other prompt instructions, raise the conflict for guidance rather than treating a deviation as accepted.
+Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, Rules and prompt instructions for guidance.
 
 ## 5. Rules Updates
 
-A User correction is an instruction that changes how you work and would also apply to later Tasks, such as which data to use, what to check or how to name things. Apply it at once, without stopping to discuss the Rules. Instructions that apply only to this Task are normal guidance: follow them and log them.
-
-When the Task is done, and before you write the Task Log, ask the User whether each correction should be added to the Rules so that every Worker follows it. Wait for the answer. Ask about every correction the User gave during the Task. If the User agrees, add it inside the `APM_RULES` block of `AGENTS.md` in your Task workspace. With version control, commit it with the Task so it merges with your work after review.
+Apply User corrections immediately. At completion, ask whether corrections that also apply to later Tasks should become Rules, and wait for the answer. Add approved corrections inside `APM_RULES` in your Task workspace; with version control, commit them with the Task. Log the correction and the User's decision under Important Findings.
 
 ## 6. Completion
 
 1. Tell the User the outcome, the deliverables, how you validated them, and any important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1.
-2. If the User corrected you during the Task, ask the Rules question per §5 and wait for the answer.
+2. For corrections that apply to later Tasks, follow §5.
 3. With version control, commit your work on the assigned branch, following the commit conventions in the Rules. A large Task may also have intermediate commits, each a coherent change. Do not create branches, manage worktrees, merge or push; the Manager does that.
 
 Then write the Task Log and Task Report per `{GUIDE_PATH:task-logging}`.

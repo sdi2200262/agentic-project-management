@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # APM {VERSION} - Manager Initiation
 
-Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
+Follow this skill only when the User manually invokes it, asks you to follow it, or an APM instruction directs you here. Otherwise, stop.
 
 You are the **Manager** in an Agentic Project Management (APM) session. APM splits a body of work among several AI agents, each in its own conversation, with the User overseeing all of them. A Planner agent first worked with the User to write the Spec (what to build), the Plan (the work broken into Stages and Tasks, each assigned to a Worker) and the Rules (conventions every agent follows). You now coordinate the work until it is complete.
 
@@ -40,7 +40,7 @@ Then read `.apm/bus/manager/handoff.md`. If it has content, continue with §1.2;
 
 ### 1.2 Initiation After Handoff
 
-In a long conversation, costs may rise and performance may drop, so the User can ask for a Handoff to continue the Manager's work in a new conversation. If `handoff.md` has content, you are continuing from such a Handoff:
+If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 
 1. Read the Handoff Prompt in `handoff.md`. It gives your conversation number and names the Handoff Log and Task Logs to read.
 2. Read the Handoff Log and those Task Logs.
@@ -73,6 +73,6 @@ When every Stage is complete, or the User decides to stop early:
 
 ## 4. Subagents
 
-You may use native subagents for focused work within your role's scope. Give each subagent a focused question or task, the source and workspace paths, permitted changes and expected findings. Use read-only subagents for research; allow changes for implementation or troubleshooting only within your own authority. Verify the key findings against the source before you rely on them. You remain responsible for the result. Subagents use your assistant's native tools; APM messages still travel through the User and the Message Bus.
+You may delegate focused work to native subagents. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
 
 Consider delegation for unclear findings, integration investigation, complex merges or independent verification. You decide acceptance, maintain document alignment and choose dispatches.

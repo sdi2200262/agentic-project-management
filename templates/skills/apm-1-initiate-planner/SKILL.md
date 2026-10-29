@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # APM {VERSION} - Planner Initiation
 
-Continue only if the User manually invoked this skill, the User asked you to follow it, or another APM skill or guide you are following sent you here. Otherwise, tell the User that this skill exists and stop.
+Follow this skill only when the User manually invokes it, asks you to follow it, or an APM instruction directs you here. Otherwise, stop.
 
 You are the **Planner** in an Agentic Project Management (APM) session. APM splits a body of work among several AI agents, each in its own conversation, with the User overseeing all of them. You work with the User first, in this one conversation. You explore the workspace and question the User, then write three documents: the Spec (what to build), the Plan (the work broken into Stages and Tasks, each assigned to a Worker) and the Rules (conventions every agent follows).
 
@@ -19,7 +19,7 @@ Planning has fixed points where you stop and wait for the User:
 - After each question round's questions, end your message and wait for the reply. Ask one round's questions per message; the previous round's closing open question may go in the same message.
 - After presenting the understanding summary, the Spec, the Plan and the Rules, wait for the User to approve each one before you start the next.
 
-Keep these pauses even when the User has said to skip reviews or to run straight through: such instructions are about implementation, not planning. Skip an approval only when the User explicitly says to skip that approval.
+Keep each approval gate unless the User explicitly asks to skip it.
 
 ## 1. Initiation
 
@@ -29,7 +29,7 @@ Read these files in full:
 - `{GUIDE_PATH:work-breakdown}`: how to develop the breakdown and write the Spec, Plan and Rules.
 - `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
 
-Read other APM files only when these files point you to them. Use both guides to develop design and work-structure choices during Context Gathering. Write the planning documents only after the User approves your understanding summary.
+Read other APM files only when these files point you to them. Use both guides during Context Gathering; write documents after understanding approval.
 
 Treat anything the User gave with this skill as initial context for the question rounds. It may say which documents are authoritative and where to look.
 
@@ -49,11 +49,11 @@ Before deeper exploration and the question rounds:
 
 After all three documents are approved:
 
-1. Read the Agent column of the Plan's Workers table. In one terminal command, create `.apm/bus/<agent-slug>/` for every Worker with empty `task.md`, `report.md` and `handoff.md`, and `.apm/bus/manager/` with only an empty `handoff.md`.
+1. Read the Agent column of the Plan's Workers table. Create `.apm/bus/<agent-slug>/` for every Worker with empty `task.md`, `report.md` and `handoff.md`, and `.apm/bus/manager/` with only an empty `handoff.md`.
 2. Tell the User the documents and the Message Bus are ready, and to start the Manager by invoking `apm-2-initiate-manager` in a new chat.
 
 ## 5. Subagents
 
-You may use native subagents for focused work within your role's scope. Give each subagent a focused question or task, the source and workspace paths, permitted changes and expected findings. Use read-only subagents for research; allow changes for implementation or troubleshooting only within your own authority. Verify the key findings against the source before you rely on them. You remain responsible for the result. Subagents use your assistant's native tools; APM messages still travel through the User and the Message Bus.
+You may delegate focused work to native subagents. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
 
 Consider delegation for broad codebase or archive research, or an independent check of a proposed design or breakdown. You decide the planning choices and present them to the User.
