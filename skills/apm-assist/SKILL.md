@@ -209,7 +209,7 @@ Archive metadata adds `archivedAt` and `reason` (e.g. `"migration"`) fields.
 
 **Step 1 - Archive.** Move existing `.apm/` artifacts into `.apm/archives/session-YYYY-MM-DD-001/`. Convert old `metadata.json` to the current archive schema (fetch the CLI Guide for the current schema). Create an archive index at `.apm/archives/index.md`.
 
-**Step 2 (optional) - Session summary.** If the user wants, generate a `session-summary.md` from the old artifacts. Include a Migration Notice at the top stating the old version and terminology differences. Adapt sections to whatever the old artifacts contain.
+**Step 2 (optional) - Session summary.** If the user wants, generate a `session.summary.md` from the old artifacts. Include a Migration Notice at the top stating the old version and terminology differences. Adapt sections to whatever the old artifacts contain.
 
 **Step 3 - Clean assistant directories.** Remove only APM-installed files from assistant directories. List every file before deleting. Do NOT remove non-APM content. When uncertain, ask.
 
