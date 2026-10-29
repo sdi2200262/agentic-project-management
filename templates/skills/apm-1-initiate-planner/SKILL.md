@@ -23,21 +23,27 @@ Keep these pauses even when the User has said to skip reviews or to run straight
 
 ## 1. Initiation
 
-Read `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus. Read other APM files only when these files point you to them.
+Read these files in full:
+
+- `{GUIDE_PATH:context-gathering}`: how to explore the workspace and question the User.
+- `{GUIDE_PATH:work-breakdown}`: how to develop the breakdown and write the Spec, Plan and Rules.
+- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
+
+Read other APM files only when these files point you to them. Use both guides to develop design and work-structure choices during Context Gathering. Write the planning documents only after the User approves your understanding summary.
 
 Treat anything the User gave with this skill as initial context for the question rounds. It may say which documents are authoritative and where to look.
 
 ## 2. Workspace Survey
 
-Before reading the Context Gathering guide:
+Before deeper exploration and the question rounds:
 
-1. Build an initial picture of the workspace yourself, so you can later give subagents targeted questions. List root folders and repositories, note each repository's current branch and latest commits, and find planning materials. Check `.apm/archives/` for earlier APM sessions and read `AGENTS.md` if it exists.{CLAUDE_ONLY: Check `CLAUDE.md`, `.claude/CLAUDE.md` and `CLAUDE.local.md` in the workspace root and its ancestors for applicable instructions. Read those that apply.} Read READMEs and general documentation. Note what is worked on, what is only a reference, and whether the workspace has one, several or no repositories. Leave source-code exploration and deeper research for the guide.
+1. Build an initial picture of the workspace. List root folders and repositories, note each repository's current branch and latest commits, and find planning materials. Check `.apm/archives/` for earlier APM sessions and read `AGENTS.md` if it exists.{CLAUDE_ONLY: Check `CLAUDE.md`, `.claude/CLAUDE.md` and `CLAUDE.local.md` in the workspace root and its ancestors for applicable instructions. Read those that apply.} Read READMEs and general documentation. Note what is worked on, what is only a reference, and whether the workspace has one, several or no repositories. Leave source-code exploration and deeper research for the guide.
 2. If the workspace is empty, continue to §3 and treat all details as unknown until the User gives them. Otherwise establish which materials and archives are current and relevant. When the User's initial context names them or makes their authority clear, read them and continue. Ask the User before reading other discovered materials, even if one document claims another is authoritative.
 
 ## 3. Planning
 
-1. Read `{GUIDE_PATH:context-gathering}` and the authoritative documents, and follow the guide until the User approves your understanding summary.
-2. Read `{GUIDE_PATH:work-breakdown}` and follow it to write the Spec, the Plan and the Rules, each approved before the next.
+1. Read the authoritative documents and follow `{GUIDE_PATH:context-gathering}` until the User approves your understanding summary.
+2. Follow `{GUIDE_PATH:work-breakdown}` to write the Spec, the Plan and the Rules, each approved before the next.
 
 ## 4. Planning Phase Completion
 
@@ -45,3 +51,9 @@ After all three documents are approved:
 
 1. Read the Agent column of the Plan's Workers table. In one terminal command, create `.apm/bus/<agent-slug>/` for every Worker with empty `task.md`, `report.md` and `handoff.md`, and `.apm/bus/manager/` with only an empty `handoff.md`.
 2. Tell the User the documents and the Message Bus are ready, and to start the Manager by invoking `apm-2-initiate-manager` in a new chat.
+
+## 5. Subagents
+
+You may use native subagents for focused work within your role's scope. Give each subagent a focused question or task, the source and workspace paths, permitted changes and expected findings. Use read-only subagents for research; allow changes for implementation or troubleshooting only within your own authority. Verify the key findings against the source before you rely on them. You remain responsible for the result. Subagents use your assistant's native tools; APM messages still travel through the User and the Message Bus.
+
+Consider delegation for broad codebase or archive research, or an independent check of a proposed design or breakdown. You decide the planning choices and present them to the User.

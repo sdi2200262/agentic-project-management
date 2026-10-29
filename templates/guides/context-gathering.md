@@ -2,11 +2,11 @@
 
 This guide covers Context Gathering: exploring the workspace, questioning the User in three rounds, settling how much of the User's goal this APM session covers, and getting the User's approval of your understanding. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
 
-Your findings feed three documents: the Spec holds design decisions and constraints, the Plan organizes the work, and the Rules hold conventions shared by all or most work. Gather requirements, domain knowledge, technical choices, constraints and concrete success criteria. Leave dispatch, version control and verification to the Manager: note any preferences the User mentions about them, but do not ask about them. Research needed to understand the work belongs here; research that is itself a deliverable becomes planned work.
+Your findings feed three documents: the Spec holds design decisions and constraints, the Plan organizes the work, and the Rules hold conventions shared by all or most work. Gather requirements, domain knowledge, technical choices, constraints and concrete success criteria. Develop work-structure choices as you gather context. Ask about coordination and version control preferences when they affect the plan; the Manager confirms repository conventions and chooses actual dispatches. Research needed to understand the work belongs here; research that is itself a deliverable becomes planned work.
 
 ## 1. Preparation
 
-1. If the User confirmed relevant archives, use a subagent to examine them. Give it the archive paths and your questions, and tell it to read each archive's `session-summary.md` first, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when Task or Worker states matter, and `metadata.json` for the archive date. Ask for relevant scope, decisions, completed work and known issues, with paths or commands to verify them, and for anything that may have changed since. Verify the findings you will rely on against the current code.
+1. If the User confirmed relevant archives, examine them. Read each archive's `session.summary.md` first, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when Task or Worker states matter, and `metadata.json` for the archive date. Identify relevant scope, decisions, completed work and known issues, with paths or commands to verify them, and anything that may have changed since. Verify the findings you will rely on against the current code.
 2. Explore every codebase relevant to the work, per §3.
 3. If `AGENTS.md` exists, summarize it for the User, explain that planning adds a separate Rules section and keeps the existing content, and ask whether they want that content changed.{CLAUDE_ONLY: Summarize any applicable `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md` instructions too, and ask the same. Preserve their content; the Rules go in `AGENTS.md`.} If there is no `AGENTS.md`, ask in Round 1 whether the User has one elsewhere or wants it created.
 
@@ -14,7 +14,9 @@ Present what you found with the first round's questions, keeping to what the Use
 
 ## 2. Question Rounds
 
-Hold the three rounds in order, each with at least one exchange with the User. Use the User's and the domain's own language in questions, summaries and subagent prompts. Leave Stages, Tasks, Workers and task sizing for Work Breakdown; record domains, dependencies and complexity as characteristics of the work.
+Hold the three rounds in order, each with at least one exchange with the User. Use the User's and the domain's own language in questions, summaries and subagent prompts. Propose tentative Stages, Tasks and Workers when the work is clear enough, giving the reasons and trade-offs. Revise the breakdown as you learn more; keep document writing for after understanding approval.
+
+Ask coordination questions through a proposal the User can assess, such as "I propose three Tasks across two Workers, with the first two running in parallel. Would you prefer fewer, broader Tasks or smaller review points?" Ask when the choice matters; do not require the User to invent a Task count.
 
 In each round:
 
@@ -49,7 +51,8 @@ Cover technical preferences, quality standards, workflow preferences, outside ap
 - Account or environment actions needed for setup, delivery or validation.
 - Preferred validation, reviews, sign-offs and acceptance requirements.
 - Consistency standards, formats, examples and reference material.
-- Areas of expertise and natural boundaries in the work, without choosing Workers.
+- Areas of expertise, natural boundaries, available agents, parallelism, preferred Task size and review points.
+- Proposed Stages, Tasks and Workers, and coordination or version control preferences that affect the plan.
 - Chosen approaches and their reasons, including what ruled alternatives out.
 
 Move on when the approach, quality standards and approvals are clear.
@@ -58,7 +61,7 @@ Move on when the approach, quality standards and approvals are clear.
 
 When the User's answers or the materials point to code, explore it before you continue the questions. If the User asks you to defer research, do so and note the resulting limits in your summary.
 
-Read a single document or a few known files yourself. For broader research, such as how a codebase is built, its history and branches, or a question that spans many files, use a subagent: give it specific questions and the sources to check, and ask for findings with file references. Check each finding you will rely on against the files or commands it cites. If that turns up a contradiction or an important gap, send a focused follow-up and verify it too. Show the User what you verified before relying on it.
+Research specific questions against the relevant files, history, branches or other sources. Check each finding you will rely on against the files or commands it cites. If that turns up a contradiction or an important gap, investigate it and verify the result. Show the User what you verified before relying on it.
 
 When research shows several viable designs, present their trade-offs with a recommendation and let the User choose. When one approach is clearly best, explain the evidence and continue unless the User redirects you.
 
@@ -70,7 +73,7 @@ As context grows, judge how large the User's goal is. If it is too large for one
 
 1. After Round 3, present your understanding per §6.1, including any limits that are still unresolved.
 2. Ask the User to review and approve it. Apply corrections, update the summary and ask again.
-3. Once approved, read `{GUIDE_PATH:work-breakdown}` and continue there.
+3. Once approved, continue with `{GUIDE_PATH:work-breakdown}`.
 
 ## 6. Formats
 
@@ -85,6 +88,7 @@ Use Markdown suited to the work, with enough detail for the User to judge whethe
 - Environments, resources and access.
 - Process, quality and approval needs.
 - Conventions and existing `AGENTS.md` content.
-- Version control or coordination preferences the User mentioned.
+- Proposed Stages, Tasks and Workers, with reasons and alternatives where developed.
+- Version control and coordination preferences.
 
 End with an explicit request for approval.
