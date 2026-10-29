@@ -12,7 +12,7 @@ import { METADATA_FILE, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
 import { formatAssistantList } from '../core/assistants.js';
-import { createArchive, listArchivesWithInfo, removeArchive, clearArchives, generateArchiveName, archivePathFor } from '../services/archive.js';
+import { createArchive, listArchivesWithInfo, inspectArchiveDeletion, inspectArchiveDeletions, removeArchive, clearArchives, generateArchiveName, archivePathFor } from '../services/archive.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
 import { confirmDestructiveAction } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
@@ -29,14 +29,21 @@ import logger from '../ui/logger.js';
  * @returns {Promise<void>}
  */
 export async function archiveCommand(options = {}) {
-  const { list, force = false, name, delete: deleteArchive, clear, discardWorktrees = false } = options;
+  const { list, force = false, name, delete: deleteArchive, clear } = options;
 
   logger.clearAndBanner();
 
-  if (discardWorktrees && (list || (!deleteArchive && !clear))) throw new Error('--discard-worktrees applies only to --delete or --clear.');
   if (list) return listMode();
-  if (deleteArchive) return deleteMode(deleteArchive, force, discardWorktrees);
-  if (clear) return clearMode(force, discardWorktrees);
+  if (deleteArchive || clear) {
+    try {
+      return await (deleteArchive ? deleteMode(deleteArchive, force) : clearMode(force));
+    } catch (error) {
+      if (error.name !== 'ExitPromptError' && error.code !== 'NOT_INTERACTIVE') {
+        logger.warn(`Archive deletion did not complete. Check the remaining files in ${path.join(process.cwd(), ARCHIVES_DIR)} and their Git worktrees before retrying; cleanup may be partial.`);
+      }
+      throw error;
+    }
+  }
 
   return createMode(force, name);
 }
@@ -74,18 +81,17 @@ async function listMode() {
 /**
  * Removes a single archive.
  */
-async function deleteMode(name, force, discardWorktrees) {
+async function deleteMode(name, force) {
   const cwd = process.cwd();
-  const archivePath = archivePathFor(cwd, name);
-
-  if (!await fs.pathExists(archivePath)) {
+  const archive = await inspectArchiveDeletion(cwd, name);
+  if (!archive) {
     logger.error(`Archive "${name}" not found.`);
     return;
   }
 
   if (!force) {
     const proceed = await confirmDestructiveAction(
-      [`Delete archive "${name}" permanently${discardWorktrees ? ", including preserved unfinished worktrees" : " and its clean worktrees"}`],
+      [`Delete archive "${name}" and all its files permanently`, ...worktreeWarnings(archive.worktrees)],
       'Delete?'
     );
     if (!proceed) {
@@ -94,7 +100,7 @@ async function deleteMode(name, force, discardWorktrees) {
     }
   }
 
-  await removeArchive(cwd, name, { discardWorktrees });
+  await removeArchive(cwd, name);
   logger.clearAndBanner();
   logger.success(`Deleted archive: ${name}`);
 }
@@ -102,9 +108,9 @@ async function deleteMode(name, force, discardWorktrees) {
 /**
  * Clears all archives.
  */
-async function clearMode(force, discardWorktrees) {
+async function clearMode(force) {
   const cwd = process.cwd();
-  const archives = await listArchivesWithInfo(cwd);
+  const archives = await inspectArchiveDeletions(cwd);
 
   if (!archives.length) {
     logger.info('No archives to clear.');
@@ -112,10 +118,8 @@ async function clearMode(force, discardWorktrees) {
   }
 
   if (!force) {
-    const actions = archives.map(a => {
-      const date = a.metadata.archivedAt ? new Date(a.metadata.archivedAt).toLocaleString() : 'unknown';
-      return `Delete ${a.name} (archived ${date})${discardWorktrees ? ", including preserved unfinished worktrees" : " and its clean worktrees"}`;
-    });
+    const actions = archives.map(a => `Delete ${path.basename(a.archivePath)} and all its files permanently`);
+    actions.push(...worktreeWarnings(archives.flatMap(a => a.worktrees)));
     const proceed = await confirmDestructiveAction(actions, `Delete all ${archives.length} archives?`);
     if (!proceed) {
       logger.info('Aborted.');
@@ -123,9 +127,18 @@ async function clearMode(force, discardWorktrees) {
     }
   }
 
-  const count = await clearArchives(cwd, { discardWorktrees });
+  const count = await clearArchives(cwd);
   logger.clearAndBanner();
   logger.success(`Deleted ${logger.plural(count, 'archive')}.`);
+}
+
+function worktreeWarnings(worktrees) {
+  if (!worktrees.length) return [];
+  const warnings = [`Delete ${logger.plural(worktrees.length, 'worktree')} that may not be merged`];
+  if (worktrees.some(worktree => worktree.state.status)) {
+    warnings.push('Uncommitted changes and untracked or ignored files in these worktrees will also be deleted');
+  }
+  return warnings;
 }
 
 /**

@@ -105,16 +105,9 @@ export async function restoreWorktree(worktree, destination) {
   if (!registered || registered.prunable) throw new Error(`Restored worktree registration needs repair: ${worktree.from}`);
 }
 
-export async function checkWorktreeRemoval(worktrees, discardWorktrees = false) {
+/** Called only after the User confirms archive deletion or supplies --force. */
+export async function removeWorktrees(worktrees) {
   for (const worktree of worktrees) {
-    if (worktree.state.status && !discardWorktrees) {
-      throw new Error(`Archive contains unfinished work in ${worktree.from}. Keep it, or explicitly authorize deletion with --discard-worktrees; --force only skips confirmation.`);
-    }
-  }
-}
-
-export async function removeWorktrees(worktrees, discardWorktrees = false) {
-  for (const worktree of worktrees) {
-    await git(['--git-dir', worktree.repository, 'worktree', 'remove', ...(discardWorktrees ? ['--force'] : []), worktree.from]);
+    await git(['--git-dir', worktree.repository, 'worktree', 'remove', '--force', worktree.from]);
   }
 }

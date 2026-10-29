@@ -9,7 +9,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { ARCHIVES_DIR } from '../core/constants.js';
-import { inspectWorktrees, moveWorktree, verifyMovedWorktree, restoreWorktree, checkWorktreeRemoval, removeWorktrees } from './worktrees.js';
+import { inspectWorktrees, moveWorktree, verifyMovedWorktree, restoreWorktree, removeWorktrees } from './worktrees.js';
 
 /**
  * Generates the next archive directory name for today.
@@ -174,37 +174,42 @@ export async function createArchive(cwd, options = {}) {
   return { archivePath, runtimeEntries, worktrees: moved.map(({ worktree, destination }) => ({ from: worktree.from, to: destination, unfinished: !!worktree.state.status })) };
 }
 
-async function deletionPlan(cwd, name, options) {
+export async function inspectArchiveDeletion(cwd, name) {
   const archivePath = archivePathFor(cwd, name);
   if (!await fs.pathExists(archivePath)) return null;
   if ((await fs.lstat(path.join(cwd, ARCHIVES_DIR))).isSymbolicLink()) throw new Error('Archive directory is a symbolic link.');
   if ((await fs.lstat(archivePath)).isSymbolicLink()) throw new Error(`Archive is a symbolic link: ${archivePath}`);
   const worktrees = await inspectWorktrees(path.join(archivePath, 'worktrees'), { allowOtherFiles: true });
-  await checkWorktreeRemoval(worktrees, options.discardWorktrees);
   return { archivePath, worktrees };
 }
 
 /** Remove archived worktrees through Git before deleting their session records. */
-export async function removeArchive(cwd, name, options = {}) {
-  const plan = await deletionPlan(cwd, name, options);
+export async function removeArchive(cwd, name) {
+  const plan = await inspectArchiveDeletion(cwd, name);
   if (!plan) return false;
-  await removeWorktrees(plan.worktrees, options.discardWorktrees);
+  await removeWorktrees(plan.worktrees);
   await fs.remove(plan.archivePath);
   return true;
 }
 
-/** Check every archive before deleting any, including explicit discard authorization. */
-export async function clearArchives(cwd, options = {}) {
+/** Inspect every archive before confirmation or deletion. */
+export async function inspectArchiveDeletions(cwd) {
   const archivesDir = path.join(cwd, ARCHIVES_DIR);
-  if (!await fs.pathExists(archivesDir)) return 0;
+  if (!await fs.pathExists(archivesDir)) return [];
   if ((await fs.lstat(archivesDir)).isSymbolicLink()) throw new Error('Archive directory is a symbolic link.');
   const entries = await fs.readdir(archivesDir, { withFileTypes: true });
   const plans = [];
   for (const entry of entries) {
-    if (entry.isDirectory()) plans.push(await deletionPlan(cwd, entry.name, options));
+    if (entry.isDirectory()) plans.push(await inspectArchiveDeletion(cwd, entry.name));
   }
+  return plans;
+}
+
+/** Remove archives after confirmation, checking every archive before deleting any. */
+export async function clearArchives(cwd) {
+  const plans = await inspectArchiveDeletions(cwd);
   for (const plan of plans) {
-    await removeWorktrees(plan.worktrees, options.discardWorktrees);
+    await removeWorktrees(plan.worktrees);
     await fs.remove(plan.archivePath);
   }
   return plans.length;
@@ -215,6 +220,8 @@ export default {
   listArchivesWithInfo,
   countArchives,
   createArchive,
+  inspectArchiveDeletion,
+  inspectArchiveDeletions,
   removeArchive,
   clearArchives
 };

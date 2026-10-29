@@ -170,4 +170,4 @@ A new conversation may summarize a session at any point; the Manager may do so a
 
 Archiving is optional and needs User approval. It preserves session records and remaining worktrees with their uncommitted contents, verifies preservation, then clears active APM files and installed instructions. Worktrees remain attached to source repositories. Failure preserves recoverable state and reports the paths needing attention. Completing Tasks, committing and merging are separate decisions.
 
-The archive index links to summaries. A new installation starts another session; its Planner can use relevant archives after checking current evidence. Deleting dirty archived work requires explicit authorization separate from bypassing CLI confirmation.
+The archive index links to summaries. A new installation starts another session; its Planner can use relevant archives after checking current evidence. Archive deletion asks for confirmation describing the files, worktrees and uncommitted work to be deleted; `-f` skips that confirmation. A failed deletion stops and warns that cleanup may be partial.

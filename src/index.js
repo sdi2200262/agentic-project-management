@@ -72,7 +72,6 @@ function displayHelp() {
   console.log(`  ${chalk.bold('-l, --list')}                List archived sessions`);
   console.log(`  ${chalk.bold('--delete <name>')}           Delete a specific archive`);
   console.log(`  ${chalk.bold('--clear')}                   Delete all archives`);
-  console.log(`  ${chalk.bold('--discard-worktrees')}      Discard unfinished work in deleted archives`);
   console.log('');
   console.log(chalk.cyan.bold('Global:'));
   console.log(`  ${chalk.bold('-v, -V, --version')}         Show version number`);
@@ -188,7 +187,6 @@ program
   .option('-n, --name <name>', 'Custom archive name')
   .option('--delete <name>', 'Delete a specific archive')
   .option('--clear', 'Delete all archives')
-  .option('--discard-worktrees', 'Discard unfinished worktrees with --delete or --clear')
   .action(async (options) => {
     try {
       await archiveCommand(options);
