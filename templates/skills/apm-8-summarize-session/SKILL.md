@@ -48,7 +48,7 @@ outcome: <complete | partial | incomplete>
 <What this APM session built and why, from the Spec's Overview, and any work left for later sessions>
 
 ## Stages and Outcomes
-<Per Stage: objective, accepted results, accepted Partial outcomes and material limits, with links to Stage summaries>
+<Per Stage: objective, accepted results, key validation counts and scope, accepted Partial outcomes and material limits, with links to Stage summaries>
 
 ## Key Deliverables
 <Main outputs with paths>

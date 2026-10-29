@@ -52,7 +52,7 @@ You may correct one Task, add a dependency or an isolated Spec point, or adjust 
 
 1. Identify the change, its evidence and any approval needed.
 2. Check the affected documents and dependent or active Tasks. Keep design decisions in the Spec, Task structure and guidance in the Plan, and shared execution conventions inside `APM_RULES`. Use the existing format for new Tasks and update affected dependencies. Notes hold current assumptions or coordination context; replace stale content rather than leaving a conflicting note.
-3. Apply authorized changes together. If approval is needed, record the decision and affected work in the Tracker, present the proposal and wait. Unrelated work can continue.
+3. Apply authorized changes together. If approval is needed, record the pending decision in the Tracker, ask the User to pause affected work and present the proposal. Wait for approval; unrelated work can continue.
 4. Update Task next actions and record the change and reason in the Tracker. Deliver corrections to active work per `{GUIDE_PATH:task-assignment}` §5.1; reported attempts use a follow-up Task. Preserve consequential decisions in the Stage summary.
 
 Keep the Worker's recorded outcome and evidence. Manager acceptance is a separate decision. Follow-up logs retain consequential earlier findings and their resolution.
