@@ -55,14 +55,7 @@ Prefer boundaries and order that allow independent work, Same-Worker chains and 
 The Rules describe how to work across all or most Tasks. Every Worker reads the whole of `AGENTS.md`, including content outside the `APM_RULES` block.
 
 1. Propose the conventions, drawn from the approved documents and the gathered context, including the agreed version control choices and branch and commit conventions for each working repository. Explain what you include or leave out, and which existing standards you refer to.
-2. Read `AGENTS.md`, or confirm it does not exist, and write the `APM_RULES` block per §5.3. Keep content outside the block unless the User asks for changes. If you create the file, write only the block.{CLAUDE_ONLY:
-
-   For Claude Code, check whether `AGENTS.md` loads as project instructions. Native loading needs v2.1.277 or later. By default, `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md` in the working directory or its ancestors blocks it; the user-level `~/.claude/CLAUDE.md` is exempt. The Project instructions setting can change this behavior. Keep the existing setup when `AGENTS.md` already loads.
-
-   Otherwise, add `@AGENTS.md` to an existing workspace-root `CLAUDE.md`, or `@../AGENTS.md` to an existing `.claude/CLAUDE.md`, preserving its content. If neither exists and native loading is unavailable or blocked, create a workspace-root `CLAUDE.md` containing only `@AGENTS.md`. Keep imports outside code blocks. If project instructions are disabled, ask the User to enable them.
-
-   Explain any new file or import when presenting the Rules. Have the User check `/memory` in a fresh Claude Code chat to confirm the Rules loaded.
-}
+2. Read `AGENTS.md`, or confirm it does not exist, and write the `APM_RULES` block per §5.3. Keep content outside the block unless the User asks for changes. If you create the file, write only the block.{CLAUDE_ONLY: If the workspace has an existing `CLAUDE.md`, add an import of the workspace-root `AGENTS.md` unless it already has one. Use `@AGENTS.md` in a workspace-root `CLAUDE.md`, or `@../AGENTS.md` in `.claude/CLAUDE.md`. Preserve existing content and keep the import outside code blocks.}
 3. After approval, initialize missing repositories only where the User agreed, and apply the agreed `.gitignore` treatment of APM files. Then continue with `{SKILL_PATH:apm-1-initiate-planner}` §4.
 
 Each Rule says when it applies, such as "When adding an API route, …", and stands alone without references to the Spec, Plan or design documents. Output strings, formats, schemas and interface contracts describe what is built, so they belong in the Spec or a Task's Guidance even when several Workers need them; when unsure, keep a pattern in Guidance.

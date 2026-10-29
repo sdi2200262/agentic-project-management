@@ -40,7 +40,7 @@ Implementation ends when every Stage is complete or the User stops early. The Ma
 
 The workspace-root `AGENTS.md` holds execution conventions shared by all or most work inside `APM_RULES`. Preserve User content outside that block. Area-specific design and output contracts belong in the Spec or Task guidance.
 
-All roles read the Rules. The Planner records agreed version control conventions and ensures Claude Code can load `AGENTS.md`, adding an import only when needed and preserving existing instructions. Workers may add User-approved corrections through Task Execution.
+All roles read the Rules. The Planner records agreed version control conventions and adds an `AGENTS.md` import to an existing workspace `CLAUDE.md`, preserving its content. Workers may add User-approved corrections through Task Execution.
 
 ### 3.4 Version Control
 
@@ -108,7 +108,7 @@ Carry the gathered choices into the Spec, Plan and Rules. Propose, write and obt
 
 Workers follow expertise and context. Stages are coherent milestones in sequence. Tasks produce independently verifiable deliverables within one Worker's area; steps share the Task's validation. Prefer boundaries that allow independent work and useful dependency chains. Research steps define the question and evidence rather than requiring delegation.
 
-Record concrete validation and any outside resources, User actions or approvals needed. Rules cover shared execution conventions, not component design. Preserve existing workspace instructions and confirm Rules loading for Claude Code.
+Record concrete validation and any outside resources, User actions or approvals needed. Rules cover shared execution conventions, not component design. Preserve existing workspace instructions and import `AGENTS.md` from an existing workspace `CLAUDE.md`.
 
 ## 7. Implementation
 
