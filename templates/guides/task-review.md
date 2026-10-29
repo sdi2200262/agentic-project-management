@@ -8,7 +8,7 @@ A Worker records one outcome per Task: Success, Partial or Failed. You decide wh
 
 For each report delivered with `apm-5-check-reports`:
 
-1. If the sender has no row in the Tracker's Workers table, it is an agent outside APM: assess its contribution and what it changes for planning or dispatch, record it in the Tracker's Notes, tell the User, and send any further work per `{GUIDE_PATH:task-assignment}` §6.
+1. If the sender has no row in the Tracker's Workers table, it is an agent outside APM: assess its contribution and what it changes for planning or dispatch, record it in the Tracker's Notes, tell the User, clear its Report Bus, and send any further work per `{GUIDE_PATH:task-assignment}` §6. Then continue with the next report.
 2. If the report's `conversation` is higher than the Worker's number in the Workers table, the Worker had a Handoff. Read its Handoff Logs, `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md`, for each conversation since the one you knew, update the number, and list the Worker's Tasks from earlier Stages under Not Read Since Handoff: its new conversation did not read their logs. Remove a Task from that list once a Task Prompt has given its context as a Cross-Worker dependency.
 3. If the report mentions a recovery, record it in the Workers table's Context without changing the conversation number. Check the report against the Task Log for anything the recovery may have lost, and ask for missing details.
 4. For a batch Task Report, review each executed Task on its own per §2 and §3. Set the Tasks the batch did not start back to Ready or Waiting, and return them to dispatch.
@@ -25,7 +25,7 @@ Check each validation criterion against its evidence, including counts, scope, d
 
 If a Success log includes a failed, unrun or weaker check, tell the User and keep the Task Active. Send a follow-up to close or explain the gap. Resolve incorrect requirements or proposed exceptions per §4.
 
-Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or Rules. If the log says the User approved a Rules addition, check the `AGENTS.md` change in the diff and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
+Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or Rules. If the log says the User approved a Rules addition, check the change at its recorded `AGENTS.md` path, using the diff when tracked, and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
 
 Tell the User what the log shows, whether the evidence supports it, the Important Findings that matter and your proposed next action.
 

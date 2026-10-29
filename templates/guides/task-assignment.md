@@ -21,7 +21,7 @@ Before writing a prompt, resolve conflicting objectives, instructions and valida
 
 Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's Task entry:
 
-1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Copy in the exact Spec decisions, constraints and authoritative User-document content the Task needs, as direct content. Never refer the Worker to the Spec, Plan, Tracker or Memory. Workers read the Rules directly.
+1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Copy in the exact Spec decisions, constraints and authoritative User-document content the Task needs, as direct content. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker or Memory. Workers read the Rules directly.
 2. For code, name the path and what to do with it, such as "Read `src/api/routes.py` and use its error response schema."
 3. Keep the instructions on the Task. Leave out Stage structure, other Task IDs and coordination concepts, except a producer Task's ID where it identifies dependency context.
 4. If the Plan lists dependencies, write Context from Dependencies:

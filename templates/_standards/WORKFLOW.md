@@ -120,7 +120,7 @@ The Manager dispatches Ready Tasks to free Workers. A single dispatch holds one 
 
 Each Worker takes one dispatch at a time. Review incoming reports and dispatch newly Ready work without waiting for unrelated reports. Wait only when the sole pending report would make a Waiting Task Ready for the Worker about to receive work.
 
-Task Prompts include the relevant Spec decisions, constraints, prerequisite versions and validation directly. Same-Worker dependencies name outputs and paths; Cross-Worker dependencies also include reading and integration instructions from the producer's log. Trace upstream until an intermediate output captures the needed contracts. Give recovered Workers fuller context where needed.
+Task Prompts include the relevant Spec decisions, constraints, prerequisite versions and validation directly, along with Tracker context, lasting Index findings and corrections from earlier Tasks. Same-Worker dependencies name outputs and paths; Cross-Worker dependencies also include reading and integration instructions from the producer's log. Trace upstream until an intermediate output captures the needed contracts. Give recovered Workers fuller context where needed.
 
 Prompts name the working directory, branch/worktree and workspace root for `.apm/` paths. Follow-ups retain Task identity and log path, refining the work from review findings. Active corrections preserve valid progress and the existing workspace.
 
@@ -132,7 +132,7 @@ The Worker confirms its identity, handles any Handoff and starts its waiting pro
 
 Success requires the objective and every validation criterion to pass. A deliberate deviation or unrun check is not a pass. In a batch, validate and log each Task before the next; stop at the first Failed outcome and report unstarted Tasks.
 
-Apply User corrections immediately. At completion, ask whether corrections that apply to later Tasks should become Rules. Approved additions are committed with the Task and recorded in Important Findings.
+Apply User corrections immediately. At completion, ask whether corrections that apply to later Tasks should become Rules. Update the existing workspace Rules, using the assigned branch or worktree copy when tracked in the Task's repository. Commit those tracked additions with the Task; record every approved addition and its path in Important Findings.
 
 The Worker commits, writes the Task Log, clears its Task Bus and writes a Task Report. Reports surface consequential deviations and decisions; logs hold the detail. Follow-up logs replace earlier attempts while retaining consequential findings and their resolution. The Worker tells the User how to deliver the report, then waits.
 

@@ -6,7 +6,7 @@ Your findings feed three documents: the Spec holds design decisions and constrai
 
 ## 1. Preparation
 
-1. If the User confirmed relevant archives, examine them. Read each archive's `session.summary.md` first, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when Task or Worker states matter, and `metadata.json` for the archive date. Identify relevant scope, decisions, completed work and known issues, with paths or commands to verify them, and anything that may have changed since. Verify the findings you will rely on against the current code.
+1. If the User confirmed relevant archives, examine them. Locate and read each archive's session summary if present, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when Task or Worker states matter, and `metadata.json` for the archive date. Follow relevant links into Stage summaries and logs when more detail is needed. Identify relevant scope, decisions, completed work and known issues, with paths or commands to verify them, and anything that may have changed since. Verify the findings you will rely on against the current code.
 2. Explore every codebase relevant to the work, per §3.
 3. If `AGENTS.md` exists, summarize it for the User, explain that planning adds a separate Rules section and keeps the existing content, and ask whether they want that content changed.{CLAUDE_ONLY: Summarize any applicable `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md` instructions too, and ask the same. Preserve their content; the Rules go in `AGENTS.md`.} If there is no `AGENTS.md`, ask in Round 1 whether the User has one elsewhere or wants it created.
 
