@@ -21,21 +21,29 @@ The session's state lives in shared files outside any conversation: the planning
 
 ## Getting started
 
-APM supports Claude Code and agents that read project instructions from `AGENTS.md` and discover skills in `.agents/skills/`, such as Codex, Cursor and GitHub Copilot. It installs through `agentic-pm`, a command-line tool on npm that needs Node.js 18 or later:
+APM works with agents that use `AGENTS.md` and `.agents/skills/`, such as Codex, Cursor and GitHub Copilot. It also supports Claude Code. Install the `agentic-pm` CLI with Node.js 18 or later:
 
 ```bash
 npm install -g agentic-pm
 ```
 
-In your project directory, run:
+From your project folder, run:
 
 ```bash
 apm init
 ```
 
-Choose `agents` for agents using `.agents/skills/` and `AGENTS.md`, or `claude` for Claude Code. To install APM for both, use `apm init -a agents claude`.
+Choose `agents` for agents using `AGENTS.md` and `.agents/skills/`, or `claude` for Claude Code. To install both, use `apm init -a agents claude`.
 
-Invoke the `apm-1-initiate-planner` skill in your assistant and describe what you want to build or change. Each agent guides you through the next steps. See [Getting Started](https://agentic-project-management.dev/docs/getting-started) for the full walkthrough.
+Start a new chat with your assistant, invoke `apm-1-initiate-planner` and describe what you want to build or change.
+
+For example, in Claude Code:
+
+```text
+/apm-1-initiate-planner Create Claude Opus 6, make no mistakes.
+```
+
+APM guides you through the next steps. See [Getting Started](https://agentic-project-management.dev/docs/getting-started) for the full walkthrough.
 
 ## Documentation
 
