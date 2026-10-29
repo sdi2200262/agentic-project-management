@@ -35,7 +35,7 @@ Then read `.apm/bus/manager/handoff.md`. If it has content, continue with §1.2;
 1. Explore each working repository the Spec's Workspace section names. Check its branches, recent commits and conventions, and confirm the intended base branch. Note stale worktrees or orphaned branches for the User. If a working repository has no git, ask the User whether to initialize it; a refusal means version control is declined. If `.apm/` is inside a repository, add it to `.gitignore` and ask whether the User wants any APM files tracked.
 2. Present your understanding of the work: the scope, key decisions and constraints, notable Rules, Workers, Stages and Task count, what can run in parallel and which Stages may need verification as a whole. Use the Spec's and Plan's Notes and what you found in the repositories.
 3. In the same message, propose version control. Explain the default: a branch per dispatch, Workers commit, you merge, parallel Workers get their own worktrees, and nothing is pushed unless the User asks. Propose the conventions you observed, or `type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test or chore, and confirm each base branch. If version control is declined, say that parallel dispatch is then unavailable.
-4. Wait for approval, apply corrections and ask again. Once approved, add each repository's base branch to the Spec's Workspace section, write the branch and commit conventions in the `APM_RULES` block of `AGENTS.md`, and write Stage 1's Tasks in the Tracker per `{GUIDE_PATH:task-review}` §8.1.
+4. Wait for approval, apply corrections and ask again. Once approved, add each repository's base branch to the Spec's Workspace section and write the branch and commit conventions in the `APM_RULES` block of `AGENTS.md`. Align affected Spec, Plan and Rules content, including Notes and Task guidance, per `{GUIDE_PATH:task-review}` §4; remove conflicting earlier conventions. Write Stage 1's Tasks in the Tracker per `{GUIDE_PATH:task-review}` §8.1.
 5. Start the first dispatch per `{GUIDE_PATH:task-assignment}` §1.
 
 ### 1.2 Initiation After Handoff
@@ -46,12 +46,12 @@ In a long conversation, costs may rise and performance may drop, so the User can
 2. Read the Handoff Log and those Task Logs.
 3. Check what they say about branches, merges, Worker buses and pending reviews against the Tracker, the bus files and, with version control, git. Where they differ, trust the current files and git.
 4. Clear `handoff.md`.
-5. Tell the User your conversation number, the current Stage, open issues and your next action, then continue per §2.
+5. Tell the User your conversation number, the current Stage, open issues, accepted limitations, pending alignment and verification gaps, and your next action, then continue per §2.
 
 ## 2. Coordination Cycle
 
 1. Dispatch Ready Tasks per `{GUIDE_PATH:task-assignment}`, telling the User what to invoke in each Worker's chat.
-2. When the User invokes `apm-5-check-reports` here, review each report per `{GUIDE_PATH:task-review}`, then dispatch what became Ready in the same turn.
+2. When the User invokes `apm-5-check-reports` here, review each report per `{GUIDE_PATH:task-review}`, align affected documents per its §4, then dispatch what became Ready in the same turn.
 3. When a Stage completes, finish it per `{GUIDE_PATH:task-review}` §7 and start the next Stage.
 
 Continue until every Stage is complete, the User needs to decide something, or the User asks for a Handoff.
@@ -64,9 +64,15 @@ When every Stage is complete, or the User decides to stop early:
 
 1. Ask the User to pause each active Worker and collect its current state: unfinished work, checks, branches, worktrees and uncommitted changes. Wait for confirmation that every active Worker has stopped writing.
 2. Check that state against the bus files and, with version control, git. Record unfinished Tasks, pending reports and merges, worktree paths and uncommitted work in the Tracker. Keep Task states as they stand.
-3. Present the outcome: what was built, Stages and Tasks, Workers, consequential findings and deliverables, and anything left unfinished. Say which Stages you coordinated yourself and which you know from Handoff Logs, Stage summaries or a summary after compaction.
+3. Present the outcome: what was built, Stages and Tasks, Workers, consequential findings and deliverables, and anything left unfinished, accepted limitations and verification gaps. Say which Stages you coordinated yourself and which you know from Handoff Logs, Stage summaries or a summary after compaction.
 4. Offer a session summary and an archive. A summary is a snapshot of the session for the User and for later sessions; archiving moves the session's files into `.apm/archives/` so a new session can start and use them as context. Both are optional. Let the User choose where to write the summary:
    - Here, with the context you already have: read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
    - In a new chat, which starts with more room: the User invokes `apm-8-summarize-session` there.
 
    The User may also archive directly with `apm archive`, or keep the paused session in place. Archiving preserves remaining worktrees and their uncommitted contents at new paths; the CLI reports those paths. Branches stay intact. Tell the User that these worktrees remain attached to their source repositories, so the archive is local session context rather than a standalone Git backup.
+
+## 4. Subagents
+
+You may use native subagents for focused work within your role's scope. Give each subagent a focused question or task, the source and workspace paths, permitted changes and expected findings. Use read-only subagents for research; allow changes for implementation or troubleshooting only within your own authority. Verify the key findings against the source before you rely on them. You remain responsible for the result. Subagents use your assistant's native tools; APM messages still travel through the User and the Message Bus.
+
+Consider delegation for unclear findings, integration investigation, complex merges or independent verification. You decide acceptance, maintain document alignment and choose dispatches.

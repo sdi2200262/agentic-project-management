@@ -17,7 +17,9 @@ A Worker works from its Task Prompts, the Rules and its own conversation. Each T
 
 ## 2. Task Context
 
-Write each Task Prompt per §7.1, or §7.2 for a batch, from the Plan's Task entry:
+Before writing a prompt, resolve conflicting objectives, instructions and validation in the Spec, Plan and Rules per `{GUIDE_PATH:task-review}` §4. Include prerequisite versions, configuration constraints and accepted exceptions where they affect the Task.
+
+Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's Task entry:
 
 1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Copy in the exact Spec decisions, constraints and authoritative User-document content the Task needs, as direct content. Never refer the Worker to the Spec, Plan, Tracker or Memory. Workers read the Rules directly.
 2. For code, name the path and what to do with it, such as "Read `src/api/routes.py` and use its error response schema."
@@ -25,7 +27,7 @@ Write each Task Prompt per §7.1, or §7.2 for a batch, from the Plan's Task ent
 4. If the Plan lists dependencies, write Context from Dependencies:
    - **Same-Worker dependency:** the Worker remembers its own work. Name the earlier Task, its key outputs and paths, and how to build on them, with more detail for complex work.
    - **Cross-Worker dependency:** the Worker has not seen this work. Read the producer's Task Log, then give numbered reading steps, the producer's outputs, interfaces and constraints, and how to integrate them, however simple the work seems.
-   - Tasks listed under Not Read Since Handoff in the Tracker's Workers table count as Cross-Worker. A Worker that recovered after compaction may need more detail; the table's Notes say so.
+   - Tasks listed under Not Read Since Handoff in the Tracker's Workers table count as Cross-Worker. A Worker that recovered after compaction may need more detail; the table's Context says so.
    - Trace upstream when earlier Tasks set patterns or contracts this Task relies on. Stop where an intermediate output fully captures them.
 5. Add execution, validation or logging guidance only when it is specific to this Task. The Worker's guides already cover the general rules.
 
@@ -39,7 +41,7 @@ With version control, follow the branch and commit conventions in the Rules and 
 2. Create one branch per single or batch dispatch, from the repository's base branch. A batch shares one branch.
 3. For sequential work, use the main working directory. For parallel dispatch, give each Worker its own worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`, with `<branch-slug>` the branch name with `/` replaced by `-`. Keep the main directory on the base branch and run at most four worktrees at once. A worktree holds tracked files only, so name any untracked files the Worker needs.
 4. Name branches after the actual work.
-5. Record the branch and any worktree in the Task's row in the Tracker.
+5. Record the branch, any worktree and Next Action in the Task's row in the Tracker.
 
 Workers commit; you create branches and worktrees, merge them and clean up. Do not commit generated build files; update `.gitignore` when needed. In a worktree, every `.apm/` path still points to the workspace root, so the prompt's Workspace section says so.
 
@@ -58,7 +60,7 @@ If the User enables version control later, initialize git where needed, confirm 
 A follow-up Task sends a Task back to the same Worker after review, with a revised Task Prompt. It keeps its Task ID and stays Active.
 
 1. Rewrite the prompt per §7.3. Explain what went wrong and what review or investigation found, and revise the Objective, Instructions, Output and Validation so the Worker can close the gap from its own context.
-2. Keep the original `log_path`; the new Task Log replaces the old one.
+2. Keep the original `log_path`; the new Task Log replaces the old one. Tell the Worker to retain consequential earlier findings and explain their resolution.
 3. Deliver it per §4.
 
 ## 6. Agents Outside APM

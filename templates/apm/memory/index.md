@@ -4,5 +4,5 @@
 
 ## Stage Summaries
 
-| Stage | Summary | Folder |
-|-------|---------|--------|
+| Stage | Outcome | Summary |
+|-------|---------|---------|
