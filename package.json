@@ -20,6 +20,12 @@
   "contributors": [],
   "license": "MPL-2.0",
   "type": "module",
+  "files": [
+    "src/",
+    "CHANGELOG.md",
+    "SECURITY.md",
+    "VERSIONING.md"
+  ],
   "bin": {
     "apm": "src/index.js",
     "agentic-pm": "src/index.js"
