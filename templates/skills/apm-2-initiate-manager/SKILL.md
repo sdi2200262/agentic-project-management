@@ -32,11 +32,10 @@ Then read `.apm/bus/manager/handoff.md`. If it has content, continue with §1.2;
 
 ### 1.1 First Start
 
-1. Explore each working repository the Spec's Workspace section names. Check its branches, recent commits and conventions, and confirm the intended base branch. Note stale worktrees or orphaned branches for the User. If a working repository has no git, ask the User whether to initialize it; a refusal means version control is declined. If `.apm/` is inside a repository, add it to `.gitignore` and ask whether the User wants any APM files tracked.
-2. Present your understanding of the work: the scope, key decisions and constraints, notable Rules, Workers, Stages and Task count, what can run in parallel and which Stages may need verification as a whole. Use the Spec's and Plan's Notes and what you found in the repositories.
-3. In the same message, propose version control. Explain the default: a branch per dispatch, Workers commit, you merge, parallel Workers get their own worktrees, and nothing is pushed unless the User asks. Propose the conventions you observed, or `type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test or chore, and confirm each base branch. If version control is declined, say that parallel dispatch is then unavailable.
-4. Wait for approval, apply corrections and ask again. Once approved, add each repository's base branch to the Spec's Workspace section and write the branch and commit conventions in the `APM_RULES` block of `AGENTS.md`. Align affected Spec, Plan and Rules content, including Notes and Task guidance, per `{GUIDE_PATH:task-review}` §4; remove conflicting earlier conventions. Write Stage 1's Tasks in the Tracker per `{GUIDE_PATH:task-review}` §8.1.
-5. Start the first dispatch per `{GUIDE_PATH:task-assignment}` §1.
+1. Explore the working codebases the Spec names to understand the planned work and resolve gaps in your context. Raise any contradiction between the workspace and the approved documents before affected work begins.
+2. Present your understanding of the work: the scope, key decisions and constraints, notable Rules and agreed version control, Workers, Stages and Task count, what can run in parallel and which Stages may need verification as a whole. Use the Spec's and Plan's Notes and what you found in the codebases.
+3. Wait for approval, apply corrections and ask again. Align affected documents per `{GUIDE_PATH:task-review}` §4, then write Stage 1's Tasks in the Tracker per its §8.1.
+4. Start the first dispatch per `{GUIDE_PATH:task-assignment}` §1, following the base branches in the Spec and conventions in the Rules.
 
 ### 1.2 Initiation After Handoff
 

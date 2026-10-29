@@ -22,7 +22,7 @@ The Planner reads both planning guides at initiation and develops design and wor
 
 ### 2.2 Implementation
 
-The Manager confirms its understanding and version control with the User, updates the planning documents and starts dispatching. Each Task passes through assignment, execution, logging and review. Stages run in order; Tasks within a Stage may run singly, in batches or in parallel.
+The Manager explores the working codebases, confirms its understanding with the User and starts dispatching under the approved planning decisions. Each Task passes through assignment, execution, logging and review. Stages run in order; Tasks within a Stage may run singly, in batches or in parallel.
 
 Implementation ends when every Stage is complete or the User stops early. The Manager records the state, reports the outcome and offers a summary and archive. A large goal may span several APM sessions; the Planner agrees each session's scope with the User.
 
@@ -40,11 +40,11 @@ Implementation ends when every Stage is complete or the User stops early. The Ma
 
 The workspace-root `AGENTS.md` holds execution conventions shared by all or most work inside `APM_RULES`. Preserve User content outside that block. Area-specific design and output contracts belong in the Spec or Task guidance.
 
-All roles read the Rules. The Planner ensures Claude Code can load `AGENTS.md`, adding an import only when needed and preserving existing instructions. The Manager adds version control conventions. Workers may add User-approved corrections through Task Execution.
+All roles read the Rules. The Planner records agreed version control conventions and ensures Claude Code can load `AGENTS.md`, adding an import only when needed and preserving existing instructions. Workers may add User-approved corrections through Task Execution.
 
 ### 3.4 Version Control
 
-The Manager confirms base branches and conventions at first start. It proposes existing conventions, or `type/short-description` branches and `type: description` commits. Each dispatch gets a branch; parallel Workers also get separate worktrees. Workers commit; the Manager creates branches, merges and cleans up. Push only when the User asks.
+The Planner surveys Git state and agrees version control with the User during Context Gathering: whether to use it, base branches, conventions and APM file tracking. It proposes existing conventions, or `type/short-description` branches and `type: description` commits, records base branches in the Spec and conventions in the Rules, and initializes missing repositories only with approval. Each dispatch gets a branch; parallel Workers also get separate worktrees. Workers commit; the Manager creates branches, merges and cleans up under the agreed conventions. Push only when the User asks.
 
 When `.apm/` is inside a repository, ignore it by default and ask whether the User wants APM files tracked. If version control is declined, parallel dispatch is unavailable.
 
@@ -98,7 +98,7 @@ The Planner surveys repositories, instructions and existing materials. The User'
 
 Each round includes an exchange with the User, follow-up research, a summary and an open question. Initial context does not skip a round. The Planner resolves important gaps and confirms consequential assumptions. When several designs are viable, it presents trade-offs and a recommendation for the User to choose.
 
-The Planner may propose tentative Stages, Tasks and Workers during questioning and ask about Task size, available agents, parallelism and review points. It revises the breakdown as it learns. Repository conventions and actual dispatch remain the Manager's responsibility.
+The Planner may propose tentative Stages, Tasks and Workers during questioning and ask about Task size, available agents, parallelism and review points. It revises the breakdown as it learns and agrees repository conventions with the User. The Manager chooses actual dispatches during implementation.
 
 Agree the session's scope before the understanding summary. Research needed to understand the work happens during planning; research that is itself a deliverable becomes planned work. Understanding approval starts document writing.
 

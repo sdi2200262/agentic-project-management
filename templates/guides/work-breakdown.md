@@ -23,7 +23,7 @@ The Spec says what is built and why: decisions where alternatives existed, and t
 1. Propose the design decisions, constraints, references to source documents and how you will organize them. Explain the choices and assumptions that matter.
 2. Write `.apm/spec.md` per §5.1:
    - **Overview:** what this APM session builds.
-   - **Workspace:** working targets and read-only references, authoritative documents with paths and sections, and existing `AGENTS.md` content.
+   - **Workspace:** working targets and read-only references, each working repository's agreed base branch or decision to work without Git, authoritative documents with paths and sections, and existing `AGENTS.md` content.
    - **Notes:** assumptions, open questions, reasons behind constraints and context for work left to later sessions.
    - **Design sections:** settled design decisions and constraints, organized so the Manager can find them and copy them into Task Prompts.
 
@@ -54,7 +54,7 @@ Prefer boundaries and order that allow independent work, Same-Worker chains and 
 
 The Rules describe how to work across all or most Tasks. Every Worker reads the whole of `AGENTS.md`, including content outside the `APM_RULES` block.
 
-1. Propose the conventions, drawn from the approved documents and the gathered context. Leave version control conventions to the Manager, which adds them at its first start. Explain what you include or leave out, and which existing standards you refer to.
+1. Propose the conventions, drawn from the approved documents and the gathered context, including the agreed version control choices and branch and commit conventions for each working repository. Explain what you include or leave out, and which existing standards you refer to.
 2. Read `AGENTS.md`, or confirm it does not exist, and write the `APM_RULES` block per §5.3. Keep content outside the block unless the User asks for changes. If you create the file, write only the block.{CLAUDE_ONLY:
 
    For Claude Code, check whether `AGENTS.md` loads as project instructions. Native loading needs v2.1.277 or later. By default, `CLAUDE.md`, `.claude/CLAUDE.md` or `CLAUDE.local.md` in the working directory or its ancestors blocks it; the user-level `~/.claude/CLAUDE.md` is exempt. The Project instructions setting can change this behavior. Keep the existing setup when `AGENTS.md` already loads.
@@ -63,7 +63,7 @@ The Rules describe how to work across all or most Tasks. Every Worker reads the 
 
    Explain any new file or import when presenting the Rules. Have the User check `/memory` in a fresh Claude Code chat to confirm the Rules loaded.
 }
-3. After approval, continue with `{SKILL_PATH:apm-1-initiate-planner}` §4.
+3. After approval, initialize missing repositories only where the User agreed, and apply the agreed `.gitignore` treatment of APM files. Then continue with `{SKILL_PATH:apm-1-initiate-planner}` §4.
 
 Each Rule says when it applies, such as "When adding an API route, …", and stands alone without references to the Spec, Plan or design documents. Output strings, formats, schemas and interface contracts describe what is built, so they belong in the Spec or a Task's Guidance even when several Workers need them; when unsure, keep a pattern in Guidance.
 
@@ -80,7 +80,7 @@ The Spec is `.apm/spec.md`:
 <In three to five sentences: what this APM session builds, the problem it solves, its scope and its success criteria>
 
 ## Workspace
-<The folder structure, working and reference repositories, authoritative documents and existing `AGENTS.md` content. The Manager later adds each repository's base branch.>
+<The folder structure, working and reference repositories, each working repository's agreed base branch or decision to work without Git, authoritative documents and existing `AGENTS.md` content.>
 
 ## Notes
 <Assumptions and context for the Manager per §2>

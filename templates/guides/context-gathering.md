@@ -2,7 +2,7 @@
 
 This guide covers Context Gathering: exploring the workspace, questioning the User in three rounds, settling how much of the User's goal this APM session covers, and getting the User's approval of your understanding. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
 
-Your findings feed three documents: the Spec holds design decisions and constraints, the Plan organizes the work, and the Rules hold conventions shared by all or most work. Gather requirements, domain knowledge, technical choices, constraints and concrete success criteria. Develop work-structure choices as you gather context. Ask about coordination and version control preferences when they affect the plan; the Manager confirms repository conventions and chooses actual dispatches. Research needed to understand the work belongs here; research that is itself a deliverable becomes planned work.
+Your findings feed three documents: the Spec holds design decisions and constraints, the Plan organizes the work, and the Rules hold conventions shared by all or most work. Gather requirements, domain knowledge, technical choices, constraints and concrete success criteria. Develop work-structure choices as you gather context. Agree coordination and version control preferences with the User; the Manager chooses actual dispatches within those agreements. Research needed to understand the work belongs here; research that is itself a deliverable becomes planned work.
 
 ## 1. Preparation
 
@@ -52,8 +52,11 @@ Cover technical preferences, quality standards, workflow preferences, outside ap
 - Preferred validation, reviews, sign-offs and acceptance requirements.
 - Consistency standards, formats, examples and reference material.
 - Areas of expertise, natural boundaries, available agents, parallelism, preferred Task size and review points.
-- Proposed Stages, Tasks and Workers, and coordination or version control preferences that affect the plan.
+- Proposed Stages, Tasks and Workers, and coordination preferences that affect the plan.
+- Version control for each working repository: whether to use Git, its base branch, branch and commit conventions, and whether any `.apm/` files are tracked. Ask before initializing a repository. Explain that declining version control makes parallel dispatch unavailable.
 - Chosen approaches and their reasons, including what ruled alternatives out.
+
+Propose existing Git conventions, or `type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test or chore. Explain the default: a branch per dispatch, Workers commit, the Manager merges, parallel Workers use separate worktrees, and nothing is pushed unless the User asks. Keep `.apm/` ignored by default when it is inside a repository; agree any exceptions with the User.
 
 Move on when the approach, quality standards and approvals are clear.
 
