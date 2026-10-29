@@ -1,77 +1,51 @@
 # APM Writing Standards
 
-These standards guide template authors. Authors implement them in the command skills, shared skills and guides agents read at runtime. Apply them to both the instructions and the output those instructions request. Terms follow `TERMINOLOGY.md`; document and artifact structure follows `STRUCTURE.md`.
+Write runtime instructions for the agent that must act on them. Apply these standards to both the instructions and the output they request. `WORKFLOW.md` defines behavior, `TERMINOLOGY.md` defines terms and `STRUCTURE.md` defines file structure and formats.
 
-## 1. Principles
+## 1. Write for the Reader
 
-Write plain English: open with the substance, say each point once in everyday words, keep sentences to one main thought, state claims at the certainty the evidence supports, and choose prose, lists or tables by the content. APM text also has needs of its own:
+State what the reader needs to do, with the context needed to do it. Runtime instructions address the reading agent as "you" and use third person for other roles. Standards address template authors and maintainers.
 
-- **Formal terms.** `TERMINOLOGY.md` defines a small set of terms so agents can find each part of the workflow and choose between explicit options. Use these terms exactly as defined and ordinary words elsewhere.
-- **Fixed formats.** Artifacts and messages follow their contracts, because other agents and the CLI rely on their fields, paths and sections.
-- **Agent readers.** Most runtime text is read by an agent that has the files and the workspace but not the writer's conversation. It needs exact paths, conditions and completion criteria.
-- **Runtime copy.** The writing rules agents apply live in the `apm-communication` shared skill, which stays consistent with these authoring standards.
+Explain an unfamiliar APM concept when the agent first needs it. Use the terms in `TERMINOLOGY.md` consistently and ordinary English elsewhere.
 
-## 2. Write for the Reader
+## 2. Keep Instructions Aligned
 
-Before writing, identify the reader, the decision or action they need to take, and the context they already have. State the rule, condition and required action directly. Keep enough explanation to make the instruction unambiguous.
+Use the same wording for equivalent instructions and workflow branches. Vary only the role, inputs or actions that differ. When changing an instruction or contract, check its counterparts and update affected standards, runtime files, formats and examples together.
 
-Define required results, constraints and decision criteria. Use the enumerated values required by artifact schemas. Preserve authority, approval gates and artifact contracts.
+## 3. Use Plain Language
 
-Use the same wording for equivalent instructions and workflow branches, following `STRUCTURE.md` §1. Keep the differences that convey a different role, input or action.
+Open with the substance. Use concrete subjects, active verbs and familiar words. Keep each sentence to one main thought and say each point once. Keep related words together and prerequisites before the actions that need them.
 
-## 3. Use Plain, Precise Language
-
-Keep each sentence to one main thought. Prefer concrete subjects, active verbs and familiar words. Keep related words together and put prerequisites before the steps that depend on them. Use the passive when the receiver of an action is the subject that matters.
-
-Use a casually formal tone in chat and match authored prose to its reader and purpose. State claims at the certainty the evidence supports; identify consequential uncertainty and its cause. Hedge claims about agent behavior, such as "costs may rise and performance may drop".
-
-Use formal APM terms consistently as defined in `TERMINOLOGY.md`. Use ordinary English capitalization for other labels and section names. Where the agent first meets an APM concept, such as a Handoff, a batch or a follow-up Task, explain it in a sentence or two so the agent understands the system it works in, and leave the full detail to the file that owns the concept.
-
-Speak of the work and what the APM session builds: a session may cover only part of a larger goal.
-
-Runtime instructions address the reading agent as "you"; use third person for other roles. Shared skills distinguish role responsibilities explicitly. Standards describe the workflow in third person and may address maintainers directly.
+Write casually formal chat replies and match documents to their reader and purpose. State claims at the certainty the evidence supports; name consequential uncertainty and its cause.
 
 ## 4. Make Procedures Actionable
 
-Use numbered steps for ordered actions and lists for independent items. State the trigger, prerequisites, decisions, actions and completion condition. Include response handling whenever the agent must pause for the User: what approval allows, how corrections are applied, and when to ask again.
+State the trigger, required inputs, action and completion condition. Use numbered steps for sequences and lists for independent items. Put each rule where the agent applies it. Explain a rule's reason only when it helps the agent use it.
 
-Write actions as imperatives. Use "must" only for hard requirements on artifacts or conditions, where an imperative doesn't fit. Avoid "should", which reads as optional.
+Write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. For approval gates, state what needs approval, when to wait and how to handle corrections.
 
-Use natural conditions with a clear action. When an action is required, say so directly and say when it applies. Where the agent must judge, give it signs it can check rather than words such as "substantial" or "when helpful". State a default when it resolves a consequential edge case. When an agent must stop short of acting on its own, say what it does instead, such as presenting options with a recommendation.
+Keep ordinary transitions in sequence; use section references for other branches. Include examples only when they resolve ambiguity. Preserve role boundaries, approvals and artifact contracts.
 
-Give a rule's reason when it helps the reader apply it correctly. Keep examples for non-obvious cases. Describe ordinary sequential transitions naturally; use section references for navigation and non-sequential jumps.
+## 5. Request Useful Output
 
-## 5. Request Useful Communication
-
-Agents write for three readers. Instructions say what each output must contain for its reader; the shared rules live in `apm-communication`, and each procedure adds only what its own messages need.
-
-- **The User.** Replies open with the answer, outcome, finding, proposal or question, give only the details needed to understand or act, and stay within the default reply lengths in `apm-communication` §1 unless the User asks otherwise. Explain an APM term the first time the User meets it, and give reasons about the work rather than citing APM procedures.
-- **Other agents.** Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are self-contained for a reader without the writer's conversation. Free text records the work: outcomes, decisions with reasons, evidence, open issues and paths. Each fact has one authoritative home; reports and summaries carry its consequential findings with source paths.
-- **The system.** Bus files, frontmatter and paths follow their contracts exactly, because the CLI, the bus protocol and other agents parse them.
-
-| Situation | What the output conveys |
+| Reader | Output needs |
 |---|---|
-| Questions | The relevant understanding or gap, a focused question, and any context or options needed to answer. |
-| Proposals | The proposed result, consequential choices and their reasons, and the decision or approval needed. |
-| Progress | A meaningful finding, change or blocker, plus the next action when relevant. |
-| Completion | Outcome, deliverables, validation evidence, limits and any required action. |
-| Review | Findings against objectives and evidence, their implications, and the resulting action. |
-| Continuity | Current state, decisions and reasons, unresolved issues, source paths and concrete resumption steps. |
+| User | Answer, outcome, finding, proposal or question first; then the evidence, limits and next action needed. Follow the shared reply lengths unless the User asks otherwise. |
+| Other agents | Self-contained outcomes, decisions with reasons, evidence, open issues and source paths. The reader has the workspace, not the writer's conversation. |
+| System | Exact schemas, field names, values, paths and bus separators. |
 
-Preserve material qualifications in completion, review and summary text: comparison counts, accepted deviations and which checks ran live, ran in isolation or were not run. Acceptance closes a decision; it does not turn an unmet check into a passing result.
+Give each fact one authoritative home. Reports and summaries preserve consequential findings with source paths. Keep validation counts, accepted deviations and unrun checks visible; acceptance does not make an unmet check pass.
+
+Shared writing rules belong in `apm-communication`; procedures add only what their own outputs need.
 
 ## 6. Skills and Native Actions
 
-Refer to command skills by name, and tell the User to invoke them without a command prefix, such as "invoke `apm-3-initiate-worker` in a new chat". Refer to what the User gives with a skill by what it is, such as "the agent ID the User gave with this skill".
+Tell the User which skill to invoke, in which chat and with which argument. Name skills without a command prefix, since assistants invoke them differently.
 
-Keep assistant-specific syntax out of templates and let each agent use its own assistant's way of acting. Each role's initiation skill describes optional subagent delegation and recommends uses within that role's scope. Workflow steps state the required work and evidence, leaving delegation to the agent. A delegation brief gives the purpose, inputs, permitted actions and required findings. Name a subagent by its purpose. Claude Code-only instructions use the `{CLAUDE_ONLY:text}` placeholder in `STRUCTURE.md` §5.
+Describe assistant actions in plain English. Each role's initiation skill owns its optional delegation guidance; procedure steps specify the work and evidence needed. Keep assistant-specific instructions in the supported placeholders defined in `STRUCTURE.md`.
 
 ## 7. Formatting
 
-Use headings for distinct subjects, short paragraphs for explanations, numbered lists for sequences and tables for comparisons or schemas. Leave a blank line before lists and after headings.
+Use headings for distinct subjects, paragraphs for explanations, lists for parallel items or steps and tables for comparisons. Leave a blank line before lists and after headings.
 
-Use inline code for paths, field names and literal values. Put commands the User must run in fenced code blocks. Use fenced blocks with an appropriate language for schemas and examples; use a longer outer fence when showing nested code blocks. Reserve bold for terms or labels readers need to find again, and use italics sparingly.
-
-Preserve exact field names, values, identifiers and required artifact sections.
-
-Place Notes according to `STRUCTURE.md` §4 and the artifact's owning format.
+Use inline code for paths, field names and values, and fenced code blocks for commands, schemas and examples. Use a longer outer fence for nested code blocks. Reserve bold for terms or labels the reader needs to find again.

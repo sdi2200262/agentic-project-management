@@ -43,7 +43,6 @@ Explore the repository to understand the layout. The key directories are:
 - `TERMINOLOGY.md` - Formal vocabulary and defined concepts
 - `STRUCTURE.md` - Structural standards for each file type
 - `WRITING.md` - Writing patterns, tone, formatting
-- `NOTES.md` - Proposed future work for the official repository. These proposals do not describe current behaviour.
 
 **`build/`** - The build system that processes templates into installation bundles. `build-config.json` defines the installation targets (`agents` and `claude`) and their directory layouts.
 

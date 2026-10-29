@@ -1,71 +1,65 @@
 # APM Structure Standards
 
-These standards define source layout, navigation and artifact contracts for template authors. `WRITING.md` covers prose and Markdown presentation; `TERMINOLOGY.md` defines APM terms.
+These standards define runtime file layout, navigation and artifact contracts. `WRITING.md` covers prose; `TERMINOLOGY.md` defines APM terms.
 
-## 1. Organize for use
+## 1. Organize for Use
 
-Open each file directly with a short paragraph that says what the file covers and what it produces. Command skills establish the agent's role; guides and shared skills, like other skills, describe a procedure or protocol and leave the role to the command skill that loads them.
+Open each file with its purpose and result. Keep each section on one part of the work, in the order the agent acts. State each rule once at its point of use; repeat a brief reminder only when testing shows agents miss it.
 
-State each rule once, in the section where the agent applies it. Each section covers one part of the work and holds the steps and rules for it. A rule appears a second time only where testing showed agents skipping it, as a one-sentence reminder at the point of use.
-
-Use the same wording for equivalent instructions, loading lists, approval cycles and workflow branches. Vary only the role, inputs and actions that differ. Initiation skills introduce their loading lists with "Read these files in full:". Shared communication instructions apply to all reading roles; role-specific behavior belongs in the role's initiation skill or guides.
-
-Place artifact contracts in a final Formats section of the file that owns them, with one subsection per artifact. Each contract has one home.
-
-| Document | Content |
+| File | Content |
 |---|---|
-| Initiation command skill | An opening that places the role in the system: the other agents, what the role receives and from whom, what it produces and for whom, how messages travel, and its scope. Then identity and loading sequence, behavior at first start and after Handoff, duties and boundaries. The Planner has one conversation and no Handoff. |
-| Utility or recovery command skill | Purpose, applicability, arguments, procedure and completion behavior. |
-| Handoff command skill | Applicable role, transfer procedure, Handoff Log and Handoff Prompt formats. |
-| Guide | Opening paragraph saying what the guide covers, followed by brief context the steps rely on, such as the sections of the input it works from; one numbered section per step of the procedure, in the order the agent acts, each holding its own rules, with subsections for work that happens within a step (troubleshooting and batches within execution); a final Formats section for the contracts the guide owns. A guide stops where the next guide's procedure begins and points to it. |
-| Shared skill | Reading roles and purpose, followed by procedures and reference content. |
+| Initiation skill | Role, inputs, outputs, scope, file loading, identity, first start, continuation and duties. The Planner has no Handoff. |
+| Utility or recovery skill | Purpose, applicability, arguments, procedure and completion. |
+| Handoff skill | Role, transfer procedure, Handoff Log and Prompt formats. |
+| Guide | Procedure context, ordered steps and branches, then Formats for its artifacts. End where the next guide begins and point to it. |
+| Shared skill | Reading roles, purpose and shared protocol. Role-specific behavior belongs in the role's files. |
 
-## 2. Source layout and frontmatter
+Keep artifact contracts in a final Formats section of their owning file, one subsection per artifact.
+
+## 2. Sources and Frontmatter
 
 Sources live under `templates/`:
 
 | Source | Path | Frontmatter |
 |---|---|---|
 | Command skill | `skills/apm-<N>-<action>/SKILL.md` | `name`, `description`, `disable-model-invocation: true` |
-| Shared skill | `skills/<skill-name>/SKILL.md` | `name`, `description` |
-| Skill support file | Alongside its `SKILL.md` | As its format requires |
-| Guide | `guides/<guide-name>.md` | None |
-| Initial artifact | `apm/<artifact-path>.md` | As its runtime schema requires |
+| Shared skill | `skills/<name>/SKILL.md` | `name`, `description` |
+| Skill support file | Beside its `SKILL.md` | As required by its format |
+| Guide | `guides/<name>.md` | None |
+| Initial artifact | `apm/<path>.md` | As required by its schema |
 | Authoring standard | `_standards/<NAME>.md` | None |
 
-Names use kebab-case; each skill's `name` matches its directory. Descriptions briefly identify purpose and activation. YAML frontmatter begins on the first line between `---` delimiters, with valid field names, types and quoting.
+Use kebab-case names; each skill's `name` matches its directory. Descriptions identify purpose and activation. Valid YAML frontmatter starts on the first line between `---` delimiters.
 
-The build resolves placeholders and copies skills with their source frontmatter. Each target installs into its own folder at the workspace root, `.claude/` for Claude Code and `.agents/` for the `agents` target, with skills under `skills/` and guides under `apm-guides/`. The build resolves placeholders to exact paths for each target. The Rules live in `AGENTS.md` for every target; Claude Code-only instructions, such as checking Rules discovery and adding a needed import, go in `{CLAUDE_ONLY:text}`. Prose refers to command skills by name.
+Each build target installs skills under `skills/` and guides under `apm-guides/`, rooted at `.claude/` or `.agents/`. Initial artifacts become `.apm/`. Rules live in workspace-root `AGENTS.md` for both targets.
 
-## 3. Navigation and references
+## 3. Navigation
 
-Title each runtime file `APM {VERSION} - <Name>`, where the name says what the file is, such as `Worker Initiation`, `Check Reports` or `Task Review Guide`. Use one H1 title, H2 major sections and H3 subsections, adding deeper levels when needed. Number sections as `## 1. Title` and `### 1.1 Title`. Headings are short Title Case noun phrases that name the subject, such as `Validation`, `Dependency Context` or `Task Log Format`. Prefer a name that fits any kind of work over a coding-only one, such as `Troubleshooting` over `Debugging`. References give the number only: `§4` within a file, or `{GUIDE_PATH:task-logging} §5.1` across files. When sections are renumbered, update every reference to them.
+Title runtime files `APM {VERSION} - <Name>`. Use one H1, numbered H2 sections (`## 1. Title`) and numbered subsections (`### 1.1 Title`). Use short Title Case headings that fit any kind of work.
 
-Use explicit file paths and section references where they help navigation. Cross-file references use the placeholders in §5. A reference is enough only when the reading role can load the target within its normal access boundaries; otherwise state the rule where that role reads it.
+References use section numbers: `§4` locally, or `{GUIDE_PATH:task-logging} §5.1` across files. Update references when sections move. Use explicit paths and the placeholders below. Refer to another file only when the reading role may load it; otherwise include the needed instruction locally.
 
-## 4. Artifact contracts
+## 4. Artifact Contracts
 
-Each format definition specifies its location, naming, schema, allowed values, required/conditional fields and the meaning of non-obvious fields. Fenced examples distinguish literal content from values the agent fills in.
+Define each artifact's location, naming, schema, allowed values, required and conditional fields, and non-obvious field meanings. Initial artifacts match their owning formats.
 
-- `<value>` marks a value to fill; `[optional]` marks conditional content; `...` shows continuation.
-- `<N>` and `<M>` are integers; `<NN>` and `<MM>` are zero-padded identifiers in paths.
-- Prose Task IDs use `N.M`, such as Task 2.3. YAML uses integers (`stage: 2`, `task: 3`). Paths use zero padding, such as `stage-02/task-02-03.log.md`.
-- APM artifact names use kebab-case with `.log.md` for Task and Handoff Logs and `.summary.md` for summaries, including `session.summary.md`. Their runtime guides and skills define the fields and body sections.
+- `<value>` marks a value to fill; `[optional]` marks conditional content; `...` marks continuation.
+- `<N>` and `<M>` are integers; `<NN>` and `<MM>` are zero-padded path identifiers.
+- Task IDs use `N.M` in prose, integers in YAML (`stage: 2`, `task: 3`) and zero padding in paths (`stage-02/task-02-03.log.md`).
+- Artifact names use kebab-case with `.log.md` for logs and `.summary.md` for summaries, including `session.summary.md`.
 
-In artifacts that have Notes, place them after introductory and reference material, before the main body. The owning format defines the exact order: Spec Overview and Workspace precede Notes; the Plan's opening scope and Worker/Stage overview tables precede Notes; Tracker and Index Notes precede their tables. Do not add Notes to an artifact whose named sections already serve its needs.
+Root APM artifact paths at `.apm/`. Preserve field names, values, separators and identity rules used by the CLI and other roles. Distinguish literal content from fill-in values in format examples.
 
-Keep APM artifact paths rooted at `.apm/`. Preserve schemas, field names, allowed values, bus separators, identity rules and artifact paths used by other roles or the CLI. Artifact contracts govern required formatting, including YAML delimiters and batch separators.
+## 5. Build Placeholders and Checks
 
-## 5. Build placeholders and validation
-
-Supported placeholders match `build/processors/placeholders.js` and resolve per target:
+Supported placeholders match `build/processors/placeholders.js`:
 
 | Placeholder | Result |
 |---|---|
 | `{VERSION}` | Template version |
 | `{SKILL_PATH:name}` | `.claude/skills/<name>/SKILL.md` or `.agents/skills/<name>/SKILL.md` |
-| `{SKILL_DIR:name}` | `.claude/skills/<name>` or `.agents/skills/<name>`, for a skill's support files |
+| `{SKILL_DIR:name}` | The skill's directory, for support files |
 | `{GUIDE_PATH:name}` | `.claude/apm-guides/<name>.md` or `.agents/apm-guides/<name>.md` |
-| `{CLAUDE_ONLY:text}` | `text` in the `claude` target, nothing in the others; start `text` with a space when it follows a sentence |
+| `{CLAUDE_ONLY:text}` | Text kept only in the Claude target; start with a space when following a sentence |
 
-Validate references, artifact contracts, resolved placeholders and resolved paths in both generated bundles after changes. Check initial artifacts against their owning formats, and check that summary links name the actual files.
+Build both targets after changes. Check schemas, formats, initial artifacts, references, summary links and resolved paths and placeholders.
