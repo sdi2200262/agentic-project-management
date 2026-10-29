@@ -19,7 +19,7 @@ Your memory of earlier turns may be out of date, so check the current state befo
 - Read `task.md` and `report.md` in your bus folder.
 - With version control, use git to check your branch, its commits and whether the Manager has merged it.
 
-Use the checked state in both files.
+Use the checked state in both files, including unresolved contract questions, accepted limitations and verification gaps with source paths.
 
 ## 2. Handoff Log
 
@@ -73,7 +73,7 @@ handoff_log: <path of the Handoff Log>
 <What to read: the Handoff Log and your Task Logs from the current Stage, by path>
 
 ## Current State
-<Checked state: Tasks completed, the pending Task or batch, branches and merges>
+<Checked state: Tasks completed, the pending Task or batch, branches and merges; unresolved contract questions, accepted limitations and verification gaps, with source paths>
 
 ## Next Action
 <Where to resume the Task or batch, or wait for the User to invoke apm-4-check-tasks>

@@ -5,7 +5,7 @@ description: How APM agents write to the User, to each other and through the fil
 
 # APM {VERSION} - Communication
 
-The Planner, the Manager and Workers read this skill. It covers how you write to the User, how you write messages and APM files for other agents, how you use subagents, and the Message Bus. Your role's guides define the formats of the files you write.
+The Planner, the Manager and Workers read this skill. It covers how you write to the User, how you write messages and APM files for other agents, and the Message Bus. Your role's guides define the formats of the files you write.
 
 ## 1. Communicating with the User
 
@@ -23,7 +23,7 @@ Put longer detail in the relevant APM file and point to it. Before sending a lon
 
 - **Wording.** Use everyday words, concrete subjects and active verbs. Keep each sentence to one main thought and say each point once. State claims at the certainty the evidence supports, and put limits beside the claims they qualify.
 - **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.
-- **APM terms.** Explain an APM term, such as Task, Stage, Worker or Handoff, in a few words the first time the User meets it. During the question rounds, follow `{GUIDE_PATH:context-gathering}` §2 for language.
+- **APM terms.** Explain an APM term, such as Task, Stage, Worker or Handoff, in a few words the first time the User meets it.
 - **Reasons.** Explain decisions through the work's risks, dependencies and later needs.
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. At each required approval, stop for the User's decision, apply corrections and ask again.
 - **User actions.** When the User has to act, say exactly what to do and where: the skill to invoke, the chat to invoke it in and any argument, such as "invoke `apm-5-check-reports frontend-agent` in the Manager's chat". Name skills without a command prefix, because assistants invoke skills differently. Say when the User needs a new chat.
@@ -34,14 +34,10 @@ Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are rea
 
 - Follow their formats exactly. Other agents and the CLI rely on the field names, values, paths and sections.
 - Record the work: what was done, decisions with their reasons, evidence, open issues and the paths the reader needs.
-- Give each fact one home, and check claims against their source. Separate what you verified from what you assume.
+- Give each fact one authoritative home; reports and summaries carry its consequential findings with source paths. Check claims against their source. Separate what you verified from what you assume.
 - Keep free text short and use plain words; follow the format where it requires specific labels.
 
-## 3. Subagents
-
-Use your assistant's own way to start subagents and new chats. When you use a subagent for research, tell it to read files and run checks without changing anything. A subagent used for troubleshooting may change files to test fixes. Give each subagent a focused question, the paths it needs and the findings to return, and verify its key findings against the source before you rely on them.
-
-## 4. Message Bus
+## 3. Message Bus
 
 The Message Bus is a set of files in `.apm/bus/`, one folder per agent. The Planner creates it at the end of planning. Each folder is named by the agent's slug, lowercase and hyphenated, such as `frontend-agent`; the Plan names every Worker by its slug, and a Worker's folder is its identity. A Worker's folder holds `task.md` for Task Prompts, `report.md` for Task Reports and `handoff.md` for a Handoff Prompt; the Manager's folder, `manager/`, holds only `handoff.md`.
 
@@ -49,10 +45,10 @@ A bus file is either empty or holds one message waiting for delivery. After you 
 
 An agent outside APM can join the bus without joining the workflow; `{SKILL_DIR:apm-communication}/bus-integration.md` describes how.
 
-### 4.1 Agent Slugs
+### 3.1 Agent Slugs
 
 Every Task Prompt and Task Report names its Worker by slug in its `agent` field. The Manager's folder is `manager`.
 
-### 4.2 Agent ID Resolution
+### 3.2 Agent ID Resolution
 
 When the User gives an agent ID with `apm-3-initiate-worker`, `apm-4-check-tasks`, `apm-5-check-reports` or `apm-9-recover`, match it against the bus folder names: an exact match first, then a prefix, then the closest plausible name. Use a unique exact or prefix match directly. Confirm any other single match with the User, and list several plausible matches for the User to choose from. If `.apm/bus/` does not exist, tell the User that planning has not created the Message Bus yet.

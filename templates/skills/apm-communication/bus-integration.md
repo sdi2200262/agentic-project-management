@@ -4,7 +4,7 @@ This guide is for an agent outside APM that contributes work through the Message
 
 ## 1. Setup
 
-Choose a lowercase, hyphenated slug that no folder in `.apm/bus/` already uses. Create `.apm/bus/<your-slug>/` with empty `task.md` and `report.md`. Follow the bus rules in `{SKILL_PATH:apm-communication}` §4: read a bus file before writing it, and clear an incoming message after you process it.
+Choose a lowercase, hyphenated slug that no folder in `.apm/bus/` already uses. Create `.apm/bus/<your-slug>/` with empty `task.md` and `report.md`. Follow the bus rules in `{SKILL_PATH:apm-communication}` §3: read a bus file before writing it, and clear an incoming message after you process it.
 
 ## 2. Reporting
 

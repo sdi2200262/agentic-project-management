@@ -19,7 +19,7 @@ Your memory of earlier turns may be out of date, so check the current state befo
 - Read the Tracker and each Worker's bus files.
 - With version control, use git to check branches, worktrees and merges.
 
-Bring the Tracker up to date with the checked state before writing the two files.
+Bring the Tracker up to date with the checked state before writing the two files, including pending alignment decisions, accepted limitations and verification gaps with source paths.
 
 ## 2. Handoff Log
 
@@ -27,7 +27,7 @@ Write the Handoff Log per §5.1. Record in past tense what this conversation did
 
 ## 3. Handoff Prompt
 
-Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the Task Logs the next conversation needs: those from the current Stage, and any earlier ones that pending reviews or upcoming dependencies rely on. In Current State, list the reports awaiting review, the Workers with dispatched Tasks, and branches, worktrees and merges still pending.
+Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the Task Logs the next conversation needs: those from the current Stage, and any earlier ones that pending reviews or upcoming dependencies rely on. In Current State, list the reports awaiting review, the Workers with dispatched Tasks, and branches, worktrees and merges still pending. Include pending alignment decisions, accepted limitations and verification gaps with source paths.
 
 ## 4. User Review
 
@@ -69,7 +69,7 @@ handoff_log: <path of the Handoff Log>
 <What to read: the Handoff Log and the Task Logs the next conversation needs, by path>
 
 ## Current State
-<Checked state: reports awaiting review, Workers with dispatched Tasks, pending branches, worktrees and merges>
+<Checked state: reports awaiting review, Workers with dispatched Tasks, pending branches, worktrees and merges; pending alignment decisions, accepted limitations and verification gaps, with source paths>
 
 ## Next Action
 <The coordination step to resume with>

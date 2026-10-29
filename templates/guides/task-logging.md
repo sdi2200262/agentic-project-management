@@ -10,7 +10,7 @@ Choose the Task's status:
 - **Partial:** some work or validation remains and you need the Manager's guidance. For example, a check was unclear or unavailable, a failure keeps recurring, or the remaining problem is outside the Task.
 - **Failed:** the Objective is not reached despite your attempts to fix it.
 
-When you are unsure which status applies, choose Partial and state what remains. Keep Success when all its criteria passed, and record any findings per §2.
+When you are unsure which status applies, choose Partial and state what remains. A deliverable can exist while a required check is unmet or unverified; a deliberate deviation does not make that check pass. Keep Success when all its criteria passed, and record any findings per §2.
 
 ## 2. Important Findings
 
@@ -31,7 +31,8 @@ Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense
 
 - Describe the result and its evidence.
 - Point to deliverables by path. Include a code snippet only for new, complex or critical logic, at most 20 lines, and diagnostic output only where it explains an error.
-- Keep the checks you ran apart from claims you did not verify.
+- Keep the checks you ran apart from claims you did not verify. Preserve comparison counts and distinguish checks run live, run in isolation and not run. For example, 45 of 47 matching responses plus 13 matching probes is not full parity.
+- A follow-up log replaces the earlier attempt. Retain consequential earlier findings and explain their resolution, including any limits that remain.
 - If your context was compacted or recovered during the Task, say in the Summary which parts you rebuilt from files.
 
 ## 4. Reporting
@@ -39,7 +40,7 @@ Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense
 After the Task, or the whole batch, has ended:
 
 1. Clear `.apm/bus/<agent-slug>/task.md` using the terminal.
-2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Keep the detail in the Task Logs.
+2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Keep the detail in the Task Logs, but surface consequential deviations, unmet checks and decisions the Manager needs to make. Do not say that nothing needs action when a required check remains unmet or unverified.
 3. Tell the User the report is ready, with both ways to deliver it in the Manager's chat: invoke `apm-5-check-reports <agent-id>` for this report, or `apm-5-check-reports` with no agent ID to collect every pending report.
 4. Tell the User you are ready for the next Task, which they deliver by invoking `apm-4-check-tasks` in this chat. Wait for it or for a Handoff.
 
@@ -68,7 +69,7 @@ important_findings: true | false
 <Deliverables and changed paths, the workspace or branch you used, and your commits>
 
 ## Validation
-<Each check from the prompt's Validation section: what you ran and the result, or why it was not run>
+<Each required check: what you ran, its result, counts and scope, or why it was not run; distinguish live and isolated checks>
 
 ## Important Findings
 <Only when important_findings is true, per §2>
@@ -88,7 +89,7 @@ status: Success | Partial | Failed
 log_path: <log_path from the Task Prompt>
 ---
 
-<The outcome in a sentence, and anything the Manager must act on>
+<The outcome in a sentence, consequential deviations or limits, and anything the Manager must act on>
 [If your context was compacted or recovered during the Task, say so]
 ```
 
@@ -108,7 +109,7 @@ tasks:
 
 <How many Tasks were done, and which Task stopped the batch if one did>
 
-- Task <N>.<M> - <Title>: <status>, <the outcome in a sentence>
+- Task <N>.<M> - <Title>: <status>, <the outcome and consequential deviations or limits in a sentence>
 ...
 
 [Observations that affect several Tasks]

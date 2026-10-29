@@ -29,7 +29,7 @@ Read other APM files only when these files point you to them.
 
 The User gave you an agent ID with this skill. It tells you which Worker you are.
 
-1. Match the agent ID to a folder in `.apm/bus/` per `{SKILL_PATH:apm-communication}` §4.2. This is your bus folder.
+1. Match the agent ID to a folder in `.apm/bus/` per `{SKILL_PATH:apm-communication}` §3.2. This is your bus folder.
 2. Keep the agent ID and bus folder as your identity for this conversation. Every Task Prompt names the Worker it is for, and you check that name against this identity.
 3. Check that your bus folder holds its three files: `task.md` for Task Prompts from the Manager, `report.md` for your Task Reports, and `handoff.md` for a Handoff from an earlier conversation of yours.
 4. If `handoff.md` has content, continue with §1.2. Otherwise confirm your identity to the User. Then, if `task.md` holds a Task Prompt, start it per §2; if not, wait for the User to invoke `apm-4-check-tasks`.
@@ -54,3 +54,9 @@ For each Task Prompt, whether you found it at initiation or the User delivered i
 3. Wait for the next Task Prompt or the User's instructions.
 
 If the User asks you for a Handoff, follow `{SKILL_PATH:apm-7-handoff-worker}`.
+
+## 3. Subagents
+
+You may use native subagents for focused work within your role's scope. Give each subagent a focused question or task, the source and workspace paths, permitted changes and expected findings. Use read-only subagents for research; allow changes for implementation or troubleshooting only within your own authority. Verify the key findings against the source before you rely on them. You remain responsible for the result. Subagents use your assistant's native tools; APM messages still travel through the User and the Message Bus.
+
+Consider delegation for broad dependency investigation, independent research, troubleshooting or validation. Give subagents only the Task context and sources you may use; keep the Spec, Plan, Tracker and Index outside their scope.

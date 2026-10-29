@@ -26,7 +26,7 @@ The Objective and Output are authoritative. When an instruction, prerequisite or
 Some Tasks build on the output of earlier Tasks. The prompt's Context from Dependencies section names that output and says how to use it. It treats each dependency in one of two ways:
 
 - **Same-Worker dependency:** your own earlier work, which you remember. The prompt points to its output; refresh what you need from the named paths.
-- **Cross-Worker dependency:** work you have not seen, by another Worker or by you before a Handoff. The prompt gives reading and integration steps. Complete them all before you start the work. Read known files yourself. When the integration needs broad investigation across many files, use a subagent with a focused question and the relevant paths.
+- **Cross-Worker dependency:** work you have not seen, by another Worker or by you before a Handoff. The prompt gives reading and integration steps. Complete them all before you start the work. Read the named files and investigate any integration questions before proceeding.
 
 Do not start the work while a dependency's output is missing or fails its integration check. Ask the User for guidance when another Worker's output does not integrate as the prompt describes, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
 
@@ -34,7 +34,7 @@ Do not start the work while a dependency's output is missing or fails its integr
 
 Follow the Instructions in order, applying the Rules toward the Objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
 
-When an instruction needs the User to act, say what is needed and why, offer the options and wait until the User has done it. When you use a subagent, give it a focused task and verify its key findings against the source before you rely on them.
+When an instruction needs the User to act, say what is needed and why, offer the options and wait until the User has done it. Follow your initiation skill's guidance when you choose to delegate.
 
 Use the work's own vocabulary in commits, code and comments. APM terms, Task IDs, Stage numbers and agent names belong only in APM files.
 
@@ -42,7 +42,7 @@ Use the work's own vocabulary in commits, code and comments. APM terms, Task IDs
 
 When a check fails or the work does not behave as expected, investigate before fixing: read the error, trace where it comes from and identify the cause. Make one targeted fix, then validate again.
 
-If the fix fails, causes new problems or leaves the cause unclear, use a subagent to investigate. Give it the error output, what you investigated and tried, the relevant paths, and the expected and actual behavior. Ask it to trace the cause, state a specific hypothesis and propose a targeted fix. When independent parts of the system could be at fault, use one subagent for each, in parallel.
+If the fix fails, causes new problems or leaves the cause unclear, investigate further. Use the error output, what you tried, relevant paths and expected and actual behavior to test a specific hypothesis before applying another targeted fix.
 
 Keep going on your own while the cause is clear, the fix stays within the Task and checks are available. Stop and ask the User when the investigation does not resolve the problem, or when the prompt's instructions turn out to be wrong. Lead with the likely cause, or say that it is still unclear, then give what you tried, the current state and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 
@@ -60,7 +60,7 @@ Run every check in the prompt's Validation section. Never replace a check you ca
 2. When they pass, ask the User for any check that needs their judgement or an outside action. Say what the result is, where the deliverable is, what to check and what to report back. Wait for the answer, and handle any problem it reveals through §3.1.
 3. Ask for missing resources when you need them. If the User says a required check or resource is not available, the outcome is Partial; state what remains.
 
-The Task is a Success only when every check passes.
+The Task is a Success only when every check passes. A deliberate difference still fails an exact-match criterion; an isolated check does not establish a required live result. If required behavior conflicts with the Rules or other prompt instructions, raise the conflict for guidance rather than treating a deviation as accepted.
 
 ## 5. Rules Updates
 
