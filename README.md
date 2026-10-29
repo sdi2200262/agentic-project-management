@@ -21,29 +21,33 @@ The session's state lives in shared files outside any conversation: the planning
 
 ## Getting started
 
-APM supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, and OpenCode. It installs through `agentic-pm`, a command-line tool on npm that needs Node.js 18 or later:
+APM works with agents that use `AGENTS.md` and `.agents/skills/`, such as Codex, Cursor and GitHub Copilot. It also supports Claude Code. Install the `agentic-pm` CLI with Node.js 18 or later:
 
 ```bash
 npm install -g agentic-pm
 ```
 
-In your project directory, run the command below to install APM's commands, guides, skills, and document templates. Select your assistant when the CLI prompts you, or pass it with `-a`:
+From your project folder, run:
 
 ```bash
 apm init
 ```
 
-Open your assistant in the project and run:
+Choose `agents` for agents using `AGENTS.md` and `.agents/skills/`, or `claude` for Claude Code. To install both, use `apm init -a agents claude`.
+
+Start a new chat with your assistant, invoke `apm-1-initiate-planner` and describe what you want to build or change.
+
+For example, in Claude Code:
 
 ```text
-/apm-1-initiate-planner
+/apm-1-initiate-planner Create Claude Opus 6, make no mistakes.
 ```
 
-Describe what you want to build or change. The Planner works with you on the planning documents, then directs you to start the Manager in a new conversation. From there, each agent tells you what to run next and where. For the full walkthrough, see [Getting Started](https://agentic-project-management.dev/docs/getting-started).
+APM guides you through the next steps. See [Getting Started](https://agentic-project-management.dev/docs/getting-started) for the full walkthrough.
 
 ## Documentation
 
-The [documentation](https://agentic-project-management.dev) covers the three agent roles and how they coordinate, and describes the entire workflow end to end. It also details APM's prompt and context engineering while providing help on cost optimisation, troubleshooting, security, and customisation.
+The [documentation](https://agentic-project-management.dev) covers the workflow, agent roles, prompt and context engineering, and practical guides.
 
 ## CLI
 
@@ -51,9 +55,9 @@ The [documentation](https://agentic-project-management.dev) covers the three age
 |---------|-------------|
 | `apm init` | Install an official release |
 | `apm custom` | Install from a custom repository |
-| `apm update` | Update to the latest compatible release |
+| `apm update` | Archive the current session and install the newest stable release |
 | `apm archive` | Archive a session or manage archives |
-| `apm add` / `apm remove` | Add or remove assistants |
+| `apm add` / `apm remove` | Add or remove installation targets |
 | `apm status` | Show installation state |
 
 See the [CLI Guide](https://agentic-project-management.dev/docs/cli) for options and examples.
@@ -68,7 +72,7 @@ Two official adaptations are available. [APM Auto](https://github.com/sdi2200262
 
 ## Help
 
-The [apm-assist skill](skills/apm-assist/) helps your assistant explain APM, answer questions from the documentation, check your installation and version, and help with migration from older versions. It works with every supported assistant. See the [skills README](skills/README.md) for installation instructions.
+The [apm-assist skill](skills/apm-assist/) helps with APM questions, installation checks and migration. See the [skills README](skills/README.md) for installation instructions.
 
 You can ask your assistant to install it:
 
@@ -77,7 +81,7 @@ Install the apm-assist skill into this project using the instructions at:
 https://github.com/sdi2200262/agentic-project-management/blob/main/skills/README.md
 ```
 
-For troubleshooting, including migration from older versions, see the [Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide).
+See the [Troubleshooting Guide](https://agentic-project-management.dev/docs/troubleshooting-guide).
 
 ## Contributing
 
@@ -87,7 +91,7 @@ CLI and template releases are versioned independently. They share a major versio
 
 ## Licence
 
-Licensed under the [Mozilla Public License 2.0 (MPL-2.0)](LICENSE). Versions before v0.4.0 used the MIT licence.
+Licensed under the [Mozilla Public License 2.0 (MPL-2.0)](LICENSE).
 
 <div align="center">
   <a href="https://github.com/sdi2200262" target="_blank">

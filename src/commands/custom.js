@@ -10,9 +10,10 @@ import { CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
 import { getCustomRepos, addCustomRepo, removeCustomRepo, getRepoSettings, updateRepoSettings } from '../core/config.js';
-import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
+import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, getRequiredBundles } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer } from '../ui/prompts.js';
+import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
+import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -55,9 +56,9 @@ export async function customCommand(options = {}) {
   // Fresh only — show info for existing installations
   const existing = await readMetadata();
   if (existing) {
-    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'assistant')}).`);
+    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'installation target')}).`);
     logger.blank();
-    logger.info('Use "apm add" to add assistants, "apm update" to update, or "apm archive" to start fresh.');
+    logger.info('Use "apm add" to add installation targets, "apm update" to update, or "apm archive" to start fresh.');
     return;
   }
 
@@ -125,11 +126,11 @@ export async function customCommand(options = {}) {
 
   if (assistantList) {
     assistantIds = [];
-    for (const arg of assistantList) {
+    for (const arg of new Set(assistantList)) {
       const found = manifest.assistants.find(a => a.id === arg);
       if (!found) {
-        const available = manifest.assistants.map(a => a.id).join(', ');
-        warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
+        const available = formatAssistantList(manifest.assistants.map(a => a.id), assistantNamesFromManifest(manifest));
+        warnings.push({ level: 'error', msg: `Installation target '${arg}' not found. Available: ${available}` });
         continue;
       }
       assistantIds.push(arg);
@@ -141,27 +142,21 @@ export async function customCommand(options = {}) {
     }
   } else {
     hadInteractivePrompt = true;
-    const header = `Found ${logger.plural(manifest.assistants.length, 'assistant')} available in ${release.tag_name}`;
+    const header = `Found ${logger.plural(manifest.assistants.length, 'installation target')} available in ${release.tag_name}`;
     const selected = await selectAssistant(manifest.assistants, { header });
     assistantIds = [selected];
   }
 
-  // Download and extract each assistant
+  const bundles = getRequiredBundles(release, manifest, assistantIds);
+
   const installedFiles = {};
   let apmExtracted = false;
 
-  for (const id of assistantIds) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    const bundleAsset = findBundleAsset(release, assistant.bundle);
-
-    if (!bundleAsset) {
-      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' not found in release, skipping.` });
-      continue;
-    }
-
+  for (const { assistant, asset } of bundles) {
+    const id = assistant.id;
     stop = logger.progress(`Downloading ${assistant.bundle}`);
     const writtenFiles = await downloadAndExtract(
-      bundleAsset.browser_download_url,
+      asset.browser_download_url,
       process.cwd(),
       { skipApm: apmExtracted }
     );
@@ -180,13 +175,14 @@ export async function customCommand(options = {}) {
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION,
     assistants: assistantIds,
+    assistantNames: assistantNamesFromManifest(manifest, assistantIds),
     installedFiles
   });
   await writeMetadata(metadata);
 
-  // Offer to save repo
+  // Offer to save repo (optional, so skipped without a terminal)
   let repoSaved = false;
-  if (!repoSettings) {
+  if (!repoSettings && isInteractive()) {
     const saveRepo = await confirmAction('Save this repository for future use?', {
       header: `Initialized from ${repoString} — repository is not in your saved list`
     });
@@ -207,7 +203,7 @@ export async function customCommand(options = {}) {
   for (const w of warnings) logger[w.level](w.msg);
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (installedFiles[id]) logger.success(`Installed ${assistant.name}`);
+    if (installedFiles[id]) logger.success(`Installed ${formatAssistant(id, assistant.name)}`);
   }
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);

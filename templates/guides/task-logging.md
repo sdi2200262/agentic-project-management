@@ -1,249 +1,125 @@
 # APM {VERSION} - Task Logging Guide
 
-## 1. Overview
+This guide covers what you record when an attempt ends: the Task Log, the record of the work, and the Task Report, a short message that gives the Manager its outcome and log path. The Manager reviews the result and decides what happens next. Later conversations, including your own after a Handoff, continue from these records.
 
-**Reading Agent:** Worker
+## 1. Outcome
 
-This guide defines how you log Task outcomes and report results. Task Logs capture Task-level context using structured markdown files, enabling the Manager to track progress and make review decisions without parsing raw code or chat history.
+Choose the Task's status:
 
-### 1.1 Outputs
+- **Success:** the objective is achieved and every validation criterion passed.
+- **Partial:** some work or required validation remains, and guidance is needed to continue.
+- **Failed:** the objective was not achieved despite attempts to fix the problem.
 
-- *Task Log:* Structured log at `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` capturing outcome, validation, deliverables, and flags.
-- *Task Report:* Concise summary written to the Report Bus for the Manager to process.
+The outcome assesses the whole Task, including earlier evidence and any unresolved criteria.
 
----
+A Partial outcome can mean a check was unclear or unavailable, a failure keeps recurring, or the remaining problem is outside the Task.
 
-## 2. Operational Standards
+When you are unsure which status applies, choose Partial and state what remains. A deliverable can exist while a required check is unmet or unverified; a deliberate deviation does not make that check pass. Keep Success when all its criteria passed, and record any findings per §2.
 
-### 2.1 Flag Assessment Standards
+## 2. Important Findings
 
-Boolean flags in YAML frontmatter signal conditions requiring Manager attention. Set flags based on what you observed during execution relative to your Task Prompt and working context.
+Set `important_findings: true` when the status is Partial or Failed, or when the Manager needs to know something beyond the Task's result:
 
-**`important_findings`:** Set to `true` when execution revealed information not in your Task Prompt that seems project-relevant, you discovered dependencies, risks, or constraints your Task Prompt didn't account for, or something suggests other Tasks or agents might be affected.
+- remaining work, blockers or unmet criteria
+- a deviation from the Task Prompt, or a choice it left open that affects the result, with your reason
+- a hard problem you solved or an approach that did not work, when it may matter to later work
+- information the prompt lacked that may affect other work, such as a new dependency, risk or constraint
+- a conflict with existing code or conventions, a breaking change or a needed migration
+- a User correction affecting later work; state the correction and any approved Rules update
 
-**`compatibility_issues`:** Set to `true` when your output conflicts with existing code, patterns, or conventions you touched, you discovered integration concerns that might affect other parts of the system, or breaking changes or migration requirements resulted from your work.
+When you are unsure, set it to true. Write the findings in the Task Log's Important Findings section in whatever form explains them best.
 
-**Default:** When uncertain whether a finding warrants a flag, set to `true`. False negatives hurt coordination more than false positives.
+## 3. Logging
 
-### 2.2 Outcome Standards
+Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense to the Manager with access to the workspace and files.
 
-Status reflects whether the objective was achieved. Select based on end state, not effort expended.
+- Describe the result and its evidence.
+- Point to deliverables by path. Include code or diagnostic output only when it explains a consequential finding.
+- Keep the checks you ran apart from claims you did not verify. Preserve comparison counts and distinguish checks run live, run in isolation and not run. For example, 45 of 47 matching responses plus 13 matching probes is not full parity.
+- For a follow-up, leave earlier logs unchanged. Link the original log and previous follow-up, if any. Record the new work and checks, which earlier findings were resolved and which remain. Refer to earlier evidence that still applies rather than repeating it.
+- If your context was compacted or recovered during the Task, say in the Summary which parts you rebuilt from files.
 
-- *Success:* Objective achieved, all validation passed.
-- *Partial:* Some progress made but incomplete; you need guidance to continue.
-- *Failed:* Objective not achieved; you attempted but could not resolve the issue.
+## 4. Reporting
 
-Use Partial when: validation is ambiguous, important findings emerged that could affect other Tasks, iteration stalled with recurring failures, or approach uncertainty depends on factors outside your scope. Continue iterating (do not log yet) when validation failed but the cause is clear and fixable, no findings require Manager awareness, and progress is being made.
+After the Task, or the whole batch, has ended:
 
-### 2.3 Detail Level Standards
+1. Clear `.apm/bus/<agent-slug>/task.md`.
+2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Include deviations, unmet checks and decisions needed; keep the detail in the Task Logs.
+3. Tell the User the report is ready, with both ways to deliver it in the Manager's chat: invoke `apm-5-check-reports <agent-id>` for this report, or `apm-5-check-reports` with no agent ID to collect every pending report.
+4. Tell the User you are ready for the next Task, which they deliver by invoking `apm-4-check-tasks` in this chat. Wait for it or for a Handoff.
 
-Task Logs serve the Manager's coordination needs, not archival documentation. Ask: does this detail help the Manager understand what was accomplished? Would it affect the Manager's next review decision? Can it be found by reading the referenced artifacts directly?
+## 5. Formats
 
-**Default:** Prefer concise but comprehensive summaries with artifact references over verbose inline content. Reference artifacts by path rather than including large code blocks. Include code snippets only for novel, complex, or critical logic (20 lines or fewer). For error messages, include relevant stack traces or diagnostic details.
+### 5.1 Task Log Format
 
----
-
-## 3. Task Logging Procedure
-
-Two sequential steps after Task completion: write the Task Log, then deliver the Task Report via the bus. Execute after Task completion per `{GUIDE_PATH:task-execution}` §3.6 Task Completion.
-
-### 3.1 Task Log Procedure
-
-After Task execution, populate the Task Log at the path provided in the Task Prompt (`log_path`).
-
-Perform the following actions:
-1. From the completion assessment already presented in chat per `{GUIDE_PATH:task-execution}` §3.6 Task Completion, determine what to capture in the Task Log.
-2. Complete YAML frontmatter fields:
-   - Set `status` per §2.2 Outcome Standards.
-   - Set `important_findings` and `compatibility_issues` per §2.1 Flag Assessment Standards.
-   - Set `stage`, `task`, `title`, and `agent` from the Task Prompt.
-3. Complete markdown body sections per §4.1 Task Log Format. Always include: Summary, Details, Output, Validation, Issues. Include conditional sections (Compatibility Concerns, Important Findings) only when their corresponding flag is `true`.
-4. Write the Task Log to `log_path`.
-
-### 3.2 Task Report Delivery
-
-Perform the following actions:
-1. Clear the incoming Task Bus: truncate `.apm/bus/<agent-slug>/task.md` via terminal (e.g., `truncate -s 0` or shell redirection).
-2. Read the Report Bus, then write the Task Report to it: `.apm/bus/<agent-slug>/report.md`. The report is a concise summary - key outcome, status, log path, and any flags. Detail belongs in the Task Log.
-3. Direct the User to deliver the report to the Manager per `{SKILL_PATH:apm-communication}` §2.1 Direct Communication - provide both `/apm-5-check-reports <agent-id>` for targeted retrieval and `/apm-5-check-reports` as the general command, since multiple Workers may finish concurrently.
-
-For batch execution, write a single batch report per §4.3 Batch Report Format after completing all Tasks (or stopping on failure).
-
----
-
-## 4. Structural Specifications
-
-### 4.1 Task Log Format
-
-**Location:** `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`
-
-**Naming Convention:**
-- `<NN>`: Stage number, zero-padded (e.g., 01, 02).
-- `<MM>`: Task number within Stage, zero-padded (e.g., 01, 02).
-
-**YAML Frontmatter Schema:**
-
-```yaml
----
-stage: <N>
-task: <M>
-title: <Task title from Plan>
-agent: <agent-slug>
-status: Success | Partial | Failed
-important_findings: true | false
-compatibility_issues: true | false
----
-```
-
-**Field Descriptions:**
-- `stage`: Stage number from the Task Prompt.
-- `task`: Task number from the Task Prompt.
-- `title`: Task title from the Task Prompt.
-- `agent`: Your agent identifier.
-- `status`: Task outcome per §2.2 Outcome Standards. `Success`, `Partial`, or `Failed`.
-- `important_findings`: Whether discoveries have implications beyond current Task scope per §2.1 Flag Assessment Standards.
-- `compatibility_issues`: Whether output conflicts with existing systems per §2.1 Flag Assessment Standards.
-
-**Markdown Body Template:**
+Write at the prompt's `log_path`. The original log is `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`; follow-ups use `task-<NN>-<MM>.followup-<FF>.log.md` in the same folder. The Manager assigns `<FF>`, numbered 01, 02 and onward for each Task, independently of conversation numbers.
 
 ```markdown
+---
+agent: <agent-slug>
+conversation: <number>
+stage: <N>
+task: <M>
+status: Success | Partial | Failed
+important_findings: true | false
+---
+
 # Task <N>.<M> - <Title>
 
-## Summary
-[1-2 sentences describing main outcome]
+<For a follow-up: links to the original log and previous follow-up, if any>
 
-## Details
-[Work performed, decisions made, steps taken in logical order. Note subagent usage when applicable.]
+## Summary
+<The outcome against the Objective, how you reached it when that matters, and any part of the log you could not verify>
 
 ## Output
-- File paths for created/modified files
-- Code snippets (if necessary, ≤20 lines)
-- Configuration changes
-- Results or deliverables
+<Deliverables and changed paths, the workspace or branch you used, and your commits>
 
 ## Validation
-[Description of validation performed and result]
-
-## Issues
-[Specific blockers or errors encountered, or "None"]
-
-## Compatibility Concerns
-[Only include if compatibility_issues: true]
-[Description of compatibility issues identified]
+<Each required check: what you ran, its result, counts and scope, or why it was not run; distinguish live and isolated checks>
 
 ## Important Findings
-[Only include if important_findings: true]
-[Project-relevant discoveries that Manager must know]
+<Only when important_findings is true, per §2>
 ```
 
-### 4.2 Task Report Format
+`conversation` is your conversation number: 1 from initiation, or the number the Handoff Prompt gave you after a Handoff.
 
-Task Reports are concise summaries written to the Report Bus for the Manager to process. Detail belongs in the Task Log - the report provides enough for the Manager to assess the outcome and locate the log.
-
-**Location:** `.apm/bus/<agent-slug>/report.md`
-
-**YAML Frontmatter Schema:**
-
-```yaml
----
-stage: <N>
-task: <M>
-agent: <agent-slug>
-status: Success | Partial | Failed
-log_path: ".apm/memory/stage-<NN>/task-<NN>-<MM>.log.md"
-important_findings: true | false
-compatibility_issues: true | false
----
-```
-
-**Field Descriptions:**
-- `stage`: Stage number from the Task Prompt.
-- `task`: Task number from the Task Prompt.
-- `agent`: Your agent identifier.
-- `status`: Task outcome per §2.2 Outcome Standards.
-- `log_path`: Path to the Task Log for this Task.
-- `important_findings`: Same value as the Task Log.
-- `compatibility_issues`: Same value as the Task Log.
-
-**Markdown Body:** 1-2 sentences summarizing the outcome. Reference the Task Log for detail.
-
-For batch reports, use §4.3 Batch Report Format instead.
-
-### 4.3 Batch Report Format
-
-When completing a batch of Tasks (or stopping early on failure), the Report Bus file uses this structure.
-
-**Location:** `.apm/bus/<agent-slug>/report.md`
-
-**YAML Frontmatter Schema:**
-
-```yaml
----
-batch: true
-batch_size: <N>
-completed: <M>
-stopped_early: true | false
-tasks:
-  - stage: 1
-    task: 1
-    status: Success
-  - stage: 1
-    task: 2
-    status: Failed
-  - stage: 1
-    task: 3
-    status: "Not started"
----
-```
-
-**Field Descriptions:**
-- `batch`: Always `true` for batch reports.
-- `batch_size`: Total Tasks in the batch.
-- `completed`: Tasks that were executed (excludes unstarted).
-- `stopped_early`: Whether the batch stopped before completing all Tasks.
-- `tasks[].stage`: Stage number.
-- `tasks[].task`: Task number within Stage.
-- `tasks[].status`: `Success`, `Partial`, `Failed`, or `"Not started"` for unexecuted Tasks.
-
-**Markdown Body Template:**
+### 5.2 Task Report Format
 
 ```markdown
-# Batch Report
+---
+agent: <agent-slug>
+conversation: <number>
+stage: <N>
+task: <M>
+status: Success | Partial | Failed
+log_path: <log_path from the Task Prompt>
+---
 
-## Summary
-[Brief overview: X of Y Tasks completed, stopped early if applicable]
-
-## Task Outcomes
-
-### <Title>
-**Status:** [Success | Partial | Failed]
-**Task Log:** `<log_path>`
-[1-2 sentence summary of outcome]
-
-...
-
-## Batch Notes
-[Any cross-cutting observations, patterns, or issues affecting multiple Tasks]
+<The outcome in a sentence, consequential deviations or limits, and anything the Manager must act on>
+[If your context was compacted or recovered during the Task, say so]
 ```
 
-If the batch stopped early due to a Failed Task, indicate which Task caused the stop and list remaining Tasks as "Not started (batch stopped)."
+### 5.3 Batch Task Report Format
 
+```markdown
+---
+agent: <agent-slug>
+conversation: <number>
+tasks:
+  - stage: <N>
+    task: <M>
+    status: Success | Partial | Failed | Not started
+    log_path: <log_path from the Task Prompt>
+  ...
 ---
 
-## 5. Content Guidelines
+<How many Tasks were done, and which Task stopped the batch if one did>
 
-### 5.1 Good vs Poor Logging
-- *Summary:* "Made some changes and fixed issues" → "Implemented POST /api/users with validation. All tests passing."
-- *Details:* "I worked on the endpoint and there were some issues" → "Added registration route with email/password validation using express-validator"
-- *Output:* "Changed some files" → "Modified: `routes/users.js`, `server.js`"
-- *Validation:* "It works now" → "Test suite: 5/5 passing. Manual testing confirmed expected responses."
+- Task <N>.<M> - <Title>: <status>, <the outcome and consequential deviations or limits in a sentence>
+...
 
-### 5.2 Common Mistakes
+[Observations that affect several Tasks]
+[If your context was compacted or recovered during the batch, say so]
+```
 
-- *Forgetting conditional sections:* When a flag is `true`, include the corresponding section (Compatibility Concerns, Important Findings).
-- *Missing artifact references:* When deliverables are produced, list file paths in the Output section.
-- *Deferred batch logging:* In batch execution, write each Task Log immediately after completing that Task - before starting the next. Deferring all logging to the end of a batch risks context loss if auto-compaction occurs mid-batch.
-
----
-
-**End of Guide**
+Tasks you did not start have the status `Not started`.

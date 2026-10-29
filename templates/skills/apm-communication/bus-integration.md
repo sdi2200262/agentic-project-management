@@ -1,36 +1,16 @@
-# APM Bus System Integration Guide
+# APM {VERSION} - Bus Integration
 
-## 1. Overview
+This guide is for an agent outside APM that contributes work through the Message Bus without becoming a Worker. You receive assignments and report results. You do not write Task Logs, perform Handoffs or appear in the Manager's Tracker; your reports carry your contribution to the Manager.
 
-**Reading Agent:** Any non-APM agent
+## 1. Setup
 
-This guide explains how non-APM agents can participate in an APM session through the Message Bus. If you are a standalone agent (not managed by APM's Manager) and need to communicate with APM-managed Workers or the Manager, follow this guide.
+Choose a lowercase, hyphenated slug that no folder in `.apm/bus/` already uses. Create `.apm/bus/<your-slug>/` with empty `task.md` and `report.md`. Follow the bus rules in `{SKILL_PATH:apm-communication}` §3: read a bus file before writing it, and clear an incoming message after you process it.
 
-You participate at the communication level only - you receive work through the bus, execute it, and report back. You are not a Worker: you do not log to `.apm/memory/`, do not perform Handoff, and are not tracked in the Tracker. Your reports are your sole contribution to the session.
+## 2. Reporting
 
----
+1. Write your report to `.apm/bus/<your-slug>/report.md`. In your first report, say who you are, what the work is and why you are contributing. Give the outcome, the evidence, what it changes and its limits, so the Manager can decide what to do with it.
+2. Tell the User to invoke `apm-5-check-reports <your-slug>` in the Manager's chat.
 
-## 2. Setup
+## 3. Further Assignments
 
-Create your own bus directory in `.apm/bus/`:
-1. Choose a slug for your identity (lowercase, hyphenated name) that does not conflict with existing directories in `.apm/bus/`. Example: `external-reviewer`. This slug is your identifier for all bus communication - the Manager uses it to find your reports.
-2. Create your bus directory: `.apm/bus/<your-agent-slug>/`.
-3. Create two bus files: `task.md` (to receive assignments) and `report.md` (to send reports).
-
----
-
-## 3. Reporting Your Work
-
-When you have completed work relevant to the APM session:
-1. Write your report to `.apm/bus/<your-agent-slug>/report.md`. Your first report must clearly explain who you are, what you did, and why you are participating in the session - the Manager has no record of your participation. Include enough context for the Manager to assess the situation. Subsequent reports can be concise.
-2. Direct the User to deliver the report: `/apm-5-check-reports <your-agent-slug>` in the Manager's chat.
-
----
-
-## 4. Receiving Follow-Up Assignments
-
-The Manager may assign follow-up work through your Task Bus after processing your initial report:
-1. The User signals you to check your bus (by referencing the Task Bus file).
-2. Read `.apm/bus/<your-agent-slug>/task.md` and process the assignment.
-3. Write your report to the Report Bus and direct the User to deliver it.
-
+When the User says a new assignment is waiting, read `.apm/bus/<your-slug>/task.md`, do the assignment, clear the file, then report as in §2.

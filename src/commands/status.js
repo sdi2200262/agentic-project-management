@@ -8,9 +8,15 @@
 
 import fs from 'fs-extra';
 import path from 'path';
-import { readMetadata, getInstalledFiles } from '../core/metadata.js';
+import { readMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
+import { formatAssistant } from '../core/assistants.js';
 import { countArchives } from '../services/archive.js';
 import logger from '../ui/logger.js';
+
+/**
+ * Most missing files listed per assistant before the rest are summarized.
+ */
+const MAX_MISSING_SHOWN = 10;
 
 /**
  * Executes the status command.
@@ -28,9 +34,8 @@ export async function statusCommand() {
     const archiveCount = await countArchives(cwd);
     if (archiveCount > 0) {
       logger.info(`${logger.plural(archiveCount, 'archived session')} found. Use "apm archive -l" to list.`);
-    } else {
-      logger.info('Run "apm init" to get started.');
     }
+    logger.info('Run "apm init" to start a new session.');
     return;
   }
 
@@ -45,23 +50,30 @@ export async function statusCommand() {
   console.log(`  Installed:   ${metadata.installedAt}`);
   console.log('');
 
-  console.log(chalk.cyan.bold('Assistants'));
+  console.log(chalk.cyan.bold('Installation targets'));
   const installedFiles = getInstalledFiles(metadata);
   if (!metadata.assistants.length) {
     console.log('  none (run "apm add" to add one)');
   }
+  const names = getAssistantNames(metadata);
   const incomplete = [];
   for (const id of metadata.assistants) {
     const files = Array.isArray(installedFiles[id]) ? installedFiles[id] : [];
-    let missing = 0;
+    const missing = [];
     for (const file of files) {
-      if (!(await fs.pathExists(path.join(cwd, file)))) missing++;
+      if (!(await fs.pathExists(path.join(cwd, file)))) missing.push(file);
     }
-    if (missing) {
+    if (missing.length) {
       incomplete.push(id);
-      console.log(`  ${id} (${files.length} files, ${chalk.yellow(`${missing} missing`)})`);
+      console.log(`  ${formatAssistant(id, names[id])}: ${files.length} files, ${chalk.yellow(`${missing.length} missing`)}`);
+      for (const file of missing.slice(0, MAX_MISSING_SHOWN)) {
+        console.log(chalk.yellow(`    - ${file}`));
+      }
+      if (missing.length > MAX_MISSING_SHOWN) {
+        console.log(chalk.yellow(`    ... and ${missing.length - MAX_MISSING_SHOWN} more`));
+      }
     } else {
-      console.log(`  ${id} (${files.length} files)`);
+      console.log(`  ${formatAssistant(id, names[id])}: ${files.length} files`);
     }
   }
   console.log('');

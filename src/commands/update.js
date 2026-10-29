@@ -9,12 +9,13 @@
 
 import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
-import { readMetadata, writeMetadata, createMetadata, getInstalledFiles } from '../core/metadata.js';
-import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion, isStableRelease } from '../services/releases.js';
+import { readMetadata, writeMetadata, createMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
+import { formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
+import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion, isStableRelease } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
-import { createArchive, generateArchiveName } from '../services/archive.js';
+import { createArchive, generateArchiveName, archivePathFor } from '../services/archive.js';
 import { removeInstalledFiles } from '../services/cleanup.js';
-import { confirmDestructiveAction, confirmAction, selectRelease, selectPrompt, confirmSecurityDisclaimer } from '../ui/prompts.js';
+import { confirmDestructiveAction, confirmAction, selectRelease, selectPrompt, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
 import { getRepoSettings, addCustomRepo, updateRepoSettings } from '../core/config.js';
 import logger from '../ui/logger.js';
 import path from 'path';
@@ -53,40 +54,49 @@ export async function updateCommand(options = {}) {
   const manifest = await fetchReleaseManifest(release);
   stop();
 
+  // Names from the target release, falling back to those recorded at install
+  const names = { ...getAssistantNames(metadata), ...assistantNamesFromManifest(manifest) };
+
   // Check if any current assistants exist in the target release
-  const survivingAssistants = metadata.assistants.filter(id =>
-    manifest.assistants.some(a => a.id === id)
-  );
+  const { ids: survivingAssistants, dropped: droppedAssistants, migrations } = resolveUpdateTargets(metadata.assistants, manifest);
   if (!survivingAssistants.length) {
-    const available = manifest.assistants.map(a => a.id).join(', ');
-    logger.error(`None of your assistants (${metadata.assistants.join(', ')}) are available in ${release.tag_name}.`);
+    const available = formatAssistantList(manifest.assistants.map(a => a.id), names);
+    logger.error(`None of your installation targets (${formatAssistantList(metadata.assistants, names)}) are available in ${release.tag_name}.`);
     logger.info(`Available in ${release.tag_name}: ${available}`);
-    logger.info('Use "apm archive" then "apm init" to install with different assistants.');
+    logger.info('Use "apm archive" then "apm init" to install with different installation targets.');
     return;
   }
+
+  const bundles = getRequiredBundles(release, manifest, survivingAssistants);
 
   // Pre-compute archive name for confirmation message
   const archivesDir = path.join(cwd, ARCHIVES_DIR);
   const resolvedName = archiveName || await generateArchiveName(archivesDir);
 
+  archivePathFor(cwd, resolvedName);
+
   // Confirm destructive action
   if (!force) {
-    const currentList = metadata.assistants.join(', ');
-    const survivingList = survivingAssistants.join(', ');
-    const droppedAssistants = metadata.assistants.filter(id => !survivingAssistants.includes(id));
+    const currentList = formatAssistantList(metadata.assistants, names);
+    const survivingList = formatAssistantList(survivingAssistants, names);
 
     const bullets = [
-      `Snapshot all .apm/ contents (except archives/) into .apm/archives/${resolvedName}`,
+      `Snapshot session records into .apm/archives/${resolvedName} and move worktrees there with Git`,
+      `Agents must have stopped writing before archival starts`,
       `Remove active session files and installed templates for: ${currentList}`,
       `Download and install ${release.tag_name} for: ${survivingList}`
     ];
+    if (migrations.length) {
+      bullets.push(`Consolidate ${formatAssistantList(migrations.map(m => m.from), names)} into ${formatAssistantList([...new Set(migrations.map(m => m.to))], names)}`);
+    }
     if (droppedAssistants.length > 0) {
-      bullets.push(`Drop unsupported ${droppedAssistants.length === 1 ? 'assistant' : 'assistants'}: ${droppedAssistants.join(', ')}`);
+      bullets.push(`Drop unsupported ${droppedAssistants.length === 1 ? 'installation target' : 'installation targets'}: ${formatAssistantList(droppedAssistants, names)}`);
     }
 
     const proceed = await confirmDestructiveAction(
       bullets,
-      `Update to ${release.tag_name}?`
+      `Update to ${release.tag_name}?`,
+      { hint: 'Pass -f to update without confirmation.' }
     );
     if (!proceed) {
       logger.info('Aborted.');
@@ -95,62 +105,52 @@ export async function updateCommand(options = {}) {
   }
 
   // Archive current state
-  let archiveStop = logger.progress('Archiving current session');
-  const { archivePath } = await createArchive(cwd, { reason: 'update', name: resolvedName });
+  const archiveStop = logger.progress('Archiving current session');
+  const archived = await createArchive(cwd, { reason: 'update', name: archiveName });
   archiveStop();
 
-  // Clean all tracked files
-  const installedFiles = getInstalledFiles(metadata);
-  const { removed, keptDirs } = await removeInstalledFiles(cwd, installedFiles);
+  try {
+    // Clean all tracked files
+    const installedFiles = getInstalledFiles(metadata);
+    await removeInstalledFiles(cwd, installedFiles);
 
-  // Download new bundles for all assistants
-  const newInstalledFiles = {};
-  let apmExtracted = false;
-  const skippedAssistants = [];
-
-  for (const assistantId of metadata.assistants) {
-    const assistant = manifest.assistants.find(a => a.id === assistantId);
-    if (!assistant) {
-      skippedAssistants.push(assistantId);
-      continue;
+    // Download new bundles for all assistants
+    const newInstalledFiles = {};
+    let apmExtracted = false;
+    for (const { assistant, asset } of bundles) {
+      const assistantId = assistant.id;
+      stop = logger.progress(`Downloading ${assistant.bundle}`);
+      const writtenFiles = await downloadAndExtract(
+        asset.browser_download_url,
+        cwd,
+        { skipApm: apmExtracted }
+      );
+      stop();
+      newInstalledFiles[assistantId] = writtenFiles.filter(f => !f.startsWith('.apm/'));
+      if (!apmExtracted) {
+        newInstalledFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
+      }
+      apmExtracted = true;
     }
 
-    const bundleAsset = findBundleAsset(release, assistant.bundle);
-    if (!bundleAsset) {
-      skippedAssistants.push(assistantId);
-      continue;
-    }
-
-    stop = logger.progress(`Downloading ${assistant.bundle}`);
-    const writtenFiles = await downloadAndExtract(
-      bundleAsset.browser_download_url,
-      cwd,
-      { skipApm: apmExtracted }
-    );
-    stop();
-    newInstalledFiles[assistantId] = writtenFiles.filter(f => !f.startsWith('.apm/'));
-    if (!apmExtracted) {
-      newInstalledFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
-    }
-    apmExtracted = true;
+    // Write fresh metadata
+    const newMetadata = createMetadata({
+      source: metadata.source,
+      repository: metadata.repository,
+      releaseVersion: release.tag_name,
+      cliVersion: CLI_VERSION,
+      assistants: survivingAssistants,
+      assistantNames: assistantNamesFromManifest(manifest, survivingAssistants),
+      installedFiles: newInstalledFiles
+    });
+    await writeMetadata(newMetadata, cwd);
+  } catch (error) {
+    const preserved = archived.worktrees.map(worktree => worktree.to).join(', ');
+    throw new Error(`Previous session preserved at ${archived.archivePath}${preserved ? `; worktrees: ${preserved}` : ''}, but updating the active installation failed: ${error.message}. Check its state before continuing.`);
   }
 
-  // Compute surviving assistant list
-  const updatedAssistants = metadata.assistants.filter(id => !skippedAssistants.includes(id));
-
-  // Write fresh metadata
-  const newMetadata = createMetadata({
-    source: metadata.source,
-    repository: metadata.repository,
-    releaseVersion: release.tag_name,
-    cliVersion: CLI_VERSION,
-    assistants: updatedAssistants,
-    installedFiles: newInstalledFiles
-  });
-  await writeMetadata(newMetadata, cwd);
-
-  // Offer to save custom repo if not already saved
-  if (metadata.source === 'custom') {
+  // Offer to save custom repo if not already saved (optional, so skipped without a terminal)
+  if (metadata.source === 'custom' && isInteractive()) {
     const repoSettings = await getRepoSettings(metadata.repository);
     if (!repoSettings) {
       const saveRepo = await confirmAction('Save this repository for future use?', {
@@ -170,17 +170,25 @@ export async function updateCommand(options = {}) {
 
   // Clear content for final output
   logger.clearAndBanner();
-  if (skippedAssistants.length > 0) {
-    logger.warn(`Dropped ${logger.plural(skippedAssistants.length, 'assistant')} not in ${release.tag_name}: ${skippedAssistants.join(', ')}`);
+  if (migrations.length) {
+    logger.info(`Consolidated ${formatAssistantList(migrations.map(m => m.from), names)} into ${formatAssistantList([...new Set(migrations.map(m => m.to))], names)}.`);
   }
-  for (const id of updatedAssistants) {
-    logger.success(`Updated ${manifest.assistants.find(a => a.id === id)?.name || id}`);
+  if (droppedAssistants.length > 0) {
+    logger.warn(`Dropped ${logger.plural(droppedAssistants.length, 'installation target')} not in ${release.tag_name}: ${formatAssistantList(droppedAssistants, names)}`);
   }
-  for (const id of updatedAssistants) {
+  for (const id of survivingAssistants) {
+    logger.success(`Updated ${formatAssistant(id, names[id])}`);
+  }
+  for (const id of survivingAssistants) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
-  logger.success(`Updated to ${release.tag_name} (${logger.plural(updatedAssistants.length, 'assistant')})!`);
+  logger.success(`Updated to ${release.tag_name} (${logger.plural(survivingAssistants.length, 'installation target')})!`);
+  if (archived.worktrees.length) {
+    logger.info(`Preserved ${logger.plural(archived.worktrees.length, 'worktree')}; they remain attached to their source repositories.`);
+    for (const worktree of archived.worktrees) logger.info(`${worktree.from} -> ${worktree.to}${worktree.unfinished ? ' (unfinished work)' : ''}`);
+  }
+  logger.info(`Your previous session is in ${path.relative(cwd, archived.archivePath)}. To start a new session, invoke apm-1-initiate-planner in a new chat.`);
 }
 
 /**
@@ -230,17 +238,20 @@ async function findOfficialUpdate(metadata) {
     }
 
     const currentHeader = `Currently on ${metadata.releaseVersion} (pre-release)`;
+    const hint = 'Run "apm update" in an interactive terminal to choose whether to leave the pre-release.';
 
     // Only one option — use a simple confirm
     if (newerStable && !newestPrerelease) {
       const proceed = await confirmAction(`Update to stable release ${newerStable.tag_name}?`, {
-        header: currentHeader
+        header: currentHeader,
+        hint
       });
       return proceed ? newerStable : null;
     }
     if (!newerStable && newestPrerelease) {
       const proceed = await confirmAction(`Update to pre-release ${newestPrerelease.tag_name}?`, {
-        header: currentHeader
+        header: currentHeader,
+        hint
       });
       return proceed ? newestPrerelease : null;
     }
@@ -268,7 +279,8 @@ async function findOfficialUpdate(metadata) {
     const selected = await selectPrompt({
       message: 'Select a version:',
       choices,
-      header: currentHeader
+      header: currentHeader,
+      hint
     });
     if (!selected) return null;
     return selected === newerStable.tag_name ? newerStable : newestPrerelease;
@@ -326,7 +338,10 @@ async function findCustomUpdate(metadata) {
   }
 
   const header = `Found ${logger.plural(newerReleases.length, 'release')} from ${metadata.repository} newer than ${metadata.releaseVersion}`;
-  const selectedTag = await selectRelease(newerReleases, { header });
+  const selectedTag = await selectRelease(newerReleases, {
+    header,
+    hint: 'Run "apm update" in an interactive terminal to choose the release.'
+  });
   return newerReleases.find(r => r.tag_name === selectedTag);
 }
 

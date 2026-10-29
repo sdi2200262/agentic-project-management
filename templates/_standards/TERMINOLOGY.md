@@ -1,157 +1,140 @@
 # APM Terminology
 
-This document defines the formal vocabulary of the APM workflow. This is a development-time specification: agents do not read this file or any `_standards/` document during runtime. The vocabulary defined here takes effect through the commands, guides, and skills that use these terms consistently. Template authors use terms exactly as defined here; agents inherit correct terminology through the templates they read.
+This document defines APM's formal terms for template authors and maintainers. Runtime command skills, shared skills and guides teach agents these terms and use them exactly as defined here. `WORKFLOW.md` describes how the workflow uses the terms.
 
-Formal terms are always capitalized and carry defined meaning. All other language is natural - standard English capitalization applies (headings, labels, proper nouns) but confers no formal status. There is no intermediate category between formal vocabulary and natural language. Workflow definitions follow `WORKFLOW.md`.
+A term is defined when it names a part of the workflow an agent must find, or one of several explicit options an agent must choose between. Formal terms are capitalized. Terms are ordered so that each definition uses only terms defined before it.
 
 ---
 
-## 1. Roles
+## Roles
 
 | Term | Definition |
-| ------ | ------------ |
-| **Planner** | Gathers requirements and decomposes them into planning documents. Single instance, no Handoff. |
-| **Manager** | Coordinates and orchestrates the Implementation Phase - assigns Tasks, reviews results, maintains planning documents and memory. Single role, multiple instances via Handoff. |
-| **Worker** | Executes Tasks assigned by the Manager. Multiple roles (one per domain), multiple instances each via Handoff. |
+|---|---|
+| **Planner** | The agent that plans the work with the User. It works in a single conversation. |
+| **Manager** | The agent that coordinates implementation: it assigns work, reviews results and keeps the APM files current. One Manager works at a time. |
+| **Worker** | An agent that carries out the work the Manager assigns in one area of the work. Each area has its own Worker. |
 
 ---
 
-## 2. Phases
+## Phases
 
 | Term | Definition |
-| ------ | ------------ |
-| **Planning Phase** | The Planner transforms User requirements into planning documents through Context Gathering and Work Breakdown. |
-| **Implementation Phase** | The Manager and Workers transform the Spec, Plan and Rules into completed deliverables through coordinated Task execution. |
+|---|---|
+| **Planning Phase** | The Planner works with the User to define the work and plan it. |
+| **Implementation Phase** | The Manager and Workers carry out the planned work until it is complete or the User stops. |
+| **APM session** | One APM run of both phases on one body of work. It ends when the work is complete or the User stops early. The Spec states what the session builds, which may be one part of a larger goal. |
 
 ---
 
-## 3. Planning Documents
+## Procedures
 
-Three documents form a waterfall: Spec (what to build) → Plan (how work is organized) → Rules (how work is performed).
+Each procedure is a part of the workflow. The first six each have their own guide; Handoff has its own command skills.
+
+| Term | Performed by | Definition |
+|---|---|---|
+| **Context Gathering** | Planner | Exploring the workspace and questioning the User in three rounds, developing design and work-structure choices, settling this APM session's scope, and ending with a summary that the User approves. |
+| **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec, Plan and Rules, each approved separately. |
+| **Task Assignment** | Manager | Choosing which work to send next and to which Worker, and writing its instructions. |
+| **Task Execution** | Worker | Carrying out assigned work, validating it and fixing what fails. |
+| **Task Logging** | Worker | Recording the outcome of assigned work and reporting it to the Manager. |
+| **Task Review** | Manager | Reviewing reported work, deciding the next action and updating the APM files. |
+| **Handoff** | Manager, Worker | Moving a role from its current conversation to a new one when context runs low or the User asks. The outgoing agent records what the incoming agent needs to continue. Each role's conversations are numbered, so a Handoff goes from Manager conversation 1 to Manager conversation 2. |
+
+---
+
+## Planning documents
+
+The Planner writes these during Work Breakdown, in this order.
 
 | Term | Definition | Location |
-| ------ | ------------ | ---------- |
-| **Spec** | Project-specific design decisions and constraints that inform the Plan. The Manager may update it during the Implementation Phase. | `.apm/spec.md` |
-| **Plan** | Stage and Task breakdown with agent assignments, Dependency Graph, and validation criteria. The Manager may update it during the Implementation Phase. | `.apm/plan.md` |
-| **Rules** | Execution rules applicable to all or most Tasks, maintained as the APM Rules block within `{RULES_FILE}`. Workers access this file directly; the Manager and Workers may update it during the Implementation Phase. | `{RULES_FILE}` at workspace root |
-| **Dependency Graph** | Mermaid diagram in the Plan header that visualizes Task dependencies, agent assignments, and execution flow. Enables the Manager to identify batch candidates, parallel dispatch opportunities, and critical path bottlenecks. | Within `.apm/plan.md` |
+|---|---|---|
+| **Spec** | What to build: design decisions and constraints. | `.apm/spec.md` |
+| **Plan** | How the work is divided, ordered and assigned to Workers, with validation criteria and dependencies. | `.apm/plan.md` |
+| **Rules** | Shared conventions for Worker execution. They are kept in the `APM_RULES` block of `AGENTS.md`. | Workspace root |
 
 ---
 
-## 4. Work Units
+## Work units
 
 | Term | Definition |
-| ------ | ------------ |
-| **Stage** | Milestone grouping of related Tasks representing a coherent project progression. |
-| **Task** | Discrete work unit with objective, deliverables, validation criteria, and dependencies. Tasks contain ordered sub-units (steps) that support failure tracing but have no independent validation. |
+|---|---|
+| **Task** | A bounded unit of work in the Plan, assigned to one Worker, with an objective, deliverables, validation criteria and dependencies. Its ordered steps share the Task's validation. |
+| **Stage** | A group of related Tasks that delivers a coherent part of the work. Stages run in order. |
 
-### Task Lifecycle States
+### Task dependencies
 
-Tasks in the Tracker progress through these states:
-
-| Term | Definition |
-| ------ | ------------ |
-| **Waiting** | Dependencies not met. |
-| **Ready** | All dependencies complete; can be dispatched. |
-| **Active** | Dispatched to a Worker; execution in progress. |
-| **Done** | Coordination decision finalized - terminal state. |
-
-Outcome statuses are inputs to the Manager's coordination decision - the Manager reviews the outcome, investigates if needed, and then decides the lifecycle transition. A Task becomes Done when the Manager makes a terminal coordination decision - proceeding after Success, accepting a non-Success outcome, or restructuring work. A Task remains Active during investigation, while a follow-up is pending, or while the Manager is deciding how to proceed. Done is terminal; if completed work needs revisiting due to later findings, the Manager creates a new Task through plan modification rather than reopening the original. The original remains Done as a historical coordination decision; the new Task references it and captures what specifically needs correction. When all Tasks in a Stage are Done with no pending merges, the Stage collapses to complete.
-
-### Task Outcome Statuses
-
-Task Logs record the execution result:
+A Task depends on another when it needs that Task's output.
 
 | Term | Definition |
-| ------ | ------------ |
-| **Success** | Objective achieved, all validation passed. |
-| **Partial** | Some progress made; Worker needs guidance to continue. |
-| **Failed** | Objective not achieved; Worker attempted but could not resolve the issue. |
+|---|---|
+| **Same-Worker dependency** | The Worker that did the earlier Task also does the dependent one, so it has already worked with the output. |
+| **Cross-Worker dependency** | A different Worker did the earlier Task, so the dependent Task's Worker has not seen the output. |
 
-Partial means "I need guidance to continue." Failed means "I could not achieve the objective."
+### Task states
+
+| Term | Definition |
+|---|---|
+| **Waiting** | At least one dependency is not complete. |
+| **Ready** | All dependencies are complete, so the Task can be sent to its Worker. |
+| **Active** | Sent to its Worker. The Task stays Active through execution and review until the Manager makes a final decision. |
+| **Done** | The Manager has made a final decision on the Task. Done is final. |
+
+### Task outcomes
+
+The Worker records one outcome when it finishes a Task.
+
+| Term | Definition |
+|---|---|
+| **Success** | The objective is achieved and every validation criterion passed. |
+| **Partial** | Some work or required validation remains, and guidance is needed to continue. The deliverable may exist while a required check is unmet or unavailable. |
+| **Failed** | The objective was not achieved despite attempts to fix the problem. |
+
+### Task Dispatch
+
+Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of three forms.
+
+| Term | Definition |
+|---|---|
+| **Single dispatch** | One Task sent to one Worker. |
+| **Batch dispatch** | Several Tasks sent to the same Worker together, executed in order. |
+| **Parallel dispatch** | Tasks or batches sent to different Workers at the same time. |
 
 ---
 
-## 5. Procedures
-
-| Term | Definition |
-| ------ | ------------ |
-| **Procedure** | A defined workflow operation in APM. Each Procedure covers a specific part of agent work: Context Gathering, Work Breakdown, Task Assignment, Task Execution, Task Review, Task Logging, and Handoff. |
-
-| Term | Definition |
-| ------ | ------------ |
-| **Context Gathering** | Planner elicits requirements through structured question rounds and produces a consolidated summary for User review. |
-| **Work Breakdown** | Planner decomposes gathered context into Spec, Plan, and Rules. |
-| **Task Assignment** | Manager assesses readiness, determines dispatch mode, constructs Task Prompts, and delivers them to Workers via Task Bus. |
-| **Task Execution** | Worker receives a Task Prompt, executes instructions, validates results, iterates if needed, and logs the outcome to memory. |
-| **Task Review** | Manager reviews Task Reports and Task Logs, determines review outcome, modifies planning documents when findings warrant it, and updates the Tracker. |
-| **Task Logging** | Worker writes a structured Task Log capturing outcome, validation, deliverables, and flags. |
-| **Handoff** | Context transfer between successive instances of the same agent role when context window limits approach. Applies to Manager and Worker only. |
-
----
-
-## 6. Communication
-
-The communication system is a file-based Message Bus in `.apm/bus/`. Each agent has a directory containing its bus files. Before writing to an outgoing bus file, the agent clears its incoming bus file to prevent stale messages.
-
-| Term | Definition |
-| ------ | ------------ |
-| **Message Bus** | The file-based communication system in `.apm/bus/` through which agents exchange Task Prompts, Task Reports, and Handoff content. The User mediates every exchange. |
-| **Task Bus** | Manager-to-Worker bus file (`task.md`). Contains Task Prompts. |
-| **Report Bus** | Worker-to-Manager bus file (`report.md`). Contains Task Reports. |
-| **Handoff Bus** | Outgoing-to-incoming agent bus file (`handoff.md`). Contains the handoff prompt content that instructs the incoming agent to rebuild working context. |
-| **Task Prompt** | Self-contained prompt delivered via Task Bus providing a Worker with everything needed to execute and validate a Task. |
-| **Task Report** | Concise summary delivered via Report Bus by Worker for Manager review. |
-
----
-
-## 7. Memory
-
-Memory resides in `.apm/memory/` and captures project history for progress tracking and Handoff continuity.
+## Memory and state
 
 | Term | Definition | Location |
-| ------ | ------------ | ---------- |
-| **Memory** | The hierarchical file structure in `.apm/memory/` that captures project history for progress tracking and Handoff continuity. Contains the Index, Task Logs, and Handoff Logs. | `.apm/memory/` |
-| **Tracker** | Live session state document containing Task tracking, Worker tracking, version control state, and working notes. Updated by the Manager throughout the Implementation Phase as the operational view for dispatch decisions, dependency analysis, and Handoff continuity. | `.apm/tracker.md` |
-| **Index** | Durable project memory containing Memory notes (persistent observations and patterns) and Stage summaries (appended after each Stage completion). | `.apm/memory/index.md` |
-| **Task Log** | Structured log created by Worker after Task completion. Captures outcome, validation, deliverables, and flags. | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` |
-| **Handoff Log** | Log created during Handoff containing working context not captured elsewhere. | `.apm/memory/handoffs/<agent>/handoff-<NN>.log.md` |
+|---|---|---|
+| **Task Log** | The Worker's record of one attempt at a Task: outcome, validation, deliverables and findings. Follow-ups have separate numbered logs linked to earlier attempts. | `.apm/memory/stage-<NN>/`; filenames in Task Logging §5.1 |
+| **Handoff Log** | The record a Manager or Worker conversation writes at its Handoff: what it did and the working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md` |
+| **Index** | The overview of the APM session's history: lasting findings with sources and a table of Stage outcomes linking to their summaries. | `.apm/memory/index.md` |
+| **Memory** | The APM session's work history and continuation context: Task outcomes, lasting findings, Stage summaries and Handoff Logs. | `.apm/memory/` |
+| **Tracker** | The Manager's live record: coordination context and decisions awaiting durable recording, Task states and next actions with branches and worktrees, and each Worker's conversation and context. | `.apm/tracker.md` |
 
 ---
 
-## 8. Defined Concepts
+## Message Bus
 
-These concepts are not formal capitalized terms but are clearly defined because they drive real workflow decisions.
-
-**Task dependencies.** A Task may depend on outputs from a prior Task. The dependency context provided depends on the Worker's familiarity with the producer's work:
-
-- *Same-agent dependency:* producer and consumer are the same Worker. The Worker has working familiarity - provide light context (recall anchors, file paths).
-- *Cross-agent dependency:* producer and consumer are different Workers. The Worker has zero familiarity - provide comprehensive context (file reading instructions, output summaries, integration guidance). After a Worker Handoff, previous-Stage same-agent dependencies are treated as cross-agent because the incoming Worker lacks that working context.
-
-**Dispatch modes.** The Manager determines how to dispatch Ready Tasks:
-
-- *Single:* one Task dispatched to one Worker.
-- *Batch:* multiple sequential Tasks dispatched to the same Worker in a single prompt. Candidates either form a chain with only internal dependencies, or are an independent group of same-Worker Tasks all Ready simultaneously. When forming chains, the Manager weighs whether external Tasks depend on intermediate results - if so, dispatching individually allows earlier review and unblocks dependent Workers sooner. Soft guidance: 2-3 Tasks per batch.
-- *Parallel:* two or more dispatch units (singles or batches) sent to different Workers simultaneously when no unresolved cross-Worker dependencies exist. Requires version control workspace isolation.
-
-**Agent instances.** Each agent role is numbered sequentially. Manager 1 is the first Manager; Manager 2 takes over after Handoff. Workers follow the same pattern (e.g., Frontend Agent 1, Frontend Agent 2). Instance numbers are tracked in the Tracker's Worker tracking table. Recovery does not increment the instance number - the recovered agent continues as the same instance. Instance number increments via Handoff.
-
-**Worker states.** Workers in the Tracker are either uninitialized (defined in the Plan but no instance started) or on a specific instance (Instance N). An instance number greater than 1 indicates Handoff occurred; the Manager checks cross-agent overrides for dependency context depth.
-
-**Recovery.** Context reconstruction after platform auto-compaction, manual compaction, or a cleared or lost conversation within a Manager or Worker instance. The recovered agent re-reads the initiation command and follows its document loading instructions to rebuild procedural knowledge and project state. Recovery does not increment the instance number or constitute a Handoff. The agent notes the recovery in its next communication (Task Report for Workers, Tracker for the Manager) and in its eventual Handoff Log.
-
-**APM session.** One complete workflow cycle operating on a single set of `.apm/` artifacts. Multiple agent instances participate across Handoffs, and the artifact set remains continuous until archival. An APM session spans at least three chat conversations (Planner, Manager, and one or more Workers); a chat conversation hosts one agent instance at a time.
-
-**Session continuation.** Archiving the current session's artifacts and reinitializing for a new session. The summarization command produces an optional session summary, then the `apm archive` CLI command moves artifacts into `.apm/archives/` and removes the current installation. The user runs `apm init` (or `apm custom`) to begin a new session with fresh templates while retaining read access to archived context.
-
-**Session archive.** A snapshot of a session's artifacts stored as a directory in `.apm/archives/` (default name `session-YYYY-MM-DD-NNN`, or a custom name). Contains all `.apm/` contents except `archives/`, including planning documents, Tracker, Memory, Message Bus files, metadata, and an optional session summary. The snapshot captures whatever state the session was in at archival time - completed, partial, or in-progress. The `metadata.json` file is the canonical archive marker.
-
-**Session summary.** Optional artifact (`.apm/session-summary.md`) produced by a standalone agent via the summarization command - not a Planner, Manager, or Worker. Captures a point-in-time snapshot of the session: project scope, stage outcomes, key deliverables, notable findings, known issues, and current codebase state including how deliverables relate to the `.apm/` artifacts. Can be produced at any point during a session, not only after completion.
-
-**Understanding summary.** A consolidated presentation of gathered context for User review and approval. The Planner presents one at the end of Context Gathering, covering requirements, design decisions, work structure signals, and technical context. The Manager presents one during first initiation, covering project scope, design decisions, and proposed version control conventions. Both serve as approval gates - the User reviews and approves before the agent proceeds.
-
-**Cross-agent overrides.** When a Worker Handoff is detected, same-agent dependencies from Tasks whose logs were not loaded by the incoming Worker are reclassified as cross-agent. The Manager maintains an override list in the Tracker, recording the specific Tasks affected. During Task Assignment, the Manager checks this list to determine dependency context depth. The Dependency Graph is not modified; overrides are a runtime layer over the static plan.
+| Term | Definition | Location |
+|---|---|---|
+| **Message Bus** | The file-based system through which agents exchange messages. Each agent has its own folder, each file holds at most one message, and the User delivers every message. | `.apm/bus/` |
+| **Task Prompt** | The Manager's message giving a Worker everything needed to execute and validate a Task or batch. | |
+| **Task Report** | The Worker's short message to the Manager with a Task's outcome and the path to its Task Log, or with the outcomes of a batch. | |
+| **Handoff Prompt** | The outgoing agent's message telling the incoming agent the current state, what to read and what to do next. | |
+| **Task Bus** | The file that carries Task Prompts to a Worker. | `<worker>/task.md` |
+| **Report Bus** | The file that carries a Worker's Task Reports to the Manager. | `<worker>/report.md` |
+| **Handoff Bus** | The file that carries a Handoff Prompt to the incoming agent. | `<agent-slug>/handoff.md` |
 
 ---
 
-**End of Terminology**
+## Plain terms
+
+These terms keep ordinary lowercase but have a fixed meaning in APM templates.
+
+| Term | Definition |
+|---|---|
+| **conversation** | One chat with a Manager, Worker or the Planner. It continues through compaction and recovery; only a Handoff starts the role's next numbered conversation. |
+| **recovery** | Rebuilding a Manager's or Worker's working context after compaction or a lost conversation. It keeps the role's conversation number. |
+| **follow-up Task** | A Task that Task Review sends back to the same Worker with a revised Task Prompt. It keeps its Task ID and stays Active. |
+| **archive** | A snapshot of an APM session's `.apm/` files, stored in `.apm/archives/`. Archiving is optional; later sessions can use archives as context. |
+| **session summary** | An optional document, `.apm/session.summary.md`, describing an APM session's scope, outcomes, consequential findings, accepted limitations, open issues and current state. |

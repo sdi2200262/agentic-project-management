@@ -10,7 +10,7 @@ import fs from 'fs-extra';
 import path from 'path';
 
 /**
- * Recursively finds all .md template files under the source directory (commands/, skills/, guides/, agents/).
+ * Recursively finds all .md template files under the source directory (skills/ and guides/).
  * Excludes README.md and the _standards/ and apm/ directories.
  *
  * @param {string} sourceDir - Directory to search.

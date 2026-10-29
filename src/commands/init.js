@@ -10,9 +10,10 @@
 import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
-import { fetchOfficialReleases, findReleaseByTag, getLatestRelease, fetchReleaseManifest, findBundleAsset, parseVersion } from '../services/releases.js';
+import { fetchOfficialReleases, findReleaseByTag, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { selectAssistant } from '../ui/prompts.js';
+import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -31,9 +32,9 @@ export async function initCommand(options = {}) {
   // Fresh only — show info for existing installations
   const existing = await readMetadata();
   if (existing) {
-    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'assistant')}).`);
+    logger.warn(`Already initialized (${existing.source} ${existing.releaseVersion}, ${logger.plural(existing.assistants.length, 'installation target')}).`);
     logger.blank();
-    logger.info('Use "apm add" to add assistants, "apm update" to update, or "apm archive" to start fresh.');
+    logger.info('Use "apm add" to add installation targets, "apm update" to update, or "apm archive" to start fresh.');
     return;
   }
 
@@ -86,11 +87,11 @@ export async function initCommand(options = {}) {
   if (assistantList) {
     // Validate all requested assistants
     assistantIds = [];
-    for (const arg of assistantList) {
+    for (const arg of new Set(assistantList)) {
       const found = manifest.assistants.find(a => a.id === arg);
       if (!found) {
-        const available = manifest.assistants.map(a => a.id).join(', ');
-        warnings.push({ level: 'error', msg: `Assistant '${arg}' not found. Available: ${available}` });
+        const available = formatAssistantList(manifest.assistants.map(a => a.id), assistantNamesFromManifest(manifest));
+        warnings.push({ level: 'error', msg: `Installation target '${arg}' not found. Available: ${available}` });
         continue;
       }
       assistantIds.push(arg);
@@ -101,27 +102,21 @@ export async function initCommand(options = {}) {
       return;
     }
   } else {
-    const header = `Found ${logger.plural(manifest.assistants.length, 'assistant')} available in ${release.tag_name}`;
+    const header = `Found ${logger.plural(manifest.assistants.length, 'installation target')} available in ${release.tag_name}`;
     const selected = await selectAssistant(manifest.assistants, { header });
     assistantIds = [selected];
   }
 
-  // Download and extract each assistant
+  const bundles = getRequiredBundles(release, manifest, assistantIds);
+
   const installedFiles = {};
   let apmExtracted = false;
 
-  for (const id of assistantIds) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    const bundleAsset = findBundleAsset(release, assistant.bundle);
-
-    if (!bundleAsset) {
-      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' not found in release, skipping.` });
-      continue;
-    }
-
+  for (const { assistant, asset } of bundles) {
+    const id = assistant.id;
     stop = logger.progress(`Downloading ${assistant.bundle}`);
     const writtenFiles = await downloadAndExtract(
-      bundleAsset.browser_download_url,
+      asset.browser_download_url,
       process.cwd(),
       { skipApm: apmExtracted }
     );
@@ -140,6 +135,7 @@ export async function initCommand(options = {}) {
     releaseVersion: release.tag_name,
     cliVersion: CLI_VERSION,
     assistants: assistantIds,
+    assistantNames: assistantNamesFromManifest(manifest, assistantIds),
     installedFiles
   });
   await writeMetadata(metadata);
@@ -149,22 +145,16 @@ export async function initCommand(options = {}) {
   for (const w of warnings) logger[w.level](w.msg);
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
-    if (installedFiles[id]) logger.success(`Installed ${assistant.name}`);
+    if (installedFiles[id]) logger.success(`Installed ${formatAssistant(id, assistant.name)}`);
   }
   for (const id of assistantIds) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
   }
   logger.success('APM initialized!');
-  logger.info('Run "apm add" to add more assistants, or "apm update" to check for updates.');
+  logger.info('To start planning, invoke the apm-1-initiate-planner skill in a new chat with your assistant.');
   console.log('');
-  const names = assistantIds
-    .map(id => manifest.assistants.find(a => a.id === id))
-    .filter(a => a && installedFiles[a.id])
-    .map(a => a.name);
-  const assistantLabel = names.length ? logger.list(names) : 'your AI assistant';
-  logger.info(`New to APM? Install the apm-assist skill so ${assistantLabel} can explain how APM works and answer questions outside of APM sessions.`);
-  logger.info('See: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
+  logger.info('New to APM? The apm-assist skill lets your assistant explain how APM works: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
 }
 
 export default initCommand;

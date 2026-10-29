@@ -1,137 +1,54 @@
-# Contributing to Agentic Project Management (APM)
+# Contributing to APM
 
-Thank you for considering contributing to APM! Your contributions help build a better framework for AI-assisted project management.
+Contributions can improve the workflow, templates, CLI, build system, documentation or standalone skills.
 
-## Ways to Contribute
+## Report an issue
 
-### Reporting Bugs & Workflow Issues
+Search [existing issues](https://github.com/sdi2200262/agentic-project-management/issues) first. For a bug, include:
 
-- **Search existing issues** first: [GitHub Issues](https://github.com/sdi2200262/agentic-project-management/issues)
-- **For new bug reports**, include:
-  - APM CLI version (run `apm --version` or `npm list -g agentic-pm`)
-  - Node.js and npm versions (run `node --version` and `npm --version`)
-  - AI assistant used (Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, or OpenCode)
-  - Agent role experiencing issues (Planner, Manager, or Worker)
-  - Step-by-step reproduction of the issue (if possible, otherwise a detailed description)
-  - Expected vs actual behavior
+- CLI and template versions, Node.js and npm versions.
+- Assistant, installation target and affected role.
+- Reproduction steps, expected behavior and actual behavior.
+- Relevant errors or example interactions.
 
-### Suggesting Features & Improvements
+Describe the use case and proposed behavior for feature requests. Follow [SECURITY.md](SECURITY.md) for vulnerabilities.
 
-- Workflow improvements: procedures, coordination patterns, memory system optimisations
-- Documentation improvements: clearer explanations, additional examples, missing use cases
-- Platform support: better integration with supported assistants
-- Build system: placeholder additions, platform-specific enhancements
+## Set up
 
-### High-Priority Areas
-
-**Workflow Testing & Feedback**
-- Run APM sessions on real projects and report issues via [GitHub Issues](https://github.com/sdi2200262/agentic-project-management/issues)
-- Test across different assistants and model combinations
-- Identify edge cases in coordination, Handoff, and session continuation
-
-**Template Standards**
-- Help improve the template authoring standards in `templates/_standards/`
-- Resources: WORKFLOW.md, TERMINOLOGY.md, STRUCTURE.md, WRITING.md
-- Contributions needed: compliance findings, writing improvements, structural refinements
-
-**Standalone Skills**
-- The `skills/` directory contains standalone skills installed independently from APM bundles
-- Current skills: [apm-assist](skills/apm-assist/) (APM assistant, migration, docs), [apm-customization](skills/apm-customization/) (customising a forked or templated repository)
-- Contributions welcome for new standalone skills that complement the APM workflow
-
-### Community Contributions
-
-- Share adaptations: domain-specific customisations via custom repositories
-- Best practices: cost optimisation strategies, effective coordination patterns
-- Case studies: real project examples using APM
-
-### Community Extensions
-
-APM officially supports Claude Code, Codex CLI, Cursor, GitHub Copilot, Antigravity, and OpenCode. For other assistants (e.g. Windsurf, Kilo Code, Roo Code), community members may develop and maintain unofficial extensions.
-
-Community extensions are not officially supported, may lag behind releases, and should be tested thoroughly before use. If you're interested in developing or maintaining an extension, please open an issue to discuss.
-
-## Contribution Process
-
-### Setting Up Your Development Environment
-
-1. **Fork and clone the repository:**
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/agentic-project-management.git
-   cd agentic-project-management
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm ci
-   ```
-
-3. **Create a feature branch:**
-   ```bash
-   git checkout -b feature/description-of-change
-   ```
-
-### Making Changes
-
-APM uses a build system that processes source templates into platform-specific bundles. Understanding where to make changes is important:
-
-#### File Locations
-
-- **Templates (commands, guides, skills, agents):** Edit files in `templates/`. This is the core deliverable. All template changes must comply with `templates/_standards/`.
-- **Build system:** Edit files in `build/` for processors, config, and generators.
-- **CLI source:** Edit files in `src/` for CLI command behavior.
-- **Standalone skills:** Edit files in `skills/` for independently installable skills.
-- **Documentation:** Docs live in a separate repository: [apm-website](https://github.com/sdi2200262/apm-website) (`docs/` directory). Video walkthroughs covering the v1 workflow are needed. See the apm-website README for details.
-
-**Important:** Template changes follow a top-down propagation. Workflow changes start in `WORKFLOW.md`, then propagate to affected commands, guides, and skills. The [customisation skill](skills/apm-customization/SKILL.md) describes the propagation in detail.
-
-#### Building
-
-After modifying files in `templates/` or `build/`, run:
+Fork and clone the repository, then install dependencies and create a branch:
 
 ```bash
-npm run build:release
+npm ci
+git checkout -b feature/description
 ```
 
-This processes templates and creates platform-specific bundles in `dist/`.
+## Make changes
 
-### Testing Your Changes
+| Area | Location |
+|---|---|
+| Runtime skills, guides and initial artifacts | `templates/` |
+| Template authoring standards | `templates/_standards/` |
+| Build system and target layouts | `build/` |
+| CLI | `src/` |
+| Standalone skills | `skills/` |
+| Website documentation | [apm-website](https://github.com/sdi2200262/apm-website), under `docs/` |
 
-**For template changes** (`templates/`):
-- Run `npm run build:release` to verify the build completes
-- Test with actual AI assistants in a real project
-- Include example interactions or observations in your PR to speed review
+For workflow changes, update `WORKFLOW.md` first, then the affected runtime files. Follow `TERMINOLOGY.md`, `STRUCTURE.md` and `WRITING.md`. The [customisation skill](skills/apm-customization/SKILL.md) explains the source layout and build placeholders.
 
-**For CLI or build system changes** (`src/` or `build/`):
-- Run `npm run build:release` to verify build output
-- Test CLI commands manually
-- Verify generated output in `dist/` is correct
+Use plain-English assistant actions in templates. The build resolves paths for the `agents` and `claude` targets; `{CLAUDE_ONLY:…}` holds Claude-specific text.
 
-### Pull Requests
+## Validate and submit
 
-1. Ensure your changes are tested.
-2. Commit with clear messages in the `type(scope): description` format used in the repository history.
-3. Push your branch and create a Pull Request with a clear description.
-4. Reference related issues if applicable.
-5. Include test instructions for template changes.
+For template or build changes:
 
-### Versioning Considerations
+```bash
+VERSION=1.1.0 npm run build:release
+```
 
-APM uses a decoupled versioning system where the CLI and templates version independently but share the same major version number. See [VERSIONING.md](VERSIONING.md) for details.
+Use the version you intend to test. Inspect the ZIPs and manifest in `dist/`, including resolved paths and placeholders. Exercise changed workflows with an assistant. For CLI changes, run the affected commands and check their files and output; use `npm pack` to check the package.
 
-## License Requirements
+Submit a pull request describing the change, related issues and validation performed. Use concise `type: description` commit titles, with an optional scope. CLI and template releases are separate; see [VERSIONING.md](VERSIONING.md).
 
-APM uses Mozilla Public License 2.0 (MPL-2.0). By contributing, you agree that:
-- Your contributions will be licensed under MPL-2.0
-- Improvements to core APM files will remain open source
-- Proper attribution is maintained
+Contributions are licensed under [MPL-2.0](LICENSE). Preserve copyright and license notices.
 
-## Questions & Discussion
-
-- Technical questions: open a GitHub issue
-- General inquiries: reach out on Discord at `cobuter_man`
-- Collaboration: mention @sdi2200262 in relevant issues or PRs
-
----
-
-Your contributions help make APM better for everyone. Thank you for being part of the community!
+For questions, open an issue or contact `cobuter_man` on Discord.

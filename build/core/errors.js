@@ -15,17 +15,9 @@ export const BuildErrorCode = {
   // Config errors
   CONFIG_NOT_FOUND: 'CONFIG_NOT_FOUND',
   CONFIG_INVALID: 'CONFIG_INVALID',
-  CONFIG_MISSING_FIELD: 'CONFIG_MISSING_FIELD',
-
-  // Template errors
-  TEMPLATE_PARSE_FAILED: 'TEMPLATE_PARSE_FAILED',
-  TEMPLATE_MISSING_FIELD: 'TEMPLATE_MISSING_FIELD',
-  TEMPLATE_READ_FAILED: 'TEMPLATE_READ_FAILED',
 
   // Build errors
-  DUPLICATE_COMMAND: 'DUPLICATE_COMMAND',
   ARCHIVE_FAILED: 'ARCHIVE_FAILED',
-  WRITE_FAILED: 'WRITE_FAILED'
 };
 
 /**
@@ -85,65 +77,6 @@ export class BuildError extends Error {
       `Invalid configuration: ${errors.join(', ')}`,
       BuildErrorCode.CONFIG_INVALID,
       { errors }
-    );
-  }
-
-  /**
-   * Creates a BuildError for missing config field.
-   *
-   * @param {string} field - Missing field name.
-   * @returns {BuildError} Formatted error instance.
-   */
-  static configMissingField(field) {
-    return new BuildError(
-      `Missing required configuration field: ${field}`,
-      BuildErrorCode.CONFIG_MISSING_FIELD,
-      { field }
-    );
-  }
-
-  /**
-   * Creates a BuildError for template parse failure.
-   *
-   * @param {string} file - Template file path.
-   * @param {string} reason - Parse failure reason.
-   * @returns {BuildError} Formatted error instance.
-   */
-  static templateParseFailed(file, reason) {
-    return new BuildError(
-      `Failed to parse template ${file}: ${reason}`,
-      BuildErrorCode.TEMPLATE_PARSE_FAILED,
-      { file, reason }
-    );
-  }
-
-  /**
-   * Creates a BuildError for missing frontmatter field.
-   *
-   * @param {string} file - Template file path.
-   * @param {string} field - Missing field name.
-   * @returns {BuildError} Formatted error instance.
-   */
-  static templateMissingField(file, field) {
-    return new BuildError(
-      `Missing required frontmatter field "${field}" in ${file}`,
-      BuildErrorCode.TEMPLATE_MISSING_FIELD,
-      { file, field }
-    );
-  }
-
-  /**
-   * Creates a BuildError for duplicate command names.
-   *
-   * @param {string} name - Duplicate command name.
-   * @param {string[]} files - Files containing the duplicate.
-   * @returns {BuildError} Formatted error instance.
-   */
-  static duplicateCommand(name, files) {
-    return new BuildError(
-      `Duplicate command_name "${name}" in: ${files.join(', ')}`,
-      BuildErrorCode.DUPLICATE_COMMAND,
-      { name, files }
     );
   }
 

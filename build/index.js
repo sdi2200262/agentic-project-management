@@ -1,8 +1,7 @@
 /**
  * APM Build System Entry Point
  *
- * Generates AI assistant-specific command bundles from markdown templates.
- * All current targets use the Markdown output format (Codex CLI custom agents are written as TOML).
+ * Generates installation bundles from shared Markdown templates.
  *
  * Usage: node build/index.js
  *

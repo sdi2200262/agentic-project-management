@@ -179,14 +179,22 @@ export async function fetchReleaseManifest(release) {
     throw CLIError.manifestInvalid(release.tag_name, ['Invalid JSON']);
   }
 
+  // Check minCliVersion first: a release made for a newer CLI may have a manifest this CLI
+  // can't validate, and "update the CLI" is the useful message in that case.
+  if (typeof manifest?.minCliVersion === 'string') {
+    // An unparseable version would compare as equal and pass silently.
+    if (!parseVersion(manifest.minCliVersion)) {
+      throw CLIError.manifestInvalid(release.tag_name, [`minCliVersion: "${manifest.minCliVersion}" is not a version such as 1.0.3`]);
+    }
+    if (compareVersions(CLI_VERSION, manifest.minCliVersion) < 0) {
+      throw CLIError.cliTooOld(release.tag_name, manifest.minCliVersion);
+    }
+  }
+
   const validation = validateReleaseManifest(manifest);
 
   if (!validation.valid) {
     throw CLIError.manifestInvalid(release.tag_name, validation.errors);
-  }
-
-  if (manifest.minCliVersion && compareVersions(CLI_VERSION, manifest.minCliVersion) < 0) {
-    throw CLIError.cliTooOld(release.tag_name, manifest.minCliVersion);
   }
 
   return manifest;
@@ -201,6 +209,16 @@ export async function fetchReleaseManifest(release) {
  */
 export function findBundleAsset(release, bundleName) {
   return release.assets.find(a => a.name === bundleName) || null;
+}
+
+/** Resolves selected targets and requires every bundle before installation starts. */
+export function getRequiredBundles(release, manifest, ids) {
+  return ids.map(id => {
+    const assistant = manifest.assistants.find(a => a.id === id);
+    const asset = findBundleAsset(release, assistant.bundle);
+    if (!asset) throw CLIError.bundleNotFound(assistant.bundle, release.tag_name);
+    return { assistant, asset };
+  });
 }
 
 /**

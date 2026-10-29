@@ -1,25 +1,15 @@
----
-title: <Project Name>
----
-
 # APM Tracker
 
-## Task Tracking
+## Notes
+
+## Tasks
 
 **Stage 1:**
 
-| Task | Status | Agent | Branch |
-|------|--------|-------|--------|
+| Task | Agent | Status | Branch | Worktree | Next Action |
+|------|-------|--------|--------|----------|-------------|
 
-## Worker Tracking
+## Workers
 
-| Agent | Instance | Notes |
-|-------|----------|-------|
-
-## Version Control
-
-| Repository | Base Branch | Branch Convention | Commit Convention |
-|-----------|-------------|-------------------|-------------------|
-
-## Working Notes
-
+| Agent | Conversation | Not Read Since Handoff | Context |
+|-------|--------------|------------------------|---------|

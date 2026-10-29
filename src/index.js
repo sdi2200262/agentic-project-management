@@ -46,14 +46,16 @@ function displayHelp() {
   console.log(chalk.cyan.bold('Commands:'));
   console.log(`  ${chalk.bold('init')}              Initialize APM with official releases`);
   console.log(`  ${chalk.bold('custom')}            Install from a custom repository`);
-  console.log(`  ${chalk.bold('update')}            Update installed assistant templates`);
+  console.log(`  ${chalk.bold('update')}            Archive the session, then install the newest stable release`);
   console.log(`  ${chalk.bold('archive')}           Archive the current session or manage archives`);
-  console.log(`  ${chalk.bold('add')}               Add assistant(s) to existing installation`);
-  console.log(`  ${chalk.bold('remove')}            Remove assistant(s) from installation`);
+  console.log(`  ${chalk.bold('add')}               Add installation target(s) to existing installation`);
+  console.log(`  ${chalk.bold('remove')}            Remove installation target(s) from installation`);
   console.log(`  ${chalk.bold('status')}            Show installation status`);
   console.log('');
+  console.log(chalk.gray('Official installation targets: agents (AGENTS.md and .agents/skills/), claude (Claude Code).'));
+  console.log('');
   console.log(chalk.cyan.bold('Shared Options:'));
-  console.log(`  ${chalk.bold('-a, --assistant <id...>')}   Target assistant(s) ${chalk.dim('(init, custom, add, remove)')}`);
+  console.log(`  ${chalk.bold('-a, --assistant <id...>')}   Installation target(s) ${chalk.dim('(init, custom, add, remove)')}`);
   console.log(`  ${chalk.bold('-t, --tag <tag>')}           Specific release version ${chalk.dim('(init, custom)')}`);
   console.log(`  ${chalk.bold('-n, --name <name>')}         Custom archive name ${chalk.dim('(update, archive)')}`);
   console.log(`  ${chalk.bold('-f, --force')}               Skip destructive action confirmations`);
@@ -82,11 +84,10 @@ function displayHelp() {
   console.log('');
   console.log(`  ${chalk.bold('Official APM Releases')} (v1.x.x):`);
   console.log(`            - Follows SemVer: ${chalk.blue.underline('https://semver.org/')}`);
-  console.log(`            - Compatible with v1.x.x agentic-pm CLI`);
+  console.log(`            - Requires a v1.x.x CLI meeting the release’s minimum CLI version`);
   console.log(`            - Update via: ${chalk.yellow('apm update')}`);
   console.log('');
   console.log(chalk.gray('Learn more:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management'));
-  console.log('');
   console.log(chalk.gray('New to APM? The apm-assist skill gives your AI assistant full knowledge of'));
   console.log(chalk.gray('the framework so it can answer questions and help with migration.'));
   console.log(chalk.gray('See:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist'));
@@ -133,7 +134,7 @@ program
   .description('Initialize APM with official releases')
   .argument('[extras...]')
   .option('-t, --tag <tag>', 'Install specific release version')
-  .option('-a, --assistant <ids...>', 'Assistant(s) to install')
+  .option('-a, --assistant <ids...>', 'Installation target(s) to install')
   .action(async (extras, options) => {
     checkStrayArgs(extras, 'init');
     try {
@@ -149,7 +150,7 @@ program
   .argument('[extras...]')
   .option('-r, --repo <repo>', 'Repository in owner/repo format')
   .option('-t, --tag <tag>', 'Install specific release version (requires --repo)')
-  .option('-a, --assistant <ids...>', 'Assistant(s) to install')
+  .option('-a, --assistant <ids...>', 'Installation target(s) to install')
   .option('--add-repo <repos...>', 'Save custom repository(ies)')
   .option('--remove-repo <repos...>', 'Remove saved repository(ies)')
   .option('--list', 'List saved custom repositories')
@@ -166,7 +167,7 @@ program
 
 program
   .command('update')
-  .description('Update installed assistant templates')
+  .description('Archive the session, then install the newest stable release')
   .option('-f, --force', 'Skip destructive action confirmations')
   .option('-n, --name <name>', 'Custom archive name')
   .action(async (options) => {
@@ -195,9 +196,9 @@ program
 
 program
   .command('add')
-  .description('Add assistant(s) to existing installation')
+  .description('Add installation target(s) to existing installation')
   .argument('[extras...]')
-  .option('-a, --assistant <ids...>', 'Assistant(s) to add')
+  .option('-a, --assistant <ids...>', 'Installation target(s) to add')
   .action(async (extras, options) => {
     checkStrayArgs(extras, 'add');
     try {
@@ -209,9 +210,9 @@ program
 
 program
   .command('remove')
-  .description('Remove assistant(s) from installation')
+  .description('Remove installation target(s) from installation')
   .argument('[extras...]')
-  .option('-a, --assistant <ids...>', 'Assistant(s) to remove')
+  .option('-a, --assistant <ids...>', 'Installation target(s) to remove')
   .option('-f, --force', 'Skip destructive action confirmations')
   .action(async (extras, options) => {
     checkStrayArgs(extras, 'remove');

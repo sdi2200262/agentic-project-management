@@ -2,150 +2,34 @@
   "build": {
     "sourceDir": "templates",
     "outputDir": "dist",
-    "cleanOutput": true
+    "cleanOutput": true,
+    "minCliVersion": "1.0.3"
   },
   "targets": [
+    {
+      "id": "agents",
+      "name": "Agents supporting .agents/skills/ and AGENTS.md",
+      "bundleName": "agents.zip",
+      "directories": {
+        "skills": ".agents/skills",
+        "guides": ".agents/apm-guides"
+      },
+      "replaces": [
+        "codex",
+        "cursor",
+        "copilot",
+        "antigravity",
+        "opencode"
+      ],
+      "postInstallNote": null
+    },
     {
       "id": "claude",
       "name": "Claude Code",
       "bundleName": "claude.zip",
-      "format": "markdown",
-      "configDir": ".claude",
       "directories": {
-        "commands": ".claude/commands",
         "skills": ".claude/skills",
-        "guides": ".claude/apm-guides",
-        "agents": ".claude/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Open a new terminal and run `claude`, or open a new Claude Code tab in VS Code or a new session in the desktop app",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "`Agent(subagent_type=\"Explore\", description=\"...\", prompt=\"...\")`",
-        "explorerName": "Explore",
-        "configNote": null
-      },
-      "postInstallNote": null
-    },
-    {
-      "id": "codex",
-      "name": "Codex CLI",
-      "bundleName": "codex.zip",
-      "format": "markdown",
-      "configDir": ".codex",
-      "directories": {
-        "commands": ".agents/skills",
-        "skills": ".agents/skills",
-        "guides": ".codex/apm-guides",
-        "agents": ".codex/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Open a new terminal and run `codex`, or start a new chat in the Codex IDE extension or app",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "`spawn_agent(task_name=\"explore_<topic>\", agent_type=\"explorer\", fork_turns=\"none\", message=\"...\")`",
-        "explorerName": "explorer",
-        "configNote": null
-      },
-      "commandPrefix": "$",
-      "postInstallNote": "Codex CLI does not support custom slash commands. APM commands are installed as skills and invoked with the $ prefix (e.g., $apm-1-initiate-planner) instead of /slash-commands."
-    },
-    {
-      "id": "cursor",
-      "name": "Cursor",
-      "bundleName": "cursor.zip",
-      "format": "markdown",
-      "configDir": ".cursor",
-      "directories": {
-        "commands": ".cursor/commands",
-        "skills": ".cursor/skills",
-        "guides": ".cursor/apm-guides",
-        "agents": ".cursor/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `@` and search for the file name.",
-      "newChatGuidance": "Start a new Agent chat in the Cursor editor, or open a new terminal in the project root and run `agent`",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "`Task(subagent_type=\"explore\", description=\"...\", prompt=\"...\")`",
-        "explorerName": "explore",
-        "configNote": null
-      },
-      "postInstallNote": null
-    },
-    {
-      "id": "copilot",
-      "name": "GitHub Copilot",
-      "bundleName": "copilot.zip",
-      "format": "markdown",
-      "configDir": ".github",
-      "directories": {
-        "commands": ".github/skills",
-        "skills": ".github/skills",
-        "guides": ".github/apm-guides",
-        "agents": ".github/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `#file` and select the file from the picker.",
-      "newChatGuidance": "Start a new chat in the VS Code Chat view, or open a new terminal and run `copilot`",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "`runSubagent` with `agentName: \"Explore\"` in VS Code, or `task` with `agent_type: \"explore\"` in Copilot CLI",
-        "explorerName": "Explore",
-        "configNote": null
-      },
-      "agentFrontmatter": {
-        "user-invocable": false
-      },
-      "postInstallNote": null
-    },
-    {
-      "id": "antigravity",
-      "name": "Antigravity",
-      "bundleName": "antigravity.zip",
-      "format": "markdown",
-      "configDir": ".agents",
-      "directories": {
-        "commands": ".agents/skills",
-        "skills": ".agents/skills",
-        "guides": ".agents/apm-guides",
-        "agents": ".agents/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `@` followed by the file path.",
-      "newChatGuidance": "Start a new conversation in the Antigravity app or IDE agent panel, or open a new terminal and run `agy`",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "the `invoke_subagent` tool",
-        "explorerName": "research",
-        "configNote": null
-      },
-      "agentFrontmatter": {
-        "tools": ["view_file", "grep_search", "run_command"],
-        "subagent": true,
-        "mainAgent": false
-      },
-      "postInstallNote": null
-    },
-    {
-      "id": "opencode",
-      "name": "OpenCode",
-      "bundleName": "opencode.zip",
-      "format": "markdown",
-      "configDir": ".opencode",
-      "directories": {
-        "commands": ".opencode/commands",
-        "skills": ".opencode/skills",
-        "guides": ".opencode/apm-guides",
-        "agents": ".opencode/agents"
-      },
-      "contextAttachSyntax": "Reference the file using `@` followed by the file name.",
-      "newChatGuidance": "Open a new terminal and run `opencode`, or start a new session in the OpenCode desktop app",
-      "subagentGuidance": {
-        "hasSubagents": true,
-        "toolSyntax": "`task(subagent_type=\"explore\", description=\"...\", prompt=\"...\")` on OpenCode 1.x, or `subagent(agent=\"explore\", description=\"...\", prompt=\"...\")` on OpenCode 2.x",
-        "explorerName": "explore",
-        "configNote": null
-      },
-      "agentFrontmatter": {
-        "mode": "subagent"
+        "guides": ".claude/apm-guides"
       },
       "postInstallNote": null
     }

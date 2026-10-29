@@ -1,53 +1,34 @@
-# APM Versioning Strategy
+# Versioning
 
-APM uses a decoupled versioning system with two independent release tracks: the **CLI tool** (distributed via NPM) and **APM template releases** (distributed via GitHub Releases). Both tracks follow Semantic Versioning and share the same major version to ensure compatibility.
+APM versions its CLI and templates separately using [Semantic Versioning](https://semver.org/). They share a major version; minor and patch versions can differ.
 
-## Versioning Tracks
+| Track | Source | Distribution | Version |
+|---|---|---|---|
+| CLI (`agentic-pm`) | `src/` | npm | `package.json` |
+| Templates | `templates/` | GitHub Releases | Build variable `VERSION` |
 
-### 1. APM CLI (`agentic-pm` on NPM)
+## Compatibility and updates
 
-The CLI source code lives in `src/`. Changes to this directory trigger new NPM releases. The CLI handles template management via `apm init`, `apm custom`, `apm update`, `apm archive`, `apm add`, `apm remove`, and `apm status`.
+Official template releases must match the CLI's major version and meet the release's `minCliVersion`. Older CLIs may ignore that minimum or report a manifest error; keep the CLI up to date.
 
-Pre-release versions use the `-test-N` suffix (e.g., `1.0.0-test-1`). NPM's `latest` tag always points to the most recent stable release, so `npm install agentic-pm` installs stable versions only. Pre-releases require explicit installation: `npm install agentic-pm@1.0.0-test-1`.
+`apm update` archives the current session before installing a new release:
 
-### 2. APM Template Releases (GitHub Releases)
+- Stable official installs update to the newest stable release.
+- Pre-release installs ask which newer stable or pre-release to use.
+- Custom installs offer newer releases from the same repository, without a major-version filter. Manifest and minimum-CLI checks still apply.
 
-Templates live in `templates/` and are processed by the build system in `build/`. Running `npm run build:release` generates ZIP bundles for each supported AI assistant plus an `apm-release.json` manifest. These artifacts are published as GitHub Releases.
+`apm status` shows the installed versions. Use `apm init --tag <tag>` to install a specific release, including a pre-release.
 
-Template releases are fully decoupled from CLI versioning. The release workflow auto-increments patch versions (1.0.0 → 1.0.1) based on the latest stable release tag. For minor/major bumps, provide a version override when triggering the workflow. Never override with a version that is already tagged: the workflow then replaces that release's assets in place, and installs already on it are not offered an update.
+## Publishing
 
-Pre-release versions (e.g., `v1.0.0-test-1`, `v1.1.0-beta-1`) are supported for testing. Pre-releases sort before their stable counterpart (`v1.0.0-test-1 < v1.0.0`) and are excluded when the CLI fetches the "latest" release.
+Set the CLI version in `package.json` and publish to npm. Reserve npm's `latest` tag for stable releases; install CLI pre-releases by explicit version.
 
-Releases before v1.0.0 used build metadata to tie templates to a CLI version (e.g. `v0.5.4+templates.1`). Since v1.0.0, template tags are plain `vX.Y.Z`.
+Supply the template version when building:
 
-### 3. Build System
+```bash
+VERSION=1.1.0 npm run build:release
+```
 
-The `build/` directory, CI/CD workflows, and configuration files are not versioned. Changes are tracked via git history only.
+Publish the target ZIPs and `apm-release.json` to GitHub Releases. The release workflow increments the latest stable tag's patch version by default; supply an override for minor, major or pre-release versions. Use a new tag for each release.
 
-## Changelog
-
-[CHANGELOG.md](CHANGELOG.md) covers both tracks in one list, ordered by date. Each heading names what it covers: `CLI vX.Y.Z`, `Templates vX.Y.Z`, or both joined with `+` when they shipped together. Unreleased work sits at the top with `Unreleased` in place of a date.
-
-## Version Compatibility
-
-The CLI and template releases are decoupled but tied by **major version**. CLI v1.x will only fetch v1.x.x releases from the official repository, ensuring template compatibility. Minor and patch versions can differ between CLI and templates.
-
-A template release can also require a minimum CLI version: set `build.minCliVersion` in `build/build-config.json`, and the build writes it to the release's `apm-release.json`. From CLI v1.0.2 on, the CLI refuses such a release and asks the user to update the CLI. Earlier CLIs ignore the field, so only a major version bump keeps them away from an incompatible release.
-
-## `agentic-pm` CLI Behavior
-
-### Official Repository (`apm init`)
-
-By default, `apm init` fetches the latest stable release matching the CLI's major version. Pre-release versions are excluded from "latest" but can be installed explicitly with `--tag` (e.g., `apm init --tag v1.0.0-test-1`).
-
-### Custom Repositories (`apm custom`)
-
-**Custom repositories have no version filtering.** Users can select any available release regardless of CLI version. This enables access to experimental versions, community-maintained templates, or unreleased changes. See [SECURITY.md](SECURITY.md) for security considerations.
-
-### Updating Templates (`apm update`)
-
-For official installs, `apm update` fetches the latest compatible release. For custom installs, `apm update` fetches newer releases from the same custom repository.
-
-## Metadata Tracking
-
-Installed template information is stored in `.apm/metadata.json`, including the source (official or custom), repository, release version, installed assistants, and timestamps. This allows `apm update` to determine the current state and available updates.
+Record changes in [CHANGELOG.md](CHANGELOG.md), naming the CLI version, template version or both. Use `Unreleased` for pending changes.

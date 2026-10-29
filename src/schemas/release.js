@@ -33,17 +33,14 @@ function validateAssistant(assistant, index) {
     errors.push(`${prefix}.bundle: required string`);
   }
 
-  if (typeof assistant.configDir !== 'string' || !assistant.configDir) {
-    errors.push(`${prefix}.configDir: required string`);
-  }
-
   // Defense-in-depth: reject path traversal patterns
-  if (typeof assistant.configDir === 'string' && assistant.configDir.includes('..')) {
-    errors.push(`${prefix}.configDir: must not contain path traversal sequences`);
-  }
-
   if (typeof assistant.bundle === 'string' && assistant.bundle.includes('..')) {
     errors.push(`${prefix}.bundle: must not contain path traversal sequences`);
+  }
+
+  if (assistant.replaces !== undefined && (!Array.isArray(assistant.replaces)
+    || assistant.replaces.some(id => typeof id !== 'string' || !id))) {
+    errors.push(`${prefix}.replaces: must be an array of non-empty IDs`);
   }
 
   // description is optional
@@ -88,8 +85,19 @@ export function validateReleaseManifest(manifest) {
   } else if (manifest.assistants.length === 0) {
     errors.push('assistants: must not be empty');
   } else {
+    const ids = new Set();
+    const replacements = new Set();
     manifest.assistants.forEach((assistant, index) => {
       errors.push(...validateAssistant(assistant, index));
+      if (!assistant || typeof assistant !== 'object') return;
+      if (ids.has(assistant.id)) errors.push(`assistants[${index}].id: duplicate ID`);
+      ids.add(assistant.id);
+      if (Array.isArray(assistant.replaces)) {
+        for (const id of assistant.replaces) {
+          if (replacements.has(id)) errors.push(`assistants[${index}].replaces: duplicate replacement ID`);
+          replacements.add(id);
+        }
+      }
     });
   }
 

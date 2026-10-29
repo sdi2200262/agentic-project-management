@@ -8,7 +8,30 @@
 
 import { select, input, confirm, Separator } from '@inquirer/prompts';
 import chalk from 'chalk';
+import { CLIError } from '../core/errors.js';
+import { formatAssistant } from '../core/assistants.js';
 import logger from './logger.js';
+
+/**
+ * Prompts require terminal input and output.
+ *
+ * @returns {boolean} True when prompts can run.
+ */
+export function isInteractive() {
+  return !!(process.stdin.isTTY && process.stdout.isTTY);
+}
+
+/**
+ * Throws when a prompt cannot run, naming the option that avoids it.
+ *
+ * @param {string} question - The question the prompt would ask.
+ * @param {string} [hint] - How to run the command without the prompt.
+ */
+function requireInteractive(question, hint) {
+  if (!isInteractive()) {
+    throw CLIError.notInteractive(question, hint);
+  }
+}
 
 /**
  * Shared theme for select prompts — disables default hint.
@@ -42,19 +65,20 @@ function withSelectHint(choices) {
  * @param {string} assistants[].description - Description text.
  * @returns {Promise<string>} Selected assistant ID.
  */
-export async function selectAssistant(assistants, { header } = {}) {
+export async function selectAssistant(assistants, { header, hint = 'Pass -a <id> to choose the target.' } = {}) {
+  requireInteractive('Select an installation target:', hint);
   logger.clearAndBanner();
   if (header) {
     console.log('  ' + chalk.dim(header));
     console.log('');
   }
   const choices = assistants.map(a => ({
-    name: `${a.name} - ${a.description}`,
+    name: a.description ? `${formatAssistant(a.id, a.name)} - ${a.description}` : formatAssistant(a.id, a.name),
     value: a.id
   }));
 
   const result = await select({
-    message: 'Select an assistant:',
+    message: 'Select an installation target:',
     choices: withSelectHint(choices),
     pageSize: choices.length + HINT_LINES,
     clearPromptOnDone: true,
@@ -72,7 +96,8 @@ export async function selectAssistant(assistants, { header } = {}) {
  * @param {string} releases[].name - Release name.
  * @returns {Promise<string>} Selected release tag name.
  */
-export async function selectRelease(releases, { header } = {}) {
+export async function selectRelease(releases, { header, hint = 'Pass -t <tag> to choose the release.' } = {}) {
+  requireInteractive('Select a release:', hint);
   logger.clearAndBanner();
   if (header) {
     console.log('  ' + chalk.dim(header));
@@ -101,7 +126,8 @@ export async function selectRelease(releases, { header } = {}) {
  * @param {string} savedRepos[].repo - Repository in owner/repo format.
  * @returns {Promise<string|null>} Selected repo or null for new repo entry.
  */
-export async function selectCustomRepo(savedRepos, { header } = {}) {
+export async function selectCustomRepo(savedRepos, { header, hint = 'Pass -r <owner/repo> to choose the repository.' } = {}) {
+  requireInteractive('Select a repository:', hint);
   logger.clearAndBanner();
   if (header) {
     console.log('  ' + chalk.dim(header));
@@ -131,7 +157,8 @@ export async function selectCustomRepo(savedRepos, { header } = {}) {
  *
  * @returns {Promise<string>} Repository in owner/repo format.
  */
-export async function inputRepository() {
+export async function inputRepository({ hint = 'Pass -r <owner/repo> to choose the repository.' } = {}) {
+  requireInteractive('Repository:', hint);
   logger.clearAndBanner();
   console.log('  ' + chalk.dim('Enter a custom APM repository in owner/repo format'));
   console.log('  ' + chalk.dim('Example: my-org/my-custom-apm-repo'));
@@ -158,9 +185,11 @@ export async function inputRepository() {
  * @param {Object} [options={}] - Options.
  * @param {boolean} [options.defaultValue=false] - Default value.
  * @param {string} [options.header] - Header hint text.
+ * @param {string} [options.hint] - How to run the command without this prompt.
  * @returns {Promise<boolean>} User's confirmation.
  */
-export async function confirmAction(message, { defaultValue = false, header } = {}) {
+export async function confirmAction(message, { defaultValue = false, header, hint } = {}) {
+  requireInteractive(message, hint);
   logger.clearAndBanner();
   if (header) {
     console.log('  ' + chalk.dim(header));
@@ -179,11 +208,13 @@ export async function confirmAction(message, { defaultValue = false, header } = 
  *
  * @returns {Promise<boolean>} Whether user accepted the disclaimer.
  */
-export async function confirmSecurityDisclaimer() {
+export async function confirmSecurityDisclaimer({ hint } = {}) {
+  requireInteractive('Do you understand and accept the risks?', hint
+    || 'Run it once in an interactive terminal and choose to skip the disclaimer for this repository.');
   logger.clearAndBanner();
   console.log('  ' + chalk.yellow.bold('Security Disclaimer'));
   console.log('');
-  console.log('  ' + chalk.yellow('Custom repositories are NOT verified by APM.'));
+  console.log('  ' + chalk.yellow('APM does not verify custom repositories.'));
   console.log('  ' + chalk.yellow('Only install from sources you trust.'));
   console.log('');
 
@@ -202,7 +233,8 @@ export async function confirmSecurityDisclaimer() {
  * @param {string} [confirmMessage='Proceed?'] - Confirmation prompt message.
  * @returns {Promise<boolean>} User's confirmation.
  */
-export async function confirmDestructiveAction(actions, confirmMessage = 'Proceed?') {
+export async function confirmDestructiveAction(actions, confirmMessage = 'Proceed?', { hint = 'Pass -f to proceed without confirmation.' } = {}) {
+  requireInteractive(confirmMessage, hint);
   logger.clearAndBanner();
   console.log(chalk.yellow.bold('This will:'));
   for (const action of actions) {
@@ -226,9 +258,11 @@ export async function confirmDestructiveAction(actions, confirmMessage = 'Procee
  * @param {Object[]} options.choices - Array of { name, value } choices.
  * @param {boolean} [options.clearScreen=true] - Whether to clear screen first.
  * @param {string} [options.header] - Header hint text.
+ * @param {string} [options.hint] - How to run the command without this prompt.
  * @returns {Promise<*>} Selected value.
  */
-export async function selectPrompt({ message, choices, clearScreen = true, header }) {
+export async function selectPrompt({ message, choices, clearScreen = true, header, hint }) {
+  requireInteractive(message, hint);
   if (clearScreen) {
     logger.clearAndBanner();
   }
@@ -249,6 +283,7 @@ export async function selectPrompt({ message, choices, clearScreen = true, heade
 }
 
 export default {
+  isInteractive,
   selectAssistant,
   selectRelease,
   selectCustomRepo,
