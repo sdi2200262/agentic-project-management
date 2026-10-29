@@ -8,7 +8,7 @@ A Worker records one outcome per Task: Success, Partial or Failed. You decide wh
 
 For each report delivered with `apm-5-check-reports`:
 
-1. If the sender has no row in the Tracker's Workers table, it is an agent outside APM: assess its contribution and what it changes for planning or dispatch, record it in the Tracker's Notes, tell the User, clear its Report Bus, and send any further work per `{GUIDE_PATH:task-assignment}` §6. Then continue with the next report.
+1. If the sender has no row in the Tracker's Workers table, it is an agent outside APM: assess its contribution and what it changes for planning or dispatch. Record it in the Tracker's Notes, preserving consequential evidence, limits and source paths: this agent writes no Task Log. Tell the User, clear its Report Bus, and send any further work per `{GUIDE_PATH:task-assignment}` §6. Then continue with the next report.
 2. If the report's `conversation` is higher than the Worker's number in the Workers table, the Worker had a Handoff. Read its Handoff Logs, `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md`, for each conversation since the one you knew, update the number, and list the Worker's Tasks from earlier Stages under Not Read Since Handoff: its new conversation did not read their logs. Remove a Task from that list once a Task Prompt has given its context as a Cross-Worker dependency.
 3. If the report mentions a recovery, record it in the Workers table's Context without changing the conversation number. Check the report against the Task Log for anything the recovery may have lost, and ask for missing details.
 4. For a batch Task Report, review each executed Task on its own per §2 and §3. Set the Tasks the batch did not start back to Ready or Waiting, and return them to dispatch.
@@ -77,7 +77,7 @@ When every Task in a Stage is Done and no follow-up Task is pending:
 1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes call for it, or any of its Tasks needed a follow-up Task or reported Important Findings. Otherwise you may skip it and say so in the Stage summary.
 2. To verify, rerun key checks, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Fix contained issues yourself, add a Task for work that needs a Worker, or ask the User when the scope is unclear.
 3. Account for every consequential Important Finding: its resolution or acceptance, effects on other work, and source. Preserve unresolved or accepted limitations and unrun checks. Sort the Tracker's Notes: move findings with lasting value to the Index's Notes with sources, put Stage-specific findings and decisions into its summary, and keep notes the next Stage still needs.
-4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
+4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Then remove Tracker notes whose context is preserved there and no longer needed for ongoing work. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
 5. Once required Stage verification is resolved and, with version control, its branches are merged, replace the Stage's rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. Completion records accepted work; the summary preserves accepted Partial outcomes and limits.
 
 Then add the next Stage's Tasks to the Tracker per §8.1 and dispatch them per `{GUIDE_PATH:task-assignment}` §1. When every Stage is complete, continue with `{SKILL_PATH:apm-2-initiate-manager}` §3.
@@ -121,7 +121,7 @@ The Tracker is `.apm/tracker.md`:
 # APM Tracker
 
 ## Notes
-<Pending decisions, blockers and alignment changes: affected work, source, reason and who needs to act>
+<Coordination context: pending decisions, blockers, alignment changes and accepted limits awaiting durable recording; affected work, source, reason and any action needed>
 
 ## Tasks
 <Per §8.1>
@@ -134,7 +134,7 @@ The Tracker is `.apm/tracker.md`:
 | backend-agent | 1 | | Recovered during Task 2.2 |
 ```
 
-Add a Worker's row at its first dispatch. Not Read Since Handoff lists the Worker's Tasks from earlier Stages whose logs its current conversation has not read. Context records recovery and context reliability, without repeating Task states or Stage completion. Keep top-level Notes as self-contained bullets and remove them once stale.
+Add a Worker's row at its first dispatch. Not Read Since Handoff lists the Worker's Tasks from earlier Stages whose logs its current conversation has not read. Context records recoveries and remaining context gaps that affect later Task Prompts; update it as context is rebuilt. Keep top-level Notes as self-contained bullets while ongoing coordination needs them or their findings and decisions await recording in the Stage summary or Index.
 
 ### 8.3 Memory Index Format
 
@@ -144,7 +144,7 @@ The Index is `.apm/memory/index.md`:
 # APM Memory Index
 
 ## Notes
-<Lasting discoveries, accepted constraints and unresolved limitations useful beyond a Stage, with source links>
+<Lasting findings and accepted or unresolved limits: their implications for later work, with source links>
 
 ## Stage Summaries
 
@@ -152,6 +152,8 @@ The Index is `.apm/memory/index.md`:
 |-------|---------|---------|
 | 1 - <Stage Name> | <Accepted result and material limits, in brief> | [Stage 1](stage-01/stage-01.summary.md) |
 ```
+
+Keep Index Notes brief: record what later assignments need to know and link to the supporting records. Requirements stay in the Spec, Plan or Rules; Stage summaries preserve the decisions and evidence.
 
 ### 8.4 Stage Summary Format
 

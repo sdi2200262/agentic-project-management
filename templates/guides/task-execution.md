@@ -46,7 +46,7 @@ When a check fails or the work does not behave as expected, investigate before f
 
 If the fix fails, causes new problems or leaves the cause unclear, investigate further. Use the error output, what you tried, relevant paths and expected and actual behavior to test a specific hypothesis before applying another targeted fix.
 
-Keep going on your own while the cause is clear, the fix stays within the Task and checks are available. Stop and ask the User when the investigation does not resolve the problem, or when the prompt's instructions turn out to be wrong. Lead with the likely cause, or say that it is still unclear, then give what you tried, the current state and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
+Keep going on your own while the cause is clear, the fix stays within the Task and checks are available. Ask the User when the investigation does not resolve the problem, the fix exceeds the Task, or the prompt's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, the current state and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 
 ### 3.2 Batch Execution
 
