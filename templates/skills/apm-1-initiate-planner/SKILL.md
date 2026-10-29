@@ -42,7 +42,7 @@ Before deeper exploration and the question rounds:
 
 ## 3. Planning
 
-1. Read the authoritative documents and follow `{GUIDE_PATH:context-gathering}` until the User approves your understanding summary.
+1. Use the confirmed authoritative documents and follow `{GUIDE_PATH:context-gathering}` until the User approves your understanding summary.
 2. Follow `{GUIDE_PATH:work-breakdown}` to write the Spec, the Plan and the Rules, each approved before the next.
 
 ## 4. Planning Phase Completion

@@ -17,7 +17,7 @@ The Objective and Output are authoritative. When an instruction, prerequisite or
 
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
-3. If the title starts with `APM Follow-Up Task`, this is a follow-up Task: the Manager reviewed your earlier attempt and sent the same Task back with a revised prompt that says what to change. It keeps the same Task ID and `log_path`.
+3. If the title starts with `APM Follow-Up Task`, this is another attempt at the same Task. The revised prompt says what remains and supplies a new `log_path` and links to earlier logs. Keep the Task ID and use that path.
 4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the workspace root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
@@ -46,7 +46,7 @@ When a check fails or the work does not behave as expected, investigate before f
 
 If the fix fails, causes new problems or leaves the cause unclear, investigate further. Use the error output, what you tried, relevant paths and expected and actual behavior to test a specific hypothesis before applying another targeted fix.
 
-Keep going on your own while the cause is clear, the fix stays within the Task and checks are available. Ask the User when the investigation does not resolve the problem, the fix exceeds the Task, or the prompt's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, the current state and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
+Continue while attempts produce new evidence or close a validation gap within the Task. Ask the User when attempts repeat without progress, the remaining work substantially exceeds the assignment, or the prompt's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, what remains and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 
 ### 3.2 Batch Execution
 

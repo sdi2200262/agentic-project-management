@@ -29,7 +29,7 @@ Write the Handoff Log per §5.1. Record in past tense what this conversation did
 
 Write the Handoff Prompt per §5.2 to `.apm/bus/<agent-slug>/handoff.md`. Its Next Action depends on where you stopped:
 
-- In the middle of a Task: the Task Prompt stays in `task.md`. Say what is done and where to resume.
+- In the middle of a Task: the Task Prompt stays in `task.md`. Say what is done and where to resume, keeping its current `log_path` even during a follow-up.
 - In the middle of a batch: the batch Task Prompt stays in `task.md`. Say which Tasks are done and logged, how far the current one got and where to resume.
 - Between Tasks: `task.md` is empty. The next conversation waits for the User to invoke `apm-4-check-tasks`.
 
@@ -70,7 +70,7 @@ handoff_log: <path of the Handoff Log>
 
 # <agent-slug> Handoff Prompt - Conversation <number + 1>
 
-<What to read: the Handoff Log and your Task Logs from the current Stage, by path>
+<What to read: the Handoff Log and latest relevant attempt logs for your Tasks in the current Stage, by path; earlier attempts through links where needed>
 
 ## Current State
 <Checked state: Tasks completed, the pending Task or batch, branches and merges; unresolved contract questions, accepted limitations and verification gaps, with source paths>

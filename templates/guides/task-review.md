@@ -2,7 +2,7 @@
 
 This guide covers Task Review: reading Task Reports and Task Logs, deciding each Task's outcome, changing the planning documents when findings require it, merging, and keeping the Tracker current. It ends each Stage with verification, a Stage summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the dispatch that follows.
 
-A Worker records one outcome per Task: Success, Partial or Failed. You decide whether to mark the Task Done after reviewing that outcome.
+A Worker records one outcome per attempt: Success, Partial or Failed. You decide whether to mark the Task Done after reviewing the result.
 
 ## 1. Report Intake
 
@@ -15,7 +15,7 @@ For each report delivered with `apm-5-check-reports`:
 
 ## 2. Log Review
 
-Read the whole Task Log, then check its `status` and `important_findings` against the body and the deliverables:
+Read the whole Task Log named in the report, following original and previous-attempt links where needed to verify earlier evidence and unresolved findings. Check its `status` and `important_findings` against the body and the deliverables:
 
 - **Success:** the objective is achieved and every validation criterion passed.
 - **Partial:** some work or required validation remains, and guidance is needed to continue.
@@ -23,7 +23,7 @@ Read the whole Task Log, then check its `status` and `important_findings` agains
 
 Check each validation criterion against its evidence, including counts, scope, deviations and unrun paths. A deliberate difference is an unmet criterion; record any accepted exception as a limitation.
 
-If a Success log includes a failed, unrun or weaker check, tell the User and keep the Task Active. Send a follow-up to close or explain the gap. Resolve incorrect requirements or proposed exceptions per §4.
+If a Success log includes a failed, unrun or weaker check, tell the User and keep the Task Active. Resolve the gap per §3; incorrect requirements or proposed exceptions go through §4.
 
 Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or Rules. If the log says the User approved a Rules addition, check the change at its recorded `AGENTS.md` path, using the diff when tracked, and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
 
@@ -31,18 +31,18 @@ Tell the User what the log shows, whether the evidence supports it, the Importan
 
 ## 3. Review Outcomes
 
-1. Accept a Success that the log supports and that has no Important Findings. With version control, commit any successful work the Worker left uncommitted, on its branch and under the Rules' conventions.
-2. Investigate Important Findings and any outcome other than Success. Check contained issues yourself; trace unclear causes against the relevant files and checks. Verify the findings before deciding.
+1. Accept a Success that the log supports and that has no Important Findings.
+2. Investigate Important Findings and any outcome other than Success. Resolve contained questions, checks and corrections within the existing objective yourself; leave substantial implementation to Workers. Record your checks and corrections with evidence in the Tracker's Notes, preserving the Worker's outcome. Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:
    - **Accept:** the work is complete, or the User agrees to accept a Partial outcome; record what remains and the basis for acceptance in the Tracker's Notes. Preserve the Worker's outcome and evidence; acceptance does not turn unmet checks into passing results.
-   - **Follow-up Task:** the Worker needs another attempt. Send one per `{GUIDE_PATH:task-assignment}` §5, noting any uncommitted work.
+   - **Follow-up Task:** concrete work remains for the Worker, with an approach and a clear completion check. Preserve any uncommitted work for that attempt.
    - **Planning change:** a planning document is wrong. Change it per §4.
-4. Some findings need more than a Plan change: a fix needs design decisions the Spec does not cover, a change would rewrite the Spec's Overview or several Stages, or follow-up Tasks keep failing for the same reason. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
-5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
+4. Some findings need broader planning: a fix needs design decisions the Spec does not cover, or a change would rewrite the Spec's Overview or several Stages. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
+5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. With version control, commit accepted uncommitted work on the Task's branch under the Rules' conventions. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
 6. Record how each consequential finding was resolved, accepted, deferred or left pending, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
-7. Once the decision is made, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`. Update the Tracker per §8.1 and §8.2, in one edit with the merge and dispatch changes that follow.
+7. Once the decision is recorded, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`, then send any follow-up per `{GUIDE_PATH:task-assignment}` §5. Update the Tracker per §8.1 and §8.2, in one edit with the merge and dispatch changes that follow.
 
-Make small follow-ups and corrections on your own and tell the User. Pause for approval when a change exceeds the limits in §4.
+Tell the User about contained corrections. Pause for approval when a change exceeds the limits in §4.
 
 ## 4. Planning Document Changes
 
@@ -51,7 +51,7 @@ When a finding, correction or decision changes the Spec, Plan or Rules, update t
 You may correct one Task, add a dependency or an isolated Spec point, or adjust a Rule. Changes to several Tasks, design direction, scope, Stages or overall structure need the User's approval. Consider their combined effect when several small changes are involved.
 
 1. Identify the change, its evidence and any approval needed.
-2. Check the affected documents and dependent or active Tasks. Keep design decisions in the Spec, Task structure and guidance in the Plan, and shared Worker execution conventions inside `APM_RULES`. Use the existing format for new Tasks and update affected dependencies. Keep Notes consistent with their document's purpose and replace stale content.
+2. Check the affected documents and dependent or active Tasks. Update the requirement where it belongs in the Spec, the affected Task fields and dependencies in the Plan, or shared Worker execution conventions inside `APM_RULES`. Use the existing format for new Tasks. Keep Notes consistent with their document's purpose and replace stale content.
 3. Apply authorized changes together. If approval is needed, record the pending decision in the Tracker, ask the User to pause affected work and present the proposal. Wait for approval; unrelated work can continue.
 4. Update Task next actions and record the change and reason in the Tracker. Deliver corrections to active work per `{GUIDE_PATH:task-assignment}` §5.1; reported attempts use a follow-up Task. Preserve consequential decisions in the Stage summary.
 
@@ -75,10 +75,10 @@ Reports arrive in any order. Review each as it comes, without waiting for unrela
 When every Task in a Stage is Done and no follow-up Task is pending:
 
 1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes call for it, or any of its Tasks needed a follow-up Task or reported Important Findings. Otherwise you may skip it and say so in the Stage summary.
-2. To verify, rerun key checks, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Fix contained issues yourself, add a Task for work that needs a Worker, or ask the User when the scope is unclear.
+2. To verify, use relevant checks on the Stage's combined result, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Keep reference inputs separate from generated results and preserve usable evidence paths through cleanup. Resolve contained verification questions yourself. Add a new Task for fixes to Done work, or ask the User when the required scope is unclear.
 3. Account for every consequential Important Finding: its resolution or acceptance, effects on other work, and source. Preserve unresolved or accepted limitations and unrun checks. Sort the Tracker's Notes: move findings with lasting value to the Index's Notes with sources, put Stage-specific findings and decisions into its summary, and keep notes the next Stage still needs.
 4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Then remove Tracker notes whose context is preserved there and no longer needed for ongoing work. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
-5. Once required Stage verification is resolved and, with version control, its branches are merged, replace the Stage's rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. Completion records accepted work; the summary preserves accepted Partial outcomes and limits.
+5. Once all Tasks are Done, required Stage verification is resolved and, with version control, its branches are merged, replace the Stage's rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. Completion records accepted work; the summary preserves accepted Partial outcomes and limits.
 
 Then add the next Stage's Tasks to the Tracker per §8.1 and dispatch them per `{GUIDE_PATH:task-assignment}` §1. When every Stage is complete, continue with `{SKILL_PATH:apm-2-initiate-manager}` §3.
 
@@ -95,9 +95,9 @@ The Tracker's `## Tasks` section holds each Stage's Task states:
 
 | Task | Agent | Status | Branch | Worktree | Next Action |
 |------|-------|--------|--------|----------|-------------|
-| 2.1 | frontend-agent | Done | | | |
-| 2.2 | backend-agent | Active | feat/backend-models | .apm/worktrees/feat-backend-models | Review report |
-| 2.3 | frontend-agent | Done | feat/frontend-auth | | Merge branch |
+| [2.1](memory/stage-02/task-02-01.log.md) | frontend-agent | Done | | | |
+| [2.2](memory/stage-02/task-02-02.followup-01.log.md) | backend-agent | Active | feat/backend-models | .apm/worktrees/feat-backend-models | Review report |
+| [2.3](memory/stage-02/task-02-03.log.md) | frontend-agent | Done | feat/frontend-auth | | Merge branch |
 | 2.4 | backend-agent | Waiting: 2.2 | | | Await dependency |
 | 2.5 | frontend-agent | Ready | | | Dispatch when Worker is free |
 ```
@@ -108,6 +108,8 @@ Status values:
 - `Ready`: all dependencies are Done.
 - `Active`: dispatched, under review or awaiting a follow-up Task.
 - `Done`: final decision made. A Branch value means the branch still awaits merging.
+
+Link each Task ID to the latest reported attempt's `log_path`; use a plain ID before its first report. A pending follow-up's destination stays in its Task Prompt until reported.
 
 Next Action names what happens next and who must act when that is unclear: execute, await a report, review, resolve a decision, follow up or merge. Leave it empty when nothing remains. Keep the explanation of a broader blocker or decision in Notes rather than duplicating it here.
 
@@ -153,7 +155,7 @@ The Index is `.apm/memory/index.md`:
 | 1 - <Stage Name> | <Accepted result and material limits, in brief> | [Stage 1](stage-01/stage-01.summary.md) |
 ```
 
-Keep Index Notes brief: record what later assignments need to know and link to the supporting records. Requirements stay in the Spec, Plan or Rules; Stage summaries preserve the decisions and evidence.
+Keep Index Notes brief: record what later assignments need to know and link to the specific attempt or summary that supports the finding. Requirements stay in the Spec, Plan or Rules; Stage summaries preserve the decisions and evidence.
 
 ### 8.4 Stage Summary Format
 
@@ -163,7 +165,7 @@ Each Stage summary is `.apm/memory/stage-<NN>/stage-<NN>.summary.md`, beside its
 # Stage <N> - <Stage Name>
 
 ## Outcome
-<Accepted work and Workers involved, useful commits, accepted Partial outcomes and what remains>
+<Final review decision for each Task and Workers involved, useful commits, accepted Partial outcomes and what remains>
 
 ## Findings and Decisions
 <Consequential discoveries, their resolution or acceptance, reasons, and changes to the Spec, Plan or Rules, with source links>
@@ -173,7 +175,7 @@ Each Stage summary is `.apm/memory/stage-<NN>/stage-<NN>.summary.md`, beside its
 
 ## Task Logs
 
-- [Task <N>.<M>](task-<NN>-<MM>.log.md)
+- Task <N>.<M>: [Original](task-<NN>-<MM>.log.md), [Follow-up 1](task-<NN>-<MM>.followup-01.log.md)
 ```
 
-Select findings that affect future work, acceptance, compatibility, reproduction or unresolved risk. Keep implementation detail in Task Logs. The Index gives lasting context and navigation; each Stage summary preserves its decisions and evidence without repeating the full logs.
+Group each Task's original and follow-up logs together, identifying the final reviewed attempt. Select findings that affect future work, acceptance, compatibility, reproduction or unresolved risk. Keep implementation detail in Task Logs. The Index gives lasting context and navigation; each Stage summary preserves its decisions and evidence without repeating the full logs.

@@ -27,7 +27,7 @@ Write the Handoff Log per §5.1. Record in past tense what this conversation did
 
 ## 3. Handoff Prompt
 
-Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the Task Logs the next conversation needs: those from the current Stage, and any earlier ones that pending reviews or upcoming dependencies rely on. In Current State, list the reports awaiting review, the Workers with dispatched Tasks, and branches, worktrees and merges still pending. Include pending alignment decisions, accepted limitations and verification gaps with source paths.
+Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the latest relevant attempt logs for Tasks in the current Stage and earlier Tasks that pending reviews or upcoming dependencies rely on. Earlier attempts can be followed through links where needed. In Current State, list the reports awaiting review, the Workers with dispatched Tasks, and branches, worktrees and merges still pending. Include pending alignment decisions, accepted limitations and verification gaps with source paths.
 
 ## 4. User Review
 

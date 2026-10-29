@@ -21,12 +21,12 @@ Before writing a prompt, resolve conflicting objectives, instructions and valida
 
 Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's Task entry:
 
-1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Copy in the exact Spec decisions, constraints and authoritative User-document content the Task needs, as direct content. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker or Memory. Workers read the Rules directly.
+1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker, Index or other Workers' logs. Workers read the Rules directly.
 2. For code, name the path and what to do with it, such as "Read `src/api/routes.py` and use its error response schema."
 3. Keep the instructions on the Task. Leave out Stage structure, other Task IDs and coordination concepts, except a producer Task's ID where it identifies dependency context.
 4. If the Plan lists dependencies, write Context from Dependencies:
    - **Same-Worker dependency:** the Worker remembers its own work. Name the earlier Task, its key outputs and paths, and how to build on them, with more detail for complex work.
-   - **Cross-Worker dependency:** the Worker has not seen this work. Read the producer's Task Log, then give numbered reading steps, the producer's outputs, interfaces and constraints, and how to integrate them, however simple the work seems.
+   - **Cross-Worker dependency:** the Worker has not seen this work. Read the producer's latest accepted attempt log, following earlier-attempt links where needed, then give numbered reading steps, the producer's outputs, interfaces and constraints, and how to integrate them, however simple the work seems.
    - Tasks listed under Not Read Since Handoff in the Tracker's Workers table count as Cross-Worker. A Worker that recovered after compaction may need more detail; the table's Context says so.
    - Trace upstream when earlier Tasks set patterns or contracts this Task relies on. Stop where an intermediate output fully captures them.
 5. Add execution, validation or logging guidance only when it is specific to this Task. The Worker's guides already cover the general rules.
@@ -59,8 +59,8 @@ If the User enables version control later, agree Git setup and record it in the 
 
 A follow-up Task sends a Task back to the same Worker after review, with a revised Task Prompt. It keeps its Task ID and stays Active.
 
-1. Rewrite the prompt per §7.3. Explain what went wrong and what review or investigation found, and revise the Objective, Instructions, Output and Validation so the Worker can close the gap from its own context.
-2. Keep the original `log_path`; the new Task Log replaces the old one. Tell the Worker to retain consequential earlier findings and explain their resolution.
+1. Write the revised prompt per §7.3. Describe what remains, what review established and how completion will be checked. Use the Worker's established context and include the detail it still needs, restoring context lost through Handoff or recovery.
+2. Choose the next unused follow-up number for this Task, starting at 01, and set its new `log_path` per `{GUIDE_PATH:task-logging}` §5.1. This applies per Task even after a batch. In Follow-Up Context, link the original log and previous follow-up, if any. Earlier logs stay unchanged.
 3. Deliver it per §4.
 
 ### 5.1 Active Task Corrections
@@ -139,13 +139,13 @@ Each Task in the body has the sections of §7.1, without its own frontmatter.
 
 ### 7.3 Follow-Up Task Prompt Format
 
-A follow-up Task Prompt has the frontmatter and sections of §7.1, with the same `log_path`, and two changes:
+A follow-up Task Prompt has the frontmatter and sections of §7.1, with its new `log_path` per §5, and two changes:
 
 ```markdown
 # APM Follow-Up Task: <Task Title>
 
 ## Follow-Up Context
-<What went wrong, what review or investigation found, and what must change>
+<Links to the original log and previous follow-up if any; what review established, what remains and how completion will be checked>
 
 ## Objective
 ...

@@ -1,6 +1,6 @@
 # APM {VERSION} - Task Logging Guide
 
-This guide covers what you record when a Task ends: the Task Log, the full record of the work, and the Task Report, a short message that tells the Manager the Task has ended and where its log is. The Manager reviews your work from the log and decides what happens next. Later conversations, including your own after a Handoff, continue from it.
+This guide covers what you record when an attempt ends: the Task Log, the record of the work, and the Task Report, a short message that gives the Manager its outcome and log path. The Manager reviews the result and decides what happens next. Later conversations, including your own after a Handoff, continue from these records.
 
 ## 1. Outcome
 
@@ -9,6 +9,8 @@ Choose the Task's status:
 - **Success:** the objective is achieved and every validation criterion passed.
 - **Partial:** some work or required validation remains, and guidance is needed to continue.
 - **Failed:** the objective was not achieved despite attempts to fix the problem.
+
+The outcome assesses the whole Task, including earlier evidence and any unresolved criteria.
 
 A Partial outcome can mean a check was unclear or unavailable, a failure keeps recurring, or the remaining problem is outside the Task.
 
@@ -34,7 +36,7 @@ Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense
 - Describe the result and its evidence.
 - Point to deliverables by path. Include code or diagnostic output only when it explains a consequential finding.
 - Keep the checks you ran apart from claims you did not verify. Preserve comparison counts and distinguish checks run live, run in isolation and not run. For example, 45 of 47 matching responses plus 13 matching probes is not full parity.
-- A follow-up log replaces the earlier attempt. Retain consequential earlier findings and explain their resolution, including any limits that remain.
+- For a follow-up, leave earlier logs unchanged. Link the original log and previous follow-up, if any. Record the new work and checks, which earlier findings were resolved and which remain. Refer to earlier evidence that still applies rather than repeating it.
 - If your context was compacted or recovered during the Task, say in the Summary which parts you rebuilt from files.
 
 ## 4. Reporting
@@ -50,7 +52,7 @@ After the Task, or the whole batch, has ended:
 
 ### 5.1 Task Log Format
 
-The Task Log is written at `log_path`, `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`. A follow-up Task's log replaces the earlier one.
+Write at the prompt's `log_path`. The original log is `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`; follow-ups use `task-<NN>-<MM>.followup-<FF>.log.md` in the same folder. The Manager assigns `<FF>`, numbered 01, 02 and onward for each Task, independently of conversation numbers.
 
 ```markdown
 ---
@@ -63,6 +65,8 @@ important_findings: true | false
 ---
 
 # Task <N>.<M> - <Title>
+
+<For a follow-up: links to the original log and previous follow-up, if any>
 
 ## Summary
 <The outcome against the Objective, how you reached it when that matters, and any part of the log you could not verify>

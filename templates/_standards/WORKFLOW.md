@@ -52,7 +52,7 @@ When `.apm/` is inside a repository, ignore it by default and ask whether the Us
 
 ### 3.5 Planning Changes
 
-The Manager keeps the Spec, Plan, Rules and affected Task instructions aligned when findings or decisions change them. Correct the affected content before that work continues; record pending decisions and preserve consequential decisions in Memory.
+The Manager keeps the Spec, Plan, Rules and affected Task instructions aligned when findings or decisions change them. Update the affected requirements and Task fields before preparing further work; record pending decisions in the Tracker and consequential decisions with their reasons in Memory.
 
 Contained corrections to a Task, dependency, Spec point or Rule may proceed without approval. Changes to several Tasks, design direction, scope, Stages or overall structure need the User. Several small changes together can also need approval. If the change needs new design decisions or repeated follow-ups cannot resolve it, present options for continuing or stopping to replan; the User decides.
 
@@ -64,7 +64,7 @@ Corrections to unreported active work preserve the current dispatch and progress
 
 Shared communication covers writing to the User, writing self-contained messages for other agents and using the bus. Role-specific questioning and delegation guidance live in role files.
 
-The Planner creates `.apm/bus/<worker>/` with `task.md`, `report.md` and `handoff.md` for each Worker, and `.apm/bus/manager/` with `handoff.md`. Each file is empty or holds one pending message. Read before writing and clear processed messages before sending replies.
+The Planner creates `.apm/bus/<worker>/` with `task.md`, `report.md` and `handoff.md` for each Worker, and `.apm/bus/manager/` with `handoff.md`. Each file is empty or holds one temporary message. Read before writing, verify outgoing content and clear processed messages before sending replies. A populated Task Bus does not establish whether execution has started; repeated delivery instructions are conditional when delivery is unconfirmed.
 
 | Message | Sender → receiver | User delivery |
 |---|---|---|
@@ -76,7 +76,7 @@ Workers are identified by their bus-folder slugs. Skills resolve supplied IDs to
 
 ## 5. State and Memory
 
-The Tracker is the Manager's live record of Task states, next actions, branches, worktrees and Worker context. Memory preserves Task Logs, Stage summaries, Handoff Logs and lasting findings. The Index links to Stage summaries. Runtime formats define their fields and organization.
+The Tracker is the Manager's live record of Task states, next actions, branches, worktrees and Worker context. Each Task links to its latest reported log. Memory preserves original and follow-up Task Logs, Stage summaries, Handoff Logs and lasting findings. The Index links to Stage summaries and the specific evidence behind lasting findings. Runtime formats define their fields and organization.
 
 A Worker reports Success, Partial or Failed; the Manager decides whether the Task becomes Done. Tasks stay Active during investigation, follow-up or pending decisions. Done is final: later fixes need new Tasks referring to the original work.
 
@@ -124,29 +124,29 @@ Each Worker takes one dispatch at a time. Review incoming reports and dispatch n
 
 Task Prompts include the relevant Spec decisions, constraints, prerequisite versions and validation directly, along with Tracker context, lasting Index findings and corrections from earlier Tasks. Same-Worker dependencies name outputs and paths; Cross-Worker dependencies also include reading and integration instructions from the producer's log. Trace upstream until an intermediate output captures the needed contracts. Give recovered Workers fuller context where needed.
 
-Prompts name the working directory, branch/worktree and workspace root for `.apm/` paths. Follow-ups retain Task identity and log path, refining the work from review findings. Active corrections preserve valid progress and the existing workspace.
+Prompts name the working directory, branch/worktree and workspace root for `.apm/` paths. Include each needed contract once. Follow-ups retain Task identity but receive a new numbered log path from the Manager, per Task. They focus on remaining work and use the Worker's established context, restoring detail where it is missing. Active corrections preserve the current attempt's log path, valid progress and workspace.
 
 ### 7.2 Execution and Logging
 
 **Runtime:** `apm-3-initiate-worker`, `task-execution.md` and `task-logging.md`.
 
-The Worker confirms its identity, handles any Handoff and starts its waiting prompt. It integrates dependencies, follows instructions, validates the work and investigates failures before making targeted fixes. Missing dependencies, unresolved instruction conflicts and problems beyond the Task need guidance.
+The Worker confirms its identity, handles any Handoff and starts its waiting prompt. It integrates dependencies, follows instructions, validates the work and investigates failures before making targeted fixes. Missing dependencies, unresolved instruction conflicts, repeated attempts without progress and work that substantially exceeds the assignment need guidance.
 
 Success requires the objective and every validation criterion to pass. A deliberate deviation or unrun check is not a pass. In a batch, validate and log each Task before the next; stop at the first Failed outcome and report unstarted Tasks.
 
 Apply User corrections immediately. At completion, ask whether corrections to shared execution practices should become Rules. Update the existing workspace Rules, using the assigned branch or worktree copy when tracked in the Task's repository. Commit those tracked additions with the Task; record every approved addition and its path in Important Findings.
 
-The Worker commits, writes the Task Log, clears its Task Bus and writes a Task Report. Reports surface consequential deviations and decisions; logs hold the detail. Follow-up logs replace earlier attempts while retaining consequential findings and their resolution. The Worker tells the User how to deliver the report, then waits.
+The Worker commits, writes the Task Log, clears its Task Bus and writes a Task Report pointing to that attempt's log. Follow-up logs leave earlier attempts unchanged, link to the original and previous follow-up, and record new work, validation and the resolution of earlier findings. Outcomes still assess the whole Task, including unresolved earlier criteria. The Worker tells the User how to deliver the report, then waits.
 
 ### 7.3 Review
 
 **Runtime:** `task-review.md` and `apm-5-check-reports`.
 
-The Manager reviews each reported Task against its log and deliverables, including individual Tasks in a batch. Investigate Important Findings, unmet criteria and contradictory Success claims before accepting work. Resolve incorrect requirements or proposed exceptions through §3.5. The User may accept a Partial outcome; preserve the evidence and remaining limits.
+The Manager reviews each reported Task against its log and deliverables, including individual Tasks in a batch. Investigate Important Findings, unmet criteria and contradictory Success claims before accepting work. Resolve contained questions, checks and corrections within the existing objective during review, recording the evidence separately from the Worker's outcome. Compare follow-ups with earlier attempts; another dispatch needs concrete remaining work and a supported approach. Revisit the approach or requirement when attempts stall or remaining work substantially expands. Resolve incorrect requirements or proposed exceptions through §3.5. The User may accept a Partial outcome; preserve the evidence and remaining limits.
 
 Review results lead to acceptance, a follow-up or a planning change. Keep pending work Active, record the decision and update the Tracker. Merge accepted branches before dependent work and before the next Stage; clean up merged worktrees and branches.
 
-Verify the Stage when the User requested it, the Plan calls for it, or any Task needed a follow-up or reported Important Findings. Otherwise record why verification was skipped. Resolve issues, write the Stage summary, link it in the Index and retain the context needed for later work.
+Verify the Stage when the User requested it, the Plan calls for it, or any Task needed a follow-up or reported Important Findings. Otherwise record why verification was skipped. Use relevant checks on the Stage's combined result, keep reference inputs separate from generated results, and preserve usable evidence paths through cleanup. Fixes to Done work need new Tasks. Resolve issues, write the Stage summary, link it in the Index and retain the context needed for later work.
 
 ## 8. Continuity and Closure
 
@@ -156,13 +156,13 @@ Verify the Stage when the User requested it, the Plan calls for it, or any Task 
 
 At the User's request, the outgoing role checks current files and Git, writes a Handoff Log and Prompt, and obtains User approval before ending. The Prompt identifies the next conversation, source reading, current state and next action, including pending decisions and validation gaps.
 
-The incoming Manager reads coordination records and needed Task Logs. The incoming Worker reads its Handoff Log and own current-Stage Task Logs. It resumes pending work or waits for the next delivery. The Handoff Bus is cleared after loading.
+The incoming Manager reads coordination records and needed Task Logs. The incoming Worker reads its Handoff Log and latest relevant own Task Logs from the current Stage. Earlier attempts are read through links where needed. It resumes pending work using the current prompt's log path or waits for the next delivery. The Handoff Bus is cleared after loading.
 
 ### 8.2 Recovery
 
 **Runtime:** `apm-9-recover`.
 
-Recovery rereads the role's initiation files and rebuilds current state from files, bus and code without changing conversation number. Preserve pending decisions and validation limits, ask about unresolved gaps and record what was recovered.
+Recovery rereads the role's initiation files and rebuilds current state from files, bus and code without changing conversation number. Workers start from their current prompt, latest relevant own Task Logs and Handoff Log, following earlier-attempt links where needed. Preserve pending decisions and validation limits, ask about unresolved gaps and record what was recovered.
 
 ### 8.3 Summary and Archive
 

@@ -10,13 +10,13 @@ Follow this skill only when the User manually invokes it, asks you to follow it,
 
 This skill writes a session summary, a dated snapshot of an APM session for the User and for later sessions, and then offers to archive the session. Use it in a new chat, or as the Manager when the work is complete or the User stops early. If you are the Planner or a Worker, tell the User and stop.
 
-Read `{SKILL_PATH:apm-communication}`.
+Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 
 ## 1. Summary and Archive
 
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md`.
 2. Check the recorded Worker state. Use the Manager's or User's confirmation that active Workers have stopped writing; if that is still unclear, ask the User to pause them and collect their current state before continuing.
-3. Compare the Spec, Plan, Tracker and Stage summaries with Task Logs, relevant Handoff Logs, deliverables and Git state, including unfinished worktrees. Record material differences and validation gaps with source paths. Review the active session only; ignore copied APM records in worktrees.
+3. Compare the Spec, Plan, Tracker and Stage summaries with latest relevant Task Logs, following earlier-attempt links where needed, relevant Handoff Logs, deliverables and Git state, including unfinished worktrees. Record material differences and validation gaps with source paths. Count Tasks by ID, not attempt files. Review the active session only; ignore copied APM records in worktrees.
 4. Write `.apm/session.summary.md` per §2.1. Say which work you remember from this chat and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
 5. Present the summary and apply the User's corrections.
 6. Ask whether to archive the session. Archiving copies the session's `.apm/` files into `.apm/archives/` so a later session can use them as context, and clears the active files, including the installed APM skills and guides, so a new session can start; `apm init` reinstalls them. It is optional; if the User declines, stop here.

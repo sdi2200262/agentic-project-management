@@ -105,7 +105,7 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 
 | Term | Definition | Location |
 |---|---|---|
-| **Task Log** | The Worker's record of one Task: outcome, validation, deliverables and findings. | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` |
+| **Task Log** | The Worker's record of one attempt at a Task: outcome, validation, deliverables and findings. Follow-ups have separate numbered logs linked to earlier attempts. | `.apm/memory/stage-<NN>/`; filenames in Task Logging §5.1 |
 | **Handoff Log** | The record a Manager or Worker conversation writes at its Handoff: what it did and the working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md` |
 | **Index** | The overview of the APM session's history: lasting findings with sources and a table of Stage outcomes linking to their summaries. | `.apm/memory/index.md` |
 | **Memory** | The APM session's work history and continuation context: Task outcomes, lasting findings, Stage summaries and Handoff Logs. | `.apm/memory/` |
