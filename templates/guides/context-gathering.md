@@ -16,7 +16,7 @@ Present what you found with the first round's questions, keeping to what the Use
 
 Hold the three rounds in order, each with at least one exchange with the User. Use the User's and the domain's own language in questions, summaries and subagent prompts. Propose tentative Stages, Tasks and Workers when the work is clear enough, giving the reasons and trade-offs. Revise the breakdown as you learn more; keep document writing for after understanding approval.
 
-Ask coordination questions through a proposal the User can assess, such as "I propose three Tasks across two Workers, with the first two running in parallel. Would you prefer fewer, broader Tasks or smaller review points?" Ask when the choice matters; do not require the User to invent a Task count.
+When a coordination choice matters, propose a work breakdown and explain its trade-offs so the User can assess it. Do not require the User to invent a Task count.
 
 In each round:
 

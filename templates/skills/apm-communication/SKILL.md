@@ -26,7 +26,7 @@ Put longer detail in the relevant APM file and point to it. Before sending a lon
 - **APM terms.** Explain an APM term, such as Task, Stage, Worker or Handoff, in a few words the first time the User meets it.
 - **Reasons.** Explain decisions through their effect on the work: its risks, dependencies and later needs. Refer to APM guides when explaining the workflow itself.
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. At each required approval, stop for the User's decision, apply corrections and ask again.
-- **User actions.** When the User has to act, say exactly what to do and where: the skill to invoke, the chat to invoke it in and any argument, such as "invoke `apm-5-check-reports frontend-agent` in the Manager's chat". Name skills without a command prefix, because assistants invoke skills differently. Say when the User needs a new chat. When repeating delivery instructions without confirmation, say "if you haven't already"; a populated Task Bus does not establish whether execution has started.
+- **User actions.** When the User has to act, say exactly what to do and where: the skill to invoke, the chat to invoke it in and any argument, for example, `apm-5-check-reports frontend-agent` in the Manager's chat. Name skills without a command prefix, because assistants invoke skills differently. Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A populated Task Bus does not establish whether execution has started.
 
 ## 2. Writing for Other Agents
 

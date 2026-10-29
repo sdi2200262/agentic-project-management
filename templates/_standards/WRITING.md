@@ -24,7 +24,7 @@ State the trigger, required inputs, action and completion condition. Use numbere
 
 Write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. For approval gates, state what needs approval, when to wait and how to handle corrections.
 
-Keep ordinary transitions in sequence; use section references for other branches. Include examples only when they resolve ambiguity. Preserve role boundaries, approvals and artifact contracts.
+Keep ordinary transitions in sequence; use section references for other branches. Describe what agents should communicate rather than prescribing exact replies. Include examples only when they resolve ambiguity, and present them as illustrations. Preserve role boundaries, approvals and artifact contracts.
 
 ## 5. Request Useful Output
 
