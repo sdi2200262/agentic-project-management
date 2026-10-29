@@ -1,85 +1,32 @@
 # Changelog
-All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and both release tracks follow [Semantic Versioning (SemVer)](https://semver.org/spec/v2.0.0.html).
-
-> **Note:** APM ships two release tracks that version independently but share the major version: the **CLI** (`agentic-pm` on npm) and the **Templates** (GitHub Releases). Each heading names the track and version it covers - `CLI vX.Y.Z`, `Templates vX.Y.Z`, or both joined with `+` when they shipped together - and headings are ordered by date, newest first. See [VERSIONING.md](VERSIONING.md) for details.
-
----
+APM versions its CLI (npm) and templates (GitHub Releases) separately using [Semantic Versioning](https://semver.org/). Entries follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). See [VERSIONING.md](VERSIONING.md) for release rules.
 
 ## CLI v1.0.3 + Templates v1.1.0 - Unreleased
 
-Both installation targets install the same skills and guides, each in its own folder. Run `apm update` to move an existing install to the new layout; it removes the old files and installs the new ones.
-
 ### Breaking Changes
 
-* **Two installation targets.** Choose `agents` for agents that discover `.agents/skills/` and read `AGENTS.md`, or `claude` for Claude Code. Install both with `apm init -a agents claude`. APM no longer needs a separate bundle for each agent using the shared layout. `apm update` consolidates existing Codex, Cursor, Copilot, Antigravity and OpenCode installations into `agents`, preserving `claude` and cleaning up tracked old files. New installs and `add`/`remove` use the new IDs.
-
-* **CLI v1.0.3 or later is required.** CLI v1.0.2 refuses Templates v1.1.0 with `v1.1.0 requires agentic-pm 1.0.3 or later. Update with: npm update -g agentic-pm` and changes nothing. CLI v1.0.1 and older don't check the required version, and they delete shared files when you remove an assistant, so update the CLI before you install. Check with `apm --version`.
-* **Commands are skills for every assistant.** Claude Code, Cursor and OpenCode join Codex, Copilot and Antigravity, which already used skills. Claude Code commands install to `.claude/skills/` instead of `.claude/commands/`, and Cursor's to `.agents/skills/` instead of `.cursor/commands/`; you still run both as `/apm-…`. OpenCode's install to `.agents/skills/` instead of `.opencode/commands/`, and you run them as `@apm-…` instead of `/apm-…`.
-* **Shared folder for Codex, Cursor, Copilot and OpenCode.** Commands, guides and skills install to `.agents/skills/` and `.agents/apm-guides/`, as Antigravity's already did. They previously lived in each assistant's own folder: `.codex/apm-guides/`, `.cursor/`, `.github/` and `.opencode/`.
-
-### Added
-
-* **Preserve unfinished work when closing a session.** The Manager asks the User to pause active Workers and records their current state. Summaries include unfinished worktree outputs. Archival moves remaining worktrees with Git, preserving their uncommitted contents and registrations, and reports their new paths. These worktrees remain attached to their source repositories.
-* **Archive deletion describes what is removed.** The confirmation names the archives and warns about worktrees that may not be merged, including uncommitted work when present. `-f` skips confirmation. Worktrees are removed through Git before their archive files; failures stop deletion and warn that cleanup may be partial.
-
-* **An APM session can cover part of a larger goal.** When your goal is too large for one session, the Planner agrees with you during Context Gathering how far this session goes and keeps the rest as notes for later sessions. When the Manager meets a blocker that needs new design decisions, it proposes options, such as pausing to summarize, archive and plan again, instead of replanning on its own.
-* **Summarize and archive from the Manager.** When the work is complete or you stop early, the Manager offers two ways to summarize the session and, optionally, archive it: in its own chat, or in a new chat with `apm-8-summarize-session`. Summaries say which parts the writer remembers doing and which come from files such as Task Logs and Handoff Logs.
+* **CLI v1.0.3 required.** Run `npm update -g agentic-pm`, then `apm update` to upgrade an existing installation.
+* **Two installation targets.** Choose `agents` for assistants that use `AGENTS.md` and `.agents/skills/`, or `claude` for Claude Code. Skills and guides install under `.agents/` or `.claude/`. Updating converts previous non-Claude targets to `agents`; Claude Code keeps `claude`.
+* **Commands install as skills.** Claude Code commands move from `.claude/commands/` to `.claude/skills/`.
+* **Shared Rules location.** All assistants use workspace-root `AGENTS.md`. For Claude Code, the Planner adds an import to an existing `CLAUDE.md`.
 
 ### Changed
 
-* **One layout for every assistant.** Each target installs its skills and guides into its own folder: Claude Code into `.claude/skills/` and `.claude/apm-guides/`, the `agents` target into `.agents/skills/` and `.agents/apm-guides/`. Skills and guides name their exact paths for each target.
-* **Rules in `AGENTS.md` for every assistant.** The Planner writes the Rules to `AGENTS.md`, so Claude Code and other assistants share one Rules file in mixed installs. For Claude Code, it adds an import to an existing workspace `CLAUDE.md`, preserving its content.
-* **Simpler APM files.** The Spec, Plan, Tracker and Memory Index have no frontmatter, and an APM session no longer assumes it covers a whole project. The Plan names Workers by agent slug, marks each dependency Same-Worker or Cross-Worker and drops the dependency graph. The Spec, Plan, Tracker and Index each have a Notes section. The Tracker's Version Control table is gone: branches and worktrees sit in each Task row, conventions in the Rules and base branches in the Spec. Each Stage summary is its own file in its Stage folder, listed in the Index.
-* **Simpler Task Prompts, logs and reports.** Task Prompts use the sections Objective, Instructions, Context from Dependencies, Workspace, Output and Validation. Task Logs have Summary, Output, Validation and Important Findings, with one `important_findings` flag that is always set for Partial and Failed outcomes. Every Task Log and Task Report carries the Worker's conversation number, which tells the Manager when a Handoff happened. Batches need no `batch` field or counts.
-* **Optional native subagents.** The `apm-archive-explorer` agent is gone. Every role may delegate focused research, investigation or verification to native subagents within its scope, and verifies their findings. `apm update` removes the old agent file.
-* **Plain-English instructions.** Commands, guides and skills describe each action in plain English, such as "use a subagent to research…" or "run this command in a new chat", and each assistant carries it out with its own tools. They no longer carry per-assistant syntax.
-* **Commands run only when you invoke them.** Each command's description says to use it only when you invoke it manually, and each command tells an agent to continue only if you invoked it, asked it to follow it, or another APM step sent it there. Every command skill also sets `disable-model-invocation: true`. Codex doesn't read that setting, so its model can still see the commands.
-* **Shorter agent replies.** Agents keep chat replies short by default and present proposals, evidence and trade-offs instead of writing out their reasoning step by step. Logs, prompts and reports keep their full structure.
-* **Shorter instructions.** Skills and guides are about half as long, with the same roles, steps and approval points. Each guide lists its steps in the order the agent acts and states each rule once. Skill titles no longer say "Command", and you invoke skills by name, such as `apm-5-check-reports` in the Manager's chat.
-* **Numbered conversations.** Each Manager and Worker conversation has a number. A Handoff moves a role from one conversation to the next and writes a Handoff Log for that conversation; recovery after compaction keeps the same conversation.
-* **The CLI names the next step.** After `apm init`, `apm archive` and `apm update`, the CLI tells you to invoke `apm-1-initiate-planner` in a new chat. The help text and README now say that `apm update` archives the current session before installing the new release.
-* **Faster Context Gathering.** All three rounds remain. The Planner can present what it already knows as statements for you to confirm or correct, and asks questions only about what is missing.
-* **Work structure develops during discovery.** The Planner loads both planning guides at initiation and proposes tentative Stages, Tasks and Workers during questioning. Document writing still follows understanding approval.
-* **Version control is agreed during planning.** The Planner surveys Git state, agrees base branches, conventions and APM file tracking with the User, and records them in the Spec and Rules. The Manager presents its understanding and dispatches under those agreements.
-* **Planning stays aligned during execution.** The Manager corrects affected Spec, Plan, Rules and Task instructions together. Corrections to paused active work preserve Task identity, workspace and valid batch progress. The Tracker records next actions and pending decisions.
-* **Evidence survives review and summaries.** Acceptance remains separate from validation success. Task Logs, Stage summaries, the Index and the session summary preserve consequential findings, validation counts and scope, accepted limitations and unrun checks. The session summary is now `session.summary.md`.
-* **Prompts need a terminal.** `apm remove` and other commands that ask for confirmation stop with an error when no terminal is attached, instead of doing nothing.
-* **`apm status` names missing files.** It lists each missing file by name.
-* **Consistent assistant names.** Every command shows assistants as name and id, such as "Claude Code (claude)".
-* **Failed commands exit with an error status.** Any command that prints an error, such as for an unknown `-a` id, now exits with status 1.
-* **Smaller release manifest.** `apm-release.json` no longer lists a description for each assistant. It keeps each assistant's folder (`configDir`) in v1.1.x only, so CLI v1.0.2 can read the manifest and tell you to update; the next minor release drops it. CLI v1.0.3 accepts manifests with or without these fields.
-* **The CLI checks the required version first.** CLI v1.0.3 reads `minCliVersion` before it validates the rest of the manifest, so a release made for a newer CLI asks you to update instead of reporting an invalid manifest. A `minCliVersion` that isn't a version such as `1.0.3` is reported as invalid instead of being ignored.
-* **No overwrite warning on remove.** Assistants that share `.agents/` now install identical files, so `apm remove` no longer warns that one assistant overwrote another's files.
-* **Rate-limit errors explained.** When GitHub's API limit runs out, the error says so and suggests `GITHUB_TOKEN` or signing in with the `gh` CLI.
+* **Lighter instructions.** Runtime template files are about 44% shorter. Agent replies are shorter and focus on results, evidence and decisions. Native subagents are optional.
+* **Planning.** The Planner discusses the work breakdown and agrees Git conventions during discovery. Larger goals can be divided across APM sessions.
+* **Simpler session files.** Spec, Plan, Tracker and Memory Index have simpler formats and Notes sections. The Plan no longer includes a dependency graph. Stage summaries are separate files linked from the Index; Task and Handoff records use numbered conversations.
+* **Session summaries.** The Manager can write a summary in its own chat at completion or early stopping. Summaries include unfinished work and validation limits, and are saved as `session.summary.md`.
+* **Worktree preservation.** `apm archive` and `apm update` move remaining worktrees into the archive with their uncommitted files and Git connections. Archive deletion warns about worktrees and unfinished changes before confirmation.
+* **CLI feedback.** `apm status` names missing files. Commands give next-step instructions and clearer GitHub rate-limit errors. Commands requiring input fail with guidance when no terminal is attached; errors return a nonzero status.
+* **Template builds.** Local builds require `VERSION` and validate the release manifest.
 
 ### Fixed
 
-* **CLI packages include only runtime source and release documentation.** Local assistant settings and other development files are excluded from npm packages.
-* **Archive context remains readable.** Planners locate an available session summary when present and follow relevant Stage summaries and logs for deeper context.
-* **Task context and Rules reach the right place.** Task Prompts include relevant Tracker and Index findings. Worker Rules updates use the existing workspace file, or its tracked Task-branch copy, including when the workspace contains several repositories.
-* **Archive names cannot overwrite earlier sessions.** Named collisions are refused, and automatic names reserve a new directory. Failed worktree moves restore prior locations where possible; uncertain rollback keeps the partial archive and reports recovery paths.
-* **Less inherited corrective wording.** Templates and standards state intended actions directly while preserving role, approval and validation boundaries. CLI compatibility help now includes the release's minimum CLI version.
-
-* **Incomplete releases are refused before installation.** `apm init` and `apm custom` check every selected bundle before writing files, so missing bundles cannot leave targets recorded as installed.
-* **Local template builds require their own version.** Supply `VERSION` instead of inheriting the CLI version. The build also checks its generated manifest against the CLI's validator before writing output.
-* **Narrower workflow instructions.** Worktree cleanup applies only when an assignment used one, git operations require active version control, and session summaries focus on the active session and its worktrees rather than unrelated archives.
-* **Less repeated guidance.** Task Prompts carry Task-specific additions; general execution and reporting instructions remain in the Worker guides. Customization and release instructions now match the current build.
-
-* **Required steps are stated directly.** Agents often skipped these steps in v1.0.3 as well, so each instruction now says what to do and when:
-  * The Planner surveys the workspace and verifies the research it relies on, including any delegated findings.
-  * The Planner waits for your reply after each Context Gathering round and keeps each planning approval unless you explicitly ask to skip it.
-  * The Manager asks the Worker about a Task Log that contradicts its own status before accepting it.
-  * A Worker you corrected in a way that applies to later Tasks asks, before writing its Task Log, whether to add the correction to the Rules. It records your answer and the Rules path in the log, and commits the change with the Task when tracked in its repository.
-  * An outgoing agent checks git and the Message Bus before writing a handoff, and the incoming agent checks what the handoff says before acting on it.
-  * Agents give you reasons about the work instead of citing APM's own procedures, and explain an APM term the first time you meet it.
-  * Workers log Partial only when required work or validation is incomplete, not for findings alone.
-  * The Planner asks before initializing Git. The Manager can accept a Partial outcome when you agree, and verifies a Stage when you asked for it or a Task needed a follow-up.
-  * After a handoff, agents give you the command for the new chat only once you have approved the handoff files.
-  * Agents wait for your reply after presenting options when they are stuck.
-* **The Manager merges after review.** A Task's branch is merged only after its Task Log has been reviewed. Before, one step merged it while the report was still being processed.
-* **Codex and Antigravity no longer overwrite each other's skills.** Both now install identical files to `.agents/skills/`, so installing, updating or removing one leaves the other's instructions intact. This resolves the Templates v1.0.3 known issue. Run `apm update` to apply the fix.
+* Conflicting assistant-specific instructions in shared skill files.
+* Incomplete release bundles are rejected before installation or update.
+* Archive names cannot overwrite existing sessions.
+* CLI packages exclude local assistant settings and development files.
 
 ## CLI v1.0.2 + Templates v1.0.3 - 2026-10-15
 
