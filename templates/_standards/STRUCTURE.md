@@ -8,6 +8,8 @@ Open each file directly with a short paragraph that says what the file covers an
 
 State each rule once, in the section where the agent applies it. Each section covers one part of the work and holds the steps and rules for it. A rule appears a second time only where testing showed agents skipping it, as a one-sentence reminder at the point of use.
 
+Use the same wording for equivalent instructions, loading lists, approval cycles and workflow branches. Vary only the role, inputs and actions that differ. Initiation skills introduce their loading lists with "Read these files in full:". Shared communication instructions apply to all reading roles; role-specific behavior belongs in the role's initiation skill or guides.
+
 Place artifact contracts in a final Formats section of the file that owns them, with one subsection per artifact. Each contract has one home.
 
 | Document | Content |
@@ -48,7 +50,9 @@ Each format definition specifies its location, naming, schema, allowed values, r
 - `<value>` marks a value to fill; `[optional]` marks conditional content; `...` shows continuation.
 - `<N>` and `<M>` are integers; `<NN>` and `<MM>` are zero-padded identifiers in paths.
 - Prose Task IDs use `N.M`, such as Task 2.3. YAML uses integers (`stage: 2`, `task: 3`). Paths use zero padding, such as `stage-02/task-02-03.log.md`.
-- APM artifact paths use kebab-case. Task and Handoff Logs use `.log.md`; their runtime guides and skills define the fields and body sections.
+- APM artifact names use kebab-case with `.log.md` for Task and Handoff Logs and `.summary.md` for summaries, including `session.summary.md`. Their runtime guides and skills define the fields and body sections.
+
+In artifacts that have Notes, place them after introductory and reference material, before the main body. The owning format defines the exact order: Spec Overview and Workspace precede Notes; the Plan's opening scope and Worker/Stage overview tables precede Notes; Tracker and Index Notes precede their tables. Do not add Notes to an artifact whose named sections already serve its needs.
 
 Keep APM artifact paths rooted at `.apm/`. Preserve schemas, field names, allowed values, bus separators, identity rules and artifact paths used by other roles or the CLI. Artifact contracts govern required formatting, including YAML delimiters and batch separators.
 
@@ -64,4 +68,4 @@ Supported placeholders match `build/processors/placeholders.js` and resolve per 
 | `{GUIDE_PATH:name}` | `.claude/apm-guides/<name>.md` or `.agents/apm-guides/<name>.md` |
 | `{CLAUDE_ONLY:text}` | `text` in the `claude` target, nothing in the others; start `text` with a space when it follows a sentence |
 
-Validate references, artifact contracts, resolved placeholders and resolved paths in both generated bundles after changes.
+Validate references, artifact contracts, resolved placeholders and resolved paths in both generated bundles after changes. Check initial artifacts against their owning formats, and check that summary links name the actual files.

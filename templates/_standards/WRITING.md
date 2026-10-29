@@ -17,6 +17,8 @@ Before writing, identify the reader, the decision or action they need to take, a
 
 Define required results, constraints and decision criteria. Use the enumerated values required by artifact schemas. Preserve authority, approval gates and artifact contracts.
 
+Use the same wording for equivalent instructions and workflow branches, following `STRUCTURE.md` §1. Keep the differences that convey a different role, input or action.
+
 ## 3. Use Plain, Precise Language
 
 Keep each sentence to one main thought. Prefer concrete subjects, active verbs and familiar words. Keep related words together and put prerequisites before the steps that depend on them. Use the passive when the receiver of an action is the subject that matters.
@@ -44,7 +46,7 @@ Give a rule's reason when it helps the reader apply it correctly. Keep examples 
 Agents write for three readers. Instructions say what each output must contain for its reader; the shared rules live in `apm-communication`, and each procedure adds only what its own messages need.
 
 - **The User.** Replies open with the answer, outcome, finding, proposal or question, give only the details needed to understand or act, and stay within the default reply lengths in `apm-communication` §1 unless the User asks otherwise. Explain an APM term the first time the User meets it, and give reasons about the work rather than citing APM procedures.
-- **Other agents.** Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are self-contained for a reader without the writer's conversation. Free text records the work: outcomes, decisions with reasons, evidence, open issues and paths. Each fact has one home.
+- **Other agents.** Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are self-contained for a reader without the writer's conversation. Free text records the work: outcomes, decisions with reasons, evidence, open issues and paths. Each fact has one authoritative home; reports and summaries carry its consequential findings with source paths.
 - **The system.** Bus files, frontmatter and paths follow their contracts exactly, because the CLI, the bus protocol and other agents parse them.
 
 | Situation | What the output conveys |
@@ -56,11 +58,13 @@ Agents write for three readers. Instructions say what each output must contain f
 | Review | Findings against objectives and evidence, their implications, and the resulting action. |
 | Continuity | Current state, decisions and reasons, unresolved issues, source paths and concrete resumption steps. |
 
+Preserve material qualifications in completion, review and summary text: comparison counts, accepted deviations and which checks ran live, ran in isolation or were not run. Acceptance closes a decision; it does not turn an unmet check into a passing result.
+
 ## 6. Skills and Native Actions
 
 Refer to command skills by name, and tell the User to invoke them without a command prefix, such as "invoke `apm-3-initiate-worker` in a new chat". Refer to what the User gives with a skill by what it is, such as "the agent ID the User gave with this skill".
 
-Keep assistant-specific syntax out of templates: describe the action in plain English, such as "use a subagent to research…", and let each agent use its own assistant's way of doing it. Delegation instructions state when to use a subagent, its purpose, inputs and required findings. Name a subagent by its purpose. Claude Code-only instructions use the `{CLAUDE_ONLY:text}` placeholder in `STRUCTURE.md` §5.
+Keep assistant-specific syntax out of templates and let each agent use its own assistant's way of acting. Each role's initiation skill describes optional subagent delegation and recommends uses within that role's scope. Workflow steps state the required work and evidence, leaving delegation to the agent. A delegation brief gives the purpose, inputs, permitted actions and required findings. Name a subagent by its purpose. Claude Code-only instructions use the `{CLAUDE_ONLY:text}` placeholder in `STRUCTURE.md` §5.
 
 ## 7. Formatting
 
@@ -69,3 +73,5 @@ Use headings for distinct subjects, short paragraphs for explanations, numbered 
 Use inline code for paths, field names and literal values. Put commands the User must run in fenced code blocks. Use fenced blocks with an appropriate language for schemas and examples; use a longer outer fence when showing nested code blocks. Reserve bold for terms or labels readers need to find again, and use italics sparingly.
 
 Preserve exact field names, values, identifiers and required artifact sections.
+
+Place Notes according to `STRUCTURE.md` §4 and the artifact's owning format.

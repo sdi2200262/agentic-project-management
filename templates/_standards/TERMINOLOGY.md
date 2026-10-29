@@ -32,8 +32,8 @@ Each procedure is a part of the workflow. The first six each have their own guid
 
 | Term | Performed by | Definition |
 |---|---|---|
-| **Context Gathering** | Planner | Exploring the workspace and questioning the User in three rounds, settling how much of the User's goal this APM session covers, and ending with a summary that the User approves. |
-| **Work Breakdown** | Planner | Turning the gathered context into the documents that define what to build, how the work is divided and how it is performed. |
+| **Context Gathering** | Planner | Exploring the workspace and questioning the User in three rounds, developing design and work-structure choices, settling this APM session's scope, and ending with a summary that the User approves. |
+| **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec, Plan and Rules, each approved separately. |
 | **Task Assignment** | Manager | Choosing which work to send next and to which Worker, and writing its instructions. |
 | **Task Execution** | Worker | Carrying out assigned work, validating it and fixing what fails. |
 | **Task Logging** | Worker | Recording the outcome of assigned work and reporting it to the Manager. |
@@ -86,7 +86,7 @@ The Worker records one outcome when it finishes a Task.
 | Term | Definition |
 |---|---|
 | **Success** | The objective is achieved and every validation criterion passed. |
-| **Partial** | Some progress is made, and the Worker needs guidance to continue. |
+| **Partial** | Some work or required validation remains, and the Worker needs guidance to continue. The deliverable may exist while a required check is unmet or unavailable. |
 | **Failed** | The Worker could not achieve the objective. |
 
 ### Task Dispatch
@@ -107,9 +107,9 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 |---|---|---|
 | **Task Log** | The Worker's record of one Task: outcome, validation, deliverables and findings. | `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md` |
 | **Handoff Log** | The record a Manager or Worker conversation writes at its Handoff: what it did and the working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md` |
-| **Index** | The overview of the APM session's history: lasting notes and a table of Stage summaries. Each summary is a file in its Stage folder. | `.apm/memory/index.md` |
+| **Index** | The overview of the APM session's history: lasting findings with sources and a table of Stage outcomes linking to their summaries. | `.apm/memory/index.md` |
 | **Memory** | The APM session's work history and continuation context: Task outcomes, lasting findings, Stage summaries and Handoff Logs. | `.apm/memory/` |
-| **Tracker** | The Manager's live record of the APM session: Task states with branches and worktrees, each Worker's current conversation, and short-lived notes. | `.apm/tracker.md` |
+| **Tracker** | The Manager's live record: pending coordination notes, Task states and next actions with branches and worktrees, and each Worker's conversation and context. | `.apm/tracker.md` |
 
 ---
 
@@ -137,4 +137,4 @@ These terms keep ordinary lowercase but have a fixed meaning in APM templates.
 | **recovery** | Rebuilding a Manager's or Worker's working context after compaction or a lost conversation. It keeps the role's conversation number. |
 | **follow-up Task** | A Task that Task Review sends back to the same Worker with a revised Task Prompt. It keeps its Task ID and stays Active. |
 | **archive** | A snapshot of an APM session's `.apm/` files, stored in `.apm/archives/`. Archiving is optional; later sessions can use archives as context. |
-| **session summary** | An optional document, `.apm/session-summary.md`, describing an APM session's scope, outcomes, findings, open issues and current state. |
+| **session summary** | An optional document, `.apm/session.summary.md`, describing an APM session's scope, outcomes, consequential findings, accepted limitations, open issues and current state. |
