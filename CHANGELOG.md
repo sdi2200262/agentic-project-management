@@ -12,10 +12,10 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 
 ### Changed
 
-* Runtime template files are about 44% shorter, with simpler instructions and replies. Native subagents are optional.
+* Runtime template files are about 42% shorter, with simpler instructions and replies. Native subagents are optional.
 * Planning adapts the work breakdown to the project, agrees Git conventions and can scope larger goals across sessions.
-* Clearer responsibilities and simpler formats for the Spec, Plan, Rules, Tracker and Memory. Removed the dependency graph; Stage summaries are separate linked files, and Task/Handoff records identify numbered conversations.
-* The Manager can summarize completed or stopped sessions in its own chat, including unfinished work and validation limits.
+* Clearer responsibilities and simpler formats for the Spec, Plan, Rules, Tracker and Memory. Removed the Plan's dependency graph; Stage summaries and follow-up attempts have separate linked records, and Task/Handoff records identify numbered conversations.
+* The Manager can run missing checks or make contained corrections during review, and summarize completed or stopped sessions with unfinished work and validation limits.
 * `apm status` lists missing files. CLI messages give clearer next steps and GitHub rate-limit guidance.
 * Builds require an explicit template `VERSION` and validate release manifests.
 
@@ -23,7 +23,7 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 
 * Conflicting assistant instructions in shared skills.
 * Archival breaking worktree Git connections; archives now preserve worktrees and uncommitted files. Deletion confirmations identify worktrees and unfinished changes.
-* Missing bundle assets are detected before installation files change.
+* `apm init`, `apm custom` and `apm update` detect missing bundle assets before installation files change.
 * Archive names could overwrite existing sessions.
 * npm packages could include local assistant settings and development files.
 * Commands silently failing without a terminal or returning a successful exit status after errors.
