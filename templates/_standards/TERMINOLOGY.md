@@ -11,8 +11,8 @@ A term is defined when it names a part of the workflow an agent must find, or on
 | Term | Definition |
 |---|---|
 | **Planner** | The agent that plans the work with the User. It works in a single conversation. |
-| **Manager** | The agent that coordinates implementation: it assigns work, reviews results and keeps the APM files current. One Manager works at a time. |
-| **Worker** | An agent that carries out the work the Manager assigns in one area of the work. Each area has its own Worker. |
+| **Manager** | The agent that coordinates implementation: it assigns work to Workers or undertakes it, reviews results and keeps the APM files current. One Manager works at a time. |
+| **Worker** | An agent that carries out the work the Manager assigns in one area of the work. Each Worker has its own conversation with the User. |
 
 ---
 
@@ -34,7 +34,7 @@ Each procedure is a part of the workflow. The first six each have their own guid
 |---|---|---|
 | **Context Gathering** | Planner | Exploring the workspace and questioning the User in three rounds, developing design and work-structure choices, settling this APM session's scope, and ending with a summary that the User approves. |
 | **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec and Plan, each approved separately, and proposing needed updates to `AGENTS.md`. |
-| **Task Assignment** | Manager | Choosing which work to send next and to which Worker, and writing its instructions. |
+| **Task Assignment** | Manager | Choosing which work to start next, assigning it to a Worker or undertaking it itself, and preparing its context. |
 | **Task Execution** | Worker | Carrying out assigned work, validating it and fixing what fails. |
 | **Task Logging** | Worker | Recording the outcome of assigned work and reporting it to the Manager. |
 | **Task Review** | Manager | Reviewing reported work, deciding the next action and updating the APM files. |
@@ -49,7 +49,7 @@ The Planner writes these during Work Breakdown, in this order.
 | Term | Definition | Location |
 |---|---|---|
 | **Spec** | What to build: design decisions and constraints. | `.apm/spec.md` |
-| **Plan** | How the work is divided, ordered and assigned to Workers, with validation criteria and dependencies. | `.apm/plan.md` |
+| **Plan** | How the work is divided, ordered and allocated between the Manager and Workers, with validation criteria and dependencies. | `.apm/plan.md` |
 
 ---
 
@@ -57,7 +57,7 @@ The Planner writes these during Work Breakdown, in this order.
 
 | Term | Definition |
 |---|---|
-| **Task** | A bounded unit of work in the Plan, assigned to one Worker, with an objective, deliverables, validation criteria and dependencies. Its ordered steps share the Task's validation. |
+| **Task** | A bounded unit of work in the Plan, with the Manager or one Worker responsible for it, with an objective, deliverables, validation criteria and dependencies. Its ordered steps share the Task's validation. |
 | **Stage** | A group of related Tasks that delivers a coherent part of the work. Stages run in order. |
 
 ### Task dependencies
@@ -66,16 +66,16 @@ A Task depends on another when it needs that Task's output.
 
 | Term | Definition |
 |---|---|
-| **Same-Worker dependency** | The Worker that did the earlier Task also does the dependent one, so it has already worked with the output. |
-| **Cross-Worker dependency** | A different Worker did the earlier Task, so the dependent Task's Worker has not seen the output. |
+| **Same-Worker dependency** | The same assigned agent handles both Tasks. Available context determines how much dependency detail it needs. |
+| **Cross-Worker dependency** | Work from a different assigned agent, or earlier work whose context was lost through Handoff. The receiving agent needs reading and integration instructions. |
 
 ### Task states
 
 | Term | Definition |
 |---|---|
 | **Waiting** | At least one dependency is not complete. |
-| **Ready** | All dependencies are complete, so the Task can be sent to its Worker. |
-| **Active** | Sent to its Worker. The Task stays Active through execution and review until the Manager makes a final decision. |
+| **Ready** | All dependencies are complete, so the assigned agent can start the Task. |
+| **Active** | Started by the Manager or sent to its Worker. The Task stays Active through execution and review until the Manager makes a final decision. |
 | **Done** | The Manager has made a final decision on the Task. Done is final. |
 
 ### Task outcomes

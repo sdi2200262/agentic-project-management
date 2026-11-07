@@ -52,9 +52,13 @@ Cover technical preferences, quality standards, workflow preferences, outside ap
 - Preferred validation, reviews, sign-offs and acceptance requirements.
 - Consistency standards, formats, examples and reference material.
 - Areas of expertise, natural boundaries, available agents, parallelism, preferred Task size and review points.
-- Proposed Stages, Tasks and Workers, and coordination preferences that affect the plan.
+- Proposed Stages, Tasks and assignments, and coordination preferences that affect the plan.
 - Version control for each working repository: whether to use Git, its base branch, branch and commit conventions, and whether any `.apm/` files are tracked. Explain that declining version control makes parallel dispatch unavailable.
 - Chosen approaches and their reasons, including what ruled alternatives out.
+
+Recommend how to divide work between the Manager using subagent workers and Workers collaborating with the User in separate conversations. Favor Manager execution for straightforward work where extra interaction would add little. Favor Worker collaboration for important or uncertain work, or areas where closer involvement would help the User understand the implementation and guide its decisions. Balance these benefits against the time and coordination the work requires. For Manager work, agree where the User wants to review results before work continues. Explain that otherwise the Manager continues through ready work. Suggest review points after substantial work without User involvement or before later work builds heavily on its results.
+
+Adapt the recommendation to the User's priorities and desired involvement, using any preferences already established. If they want to oversee every Task, plan Worker collaboration throughout; if they want the Manager to handle everything, plan accordingly. For mixed arrangements, use Task size, batching and agreed review points to preserve useful involvement without interrupting routine progress. Ask whether the User wants to perform any Tasks or parts themselves.
 
 Propose existing Git conventions, or `type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test or chore. Explain the default: a branch per dispatch, Workers commit, the Manager merges, parallel Workers use separate worktrees. Keep `.apm/` ignored by default when it is inside a repository; agree any exceptions with the User.
 
@@ -93,7 +97,8 @@ Use Markdown suited to the work, with enough detail for the User to judge whethe
 - Environments, resources and access.
 - Process, quality and approval needs.
 - Conventions and existing `AGENTS.md` content.
-- Proposed Stages, Tasks and Workers, with reasons and alternatives where developed.
-- Version control and coordination preferences.
+- The division of work between the Manager and Workers, and agreed User participation and review points.
+- Proposed Stages, Tasks and assignments, with reasons and alternatives where developed.
+- Version control
 
 End with an explicit request for approval.

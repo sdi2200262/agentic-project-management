@@ -9,7 +9,7 @@ APM coordinates a body of work through planning documents, Memory and a file-bas
 | Role | Responsibility | Working context |
 |---|---|---|
 | Planner | Define and plan the work with the User. | Workspace research and planning conversation. |
-| Manager | Assign Tasks, review results and maintain the APM files. | Spec, Plan, `AGENTS.md`, Tracker and Memory. |
+| Manager | Assign Tasks to Workers or undertake them, review results and maintain the APM files. | Spec, Plan, `AGENTS.md`, Tracker and Memory. |
 | Worker | Execute, validate and report assigned Tasks. | Task Prompts, `AGENTS.md` and its own conversation. |
 
 Workers do not read the Spec, Plan, Tracker or Index unless the User widens their scope. The Manager includes needed content in Task Prompts. Every role may use native subagents within its own scope; delegation is optional, and the parent verifies their findings. Native subagents are separate from APM Workers and bus delivery.
@@ -36,7 +36,7 @@ Implementation ends when every Stage is complete or the User stops early. The Ma
 
 ### 3.2 Plan
 
-`.apm/plan.md` divides deliverables into Workers, ordered Stages and Tasks. Each Task has an objective, Worker, dependencies, output, validation, guidance and steps. Dependencies are marked Same-Worker or Cross-Worker. Its Notes hold coordination preferences, shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification needs. The Manager uses the Plan to prepare dispatches.
+`.apm/plan.md` divides deliverables into Workers, ordered Stages and Tasks. Each Task has an objective, assigned agent (`manager` or a Worker slug), dependencies, output, validation, guidance and steps. Dependencies are marked Same-Worker or Cross-Worker. Its Notes hold coordination preferences and review points, shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification needs. The Manager uses the Plan to prepare dispatches.
 
 ### 3.3 AGENTS.md
 
@@ -54,7 +54,7 @@ When `.apm/` is inside a repository, the Planner proposes ignoring it by default
 
 ### 3.5 Planning Changes
 
-The Manager keeps the Spec, Plan, `AGENTS.md` and affected Task instructions aligned when findings or decisions change them. It updates affected requirements and Task fields before preparing further work, records pending decisions in the Tracker and preserves consequential decisions with their reasons in Memory.
+The Manager keeps the Spec, Plan, `AGENTS.md` and affected Task instructions aligned when findings or decisions change them. New or changed Tasks preserve the agreed User involvement through responsibility, size and review points. It updates affected requirements and Task fields before preparing further work, records pending decisions in the Tracker and preserves consequential decisions with their reasons in Memory.
 
 Contained corrections to a Task, dependency or Spec point may proceed without approval. Workspace convention changes follow User authorization. Changes to several Tasks, design direction, scope, Stages or overall structure need the User. Several small changes together can also need approval. When new design decisions are needed or repeated follow-ups cannot resolve the issue, the Manager presents options for continuing or stopping to replan; the User decides.
 
@@ -102,15 +102,15 @@ The Planner surveys repositories, instructions and existing materials. The Plann
 
 Each round includes an exchange with the User, follow-up research, a summary and an open question. Initial context does not skip a round. The Planner resolves gaps needed to define the work or agrees how planned work will settle them, and confirms consequential assumptions. When several designs are viable, it presents trade-offs and a recommendation for the User to choose.
 
-The Planner may propose tentative Stages, Tasks and Workers during questioning and ask about Task size, available agents, parallelism and review points. It revises the breakdown as it learns and agrees repository conventions with the User. The Manager chooses actual dispatches during implementation.
+The Planner may propose tentative Stages, Tasks and Workers during questioning and ask about Task size, available agents, parallelism and review points. It revises the breakdown as it learns and agrees repository conventions with the User. Its recommendations balance efficient Manager work through subagent workers with Worker collaboration that preserves User understanding and control, guided by the User's priorities and desired involvement. It asks whether the User wants to perform any Tasks or parts and agrees review points around consequential results and substantial stretches without User involvement. The Manager chooses actual dispatches during implementation.
 
 Agree the session's scope before the understanding summary. Investigate enough to establish requirements and propose a credible breakdown. Substantial research may be planned work, with its questions and the decisions that depend on its results identified. Understanding approval starts document writing.
 
 ### 6.2 Work Breakdown
 
-The Planner writes the Spec and Plan in order, obtaining approval for each, then resolves any needed `AGENTS.md` updates with the User. Corrections carry through to affected earlier documents.
+The Planner writes the Spec and Plan in order, obtaining approval for each, then resolves any needed `AGENTS.md` updates with the User. Corrections carry through to affected earlier documents. Task responsibilities, sizes and review points reflect the agreed User involvement. Task-specific participation and review points belong in Guidance; required checks belong in Validation. The responsible agent remains the same when the User performs work.
 
-Workers group work by expertise and context, weighing specialization against the context sharing and coordination it requires. Stages mark milestones chosen around dependencies and review points. Each Task defines work one Worker can carry out and report for review, with a clear output and validation. Task boundaries depend on size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share a Task or need separate Tasks. Parallelism follows the work's dependencies and constraints. Steps are operations toward the Task's output.
+Workers group work by expertise and context, weighing specialization against the context sharing and coordination it requires. Stages mark milestones chosen around dependencies and review points. Each Task defines work the Manager or one Worker is responsible for completing, with a clear output and validation. Task boundaries depend on size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share a Task or need separate Tasks. Parallelism follows the work's dependencies and constraints. Steps are operations toward the Task's output.
 
 Validation names observable checks and expected results, including required User actions. Updates to `AGENTS.md` preserve preexisting content except for authorized changes; existing workspace `CLAUDE.md` files import `AGENTS.md`.
 
@@ -120,7 +120,7 @@ Validation names observable checks and expected results, including required User
 
 **Runtime:** `task-assignment.md` and `apm-4-check-tasks`.
 
-The Manager dispatches Ready Tasks to free Workers. A single dispatch holds one Task. A batch holds 2–3 independent Ready Tasks or a Same-Worker chain whose other dependencies are complete. Send a chain singly when another Worker needs intermediate output. Parallel dispatch requires independent work and isolated worktrees.
+The Manager selects Ready Tasks and batch sizes using the Plan's coordination preferences and current User instructions, balancing progress with User understanding and control. It follows agreed review points and reassesses them as work changes. For Tasks it undertakes, the Manager uses the Plan and Spec directly. Worker assignments use Task Prompts and the Message Bus. A single dispatch holds one Task. A batch holds 2–3 independent Ready Tasks or a Same-Worker chain whose other dependencies are complete. Send a chain singly when another Worker needs intermediate output. Parallel dispatch requires independent work and isolated worktrees.
 
 Each Worker takes one dispatch at a time. Review incoming reports and dispatch newly Ready work without waiting for unrelated reports. Wait only when the sole pending report would make a Waiting Task Ready for the Worker about to receive work.
 
@@ -144,7 +144,7 @@ The Worker commits, writes the Task Log, clears its Task Bus and writes a Task R
 
 **Runtime:** `task-review.md` and `apm-5-check-reports`.
 
-The Manager reviews each reported Task against its log and deliverables, including individual Tasks in a batch. Investigate Important Findings, unmet criteria and contradictory Success claims before accepting work. The Manager may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when its context makes this more efficient than another dispatch. Substantial implementation stays with Workers unless the User approves the Manager doing it. Record the Manager's work and validation separately from the Worker's outcome. Compare follow-ups with earlier attempts; another dispatch needs concrete remaining work and a supported approach. Revisit the approach or requirement when attempts stall or remaining work substantially expands. Resolve incorrect requirements or proposed exceptions through §3.5. The Manager may accept work completed and validated during review; accepting remaining Partial work needs the User. Preserve the evidence and remaining limits.
+The Manager reviews each reported Task against its log and deliverables, including individual Tasks in a batch. Investigate Important Findings, unmet criteria and contradictory Success claims before accepting work. The Manager may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when its context makes this more efficient than another dispatch. Substantial direct implementation by the Manager requires a User request. Record the Manager's work and validation separately from the Worker's outcome. Compare follow-ups with earlier attempts; another dispatch needs concrete remaining work and a supported approach. Revisit the approach or requirement when attempts stall or remaining work substantially expands. Resolve incorrect requirements or proposed exceptions through §3.5. The Manager may accept work completed and validated during review; accepting remaining Partial work needs the User. Preserve the evidence and remaining limits.
 
 Review results lead to acceptance, a follow-up or a planning change. Keep pending work Active, record the decision and update the Tracker. Merge accepted branches before dependent work and before the next Stage; clean up merged worktrees and branches.
 

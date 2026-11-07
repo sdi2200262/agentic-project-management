@@ -1,10 +1,14 @@
 # APM {VERSION} - Task Assignment Guide
 
-This guide covers Task Assignment: choosing which Ready Tasks to send and how, writing their Task Prompts, preparing branches and worktrees, and delivering the prompts through the Message Bus. `{GUIDE_PATH:task-review}` covers the reports that come back.
+This guide covers Task Assignment: choosing which Ready Tasks to start and who handles them, writing Worker Task Prompts, preparing branches and worktrees, and delivering the prompts through the Message Bus. `{GUIDE_PATH:task-review}` covers the reports that come back.
 
 A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
 
 ## 1. Dispatch
+
+Read each Ready Task's Agent field. For Tasks marked `manager`, use their Plan entries and the relevant Spec, dependency evidence and current coordination context directly; prepare its workspace per §3. For Worker assignments, follow the dispatch steps below.
+
+Use the Plan's coordination preferences and current User instructions when choosing dispatches and batch sizes, balancing progress with the User's understanding and control. Follow agreed review points and reassess them when work grows or changes, especially after a long stretch without User involvement. When review would help confirm direction before substantial further work, present the results and recommend pausing for feedback.
 
 1. Find the Ready Tasks from the Tracker and the Plan's Dependencies fields.
 2. Group them by Worker. A Worker takes one dispatch at a time: send it a new dispatch only after its current Task or batch has been reviewed. Corrections to an active Task use §5.1 instead. Then choose the dispatch:
@@ -21,12 +25,12 @@ Before writing a prompt, resolve conflicting objectives, instructions and valida
 
 Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's Task entry:
 
-1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker, Index or other Workers' logs. Workers read `AGENTS.md` directly.
+1. Turn the Task's steps and Guidance into Instructions the Worker can act on, preserving agreed User participation and review points. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker, Index or other Workers' logs. Workers read `AGENTS.md` directly.
 2. For code, name the path and what to do with it, such as "Read `src/api/routes.py` and use its error response schema."
 3. Keep the instructions on the Task. Leave out Stage structure, other Task IDs and coordination concepts, except a producer Task's ID where it identifies dependency context.
 4. If the Plan lists dependencies, write Context from Dependencies:
-   - **Same-Worker dependency:** the Worker remembers its own work. Name the earlier Task, its key outputs and paths, and how to build on them, with more detail for complex work.
-   - **Cross-Worker dependency:** the Worker has not seen this work. Read the producer's latest accepted attempt log, following earlier-attempt links where needed, then give numbered reading steps, the producer's outputs, interfaces and constraints, and how to integrate them, however simple the work seems.
+   - **Same-Worker dependency:** the same agent handled the earlier Task. Check what context it retains; a shared assignment does not guarantee familiarity. Name the earlier Task, its key outputs and paths, and how to build on them, with more detail for complex work.
+   - **Cross-Worker dependency:** another agent handled this work, including the Manager. Read the producer's latest accepted attempt log, following earlier-attempt links where needed, then give numbered reading steps, the producer's outputs, interfaces and constraints, and how to integrate them, however simple the work seems.
    - Tasks listed under Not Read Since Handoff in the Tracker's Workers table count as Cross-Worker. A Worker that recovered after compaction may need more detail; the table's Context says so.
    - Trace upstream when earlier Tasks set patterns or contracts this Task relies on. Stop where an intermediate output fully captures them.
 5. Add execution, validation or logging guidance only when it is specific to this Task. The Worker's guides already cover the general rules.

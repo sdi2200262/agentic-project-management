@@ -2,7 +2,7 @@
 
 This guide covers Work Breakdown: developing the work structure during Context Gathering, turning the approved understanding into the Spec and Plan, and reviewing needed additions or changes to `AGENTS.md`. `{SKILL_PATH:apm-1-initiate-planner}` §4 covers what follows.
 
-The Manager reads the Spec and Plan and copies what each Task needs into a self-contained Task Prompt. Workers read only their Task Prompts and `AGENTS.md`. Put requirements, design decisions and constraints in the Spec, work structure and Task detail in the Plan, and persistent workspace conventions in `AGENTS.md`. Preserve the context each assignment needs, with detail matched to the work's complexity. APM coordination procedures live in the role guides.
+The Manager reads the Spec and Plan and copies what each Worker-assigned Task needs into a self-contained Task Prompt. Workers read only their Task Prompts and `AGENTS.md`. Put requirements, design decisions and constraints in the Spec, work structure and Task detail in the Plan, and persistent workspace conventions in `AGENTS.md`. Preserve the context each assignment needs, with detail matched to the work's complexity. APM coordination procedures live in the role guides.
 
 Both the Spec and the Plan place Notes after their introductory and reference material, before the main body. Spec Notes explain design assumptions and context; Plan Notes explain coordination choices for the Manager, which keeps both current during implementation. Settled requirements, constraints, dependencies and conventions belong in their authoritative sections; remove Notes made redundant by those sections.
 
@@ -30,22 +30,22 @@ System behavior, output formats, schemas and interface contracts belong in the S
 
 ## 3. Plan
 
-The Plan divides the work into Workers, Stages and Tasks, with dependencies, guidance, steps, output and validation, so the Manager can build self-contained Task Prompts from it.
+The Plan divides the work into Stages and Tasks for the Manager or Workers, with dependencies, guidance, steps, output and validation, so the Manager can build self-contained Task Prompts from it.
 
 1. Carry forward the breakdown developed during Context Gathering. Propose or refine the Workers and their areas, the Stages and their deliverables, and the Tasks in each. Explain the boundaries, order and dependencies that matter.
-2. Define each Task per §5.2, including any User involvement. In Guidance, refer to the relevant Spec or source sections and add Task-specific context.
-3. Check the breakdown against the gathered context and the approved Spec: every decision has work, each Task's output has clear validation, assignments match each Worker's domain and dependencies are consistent. A dependency on a Task with a different Worker is Cross-Worker. Fix what you find.
-4. Write `.apm/plan.md` per §5.2, with Notes explaining coordination preferences, unresolved questions and anticipated difficulties, including shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification. Explain their effects on later work and name the Stages and checks involved. Keep explicit dependencies and validation criteria in Task fields; refer to Spec questions rather than repeating them.
+2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.
+3. Check the breakdown against the gathered context and the approved Spec: every decision has work, each Task's output has clear validation, assignments fit the work, Task sizes and review points match the agreed User involvement, and dependencies are consistent. A dependency on a Task with a different assigned agent is Cross-Worker. Fix what you find.
+4. Write `.apm/plan.md` per §5.2, with Notes explaining coordination preferences and review points, unresolved questions and anticipated difficulties, including shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification. Explain their effects on later work and name the Stages and checks involved. Keep explicit dependencies and validation criteria in Task fields; refer to Spec questions rather than repeating them.
 5. When you ask for review, give a short overview of the Workers, Stages, Task counts and what can run in parallel.
 
 Break the work down by these principles:
 
 - **Workers** follow expertise and context. Weigh the benefit of specialization against the context sharing and coordination it requires.
 - **Stages** are milestones in order: Stage N+1 starts after Stage N is complete. Choose milestones around dependencies and meaningful review points. Parallel work belongs in Tasks within a Stage.
-- **Tasks** define work one Worker can carry out and report for review, with a clear output and validation. Choose boundaries according to size, complexity, uncertainty, dependencies and expertise. Research, implementation and validation may share a Task or need separate Tasks. Explain the boundaries that affect how the work proceeds. Where investigation or research is needed, state the question and required evidence; the executing agent chooses whether to delegate.
+- **Tasks** define work the Manager or one Worker is responsible for completing, with a clear output and validation. Choose boundaries according to size, complexity, uncertainty, dependencies and expertise. Research, implementation and validation may share a Task or need separate Tasks. Explain the boundaries that affect how the work proceeds. Investigate consequential uncertainty before work that depends on it. Where investigation or research is needed, state the question and required evidence; the executing agent chooses whether to delegate.
 - **Steps** are ordered operations toward the Task's output. Their checks contribute to validating that deliverable.
-- **User actions.** Workers work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
-- **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the Worker can run alone from those that need the User, and tell the Worker to pause for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
+- **User actions.** Agents work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
+- **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the assigned agent can run alone from those that need the User, and tell that agent to pause for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
 
 Identify what can run independently and what must wait for earlier results. Dispatch opportunities are suggestions; the Manager chooses actual dispatches from the current state within the agreed constraints.
 
@@ -78,11 +78,14 @@ The Spec is `.apm/spec.md`:
 ...
 ```
 
-After Notes, organize the decisions into sections that follow the work's natural structure: its areas, components, boundaries or technical concerns. Related decisions share a section; cross-cutting choices get their own. Make each decision concrete. Refer to User documents by path and section. Use tables for enumerated values, code blocks for schemas and prose for reasons.
+- After Notes, organize the decisions into sections that follow the work's natural structure: its areas, components, boundaries or technical concerns.
+- Related decisions share a section; cross-cutting choices get their own. Make each decision concrete.
+- Refer to User documents by path and section.
+- Use tables for enumerated values, code blocks for schemas and prose for reasons.
 
 ### 5.2 Plan Format
 
-The Plan is `.apm/plan.md`. Name Workers by agent slug, such as `frontend-agent`, everywhere in it.
+The Plan is `.apm/plan.md`.
 
 ```markdown
 # APM Plan
@@ -108,9 +111,9 @@ The Plan is `.apm/plan.md`. Name Workers by agent slug, such as `frontend-agent`
 
 ### Task 1.1: <Title>
 
-- **Agent:** <agent-slug>
+- **Agent:** <worker-slug or manager>
 - **Objective:** <The Task's goal in one sentence>
-- **Dependencies:** <Task N.M (Same-Worker); Task N.M by <agent-slug> (Cross-Worker); or None>
+- **Dependencies:** <Task N.M (Same-Worker); Task N.M by <worker-slug or manager> (Cross-Worker); or None>
 - **Output:** <Concrete deliverables and paths>
 - **Validation:** <Observable checks and expected results for this output, and where the User is needed>
 - **Guidance:** <Task-specific constraints and approach, relevant findings, and Spec or source references>
@@ -119,6 +122,7 @@ The Plan is `.apm/plan.md`. Name Workers by agent slug, such as `frontend-agent`
 2. <Step>
 ```
 
-Stage names reflect the Stage's areas and main deliverables. List only direct dependencies.
-
-Each step is one operation a Worker can carry out directly, in order, referring to patterns, files or earlier work where relevant. Guidance states technical context and approach in the work's own terms, adding only what the other fields and steps do not cover. Use short lists when several checks or findings need separate treatment. A research step states its question, sources and required evidence, such as "Verify the current API authentication patterns against the route handlers and tests."
+- The Workers table lists only Workers with separate conversations; omit its rows when none are needed.
+- Stage names reflect the Stage's areas and main deliverables. List only direct dependencies.
+- Each step is one operation the assigned agent can carry out or delegate to a subagent, in order, referring to patterns, files or earlier work where relevant. A research step states its question, sources and required evidence.
+- Guidance states technical context and approach in the work's own terms, adding only what the other fields and steps do not cover. Use short lists when several checks or findings need separate treatment.

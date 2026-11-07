@@ -27,10 +27,10 @@ If the User delivers corrected instructions for your paused current Task, keep t
 
 Some Tasks build on the output of earlier Tasks. The prompt's Context from Dependencies section names that output and says how to use it. It treats each dependency in one of two ways:
 
-- **Same-Worker dependency:** your own earlier work, which you remember. The prompt points to its output; refresh what you need from the named paths.
-- **Cross-Worker dependency:** work you have not seen, by another Worker or by you before a Handoff. The prompt gives reading and integration steps. Complete them all before you start the work. Read the named files and investigate any integration questions before proceeding.
+- **Same-Worker dependency:** your own earlier work. The prompt points to its output; refresh what you need from the named paths.
+- **Cross-Worker dependency:** work you have not seen, by another agent or by you before a Handoff. The prompt gives reading and integration steps. Complete them all before you start the work. Read the named files and investigate any integration questions before proceeding.
 
-Do not start the work while a dependency's output is missing or fails its integration check. Ask the User for guidance when another Worker's output does not integrate as the prompt describes, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
+Do not start the work while a dependency's output is missing or fails its integration check. Ask the User for guidance when another agent's output does not integrate as the prompt describes, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
 
 ## 3. Execution
 

@@ -32,7 +32,7 @@ Tell the User what the log shows, whether the evidence supports it, the Importan
 ## 3. Review Outcomes
 
 1. Accept a Success that the log supports and that has no Important Findings.
-2. Investigate Important Findings and any outcome other than Success. You may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when your context makes this more efficient than another dispatch. Leave substantial implementation to Workers unless the User approves you doing it. Make changes in the Task's assigned workspace, follow `AGENTS.md` and validate the affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome. Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
+2. Investigate Important Findings and any outcome other than Success. You may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when your context makes this more efficient than another dispatch. Undertake substantial direct implementation only when the User requests it. Make changes in the Task's assigned workspace, follow `AGENTS.md` and validate the affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome. Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:
    - **Accept:** the work is complete, including any work you completed and validated during review, or the User agrees to accept a Partial outcome; record what remains and the basis for acceptance in the Tracker's Notes. Preserve the Worker's outcome and evidence; acceptance does not turn unmet checks into passing results.
    - **Follow-up Task:** concrete work remains for the Worker, with an approach and a clear completion check. Preserve any uncommitted work for that attempt.
@@ -51,7 +51,7 @@ When a finding, correction or decision changes the Spec, Plan or `AGENTS.md`, up
 You may correct one Task, add a dependency or an isolated Spec point, or propose an `AGENTS.md` update. Follow existing User authorization for changes to workspace conventions. Changes to several Tasks, design direction, scope, Stages or overall structure need the User's approval. Consider their combined effect when several small changes are involved.
 
 1. Identify the change, its evidence and any approval needed.
-2. Check the affected documents and dependent or active Tasks. Update the requirement where it belongs in the Spec, the affected Task fields and dependencies in the Plan, or workspace conventions in `AGENTS.md`. Suggest only needed additions or corrections, preserving unrelated content. Use the existing format for new Tasks. Keep Notes consistent with their document's purpose and replace stale content.
+2. Check the affected documents and dependent or active Tasks. Update the requirement where it belongs in the Spec, the affected Task fields and dependencies in the Plan, or workspace conventions in `AGENTS.md`. Suggest only needed additions or corrections, preserving unrelated content. For new or changed Tasks, keep responsibility, size and review points consistent with the agreed User involvement. Use the existing format for new Tasks. Keep Notes consistent with their document's purpose and replace stale content.
 3. Apply authorized changes together. If approval is needed, record the pending decision in the Tracker, ask the User to pause affected work and present the proposal. Wait for approval; unrelated work can continue.
 4. Update Task next actions and record the change and reason in the Tracker. Deliver corrections to active work per `{GUIDE_PATH:task-assignment}` §5.1; reported attempts use a follow-up Task. Preserve consequential decisions in the Stage summary.
 
@@ -108,6 +108,8 @@ Status values:
 - `Ready`: all dependencies are Done.
 - `Active`: dispatched, under review or awaiting a follow-up Task.
 - `Done`: final decision made. A Branch value means the branch still awaits merging.
+
+The Agent column uses the Plan's Worker slug or `manager`.
 
 Link each Task ID to the latest reported attempt's `log_path`; use a plain ID before its first report. A pending follow-up's destination stays in its Task Prompt until reported.
 
