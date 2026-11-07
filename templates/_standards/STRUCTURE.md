@@ -31,7 +31,7 @@ Sources live under `templates/`:
 
 Use kebab-case names; each skill's `name` matches its directory. Descriptions identify purpose and activation. Valid YAML frontmatter starts on the first line between `---` delimiters.
 
-Each build target installs skills under `skills/` and guides under `apm-guides/`, rooted at `.claude/` or `.agents/`. Initial artifacts become `.apm/`. Rules live in workspace-root `AGENTS.md` for both targets.
+Each build target installs skills under `skills/` and guides under `apm-guides/`, rooted at `.claude/` or `.agents/`. Initial artifacts become `.apm/`. Both targets use workspace-root `AGENTS.md` for workspace instructions and rules.
 
 ## 3. Navigation
 

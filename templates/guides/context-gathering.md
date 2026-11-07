@@ -2,13 +2,13 @@
 
 This guide covers Context Gathering: exploring the workspace, questioning the User in three rounds, settling how much of the User's goal this APM session covers, and getting the User's approval of your understanding. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
 
-Your findings feed three documents: the Spec holds design decisions and constraints, the Plan organizes the work, and the Rules hold shared Worker execution conventions. Gather requirements, domain knowledge, technical choices, constraints and concrete success criteria. Develop work-structure choices as you gather context. Agree coordination and version control preferences with the User; the Manager chooses actual dispatches within those agreements.
+Your findings feed the Spec and Plan for this session and any needed updates to workspace instructions and rules in `AGENTS.md`. Gather requirements, domain knowledge, technical choices, constraints and concrete success criteria. Develop work-structure choices as you gather context. Agree coordination and version control preferences with the User; the Manager chooses actual dispatches within those agreements.
 
 ## 1. Preparation
 
-1. If the User confirmed relevant archives, examine them. Locate and read each archive's session summary if present, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when Task or Worker states matter, and `metadata.json` for the archive date. Follow relevant links into Stage summaries and logs when more detail is needed. Identify relevant scope, decisions, completed work and known issues, with paths or commands to verify them, and anything that may have changed since. Verify the findings you will rely on against the current code.
+1. If relevant archives exist, examine them. Locate and read each archive's session summary if present, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when Task or Worker states matter, and `metadata.json` for the archive date. Follow relevant links into Stage summaries and logs when more detail is needed. Identify relevant scope, decisions, completed work and known issues, with paths or commands to verify them, and anything that may have changed since. Verify the findings you will rely on against the current code.
 2. Explore every codebase relevant to the work, per §3.
-3. If `AGENTS.md` exists, summarize it for the User, explain that planning adds a separate Rules section and keeps the existing content, and ask whether they want that content changed.{CLAUDE_ONLY: Summarize existing `CLAUDE.md` instructions too, and ask the same. Preserve their content; the Rules go in `AGENTS.md`.} If there is no `AGENTS.md`, ask in Round 1 whether the User has one elsewhere or wants it created.
+3. Read preexisting `AGENTS.md` content, applicable scoped instructions and referenced guidance.{CLAUDE_ONLY: Read preexisting workspace `CLAUDE.md` content too.} Summarize what affects planning and check it against the workspace. Note gaps and inconsistencies to inform proposed additions or corrections during §4 of Work Breakdown. If `AGENTS.md` is missing, ask whether instructions exist elsewhere.
 
 Present what you found with the first round's questions, keeping to what the User needs to answer them.
 
@@ -53,10 +53,10 @@ Cover technical preferences, quality standards, workflow preferences, outside ap
 - Consistency standards, formats, examples and reference material.
 - Areas of expertise, natural boundaries, available agents, parallelism, preferred Task size and review points.
 - Proposed Stages, Tasks and Workers, and coordination preferences that affect the plan.
-- Version control for each working repository: whether to use Git, its base branch, branch and commit conventions, and whether any `.apm/` files are tracked. Ask before initializing a repository. Explain that declining version control makes parallel dispatch unavailable.
+- Version control for each working repository: whether to use Git, its base branch, branch and commit conventions, and whether any `.apm/` files are tracked. Explain that declining version control makes parallel dispatch unavailable.
 - Chosen approaches and their reasons, including what ruled alternatives out.
 
-Propose existing Git conventions, or `type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test or chore. Explain the default: a branch per dispatch, Workers commit, the Manager merges, parallel Workers use separate worktrees, and nothing is pushed unless the User asks. Keep `.apm/` ignored by default when it is inside a repository; agree any exceptions with the User.
+Propose existing Git conventions, or `type/short-description` branches and `type: description` commits using feat, fix, refactor, docs, test or chore. Explain the default: a branch per dispatch, Workers commit, the Manager merges, parallel Workers use separate worktrees. Keep `.apm/` ignored by default when it is inside a repository; agree any exceptions with the User.
 
 Move on when the approach, quality standards and approvals are clear.
 

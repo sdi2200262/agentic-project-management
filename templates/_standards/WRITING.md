@@ -22,7 +22,7 @@ Write casually formal chat replies and match documents to their reader and purpo
 
 State the trigger, required inputs, action and completion condition. Use numbered steps for sequences and lists for independent items. Put each rule where the agent applies it. Explain a rule's reason only when it helps the agent use it.
 
-Write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. For approval gates, state what needs approval, when to wait and how to handle corrections.
+Write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. Reserve action-specific approval clauses for workflow checkpoints and substantive User decisions. Ordinary actions follow the shared approval-request guidance in `apm-communication`. For approval gates, state what needs approval, when to wait and how to handle corrections.
 
 Keep ordinary transitions in sequence; use section references for other branches. Describe what agents should communicate rather than prescribing exact replies. Include examples only when they resolve ambiguity, and present them as illustrations. Preserve role boundaries, approvals and artifact contracts.
 

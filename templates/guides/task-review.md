@@ -25,33 +25,33 @@ Check each validation criterion against its evidence, including counts, scope, d
 
 If a Success log includes a failed, unrun or weaker check, tell the User and keep the Task Active. Resolve the gap per §3; incorrect requirements or proposed exceptions go through §4.
 
-Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or Rules. If the log says the User approved a Rules addition, check the change at its recorded `AGENTS.md` path, using the diff when tracked, and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
+Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or `AGENTS.md`. If the log records User authorization for an `AGENTS.md` change, check the change at its recorded `AGENTS.md` path, using the diff when tracked, and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
 
 Tell the User what the log shows, whether the evidence supports it, the Important Findings that matter and your proposed next action.
 
 ## 3. Review Outcomes
 
 1. Accept a Success that the log supports and that has no Important Findings.
-2. Investigate Important Findings and any outcome other than Success. You may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when your context makes this more efficient than another dispatch. Leave substantial implementation to Workers unless the User approves you doing it. Make changes in the Task's assigned workspace, follow the Rules and validate the affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome. Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
+2. Investigate Important Findings and any outcome other than Success. You may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when your context makes this more efficient than another dispatch. Leave substantial implementation to Workers unless the User approves you doing it. Make changes in the Task's assigned workspace, follow `AGENTS.md` and validate the affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome. Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:
    - **Accept:** the work is complete, including any work you completed and validated during review, or the User agrees to accept a Partial outcome; record what remains and the basis for acceptance in the Tracker's Notes. Preserve the Worker's outcome and evidence; acceptance does not turn unmet checks into passing results.
    - **Follow-up Task:** concrete work remains for the Worker, with an approach and a clear completion check. Preserve any uncommitted work for that attempt.
    - **Planning change:** a planning document is wrong. Change it per §4.
 4. Some findings need broader planning: a fix needs design decisions the Spec does not cover, or a change would rewrite the Spec's Overview or several Stages. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
-5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. With version control, commit accepted uncommitted work on the Task's branch under the Rules' conventions. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
+5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. With version control, commit accepted uncommitted work on the Task's branch under the conventions in `AGENTS.md`. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
 6. Record how each consequential finding was resolved, accepted, deferred or left pending, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
 7. Once the decision is recorded, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`, then send any follow-up per `{GUIDE_PATH:task-assignment}` §5. Update the Tracker per §8.1 and §8.2, in one edit with the merge and dispatch changes that follow.
 
 Tell the User about contained corrections. Pause for approval when a change exceeds the limits in §4.
 
-## 4. Planning Document Changes
+## 4. Planning and AGENTS.md Changes
 
-When a finding, correction or decision changes the Spec, Plan or Rules, update the related content and Task instructions.
+When a finding, correction or decision changes the Spec, Plan or `AGENTS.md`, update the related content and Task instructions.
 
-You may correct one Task, add a dependency or an isolated Spec point, or adjust a Rule. Changes to several Tasks, design direction, scope, Stages or overall structure need the User's approval. Consider their combined effect when several small changes are involved.
+You may correct one Task, add a dependency or an isolated Spec point, or propose an `AGENTS.md` update. Follow existing User authorization for changes to workspace conventions. Changes to several Tasks, design direction, scope, Stages or overall structure need the User's approval. Consider their combined effect when several small changes are involved.
 
 1. Identify the change, its evidence and any approval needed.
-2. Check the affected documents and dependent or active Tasks. Update the requirement where it belongs in the Spec, the affected Task fields and dependencies in the Plan, or shared Worker execution conventions inside `APM_RULES`. Use the existing format for new Tasks. Keep Notes consistent with their document's purpose and replace stale content.
+2. Check the affected documents and dependent or active Tasks. Update the requirement where it belongs in the Spec, the affected Task fields and dependencies in the Plan, or workspace conventions in `AGENTS.md`. Suggest only needed additions or corrections, preserving unrelated content. Use the existing format for new Tasks. Keep Notes consistent with their document's purpose and replace stale content.
 3. Apply authorized changes together. If approval is needed, record the pending decision in the Tracker, ask the User to pause affected work and present the proposal. Wait for approval; unrelated work can continue.
 4. Update Task next actions and record the change and reason in the Tracker. Deliver corrections to active work per `{GUIDE_PATH:task-assignment}` §5.1; reported attempts use a follow-up Task. Preserve consequential decisions in the Stage summary.
 
@@ -61,7 +61,7 @@ Keep the Worker's recorded outcome and evidence. Manager acceptance is a separat
 
 With version control, merge a dispatch's branch into its base branch after a successful review, before dispatching Tasks that depend on it, and merge every branch of a Stage before the next Stage begins.
 
-1. Switch to the recorded base branch, merge and check the result. Clean merges need no approval.
+1. Switch to the recorded base branch, merge and check the result.
 2. Resolve conflicts from the Task objectives and the Spec. Investigate complex conflicts against the affected contracts, or ask the User when a decision is needed.
 3. If branch protection blocks a direct merge, use a pull request, an intermediate branch or the User's guidance, and record the constraint in the Tracker's Notes.
 4. After the merge, remove the worktree with `git worktree remove .apm/worktrees/<branch-slug>` if there was one, delete the branch with `git branch -d <branch-name>`, and clear the Task's Branch and Worktree in the Tracker. When cleaning up several branches, remove their worktrees before deleting the branches.
@@ -136,7 +136,7 @@ The Tracker is `.apm/tracker.md`:
 | backend-agent | 1 | | Recovered during Task 2.2 |
 ```
 
-Add a Worker's row at its first dispatch. Not Read Since Handoff lists the Worker's Tasks from earlier Stages whose logs its current conversation has not read. Context records recoveries and remaining context gaps that affect later Task Prompts; update it as context is rebuilt. Keep top-level Notes as self-contained bullets while ongoing coordination needs them or their findings and decisions await recording in the Stage summary or Index.
+Add a Worker's row at its first dispatch. Not Read Since Handoff lists the Worker's Tasks from earlier Stages whose logs its current conversation has not read. Context records recoveries and remaining context gaps that affect later Task Prompts; update it as context is rebuilt. Keep top-level Notes as self-contained bullets for current coordination and pending decisions, including findings awaiting durable recording. Link actions to lasting findings in Memory rather than repeating their account. Remove notes once recorded durably and no longer needed for coordination.
 
 ### 8.3 Memory Index Format
 
@@ -155,7 +155,7 @@ The Index is `.apm/memory/index.md`:
 | 1 - <Stage Name> | <Accepted result and material limits, in brief> | [Stage 1](stage-01/stage-01.summary.md) |
 ```
 
-Keep Index Notes brief: record what later assignments need to know and link to the specific attempt or summary that supports the finding. Requirements stay in the Spec, Plan or Rules; Stage summaries preserve the decisions and evidence.
+Keep Index Notes brief: findings and implications later work should remember, linked to supporting attempts or summaries. Pending decisions belong in the Tracker; accepted limits relevant to later work remain here. Session requirements stay in the Spec, work structure in the Plan and workspace conventions in `AGENTS.md`; Stage summaries preserve the decisions and evidence.
 
 ### 8.4 Stage Summary Format
 
@@ -168,7 +168,7 @@ Each Stage summary is `.apm/memory/stage-<NN>/stage-<NN>.summary.md`, beside its
 <Final review decision for each Task and Workers involved, useful commits, accepted Partial outcomes and what remains>
 
 ## Findings and Decisions
-<Consequential discoveries, their resolution or acceptance, reasons, and changes to the Spec, Plan or Rules, with source links>
+<Consequential discoveries, their resolution or acceptance, reasons, and changes to the Spec, Plan or `AGENTS.md`, with source links>
 
 ## Validation and Limits
 <Stage verification performed or skipped and why; key results with counts and scope, accepted deviations and unrun checks, with evidence paths>

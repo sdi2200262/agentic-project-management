@@ -9,16 +9,18 @@ APM coordinates a body of work through planning documents, Memory and a file-bas
 | Role | Responsibility | Working context |
 |---|---|---|
 | Planner | Define and plan the work with the User. | Workspace research and planning conversation. |
-| Manager | Assign Tasks, review results and maintain the APM files. | Spec, Plan, Rules, Tracker and Memory. |
-| Worker | Execute, validate and report assigned Tasks. | Task Prompts, Rules and its own conversation. |
+| Manager | Assign Tasks, review results and maintain the APM files. | Spec, Plan, `AGENTS.md`, Tracker and Memory. |
+| Worker | Execute, validate and report assigned Tasks. | Task Prompts, `AGENTS.md` and its own conversation. |
 
 Workers do not read the Spec, Plan, Tracker or Index unless the User widens their scope. The Manager includes needed content in Task Prompts. Every role may use native subagents within its own scope; delegation is optional, and the parent verifies their findings. Native subagents are separate from APM Workers and bus delivery.
+
+Responsibilities defined in role instructions and existing User authorization govern ordinary actions. Approval requests identify the proposed action and why it needs User agreement. Existing authorization avoids repeated requests, except for confirmation of destructive or irreversible actions and their consequences. Explicit workflow reviews and approval checkpoints remain in force.
 
 ## 2. Phases
 
 ### 2.1 Planning
 
-The Planner reads both planning guides at initiation and develops design and work-structure choices during Context Gathering. The User approves its understanding summary, then the Spec, Plan and Rules separately, in that order. The Planner creates the Message Bus and directs the User to start the Manager in a new chat.
+The Planner reads both planning guides at initiation and develops design and work-structure choices during Context Gathering. The User approves its understanding summary, then the Spec and Plan separately, in that order. Proposed changes to `AGENTS.md` are reviewed against existing User authorization. The Planner creates the Message Bus and directs the User to start the Manager in a new chat.
 
 ### 2.2 Implementation
 
@@ -30,31 +32,31 @@ Implementation ends when every Stage is complete or the User stops early. The Ma
 
 ### 3.1 Spec
 
-`.apm/spec.md` defines scope, required behavior, design decisions and constraints. Its Workspace section identifies repositories, authoritative User documents and agreed Git setup; Notes hold design assumptions and context. The Manager maintains it and copies relevant requirements into Task Prompts.
+`.apm/spec.md` defines scope, required behavior, design decisions and constraints. It describes this session, with authoritative sources and reasons alongside requirements. Notes hold design assumptions and unresolved questions. The Manager maintains it and copies relevant requirements into Task Prompts.
 
 ### 3.2 Plan
 
-`.apm/plan.md` divides deliverables into Workers, ordered Stages and Tasks. Each Task has an objective, Worker, dependencies, output, validation, guidance and steps. Dependencies are marked Same-Worker or Cross-Worker. Its Notes hold coordination considerations and Stage verification needs. The Manager uses the Plan to prepare dispatches.
+`.apm/plan.md` divides deliverables into Workers, ordered Stages and Tasks. Each Task has an objective, Worker, dependencies, output, validation, guidance and steps. Dependencies are marked Same-Worker or Cross-Worker. Its Notes hold coordination preferences, shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification needs. The Manager uses the Plan to prepare dispatches.
 
-### 3.3 Rules
+### 3.3 AGENTS.md
 
-The workspace-root `AGENTS.md` holds shared Worker execution conventions inside `APM_RULES`. Preserve User content outside that block. Design requirements belong in the Spec, Task-specific approach in Guidance, and APM coordination in the role guides.
+`AGENTS.md` holds project orientation, working and read-only repository boundaries, and applicable workspace conventions across sessions. All agent roles read it. The Planner proposes needed additions or corrections to preexisting content; the Manager and Workers maintain it as work reveals durable conventions. Content stays concise and useful beyond the current session, without duplicating existing guidance. Orientation states facts; instructions identify the actions or areas to which they apply. Changes follow User authorization and preserve unrelated content.
 
-All roles read the Rules. The Planner records agreed commit conventions there and adds an `AGENTS.md` import to an existing workspace `CLAUDE.md`, preserving its content. Workers may add User-approved execution conventions through Task Execution.
+For Claude, existing workspace `CLAUDE.md` files import `AGENTS.md` outside code blocks, preserving preexisting content and avoiding circular references.
 
 ### 3.4 Version Control
 
-The Planner surveys Git state and agrees Git use, base branches, branch and commit conventions, and APM file tracking during Context Gathering. It proposes existing conventions, or `type/short-description` branches and `type: description` commits. It records Git setup in the Spec's Workspace section and commit conventions in the Rules, and initializes repositories only with approval.
+The Planner surveys Git state and agrees Git use, base branches, branch and commit conventions, and APM file tracking during Context Gathering. It proposes existing conventions, or `type/short-description` branches and `type: description` commits. Durable repository conventions belong in `AGENTS.md`, session-specific Git setup and constraints in the Spec, and current branches/worktrees in the Tracker.
 
-Each dispatch gets a branch; parallel Workers also get separate worktrees. Workers commit; the Manager creates branches, merges and cleans up. Push only when the User asks.
+Each dispatch gets a branch; parallel Workers also get separate worktrees. Workers commit; the Manager creates branches, merges and cleans up.
 
-When `.apm/` is inside a repository, ignore it by default and ask whether the User wants APM files tracked. If version control is declined, parallel dispatch is unavailable.
+When `.apm/` is inside a repository, the Planner proposes ignoring it by default and asks whether the User wants APM files tracked. If version control is declined, parallel dispatch is unavailable.
 
 ### 3.5 Planning Changes
 
-The Manager keeps the Spec, Plan, Rules and affected Task instructions aligned when findings or decisions change them. Update the affected requirements and Task fields before preparing further work; record pending decisions in the Tracker and consequential decisions with their reasons in Memory.
+The Manager keeps the Spec, Plan, `AGENTS.md` and affected Task instructions aligned when findings or decisions change them. It updates affected requirements and Task fields before preparing further work, records pending decisions in the Tracker and preserves consequential decisions with their reasons in Memory.
 
-Contained corrections to a Task, dependency, Spec point or Rule may proceed without approval. Changes to several Tasks, design direction, scope, Stages or overall structure need the User. Several small changes together can also need approval. If the change needs new design decisions or repeated follow-ups cannot resolve it, present options for continuing or stopping to replan; the User decides.
+Contained corrections to a Task, dependency or Spec point may proceed without approval. Workspace convention changes follow User authorization. Changes to several Tasks, design direction, scope, Stages or overall structure need the User. Several small changes together can also need approval. When new design decisions are needed or repeated follow-ups cannot resolve the issue, the Manager presents options for continuing or stopping to replan; the User decides.
 
 Corrections to unreported active work preserve the current dispatch and progress. Reported attempts use review and follow-up Tasks. The User delivers both through the Message Bus.
 
@@ -76,7 +78,7 @@ Workers are identified by their bus-folder slugs. Skills resolve supplied IDs to
 
 ## 5. State and Memory
 
-The Tracker is the Manager's live record of Task states, next actions, branches, worktrees and Worker context. Each Task links to its latest reported log. Memory preserves original and follow-up Task Logs, Stage summaries, Handoff Logs and lasting findings. The Index links to Stage summaries and the specific evidence behind lasting findings. Runtime formats define their fields and organization.
+The Tracker is the Manager's live record of Task states, next actions, branches, worktrees and Worker context. Each Task links to its latest reported log. Memory preserves original and follow-up Task Logs, Stage summaries, Handoff Logs and lasting findings. Tracker Notes hold current coordination needs and pending decisions. Index Notes preserve findings useful to later work, linked to Stage summaries and supporting evidence. Pending actions link to lasting findings rather than duplicating them; Tracker notes are removed when preserved durably and no longer needed for coordination. Runtime formats define their fields and organization.
 
 A Worker reports Success, Partial or Failed; the Manager decides whether the Task becomes Done. Tasks stay Active during investigation, follow-up or pending decisions. Done is final: later fixes need new Tasks referring to the original work.
 
@@ -92,7 +94,7 @@ Worker conversation numbers change at Handoff, not recovery. The Tracker records
 
 ### 6.1 Context Gathering
 
-The Planner surveys repositories, instructions and existing materials. The User's opening context may establish which documents and archives are authoritative; otherwise the Planner asks before reading discovered planning materials. It researches relevant codebases and confirmed archives, then follows three question rounds:
+The Planner surveys repositories, instructions and existing materials. The Planner may read relevant materials within its scope; the User's instructions and current evidence establish which sources govern the session. Unclear or conflicting source authority requires clarification. It researches relevant codebases and archives, then follows three question rounds:
 
 1. Existing materials, vision and scope.
 2. Technical requirements, constraints, dependencies and success criteria.
@@ -106,11 +108,11 @@ Agree the session's scope before the understanding summary. Investigate enough t
 
 ### 6.2 Work Breakdown
 
-Carry the gathered choices into the Spec, Plan and Rules. Propose, write and obtain approval for each before starting the next. Apply corrections to affected earlier documents.
+The Planner writes the Spec and Plan in order, obtaining approval for each, then resolves any needed `AGENTS.md` updates with the User. Corrections carry through to affected earlier documents.
 
 Workers group work by expertise and context, weighing specialization against the context sharing and coordination it requires. Stages mark milestones chosen around dependencies and review points. Each Task defines work one Worker can carry out and report for review, with a clear output and validation. Task boundaries depend on size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share a Task or need separate Tasks. Parallelism follows the work's dependencies and constraints. Steps are operations toward the Task's output.
 
-Validation names observable checks and expected results, including required User actions. Preserve existing workspace instructions and import `AGENTS.md` from an existing workspace `CLAUDE.md`.
+Validation names observable checks and expected results, including required User actions. Updates to `AGENTS.md` preserve preexisting content except for authorized changes; existing workspace `CLAUDE.md` files import `AGENTS.md`.
 
 ## 7. Implementation
 
@@ -134,7 +136,7 @@ The Worker confirms its identity, handles any Handoff and starts its waiting pro
 
 Success requires the objective and every validation criterion to pass. A deliberate deviation or unrun check is not a pass. In a batch, validate and log each Task before the next; stop at the first Failed outcome and report unstarted Tasks.
 
-Apply User corrections immediately. At completion, ask whether corrections to shared execution practices should become Rules. Update the existing workspace Rules, using the assigned branch or worktree copy when tracked in the Task's repository. Commit those tracked additions with the Task; record every approved addition and its path in Important Findings.
+The Worker applies User corrections immediately and resolves whether they should persist in `AGENTS.md` at completion, using existing User instructions or asking when that decision remains open. Other findings may also prompt proposed additions or corrections. Authorized changes use the assigned branch or worktree when tracked and are committed with the Task. Important Findings record the changes and their paths.
 
 The Worker commits, writes the Task Log, clears its Task Bus and writes a Task Report pointing to that attempt's log. Follow-up logs leave earlier attempts unchanged, link to the original and previous follow-up, and record new work, validation and the resolution of earlier findings. Outcomes still assess the whole Task, including unresolved earlier criteria. The Worker tells the User how to deliver the report, then waits.
 

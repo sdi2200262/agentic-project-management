@@ -2,6 +2,4 @@
 
 ## Overview
 
-## Workspace
-
 ## Notes

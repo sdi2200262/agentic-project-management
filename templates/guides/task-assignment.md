@@ -2,7 +2,7 @@
 
 This guide covers Task Assignment: choosing which Ready Tasks to send and how, writing their Task Prompts, preparing branches and worktrees, and delivering the prompts through the Message Bus. `{GUIDE_PATH:task-review}` covers the reports that come back.
 
-A Worker works from its Task Prompts, the Rules and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
+A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
 
 ## 1. Dispatch
 
@@ -10,18 +10,18 @@ A Worker works from its Task Prompts, the Rules and its own conversation. Each T
 2. Group them by Worker. A Worker takes one dispatch at a time: send it a new dispatch only after its current Task or batch has been reviewed. Corrections to an active Task use §5.1 instead. Then choose the dispatch:
    - **Single dispatch:** one Task to one Worker.
    - **Batch dispatch:** several Tasks to the same Worker, executed in order. A batch may be a chain whose dependencies are inside the batch or already Done, or independent Tasks that are all Ready. Keep batches to 2–3 Tasks. Send a chain's Tasks one at a time when other Workers wait on its intermediate results.
-   - **Parallel dispatch:** Tasks or batches to different Workers at the same time, when no unresolved Cross-Worker dependency links them and version control gives each Worker its own worktree. Suggest tool approvals that keep parallel Workers from waiting on the User.
+   - **Parallel dispatch:** Tasks or batches to different Workers at the same time, when no unresolved Cross-Worker dependency links them and version control gives each Worker its own worktree.
 3. Wait for a pending report only when it is the only one outstanding and would make a Waiting Task Ready for a Worker you are about to dispatch. Otherwise dispatch what is Ready.
 4. If nothing is Ready while Workers are busy, tell the User what you are waiting for and which report to bring next, preferring one that unblocks other work.
 5. Prepare each Task per §2.
 
 ## 2. Task Context
 
-Before writing a prompt, resolve conflicting objectives, instructions and validation in the Spec, Plan and Rules per `{GUIDE_PATH:task-review}` §4. Include prerequisite versions, configuration constraints and accepted exceptions where they affect the Task.
+Before writing a prompt, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Include prerequisite versions, configuration constraints and accepted exceptions where they affect the Task.
 
 Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's Task entry:
 
-1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker, Index or other Workers' logs. Workers read the Rules directly.
+1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker, Index or other Workers' logs. Workers read `AGENTS.md` directly.
 2. For code, name the path and what to do with it, such as "Read `src/api/routes.py` and use its error response schema."
 3. Keep the instructions on the Task. Leave out Stage structure, other Task IDs and coordination concepts, except a producer Task's ID where it identifies dependency context.
 4. If the Plan lists dependencies, write Context from Dependencies:
@@ -35,7 +35,7 @@ Reread the Spec at the first dispatch of a Stage and after any change to it.
 
 ## 3. Version Control
 
-With version control, follow the base branches and branch naming in the Spec's Workspace section and commit conventions in the Rules. Name a repository's conventions in the Task Prompt when they differ from the others.
+With version control, follow repository conventions in `AGENTS.md` and session-specific Git setup and constraints in the Spec. Name a repository's conventions in the Task Prompt when they differ from the others.
 
 1. Merge any producer branch the Task needs before you create its branch.
 2. Create one branch per single or batch dispatch, from the repository's base branch. A batch shares one branch.
@@ -43,9 +43,9 @@ With version control, follow the base branches and branch naming in the Spec's W
 4. Name branches after the actual work.
 5. Record the branch, any worktree and Next Action in the Task's row in the Tracker.
 
-Workers commit; you create branches and worktrees, merge them and clean up. Push only when the User asks. Do not commit generated build files; update `.gitignore` when needed. In a worktree, every `.apm/` path still points to the workspace root, so the prompt's Workspace section says so.
+Workers commit; you create branches and worktrees, merge them and clean up. Do not commit generated build files; update `.gitignore` when needed. In a worktree, every `.apm/` path still points to the workspace root, so the prompt's Workspace section says so.
 
-If the User enables version control later, agree Git setup and record it in the Spec's Workspace section, with commit conventions in the Rules. Initialize missing repositories with approval. Without version control, parallel dispatch is unavailable.
+If the User enables version control later, agree Git setup and record session setup and constraints in the Spec, resolving any needed convention changes in `AGENTS.md` under existing User authorization. Apply the agreed setup. Without version control, parallel dispatch is unavailable.
 
 ## 4. Delivery
 

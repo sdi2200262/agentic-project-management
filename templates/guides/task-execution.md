@@ -34,7 +34,7 @@ Do not start the work while a dependency's output is missing or fails its integr
 
 ## 3. Execution
 
-Follow the Instructions in order, applying the Rules toward the Objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
+Follow the Instructions in order, applying `AGENTS.md` toward the Objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
 
 When an instruction needs the User to act, say what is needed and why, offer the options and wait for the result.
 
@@ -62,16 +62,18 @@ Run every check in the prompt's Validation section. Never replace a check you ca
 2. When they pass, ask the User for any check that needs their judgement or an outside action. Say what the result is, where the deliverable is, what to check and what to report back. Wait for the answer, and handle any problem it reveals through §3.1.
 3. Ask for missing resources when you need them. If the User says a required check or resource is not available, the outcome is Partial; state what remains.
 
-Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, Rules and prompt instructions for guidance.
+Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, instructions and rules in `AGENTS.md` and the Task Prompt for guidance.
 
-## 5. Rules Updates
+## 5. AGENTS.md Updates
 
-Apply User corrections immediately. At completion, ask whether corrections to shared execution practices should become Rules, and wait for the answer. Add approved corrections inside `APM_RULES` in the workspace-root `AGENTS.md` you read at initiation. If that file is tracked in the Task's repository, update its copy on your assigned branch or worktree and commit it with the Task; otherwise update the shared file at its actual path. Reread it before editing and preserve other content. Log the correction, file path and User's decision under Important Findings.
+Apply User corrections immediately. At completion, check whether the User has asked to retain corrections to workspace practices in `AGENTS.md`; if that decision remains open, ask and wait for the answer. You may also suggest additions or corrections when findings reveal a durable convention or outdated guidance. Apply changes under the User's authorization. Keep Task-specific requirements in the assignment and report planning implications to the Manager.
+
+Reread the file before editing. Fit authorized changes into the relevant sections, state their scope and preserve unrelated content. If tracked in the Task's repository, update the assigned branch or worktree copy and commit it with the Task; otherwise update the shared file at its actual path. Record the change, path and User's decision under Important Findings.
 
 ## 6. Completion
 
 1. Tell the User the outcome, the deliverables, how you validated them, and any important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 2. For corrections that apply to later Tasks, follow §5.
-3. With version control, commit your work on the assigned branch, following the commit conventions in the Rules. A large Task may also have intermediate commits, each a coherent change. Do not create branches, manage worktrees, merge or push; the Manager does that.
+3. With version control, commit your work on the assigned branch, following the commit conventions in `AGENTS.md`. A large Task may also have intermediate commits, each a coherent change. Do not create branches, manage worktrees, merge or push; the Manager does that.
 
 Then write the Task Log and Task Report per `{GUIDE_PATH:task-logging}`.

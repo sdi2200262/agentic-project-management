@@ -33,7 +33,7 @@ Each procedure is a part of the workflow. The first six each have their own guid
 | Term | Performed by | Definition |
 |---|---|---|
 | **Context Gathering** | Planner | Exploring the workspace and questioning the User in three rounds, developing design and work-structure choices, settling this APM session's scope, and ending with a summary that the User approves. |
-| **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec, Plan and Rules, each approved separately. |
+| **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec and Plan, each approved separately, and proposing needed updates to `AGENTS.md`. |
 | **Task Assignment** | Manager | Choosing which work to send next and to which Worker, and writing its instructions. |
 | **Task Execution** | Worker | Carrying out assigned work, validating it and fixing what fails. |
 | **Task Logging** | Worker | Recording the outcome of assigned work and reporting it to the Manager. |
@@ -50,7 +50,6 @@ The Planner writes these during Work Breakdown, in this order.
 |---|---|---|
 | **Spec** | What to build: design decisions and constraints. | `.apm/spec.md` |
 | **Plan** | How the work is divided, ordered and assigned to Workers, with validation criteria and dependencies. | `.apm/plan.md` |
-| **Rules** | Shared conventions for Worker execution. They are kept in the `APM_RULES` block of `AGENTS.md`. | Workspace root |
 
 ---
 
