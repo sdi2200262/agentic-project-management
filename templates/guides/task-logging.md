@@ -1,6 +1,6 @@
 # APM {VERSION} - Task Logging Guide
 
-This guide covers what you record when an attempt ends: the Task Log, the record of the work, and the Task Report, a short message that gives the Manager its outcome and log path. The Manager reviews the result and decides what happens next. Later conversations, including your own after a Handoff, continue from these records.
+This guide covers recording Task outcomes in a Task Log and delivering its outcome through a Task Report when required by your role. Later conversations, including your own after a Handoff, continue from these records.
 
 ## 1. Outcome
 
@@ -18,12 +18,12 @@ When you are unsure which status applies, choose Partial and state what remains.
 
 ## 2. Important Findings
 
-Set `important_findings: true` when the status is Partial or Failed, or when the Manager needs to know something beyond the Task's result:
+Set `important_findings: true` when the status is Partial or Failed, or when a finding affects acceptance or later work beyond the Task's result:
 
 - remaining work, blockers or unmet criteria
-- a deviation from the Task Prompt, or a choice it left open that affects the result, with your reason
+- a deviation from the Task instructions, or a choice it left open that affects the result, with your reason
 - a hard problem you solved or an approach that did not work, when it may matter to later work
-- information the prompt lacked that may affect other work, such as a new dependency, risk or constraint
+- information the Task instructions lacked that may affect other work, such as a new dependency, risk or constraint
 - a conflict with existing code or conventions, a breaking change or a needed migration
 - a User correction affecting later work; state the correction and any authorized `AGENTS.md` update
 
@@ -31,9 +31,9 @@ When you are unsure, set it to true. Write the findings in the Task Log's Import
 
 ## 3. Logging
 
-Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense to the Manager with access to the workspace and files.
+Write the Task Log per §5.1, using the assigned `log_path` when provided. Write from your role's perspective and the context available to you. The log must make sense to a later reader with access to the workspace and files.
 
-- Describe the result and its evidence.
+- Describe the result and the evidence you checked, identifying contributions made by others. Include coordination decisions only when they explain the result, validation or remaining work.
 - Point to deliverables by path. Include code or diagnostic output only when it explains a consequential finding.
 - Keep the checks you ran apart from claims you did not verify. Preserve comparison counts and distinguish checks run live, run in isolation and not run. For example, 45 of 47 matching responses plus 13 matching probes is not full parity.
 - For a follow-up, leave earlier logs unchanged. Link the original log and previous follow-up, if any. Record the new work and checks, which earlier findings were resolved and which remain. Refer to earlier evidence that still applies rather than repeating it.
@@ -41,7 +41,7 @@ Write the Task Log at the prompt's `log_path` per §5.1. The log must make sense
 
 ## 4. Reporting
 
-After the Task, or the whole batch, has ended:
+When your role requires a Task Report, send it after the Task or whole batch has ended:
 
 1. Clear `.apm/bus/<agent-slug>/task.md`.
 2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Include deviations, unmet checks and decisions needed; keep the detail in the Task Logs.
@@ -52,11 +52,11 @@ After the Task, or the whole batch, has ended:
 
 ### 5.1 Task Log Format
 
-Write at the prompt's `log_path`. The original log is `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`; follow-ups use `task-<NN>-<MM>.followup-<FF>.log.md` in the same folder. The Manager assigns `<FF>`, numbered 01, 02 and onward for each Task, independently of conversation numbers.
+The original log is `.apm/memory/stage-<NN>/task-<NN>-<MM>.log.md`; follow-ups use `task-<NN>-<MM>.followup-<FF>.log.md` in the same folder. The Manager chooses the next unused `<FF>`, numbered 01, 02 and onward for each Task, independently of conversation numbers.
 
 ```markdown
 ---
-agent: <agent-slug>
+agent: <worker-slug or manager>
 conversation: <number>
 stage: <N>
 task: <M>
@@ -81,7 +81,7 @@ important_findings: true | false
 <Only when important_findings is true, per §2>
 ```
 
-`conversation` is your conversation number: 1 from initiation, or the number the Handoff Prompt gave you after a Handoff.
+`agent` identifies the author: the responsible Worker slug or `manager`. `conversation` is your conversation number: 1 from initiation, or the number the Handoff Prompt gave you after a Handoff.
 
 ### 5.2 Task Report Format
 

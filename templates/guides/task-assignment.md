@@ -6,7 +6,7 @@ A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each
 
 ## 1. Dispatch
 
-Read each Ready Task's Agent field. For Tasks marked `manager`, use their Plan entries and the relevant Spec, dependency evidence and current coordination context directly; prepare its workspace per §3. For Worker assignments, follow the dispatch steps below.
+Read each Ready Task's Agent field. For a Task marked `manager`, prepare its workspace per §3, mark it Active in the Tracker and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. For Worker assignments, follow the dispatch steps below.
 
 Use the Plan's coordination preferences and current User instructions when choosing dispatches and batch sizes, balancing progress with the User's understanding and control. Follow agreed review points and reassess them when work grows or changes, especially after a long stretch without User involvement. When review would help confirm direction before substantial further work, present the results and recommend pausing for feedback.
 
@@ -42,8 +42,8 @@ Reread the Spec at the first dispatch of a Stage and after any change to it.
 With version control, follow repository conventions in `AGENTS.md` and session-specific Git setup and constraints in the Spec. Name a repository's conventions in the Task Prompt when they differ from the others.
 
 1. Merge any producer branch the Task needs before you create its branch.
-2. Create one branch per single or batch dispatch, from the repository's base branch. A batch shares one branch.
-3. For sequential work, use the main working directory. For parallel dispatch, give each Worker its own worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`, with `<branch-slug>` the branch name with `/` replaced by `-`. Keep the main directory on the base branch and run at most four worktrees at once. A worktree holds tracked files only, so name any untracked files the Worker needs.
+2. Create one branch per single or batch dispatch, or per Task you undertake, from the repository's base branch. A batch shares one branch.
+3. For sequential work, use the main working directory. For parallel dispatch, give each Worker its own worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`, with `<branch-slug>` the branch name with `/` replaced by `-`. Keep the main directory on the base branch and run at most four worktrees at once. A worktree holds tracked files only, so name any untracked files the Worker needs. Give your own Task a separate worktree too when other work is running in the same repository.
 4. Name branches after the actual work.
 5. Record the branch, any worktree and Next Action in the Task's row in the Tracker.
 

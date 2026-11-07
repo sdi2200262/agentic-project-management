@@ -11,7 +11,7 @@ A Task Prompt has these sections:
 - **Output:** the deliverables.
 - **Validation:** the checks the work must pass.
 
-The Objective and Output are authoritative. When an instruction, prerequisite or assumption in the prompt looks wrong, check it against the codebase or other relevant sources, such as documentation. If that does not settle it, ask the User for direction. Then use what you learn to reach the Objective.
+The Objective and Output are authoritative. When a Task instruction, prerequisite or assumption looks wrong, check it against the codebase or other relevant sources, such as documentation. If that does not settle it, ask the User for direction. Then use what you learn to reach the Objective.
 
 ## 1. Task Receipt
 
@@ -46,7 +46,7 @@ When a check fails or the work does not behave as expected, investigate before f
 
 If the fix fails, causes new problems or leaves the cause unclear, investigate further. Use the error output, what you tried, relevant paths and expected and actual behavior to test a specific hypothesis before applying another targeted fix.
 
-Continue while attempts produce new evidence or close a validation gap within the Task. Ask the User when attempts repeat without progress, the remaining work substantially exceeds the assignment, or the prompt's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, what remains and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
+Continue while attempts produce new evidence or close a validation gap within the Task. Ask the User when attempts repeat without progress, the remaining work substantially exceeds the assignment, or the Task's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, what remains and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 
 ### 3.2 Batch Execution
 
@@ -56,17 +56,17 @@ Execute the Tasks in order, following §1 steps 3–5 for each, except that you 
 
 ## 4. Validation
 
-Run every check in the prompt's Validation section. Never replace a check you cannot run with a weaker one.
+Run every check in the Task's Validation section. Never replace a check you cannot run with a weaker one.
 
 1. Run all checks you can do on your own first. A failed or unclear result goes to §3.1.
 2. When they pass, ask the User for any check that needs their judgement or an outside action. Say what the result is, where the deliverable is, what to check and what to report back. Wait for the answer, and handle any problem it reveals through §3.1.
 3. Ask for missing resources when you need them. If the User says a required check or resource is not available, the outcome is Partial; state what remains.
 
-Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, instructions and rules in `AGENTS.md` and the Task Prompt for guidance.
+Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, instructions and rules in `AGENTS.md` and the Task instructions for guidance.
 
 ## 5. AGENTS.md Updates
 
-Apply User corrections immediately. At completion, check whether the User has asked to retain corrections to workspace practices in `AGENTS.md`; if that decision remains open, ask and wait for the answer. You may also suggest additions or corrections when findings reveal a durable convention or outdated guidance. Apply changes under the User's authorization. Keep Task-specific requirements in the assignment and report planning implications to the Manager.
+Apply User corrections immediately. At completion, check whether the User has asked to retain corrections to workspace practices in `AGENTS.md`; if that decision remains open, ask and wait for the answer. You may also suggest additions or corrections when findings reveal a durable convention or outdated guidance. Apply changes under the User's authorization. Keep Task-specific requirements in the Task instructions and record planning implications under Important Findings.
 
 Reread the file before editing. Fit authorized changes into the relevant sections, state their scope and preserve unrelated content. If tracked in the Task's repository, update the assigned branch or worktree copy and commit it with the Task; otherwise update the shared file at its actual path. Record the change, path and User's decision under Important Findings.
 

@@ -35,8 +35,8 @@ Each procedure is a part of the workflow. The first six each have their own guid
 | **Context Gathering** | Planner | Exploring the workspace and questioning the User in three rounds, developing design and work-structure choices, settling this APM session's scope, and ending with a summary that the User approves. |
 | **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec and Plan, each approved separately, and proposing needed updates to `AGENTS.md`. |
 | **Task Assignment** | Manager | Choosing which work to start next, assigning it to a Worker or undertaking it itself, and preparing its context. |
-| **Task Execution** | Worker | Carrying out assigned work, validating it and fixing what fails. |
-| **Task Logging** | Worker | Recording the outcome of assigned work and reporting it to the Manager. |
+| **Task Execution** | Manager, Worker | Carrying out assigned work, validating it and fixing what fails. |
+| **Task Logging** | Manager, Worker | Recording a Task's outcome; Workers also report each attempt to the Manager. |
 | **Task Review** | Manager | Reviewing reported work, deciding the next action and updating the APM files. |
 | **Handoff** | Manager, Worker | Moving a role from its current conversation to a new one when context runs low or the User asks. The outgoing agent records what the incoming agent needs to continue. Each role's conversations are numbered, so a Handoff goes from Manager conversation 1 to Manager conversation 2. |
 
@@ -80,7 +80,7 @@ A Task depends on another when it needs that Task's output.
 
 ### Task outcomes
 
-The Worker records one outcome when it finishes a Task.
+The Manager records an outcome when concluding its Task; a Worker records one for each reported attempt.
 
 | Term | Definition |
 |---|---|
@@ -104,7 +104,7 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 
 | Term | Definition | Location |
 |---|---|---|
-| **Task Log** | The Worker's record of one attempt at a Task: outcome, validation, deliverables and findings. Follow-ups have separate numbered logs linked to earlier attempts. | `.apm/memory/stage-<NN>/`; filenames in Task Logging §5.1 |
+| **Task Log** | The responsible agent's record of the work: outcome, validation, deliverables and findings. The Manager writes one log when concluding its Task; Worker follow-ups have separate numbered logs linked to earlier attempts. | `.apm/memory/stage-<NN>/`; filenames in Task Logging §5.1 |
 | **Handoff Log** | The record a Manager or Worker conversation writes at its Handoff: what it did and the working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md` |
 | **Index** | The overview of the APM session's history: lasting findings with sources and a table of Stage outcomes linking to their summaries. | `.apm/memory/index.md` |
 | **Memory** | The APM session's work history and continuation context: Task outcomes, lasting findings, Stage summaries and Handoff Logs. | `.apm/memory/` |
@@ -134,6 +134,6 @@ These terms keep ordinary lowercase but have a fixed meaning in APM templates.
 |---|---|
 | **conversation** | One chat with a Manager, Worker or the Planner. It continues through compaction and recovery; only a Handoff starts the role's next numbered conversation. |
 | **recovery** | Rebuilding a Manager's or Worker's working context after compaction or a lost conversation. It keeps the role's conversation number. |
-| **follow-up Task** | A Task that Task Review sends back to the same Worker with a revised Task Prompt. It keeps its Task ID and stays Active. |
+| **follow-up Task** | Another Worker attempt at a Task after review, delivered through a revised Task Prompt. It keeps its Task ID and stays Active. |
 | **archive** | A snapshot of an APM session's `.apm/` files, stored in `.apm/archives/`. Archiving is optional; later sessions can use archives as context. |
 | **session summary** | An optional document, `.apm/session.summary.md`, describing an APM session's scope, outcomes, consequential findings, accepted limitations, open issues and current state. |

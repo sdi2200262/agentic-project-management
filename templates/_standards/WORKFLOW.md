@@ -12,7 +12,7 @@ APM coordinates a body of work through planning documents, Memory and a file-bas
 | Manager | Assign Tasks to Workers or undertake them, review results and maintain the APM files. | Spec, Plan, `AGENTS.md`, Tracker and Memory. |
 | Worker | Execute, validate and report assigned Tasks. | Task Prompts, `AGENTS.md` and its own conversation. |
 
-Workers do not read the Spec, Plan, Tracker or Index unless the User widens their scope. The Manager includes needed content in Task Prompts. Every role may use native subagents within its own scope; delegation is optional, and the parent verifies their findings. Native subagents are separate from APM Workers and bus delivery.
+Workers do not read the Spec, Plan, Tracker or Index unless the User widens their scope. The Manager includes needed content in Task Prompts. Every role may use native subagents within its own scope, and the parent verifies their findings. The Manager carries out its Tasks through subagent workers; substantial direct work requires a User request. Native subagents are separate from APM Workers and bus delivery.
 
 Responsibilities defined in role instructions and existing User authorization govern ordinary actions. Approval requests identify the proposed action and why it needs User agreement. Existing authorization avoids repeated requests, except for confirmation of destructive or irreversible actions and their consequences. Explicit workflow reviews and approval checkpoints remain in force.
 
@@ -78,9 +78,9 @@ Workers are identified by their bus-folder slugs. Skills resolve supplied IDs to
 
 ## 5. State and Memory
 
-The Tracker is the Manager's live record of Task states, next actions, branches, worktrees and Worker context. Each Task links to its latest reported log. Memory preserves original and follow-up Task Logs, Stage summaries, Handoff Logs and lasting findings. Tracker Notes hold current coordination needs and pending decisions. Index Notes preserve findings useful to later work, linked to Stage summaries and supporting evidence. Pending actions link to lasting findings rather than duplicating them; Tracker notes are removed when preserved durably and no longer needed for coordination. Runtime formats define their fields and organization.
+The Tracker is the Manager's live record of Task states, next actions, branches, worktrees and Worker context. Each Task links to its latest reported Worker log or concluding Manager log. Memory preserves original and follow-up Task Logs, Stage summaries, Handoff Logs and lasting findings. Tracker Notes hold current coordination needs and pending decisions. Index Notes preserve findings useful to later work, linked to Stage summaries and supporting evidence. Pending actions link to lasting findings rather than duplicating them; Tracker notes are removed when preserved durably and no longer needed for coordination. Runtime formats define their fields and organization.
 
-A Worker reports Success, Partial or Failed; the Manager decides whether the Task becomes Done. Tasks stay Active during investigation, follow-up or pending decisions. Done is final: later fixes need new Tasks referring to the original work.
+The responsible agent logs Success, Partial or Failed; the Manager decides whether the Task becomes Done. Tasks stay Active during investigation, follow-up or pending decisions. Done is final: later fixes need new Tasks referring to the original work.
 
 A Stage completes when all Tasks are Done, required Stage verification is resolved and, with version control, its branches are merged. Accepted Partial outcomes and unrun checks remain qualified in summaries.
 
@@ -130,7 +130,9 @@ Prompts name the working directory, branch/worktree and workspace root for `.apm
 
 ### 7.2 Execution and Logging
 
-**Runtime:** `apm-3-initiate-worker`, `task-execution.md` and `task-logging.md`.
+**Runtime:** `apm-2-initiate-manager`, `apm-3-initiate-worker`, `task-execution.md` and `task-logging.md`.
+
+The Manager reads all four implementation guides. It starts its own Tasks from the Plan, Spec and dependency evidence, and supplies subagent workers with the context, boundaries and checks needed for their contributions. It verifies their output, resolves validation gaps and writes the final Task Log itself. Its Tasks use `agent: manager` and its conversation number. Iteration and pauses remain part of the same Active Task; the Manager writes one log when concluding it. The Manager records completion directly after validation, keeps unfinished Tasks Active and obtains User agreement before accepting Partial work. Planning changes and merging follow Task Review.
 
 The Worker confirms its identity, handles any Handoff and starts its waiting prompt. It integrates dependencies, follows instructions, validates the work and investigates failures before making targeted fixes. Missing dependencies, unresolved instruction conflicts, repeated attempts without progress and work that substantially exceeds the assignment need guidance.
 
@@ -148,7 +150,7 @@ The Manager reviews each reported Task against its log and deliverables, includi
 
 Review results lead to acceptance, a follow-up or a planning change. Keep pending work Active, record the decision and update the Tracker. Merge accepted branches before dependent work and before the next Stage; clean up merged worktrees and branches.
 
-Verify the Stage when the User requested it, the Plan calls for it, or any Task needed a follow-up or reported Important Findings. Otherwise record why verification was skipped. Use relevant checks on the Stage's combined result, keep reference inputs separate from generated results, and preserve usable evidence paths through cleanup. Fixes to Done work need new Tasks. Resolve issues, write the Stage summary, link it in the Index and retain the context needed for later work.
+Verify the Stage when the User requested it, the Plan calls for it, or any Task needed a follow-up or recorded Important Findings. Otherwise record why verification was skipped. Use relevant checks on the Stage's combined result, keep reference inputs separate from generated results, and preserve usable evidence paths through cleanup. Fixes to Done work need new Tasks. Resolve issues, write the Stage summary, link it in the Index and retain the context needed for later work.
 
 ## 8. Continuity and Closure
 

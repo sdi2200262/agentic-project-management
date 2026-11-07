@@ -74,7 +74,7 @@ Reports arrive in any order. Review each as it comes, without waiting for unrela
 
 When every Task in a Stage is Done and no follow-up Task is pending:
 
-1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes call for it, or any of its Tasks needed a follow-up Task or reported Important Findings. Otherwise you may skip it and say so in the Stage summary.
+1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes call for it, or any of its Tasks needed a follow-up Task or recorded Important Findings. Otherwise you may skip it and say so in the Stage summary.
 2. To verify, use relevant checks on the Stage's combined result, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Keep reference inputs separate from generated results and preserve usable evidence paths through cleanup. Resolve contained verification questions yourself. Add a new Task for fixes to Done work, or ask the User when the required scope is unclear.
 3. Account for every consequential Important Finding: its resolution or acceptance, effects on other work, and source. Preserve unresolved or accepted limitations and unrun checks. Sort the Tracker's Notes: move findings with lasting value to the Index's Notes with sources, put Stage-specific findings and decisions into its summary, and keep notes the next Stage still needs.
 4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Then remove Tracker notes whose context is preserved there and no longer needed for ongoing work. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
@@ -106,16 +106,16 @@ Status values:
 
 - `Waiting: N.M`: a dependency is not Done. It may list several.
 - `Ready`: all dependencies are Done.
-- `Active`: dispatched, under review or awaiting a follow-up Task.
+- `Active`: started by the Manager, dispatched to a Worker, under review or awaiting a follow-up Task.
 - `Done`: final decision made. A Branch value means the branch still awaits merging.
 
 The Agent column uses the Plan's Worker slug or `manager`.
 
-Link each Task ID to the latest reported attempt's `log_path`; use a plain ID before its first report. A pending follow-up's destination stays in its Task Prompt until reported.
+Link each Task ID to the latest reported Worker attempt or completed Manager log; use a plain ID before either exists. A pending Worker follow-up's destination stays in its Task Prompt until reported.
 
 Next Action names what happens next and who must act when that is unclear: execute, await a report, review, resolve a decision, follow up or merge. Leave it empty when nothing remains. Keep the explanation of a broader blocker or decision in Notes rather than duplicating it here.
 
-Write each state and next action at the end of the review and dispatch cycle. A Task unblocked and dispatched in the same turn goes straight from Waiting to Active. A Task whose Worker is still busy, or that waits for a better dispatch, stays Ready.
+Write each state and next action at the end of the review and dispatch cycle. A Task unblocked and dispatched in the same turn goes straight from Waiting to Active. A Task whose responsible agent is still busy, or that waits for a better dispatch, stays Ready.
 
 ### 8.2 Tracker Format
 

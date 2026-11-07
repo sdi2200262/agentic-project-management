@@ -22,7 +22,9 @@ Read these files in full:
 - `.apm/memory/index.md`: lasting notes and Stage summaries.
 - `.apm/plan.md` and `.apm/spec.md`: the work and its design.
 - `AGENTS.md` at the workspace root, applicable scoped instructions and referenced guidance.
-- `{GUIDE_PATH:task-assignment}`: how to send Tasks.
+- `{GUIDE_PATH:task-assignment}`: how to prepare your work and Worker dispatches.
+- `{GUIDE_PATH:task-execution}`: shared execution, troubleshooting, validation and workspace-maintenance guidance in §§3–5. For your Tasks, apply it to the Plan and Spec directly.
+- `{GUIDE_PATH:task-logging}`: outcomes and Task Logs. Write your own logs after reviewing subagent results, using `agent: manager`, your conversation number and the paths in §5.1.
 - `{GUIDE_PATH:task-review}`: how to review them.
 - `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
 
@@ -49,13 +51,21 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 
 ## 2. Coordination Cycle
 
-1. Select Ready Tasks per `{GUIDE_PATH:task-assignment}`. For Worker dispatches, tell the User what to invoke in each Worker's chat.
+1. Select Ready Tasks per `{GUIDE_PATH:task-assignment}`. For Worker dispatches, tell the User what to invoke in each Worker's chat. Carry out your own Tasks per §2.1.
 2. When the User invokes `apm-5-check-reports` here, review each report per `{GUIDE_PATH:task-review}`, align affected documents per its §4, then dispatch what became Ready in the same turn.
 3. When a Stage completes, finish it per `{GUIDE_PATH:task-review}` §7 and start the next Stage.
 
 Continue until every Stage is complete, an agreed User review point is reached, the User needs to decide something, or the User asks for a Handoff.
 
 Watch for signs that a Worker is losing context: it says its context was compacted, repeats finished work, ignores `AGENTS.md`, or cites wrong paths or Task details. Tell the User when that Worker needs a Handoff or recovery. When the User asks for your own Handoff, follow `{SKILL_PATH:apm-6-handoff-manager}`.
+
+### 2.1 Your Tasks
+
+Check that required dependency outputs are available and usable before starting. Carry out the Task through subagent workers per §4. Review their outputs against the Task requirements, resolve remaining issues and validate the combined result. Consult dependency outputs and earlier logs where your context needs refreshing. Follow the shared execution and logging guidance loaded at initiation.
+
+Keep the Task Active while iterating or awaiting User direction. When concluding it, commit the work under the repository conventions, write its Task Log yourself and link it from the Tracker. Mark it Done when its objective and required checks are met, or the User agrees to accept a Partial result; record any remaining limits and the reason for acceptance. Changes to requirements or planned work follow `{GUIDE_PATH:task-review}` §4. Later fixes to Done work require a new Task.
+
+Merge completed work per `{GUIDE_PATH:task-review}` §5 and continue with ready work, presenting results at agreed review points. When progress needs User input, explain the issue and wait for their reply.
 
 ## 3. Session Completion
 
@@ -72,6 +82,8 @@ When every Stage is complete, or the User decides to stop early:
 
 ## 4. Subagents
 
-You may delegate focused work to native subagents. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
+Use subagent workers to carry out your Tasks, dividing the work as its needs require. Give each the relevant requirements, workspace instructions, paths, dependency context, accepted exceptions, permitted changes and expected evidence. Explain its contribution and what follows it. Keep delegated work within your scope, verify findings before relying on them and keep concurrent changes separate.
 
-Consider delegation for unclear findings, integration investigation, complex merges or independent verification. You decide acceptance, maintain document alignment and choose dispatches.
+Continue a subagent worker conversation when supported and useful; otherwise supply the context a new one needs. Judge familiarity from the context it retains. Native subagents are separate from APM Workers; bus messages still go through the User.
+
+You may also use subagents for research, reviewing Worker Tasks, investigating unclear findings, complex merges or independent verification. You decide acceptance, maintain document alignment and choose dispatches.
