@@ -2,9 +2,9 @@
 
 This guide covers Work Breakdown: developing the work structure during Context Gathering, turning the approved understanding into the Spec and Plan, and reviewing needed additions or changes to `AGENTS.md`. `{SKILL_PATH:apm-1-initiate-planner}` §4 covers what follows.
 
-The Manager reads the Spec and Plan and copies what each Worker-assigned Task needs into a self-contained Task Prompt. Workers read only their Task Prompts and `AGENTS.md`. Put requirements, design decisions and constraints in the Spec, work structure and Task detail in the Plan, and persistent workspace conventions in `AGENTS.md`. Preserve the context each assignment needs, with detail matched to the work's complexity. APM coordination procedures live in the role guides.
+The Manager prepares self-contained Worker Task Prompts from the Spec and Plan; Workers read those prompts and `AGENTS.md`. Match detail to the work’s complexity: requirements and design belong in the Spec, work structure in the Plan, and lasting workspace guidance in `AGENTS.md`.
 
-Both the Spec and the Plan place Notes after their introductory and reference material, before the main body. Spec Notes explain design assumptions and context; Plan Notes explain coordination choices for the Manager, which keeps both current during implementation. Settled requirements, constraints, dependencies and conventions belong in their authoritative sections; remove Notes made redundant by those sections.
+Both the Spec and the Plan place Notes after their introductory and reference material, before the main body. Spec Notes hold unresolved questions and assumptions; Plan Notes explain coordination across Tasks and refer to relevant Spec questions. The Manager keeps both current during implementation.
 
 ## 1. Review Cycle
 
@@ -18,24 +18,24 @@ Start the next document only after approval, so a problem in one document is cau
 
 ## 2. Spec
 
-The Spec says what is built and why: decisions where alternatives existed, and the constraints and requirements that shape the work. State these in the work's own terms. The Plan must implement every decision in it.
+The Spec says what is built and why: decisions where alternatives existed, and the constraints and requirements that shape the work. State these in the work's own terms. The Plan turns the agreed work into Tasks.
 
 1. Propose the design decisions, constraints, references to source documents and how you will organize them. Explain the choices and assumptions that matter.
 2. Write `.apm/spec.md` per §5.1:
-   - **Overview:** what this APM session builds.
-   - **Notes:** design assumptions, unresolved questions and context for work left to later sessions.
-   - **Design sections:** session requirements, design decisions and constraints, with their reasons and authoritative source paths and sections, organized so the Manager can find them and copy them into Task Prompts. Name working targets and references where they define this session's scope. Record the agreed Git setup and constraints for the session's repositories, including Git use, base branches and APM file tracking.
+   - **Opening:** the session’s goal, scope and success criteria, directly below the title.
+   - **Notes:** unresolved questions and assumptions. If later sessions were discussed, briefly record the work left for them and why.
+   - **Design sections:** session requirements, design decisions and constraints, with their reasons and authoritative source paths and sections, organized so the Manager can find them and copy them into Task Prompts. Name working targets and references where they define this session's scope. Record the agreed version-control arrangement, including work locations, commit and integration timing, and APM file tracking.
 
 System behavior, output formats, schemas and interface contracts belong in the Spec. Implementation approach that leaves a design decision unchanged goes in a Task's Guidance, operations go in steps, and durable workspace conventions go in `AGENTS.md`.
 
 ## 3. Plan
 
-The Plan divides the work into Stages and Tasks for the Manager or Workers, with dependencies, guidance, steps, output and validation, so the Manager can build self-contained Task Prompts from it.
+The Plan divides the work into ordered Stages and Tasks for the Manager or Workers, using the fields in §5.2.
 
 1. Carry forward the breakdown developed during Context Gathering. Propose or refine the Workers and their areas, the Stages and their deliverables, and the Tasks in each. Explain the boundaries, order and dependencies that matter.
 2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.
-3. Check the breakdown against the gathered context and the approved Spec: every decision has work, each Task's output has clear validation, assignments fit the work, Task sizes and review points match the agreed User involvement, and dependencies are consistent. A dependency on a Task with a different assigned agent is Cross-Worker. Fix what you find.
-4. Write `.apm/plan.md` per §5.2, with Notes explaining coordination preferences and review points, unresolved questions and anticipated difficulties, including shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification. Explain their effects on later work and name the Stages and checks involved. Keep explicit dependencies and validation criteria in Task fields; refer to Spec questions rather than repeating them.
+3. Check the breakdown against the gathered context and the approved Spec: all work agreed for this session is covered, each Task's output has clear validation, assignments fit the work, Task sizes and review points match the agreed User involvement, and dependencies are consistent. Same-Worker means both Tasks are assigned to the same agent; Cross-Worker means they are assigned to different agents, including the Manager. Fix what you find.
+4. Write `.apm/plan.md` per §5.2, with Notes explaining coordination preferences, review points and anticipated difficulties across Tasks, including shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification. Explain their effects on later work and name the Stages and checks involved. Keep explicit dependencies and validation criteria in Task fields; refer to Spec questions rather than repeating them. If later sessions were discussed, briefly record any agreed sequencing or prerequisites for that work, referring to the Spec for what it covers.
 5. When you ask for review, give a short overview of the Workers, Stages, Task counts and what can run in parallel.
 
 Break the work down by these principles:
@@ -51,9 +51,9 @@ Identify what can run independently and what must wait for earlier results. Disp
 
 ## 4. AGENTS.md
 
-Maintain `AGENTS.md` for the project and workspace across sessions: brief orientation, repository paths and working versus read-only reference boundaries, and applicable conventions for coding, testing and commits. Every Worker reads the whole file; its instructions must stand alone without requiring the Spec or Plan. Keep content concise and useful beyond this session, without duplicating existing guidance. The Manager and Workers maintain it as the project develops.
+Keep `AGENTS.md` useful across sessions, with brief project orientation, repository paths, working and read-only reference boundaries, and applicable workspace conventions. Every Worker reads the whole file; its instructions must stand alone without requiring the Spec or Plan. The Manager and Workers maintain it under User authorization as the project develops.
 
-1. Review existing `AGENTS.md` and any applicable guidance. Suggest additions where needed, or corrections when discovery reveals inconsistencies or outdated instructions. Explain the evidence for changes. If the file is missing, propose one with the project context and workspace instructions established during discovery.
+1. Review existing `AGENTS.md` and any applicable guidance. Propose concise additions or corrections that help future work, extending or replacing existing guidance where possible. Explain the evidence for changes. If the file is missing, propose one with the project context and workspace instructions established during discovery.
 2. Present the proposal and resolve decisions needing User agreement. Create or update `AGENTS.md`, then check it. Use clear sections, respecting existing organization and unrelated content where present. State orientation as facts and rules as direct instructions, with conditions where needed.{CLAUDE_ONLY: Add an import to an existing workspace `CLAUDE.md` unless it already has one: `@AGENTS.md` at the workspace root, or `@../AGENTS.md` in `.claude/CLAUDE.md`. Keep it outside code blocks and preserve preexisting content. If references would form a cycle, include its correction in the proposal.}
 
 Continue with `{SKILL_PATH:apm-1-initiate-planner}` §4.
@@ -67,11 +67,10 @@ The Spec is `.apm/spec.md`:
 ```markdown
 # APM Spec
 
-## Overview
 <In three to five sentences: what this APM session builds, the problem it solves, its scope and its success criteria>
 
 ## Notes
-<Assumptions, unresolved questions and context for the Manager per §2>
+<Questions, assumptions and any later-session work per §2>
 
 ## <Design Section>
 <Design decisions for one part of the work>
@@ -90,7 +89,7 @@ The Plan is `.apm/plan.md`.
 ```markdown
 # APM Plan
 
-<One or two sentences on what this APM session builds>
+<One or two sentences on how the work described in the Spec is divided, ordered and assigned, with a reference to the Spec>
 
 ## Workers
 
@@ -105,18 +104,18 @@ The Plan is `.apm/plan.md`.
 | 1 | <Name> | 1.1–1.3 | frontend-agent, backend-agent |
 
 ## Notes
-<Coordination considerations per §3 step 4, and work left for later sessions>
+<Coordination across Tasks and any later-session coordination per §3 step 4, referring to the Spec>
 
 ## Stage 1: <Name>
 
 ### Task 1.1: <Title>
 
-- **Agent:** <worker-slug or manager>
-- **Objective:** <The Task's goal in one sentence>
+- **Agent:** <worker-slug or manager responsible for the Task>
+- **Objective:** <What the Task must achieve>
 - **Dependencies:** <Task N.M (Same-Worker); Task N.M by <worker-slug or manager> (Cross-Worker); or None>
 - **Output:** <Concrete deliverables and paths>
-- **Validation:** <Observable checks and expected results for this output, and where the User is needed>
-- **Guidance:** <Task-specific constraints and approach, relevant findings, and Spec or source references>
+- **Validation:** <Checks and expected results that establish completion, including checks requiring the User>
+- **Guidance:** <Task-specific approach, relevant context and references, and agreed User participation or review points>
 
 1. <Step>
 2. <Step>
@@ -124,5 +123,5 @@ The Plan is `.apm/plan.md`.
 
 - The Workers table lists only Workers with separate conversations; omit its rows when none are needed.
 - Stage names reflect the Stage's areas and main deliverables. List only direct dependencies.
-- Each step is one operation the assigned agent can carry out or delegate to a subagent, in order, referring to patterns, files or earlier work where relevant. A research step states its question, sources and required evidence.
-- Guidance states technical context and approach in the work's own terms, adding only what the other fields and steps do not cover. Use short lists when several checks or findings need separate treatment.
+- Steps are ordered actions that produce and validate the deliverables, referring to patterns, files or earlier work where relevant. A research step states its question, sources and required evidence.
+- Put each detail in the field or step it serves. Refer to relevant Spec sections for requirements and design decisions.

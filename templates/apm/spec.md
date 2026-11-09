@@ -1,5 +1,3 @@
 # APM Spec
 
-## Overview
-
 ## Notes
