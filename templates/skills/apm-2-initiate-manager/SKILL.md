@@ -63,7 +63,7 @@ Watch for signs that a Worker is losing context: it says its context was compact
 
 ### 2.1 Your Tasks
 
-Check that required dependency outputs are available and usable before starting. Carry out the Task through subagent workers per §4. Review their outputs against the Task requirements, resolve remaining issues and validate the combined result. Consult dependency outputs and earlier logs where your context needs refreshing. Follow the shared execution and logging guidance loaded at initiation.
+Check that required dependency outputs are available and usable before starting. Carry out the Task through subagent workers per §4. Review their outputs against the Task requirements, resolve remaining issues and validate the combined result. Consult dependency outputs and earlier logs where your context needs refreshing. Follow the shared execution and logging guidance loaded at initiation, and consider independent review per `{GUIDE_PATH:task-review}` §2 before concluding substantial work.
 
 Keep the Task Active while iterating or awaiting User direction. When concluding it, commit the work under the repository conventions, write its Task Log yourself and link it from the Tracker. Mark it Done when its objective and required checks are met, or the User agrees to accept a Partial result; record any remaining limits and the reason for acceptance. Changes to requirements or planned work follow `{GUIDE_PATH:task-review}` §4. Later fixes to Done work require a new Task.
 
@@ -84,7 +84,7 @@ When every Stage is complete, or the User decides to stop early:
 
 ## 4. Subagents
 
-Use subagent workers to carry out your Tasks, dividing the work as its needs require. Give each the relevant requirements, workspace instructions, paths, dependency context, accepted exceptions, permitted changes and expected evidence. Explain its contribution and what follows it. Keep delegated work within your scope, verify findings before relying on them and keep concurrent changes separate.
+Use subagent workers to carry out your Tasks, dividing the work as its needs require. Give each subagent the relevant requirements, workspace instructions, paths, dependency context, accepted exceptions, permitted changes and expected evidence. Explain its contribution and what follows it. Keep delegated work within your scope, verify findings before relying on them and keep concurrent changes separate.
 
 Continue a subagent worker conversation when supported and useful; otherwise supply the context a new one needs. Judge familiarity from the context it retains. Native subagents are separate from APM Workers; bus messages still go through the User.
 
