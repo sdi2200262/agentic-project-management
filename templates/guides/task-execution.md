@@ -54,6 +54,14 @@ A batch Task Prompt sends several of your Tasks in one file, to run in order. It
 
 Execute the Tasks in order, following §1 steps 3–5 for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch at the first Failed outcome. When all Tasks are done or the batch stops, report per `{GUIDE_PATH:task-logging}` §4.
 
+### 3.3 Working with the User
+
+The User may perform a Task or part of it, take over while work is underway, or ask you to continue or finish it. You remain responsible for supporting them, validating the result and logging the Task.
+
+When the User takes over, stop your own and any subagents' overlapping work and preserve progress. Brief them on progress and pending checks. Stay available for help without taking over work they have kept.
+
+When the User returns work, check their changes and results against the Task requirements, then continue from the current state. Keep the same Task and attempt throughout these changes.
+
 ## 4. Validation
 
 Run every check in the Task's Validation section. Never replace a check you cannot run with a weaker one.

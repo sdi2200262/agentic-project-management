@@ -136,6 +136,8 @@ The Manager reads all four implementation guides. It starts its own Tasks from t
 
 The Worker confirms its identity, handles any Handoff and starts its waiting prompt. It integrates dependencies, follows instructions, validates the work and investigates failures before making targeted fixes. Missing dependencies, unresolved instruction conflicts, repeated attempts without progress and work that substantially exceeds the assignment need guidance.
 
+The User may perform any Task or part, take over during execution, and return work to its responsible agent at any time. That agent briefs and supports the User, stops overlapping execution, checks returned work and remains responsible for validation and logging. Limited help does not transfer the rest of the work. Current participation and the resume point belong in the Manager’s Tracker or the Worker’s current Task Prompt; the Task Log records contributions and consequential changes in who performed the work. Participation changes preserve the assignment, Task state and current attempt.
+
 Success requires the objective and every validation criterion to pass. A deliberate deviation or unrun check is not a pass. In a batch, validate and log each Task before the next; stop at the first Failed outcome and report unstarted Tasks.
 
 The Worker applies User corrections immediately and resolves whether they should persist in `AGENTS.md` at completion, using existing User instructions or asking when that decision remains open. Other findings may also prompt proposed additions or corrections. Authorized changes use the assigned branch or worktree when tracked and are committed with the Task. Important Findings record the changes and their paths.

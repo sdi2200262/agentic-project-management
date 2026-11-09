@@ -57,6 +57,8 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 
 Continue until every Stage is complete, an agreed User review point is reached, the User needs to decide something, or the User asks for a Handoff.
 
+When the User takes on or returns work, follow `{GUIDE_PATH:task-execution}` §3.3. Record the current arrangement and resume point in the Tracker’s Next Action, with supporting context in Notes. For a Worker’s Task, direct the User to that Worker’s chat to arrange the change.
+
 Watch for signs that a Worker is losing context: it says its context was compacted, repeats finished work, ignores `AGENTS.md`, or cites wrong paths or Task details. Tell the User when that Worker needs a Handoff or recovery. When the User asks for your own Handoff, follow `{SKILL_PATH:apm-6-handoff-manager}`.
 
 ### 2.1 Your Tasks

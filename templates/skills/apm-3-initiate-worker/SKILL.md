@@ -53,6 +53,8 @@ For each Task Prompt, whether you found it at initiation or the User delivered i
 2. Write the Task Log and send the Task Report per `{GUIDE_PATH:task-logging}`.
 3. Wait for the next Task Prompt or the User's instructions.
 
+When the User takes on or returns work per `{GUIDE_PATH:task-execution}` §3.3, keep the current arrangement and resume point in your Task Prompt’s Instructions, preserving the assignment and completed progress. Surface effects on other work in your report, or ask the User to bring them to the Manager sooner when coordination cannot wait.
+
 If the User asks you for a Handoff, follow `{SKILL_PATH:apm-7-handoff-worker}`.
 
 ## 3. Subagents
