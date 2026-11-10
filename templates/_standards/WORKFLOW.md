@@ -14,7 +14,7 @@ APM coordinates a body of work through planning documents, Memory and a file-bas
 
 Workers do not read the Spec, Plan, Tracker or Index unless the User widens their scope. The Manager includes needed content in Task Prompts. Every role may use native subagents within its own scope, and the parent verifies their findings. The Manager carries out its Tasks through subagent workers; substantial direct work requires a User request. Native subagents are separate from APM Workers and bus delivery.
 
-Responsibilities defined in role instructions and existing User authorization govern ordinary actions. Approval requests identify the proposed action and why it needs User agreement. Existing authorization avoids repeated requests, except for confirmation of destructive or irreversible actions and their consequences. Explicit workflow reviews and approval checkpoints remain in force.
+Role instructions, applicable workspace instructions and permissions agreed with the User govern actions. Approval requests identify the proposed action and why it needs User agreement. Existing authorization avoids repeated requests, except for confirmation of destructive or irreversible actions and their consequences. Required workflow approvals and agreed review points remain in force.
 
 ## 2. Phases
 
@@ -24,7 +24,7 @@ The Planner reads both planning guides at initiation and develops design and wor
 
 ### 2.2 Implementation
 
-The Manager explores the working codebases, confirms its understanding with the User and starts dispatching under the approved planning decisions. Each Task passes through assignment, execution, logging and review. Stages run in order; Tasks within a Stage may run singly, in batches or in parallel.
+The Manager explores the working codebases, confirms its understanding with the User and starts dispatching under the approved planning decisions. Workers report attempts for Manager review; the Manager concludes its own Tasks after reviewing and validating subagent work. Stages run in order. The Manager may coordinate its Tasks sequentially or concurrently; Worker dispatches may be single, batch or parallel.
 
 Implementation ends when every Stage is complete or the User stops early. The Manager records the state, reports the outcome and offers a summary and archive. A large goal may span several APM sessions; the Planner agrees each session's scope with the User.
 
@@ -32,25 +32,25 @@ Implementation ends when every Stage is complete or the User stops early. The Ma
 
 ### 3.1 Spec
 
-`.apm/spec.md` defines scope, required behavior, design decisions and constraints. It describes this session, with authoritative sources and reasons alongside requirements. Notes hold design assumptions and unresolved questions. The Manager maintains it and copies relevant requirements into Task Prompts.
+`.apm/spec.md` defines scope, required behavior, design decisions and constraints. Its opening states the session’s goal, scope and success criteria; its subject sections keep authoritative sources and reasons alongside requirements and decisions. Notes hold design assumptions and unresolved questions, with brief context on work left for later sessions when discussed. The Manager maintains it and copies relevant requirements into Task Prompts.
 
 ### 3.2 Plan
 
-`.apm/plan.md` divides deliverables into Workers, ordered Stages and Tasks. Each Task has an objective, assigned agent (`manager` or a Worker slug), dependencies, output, validation, guidance and steps. Dependencies are marked Same-Worker or Cross-Worker. Its Notes hold coordination preferences and review points, shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification needs. The Manager uses the Plan to prepare dispatches.
+`.apm/plan.md` opens with how the work described in the Spec is divided, ordered and assigned, referring to the Spec, then includes Workers and Stages tables before the Task detail. Each Task has an objective, assigned agent (`manager` or a Worker slug), dependencies, output, validation, guidance and steps. Dependencies identify earlier Task outputs, marked Same-Worker for the same assigned agent and Cross-Worker for different agents, including the Manager. Guidance holds Task-specific approach, context, references and agreed participation or review points; steps hold actions and Validation holds checks. Its Notes hold coordination preferences and review points, shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification needs. When later sessions were discussed, Notes briefly record agreed sequencing or prerequisites, referring to the Spec for the work involved. The Manager uses the Plan to prepare dispatches.
 
 ### 3.3 AGENTS.md
 
-`AGENTS.md` holds project orientation, working and read-only repository boundaries, and applicable workspace conventions across sessions. All agent roles read it. The Planner proposes needed additions or corrections to preexisting content; the Manager and Workers maintain it as work reveals durable conventions. Content stays concise and useful beyond the current session, without duplicating existing guidance. Orientation states facts; instructions identify the actions or areas to which they apply. Changes follow User authorization and preserve unrelated content.
+`AGENTS.md` holds project orientation, working and read-only repository boundaries, and applicable workspace conventions across sessions. All agent roles read it. The Planner proposes needed additions or corrections to preexisting content; the Manager and Workers maintain it as work reveals durable conventions. Add or revise guidance when it helps future work in the workspace, extending or replacing existing guidance where possible and keeping additions concise. Orientation states facts; instructions identify the actions or areas to which they apply. Changes follow User authorization and preserve unrelated content.
 
 For Claude, existing workspace `CLAUDE.md` files import `AGENTS.md` outside code blocks, preserving preexisting content and avoiding circular references.
 
 ### 3.4 Version Control
 
-The Planner surveys Git state and agrees Git use, base branches, branch and commit conventions, and APM file tracking during Context Gathering. It proposes existing conventions, or `type/short-description` branches and `type: description` commits. Durable repository conventions belong in `AGENTS.md`, session-specific Git setup and constraints in the Spec, and current branches/worktrees in the Tracker.
+The Planner checks repository history and workspace instructions, proposes a version-control arrangement suited to the work and User preferences, explains changes to existing conventions and asks whether it meets the User’s needs. The agreement covers Git use, work locations, commit and integration timing, and APM file tracking. Durable conventions belong in `AGENTS.md`, the session arrangement in the Spec, coordination implications in the Plan, and live locations and actions in the Tracker.
 
-Each dispatch gets a branch; parallel Workers also get separate worktrees. Workers commit; the Manager creates branches, merges and cleans up.
+The Manager prepares workspaces and handles integration and cleanup under the agreement. Parallel Tasks in the same repository need separate worktrees, including Manager Tasks. APM-managed worktrees stay under `.apm/worktrees/`. Required dependency outputs, including uncommitted and untracked files, must be usable in the assigned workspace. Without version control, parallel Worker dispatch is unavailable.
 
-When `.apm/` is inside a repository, the Planner proposes ignoring it by default and asks whether the User wants APM files tracked. If version control is declined, parallel dispatch is unavailable.
+Commits follow the agreed conventions and timing and may cover several Tasks. Logs record relevant commits and uncommitted work. Branches and worktrees may serve several Tasks or Stages; acceptance is independent of their lifecycle. Remove them only when no longer needed and their work is preserved. The Tracker’s Branch and Worktree columns locate work. A Task may be Done, including with any explicitly accepted Partial outcome, while integration or cleanup remains pending. Record remaining limitations and pending integration or cleanup explicitly in Tracker Notes and keep Next Action current. Notes also retain shared arrangements while needed.
 
 ### 3.5 Planning Changes
 
@@ -58,7 +58,7 @@ The Manager keeps the Spec, Plan, `AGENTS.md` and affected Task instructions ali
 
 Contained corrections to a Task, dependency or Spec point may proceed without approval. Workspace convention changes follow User authorization. Changes to several Tasks, design direction, scope, Stages or overall structure need the User. Several small changes together can also need approval. When new design decisions are needed or repeated follow-ups cannot resolve the issue, the Manager presents options for continuing or stopping to replan; the User decides.
 
-Corrections to unreported active work preserve the current dispatch and progress. Reported attempts use review and follow-up Tasks. The User delivers both through the Message Bus.
+When changes affect ongoing work, the Manager checks their effects and coordinates any needed adjustment with whoever performs it, arranging a pause when needed. It carries forward User agreements and resolves further approvals. Corrections preserve valid progress, Task identity, current attempt and workspace. The Manager updates its subagents directly, the User delivers Worker corrections through the Message Bus, and User-performed portions are coordinated with the User. Reported Worker attempts use review and follow-up Tasks.
 
 ## 4. Communication
 
@@ -82,11 +82,11 @@ The Tracker is the Manager's live record of Task states, next actions, branches,
 
 The responsible agent logs Success, Partial or Failed; the Manager decides whether the Task becomes Done. Tasks stay Active during investigation, follow-up or pending decisions. Done is final: later fixes need new Tasks referring to the original work.
 
-A Stage completes when all Tasks are Done, required Stage verification is resolved and, with version control, its branches are merged. Accepted Partial outcomes and unrun checks remain qualified in summaries.
+A Stage completes when its Tasks are Done and its required integration and verification are complete. Accepted Partial outcomes and unrun checks remain qualified in summaries.
 
-Workers flag Important Findings that affect acceptance or later work. Partial and Failed outcomes always have Important Findings. The Manager resolves their effects on planning and records the decision. Summaries preserve consequential findings, decisions, evidence and limitations with source links.
+Agents flag Important Findings that affect acceptance or may matter to later work, separating evidence from uncertainty. Partial and Failed outcomes always have Important Findings. The Manager resolves their effects on planning and records the decision. Summaries preserve consequential findings, decisions, evidence and limitations with source links.
 
-Worker conversation numbers change at Handoff, not recovery. The Tracker records earlier-Stage Tasks a new Worker conversation has not read; their dependencies count as Cross-Worker. Recovery notes identify when rebuilt context may need fuller dependency instructions.
+Worker conversation numbers change at Handoff, not recovery. The Tracker records earlier-Stage Tasks a new Worker conversation has not read and context gaps after recovery. These notes guide context restoration without changing dependency labels.
 
 ## 6. Planning
 
@@ -102,15 +102,17 @@ The Planner surveys repositories, instructions and existing materials. The Plann
 
 Each round includes an exchange with the User, follow-up research, a summary and an open question. Initial context does not skip a round. The Planner resolves gaps needed to define the work or agrees how planned work will settle them, and confirms consequential assumptions. When several designs are viable, it presents trade-offs and a recommendation for the User to choose.
 
-The Planner may propose tentative Stages, Tasks and Workers during questioning and ask about Task size, available agents, parallelism and review points. It revises the breakdown as it learns and agrees repository conventions with the User. Its recommendations balance efficient Manager work through subagent workers with Worker collaboration that preserves User understanding and control, guided by the User's priorities and desired involvement. It asks whether the User wants to perform any Tasks or parts and agrees review points around consequential results and substantial stretches without User involvement. The Manager chooses actual dispatches during implementation.
+The Planner develops tentative Stages, Tasks and assignments during questioning, revising them as it learns. Manager execution through subagents supports automation and higher-level collaboration; separate Workers support close implementation collaboration. The Planner asks whether the User wants to perform any portion, with the responsible agent’s assistance.
+
+Planner and Manager shape involvement through Task and Stage boundaries, Task size, review points, batches and parallel work. They use the work’s needs and the purpose of each arrangement when preferences leave choices open, explain consequential choices and revisit involvement with the User. Reviews are useful before consequential further work or after substantial work without User involvement. The Manager chooses actual dispatches during implementation.
 
 Agree the session's scope before the understanding summary. Investigate enough to establish requirements and propose a credible breakdown. Substantial research may be planned work, with its questions and the decisions that depend on its results identified. Understanding approval starts document writing.
 
 ### 6.2 Work Breakdown
 
-The Planner writes the Spec and Plan in order, obtaining approval for each, then resolves any needed `AGENTS.md` updates with the User. Corrections carry through to affected earlier documents. Task responsibilities, sizes and review points reflect the agreed User involvement. Task-specific participation and review points belong in Guidance; required checks belong in Validation. The responsible agent remains the same when the User performs work.
+The Planner writes the Spec and Plan in order, obtaining approval for each, then resolves any needed `AGENTS.md` updates with the User. Corrections carry through to affected earlier documents. Task responsibilities, sizes and review points reflect the agreed User involvement. The responsible agent remains the same when the User performs work.
 
-Workers group work by expertise and context, weighing specialization against the context sharing and coordination it requires. Stages mark milestones chosen around dependencies and review points. Each Task defines work the Manager or one Worker is responsible for completing, with a clear output and validation. Task boundaries depend on size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share a Task or need separate Tasks. Parallelism follows the work's dependencies and constraints. Steps are operations toward the Task's output.
+The Planner groups Worker responsibilities by expertise and context, weighing specialization against the context sharing and coordination it requires. Stages mark milestones chosen around dependencies and review points. Each Task defines work the Manager or one Worker is responsible for completing, with a clear output and validation. Task boundaries depend on size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share a Task or need separate Tasks. Parallelism follows the work's dependencies and constraints. Steps are operations toward the Task's output.
 
 Validation names observable checks and expected results, including required User actions. Updates to `AGENTS.md` preserve preexisting content except for authorized changes; existing workspace `CLAUDE.md` files import `AGENTS.md`.
 
@@ -124,25 +126,25 @@ The Manager selects Ready Tasks and batch sizes using the Plan's coordination pr
 
 Each Worker takes one dispatch at a time. Review incoming reports and dispatch newly Ready work without waiting for unrelated reports. Wait only when the sole pending report would make a Waiting Task Ready for the Worker about to receive work.
 
-Task Prompts include the relevant Spec decisions, constraints, prerequisite versions and validation directly, along with Tracker context, lasting Index findings and corrections from earlier Tasks. Same-Worker dependencies name outputs and paths; Cross-Worker dependencies also include reading and integration instructions from the producer's log. Trace upstream until an intermediate output captures the needed contracts. Give recovered Workers fuller context where needed.
+Task Prompts include the relevant Spec decisions, constraints, prerequisite versions and validation directly, along with Tracker context, lasting Index findings and corrections from earlier Tasks. Every dependency names outputs, paths and how to use them. Cross-Worker dependencies include reading and integration instructions from accepted logs; Same-Worker dependencies do too when context is missing after Handoff or recovery from a lost, corrupted or compacted conversation. Trace upstream until an intermediate output captures the needed contracts.
 
-Prompts name the working directory, branch/worktree and workspace root for `.apm/` paths. Include each needed contract once. Follow-ups retain Task identity but receive a new numbered log path from the Manager, per Task. They focus on remaining work and use the Worker's established context, restoring detail where it is missing. Active corrections preserve the current attempt's log path, valid progress and workspace.
+Prompts supply the workspace and commit instructions established under §3.4, including the session root for `.apm/` paths. Include each needed contract once. Follow-ups retain Task identity but receive a new numbered log path from the Manager, per Task. They focus on remaining work and use the Worker's established context, restoring detail where it is missing. Active corrections preserve the current attempt's log path, valid progress and workspace.
 
 ### 7.2 Execution and Logging
 
 **Runtime:** `apm-2-initiate-manager`, `apm-3-initiate-worker`, `task-execution.md` and `task-logging.md`.
 
-The Manager reads all four implementation guides. It starts its own Tasks from the Plan, Spec and dependency evidence, and supplies subagent workers with the context, boundaries and checks needed for their contributions. It verifies their output, resolves validation gaps and writes the final Task Log itself. Its Tasks use `agent: manager` and its conversation number. Iteration and pauses remain part of the same Active Task; the Manager writes one log when concluding it. The Manager records completion directly after validation, keeps unfinished Tasks Active and obtains User agreement before accepting Partial work. Planning changes and merging follow Task Review.
+The Manager reads all four implementation guides. It starts its own Tasks from the Plan, Spec, dependency evidence and implementation context built through coordination and review. It develops the Task detail needed to direct subagent workers and supplies the context, boundaries and checks for their contributions. It verifies their output, resolves validation gaps and writes the final Task Log itself. Its concluding log uses `agent: manager` and its conversation number. Tasks remain Active through iteration or pending decisions; completion requires validated requirements or User agreement to remaining limits. Planning changes and merging follow Task Review.
 
-The Worker confirms its identity, handles any Handoff and starts its waiting prompt. It integrates dependencies, follows instructions, validates the work and investigates failures before making targeted fixes. Missing dependencies, unresolved instruction conflicts, repeated attempts without progress and work that substantially exceeds the assignment need guidance.
+The Worker confirms its identity, handles any Handoff and starts its waiting prompt. Role instructions own Task and Report receipt; delivery commands route there. An established Worker retains its identity when checking Tasks. The Manager reads the requested reports, or all pending reports when none are specified, and returns to coordination if none are waiting. The Worker uses its Task Prompt, workspace instructions and knowledge of its area built through earlier assignments and its conversation. It integrates dependencies, follows instructions, validates the work and investigates failures before making targeted fixes. Missing dependencies, unresolved instruction conflicts, repeated attempts without progress and work that substantially exceeds the assignment need guidance. Workers report relevant findings and possible wider effects from their available context. When that context leaves an issue unclear, they ask the User and recommend local resolution or Manager involvement if broader context or coordination is likely needed, pausing only affected work.
 
 The User may perform any Task or part, take over during execution, and return work to its responsible agent at any time. That agent briefs and supports the User, stops overlapping execution, checks returned work and remains responsible for validation and logging. Limited help does not transfer the rest of the work. Current participation and the resume point belong in the Manager’s Tracker or the Worker’s current Task Prompt; the Task Log records contributions and consequential changes in who performed the work. Participation changes preserve the assignment, Task state and current attempt.
 
-Success requires the objective and every validation criterion to pass. A deliberate deviation or unrun check is not a pass. In a batch, validate and log each Task before the next; stop at the first Failed outcome and report unstarted Tasks.
+Success requires the objective and every validation criterion to pass. A deliberate deviation or unrun check is not a pass. Use valid User evidence for the current deliverable and request remaining checks. In a Worker batch, validate and log each Task before the next; stop at Partial or Failed and report remaining Tasks as Not started.
 
-The Worker applies User corrections immediately and resolves whether they should persist in `AGENTS.md` at completion, using existing User instructions or asking when that decision remains open. Other findings may also prompt proposed additions or corrections. Authorized changes use the assigned branch or worktree when tracked and are committed with the Task. Important Findings record the changes and their paths.
+The Worker applies User corrections immediately and resolves whether they should persist in `AGENTS.md` at completion, using existing User instructions or asking when that decision remains open. Other findings may also prompt proposed additions or corrections. Authorized changes use the assigned branch or worktree when tracked and follow agreed commit timing. Important Findings record the changes and their paths.
 
-The Worker commits, writes the Task Log, clears its Task Bus and writes a Task Report pointing to that attempt's log. Follow-up logs leave earlier attempts unchanged, link to the original and previous follow-up, and record new work, validation and the resolution of earlier findings. Outcomes still assess the whole Task, including unresolved earlier criteria. The Worker tells the User how to deliver the report, then waits.
+The Worker completes agreed User review and resulting changes, follows agreed commit conventions, writes the Task Log, clears its Task Bus and writes a Task Report pointing to that attempt’s log. Follow-up logs leave earlier attempts unchanged, link to the original and previous follow-up, and record new work, validation and the resolution of earlier findings. Outcomes still assess the whole Task, including unresolved earlier criteria. The Worker tells the User how to deliver the report, then waits.
 
 ### 7.3 Review
 
@@ -150,9 +152,9 @@ The Worker commits, writes the Task Log, clears its Task Bus and writes a Task R
 
 The Manager reviews each reported Task against its log and deliverables, including individual Tasks in a batch. Investigate Important Findings, unmet criteria and contradictory Success claims before accepting work. The Manager may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when its context makes this more efficient than another dispatch. Substantial direct implementation by the Manager requires a User request. Record the Manager's work and validation separately from the Worker's outcome. Compare follow-ups with earlier attempts; another dispatch needs concrete remaining work and a supported approach. Revisit the approach or requirement when attempts stall or remaining work substantially expands. Resolve incorrect requirements or proposed exceptions through §3.5. The Manager may accept work completed and validated during review; accepting remaining Partial work needs the User. Preserve the evidence and remaining limits.
 
-Independent subagent review is recommended before concluding substantial Manager Tasks or accepting important Worker Tasks. Each review uses a fresh, one-time conversation with requirements, relevant evidence, accepted exceptions and the review’s scope and next steps. Reviewers challenge completeness and validation; the Manager verifies their findings and resolves gaps through the existing execution or review procedure. A recommendation to accept remaining Partial work explains its limits and reasons for User agreement.
+Independent subagent review is recommended before concluding substantial Manager Tasks or accepting important Worker Tasks. Each review uses a fresh, one-time conversation with requirements, relevant evidence, accepted exceptions and the review’s scope and next steps. Reviewers challenge completeness and validation; the Manager verifies their findings and resolves gaps through the existing execution or review procedure. A recommendation to accept remaining Partial work explains its limits and reasons for User agreement. Agreement may originate in the Worker conversation; the Manager checks whether it covers the limits and wider consequences, asking again only for new consequences or an unclear decision.
 
-Review results lead to acceptance, a follow-up or a planning change. Keep pending work Active, record the decision and update the Tracker. Merge accepted branches before dependent work and before the next Stage; clean up merged worktrees and branches.
+Review results lead to acceptance, a follow-up or a planning change. Keep pending work Active, record the decision and update the Tracker. Integration and cleanup follow §3.4 independently of Task acceptance.
 
 Verify the Stage when the User requested it, the Plan calls for it, or any Task needed a follow-up or recorded Important Findings. Otherwise record why verification was skipped. Use relevant checks on the Stage's combined result, keep reference inputs separate from generated results, and preserve usable evidence paths through cleanup. Fixes to Done work need new Tasks. Resolve issues, write the Stage summary, link it in the Index and retain the context needed for later work.
 
@@ -162,22 +164,22 @@ Verify the Stage when the User requested it, the Plan calls for it, or any Task 
 
 **Runtime:** `apm-6-handoff-manager` and `apm-7-handoff-worker`.
 
-At the User's request, the outgoing role checks current files and Git, writes a Handoff Log and Prompt, and obtains User approval before ending. The Prompt identifies the next conversation, source reading, current state and next action, including pending decisions and validation gaps.
+At the User’s request, the outgoing role checks current files and Git, writes a Handoff Log and Prompt, and obtains User approval before ending. If subagents are running, it tells the User, pauses them and collects progress, outputs and pending checks first. Records carry any User-held work, assistance the User may need, resume conditions and agreed reviews or limitations. The Prompt identifies the next conversation, source reading, current state and next action, including pending decisions and validation gaps.
 
-The incoming Manager reads coordination records and needed Task Logs. The incoming Worker reads its Handoff Log and latest relevant own Task Logs from the current Stage. Earlier attempts are read through links where needed. It resumes pending work using the current prompt's log path or waits for the next delivery. The Handoff Bus is cleared after loading.
+The incoming Manager reads coordination records and needed Task Logs. The incoming Worker reads its Handoff Log and latest relevant own Task Logs from the current Stage. Earlier attempts are read through links where needed. It resumes pending work using the current prompt's log path or waits for the next delivery. The incoming agent checks recorded progress against current state, preserves User-held work and asks about gaps the records cannot settle. The Handoff Bus is cleared after loading.
 
 ### 8.2 Recovery
 
 **Runtime:** `apm-9-recover`.
 
-Recovery rereads the role's initiation files and rebuilds current state from files, bus and code without changing conversation number. Workers start from their current prompt, latest relevant own Task Logs and Handoff Log, following earlier-attempt links where needed. Preserve pending decisions and validation limits, ask about unresolved gaps and record what was recovered.
+Recovery rereads the role's initiation files and rebuilds current state from files, bus and code without changing conversation number. Workers start from their current prompt, latest relevant own Task Logs and Handoff Log, following earlier-attempt links where needed. Preserve the current attempt and User-held work, pending decisions and validation limits, ask about unresolved gaps and record what was recovered.
 
 ### 8.3 Summary and Archive
 
 **Runtime:** `apm-8-summarize-session`.
 
-A new conversation may summarize a session at any point; the Manager may do so at completion or early stopping. Before summarizing or archiving, pause active writers and record unfinished work and Git state. The optional `.apm/session.summary.md` records outcomes, consequential findings, decisions, limitations and attribution, checked against sources and deliverables. Completion counts describe workflow progress, not universal validation success.
+A new conversation may summarize a session at any point; the Manager may do so at completion or early stopping. At normal completion the Manager presents results. For early closure it pauses active Tasks, stops their subagents, asks the User to pause other active work, and records checked unfinished state without changing Task states. Before summarizing or archiving, use current confirmation that active work has stopped; collect missing or changed state from the User. The optional `.apm/session.summary.md` records outcomes, consequential findings, decisions, limitations and attribution, checked against sources and deliverables. Completion counts describe workflow progress, not universal validation success.
 
-Archiving is optional and needs User approval. It preserves session records and remaining worktrees with their uncommitted contents, verifies preservation, then clears active APM files and installed instructions. Worktrees remain attached to source repositories. Failure preserves recoverable state and reports the paths needing attention. Completing Tasks, committing and merging are separate decisions.
+Archiving is optional and needs User approval. It preserves session records and remaining APM-managed worktrees with their uncommitted contents, verifies preservation, then clears active APM files and installed instructions. Worktrees remain attached to source repositories; ordinary project-directory changes remain in place. Failure preserves recoverable state and reports the paths needing attention. Completing Tasks, committing and merging are separate decisions.
 
 The archive index links to summaries. A new installation starts another session; its Planner can use relevant archives after checking current evidence. Archive deletion asks for confirmation describing the files, worktrees and uncommitted work to be deleted; `-f` skips that confirmation. A failed deletion stops and warns that cleanup may be partial.

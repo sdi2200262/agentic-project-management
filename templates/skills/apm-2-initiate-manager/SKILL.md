@@ -56,7 +56,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 ## 2. Coordination Cycle
 
 1. Select Ready Tasks per `{GUIDE_PATH:task-assignment}`. For Worker dispatches, tell the User what to invoke in each Worker's chat. Carry out your own Tasks per §2.1.
-2. When the User delivers reports, receive them per §2.2, review each per `{GUIDE_PATH:task-review}`, align affected documents per its §4, then start what became Ready in the same turn.
+2. When the User delivers reports, receive and review them per §2.2, align affected documents per `{GUIDE_PATH:task-review}` §4, then start what became Ready in the same turn.
 3. When a Stage completes, finish it per `{GUIDE_PATH:task-review}` §7 and start the next Stage.
 
 Continue ready work, pausing affected work for agreed User reviews, required approvals or decisions needed to proceed. Follow the Task and Stage procedures for validation, completion and records.

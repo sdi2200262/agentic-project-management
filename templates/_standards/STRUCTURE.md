@@ -8,8 +8,8 @@ Open each file with its purpose and result. Keep each section on one part of the
 
 | File | Content |
 |---|---|
-| Initiation skill | Role, inputs, outputs, scope, file loading, identity, first start, continuation and duties. The Planner has no Handoff. |
-| Utility or recovery skill | Purpose, applicability, arguments, procedure and completion. |
+| Initiation skill | Role, inputs, outputs, scope, file loading, identity, first start, continuation, message receipt and duties. The Planner has no Handoff. |
+| Utility or recovery skill | Purpose, applicability, arguments, procedure or route to the owning role procedure, and completion. |
 | Handoff skill | Role, transfer procedure, Handoff Log and Prompt formats. |
 | Guide | Procedure context, ordered steps and branches, then Formats for its artifacts. End where the next guide begins and point to it. |
 | Shared skill | Reading roles, purpose and shared protocol. Role-specific behavior belongs in the role's files. |

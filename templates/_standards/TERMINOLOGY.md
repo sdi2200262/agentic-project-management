@@ -66,8 +66,8 @@ A Task depends on another when it needs that Task's output.
 
 | Term | Definition |
 |---|---|
-| **Same-Worker dependency** | The same assigned agent handles both Tasks. Available context determines how much dependency detail it needs. |
-| **Cross-Worker dependency** | Work from a different assigned agent, or earlier work whose context was lost through Handoff. The receiving agent needs reading and integration instructions. |
+| **Same-Worker dependency** | Both Tasks are assigned to the same agent. |
+| **Cross-Worker dependency** | The Tasks are assigned to different agents, including the Manager. |
 
 ### Task states
 
@@ -85,7 +85,7 @@ The Manager records an outcome when concluding its Task; a Worker records one fo
 | Term | Definition |
 |---|---|
 | **Success** | The objective is achieved and every validation criterion passed. |
-| **Partial** | Some work or required validation remains, and guidance is needed to continue. The deliverable may exist while a required check is unmet or unavailable. |
+| **Partial** | Some work or required validation remains. |
 | **Failed** | The objective was not achieved despite attempts to fix the problem. |
 
 ### Task Dispatch

@@ -22,7 +22,7 @@ Write casually formal chat replies and match documents to their reader and purpo
 
 State the trigger, required inputs, action and completion condition. Use numbered steps for sequences and lists for independent items. Put each rule where the agent applies it. Explain a rule's reason only when it helps the agent use it.
 
-Write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. Reserve action-specific approval clauses for workflow checkpoints and substantive User decisions. Ordinary actions follow the shared approval-request guidance in `apm-communication`. For approval gates, state what needs approval, when to wait and how to handle corrections.
+Write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. Reserve action-specific approval clauses for required workflow approvals and substantive User decisions. Ordinary actions follow the shared approval-request guidance in `apm-communication`. For approval gates, state what needs approval, when to wait and how to handle corrections.
 
 Keep ordinary transitions in sequence; use section references for other branches. Describe what agents should communicate rather than prescribing exact replies. Include examples only when they resolve ambiguity, and present them as illustrations. Preserve role boundaries, approvals and artifact contracts.
 
@@ -42,7 +42,7 @@ Shared writing rules belong in `apm-communication`; procedures add only what the
 
 Tell the User which skill to invoke, in which chat and with which argument. Name skills without a command prefix, since assistants invoke them differently.
 
-Describe assistant actions in plain English. Each role's initiation skill owns its optional delegation guidance; procedure steps specify the work and evidence needed. Keep assistant-specific instructions in the supported placeholders defined in `STRUCTURE.md`.
+Describe assistant actions in plain English. Each role's initiation skill owns its general delegation guidance; procedure steps specify the work and evidence needed. Keep assistant-specific instructions in the supported placeholders defined in `STRUCTURE.md`.
 
 ## 7. Formatting
 
