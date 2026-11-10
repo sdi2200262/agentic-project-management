@@ -6,7 +6,7 @@ A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each
 
 ## 1. Dispatch
 
-Select Ready Tasks using their dependencies, available agents, the Plan’s coordination preferences and current User instructions. Balance progress with the User’s understanding and control. Follow agreed review points and revisit them when work grows or changes. When review would help confirm direction before substantial further work, present the results and recommend pausing for feedback.
+Select Ready Tasks using their dependencies, available agents, the Plan’s coordination preferences and current User instructions. Follow the agreed forms and frequency of involvement, including review points. When findings or changes make an adjustment useful, explain why and recommend how and when to involve the User.
 
 Before starting either Manager or Worker work, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependency context and prepare the workspace per §3. For a Task marked `manager`, mark it Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. You may coordinate your Tasks sequentially or concurrently as dependencies, workspace isolation and agreed User involvement allow.
 
