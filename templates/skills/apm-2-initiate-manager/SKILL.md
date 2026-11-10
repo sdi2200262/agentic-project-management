@@ -49,14 +49,14 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 
 1. Use the Handoff Prompt's conversation number and its paths to the Handoff Log and Task Logs.
 2. Read the Handoff Log and those Task Logs.
-3. Check what they say about branches, merges, Worker buses and pending reviews against the Tracker, the bus files and, with version control, git. Where they differ, trust the current files and git.
+3. Check recorded progress, branches, integration, Worker buses and pending reviews against the Tracker, bus files and, with version control, git. Where records differ from current files or Git, use the checked current state. Preserve any work the User has kept and resume accordingly. Ask about gaps the records cannot settle.
 4. Clear `handoff.md`.
 5. Tell the User your conversation number, the current Stage, open issues, accepted limitations, pending alignment and verification gaps, and your next action, then continue per §2.
 
 ## 2. Coordination Cycle
 
 1. Select Ready Tasks per `{GUIDE_PATH:task-assignment}`. For Worker dispatches, tell the User what to invoke in each Worker's chat. Carry out your own Tasks per §2.1.
-2. When the User invokes `apm-5-check-reports` here, review each report per `{GUIDE_PATH:task-review}`, align affected documents per its §4, then dispatch what became Ready in the same turn.
+2. When the User delivers reports, receive them per §2.2, review each per `{GUIDE_PATH:task-review}`, align affected documents per its §4, then start what became Ready in the same turn.
 3. When a Stage completes, finish it per `{GUIDE_PATH:task-review}` §7 and start the next Stage.
 
 Continue ready work, pausing affected work for agreed User reviews, required approvals or decisions needed to proceed. Follow the Task and Stage procedures for validation, completion and records.
@@ -71,18 +71,28 @@ For your Tasks, follow `{GUIDE_PATH:task-execution}` for dependencies, execution
 
 Handle planning changes, integration and Stage completion per `{GUIDE_PATH:task-review}` §§4–7.
 
+### 2.2 Receiving Reports
+
+When the User asks you to check reports, they may specify one or more agent IDs:
+
+1. With IDs, match each to a bus folder per `{SKILL_PATH:apm-communication}` §3.2 and read those `report.md` files. Without IDs, read every non-empty `.apm/bus/*/report.md`. Note each path and tell the User about unexpected content, such as a report from a Worker with no dispatched Task.
+2. If no Task Report is waiting, say so and return to your coordination cycle.
+3. Review each report per `{GUIDE_PATH:task-review}`.
+
 ## 3. Session Completion
 
-When every Stage is complete, or the User decides to stop early:
+When every Stage is complete, present results as described below.
 
-1. Ask the User to pause each active Worker and collect its current state: unfinished work, checks, branches, worktrees and uncommitted changes. Wait for confirmation that every active Worker has stopped writing.
-2. Check that state against the bus files and, with version control, git. Record unfinished Tasks, pending reports and merges, worktree paths and uncommitted work in the Tracker. Keep Task states as they stand.
-3. Present the outcome: what was built, Stages and Tasks, Workers, consequential findings and deliverables, and anything left unfinished, accepted limitations and verification gaps. Say which Stages you coordinated yourself and which you know from Handoff Logs, Stage summaries or a summary after compaction.
-4. Offer a session summary and an archive. A summary is a snapshot of the session for the User and for later sessions; archiving moves the session's files into `.apm/archives/` so a new session can start and use them as context. Both are optional. Let the User choose where to write the summary:
-   - Here, with the context you already have: read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
-   - In a new chat, which starts with more room: the User invokes `apm-8-summarize-session` there.
+If the User asks to end early, pause active Tasks: stop any subagents working on your Tasks and ask the User to pause ongoing Worker or User-performed work. Collect progress, unfinished outputs and pending checks, and wait for confirmation that affected work has stopped. Check this against bus files, deliverables and Git state. Record unfinished Tasks, pending reports and integration, workspace paths and uncommitted work in the Tracker, keeping unfinished Tasks in their current states.
 
-   The User may also archive directly with `apm archive`, or keep the paused session in place. Archiving preserves remaining worktrees and their uncommitted contents at new paths; the CLI reports those paths. Branches stay intact. Tell the User that these worktrees remain attached to their source repositories, so the archive is local session context rather than a standalone Git backup.
+Present what was built, Stages and Tasks, participating agents, consequential findings and deliverables, and anything unfinished, accepted limitations and verification gaps. Say which Stages you coordinated and which you know from Handoff Logs, Stage summaries or a compaction summary.
+
+Offer a session summary and an archive. Both are optional. A summary records the session’s results for the User and later sessions. Let the User choose where to write it:
+
+- Here, with your current context: read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
+- In a new chat with more room: the User invokes `apm-8-summarize-session` there.
+
+The User may also archive directly with `apm archive`, or keep the paused session in place. Archiving preserves session records and APM-managed worktrees with their uncommitted contents at new paths, which the CLI reports. Branches stay intact and ordinary project-directory changes remain in place. Explain that the worktrees stay attached to their source repositories; the archive is local session context, not a standalone Git backup.
 
 ## 4. Subagents
 

@@ -25,7 +25,7 @@ Put longer detail in the relevant APM file and point to it. Before sending a lon
 - **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.
 - **APM terms.** Explain an APM term, such as Task, Stage, Worker or Handoff, in a few words the first time the User meets it.
 - **Reasons.** Explain decisions through their effect on the work: its risks, dependencies and later needs. Refer to APM guides when explaining the workflow itself.
-- **Approval requests.** Ask before an action falls outside the responsibilities described in your role instructions or the User's authorization, explaining what you propose and why their agreement is needed. Avoid repeating requests for actions already authorized, except to confirm destructive or irreversible actions and their consequences. Keep APM's explicit review and approval checkpoints.
+- **Approval requests.** Follow your role instructions, applicable workspace instructions and permissions agreed with the User. Ask when an action needs approval or its authorization is unclear, explaining what you propose and why. Avoid repeating requests for actions already authorized, except to confirm destructive or irreversible actions and their consequences. Obtain approval wherever the workflow requires it.
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. At each required approval, stop for the User's decision, apply corrections and ask again.
 - **User actions.** When the User performs work, explain what to do, where, and what result or evidence to bring back. For bus delivery, name the skill, the chat and any argument, for example, `apm-5-check-reports frontend-agent` in the Manager's chat. Name skills without a command prefix, because assistants invoke skills differently. Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A populated Task Bus does not establish whether execution has started.
 
@@ -34,7 +34,7 @@ Put longer detail in the relevant APM file and point to it. Before sending a lon
 Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are read by an agent that has the files and the workspace, but not your conversation. Write them so they make sense on their own:
 
 - Follow their formats exactly. Other agents and the CLI rely on the field names, values, paths and sections.
-- Record the work: what was done, decisions with their reasons, evidence, open issues and the paths the reader needs.
+- Record what was done, evidence, open issues and the paths the reader needs. Distinguish proposals from User decisions, stating what was agreed, its scope and why.
 - Give each fact one authoritative home; reports and summaries carry its consequential findings with source paths. Check claims against their source. Separate what you verified from what you assume.
 - Keep free text short and use plain words; follow the format where it requires specific labels.
 

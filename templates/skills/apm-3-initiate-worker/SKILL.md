@@ -27,7 +27,7 @@ Read other APM files only when these files point you to them.
 
 ### 1.1 Registration
 
-The User gave you an agent ID with this skill. It tells you which Worker you are.
+Use the agent ID the User supplied to identify your Worker. If it is missing, ask for it.
 
 1. Match the agent ID to a folder in `.apm/bus/` per `{SKILL_PATH:apm-communication}` §3.2. This is your bus folder.
 2. Keep the agent ID and bus folder as your identity for this conversation. Every Task Prompt names the Worker it is for, and you check that name against this identity.
@@ -40,7 +40,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Worker's work:
 
 1. Read the Handoff Prompt in `handoff.md`. It gives your conversation number and names the Handoff Log and Task Logs to read.
 2. Read the Handoff Log and those Task Logs. The Task Logs cover the current Stage only.
-3. Check what they say about branches, merges and pending work against `task.md` and, with version control, with git. Where they differ, trust the current files and git.
+3. Check recorded progress, branches, integration and pending work against `task.md` and, with version control, git. Where records differ from current files or Git, use the checked current state. Preserve any work the User has kept and resume accordingly. Ask about gaps the records cannot settle.
 4. Clear `handoff.md`.
 5. Tell the User your conversation number, the Task Logs you loaded and what you will do next. If there are earlier Stages, say that you did not load their logs.
 6. If `task.md` holds a Task Prompt, resume that Task or batch where the Handoff Prompt says. Otherwise wait for the User to invoke `apm-4-check-tasks`.
@@ -58,6 +58,10 @@ When the User takes on or returns work per `{GUIDE_PATH:task-execution}` §3.3, 
 Work in the prepared workspace and follow the assigned commit instructions. Leave branch creation, worktree management, merges and pushing to the Manager.
 
 If the User asks you for a Handoff, follow `{SKILL_PATH:apm-7-handoff-worker}`.
+
+### 2.1 Receiving Tasks
+
+When the User asks you to check for a Task Prompt, keep your registered identity; an additional agent ID does not change it. Read `.apm/bus/<agent-slug>/task.md`. If it is empty, say so and wait for the User’s next delivery. Otherwise execute it per `{GUIDE_PATH:task-execution}`.
 
 ## 3. Subagents
 

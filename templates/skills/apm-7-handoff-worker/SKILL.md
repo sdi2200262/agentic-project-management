@@ -14,12 +14,14 @@ Your conversation number is 1 if you started from initiation, or the number the 
 
 ## 1. Current State
 
+If subagents are running when a Handoff is requested, tell the User, pause them and collect their progress, outputs and pending checks before preparing the Handoff.
+
 Your memory of earlier turns may be out of date, so check the current state before writing either file:
 
 - Read `task.md` and `report.md` in your bus folder.
 - With version control, use git to check your branch, its commits and whether the Manager has merged it.
 
-Use the checked state in both files, including unresolved contract questions, accepted limitations and verification gaps with source paths.
+Use the checked state in both files, including unresolved contract questions and verification gaps with source paths.
 
 ## 2. Handoff Log
 
@@ -32,6 +34,8 @@ Write the Handoff Prompt per §5.2 to `.apm/bus/<agent-slug>/handoff.md`. Its Ne
 - In the middle of a Task: the Task Prompt stays in `task.md`. Say what is done and where to resume, keeping its current `log_path` even during a follow-up.
 - In the middle of a batch: the batch Task Prompt stays in `task.md`. Say which Tasks are done and logged, how far the current one got and where to resume.
 - Between Tasks: `task.md` is empty. The next conversation waits for the User to invoke `apm-4-check-tasks`.
+
+If the User is performing part of the work, record what they are doing, any assistance they may need, and when the agent should resume. Carry forward agreed review points, pending decisions and accepted limitations, with links to their evidence.
 
 ## 4. User Review
 
@@ -53,7 +57,7 @@ stage: <N>
 # <agent-slug> Handoff Log - Conversation <number>
 
 ## Summary
-<The Tasks completed in this conversation and the Stage's progress>
+<The Tasks completed in this conversation and progress on unfinished work>
 
 ## Working Context
 <Patterns, conventions, decisions with reasons and environment notes that the Task Logs do not hold; for a Handoff in the middle of a Task, the steps already done>

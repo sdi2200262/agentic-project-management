@@ -15,12 +15,12 @@ Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 ## 1. Summary and Archive
 
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md`.
-2. Check the recorded Worker state. Use the Manager's or User's confirmation that active Workers have stopped writing; if that is still unclear, ask the User to pause them and collect their current state before continuing.
+2. Check the recorded state of active Tasks, including subagent and User-performed work. Use the Manager’s or User’s confirmation that active work has stopped when it is still current. Otherwise ask the User to pause affected work and collect its current state before continuing.
 3. Compare the Spec, Plan, Tracker and Stage summaries with latest relevant Task Logs, following earlier-attempt links where needed, relevant Handoff Logs, deliverables and Git state, including unfinished worktrees. Record material differences and validation gaps with source paths. Count Tasks by ID, not attempt files. Review the active session only; ignore copied APM records in worktrees.
 4. Write `.apm/session.summary.md` per §2.1. Say which work you remember from this chat and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
 5. Present the summary and apply the User's corrections.
 6. Ask whether to archive the session. Archiving copies the session's `.apm/` files into `.apm/archives/` so a later session can use them as context, and clears the active files, including the installed APM skills and guides, so a new session can start; `apm init` reinstalls them. It is optional; if the User declines, stop here.
-7. Ask for an archive name, or use the default dated name. Explain that remaining worktrees move with their uncommitted contents and stay attached to their source repositories; Tasks and branches keep their current state. Run `apm archive --force`, or `apm archive --force --name <name>`. Continue only after the CLI confirms preservation and archival succeeded. If it reports a failure, show the obstacle and current paths, and follow its recovery guidance.
+7. Ask for an archive name, or use the default dated name. Explain that remaining APM-managed worktrees move with their uncommitted contents and stay attached to their source repositories; ordinary project-directory changes remain in place. Tasks and branches keep their current state. Run `apm archive --force`, or `apm archive --force --name <name>`. Continue only after the CLI confirms preservation and archival succeeded. If it reports a failure, show the obstacle and current paths, and follow its recovery guidance.
 8. Read `.apm/archives/index.md`, creating it per §2.2 if it is missing or malformed, and add the new archive at the top of its table.
 9. Tell the User the archive's path and any relocated worktrees the CLI reported. To start a new session, the User runs `apm init` (or `apm custom`) and then invokes `apm-1-initiate-planner` in a new chat; the next Planner can use the archives.
 
@@ -45,7 +45,7 @@ outcome: <complete | partial | incomplete>
 # APM Session Summary
 
 ## Scope
-<What this APM session built and why, from the Spec's Overview, and any work left for later sessions>
+<What this APM session built and why, from the Spec’s opening and scope, and any work left for later sessions>
 
 ## Stages and Outcomes
 <Per Stage: objective, accepted results, key validation counts and scope, accepted Partial outcomes and material limits, with links to Stage summaries>

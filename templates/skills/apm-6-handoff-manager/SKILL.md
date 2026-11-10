@@ -14,20 +14,24 @@ Your conversation number is 1 if you started from initiation, or the number the 
 
 ## 1. Current State
 
+If subagents are running when a Handoff is requested, tell the User, pause them and collect their progress, outputs and pending checks before preparing the Handoff.
+
 Your memory of earlier turns may be out of date, so check the current state before writing either file:
 
-- Read the Tracker and each Worker's bus files.
+- Read the Tracker and each Worker’s bus files. Check progress, outputs and pending validation for your active Tasks, including subagent contributions.
 - With version control, use git to check branches, worktrees and merges.
 
-Bring the Tracker up to date with the checked state before writing the two files, including pending alignment decisions, accepted limitations and verification gaps with source paths.
+Check the continuation details in §3 and bring the Tracker up to date before writing the two files.
 
 ## 2. Handoff Log
 
-Write the Handoff Log per §5.1. Record in past tense what this conversation did: the Stages and reviews you handled, decisions with their reasons, User preferences, dispatch patterns and coordination observations that the Tracker, the Index and the Task Logs do not hold. If your context was compacted or recovered in this conversation, say which parts you rebuilt from a summary or from files, and from where.
+Write the Handoff Log per §5.1. Record in past tense what this conversation did: the Stages, Tasks and reviews you handled, decisions with their reasons, User preferences, dispatch patterns and coordination observations that the Tracker, the Index and the Task Logs do not hold. If your context was compacted or recovered in this conversation, say which parts you rebuilt from a summary or from files, and from where.
 
 ## 3. Handoff Prompt
 
-Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the latest relevant attempt logs for Tasks in the current Stage and earlier Tasks that pending reviews or upcoming dependencies rely on. Earlier attempts can be followed through links where needed. In Current State, list the reports awaiting review, the Workers with dispatched Tasks, and branches, worktrees and merges still pending. Include pending alignment decisions, accepted limitations and verification gaps with source paths.
+Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the latest relevant attempt logs for Tasks in the current Stage and earlier Tasks that pending reviews or upcoming dependencies rely on. Earlier attempts can be followed through links where needed. In Current State, list your active Tasks and where to resume, reports awaiting review, Workers with dispatched Tasks, and branches, worktrees and pending integration or cleanup. Include pending alignment decisions and verification gaps with source paths.
+
+If the User is performing part of the work, record what they are doing, any assistance they may need, and when the agent should resume. Carry forward agreed review points, pending decisions and accepted limitations, with links to their evidence.
 
 ## 4. User Review
 
@@ -49,7 +53,7 @@ stage: <N>
 # Manager Handoff Log - Conversation <number>
 
 ## Summary
-<The Stages, reviews and dispatches handled in this conversation>
+<The Stages, Tasks, reviews and dispatches handled in this conversation>
 
 ## Working Context
 <Decisions with reasons, User preferences, dispatch patterns and coordination observations that the Tracker, the Index and the Task Logs do not hold>
@@ -69,7 +73,7 @@ handoff_log: <path of the Handoff Log>
 <What to read: the Handoff Log and the Task Logs the next conversation needs, by path>
 
 ## Current State
-<Checked state: reports awaiting review, Workers with dispatched Tasks, pending branches, worktrees and merges; pending alignment decisions, accepted limitations and verification gaps, with source paths>
+<Checked state: your active Tasks and progress, reports awaiting review, Workers with dispatched Tasks, work locations and pending integration or cleanup; pending alignment decisions, accepted limitations and verification gaps, with source paths>
 
 ## Next Action
 <The coordination step to resume with>
