@@ -20,7 +20,7 @@ When you are unsure which status applies, choose Partial and state what remains.
 
 ## 2. Important Findings
 
-Set `important_findings: true` when the status is Partial or Failed, or when a finding affects acceptance or later work beyond the Task's result:
+Set `important_findings: true` when the status is Partial or Failed, or when a finding affects acceptance or may matter to later work beyond the Task’s result:
 
 - remaining work, blockers or unmet criteria
 - a deviation from the Task instructions, or a choice it left open that affects the result, with your reason
@@ -29,7 +29,7 @@ Set `important_findings: true` when the status is Partial or Failed, or when a f
 - a conflict with existing code or conventions, a breaking change or a needed migration
 - a User correction affecting later work; state the correction and any authorized `AGENTS.md` update
 
-When you are unsure, set it to true. Write the findings in the Task Log's Important Findings section in whatever form explains them best.
+Separate evidence from uncertainty about possible wider effects. Record User agreements and the limits they cover. When you are unsure, set it to true. Write the findings in the Task Log's Important Findings section in whatever form explains them best.
 
 ## 3. Logging
 
@@ -46,7 +46,7 @@ Write the Task Log per §5.1, using the assigned `log_path` when provided. Write
 When your role requires a Task Report, send it after the Task or whole batch has ended:
 
 1. Clear `.apm/bus/<agent-slug>/task.md`.
-2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Include deviations, unmet checks and decisions needed; keep the detail in the Task Logs.
+2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Include deviations, unmet checks, any User agreement about their limits and decisions still needed; keep the detail in the Task Logs.
 3. Tell the User the report is ready, with both ways to deliver it in the Manager's chat: invoke `apm-5-check-reports <agent-id>` for this report, or `apm-5-check-reports` with no agent ID to collect every pending report.
 4. Tell the User you are ready for the next Task, which they deliver by invoking `apm-4-check-tasks` in this chat. Wait for it or for a Handoff.
 

@@ -9,17 +9,13 @@ A Worker records one outcome per attempt: Success, Partial or Failed. You decide
 For each report delivered with `apm-5-check-reports`:
 
 1. If the sender has no row in the Tracker's Workers table, it is an agent outside APM: assess its contribution and what it changes for planning or dispatch. Record it in the Tracker's Notes, preserving consequential evidence, limits and source paths: this agent writes no Task Log. Tell the User, clear its Report Bus, and send any further work per `{GUIDE_PATH:task-assignment}` §6. Then continue with the next report.
-2. If the report's `conversation` is higher than the Worker's number in the Workers table, the Worker had a Handoff. Read its Handoff Logs, `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md`, for each conversation since the one you knew, update the number, and list the Worker's Tasks from earlier Stages under Not Read Since Handoff: its new conversation did not read their logs. Remove a Task from that list once a Task Prompt has given its context as a Cross-Worker dependency.
+2. If the report's `conversation` is higher than the Worker's number in the Workers table, the Worker had a Handoff. Read its Handoff Logs, `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md`, for each conversation since the one you knew, update the number, and list the Worker's Tasks from earlier Stages under Not Read Since Handoff: its new conversation did not read their logs. Remove a Task from that list once a Task Prompt has supplied its missing dependency context.
 3. If the report mentions a recovery, record it in the Workers table's Context without changing the conversation number. Check the report against the Task Log for anything the recovery may have lost, and ask for missing details.
 4. For a batch Task Report, review each executed Task on its own per §2 and §3. Set the Tasks the batch did not start back to Ready or Waiting, and return them to dispatch.
 
 ## 2. Log Review
 
-Read the whole Task Log named in the report, following original and previous-attempt links where needed to verify earlier evidence and unresolved findings. Check its `status` and `important_findings` against the body and the deliverables:
-
-- **Success:** the objective is achieved and every validation criterion passed.
-- **Partial:** some work or required validation remains, and guidance is needed to continue.
-- **Failed:** the objective was not achieved despite attempts to fix the problem.
+Read the whole Task Log named in the report, following original and previous-attempt links where needed to verify earlier evidence and unresolved findings. Check its `status` against the outcome definitions in `{GUIDE_PATH:task-logging}` §1, and its `important_findings` against the body and deliverables.
 
 Check each validation criterion against its evidence, including counts, scope, deviations and unrun paths. A deliberate difference is an unmet criterion; record any accepted exception as a limitation.
 
@@ -29,22 +25,22 @@ Important Findings can affect other work, reveal missing validation, record a Us
 
 For substantial Tasks you carry out and important Worker Tasks, prefer an independent review by fresh, one-time subagent reviewers. Give them the requirements, applicable instructions, outputs, validation evidence and accepted exceptions, explaining their scope and what follows their review. Ask them to challenge completeness and validation. Verify their findings and resolve gaps through your ongoing execution or §3 for Worker Tasks.
 
-Tell the User what the log shows, whether the evidence supports it, the Important Findings that matter and your proposed next action. If recommending acceptance of remaining Partial work, explain its limits and your reasons for User agreement.
+Tell the User what the evidence supports, the consequential findings and your proposed next action.
 
 ## 3. Review Outcomes
 
 1. Accept a Success that the log supports and that has no Important Findings.
 2. Investigate Important Findings and any outcome other than Success. You may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when your context makes this more efficient than another dispatch. Undertake substantial direct implementation only when the User requests it. Make changes in the Task's assigned workspace, follow `AGENTS.md` and validate the affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome. Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:
-   - **Accept:** the work is complete, including any work you completed and validated during review, or the User agrees to accept a Partial outcome; record what remains and the basis for acceptance in the Tracker's Notes. Preserve the Worker's outcome and evidence; acceptance does not turn unmet checks into passing results.
+   - **Accept:** the work is complete, including corrections validated during review, or the User agrees to accept remaining limits. Check whether any recorded agreement covers those limits and their effects on other Tasks; ask only about new consequences or unclear decisions. Explain the limits and reasons for any acceptance recommendation. Record what remains and the basis for acceptance in Tracker Notes, preserving the Worker’s outcome and evidence. Acceptance does not turn unmet checks into passes.
    - **Follow-up Task:** concrete work remains for the Worker, with an approach and a clear completion check. Preserve any uncommitted work for that attempt.
    - **Planning change:** a planning document is wrong. Change it per §4.
-4. Some findings need broader planning: a fix needs design decisions the Spec does not cover, or a change would rewrite the Spec's Overview or several Stages. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
+4. Some findings need broader planning: a fix needs design decisions the Spec does not cover, or a change would rewrite the Spec’s scope or several Stages. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
 5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. With version control, commit accepted uncommitted work on the Task's branch under the conventions in `AGENTS.md`. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
 6. Record how each consequential finding was resolved, accepted, deferred or left pending, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
 7. Once the decision is recorded, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`, then send any follow-up per `{GUIDE_PATH:task-assignment}` §5. Update the Tracker per §8.1 and §8.2, in one edit with the merge and dispatch changes that follow.
 
-Tell the User about contained corrections. Pause for approval when a change exceeds the limits in §4.
+Tell the User about contained corrections.
 
 ## 4. Planning and AGENTS.md Changes
 
@@ -52,12 +48,10 @@ When a finding, correction or decision changes the Spec, Plan or `AGENTS.md`, up
 
 You may correct one Task, add a dependency or an isolated Spec point, or propose an `AGENTS.md` update. Follow existing User authorization for changes to workspace conventions. Changes to several Tasks, design direction, scope, Stages or overall structure need the User's approval. Consider their combined effect when several small changes are involved.
 
-1. Identify the change, its evidence and any approval needed.
-2. Check the affected documents and dependent or active Tasks. Update the requirement where it belongs in the Spec, the affected Task fields and dependencies in the Plan, or workspace conventions in `AGENTS.md`. Suggest only needed additions or corrections, preserving unrelated content. For new or changed Tasks, keep responsibility, size and review points consistent with the agreed User involvement. Use the existing format for new Tasks. Keep Notes consistent with their document's purpose and replace stale content.
-3. Apply authorized changes together. If approval is needed, record the pending decision in the Tracker, ask the User to pause affected work and present the proposal. Wait for approval; unrelated work can continue.
-4. Update Task next actions and record the change and reason in the Tracker. Deliver corrections to active work per `{GUIDE_PATH:task-assignment}` §5.1; reported attempts use a follow-up Task. Preserve consequential decisions in the Stage summary.
-
-Keep the Worker's recorded outcome and evidence. Manager acceptance is a separate decision. Follow-up logs retain consequential earlier findings and their resolution.
+1. Identify the change, its evidence, affected documents and dependent or active work. Check how the change affects ongoing work and coordinate any needed adjustment with whoever is performing it. Preserve valid progress, Task identity, current attempt and workspace.
+2. Carry forward decisions already agreed with the User and resolve any further approval needed. If further approval is needed, record the pending decision in the Tracker, present the proposal and wait; unrelated work may continue.
+3. Update requirements in the Spec, Task fields and dependencies in the Plan, and lasting workspace guidance in `AGENTS.md` as authorized. Keep Notes consistent with their document’s purpose. For new or changed Tasks, preserve the agreed involvement through responsibility, size and review points and use the existing format. Extend or replace workspace guidance where possible, keeping additions concise and preserving unrelated content.
+4. Update affected instructions and record what should happen next, the change and its reason in the Tracker. Update your subagents directly; ask the User to deliver Worker corrections per `{GUIDE_PATH:task-assignment}` §5.1, or use a follow-up for a reported attempt. Coordinate User-performed portions with the User. Preserve consequential decisions in the Stage summary.
 
 ## 5. Merging
 

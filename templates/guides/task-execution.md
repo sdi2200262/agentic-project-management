@@ -21,18 +21,15 @@ The Objective and Output are authoritative. Check questionable instructions, pre
 4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the workspace root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
-If the User delivers corrected instructions for your paused current Task, keep the same Task identity, branch and worktree. Check what changed and where the prompt says to resume. Preserve valid completed work and batch progress; do not restart logged Tasks. If the stated progress conflicts with your checked workspace, ask the User to resolve it before resuming.
+If the User delivers corrected instructions for your current Task, keep the same Task identity, branch and worktree. Check what changed and what the prompt says to do next. Preserve valid completed work and batch progress; do not restart logged Tasks. If the stated progress conflicts with your checked workspace, ask the User to resolve it before proceeding with affected work.
 
 Report relevant findings and possible wider effects, separating evidence from uncertainty. When the Task Prompt and available context leave an issue unclear, ask the User how to proceed and recommend a local resolution or Manager involvement if broader context or coordination is likely needed. Pause only affected work, and record the decision and result for Manager review.
 
 ## 2. Dependency Context
 
-Some Tasks build on the output of earlier Tasks. The prompt's Context from Dependencies section names that output and says how to use it. It treats each dependency in one of two ways:
+Read the named dependency outputs and complete any supplied integration steps before starting the work. Investigate integration questions against the named files.
 
-- **Same-Worker dependency:** your own earlier work. The prompt points to its output; refresh what you need from the named paths.
-- **Cross-Worker dependency:** work you have not seen, by another agent or by you before a Handoff. The prompt gives reading and integration steps. Complete them all before you start the work. Read the named files and investigate any integration questions before proceeding.
-
-Do not start the work while a dependency's output is missing or fails its integration check. Ask the User for guidance when another agent's output does not integrate as the prompt describes, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
+Do not start the work while a dependency's output is missing or fails its integration check. Ask the User for guidance when another agent's output does not integrate as the Task instructions describe, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
 
 ## 3. Execution
 

@@ -6,11 +6,13 @@ A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each
 
 ## 1. Dispatch
 
-Read each Ready Task's Agent field. For a Task marked `manager`, prepare its workspace per §3, mark it Active in the Tracker and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. For Worker assignments, follow the dispatch steps below.
+Select Ready Tasks using their dependencies, available agents, the Plan’s coordination preferences and current User instructions. Balance progress with the User’s understanding and control. Follow agreed review points and revisit them when work grows or changes. When review would help confirm direction before substantial further work, present the results and recommend pausing for feedback.
 
-Use the Plan's coordination preferences and current User instructions when choosing dispatches and batch sizes, balancing progress with the User's understanding and control. Follow agreed review points and reassess them when work grows or changes, especially after a long stretch without User involvement. When review would help confirm direction before substantial further work, present the results and recommend pausing for feedback.
+Before starting either Manager or Worker work, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependency context and prepare the workspace per §3. For a Task marked `manager`, mark it Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. You may coordinate your Tasks sequentially or concurrently as dependencies, workspace isolation and agreed User involvement allow.
 
-1. Find the Ready Tasks from the Tracker and the Plan's Dependencies fields.
+For Worker assignments:
+
+1. Check the Tracker and the Plan’s Dependencies fields for the selected Tasks.
 2. Group them by Worker. A Worker takes one dispatch at a time: send it a new dispatch only after its current Task or batch has been reviewed. Corrections to an active Task use §5.1 instead. Then choose the dispatch:
    - **Single dispatch:** one Task to one Worker.
    - **Batch dispatch:** several Tasks to the same Worker, executed in order. A batch may be a chain whose dependencies are inside the batch or already Done, or independent Tasks that are all Ready. Keep batches to 2–3 Tasks. Send a chain's Tasks one at a time when other Workers wait on its intermediate results.
@@ -21,17 +23,16 @@ Use the Plan's coordination preferences and current User instructions when choos
 
 ## 2. Task Context
 
-Before writing a prompt, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Include prerequisite versions, configuration constraints and accepted exceptions where they affect the Task.
+Include prerequisite versions, configuration constraints and accepted exceptions where they affect the Task.
 
 Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's Task entry:
 
-1. Turn the Task's steps and Guidance into Instructions the Worker can act on, preserving agreed User participation and review points. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker, Index or other Workers' logs. Workers read `AGENTS.md` directly.
+1. Turn the Task’s steps and Guidance into Instructions the Worker can act on, preserving agreed User participation and review points. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker, Index or other Workers' logs. Workers read `AGENTS.md` directly.
 2. For code, name the path and what to do with it, such as "Read `src/api/routes.py` and use its error response schema."
 3. Keep the instructions on the Task. Leave out Stage structure, other Task IDs and coordination concepts, except a producer Task's ID where it identifies dependency context.
-4. If the Plan lists dependencies, write Context from Dependencies:
-   - **Same-Worker dependency:** the same agent handled the earlier Task. Check what context it retains; a shared assignment does not guarantee familiarity. Name the earlier Task, its key outputs and paths, and how to build on them, with more detail for complex work.
-   - **Cross-Worker dependency:** another agent handled this work, including the Manager. Read the producer's latest accepted attempt log, following earlier-attempt links where needed, then give numbered reading steps, the producer's outputs, interfaces and constraints, and how to integrate them, however simple the work seems.
-   - Tasks listed under Not Read Since Handoff in the Tracker's Workers table count as Cross-Worker. A Worker that recovered after compaction may need more detail; the table's Context says so.
+4. If the Plan lists dependencies, write Context from Dependencies. Same-Worker means both Tasks are assigned to the same agent; Cross-Worker means different agents, including you:
+   - Name each earlier Task, its outputs and paths, and how to use them.
+   - For Cross-Worker dependencies, read the producer’s latest accepted attempt log, following earlier-attempt links where needed. Provide numbered reading and integration steps, preserving interfaces and constraints. Do the same for Same-Worker dependencies when earlier context is missing after Handoff or recovery from a lost, corrupted or compacted conversation. Use the Tracker’s Handoff and recovery notes to identify what needs restoring.
    - Trace upstream when earlier Tasks set patterns or contracts this Task relies on. Stop where an intermediate output fully captures them.
 5. Add execution, validation or logging guidance only when it is specific to this Task. The Worker's guides already cover the general rules.
 
@@ -71,9 +72,9 @@ A follow-up Task sends a Task back to the same Worker after review, with a revis
 
 When a planning change affects an active Task whose attempt has not been reported, correct the existing dispatch:
 
-1. Ask the User to pause the affected Worker and confirm its current progress. Align the planning documents per `{GUIDE_PATH:task-review}` §4.
-2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and worktree. In Instructions, explain what changed, what completed work remains valid and where to resume. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
-3. Record the correction and next action in the Tracker, then deliver the revised prompt per §4. Tell the User to invoke `apm-4-check-tasks` in the paused Worker's chat. This updates the current dispatch; do not create a new branch or worktree.
+1. Coordinate the correction through the User, checking progress and arranging a pause if needed. Align the planning documents per `{GUIDE_PATH:task-review}` §4.
+2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and worktree. In Instructions, explain what changed, what completed work remains valid and what to do next. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
+3. Record the correction and next action in the Tracker, then deliver the revised prompt per §4. Tell the User to invoke `apm-4-check-tasks` in the Worker's chat. This updates the current dispatch; do not create a new branch or worktree.
 
 After a reported attempt, review it and use a follow-up Task per §5 instead.
 
