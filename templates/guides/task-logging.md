@@ -2,12 +2,14 @@
 
 This guide covers recording Task outcomes in a Task Log and delivering its outcome through a Task Report when required by your role. Later conversations, including your own after a Handoff, continue from these records.
 
+Workers write a Task Log for each attempt and report the outcome for Manager review. The Manager writes one concluding log for each Task it carries out, after reviewing the work, resolving outstanding decisions and validating the result. It keeps the Task Active while work or a decision remains pending, and marks it Done when requirements are met or the User agrees to accept remaining limitations. It records that agreement and the limits in the concluding log and links it from the Tracker. Later fixes to Done work need a new Task.
+
 ## 1. Outcome
 
 Choose the Task's status:
 
 - **Success:** the objective is achieved and every validation criterion passed.
-- **Partial:** some work or required validation remains, and guidance is needed to continue.
+- **Partial:** some work or required validation remains.
 - **Failed:** the objective was not achieved despite attempts to fix the problem.
 
 The outcome assesses the whole Task, including earlier evidence and any unresolved criteria.
