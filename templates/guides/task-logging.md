@@ -74,7 +74,7 @@ important_findings: true | false
 <The outcome against the Objective, how you reached it when that matters, and any part of the log you could not verify>
 
 ## Output
-<Deliverables and changed paths, the workspace or branch you used, and your commits>
+<Deliverables and changed paths, the workspace or branch you used, relevant commits and any uncommitted work>
 
 ## Validation
 <Each required check: what you ran, its result, counts and scope, or why it was not run; distinguish live and isolated checks>

@@ -1,6 +1,6 @@
 # APM {VERSION} - Task Review Guide
 
-This guide covers Task Review: reading Task Reports and Task Logs, deciding each Task's outcome, changing the planning documents when findings require it, merging, and keeping the Tracker current. It ends each Stage with verification, a Stage summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the dispatch that follows.
+This guide covers Task Review: reading Task Reports and Task Logs, deciding each Task's outcome, aligning planning documents, integrating completed work, cleaning up workspaces and keeping the Tracker current. It ends each Stage with verification, a Stage summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the dispatch that follows.
 
 A Worker records one outcome per attempt: Success, Partial or Failed. You decide whether to mark the Task Done after reviewing the result.
 
@@ -36,9 +36,9 @@ Tell the User what the evidence supports, the consequential findings and your pr
    - **Follow-up Task:** concrete work remains for the Worker, with an approach and a clear completion check. Preserve any uncommitted work for that attempt.
    - **Planning change:** a planning document is wrong. Change it per §4.
 4. Some findings need broader planning: a fix needs design decisions the Spec does not cover, or a change would rewrite the Spec’s scope or several Stages. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it with `apm-8-summarize-session`, archive it and plan again with a new Planner. The User decides.
-5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. With version control, commit accepted uncommitted work on the Task's branch under the conventions in `AGENTS.md`. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
+5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. Follow the agreed commit conventions, retaining the location and state of uncommitted work in the records. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
 6. Record how each consequential finding was resolved, accepted, deferred or left pending, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
-7. Once the decision is recorded, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`, then send any follow-up per `{GUIDE_PATH:task-assignment}` §5. Update the Tracker per §8.1 and §8.2, in one edit with the merge and dispatch changes that follow.
+7. Once the decision is recorded, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`, then send any follow-up per `{GUIDE_PATH:task-assignment}` §5. Update the Tracker per §8.1 and §8.2, in one edit with the integration and dispatch changes that follow.
 
 Tell the User about contained corrections.
 
@@ -53,14 +53,14 @@ You may correct one Task, add a dependency or an isolated Spec point, or propose
 3. Update requirements in the Spec, Task fields and dependencies in the Plan, and lasting workspace guidance in `AGENTS.md` as authorized. Keep Notes consistent with their document’s purpose. For new or changed Tasks, preserve the agreed involvement through responsibility, size and review points and use the existing format. Extend or replace workspace guidance where possible, keeping additions concise and preserving unrelated content.
 4. Update affected instructions and record what should happen next, the change and its reason in the Tracker. Update your subagents directly; ask the User to deliver Worker corrections per `{GUIDE_PATH:task-assignment}` §5.1, or use a follow-up for a reported attempt. Coordinate User-performed portions with the User. Preserve consequential decisions in the Stage summary.
 
-## 5. Merging
+## 5. Integration and Cleanup
 
-With version control, merge a dispatch's branch into its base branch after a successful review, before dispatching Tasks that depend on it, and merge every branch of a Stage before the next Stage begins.
+Integrate completed work according to the agreed version-control arrangement. Before starting dependent work, make sure required outputs are available in its actual workspace.
 
-1. Switch to the recorded base branch, merge and check the result.
-2. Resolve conflicts from the Task objectives and the Spec. Investigate complex conflicts against the affected contracts, or ask the User when a decision is needed.
-3. If branch protection blocks a direct merge, use a pull request, an intermediate branch or the User's guidance, and record the constraint in the Tracker's Notes.
-4. After the merge, remove the worktree with `git worktree remove .apm/worktrees/<branch-slug>` if there was one, delete the branch with `git branch -d <branch-name>`, and clear the Task's Branch and Worktree in the Tracker. When cleaning up several branches, remove their worktrees before deleting the branches.
+1. Integrate into the agreed branch or workspace and check the combined result.
+2. Resolve conflicts from the Task objectives and the Spec. Investigate complex conflicts against affected contracts, or ask the User when a decision is needed.
+3. If branch protection blocks a direct merge, use a pull request, an intermediate branch or the User’s guidance, and record the constraint in the Tracker’s Notes.
+4. Remove branches and worktrees only when no longer needed and their work is preserved. Remove worktrees before deleting their branches. Clear obsolete locations from the Tracker. Record pending integration, cleanup and shared workspace use in Notes, and keep the affected Tasks’ Next Action current.
 
 ## 6. Next Dispatch
 
@@ -72,9 +72,9 @@ When every Task in a Stage is Done and no follow-up Task is pending:
 
 1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes call for it, or any of its Tasks needed a follow-up Task or recorded Important Findings. Otherwise you may skip it and say so in the Stage summary.
 2. To verify, use relevant checks on the Stage's combined result, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Keep reference inputs separate from generated results and preserve usable evidence paths through cleanup. Resolve contained verification questions yourself. Add a new Task for fixes to Done work, or ask the User when the required scope is unclear.
-3. Account for every consequential Important Finding: its resolution or acceptance, effects on other work, and source. Preserve unresolved or accepted limitations and unrun checks. Sort the Tracker's Notes: move findings with lasting value to the Index's Notes with sources, put Stage-specific findings and decisions into its summary, and keep notes the next Stage still needs.
+3. Account for every consequential Important Finding: its resolution or acceptance, effects on other work, and source. Preserve unresolved or accepted limitations and unrun checks. Sort the Tracker's Notes: move findings with lasting value to the Index's Notes with sources, put Stage-specific findings and decisions into its summary, and keep notes the next Stage still needs, including workspace locations and pending integration or cleanup.
 4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Then remove Tracker notes whose context is preserved there and no longer needed for ongoing work. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
-5. Once all Tasks are Done, required Stage verification is resolved and, with version control, its branches are merged, replace the Stage's rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. Completion records accepted work; the summary preserves accepted Partial outcomes and limits.
+5. Once all Tasks are Done and required integration and Stage verification are complete, replace the Stage's rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. Completion records accepted work; the summary preserves accepted Partial outcomes and limits.
 
 Then add the next Stage's Tasks to the Tracker per §8.1 and dispatch them per `{GUIDE_PATH:task-assignment}` §1. When every Stage is complete, continue with `{SKILL_PATH:apm-2-initiate-manager}` §3.
 
@@ -103,13 +103,13 @@ Status values:
 - `Waiting: N.M`: a dependency is not Done. It may list several.
 - `Ready`: all dependencies are Done.
 - `Active`: started by the Manager, dispatched to a Worker, under review or awaiting a follow-up Task.
-- `Done`: final decision made. A Branch value means the branch still awaits merging.
+- `Done`: final decision made, including any explicitly accepted Partial outcome. Record remaining limitations and any pending integration or cleanup explicitly in Tracker Notes, and keep Next Action current.
 
-The Agent column uses the Plan's Worker slug or `manager`.
+The Agent column uses the Plan’s Worker slug or `manager`. Record each Task’s branch and any worktree; several Tasks may share these values. Use Notes for arrangements affecting several Tasks.
 
 Link each Task ID to the latest reported Worker attempt or completed Manager log; use a plain ID before either exists. A pending Worker follow-up's destination stays in its Task Prompt until reported.
 
-Next Action names what happens next and who must act when that is unclear: execute, await a report, review, resolve a decision, follow up or merge. Leave it empty when nothing remains. Keep the explanation of a broader blocker or decision in Notes rather than duplicating it here.
+Next Action names what happens next and who must act when that is unclear: execute, await a report, review, resolve a decision, follow up, integrate or clean up. Leave it empty when nothing remains. Keep the explanation of a broader blocker or decision in Notes rather than duplicating it here.
 
 Write each state and next action at the end of the review and dispatch cycle. A Task unblocked and dispatched in the same turn goes straight from Waiting to Active. A Task whose responsible agent is still busy, or that waits for a better dispatch, stays Ready.
 
@@ -121,7 +121,7 @@ The Tracker is `.apm/tracker.md`:
 # APM Tracker
 
 ## Notes
-<Coordination context: pending decisions, blockers, alignment changes and accepted limits awaiting durable recording; affected work, source, reason and any action needed>
+<Blockers, pending decisions and context needed to coordinate the current Stage, with sources and reasons. Keep notes across Stage boundaries while they still require attention.>
 
 ## Tasks
 <Per §8.1>
@@ -134,7 +134,7 @@ The Tracker is `.apm/tracker.md`:
 | backend-agent | 1 | | Recovered during Task 2.2 |
 ```
 
-Add a Worker's row at its first dispatch. Not Read Since Handoff lists the Worker's Tasks from earlier Stages whose logs its current conversation has not read. Context records recoveries and remaining context gaps that affect later Task Prompts; update it as context is rebuilt. Keep top-level Notes as self-contained bullets for current coordination and pending decisions, including findings awaiting durable recording. Link actions to lasting findings in Memory rather than repeating their account. Remove notes once recorded durably and no longer needed for coordination.
+Add a Worker's row at its first dispatch. Not Read Since Handoff lists the Worker's Tasks from earlier Stages whose logs its current conversation has not read. Context records recoveries and remaining context gaps that affect later Task Prompts; update it as context is rebuilt. Keep top-level Notes as self-contained bullets for current coordination and pending decisions, including findings awaiting durable recording. Link actions to lasting findings in Memory rather than repeating their account. Retain and distill notes at Stage completion per §7.
 
 ### 8.3 Memory Index Format
 
@@ -163,7 +163,7 @@ Each Stage summary is `.apm/memory/stage-<NN>/stage-<NN>.summary.md`, beside its
 # Stage <N> - <Stage Name>
 
 ## Outcome
-<Final review decision for each Task and Workers involved, useful commits, accepted Partial outcomes and what remains>
+<Final decision for each Task and agents involved, relevant commits and uncommitted work, accepted Partial outcomes and what remains>
 
 ## Findings and Decisions
 <Consequential discoveries, their resolution or acceptance, reasons, and changes to the Spec, Plan or `AGENTS.md`, with source links>

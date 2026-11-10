@@ -40,17 +40,14 @@ Reread the Spec at the first dispatch of a Stage and after any change to it.
 
 ## 3. Version Control
 
-With version control, follow repository conventions in `AGENTS.md` and session-specific Git setup and constraints in the Spec. Name a repository's conventions in the Task Prompt when they differ from the others.
+Prepare each Task’s workspace under the version-control arrangement agreed in the Spec and applicable repository conventions in `AGENTS.md`.
 
-1. Merge any producer branch the Task needs before you create its branch.
-2. Create one branch per single or batch dispatch, or per Task you undertake, from the repository's base branch. A batch shares one branch.
-3. For sequential work, use the main working directory. For parallel dispatch, give each Worker its own worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`, with `<branch-slug>` the branch name with `/` replaced by `-`. Keep the main directory on the base branch and run at most four worktrees at once. A worktree holds tracked files only, so name any untracked files the Worker needs. Give your own Task a separate worktree too when other work is running in the same repository.
-4. Name branches after the actual work.
-5. Record the branch, any worktree and Next Action in the Task's row in the Tracker.
+1. Make sure required dependency outputs are available and usable in the workspace. Arrange access to needed uncommitted and untracked files; a new worktree does not automatically contain them.
+2. Give Tasks running in parallel in the same repository separate worktrees, including your own Tasks. Keep APM-managed worktrees under the session root’s `.apm/worktrees/`.
+3. Record the branch, any worktree and Next Action in the Tracker. Several Tasks may share a branch or workspace when the arrangement allows it.
+4. In each Worker prompt, give the working directory, branch or worktree, applicable commit instructions and the session workspace root for every `.apm/` path.
 
-Workers commit; you create branches and worktrees, merge them and clean up. Do not commit generated build files; update `.gitignore` when needed. In a worktree, every `.apm/` path still points to the workspace root, so the prompt's Workspace section says so.
-
-If the User enables version control later, agree Git setup and record session setup and constraints in the Spec, resolving any needed convention changes in `AGENTS.md` under existing User authorization. Apply the agreed setup. Without version control, parallel dispatch is unavailable.
+You prepare workspaces and handle integration and cleanup; Workers use the assigned workspace and commit instructions. Follow the agreed timing for commits and integration, revisiting the arrangement with the User when needed. If version control is enabled later, agree and apply the setup, recording session choices in the Spec and lasting conventions in `AGENTS.md`. Without version control, parallel Worker dispatch is unavailable.
 
 ## 4. Delivery
 
@@ -106,7 +103,7 @@ log_path: ".apm/memory/stage-<NN>/task-<NN>-<MM>.log.md"
 <Only when the Task has dependencies, per §2 step 4>
 
 ## Workspace
-<The working directory; with version control, the branch, and for parallel dispatch the worktree and the workspace root for every `.apm/` path>
+<The working directory, any branch or worktree, applicable commit instructions, and the session workspace root for every `.apm/` path>
 
 ## Output
 <The deliverables from the Plan's Output field>
