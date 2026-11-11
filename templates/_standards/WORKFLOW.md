@@ -164,7 +164,7 @@ Verify the Stage when the User requested it, the Plan calls for it, or any Task 
 
 **Runtime:** `apm-6-handoff-manager` and `apm-7-handoff-worker`.
 
-At the User’s request, the outgoing role checks current files and Git, writes a Handoff Log and Prompt, and obtains User approval before ending. If subagents are running, it tells the User, pauses them and collects progress, outputs and pending checks first. Records carry any User-held work, assistance the User may need, resume conditions and agreed reviews or limitations. The Prompt identifies the next conversation, source reading, current state and next action, including pending decisions and validation gaps.
+At the User’s request, the outgoing role checks current files and Git, writes a Handoff Log and Prompt, and obtains User approval before ending. If subagents are running, it tells the User, pauses them and collects progress, outputs and pending checks first. Workers check their assigned workspace, commits and uncommitted work, recording integration state only where supported by available evidence. Records carry any User-held work, assistance the User may need, resume conditions and agreed reviews or limitations. The Prompt identifies the next conversation, source reading, current state and next action, including pending decisions and validation gaps.
 
 The incoming Manager reads coordination records and needed Task Logs. The incoming Worker reads its Handoff Log and latest relevant own Task Logs from the current Stage. Earlier attempts are read through links where needed. It resumes pending work using the current prompt's log path or waits for the next delivery. The incoming agent checks recorded progress against current state, preserves User-held work and asks about gaps the records cannot settle. The Handoff Bus is cleared after loading.
 
@@ -172,7 +172,7 @@ The incoming Manager reads coordination records and needed Task Logs. The incomi
 
 **Runtime:** `apm-9-recover`.
 
-Recovery rereads the role's initiation files and rebuilds current state from files, bus and code without changing conversation number. Workers start from their current prompt, latest relevant own Task Logs and Handoff Log, following earlier-attempt links where needed. Preserve the current attempt and User-held work, pending decisions and validation limits, ask about unresolved gaps and record what was recovered.
+The shared Recovery skill routes to the role's recovery procedure. Recovery reloads the full role instructions and their required files, then rebuilds current state from permitted files, bus and code without repeating initiation or changing conversation number. Workers start from their current prompt, latest relevant own Task Logs and Handoff Log, following earlier-attempt links where needed. Preserve the current attempt and User-held work, pending decisions and validation limits, ask about unresolved gaps and record what was recovered.
 
 ### 8.3 Summary and Archive
 

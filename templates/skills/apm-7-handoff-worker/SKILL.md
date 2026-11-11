@@ -19,7 +19,7 @@ If subagents are running when a Handoff is requested, tell the User, pause them 
 Your memory of earlier turns may be out of date, so check the current state before writing either file:
 
 - Read `task.md` and `report.md` in your bus folder.
-- With version control, use git to check your branch, its commits and whether the Manager has merged it.
+- Check your assigned workspace and, with version control, its branch, commits and uncommitted work. Record integration details supported by your available evidence, noting anything unresolved.
 
 Use the checked state in both files, including unresolved contract questions and verification gaps with source paths.
 
@@ -77,7 +77,7 @@ handoff_log: <path of the Handoff Log>
 <What to read: the Handoff Log and latest relevant attempt logs for your Tasks in the current Stage, by path; earlier attempts through links where needed>
 
 ## Current State
-<Checked state: Tasks completed, the pending Task or batch, branches and merges; unresolved contract questions, accepted limitations and verification gaps, with source paths>
+<Checked state: Tasks completed, the pending Task or batch, workspace, commits, uncommitted work and known integration state; unresolved contract questions, accepted limitations and verification gaps, with source paths>
 
 ## Next Action
 <Where to resume the Task or batch, or wait for the User to invoke apm-4-check-tasks>

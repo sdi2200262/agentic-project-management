@@ -45,6 +45,15 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Worker's work:
 5. Tell the User your conversation number, the Task Logs you loaded and what you will do next. If there are earlier Stages, say that you did not load their logs.
 6. If `task.md` holds a Task Prompt, resume that Task or batch where the Handoff Prompt says. Otherwise wait for the User to invoke `apm-4-check-tasks`.
 
+### 1.3 Recovery
+
+When recovering after compaction or a lost conversation:
+
+1. Reload the files required by §1. Keep your registered identity and conversation number; resume from the checked current state without repeating initiation.
+2. Use your current Task Prompt, bus files, latest relevant own attempt logs and Handoff Log, following earlier-attempt links where needed. Check progress against your deliverables and workspace, including Git state, pending decisions, accepted limitations and verification gaps. Preserve User-held work and record any assistance needed and where to resume. Keep the prompt's `log_path`; ask the User about gaps the records cannot settle.
+3. Mention the recovery in your next Task Report. In any later Handoff Log, identify the files or summary used to rebuild earlier work.
+4. Tell the User what you rebuilt and your next action, then continue per §2.
+
 ## 2. Task Cycle
 
 For each Task Prompt, whether you found it at initiation or the User delivered it with `apm-4-check-tasks`:
@@ -67,4 +76,4 @@ When the User asks you to check for a Task Prompt, keep your registered identity
 
 Use native subagents when focused delegation would improve the work. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
 
-Consider research or debugging subagents for focused investigation, subagent workers for bounded implementation, or subagent reviewers for independent checks. Give subagents only the Task context and sources you may use; keep the Spec, Plan, Tracker and Index outside their scope.
+Consider research or debugging subagents for focused investigation, subagent workers for bounded implementation, or subagent reviewers for independent checks. Give subagents only the Task context and sources within your authorized scope.
