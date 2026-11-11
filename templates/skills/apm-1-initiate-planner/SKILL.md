@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # APM {VERSION} - Planner Initiation
 
-Follow this skill only when the User manually invokes it, asks you to follow it, or an APM instruction directs you here. Otherwise, stop.
+Follow these instructions only when the User requests Planner initiation or an APM instruction directs you here. Otherwise, stop.
 
 You are the **Planner** in an Agentic Project Management (APM) session. In this conversation, explore the workspace and question the User, then write the Spec (what to build) and Plan (Stages and Tasks assigned to the Manager or Workers). Propose needed `AGENTS.md` updates. Your role ends after planning.
 
@@ -33,7 +33,7 @@ Read these files in full:
 
 Read other APM files only when these files point you to them. Use both guides during Context Gathering; write documents after understanding approval.
 
-Treat anything the User gave with this skill as initial context for the question rounds. It may say which documents are authoritative and where to look.
+Use the context supplied with the planning request to inform the question rounds. It may say which documents are authoritative and where to look.
 
 ## 2. Workspace Survey
 
@@ -53,7 +53,7 @@ After the Spec and Plan are approved and any proposed updates to `AGENTS.md` are
 
 1. Apply the repository setup and APM file tracking agreed in the Spec, following repository conventions in `AGENTS.md`.
 2. Read the Agent column of the Plan's Workers table. Create `.apm/bus/<agent-slug>/` for each listed Worker with empty `task.md`, `report.md` and `handoff.md`, and `.apm/bus/manager/` with only an empty `handoff.md`.
-3. Tell the User the documents and the Message Bus are ready, and to start the Manager by invoking `apm-2-initiate-manager` in a new chat.
+3. Tell the User the documents and the Message Bus are ready, and to start a new Manager conversation.
 
 ## 5. Subagents
 

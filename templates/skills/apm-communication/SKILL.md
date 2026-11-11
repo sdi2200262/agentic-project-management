@@ -5,7 +5,7 @@ description: How APM agents write to the User, to each other and through the fil
 
 # APM {VERSION} - Communication
 
-The Planner, the Manager and Workers read this skill. It covers how you write to the User, how you write messages and APM files for other agents, and the Message Bus. Your role's guides define the formats of the files you write.
+The Planner, the Manager and Workers read these instructions. They cover how you write to the User, how you write messages and APM files for other agents, and the Message Bus. Your role's guides define the formats of the files you write.
 
 ## 1. Communicating with the User
 
@@ -27,7 +27,7 @@ Put longer detail in the relevant APM file and point to it. Before sending a lon
 - **Reasons.** Explain decisions through their effect on the work: its risks, dependencies and later needs. Refer to APM guides when explaining the workflow itself.
 - **Approval requests.** Follow your role instructions, applicable workspace instructions and permissions agreed with the User. Ask when an action needs approval or its authorization is unclear, explaining what you propose and why. Avoid repeating requests for actions already authorized, except to confirm destructive or irreversible actions and their consequences. Obtain approval wherever the workflow requires it.
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. At each required approval, stop for the User's decision, apply corrections and ask again.
-- **User actions.** When the User performs work, explain what to do, where, and what result or evidence to bring back. For bus delivery, name the skill, the chat and any argument, for example, `apm-5-check-reports frontend-agent` in the Manager's chat. Name skills without a command prefix, because assistants invoke skills differently. Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A populated Task Bus does not establish whether execution has started.
+- **User actions.** When the User performs work, explain what to do, where, and what result or evidence to bring back. For bus delivery, name the action, conversation and any agent ID, for example, "Ask the Manager to check frontend-agent’s report in its conversation." Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A populated Task Bus does not establish whether execution has started.
 
 ## 2. Writing for Other Agents
 
@@ -52,4 +52,4 @@ Every Task Prompt and Task Report names its Worker by slug in its `agent` field.
 
 ### 3.2 Agent ID Resolution
 
-When the User gives an agent ID with `apm-3-initiate-worker`, `apm-4-check-tasks`, `apm-5-check-reports` or `apm-9-recover`, match it against the bus folder names: an exact match first, then a prefix, then the closest plausible name. Use a unique exact or prefix match directly. Confirm any other single match with the User, and list several plausible matches for the User to choose from. If `.apm/bus/` does not exist, tell the User that planning has not created the Message Bus yet.
+When the User supplies an agent ID for Worker initiation, Task or report delivery, or recovery, match it against the bus folder names: an exact match first, then a prefix, then the closest plausible name. Use a unique exact or prefix match directly. Confirm any other single match with the User, and list several plausible matches for the User to choose from. If `.apm/bus/` does not exist, tell the User that planning has not created the Message Bus yet.

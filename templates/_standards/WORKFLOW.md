@@ -4,7 +4,7 @@ This specification defines APM behavior for template authors and maintainers. Ch
 
 ## 1. Roles and Scope
 
-APM coordinates a body of work through planning documents, Memory and a file-based Message Bus. The User starts agents, delivers bus messages by invoking skills in their chats, approves decisions and starts Handoffs.
+APM coordinates a body of work through planning documents, Memory and a file-based Message Bus. The User starts agents, delivers bus messages by asking agents to check them in their conversations, approves decisions and starts Handoffs.
 
 | Role | Responsibility | Working context |
 |---|---|---|
@@ -70,9 +70,9 @@ The Planner creates `.apm/bus/<worker>/` with `task.md`, `report.md` and `handof
 
 | Message | Sender → receiver | User delivery |
 |---|---|---|
-| Task Prompt | Manager → Worker | `apm-3-initiate-worker` in a new chat, or `apm-4-check-tasks` in an existing one |
-| Task Report | Worker → Manager | `apm-5-check-reports` |
-| Handoff Prompt | Outgoing → incoming conversation | The role's initiation skill in a new chat |
+| Task Prompt | Manager → Worker | Start a Worker conversation with its agent ID, or ask an existing Worker to check its tasks |
+| Task Report | Worker → Manager | Ask the Manager to check the named agents’ reports or all pending reports |
+| Handoff Prompt | Outgoing → incoming conversation | Start a new conversation of the same role, supplying the Worker ID when applicable |
 
 Workers are identified by their bus-folder slugs. Skills resolve supplied IDs to those folders. An outside agent can contribute through the bus without becoming a Worker, writing Task Logs or joining Handoffs; its report carries its evidence to the Manager.
 

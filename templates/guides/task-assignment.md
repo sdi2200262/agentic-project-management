@@ -53,8 +53,8 @@ You prepare workspaces and handle integration and cleanup; Workers use the assig
 
 1. Read the Worker's Task Bus, `.apm/bus/<agent-slug>/task.md`, then write the Task Prompt to it.
 2. In one message, tell the User what you are sending, to whom, any dependency or isolation point that shaped the choice, and how to deliver it:
-   - A Worker that has not started: invoke `apm-3-initiate-worker <agent-slug>` in a new chat. It finds the waiting prompt.
-   - A Worker already running: invoke `apm-4-check-tasks` in its chat.
+   - A Worker that has not started: start a new Worker conversation with its agent ID. It finds the waiting prompt.
+   - A Worker already running: ask it to check its tasks in its conversation.
    - For a batch, give the number of Tasks and their order; for parallel dispatch, give each Worker's action.
 
 ## 5. Follow-Up Tasks
@@ -71,7 +71,7 @@ When a planning change affects an active Task whose attempt has not been reporte
 
 1. Coordinate the correction through the User, checking progress and arranging a pause if needed. Align the planning documents per `{GUIDE_PATH:task-review}` §4.
 2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and worktree. In Instructions, explain what changed, what completed work remains valid and what to do next. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
-3. Record the correction and next action in the Tracker, then deliver the revised prompt per §4. Tell the User to invoke `apm-4-check-tasks` in the Worker's chat. This updates the current dispatch; do not create a new branch or worktree.
+3. Record the correction and next action in the Tracker, then deliver the revised prompt per §4. Tell the User to ask the Worker to check its tasks in its conversation. This updates the current dispatch; do not create a new branch or worktree.
 
 After a reported attempt, review it and use a follow-up Task per §5 instead.
 

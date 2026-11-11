@@ -6,9 +6,9 @@ disable-model-invocation: true
 
 # APM {VERSION} - Manager Handoff
 
-Follow this skill only when the User manually invokes it, asks you to follow it, or an APM instruction directs you here. Otherwise, stop.
+Follow these instructions only when the User requests a Manager Handoff or an APM instruction directs you here. Otherwise, stop.
 
-This skill hands your coordination to a new Manager conversation. You write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in `.apm/bus/manager/handoff.md`, tells the next conversation what to read and where to resume. The next conversation also reads the planning documents, the Tracker and the Index at initiation, per `{SKILL_PATH:apm-2-initiate-manager}`.
+This Handoff transfers your coordination to a new Manager conversation. You write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in `.apm/bus/manager/handoff.md`, tells the next conversation what to read and where to resume. The next conversation also reads the planning documents, the Tracker and the Index at initiation, per `{SKILL_PATH:apm-2-initiate-manager}`.
 
 Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
 
@@ -35,7 +35,7 @@ If the User is performing part of the work, record what they are doing, any assi
 
 ## 4. User Review
 
-Give the User both file paths and ask them to review the two files. Apply their corrections and ask again. After they approve, tell them to invoke `apm-2-initiate-manager` in a new chat; it finds the Handoff Prompt on its own. Your work in this conversation then ends.
+Give the User both file paths and ask them to review the two files. Apply their corrections and ask again. After they approve, tell them to start a new Manager conversation; it finds the Handoff Prompt on its own. Your work in this conversation then ends.
 
 ## 5. Formats
 

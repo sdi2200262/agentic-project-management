@@ -47,8 +47,8 @@ When your role requires a Task Report, send it after the Task or whole batch has
 
 1. Clear `.apm/bus/<agent-slug>/task.md`.
 2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Include deviations, unmet checks, any User agreement about their limits and decisions still needed; keep the detail in the Task Logs.
-3. Tell the User the report is ready, with both ways to deliver it in the Manager's chat: invoke `apm-5-check-reports <agent-id>` for this report, or `apm-5-check-reports` with no agent ID to collect every pending report.
-4. Tell the User you are ready for the next Task, which they deliver by invoking `apm-4-check-tasks` in this chat. Wait for it or for a Handoff.
+3. Tell the User the report is ready. In the Manager's conversation, they can ask it to check your report, giving your agent ID, or to check all pending reports.
+4. Tell the User you are ready for the next Task; they can ask you to check your tasks in this conversation. Wait for their next delivery or a Handoff.
 
 ## 5. Formats
 

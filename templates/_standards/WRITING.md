@@ -40,9 +40,9 @@ Shared writing rules belong in `apm-communication`; procedures add only what the
 
 ## 6. Skills and Native Actions
 
-Tell the User which skill to invoke, in which chat and with which argument. Name skills without a command prefix, since assistants invoke them differently.
+Runtime directions name the action, conversation and any agent ID. Conversations may use different assistants and APM formats, so the sender’s installation does not determine how the receiver is invoked. Keep concrete invocation examples in installation and startup guidance; shared runtime prose describes the requested action.
 
-Describe assistant actions in plain English. Each role's initiation skill owns its general delegation guidance; procedure steps specify the work and evidence needed. Keep assistant-specific instructions in the supported placeholders defined in `STRUCTURE.md`.
+Describe assistant actions in plain English. Each role's instructions own its general delegation guidance; procedure steps specify the work and evidence needed. Keep assistant-specific instructions in the supported placeholders defined in `STRUCTURE.md`.
 
 ## 7. Formatting
 

@@ -6,9 +6,9 @@ disable-model-invocation: true
 
 # APM {VERSION} - Session Summary
 
-Follow this skill only when the User manually invokes it, asks you to follow it, or an APM instruction directs you here. Otherwise, stop.
+Follow these instructions only when the User requests a session summary or an APM instruction directs you here. Otherwise, stop.
 
-This skill writes a session summary, a dated snapshot of an APM session for the User and for later sessions, and then offers to archive the session. Use it in a new chat, or as the Manager when the work is complete or the User stops early. If you are the Planner or a Worker, tell the User and stop.
+Write a session summary—a dated snapshot of an APM session for the User and later sessions—then offer to archive it. Use it in a new chat, or as the Manager when the work is complete or the User stops early. If you are the Planner or a Worker, tell the User and stop.
 
 Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 
@@ -19,10 +19,10 @@ Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 3. Compare the Spec, Plan, Tracker and Stage summaries with latest relevant Task Logs, following earlier-attempt links where needed, relevant Handoff Logs, deliverables and Git state, including unfinished worktrees. Record material differences and validation gaps with source paths. Count Tasks by ID, not attempt files. Review the active session only; ignore copied APM records in worktrees.
 4. Write `.apm/session.summary.md` per §2.1. Say which work you remember from this chat and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
 5. Present the summary and apply the User's corrections.
-6. Ask whether to archive the session. Archiving copies the session's `.apm/` files into `.apm/archives/` so a later session can use them as context, and clears the active files, including the installed APM skills and guides, so a new session can start; `apm init` reinstalls them. It is optional; if the User declines, stop here.
+6. Ask whether to archive the session. Archiving copies the session's `.apm/` files into `.apm/archives/` so a later session can use them as context, and clears the active files, including the installed APM instructions, so a new session can start; `apm init` reinstalls them. It is optional; if the User declines, stop here.
 7. Ask for an archive name, or use the default dated name. Explain that remaining APM-managed worktrees move with their uncommitted contents and stay attached to their source repositories; ordinary project-directory changes remain in place. Tasks and branches keep their current state. Run `apm archive --force`, or `apm archive --force --name <name>`. Continue only after the CLI confirms preservation and archival succeeded. If it reports a failure, show the obstacle and current paths, and follow its recovery guidance.
 8. Read `.apm/archives/index.md`, creating it per §2.2 if it is missing or malformed, and add the new archive at the top of its table.
-9. Tell the User the archive's path and any relocated worktrees the CLI reported. To start a new session, the User runs `apm init` (or `apm custom`) and then invokes `apm-1-initiate-planner` in a new chat; the next Planner can use the archives.
+9. Tell the User the archive's path and any relocated worktrees the CLI reported. To start a new session, the User runs `apm init` (or `apm custom`) and then starts a new Planner conversation; the next Planner can use the archives.
 
 ### 1.1 Subagents
 
