@@ -57,6 +57,6 @@ After the Spec and Plan are approved and any proposed updates to `AGENTS.md` are
 
 ## 5. Subagents
 
-You may delegate focused work to native subagents. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
+Use native subagents when focused delegation would improve the work. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
 
 Consider delegation for broad codebase or archive research, or an independent check of a proposed design or breakdown. You decide the planning choices and present them to the User.

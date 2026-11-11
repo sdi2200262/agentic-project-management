@@ -23,7 +23,7 @@ If a Success log includes a failed, unrun or weaker check, tell the User and kee
 
 Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or `AGENTS.md`. If the log records User authorization for an `AGENTS.md` change, check the change at its recorded `AGENTS.md` path, using the diff when tracked, and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
 
-For substantial Tasks you carry out and important Worker Tasks, prefer an independent review by fresh, one-time subagent reviewers. Give them the requirements, applicable instructions, outputs, validation evidence and accepted exceptions, explaining their scope and what follows their review. Ask them to challenge completeness and validation. Verify their findings and resolve gaps through your ongoing execution or §3 for Worker Tasks.
+Use independent subagent review where another perspective would help catch consequential mistakes or gaps. Consider it after substantial autonomous work, for important Tasks, or when checking a Stage or integrated result. Choose the timing and scope according to the work’s risks and uncertainty. Give fresh, one-time reviewers the requirements, applicable instructions, outputs, validation evidence and accepted exceptions. Explain what follows their review and ask them to challenge completeness and validation. Verify their findings and resolve confirmed gaps through the applicable execution, review or planning procedure.
 
 Tell the User what the evidence supports, the consequential findings and your proposed next action.
 

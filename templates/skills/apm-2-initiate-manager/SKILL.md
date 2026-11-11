@@ -69,7 +69,7 @@ Watch for signs that a Worker is losing context: it says its context was compact
 
 ### 2.1 Your Tasks
 
-For your Tasks, follow `{GUIDE_PATH:task-execution}` for dependencies, execution and validation, and `{GUIDE_PATH:task-logging}` for the concluding log and completion. Consider independent review per `{GUIDE_PATH:task-review}` §2 before concluding substantial work.
+For your Tasks, follow `{GUIDE_PATH:task-execution}` for dependencies, execution and validation, and `{GUIDE_PATH:task-logging}` for the concluding log and completion.
 
 Handle planning changes, integration and Stage completion per `{GUIDE_PATH:task-review}` §§4–7.
 
@@ -102,4 +102,4 @@ Use subagent workers to carry out your Tasks, dividing the work as its needs req
 
 Continue a subagent worker conversation when supported and useful; otherwise supply the context a new one needs. Judge familiarity from the context it retains. Native subagents are separate from APM Workers; bus messages still go through the User.
 
-You may also use subagents for research, reviewing Worker Tasks, investigating unclear findings, complex merges or independent verification. You decide acceptance, maintain document alignment and choose dispatches.
+You may also delegate exploration, research, investigation, conflict resolution or independent review when another perspective would improve the result. Choose independent review opportunities per `{GUIDE_PATH:task-review}` §2. You decide acceptance, maintain document alignment and choose dispatches.

@@ -26,7 +26,7 @@ Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 
 ### 1.1 Subagents
 
-You may delegate focused work to native subagents. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
+Use native subagents when focused delegation would improve the work. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
 
 Consider delegation for broad source review or an independent check of deliverables and Git state. You verify the evidence and write the summary, preserving consequential findings and limits.
 

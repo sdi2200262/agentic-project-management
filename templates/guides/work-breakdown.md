@@ -30,7 +30,7 @@ System behavior, output formats, schemas and interface contracts belong in the S
 
 ## 3. Plan
 
-The Plan divides the work into ordered Stages and Tasks for the Manager or Workers, using the fields in §5.2.
+The Plan divides the work into ordered Stages and Tasks for the Manager or Workers, using the fields in §5.2. A Task’s assignment identifies its responsible agent and APM conversation. Workers execute their Tasks with optional delegation; the Manager coordinates subagent workers to execute its Tasks.
 
 1. Carry forward the breakdown developed during Context Gathering. Propose or refine the Workers and their areas, the Stages and their deliverables, and the Tasks in each. Explain the boundaries, order and dependencies that matter.
 2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.
@@ -42,7 +42,7 @@ Break the work down by these principles:
 
 - **Workers** follow expertise and context. Weigh the benefit of specialization against the context sharing and coordination it requires.
 - **Stages** are milestones in order: Stage N+1 starts after Stage N is complete. Choose milestones around dependencies and meaningful review points. Parallel work belongs in Tasks within a Stage.
-- **Tasks** define work the Manager or one Worker is responsible for completing, with a clear output and validation. Choose boundaries according to size, complexity, uncertainty, dependencies and expertise. Research, implementation and validation may share a Task or need separate Tasks. Explain the boundaries that affect how the work proceeds. Investigate consequential uncertainty before work that depends on it. Where investigation or research is needed, state the question and required evidence; the executing agent chooses whether to delegate.
+- **Tasks** define work the Manager or one Worker is responsible for completing, with a clear output and validation. Choose boundaries according to size, complexity, uncertainty, dependencies and expertise. Research, implementation and validation may share a Task or need separate Tasks. Explain the boundaries that affect how the work proceeds. Investigate consequential uncertainty before work that depends on it. Where investigation or research is needed, state the question and required evidence; the assigned agent organizes it according to its role.
 - **Steps** are ordered operations toward the Task's output. Their checks contribute to validating that deliverable.
 - **User actions.** Agents work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
 - **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the assigned agent can run alone from those that need the User, and tell that agent to pause for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
