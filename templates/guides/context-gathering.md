@@ -56,7 +56,7 @@ Cover technical preferences, quality standards, workflow preferences, outside ap
 - Version control for each working repository, including whether to use Git and how it supports the planned work.
 - Chosen approaches and their reasons, including what ruled alternatives out.
 
-Recommend assignments between the Manager and separate Workers using the work’s needs and the User’s preferences. Bounded work with clear goals and checks often suits Manager execution; important or uncertain work may benefit from closer Worker collaboration. Explain consequential choices.
+Recommend assignments between the Manager and separate Workers using the gathered context and the assignment principles in `{GUIDE_PATH:work-breakdown}` §3. Bounded work with clear goals and checks often suits Manager execution; important or uncertain work may benefit from closer Worker collaboration. Explain consequential choices.
 
 Propose forms and frequency of User involvement based on the project’s risks and uncertainty and the User’s experience and preferences. Options include Worker collaboration, reviewing changes or test results, manual testing, demonstrations, explanations and progress reports. Explain what the proposed points or intervals help the User understand or decide. Agree the arrangement and shape Task and Stage boundaries, Task sizes, batches and parallel work around it. Ask whether the User wants to perform any work themselves, with the responsible agent providing context, assistance and validation.
 

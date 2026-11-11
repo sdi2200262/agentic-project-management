@@ -98,8 +98,8 @@ The User may also archive directly with `apm archive`, or keep the paused sessio
 
 ## 4. Subagents
 
-Use subagent workers to carry out your Tasks, dividing the work as its needs require. Give each subagent the relevant requirements, workspace instructions, paths, dependency context, accepted exceptions, permitted changes and expected evidence. Explain its contribution and what follows it. Keep delegated work within your scope, verify findings before relying on them and keep concurrent changes separate.
+Use subagent workers to carry out your Tasks. Give one subagent worker a whole coherent Task, or divide it into logical contributions that together cover its objective and validation. Sequence dependent contributions and run independent ones together where useful. Give each subagent the relevant requirements, workspace instructions, paths, dependency context, accepted exceptions, permitted changes and expected evidence. Explain its contribution and what follows it. Keep delegated work within your scope, verify findings before relying on them and keep concurrent changes separate.
 
 Continue a subagent worker conversation when supported and useful; otherwise supply the context a new one needs. Judge familiarity from the context it retains. Native subagents are separate from APM Workers; bus messages still go through the User.
 
-You may also delegate exploration, research, investigation, conflict resolution or independent review when another perspective would improve the result. Choose independent review opportunities per `{GUIDE_PATH:task-review}` §2. You decide acceptance, maintain document alignment and choose dispatches.
+Use research or debugging subagents when focused investigation would help, then continue implementation from valid progress. You may also use subagents for exploration, conflict resolution or independent review. Choose independent review opportunities per `{GUIDE_PATH:task-review}` §2. You decide acceptance, maintain document alignment and choose dispatches.
