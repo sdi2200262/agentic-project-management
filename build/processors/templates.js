@@ -11,50 +11,28 @@ import path from 'path';
 import logger from '../utils/logger.js';
 import { findMdFiles } from '../utils/files.js';
 import { replacePlaceholders } from './placeholders.js';
+import { isSingleSkill, templateOutputPath } from './paths.js';
 import { generateReleaseManifest } from '../generators/manifest.js';
 import { createZipArchive } from '../generators/archive.js';
 import { getVersion } from '../core/config.js';
 import { BuildError } from '../core/errors.js';
 
-/**
- * Determines if a template file is a guide based on its source directory.
- *
- * @param {string} templatePath - Path to template file.
- * @param {string} sourceDir - Source templates directory.
- * @returns {boolean} True if file is in guides/ directory.
- */
-function isGuideTemplate(templatePath, sourceDir) {
-  const relativePath = path.relative(sourceDir, templatePath);
-  return relativePath.startsWith('guides' + path.sep);
-}
-
-/**
- * Processes a single template file.
- *
- * @param {string} templatePath - Path to template file.
- * @param {Object} options - Processing options.
- * @returns {Promise<void>}
- */
+/** Renders one source using the same path mapping used by cross-file references. */
 async function processTemplate(templatePath, options) {
-  const { version, target, skillsDir, guidesDir, targetBuildDir, sourceDir } = options;
+  const { version, target, targetBuildDir, sourceDir } = options;
+  const relativePath = path.relative(sourceDir, templatePath).split(path.sep).join('/');
+  const destination = templateOutputPath(target, relativePath);
+  if (destination === null) return;
 
-  const content = replacePlaceholders(await fs.readFile(templatePath, 'utf8'), { version, target });
-  const relativePath = path.relative(sourceDir, templatePath);
-  let outputPath;
-
-  if (isGuideTemplate(templatePath, sourceDir)) {
-    // Guides: flat files
-    outputPath = path.join(guidesDir, path.basename(templatePath));
-  } else {
-    // Command skills and shared skills: skills/<skill-name>/<file>.md, copied as they are
-    const [, skillName, ...rest] = relativePath.split(path.sep);
-    const skillDir = path.join(skillsDir, skillName);
-    await fs.ensureDir(skillDir);
-    outputPath = path.join(skillDir, ...rest);
+  let source = await fs.readFile(templatePath, 'utf8');
+  if (isSingleSkill(target) && relativePath !== 'entrypoints/apm/SKILL.md') {
+    // Reference documents are ordinary Markdown, not discoverable skills.
+    source = source.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n(?:\r?\n)?/, '');
   }
-
-  await fs.writeFile(outputPath, content);
-  logger.info(`${relativePath} → ${path.relative(targetBuildDir, outputPath)}`);
+  const content = replacePlaceholders(source, { version, target });
+  const outputPath = path.join(targetBuildDir, destination);
+  await fs.outputFile(outputPath, content);
+  logger.info(`${relativePath} → ${destination}`);
 }
 
 /**
@@ -87,19 +65,19 @@ async function buildTarget(target, config, version) {
   const { outputDir, sourceDir } = buildConfig;
 
   const targetBuildDir = path.join(outputDir, `${target.id}-build`);
-  const skillsDir = path.join(targetBuildDir, target.directories.skills);
-  const guidesDir = path.join(targetBuildDir, target.directories.guides);
 
   logger.info(`\nProcessing target: ${target.name} (${target.id})`);
-
-  await fs.ensureDir(skillsDir);
-  await fs.ensureDir(guidesDir);
 
   // Copy apm/ → .apm/ (common to all targets)
   await copyApmDirectory(sourceDir, targetBuildDir);
 
-  // Find template files (excludes _standards/ and apm/)
-  const templateFiles = await findMdFiles(sourceDir);
+  const templateFiles = [
+    ...await findMdFiles(path.join(sourceDir, 'skills')),
+    ...await findMdFiles(path.join(sourceDir, 'guides'))
+  ];
+  if (isSingleSkill(target)) {
+    templateFiles.push(path.join(sourceDir, 'entrypoints/apm/SKILL.md'));
+  }
   logger.info(`Found ${templateFiles.length} template files`);
 
   // Process all templates
@@ -107,8 +85,6 @@ async function buildTarget(target, config, version) {
     await processTemplate(templatePath, {
       target,
       version,
-      skillsDir,
-      guidesDir,
       targetBuildDir,
       sourceDir
     });

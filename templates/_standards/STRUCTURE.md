@@ -13,6 +13,7 @@ Open each file with its purpose and result. Keep each section on one part of the
 | Handoff skill | Role, transfer procedure, Handoff Log and Prompt formats. |
 | Guide | Procedure context, ordered steps and branches, then Formats for its artifacts. End where the next guide begins and point to it. |
 | Shared skill | Reading roles, purpose and shared protocol. Role-specific behavior belongs in the role's files. |
+| Single-skill entry | Briefly explains APM so an agent can assess its suitability, then directs requested actions to the owning role or procedure. Keep workflow procedures in the shared sources. |
 
 Keep artifact contracts in a final Formats section of their owning file, one subsection per artifact.
 
@@ -26,12 +27,18 @@ Sources live under `templates/`:
 | Shared skill | `skills/<name>/SKILL.md` | `name`, `description` |
 | Skill support file | Beside its `SKILL.md` | As required by its format |
 | Guide | `guides/<name>.md` | None |
+| Single-skill entry | `entrypoints/apm/SKILL.md` | `name`, `description` |
 | Initial artifact | `apm/<path>.md` | As required by its schema |
 | Authoring standard | `_standards/<NAME>.md` | None |
 
 Use kebab-case names; each skill's `name` matches its directory. Descriptions identify purpose and activation. Valid YAML frontmatter starts on the first line between `---` delimiters.
 
-Each build target installs skills under `skills/` and guides under `apm-guides/`, rooted at `.claude/` or `.agents/`. Initial artifacts become `.apm/`. Both targets use workspace-root `AGENTS.md` for workspace instructions and rules.
+Build targets select an assistant family (`agents` or `claude`) and format (`multi-skill` or `single-skill`). The family determines assistant-specific text; configured directories determine installation paths.
+
+- Multi-skill targets install numbered and shared skills under `skills/`, with guides under `apm-guides/`, rooted at `.claude/` or `.agents/`.
+- Single-skill targets are a research preview. They install one `skills/apm/SKILL.md` entry. Shared initiation sources become `roles/{planner,manager,worker}.md`. The six guides and Handoff, recovery and summary instructions go under `guides/`; communication and bus support go under `communication/`. Reference documents have no skill frontmatter. Check Tasks/Reports wrappers are omitted; the entry routes to role-owned receipt instructions.
+
+All targets use the same workflow sources, workspace-root `AGENTS.md` and initial `.apm/` artifacts. The build maps paths and strips reference frontmatter without rewriting workflow prose.
 
 ## 3. Navigation
 
@@ -52,14 +59,14 @@ Root APM artifact paths at `.apm/`. Preserve field names, values, separators and
 
 ## 5. Build Placeholders and Checks
 
-Supported placeholders match `build/processors/placeholders.js`:
+Supported placeholders resolve through `build/processors/placeholders.js` and the output mapping in `build/processors/paths.js`:
 
 | Placeholder | Result |
 |---|---|
 | `{VERSION}` | Template version |
-| `{SKILL_PATH:name}` | `.claude/skills/<name>/SKILL.md` or `.agents/skills/<name>/SKILL.md` |
-| `{SKILL_DIR:name}` | The skill's directory, for support files |
-| `{GUIDE_PATH:name}` | `.claude/apm-guides/<name>.md` or `.agents/apm-guides/<name>.md` |
-| `{CLAUDE_ONLY:text}` | Text kept only in the Claude target; start with a space when following a sentence |
+| `{SKILL_PATH:name}` | The source skill's output file: a skill, role or procedure reference, depending on the target |
+| `{SKILL_DIR:name}` | The mapped file's directory, for support files |
+| `{GUIDE_PATH:name}` | `<configured guides directory>/<name>.md` |
+| `{CLAUDE_ONLY:text}` | Text kept only for the Claude assistant family; start with a space when following a sentence |
 
-Build both targets after changes. Check schemas, formats, initial artifacts, references, summary links and resolved paths and placeholders.
+Build all four targets after changes. Check schemas, formats, initial artifacts, references, summary links and resolved paths and placeholders. Single-skill bundles contain exactly one `SKILL.md`; existing multi-skill output must remain equivalent to its sources. Unmapped single-skill references fail the build.

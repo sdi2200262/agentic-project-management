@@ -16,6 +16,14 @@ Workers do not read the Spec, Plan, Tracker or Index unless the User widens thei
 
 Role instructions, applicable workspace instructions and permissions agreed with the User govern actions. Approval requests identify the proposed action and why it needs User agreement. Existing authorization avoids repeated requests, except for confirmation of destructive or irreversible actions and their consequences. Required workflow approvals and agreed review points remain in force.
 
+### 1.1 Entry Formats
+
+APM provides numbered skills and a single-skill research preview, both using the same workflow sources. Numbered command skills require User invocation. The single-skill entry may be loaded for a requested APM action or to assess whether to suggest APM for substantial work. It briefly explains the framework; starting a session requires the User's request or agreement.
+
+Role and procedure files own the workflow. Established agents follow their loaded role instructions for ongoing work, including task/report receipt, without reloading the entry. The entry helps locate instructions when needed without repeating initiation. Each APM agent has its own conversation. Loading the entry preserves the established role and Worker identity; agents stay within their permitted files and do not switch to another role or Worker identity. Explicit User authorization may widen file access. Both formats require User-triggered bus delivery.
+
+Runtime names below identify the shared sources; `STRUCTURE.md` defines their output locations in each format.
+
 ## 2. Phases
 
 ### 2.1 Planning
@@ -178,7 +186,7 @@ The shared Recovery skill routes to the role's recovery procedure. Recovery relo
 
 **Runtime:** `apm-8-summarize-session`.
 
-A new conversation may summarize a session at any point; the Manager may do so at completion or early stopping. At normal completion the Manager presents results. For early closure it pauses active Tasks, stops their subagents, asks the User to pause other active work, and records checked unfinished state without changing Task states. Before summarizing or archiving, use current confirmation that active work has stopped; collect missing or changed state from the User. The optional `.apm/session.summary.md` records outcomes, consequential findings, decisions, limitations and attribution, checked against sources and deliverables. Completion counts describe workflow progress, not universal validation success.
+A new conversation may summarize a session at any point without initiating an APM role; the Manager may do so at completion or early stopping. At normal completion the Manager presents results. For early closure it pauses active Tasks, stops their subagents, asks the User to pause other active work, and records checked unfinished state without changing Task states. Before summarizing or archiving, use current confirmation that active work has stopped; collect missing or changed state from the User. The optional `.apm/session.summary.md` records outcomes, consequential findings, decisions, limitations and attribution, checked against sources and deliverables. Completion counts describe workflow progress, not universal validation success.
 
 Archiving is optional and needs User approval. It preserves session records and remaining APM-managed worktrees with their uncommitted contents, verifies preservation, then clears active APM files and installed instructions. Worktrees remain attached to source repositories; ordinary project-directory changes remain in place. Failure preserves recoverable state and reports the paths needing attention. Completing Tasks, committing and merging are separate decisions.
 

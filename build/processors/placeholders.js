@@ -6,15 +6,17 @@
  * @module build/processors/placeholders
  */
 
+import { skillPath, skillDirectory, guidePath } from './paths.js';
+
 /**
  * Replaces template placeholders with target-specific values.
  *
  * Supported placeholders:
  * - {VERSION}: Template version
- * - {SKILL_PATH:name}: Skill file (<skills dir>/<name>/SKILL.md)
- * - {SKILL_DIR:name}: Skill folder (<skills dir>/<name>)
+ * - {SKILL_PATH:name}: Source skill mapped to its output file
+ * - {SKILL_DIR:name}: Directory containing the mapped source skill
  * - {GUIDE_PATH:name}: Guide file (<guides dir>/<name>.md)
- * - {CLAUDE_ONLY:text}: Text kept for the claude target and removed for the others
+ * - {CLAUDE_ONLY:text}: Text kept for the claude assistant family and removed for the others
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
@@ -24,12 +26,12 @@
  */
 export function replacePlaceholders(content, context) {
   const { version, target } = context;
-  const { directories, id } = target;
+  const assistant = target.assistant ?? target.id;
 
   return content
     .replace(/{VERSION}/g, version)
-    .replace(/{CLAUDE_ONLY:([^}]*)}/g, (_match, text) => (id === 'claude' ? text : ''))
-    .replace(/{SKILL_PATH:([^}]+)}/g, (_match, name) => `${directories.skills}/${name}/SKILL.md`)
-    .replace(/{SKILL_DIR:([^}]+)}/g, (_match, name) => `${directories.skills}/${name}`)
-    .replace(/{GUIDE_PATH:([^}]+)}/g, (_match, name) => `${directories.guides}/${name}.md`);
+    .replace(/{CLAUDE_ONLY:([^}]*)}/g, (_match, text) => (assistant === 'claude' ? text : ''))
+    .replace(/{SKILL_PATH:([^}]+)}/g, (_match, name) => skillPath(target, name))
+    .replace(/{SKILL_DIR:([^}]+)}/g, (_match, name) => skillDirectory(target, name))
+    .replace(/{GUIDE_PATH:([^}]+)}/g, (_match, name) => guidePath(target, name));
 }

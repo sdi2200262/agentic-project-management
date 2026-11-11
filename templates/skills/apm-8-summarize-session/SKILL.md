@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Follow these instructions only when the User requests a session summary or an APM instruction directs you here. Otherwise, stop.
 
-Write a session summary—a dated snapshot of an APM session for the User and later sessions—then offer to archive it. Use it in a new chat, or as the Manager when the work is complete or the User stops early. If you are the Planner or a Worker, tell the User and stop.
+Write a session summary—a dated snapshot of an APM session for the User and later sessions—then offer to archive it. Use it in a new chat, or as the Manager when the work is complete or the User stops early. In a new chat, you may follow these instructions without loading an APM role. If you are the Planner or a Worker, tell the User and stop.
 
 Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 
