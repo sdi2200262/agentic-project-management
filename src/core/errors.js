@@ -19,6 +19,7 @@ export const CLIErrorCode = {
   MANIFEST_MISSING: 'MANIFEST_MISSING',
   MANIFEST_INVALID: 'MANIFEST_INVALID',
   BUNDLE_NOT_FOUND: 'BUNDLE_NOT_FOUND',
+  TARGET_CONFLICT: 'TARGET_CONFLICT',
 
   // Config errors
   CONFIG_READ_FAILED: 'CONFIG_READ_FAILED',
@@ -113,6 +114,15 @@ export class CLIError extends Error {
       `${tag} requires agentic-pm ${minCliVersion} or later. Update with: npm update -g agentic-pm`,
       CLIErrorCode.CLI_TOO_OLD,
       { tag, minCliVersion }
+    );
+  }
+
+  /** Reports incompatible selections without changing the installation. */
+  static targetConflict(conflicts, details, guidance) {
+    return new CLIError(
+      `Installation targets cannot be used together:\n${details.join('\n')}\n${guidance}`,
+      CLIErrorCode.TARGET_CONFLICT,
+      { conflicts }
     );
   }
 

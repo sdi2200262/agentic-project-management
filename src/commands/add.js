@@ -9,7 +9,7 @@
 import { CLI_VERSION } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
-import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
+import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import { getRepoSettings } from '../core/config.js';
 import { fetchReleaseByTag, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
@@ -90,6 +90,8 @@ export async function addCommand(options = {}) {
     assistantIds = [selected];
   }
 
+  assertCompatibleTargets(manifest, [...metadata.assistants, ...assistantIds], { installedIds: metadata.assistants });
+
   // Download and install each assistant
   const installedFiles = getInstalledFiles(metadata);
   const newAssistants = [...metadata.assistants];
@@ -124,10 +126,7 @@ export async function addCommand(options = {}) {
   for (const w of warnings) logger[w.level](w.msg);
   if (added.length) {
     logger.success(`Added ${formatAssistantList(added, names)} to installation.`);
-  }
-  for (const id of assistantIds) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
+    logger.showInstallationNotes(manifest, added);
   }
 }
 

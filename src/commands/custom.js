@@ -13,7 +13,7 @@ import { getCustomRepos, addCustomRepo, removeCustomRepo, getRepoSettings, updat
 import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, getRequiredBundles } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
-import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
+import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -147,6 +147,7 @@ export async function customCommand(options = {}) {
     assistantIds = [selected];
   }
 
+  assertCompatibleTargets(manifest, assistantIds);
   const bundles = getRequiredBundles(release, manifest, assistantIds);
 
   const installedFiles = {};
@@ -205,12 +206,9 @@ export async function customCommand(options = {}) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (installedFiles[id]) logger.success(`Installed ${formatAssistant(id, assistant.name)}`);
   }
-  for (const id of assistantIds) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
-  }
   logger.success(`APM initialized from ${repoString}!`);
   if (repoSaved) logger.info('Repository saved.');
+  logger.showInstallationNotes(manifest, assistantIds);
 }
 
 // --- Repo management handlers ---

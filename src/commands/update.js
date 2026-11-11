@@ -10,7 +10,7 @@
 import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, createMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
-import { formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
+import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
 import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion, isStableRelease } from '../services/releases.js';
 import { downloadAndExtract } from '../services/extractor.js';
 import { createArchive, generateArchiveName, archivePathFor } from '../services/archive.js';
@@ -58,7 +58,7 @@ export async function updateCommand(options = {}) {
   const names = { ...getAssistantNames(metadata), ...assistantNamesFromManifest(manifest) };
 
   // Check if any current assistants exist in the target release
-  const { ids: survivingAssistants, dropped: droppedAssistants, migrations } = resolveUpdateTargets(metadata.assistants, manifest);
+  const { ids: survivingAssistants, dropped: droppedAssistants, migrations, sources } = resolveUpdateTargets(metadata.assistants, manifest);
   if (!survivingAssistants.length) {
     const available = formatAssistantList(manifest.assistants.map(a => a.id), names);
     logger.error(`None of your installation targets (${formatAssistantList(metadata.assistants, names)}) are available in ${release.tag_name}.`);
@@ -67,6 +67,7 @@ export async function updateCommand(options = {}) {
     return;
   }
 
+  assertCompatibleTargets(manifest, survivingAssistants, { sources });
   const bundles = getRequiredBundles(release, manifest, survivingAssistants);
 
   // Pre-compute archive name for confirmation message
@@ -179,16 +180,13 @@ export async function updateCommand(options = {}) {
   for (const id of survivingAssistants) {
     logger.success(`Updated ${formatAssistant(id, names[id])}`);
   }
-  for (const id of survivingAssistants) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
-  }
   logger.success(`Updated to ${release.tag_name} (${logger.plural(survivingAssistants.length, 'installation target')})!`);
   if (archived.worktrees.length) {
     logger.info(`Preserved ${logger.plural(archived.worktrees.length, 'worktree')}; they remain attached to their source repositories.`);
     for (const worktree of archived.worktrees) logger.info(`${worktree.from} -> ${worktree.to}${worktree.unfinished ? ' (unfinished work)' : ''}`);
   }
-  logger.info(`Your previous session is in ${path.relative(cwd, archived.archivePath)}. To start a new session, invoke apm-1-initiate-planner in a new chat.`);
+  logger.info(`Your previous session is in ${path.relative(cwd, archived.archivePath)}.`);
+  logger.showInstallationNotes(manifest, survivingAssistants);
 }
 
 /**

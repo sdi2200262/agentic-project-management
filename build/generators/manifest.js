@@ -24,6 +24,7 @@ export function generateReleaseManifest(config, version) {
       bundle: target.bundleName
     };
     if (target.replaces !== undefined) entry.replaces = target.replaces;
+    if (target.conflictsWith !== undefined) entry.conflictsWith = target.conflictsWith;
     if (target.postInstallNote) {
       entry.postInstallNote = target.postInstallNote;
     }

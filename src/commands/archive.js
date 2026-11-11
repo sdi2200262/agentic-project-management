@@ -196,7 +196,7 @@ async function createMode(force, archiveName) {
     logger.info(`Preserved ${logger.plural(worktrees.length, 'worktree')}; they remain attached to their source repositories.`);
     for (const worktree of worktrees) logger.info(`${worktree.from} -> ${worktree.to}${worktree.unfinished ? ' (unfinished work)' : ''}`);
   }
-  logger.info('To start a new session, run "apm init" (or "apm custom"), then invoke apm-1-initiate-planner in a new chat.');
+  logger.info('To start a new session, run "apm init" (or "apm custom") and follow the installation guidance.');
 }
 
 export default archiveCommand;

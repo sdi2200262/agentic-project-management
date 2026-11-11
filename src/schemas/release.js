@@ -43,6 +43,15 @@ function validateAssistant(assistant, index) {
     errors.push(`${prefix}.replaces: must be an array of non-empty IDs`);
   }
 
+  if (assistant.conflictsWith !== undefined) {
+    if (!Array.isArray(assistant.conflictsWith)
+      || assistant.conflictsWith.some(id => typeof id !== 'string' || !id.trim())) {
+      errors.push(`${prefix}.conflictsWith: must be an array of non-empty IDs`);
+    } else if (new Set(assistant.conflictsWith).size !== assistant.conflictsWith.length) {
+      errors.push(`${prefix}.conflictsWith: duplicate ID`);
+    }
+  }
+
   // description is optional
   if (assistant.description !== undefined && typeof assistant.description !== 'string') {
     errors.push(`${prefix}.description: must be a string if provided`);
@@ -99,6 +108,26 @@ export function validateReleaseManifest(manifest) {
         }
       }
     });
+
+    // Resolve references after collecting every target ID, including later entries.
+    let hasConflicts = false;
+    manifest.assistants.forEach((assistant, index) => {
+      if (!Array.isArray(assistant?.conflictsWith)) return;
+      if (assistant.conflictsWith.length) hasConflicts = true;
+      for (const id of assistant.conflictsWith) {
+        if (id === assistant.id) errors.push(`assistants[${index}].conflictsWith: cannot reference itself`);
+        else if (!ids.has(id)) errors.push(`assistants[${index}].conflictsWith: unknown target "${id}"`);
+      }
+    });
+    if (hasConflicts) {
+      // CLI 1.0.4 first enforces conflicts. Require a stable numeric minimum;
+      // older manifests without conflicts keep their existing version rules.
+      const minimum = typeof manifest.minCliVersion === 'string'
+        && manifest.minCliVersion.match(/^(\d+)\.(\d+)\.(\d+)$/);
+      const supported = minimum && (Number(minimum[1]) > 1
+        || (Number(minimum[1]) === 1 && (Number(minimum[2]) > 0 || Number(minimum[3]) >= 4)));
+      if (!supported) errors.push('conflictsWith requires minCliVersion 1.0.4 or later (stable X.Y.Z)');
+    }
   }
 
   return {

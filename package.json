@@ -1,6 +1,6 @@
 {
   "name": "agentic-pm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Agentic Project Management CLI",
   "scripts": {
     "build": "node build/index.js",

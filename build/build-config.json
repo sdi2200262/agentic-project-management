@@ -3,7 +3,7 @@
     "sourceDir": "templates",
     "outputDir": "dist",
     "cleanOutput": true,
-    "minCliVersion": "1.0.3"
+    "minCliVersion": "1.0.4"
   },
   "targets": [
     {
@@ -23,6 +23,9 @@
         "antigravity",
         "opencode"
       ],
+      "conflictsWith": [
+        "agents-single-skill"
+      ],
       "postInstallNote": "To start planning, invoke the apm-1-initiate-planner skill in a new chat."
     },
     {
@@ -35,6 +38,9 @@
         "skills": ".claude/skills",
         "guides": ".claude/apm-guides"
       },
+      "conflictsWith": [
+        "claude-single-skill"
+      ],
       "postInstallNote": "To start planning, invoke the apm-1-initiate-planner skill in a new chat."
     },
     {
@@ -47,6 +53,9 @@
         "skills": ".agents/skills",
         "guides": ".agents/skills/apm/guides"
       },
+      "conflictsWith": [
+        "agents"
+      ],
       "postInstallNote": "[RESEARCH PREVIEW] To start planning, invoke the apm skill in a new chat and ask it to start the planning phase."
     },
     {
@@ -59,6 +68,9 @@
         "skills": ".claude/skills",
         "guides": ".claude/skills/apm/guides"
       },
+      "conflictsWith": [
+        "claude"
+      ],
       "postInstallNote": "[RESEARCH PREVIEW] To start planning, invoke the apm skill in a new chat and ask it to start the planning phase."
     }
   ]
