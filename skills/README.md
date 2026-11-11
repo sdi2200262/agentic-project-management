@@ -1,6 +1,6 @@
 # APM Standalone Skills
 
-These optional skills help with APM setup and customisation.
+These optional skills help with APM setup and customisation. They work with every target and are installed separately from the skills `apm init` installs.
 
 | Skill | Purpose |
 |---|---|

@@ -1,6 +1,27 @@
 # Changelog
 
-APM versions its CLI (npm) and templates (GitHub Releases) separately using [Semantic Versioning](https://semver.org/). Entries follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). See [VERSIONING.md](VERSIONING.md) for release rules.
+APM versions its CLI (npm) and templates (GitHub Releases) separately using [Semantic Versioning](https://semver.org/). Entries follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). See [CONTRIBUTING.md](CONTRIBUTING.md#releases) for release rules.
+
+## Unreleased — CLI v1.0.4 + Templates v1.2.0
+
+### Breaking Changes
+
+* **CLI v1.0.4 required.** Run `npm install -g agentic-pm@latest`, then `apm update`. Older CLIs may show a manifest error for this release.
+* **Rules removed.** The Planner no longer writes Rules in an `APM_RULES` block. `AGENTS.md` holds ordinary workspace instructions that the Planner proposes or creates and the Manager and Workers maintain across sessions. When updating, keep useful rules as ordinary instructions and delete the `APM_RULES` markers; the CLI does not change `AGENTS.md`.
+
+### Added
+
+* **Manager execution and User-led work.** The Manager can carry out Tasks through subagents, alongside separate Worker conversations. You can also do any Task, or part of one, yourself with agent assistance, within APM’s workflow. These changes bring the benefits of APM Auto and APM Semi into APM's core.
+* The Manager now may use fresh subagents to review important work or long stretches of autonomous iterations.
+* `agents-single-skill` and `claude-single-skill` targets (research preview) provide the same workflow through one `apm` skill. Choose one format for `agents` and one for `claude`; the two can differ.
+
+### Changed
+
+* The Planner and Manager suggest how you stay involved, instead of involvement being hardwired through user-mediated coordination. You choose the arrangement of how work gets reviewed and can change it later.
+* You and the Planner agree how Git is used, replacing the fixed branch per dispatch and merge before each Stage. The Manager makes sure each Task has the earlier work it depends on, committed or not.
+* Worker batches now stop at partly done Tasks. Agreed User reviews happen before the Worker reports.
+* Handoffs, recovery, and early closure account for work you do yourself and any running subagents. Current files and Git state take precedence over older records.
+* CLI v1.0.4 shows each release's startup steps and rejects incompatible targets, such as both formats for `claude`, before changing files.
 
 ## CLI v1.0.3 + Templates v1.1.0 - 2026-10-29
 

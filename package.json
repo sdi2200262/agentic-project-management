@@ -23,8 +23,7 @@
   "files": [
     "src/",
     "CHANGELOG.md",
-    "SECURITY.md",
-    "VERSIONING.md"
+    "SECURITY.md"
   ],
   "bin": {
     "apm": "src/index.js",

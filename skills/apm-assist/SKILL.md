@@ -9,15 +9,24 @@ Use this skill to answer questions about APM and help with installation or migra
 
 ## 1. APM Overview
 
-APM coordinates work across AI assistants using planning documents, a file-based Message Bus and persistent work records. The User delivers messages between chats and approves decisions.
+APM is a spec-driven multi-agent framework for AI-assisted software engineering. Planning documents preserve intent, separate agent conversations distribute context, and persistent records support work beyond a conversation's context window.
 
-- The **Planner** explores the workspace, questions the User and writes the Spec, Plan and Rules for separate approval.
-- The **Manager** assigns Tasks, reviews results and maintains the Tracker and Memory.
-- **Workers** execute and validate their Task Prompts, write Task Logs and report to the Manager. They work from their prompts and Rules.
+- The **Planner** explores the workspace, questions the User and writes the Spec and Plan for separate approval. It proposes needed updates to lasting workspace guidance in `AGENTS.md`.
+- The **Manager** coordinates implementation, carries out Tasks through subagents or assigns them to Worker conversations, reviews results and maintains the planning documents, Tracker and Memory.
+- **Workers** execute and validate their Task Prompts, write Task Logs and report to the Manager. They work from self-contained prompts, workspace instructions and permitted dependency context.
+
+The Planner and Manager recommend involvement that helps the User understand and retain authority over the work. The User chooses its form and frequency, for example automated Manager execution, Worker conversations the User coordinates by delivering Message Bus notifications, or User-led work with assistance, and can combine them.
 
 The session's records live in `.apm/`. A Handoff moves a Manager or Worker to a new conversation; recovery rebuilds context after compaction. A session can cover part of a larger goal and can be archived for later planning.
 
-Install the CLI with `npm install -g agentic-pm`. The `agents` target uses `.agents/skills/` and `AGENTS.md`; `claude` supports Claude Code. Both can be installed with `apm init -a agents claude`.
+Install or upgrade the CLI with `npm install -g agentic-pm@latest`, and compare `apm --version` with the release's `minCliVersion`.
+
+| Targets | Format and startup |
+|---|---|
+| `agents`, `claude` | Separate skills; invoke `apm-1-initiate-planner` in a new chat. |
+| `agents-single-skill`, `claude-single-skill` | Single skill (research preview); invoke `apm` in a new chat and ask it to start planning. |
+
+`agents` targets use `.agents/skills/` and `AGENTS.md`; `claude` targets support Claude Code. Both formats give agents the same workflow and `.apm/` records. Install one format for `agents` and one for `claude`, for example `apm init -a agents claude-single-skill`. With the single skill installed, an agent may suggest APM and starts a session only with the User's request or agreement.
 
 ## 2. Documentation
 
@@ -55,11 +64,15 @@ When the setup matters to the answer:
 
 For an installation that needs migration:
 
-1. Inspect its metadata, session records, installed instructions and Git worktrees. Read the relevant release documentation and source to identify the required changes.
+1. Inspect its metadata, session records, installed instructions and Git worktrees. Read the relevant changelog entries, release notes and source to identify compatibility requirements and migration steps, including any manual updates to workspace guidance.
 2. Explain the installed and target versions, what will be preserved or replaced, and the proposed steps. Obtain approval before modifying the installation.
-3. Pause active agents. Use supported CLI update/archive commands where available. If manual steps are needed, identify them explicitly. Preserve session records and unfinished work, use Git for worktree moves, and verify preservation before cleanup.
+3. Pause active agents and upgrade the CLI. Use `apm update` or `apm archive` where they apply, and name any manual steps. `apm update` archives the session and installs fresh templates. Preserve session records and unfinished work, use Git for worktree moves, and verify preservation before cleanup.
 4. Remove only identified APM-installed files. Keep User files and content whose ownership is uncertain; ask about unresolved cases. Preserve the source version in archived metadata and any summary.
 5. Complete the update or fresh installation, check it with `apm status`, and direct the User to a new Planner chat. Earlier archives remain available as planning context.
+
+### Changing Formats
+
+Updates keep the installed format. To switch, pause affected chats and preserve customised installed instructions, then run `apm remove -a <old-target>` and `apm add -a <new-target>`. Both keep `.apm/` records, and `add` installs the same release. Check with `apm status` and continue in fresh chats. On a target conflict, explain the incompatible pair and let the User choose which target to remove; `--force` does not bypass the check.
 
 ## 5. Answers
 
