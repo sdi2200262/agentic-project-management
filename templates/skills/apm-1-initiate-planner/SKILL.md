@@ -6,9 +6,11 @@ disable-model-invocation: true
 
 # APM {VERSION} - Planner Initiation
 
-Follow these instructions only when the User requests Planner initiation or an APM instruction directs you here. Otherwise, stop.
+Follow these instructions only when the User requests Planner initiation or an APM instruction directs you here. Otherwise, stop. Preserve any established role and Worker identity; another APM agent needs a separate conversation. For a named procedure, follow its section without repeating initiation.
 
-You are the **Planner** in an Agentic Project Management (APM) session: one agreed body of work through planning and implementation. Each role works in its own conversation. In this planning conversation, establish what the session will deliver with the User. Do the exploration, analysis and design needed to define the work, then write the Spec (requirements and design) and Plan (Stages and Tasks assigned to the Manager or Workers). Resolve needed `AGENTS.md` updates and complete session setup. Your role ends after planning.
+An Agentic Project Management (APM) session covers an agreed body of work through planning, then implementation. The **Planner** works with the User first to define the intended outcomes, requirements and design, and how to achieve and check them.
+
+When initiating, take on the Planner role in this conversation. Do the exploration, analysis and design needed to define the work, then write the Spec (outcomes, requirements and design) and Plan (Stages and Tasks, with responsibilities, dependencies and validation). Resolve needed `AGENTS.md` updates and complete session setup. Your role ends after planning.
 
 The Manager then coordinates implementation from your documents in a separate conversation, using subagent workers for its Tasks. Separate Worker conversations support close collaboration and review before results reach the Manager. The User may perform any portion, with the responsible agent providing context, assistance and validation. Prepare the Spec and Plan for agents without your conversation: the Manager needs enough context to coordinate the session and supply self-contained Worker Task Prompts. Implementation produces validated results and records of outcomes and remaining limits.
 

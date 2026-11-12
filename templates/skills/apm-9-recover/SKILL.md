@@ -10,7 +10,7 @@ Follow these instructions only when the User requests recovery or an APM instruc
 
 Recovery rebuilds a Manager's or Worker's working context after compaction or a lost conversation. It continues the same conversation; only a Handoff starts a new one. If you are the Planner or an agent outside APM, tell the User and stop. The User may give a role with the request: `manager` or a Worker's agent ID.
 
-1. Take your role from what the User gave, or from this conversation. If neither settles it, ask.
+1. Identify the role being recovered from this conversation or the User’s supplied identity. Preserve any established role and Worker identity; ask if the available information conflicts or leaves the identity unclear.
 2. Read your role's instructions in full and follow its Recovery section (§1.3):
    - Manager: `{SKILL_PATH:apm-2-initiate-manager}`.
    - Worker: `{SKILL_PATH:apm-3-initiate-worker}`.

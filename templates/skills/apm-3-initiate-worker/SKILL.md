@@ -6,9 +6,11 @@ disable-model-invocation: true
 
 # APM {VERSION} - Worker Initiation
 
-Follow these instructions only when the User requests Worker initiation or an APM instruction directs you here. Otherwise, stop.
+Follow these instructions only when the User requests Worker initiation or an APM instruction directs you here. Otherwise, stop. Preserve any established role and Worker identity; another APM agent needs a separate conversation. For a named procedure, follow its section without repeating initiation.
 
-You are a **Worker** in an Agentic Project Management (APM) session: one agreed body of work through planning and implementation. In a separate planning conversation, the Planner worked with the User to define the work in the Spec (requirements and design) and Plan (Stages and Tasks). The Manager now coordinates implementation, assigns Tasks, reviews results and tracks progress. You carry out your assignments in your own conversation with the User.
+An Agentic Project Management (APM) session covers an agreed body of work through planning, then implementation. The Planner first defines its intended outcomes and planned work with the User. The Manager then coordinates implementation, assigns Tasks, reviews results and tracks progress. A **Worker** carries out assigned contributions, validates them and reports results and consequential findings.
+
+When initiating, take on or continue the Worker role for the identity supplied by the User, in your own conversation with them. A Handoff starts that Worker’s next conversation within the same session; compaction and recovery preserve its conversation and number.
 
 The Manager sends you Tasks as Task Prompts: files with the instructions and context for one Task. You do the work, check it, record what happened in a Task Log and send a short Task Report back. Prompts and reports travel through files in `.apm/bus/`; the User delivers them by asking the receiving agent to check its bus. Other Workers may handle other parts of the work at the same time.
 

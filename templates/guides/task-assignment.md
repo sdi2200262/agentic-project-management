@@ -1,6 +1,6 @@
 # APM {VERSION} - Task Assignment Guide
 
-This guide covers Task Assignment: choosing which Ready Tasks to start and who handles them, writing Worker Task Prompts, preparing branches and worktrees, and delivering the prompts through the Message Bus. `{GUIDE_PATH:task-review}` covers the reports that come back.
+This guide covers the Manager’s Task Assignment: choosing which Ready Tasks to start and who handles them, writing Worker Task Prompts, preparing branches and worktrees, and delivering the prompts through the Message Bus. `{GUIDE_PATH:task-review}` covers the reports that come back.
 
 A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
 

@@ -4,11 +4,11 @@ These standards define runtime file layout, navigation and artifact contracts fo
 
 ## 1. Organize for Use
 
-Open each file with its purpose and result. Keep each section on one part of the work, in the order the agent acts. State each rule once at its point of use; repeat a brief reminder only when testing shows agents miss it.
+Open each file with its purpose, intended reader and result. Distinguish role initiation from procedures used by an established agent. Keep each section on one part of the work, in the order the agent acts. State each rule once at its point of use; repeat a brief reminder only when testing shows agents miss it.
 
 | File | Content |
 |---|---|
-| Initiation skill | Role, inputs, outputs, scope, file loading, identity, first start, continuation, recovery, message receipt and duties. The Planner has no Handoff. |
+| Initiation skill | Role description and place in the session, directions to take on or continue it, inputs, outputs, scope, file loading, identity, first start, continuation, recovery, message receipt and duties. The Planner has no Handoff. |
 | Utility or recovery skill | Purpose, applicability, arguments, procedure or route to the owning role procedure, and completion. |
 | Handoff skill | Role, transfer procedure, Handoff Log and Prompt formats. |
 | Guide | Procedure context, ordered steps and branches, then Formats for its artifacts. End where the next guide begins and point to it. |

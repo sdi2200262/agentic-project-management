@@ -1,6 +1,6 @@
 # APM {VERSION} - Task Execution Guide
 
-This guide covers Task Execution: integrating dependencies, doing the work, validating it and fixing failures. `{GUIDE_PATH:task-logging}` covers recording the result.
+The Manager and Workers use this guide to integrate dependencies, carry out Tasks, validate results and fix failures. Receipt and batch procedures describe Worker assignments; the Manager starts its Tasks from the Spec and Plan. `{GUIDE_PATH:task-logging}` covers recording results and Worker reports.
 
 ## 1. Task Receipt
 
