@@ -4,7 +4,7 @@ This guide covers the Planner’s Work Breakdown: developing the work structure 
 
 The Manager prepares self-contained Worker Task Prompts from the Spec and Plan; Workers read those prompts and `AGENTS.md`. Match detail to the work’s complexity: requirements and design belong in the Spec, work structure in the Plan, and lasting workspace guidance in `AGENTS.md`.
 
-Spec Notes hold unresolved questions and assumptions; Plan Notes explain coordination across Tasks and refer to relevant Spec questions. The Manager keeps both current during implementation.
+The Manager keeps the Spec and Plan current during implementation.
 
 ## 1. Review Cycle
 
@@ -24,11 +24,11 @@ The Spec defines what the session is intended to achieve and why, with the requi
 2. Write `.apm/spec.md` per §5.1:
    - **Opening:** the session’s goal, scope and success criteria, directly below the title.
    - **Notes:** unresolved questions and assumptions. If later sessions were discussed, briefly record the work left for them and why.
-   - **Design sections:** session requirements, design decisions and constraints, with their reasons and authoritative source paths and sections, organized so the Manager can find them and copy them into Task Prompts. Name working targets and references where they define this session's scope. Record the agreed version-control arrangement, including work locations, commit and integration timing, and APM file tracking.
+   - **Design sections:** session requirements, policies, design decisions and constraints, with their reasons and authoritative source paths and sections, organized so the Manager can find them and copy them into Task Prompts. Name working targets and references where they define this session's scope. Record the agreed version-control arrangement, including work locations, commit and integration timing, and APM file tracking.
 
 System behavior, output formats, schemas and interface contracts belong in the Spec. Implementation approach that leaves a design decision unchanged goes in a Task's Guidance, operations go in steps, and durable workspace conventions go in `AGENTS.md`.
 
-Keep requirements in the Spec, planned work in the Plan, live coordination in the Tracker, and work history in Memory. Add supporting documents only for retained material outside those responsibilities. Propose their purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. Refine the proposal with their feedback and record the agreed arrangement in the Spec for this session only. Put any implementation work to create, use or maintain them in the relevant Plan Tasks. Reuse existing supporting documents where suitable.
+Keep requirements in the Spec, planned work in the Plan, live coordination in the Tracker, and work history in Memory. Add supporting documents only for retained material outside those responsibilities. Propose their purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. Choose a structure readers can navigate as the session grows, reusing existing documents and conventions where suitable. Refine the proposal with their feedback and record the agreed arrangement in the Spec for this session only. Put any implementation work to create, use or maintain them in the relevant Plan Tasks.
 
 ## 3. Plan
 
@@ -36,19 +36,19 @@ The Plan divides the work into ordered Stages and Tasks for the Manager or Worke
 
 1. Refine the breakdown developed during Context Gathering: Worker areas, Stage deliverables and Tasks. Explain consequential boundaries, order and dependencies.
 2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.
-3. Check the breakdown against the approved Spec: every agreed outcome is covered by Tasks whose assigned agents can undertake and validate the work. Check assignments, dependencies, Task sizes and review points against the principles below and agreed User involvement. Same-Worker means both Tasks are assigned to the same agent; Cross-Worker means they are assigned to different agents, including the Manager. Fix what you find.
+3. Check the breakdown against the approved Spec: every agreed outcome is covered by Tasks whose assigned agents can undertake and validate the work. Check assignments, dependencies, Task sizes and review points against the principles below and agreed User involvement. Keep workspace preparation, integration and pushing with the Manager; Worker steps use the prepared workspace and agreed commit instructions. Same-Worker means both Tasks are assigned to the same agent; Cross-Worker means they are assigned to different agents, including the Manager. Fix what you find.
 4. Write `.apm/plan.md` per §5.2. Keep Notes to necessary coordination across Tasks: shared constraints, participation or review arrangements, dispatch opportunities and Stage verification. Name affected work and checks. Keep Task-specific dependencies and validation in their fields, and refer to Spec questions. If later sessions were discussed, briefly record relevant sequencing or prerequisites, referring to the Spec for scope.
 5. When you ask for review, give a short overview of the Workers, Stages, Task counts and what can run in parallel.
 
 Break the work down by these principles:
 
 - **Assignments** group Tasks between Manager and Worker conversations by the expertise, shared context and User involvement the planned work is likely to need. Keep related work together where familiarity should help, weighing the expected context and coordination demands.
-- **Stages** are milestones in order: Stage N+1 starts after Stage N is complete. Choose milestones around dependencies and meaningful review points. Parallel work belongs in Tasks within a Stage.
+- **Stages** are ordered milestones: Stage N+1 starts after Stage N is complete. Choose boundaries around coherent outcomes or meaningful review. Keep independent Tasks together when no useful milestone requires a barrier.
 - **Tasks** define work the Manager or one Worker is responsible for completing, with a clear output and validation. Choose boundaries according to size, complexity, uncertainty, dependencies and expertise. Research, implementation and validation may share a Task or need separate Tasks. Explain the boundaries that affect how the work proceeds. Investigate consequential uncertainty before work that depends on it. For research Tasks, state specific questions, required evidence and completion criteria, and identify dependent decisions or work. Define dependent Tasks to the extent the answers allow; the assigned agent organizes execution according to its role.
 - **User actions.** Agents work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
 - **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the assigned agent can run alone from those that need the User, and tell that agent to pause affected work for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
 
-Identify what can run independently and what must wait for earlier results. Dispatch opportunities are suggestions; the Manager chooses actual dispatches from the current state within the agreed constraints.
+Identify what can run independently and what must wait for earlier results. Label required validation and User or outside review points clearly. Dispatch opportunities are suggestions; the Manager chooses actual coordination within the agreed constraints.
 
 ## 4. AGENTS.md
 
@@ -124,5 +124,5 @@ The Plan is `.apm/plan.md`.
 
 - The Workers table lists only Workers with separate conversations; omit its rows when none are needed.
 - Stage names reflect the Stage's areas and main deliverables. List only direct dependencies.
-- Steps are ordered actions that produce and validate the deliverables, referring to patterns, files or earlier work where relevant. A research step states its question, sources and required evidence.
+- Write ordered, Task-specific actions that produce and validate the deliverables, referencing shared procedures for common details. Shared coordination belongs in Notes. A research step states its question, sources and required evidence.
 - Put each detail in the field or step it serves. Refer to relevant Spec sections for requirements and design decisions.
