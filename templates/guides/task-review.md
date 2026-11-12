@@ -13,11 +13,11 @@ For each report the User delivers:
 3. If the report mentions a recovery, record it in the Workers table's Context without changing the conversation number. Check the report against the Task Log for anything the recovery may have lost, and ask for missing details.
 4. For a batch Task Report, review each executed Task on its own per §2 and §3. Set the Tasks the batch did not start back to Ready or Waiting, and return them to dispatch.
 
-## 2. Log Review
+## 2. Result Review
 
 Read the whole Task Log named in the report, following original and previous-attempt links where needed to verify earlier evidence and unresolved findings. Check its `status` against the outcome definitions in `{GUIDE_PATH:task-logging}` §1, and its `important_findings` against the body and deliverables.
 
-Check each validation criterion against its evidence, including counts, scope, deviations and unrun paths. A deliberate difference is an unmet criterion; record any accepted exception as a limitation.
+Check the delivered result and each validation criterion against the Task requirements and evidence, including counts, scope, deviations and unrun paths. Inspect outputs or run focused checks where evidence is incomplete or uncertain. Revisit relevant Spec and Plan sections when findings question the requirements or assumptions. A deliberate difference is an unmet criterion; record accepted exceptions as limitations.
 
 If a Success log includes a failed, unrun or weaker check, tell the User and keep the Task Active. Resolve the gap per §3; incorrect requirements or proposed exceptions go through §4.
 
@@ -29,15 +29,15 @@ Tell the User what the evidence supports, the consequential findings and your pr
 
 ## 3. Review Outcomes
 
-1. Accept a Success that the log supports and that has no Important Findings.
+1. Accept a Success supported by the reviewed result and evidence, with no unresolved Important Findings.
 2. Investigate Important Findings and any outcome other than Success. You may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when your context makes this more efficient than another dispatch. Undertake substantial direct implementation only when the User requests it. Make changes in the Task's assigned workspace, follow `AGENTS.md` and validate the affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome.
 
    Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:
-   - **Accept:** the work is complete, including corrections validated during review, or the User agrees to accept remaining limits. Check whether any recorded agreement covers those limits and their effects on other Tasks; ask only about new consequences or unclear decisions. Explain the limits and reasons for any acceptance recommendation. Record what remains and the basis for acceptance in Tracker Notes, preserving the Worker’s outcome and evidence. Acceptance does not turn unmet checks into passes.
+   - **Accept:** the work is complete, including corrections validated during review, or the User agrees to accept remaining limits. Check whether any recorded agreement covers those limits and their effects on other Tasks; ask only about new consequences or unclear decisions. Offer a recommendation when the User asks for guidance or evidence clarifies a consequential trade-off. For any proposed acceptance of remaining limits, explain their effects on the session and dependent work and why acceptance is preferable to further work or a planning change. Record what remains and the basis for acceptance in Tracker Notes, preserving the Worker’s outcome and evidence. Acceptance does not turn unmet checks into passes.
    - **Follow-up Task:** concrete work remains for the Worker, with an approach and a clear completion check. Preserve any uncommitted work for that attempt.
    - **Planning change:** a planning document is wrong. Change it per §4.
-4. Some findings need broader planning: a fix needs design decisions the Spec does not cover, or a change would rewrite the Spec’s scope or several Stages. Do not plan the solution yourself. Present the options with your recommendation, such as changing the Plan and continuing, or pausing the session to summarize it per `{SKILL_PATH:apm-8-summarize-session}`, archive it and plan again with a new Planner. The User decides.
+4. When findings require broader design or scope changes, investigate the affected requirements and dependencies enough to present viable options. Resolve contained corrections per §4; agree broader changes with the User. Options include revising the Plan and continuing, or pausing to summarize the session per `{SKILL_PATH:apm-8-summarize-session}`, archive it and plan again with a new Planner.
 5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. Follow the agreed commit conventions, retaining the location and state of uncommitted work in the records. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
 6. Record how each consequential finding was resolved, accepted, deferred or left pending, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
 7. Once the decision is recorded, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`, then send any follow-up per `{GUIDE_PATH:task-assignment}` §5. Update the Tracker per §8.1 and §8.2, in one edit with the integration and dispatch changes that follow.
@@ -68,7 +68,7 @@ Integrate completed work according to the agreed version-control arrangement. Be
 
 ## 6. Next Dispatch
 
-Reports arrive in any order. Review each as it comes, without waiting for unrelated reports, and in the same turn dispatch newly Ready Tasks per `{GUIDE_PATH:task-assignment}` §1.
+Review reports as they arrive. Complete needed investigation and document alignment before starting affected downstream work. Continue unrelated Ready work without waiting for other reports, per `{GUIDE_PATH:task-assignment}` §1.
 
 ## 7. Stage Completion
 

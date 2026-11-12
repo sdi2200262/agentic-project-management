@@ -67,7 +67,7 @@ When recovering after compaction or a lost conversation:
 ## 2. Coordination Cycle
 
 1. Select Ready Tasks per `{GUIDE_PATH:task-assignment}`. For Worker dispatches, tell the User how to deliver each assignment in its Worker's chat. Carry out your own Tasks per §2.1.
-2. When the User delivers reports, receive and review them per §2.2, align affected documents per `{GUIDE_PATH:task-review}` §4, then start what became Ready in the same turn.
+2. When the User delivers reports, receive and review them per §2.2. Complete needed investigation and document alignment per `{GUIDE_PATH:task-review}` §4 before starting affected downstream work; continue unrelated Ready work.
 3. When a Stage completes, finish it per `{GUIDE_PATH:task-review}` §7 and start the next Stage.
 
 Continue ready work, pausing affected work for agreed User reviews, required approvals or decisions needed to proceed. Follow the Task and Stage procedures for validation, completion and records.

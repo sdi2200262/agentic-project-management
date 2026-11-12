@@ -69,7 +69,7 @@ Run every check in the Task's Validation section. Never replace a check you cann
 
 1. Run all checks you can do on your own first. A failed or unclear result goes to §3.1.
 2. When they pass, check any results the User has already supplied against the current deliverable. Ask for remaining checks that need their judgement or an outside action. Say what the result is, where the deliverable is, what to check and what to report back. Wait for the answer, and handle any problem it reveals through §3.1.
-3. Ask for missing resources when you need them. If the User says a required check or resource is not available, the outcome is Partial; state what remains.
+3. Ask for missing resources when you need them. If a required check or resource is unavailable, continue unaffected work and available checks. If it remains unavailable at completion, use Partial and state what remains.
 
 Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, instructions and rules in `AGENTS.md` and the Task instructions for guidance.
 
@@ -81,7 +81,7 @@ Before editing, reread the file. Under User authorization, extend or replace rel
 
 ## 6. Completion
 
-1. Present the outcome, deliverables, validation and important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. When work or required validation remains, explain the limits and available options. Recommend acceptance only when you have enough context to explain its consequences, and record any User agreement with the Partial outcome.
+1. Present the outcome, deliverables, validation and important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. When work or required validation remains, explain the limits and available options. Offer an acceptance recommendation when the User asks for guidance or evidence clarifies a consequential trade-off. When proposing acceptance, explain remaining limits and their effects within your available context, and why acceptance is preferable to further work or a planning change. Record any User agreement with the Partial outcome.
 2. Complete agreed User review and resulting changes before writing the Task Log and Task Report. Resolve any workspace-guidance updates per §5.
 3. Follow the agreed commit conventions. Record relevant commits and any uncommitted work in the Task Log.
 
