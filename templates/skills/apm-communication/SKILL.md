@@ -19,7 +19,7 @@ Open with what the User asked for or needs: the answer, outcome, finding, propos
 | Explanation or work report | 250 |
 | Broad plan or review | 500 |
 
-Put longer detail in the relevant APM file and point to it. Before sending a longer reply, check that it opens with the substance and fits its ceiling.
+Keep detail in its owning APM file and link to it. Before sending a longer reply, check that it opens with the substance and fits its ceiling.
 
 - **Wording.** Use everyday words, concrete subjects and active verbs. Keep each sentence to one main thought and say each point once. State claims at the certainty the evidence supports, and put limits beside the claims they qualify.
 - **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.

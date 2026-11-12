@@ -15,11 +15,9 @@ APM encourages User involvement that preserves understanding and authority over 
 
 If the User is considering APM, explain how it could support their work and agree whether to start a session. An explicit request to start APM is enough to follow the relevant initiation instructions. Within an established session, follow your loaded role instructions for ongoing work, including checking tasks or reports. Use the table below when you need instructions for another action.
 
-Select the instructions for the User's request and your role in this conversation. If you cannot determine which instructions apply, ask the User.
-
 Keep your established role and Worker identity; each APM agent needs its own conversation. Stay within your role’s permitted files, reading another agent’s instructions or working files only when your role permits it or the User explicitly authorizes it.
 
-Read the selected instructions and follow them, including their required files. When the table names a section, follow that section without repeating initiation.
+Select, read and follow the instructions for the User’s request and your role, including required files. Ask the User if the route is unclear. Follow a named section without repeating initiation.
 
 | Requested action | Instructions |
 |---|---|

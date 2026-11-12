@@ -4,7 +4,7 @@ These standards define runtime file layout, navigation and artifact contracts fo
 
 ## 1. Organize for Use
 
-Open each file with its purpose, intended reader and result. Distinguish role initiation from procedures used by an established agent. Keep each section on one part of the work, in the order the agent acts. State each rule once at its point of use; repeat a brief reminder only when testing shows agents miss it.
+Open each file with its purpose, intended reader and result. Distinguish role initiation from procedures used by an established agent. Keep each section on one part of the work, in the order the agent acts. State each rule once at its point of use; repeat a brief reminder only where a separate reader or decision point needs it.
 
 | File | Content |
 |---|---|

@@ -4,7 +4,7 @@ This guide covers the Planner’s Work Breakdown: developing the work structure 
 
 The Manager prepares self-contained Worker Task Prompts from the Spec and Plan; Workers read those prompts and `AGENTS.md`. Match detail to the work’s complexity: requirements and design belong in the Spec, work structure in the Plan, and lasting workspace guidance in `AGENTS.md`.
 
-Both the Spec and the Plan place Notes after their introductory and reference material, before the main body. Spec Notes hold unresolved questions and assumptions; Plan Notes explain coordination across Tasks and refer to relevant Spec questions. The Manager keeps both current during implementation.
+Spec Notes hold unresolved questions and assumptions; Plan Notes explain coordination across Tasks and refer to relevant Spec questions. The Manager keeps both current during implementation.
 
 ## 1. Review Cycle
 
@@ -20,7 +20,7 @@ Start the next document only after approval, so a problem in one document is cau
 
 The Spec defines what the session is intended to achieve and why, with the requirements, design decisions and constraints that shape the work. State these in the work’s own terms. The Plan explains how to achieve those outcomes through assigned work and validation.
 
-1. Propose the design decisions, constraints, references to source documents and how you will organize them. Explain the choices and assumptions that matter.
+1. Present how you will organize the agreed requirements, design decisions, constraints and sources. Explain consequential choices and assumptions.
 2. Write `.apm/spec.md` per §5.1:
    - **Opening:** the session’s goal, scope and success criteria, directly below the title.
    - **Notes:** unresolved questions and assumptions. If later sessions were discussed, briefly record the work left for them and why.
@@ -96,13 +96,13 @@ The Plan is `.apm/plan.md`.
 
 | Agent | Domain | Description |
 |-------|--------|-------------|
-| frontend-agent | <Domain> | <What it works on> |
+| <worker-slug> | <Domain> | <What it works on> |
 
 ## Stages
 
 | Stage | Name | Tasks | Agents |
 |-------|------|-------|--------|
-| 1 | <Name> | 1.1–1.3 | frontend-agent, backend-agent |
+| 1 | <Name> | <Task IDs> | <Assigned agents> |
 
 ## Notes
 <Coordination across Tasks and any later-session coordination per §3 step 4, referring to the Spec>

@@ -1,6 +1,6 @@
 # APM {VERSION} - Task Review Guide
 
-This guide covers how the Manager reviews Task Reports, Task Logs and results, decides next actions, aligns planning, integrates work, cleans up workspaces and maintains the Tracker. Stage completion includes verification, a summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the next dispatch.
+This guide covers how the Manager reviews Task Reports, Task Logs and results, decides next actions, aligns planning, integrates work, cleans up workspaces and maintains the Tracker. Stage completion includes required verification, a summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the next dispatch.
 
 A Worker records one outcome per attempt: Success, Partial or Failed. You decide whether to mark the Task Done after reviewing the result.
 
