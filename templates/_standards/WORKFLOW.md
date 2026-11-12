@@ -26,9 +26,11 @@ Runtime names below identify the shared sources; `STRUCTURE.md` defines their ou
 
 ## 2. Phases
 
+An APM session covers one agreed body of work through planning and implementation. Each role works in its own conversation; Handoffs continue the same session in a new conversation of that role. Planning establishes what the session will deliver and how; implementation produces the deliverables and records their validation, outcomes and remaining limits.
+
 ### 2.1 Planning
 
-The Planner reads both planning guides at initiation and develops design and work-structure choices during Context Gathering. The User approves its understanding summary, then the Spec and Plan separately, in that order. Proposed changes to `AGENTS.md` are reviewed against existing User authorization. The Planner creates the Message Bus and directs the User to start the Manager in a new chat.
+The Planner reads both planning guides at initiation and establishes the session's intended outcome with the User. It does the exploration, analysis and design needed to define the work before writing the Spec and Plan. The User approves its understanding summary, then the Spec and Plan separately, in that order. The Planner resolves needed `AGENTS.md` changes under existing User authorization, completes session setup and creates the Message Bus. It communicates the guidance review's result, including a justified no-change conclusion, and directs the User to start a new Manager conversation to coordinate the approved session.
 
 ### 2.2 Implementation
 
@@ -44,7 +46,7 @@ Implementation ends when every Stage is complete or the User stops early. The Ma
 
 ### 3.2 Plan
 
-`.apm/plan.md` opens with how the work described in the Spec is divided, ordered and assigned, referring to the Spec, then includes Workers and Stages tables before the Task detail. Each Task has an objective, assigned agent (`manager` or a Worker slug), dependencies, output, validation, guidance and steps. Assignment identifies the responsible agent and its APM conversation. Workers execute with optional delegation; the Manager coordinates subagent workers to execute its Tasks. Dependencies identify earlier Task outputs, marked Same-Worker for the same assigned agent and Cross-Worker for different agents, including the Manager. Guidance holds Task-specific approach, context, references and agreed participation or review points; steps hold actions and Validation holds checks. Its Notes hold coordination preferences and review points, shared-resource constraints, likely blockers, integration points, possible batch or parallel dispatches and Stage verification needs. When later sessions were discussed, Notes briefly record agreed sequencing or prerequisites, referring to the Spec for the work involved. The Manager uses the Plan to prepare dispatches.
+`.apm/plan.md` opens with how the work described in the Spec is divided, ordered and assigned, referring to the Spec, then includes Workers and Stages tables before the Task detail. Each Task has an objective, assigned agent (`manager` or a Worker slug), dependencies, output, validation, guidance and steps. Assignment identifies the responsible agent and its APM conversation. Workers execute with optional delegation; the Manager coordinates subagent workers to execute its Tasks. Dependencies identify earlier Task outputs, marked Same-Worker for the same assigned agent and Cross-Worker for different agents, including the Manager. Guidance holds Task-specific approach, context, references and agreed participation or review points; steps hold actions and Validation holds checks. Its Notes hold necessary coordination across Tasks, including shared constraints, review points and Stage verification needs. Task-specific dependencies and checks stay in their fields. When later sessions were discussed, Notes briefly record agreed sequencing or prerequisites, referring to the Spec for the work involved. The Manager uses the Plan to prepare dispatches.
 
 ### 3.3 AGENTS.md
 
@@ -108,13 +110,13 @@ The Planner surveys repositories, instructions and existing materials. The Plann
 2. Technical requirements, constraints, dependencies and success criteria.
 3. Implementation approach, quality and coordination preferences.
 
-Each round includes an exchange with the User, follow-up research, a summary and an open question. Initial context does not skip a round. The Planner resolves gaps needed to define the work or agrees how planned work will settle them, and confirms consequential assumptions. When several designs are viable, it presents trade-offs and a recommendation for the User to choose.
+The rounds organize discussion while exploration, research, analysis and design continue throughout Context Gathering. Planning depth follows the agreed scope, complexity and uncertainty. Each round includes an exchange with the User, follow-up work, a summary and an open question. When an answer or finding reveals preparation needed for a planning decision, the Planner completes it before dependent questions, then resumes the rounds with updated questions. Initial context and intermediate work do not skip rounds. Questions resolve substantive gaps; recommendations help with consequential trade-offs or uncertainty rather than pre-empting unclear intent.
 
 The Planner develops tentative Stages, Tasks and assignments during questioning, revising them as it learns. Manager execution through subagent workers supports automation and higher-level collaboration; separate Workers support close implementation collaboration. The Planner asks whether the User wants to perform any portion, with the responsible agent’s assistance.
 
 APM encourages involvement that preserves the User’s understanding of and authority over work they remain responsible for. Planner and Manager recommend forms and frequency based on project risks and uncertainty and the User’s experience and preferences, explaining their purpose. The User may choose automated Manager execution, User-mediated coordination with Workers, User-led work with assistance, or a combination. Involvement may include collaboration, reviews, testing, demonstrations, explanations or progress reports at agreed points or intervals. Task and Stage boundaries, Task sizes, batches and parallel work support that arrangement. The Manager chooses actual dispatches and proposes adjustments as the work develops.
 
-Agree the session's scope before the understanding summary. Investigate enough to establish requirements and propose a credible breakdown. Substantial research may be planned work, with its questions and the decisions that depend on its results identified. Understanding approval starts document writing.
+Establish the intended session outcome early and refine its boundary through discovery. For a larger goal, propose a coherent outcome for this session and a tentative sequence of later sessions, explaining boundaries and dependencies. Agree the scope before the understanding summary. Preparation needed to define the work belongs in planning; bounded investigation within defined work may be a Task with specific questions, evidence, completion criteria and dependent decisions identified. The summary presents the actual proposed work and assignments. Understanding approval starts document writing.
 
 ### 6.2 Work Breakdown
 
@@ -122,7 +124,7 @@ The Planner writes the Spec and Plan in order, obtaining approval for each, then
 
 The Planner assigns Tasks between Manager and Worker conversations using the expertise, shared context and User involvement the planned work is likely to need. Related work stays together where familiarity should help, weighing expected context and coordination demands. Stages mark milestones chosen around dependencies and review points. Each Task defines work the Manager or one Worker is responsible for completing, with a clear output and validation. Task boundaries depend on size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share a Task or need separate Tasks. Parallelism follows the work's dependencies and constraints. Steps are operations toward the Task's output.
 
-Validation names observable checks and expected results, including required User actions. Updates to `AGENTS.md` preserve preexisting content except for authorized changes; existing workspace `CLAUDE.md` files import `AGENTS.md`.
+Before approval, the Spec must define the agreed outcomes and behavior, and each Plan Task must describe work its assigned agent can undertake and validate. Research Tasks identify the questions and decisions they leave open; dependent work is defined to the extent those answers allow. Participation and review points identify the work and decisions they concern. Validation names observable checks and expected results, including required User actions. Updates to `AGENTS.md` preserve preexisting content except for authorized changes; existing workspace `CLAUDE.md` files import `AGENTS.md`.
 
 ## 7. Implementation
 

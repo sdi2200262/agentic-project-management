@@ -32,7 +32,7 @@ Each procedure is a part of the workflow. The first six each have their own guid
 
 | Term | Performed by | Definition |
 |---|---|---|
-| **Context Gathering** | Planner | Exploring the workspace and questioning the User in three rounds, developing design and work-structure choices, settling this APM session's scope, and ending with a summary that the User approves. |
+| **Context Gathering** | Planner | Defining the session's work through three question rounds with exploration, research, analysis and design as needed throughout, settling scope and a proposed breakdown, and ending with a summary that the User approves. |
 | **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec and Plan, each approved separately, and proposing needed updates to `AGENTS.md`. |
 | **Task Assignment** | Manager | Choosing which work to start next, assigning it to a Worker or undertaking it itself, and preparing its context. |
 | **Task Execution** | Manager, Worker | Carrying out assigned work, validating it and fixing what fails. |
