@@ -72,7 +72,7 @@ When changes affect ongoing work, the Manager checks their effects and coordinat
 
 ### 3.6 Session-Specific Documents
 
-When supporting information needs a separate document, the Planner or Manager proposes its purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. They refine the proposal with User feedback and record the agreed arrangement in the Spec for this session only. Any implementation work to create, use or maintain them belongs in Plan Tasks; Workers receive relevant instructions through Task Prompts. Existing documents are reused where suitable. Requirements, planned work, live coordination and history remain in their standard APM files, linked to supporting detail. Later changes follow §3.5.
+Requirements belong in the Spec, planned work in the Plan, live coordination in the Tracker, and work history in Memory. Supporting documents hold only retained material outside those responsibilities. The Planner or Manager proposes their purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. They refine the proposal with User feedback and record the agreed arrangement in the Spec for this session only. Any implementation work to create, use or maintain them belongs in Plan Tasks; Workers receive relevant instructions through Task Prompts. Existing supporting documents are reused where suitable. Logs link to supporting documents used or updated; Tracker entries link to those used for coordination. New document types or structures follow §3.5.
 
 ## 4. Communication
 

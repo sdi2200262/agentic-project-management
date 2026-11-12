@@ -55,7 +55,7 @@ Define each artifact's location, naming, schema, allowed values, required and co
 - Task IDs use `N.M` in prose, integers in YAML (`stage: 2`, `task: 3`) and zero padding in paths (`stage-02/task-02-03.log.md`).
 - Artifact names use kebab-case with `.log.md` for logs and `.summary.md` for summaries, including `session.summary.md`.
 
-Root APM artifact paths at `.apm/`. Preserve field names, values, separators and identity rules used by the CLI and other roles. Distinguish literal content from fill-in values in format examples. Optional supporting documents supplement the standard artifacts. Their agreed structure and purpose belong in this session's Spec, with implementation instructions in the Plan.
+Root APM artifact paths at `.apm/`. Preserve field names, values, separators and identity rules used by the CLI and other roles. Distinguish literal content from fill-in values in format examples. Optional supporting documents' agreed structure and purpose are defined in the session's Spec, with implementation instructions in the Plan.
 
 ## 5. Build Placeholders and Checks
 

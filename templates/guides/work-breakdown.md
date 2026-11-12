@@ -28,7 +28,7 @@ The Spec says what is built and why: decisions where alternatives existed, and t
 
 System behavior, output formats, schemas and interface contracts belong in the Spec. Implementation approach that leaves a design decision unchanged goes in a Task's Guidance, operations go in steps, and durable workspace conventions go in `AGENTS.md`.
 
-When supporting information needs a separate document, propose its purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. Refine the proposal with their feedback and record the agreed arrangement in the Spec for this session only. Put any implementation work to create, use or maintain them in the relevant Plan Tasks. Reuse existing documents where suitable. Keep requirements, planned work, live coordination and history in their standard APM files, linking to supporting detail.
+Keep requirements in the Spec, planned work in the Plan, live coordination in the Tracker, and work history in Memory. Add supporting documents only for retained material outside those responsibilities. Propose their purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. Refine the proposal with their feedback and record the agreed arrangement in the Spec for this session only. Put any implementation work to create, use or maintain them in the relevant Plan Tasks. Reuse existing supporting documents where suitable.
 
 ## 3. Plan
 
