@@ -28,6 +28,8 @@ The Spec says what is built and why: decisions where alternatives existed, and t
 
 System behavior, output formats, schemas and interface contracts belong in the Spec. Implementation approach that leaves a design decision unchanged goes in a Task's Guidance, operations go in steps, and durable workspace conventions go in `AGENTS.md`.
 
+When supporting information needs a separate document, propose its purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. Refine the proposal with their feedback and record the agreed arrangement in the Spec for this session only. Put any implementation work to create, use or maintain them in the relevant Plan Tasks. Reuse existing documents where suitable. Keep requirements, planned work, live coordination and history in their standard APM files, linking to supporting detail.
+
 ## 3. Plan
 
 The Plan divides the work into ordered Stages and Tasks for the Manager or Workers, using the fields in §5.2. A Task’s assignment identifies its responsible agent and APM conversation. Workers execute their Tasks with optional delegation; the Manager coordinates subagent workers to execute its Tasks.

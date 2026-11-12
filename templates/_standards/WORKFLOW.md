@@ -70,6 +70,10 @@ Contained corrections to a Task, dependency or Spec point may proceed without ap
 
 When changes affect ongoing work, the Manager checks their effects and coordinates any needed adjustment with whoever performs it, arranging a pause when needed. It carries forward User agreements and resolves further approvals. Corrections preserve valid progress, Task identity, current attempt and workspace. The Manager updates its subagents directly, the User delivers Worker corrections through the Message Bus, and User-performed portions are coordinated with the User. Reported Worker attempts use review and follow-up Tasks.
 
+### 3.6 Session-Specific Documents
+
+When supporting information needs a separate document, the Planner or Manager proposes its purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. They refine the proposal with User feedback and record the agreed arrangement in the Spec for this session only. Any implementation work to create, use or maintain them belongs in Plan Tasks; Workers receive relevant instructions through Task Prompts. Existing documents are reused where suitable. Requirements, planned work, live coordination and history remain in their standard APM files, linked to supporting detail. Later changes follow §3.5.
+
 ## 4. Communication
 
 **Runtime:** `apm-communication` and `bus-integration.md`.
