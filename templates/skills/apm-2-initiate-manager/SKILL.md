@@ -96,7 +96,7 @@ When every Stage is complete, present results as described below.
 
 If the User asks to end early, pause active Tasks: stop any subagents working on your Tasks and ask the User to pause ongoing Worker or User-performed work. Collect progress, unfinished outputs and pending checks, and wait for confirmation that affected work has stopped. Check this against bus files, deliverables and Git state. Record unfinished Tasks, pending reports and integration, workspace paths and uncommitted work in the Tracker, keeping unfinished Tasks in their current states.
 
-Present what was built, Stages and Tasks, participating agents, consequential findings and deliverables, and anything unfinished, accepted limitations and verification gaps. Say which Stages you coordinated and which you know from Handoff Logs, Stage summaries or a compaction summary.
+Present the intended outcomes and actual results, Stages and Tasks, participating agents, consequential findings and deliverables, and anything unfinished, accepted limitations and verification gaps. Say which Stages you coordinated and which you know from Handoff Logs, Stage summaries or a compaction summary.
 
 Offer a session summary and an archive. Both are optional. A summary records the session’s results for the User and later sessions. Let the User choose where to write it:
 

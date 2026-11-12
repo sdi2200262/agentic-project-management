@@ -26,7 +26,9 @@ Runtime names below identify the shared sources; `STRUCTURE.md` defines their ou
 
 ## 2. Phases
 
-An APM session covers one agreed body of work through planning and implementation. Each role works in its own conversation; Handoffs continue the same session in a new conversation of that role. Planning establishes what the session will deliver and how; implementation produces the deliverables and records their validation, outcomes and remaining limits.
+An APM session covers an agreed body of work through planning, then implementation. Planning establishes the intended outcomes, requirements and approach; implementation carries out the work, validates results and records what was achieved and what remains. A session may address a larger goal in full or deliver a coherent part of it.
+
+The Planner works with the User first, in its own conversation. The Manager begins after planning is complete; separate Worker conversations begin as needed for assignments. Each agent has its own conversation. Manager and Worker Handoffs start that agent’s next numbered conversation within the same session; compaction and recovery preserve its conversation and number. Within implementation, Stages group related Tasks into coherent parts of the work.
 
 ### 2.1 Planning
 
@@ -36,13 +38,13 @@ The Planner reads both planning guides at initiation and establishes the session
 
 The Manager explores the working codebases, confirms its understanding with the User and starts dispatching under the approved planning decisions. Workers report attempts for Manager review; the Manager concludes its own Tasks after reviewing and validating subagent workers’ outputs. Stages run in order. The Manager may coordinate its Tasks sequentially or concurrently; Worker dispatches may be single, batch or parallel.
 
-Implementation ends when every Stage is complete or the User stops early. The Manager records the state, reports the outcome and offers a summary and archive. A large goal may span several APM sessions; the Planner agrees each session's scope with the User.
+Implementation ends when every Stage is complete or the User stops early. The Manager records the state, reports the outcome and offers a summary and archive. Later sessions can build on earlier results, decisions and findings, checked against the current state. Their intended outcomes and approach are agreed with the User; proposed sequences remain tentative as understanding develops.
 
 ## 3. Planning Documents
 
 ### 3.1 Spec
 
-`.apm/spec.md` defines scope, required behavior, design decisions and constraints. Its opening states the session’s goal, scope and success criteria; its subject sections keep authoritative sources and reasons alongside requirements and decisions. Notes hold design assumptions and unresolved questions, with brief context on work left for later sessions when discussed. The Manager maintains it and copies relevant requirements into Task Prompts.
+`.apm/spec.md` defines the intended outcomes, scope, required behavior, design decisions and constraints. Its opening states the session’s goal, scope and success criteria; its subject sections keep authoritative sources and reasons alongside requirements and decisions. Notes hold design assumptions and unresolved questions, with brief context on work left for later sessions when discussed. The Manager maintains it and copies relevant requirements into Task Prompts.
 
 ### 3.2 Plan
 

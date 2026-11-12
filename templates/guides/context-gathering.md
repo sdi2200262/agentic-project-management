@@ -6,7 +6,7 @@ Establish the session's intended outcomes, requirements, design choices, constra
 
 ## 1. Preparation
 
-1. Read relevant archives' session summaries when present, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when states matter, and `metadata.json` for dates. Follow Stage-summary and log links as needed. Identify relevant scope, decisions, completed work, known issues and what may have changed. Verify findings you will use against current code, retaining source paths or verification commands.
+1. Use earlier results and findings to inform this session’s intended outcomes. Read relevant archives’ session summaries when present, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when states matter, and `metadata.json` for dates. Follow Stage-summary and log links as needed. Identify relevant scope, decisions, completed work, known issues and what may have changed. Verify findings you will use against current code, retaining source paths or verification commands.
 2. Explore every codebase relevant to the work, per §3.
 3. Read preexisting `AGENTS.md` content, applicable scoped instructions and referenced guidance.{CLAUDE_ONLY: Read preexisting workspace `CLAUDE.md` content too.} Summarize what affects planning and check it against the workspace. Note gaps and inconsistencies to inform proposed additions or corrections during §4 of Work Breakdown. If `AGENTS.md` is missing, ask whether instructions exist elsewhere.
 
@@ -76,7 +76,7 @@ When research reveals a consequential design choice, present the evidence and tr
 
 ## 4. Session Scope
 
-Refine the initial session boundary as you learn. If the goal is too large for one session, propose a coherent outcome for this session and a tentative division of the remaining work into later sessions. Explain the boundaries, dependencies and decisions affecting the sequence. Agree the approach with the User before the Understanding Summary. Develop this session's requirements and breakdown; keep later sessions at the level current understanding supports. Record the scope and work left for later sessions in the Spec, and relevant sequencing or prerequisites in the Plan.
+Refine the initial session boundary as you learn. If the goal is too large for one session, propose a coherent outcome for this session and a tentative division of the remaining work into later sessions. Explain the boundaries, dependencies and decisions affecting the sequence. Agree the intended outcomes and approach with the User before the Understanding Summary. Develop this session’s requirements and breakdown; keep later sessions tentative and at the level current understanding supports. Record the scope and work left for later sessions in the Spec, and relevant sequencing or prerequisites in the Plan.
 
 ## 5. Understanding Summary
 

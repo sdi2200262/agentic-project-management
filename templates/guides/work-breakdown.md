@@ -18,7 +18,7 @@ Start the next document only after approval, so a problem in one document is cau
 
 ## 2. Spec
 
-The Spec says what is built and why: decisions where alternatives existed, and the constraints and requirements that shape the work. State these in the work's own terms. The Plan turns the agreed work into Tasks.
+The Spec defines what the session is intended to achieve and why, with the requirements, design decisions and constraints that shape the work. State these in the work’s own terms. The Plan explains how to achieve those outcomes through assigned work and validation.
 
 1. Propose the design decisions, constraints, references to source documents and how you will organize them. Explain the choices and assumptions that matter.
 2. Write `.apm/spec.md` per §5.1:
@@ -68,7 +68,7 @@ The Spec is `.apm/spec.md`:
 ```markdown
 # APM Spec
 
-<In three to five sentences: what this APM session builds, the problem it solves, its scope and its success criteria>
+<In three to five sentences: this session’s intended outcomes, the problem it addresses, its scope and its success criteria>
 
 ## Notes
 <Questions, assumptions and any later-session work per §2>

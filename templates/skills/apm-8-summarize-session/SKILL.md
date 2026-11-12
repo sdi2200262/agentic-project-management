@@ -45,7 +45,7 @@ outcome: <complete | partial | incomplete>
 # APM Session Summary
 
 ## Scope
-<What this APM session built and why, from the Spec’s opening and scope, and any work left for later sessions>
+<The session’s intended outcomes and scope, why the work was needed, what it achieved, and any work left for later sessions>
 
 ## Stages and Outcomes
 <Per Stage: objective, accepted results, key validation counts and scope, accepted Partial outcomes and material limits, with links to Stage summaries>
@@ -77,7 +77,7 @@ This summary reflects the session as of <date>. The code may have changed since.
 
 | Archive | Date | Scope | Stages | Tasks |
 |---------|------|-------|--------|-------|
-| [session-2026-03-04-001](session-2026-03-04-001/session.summary.md) | 2026-03-04 | <What the session built, in brief> | <Stages completed> | <Total Tasks> |
+| [session-2026-03-04-001](session-2026-03-04-001/session.summary.md) | 2026-03-04 | <What the session addressed, in brief> | <Stages completed> | <Total Tasks> |
 ```
 
 List newest archives first. Link each name to its summary, or to its folder if no summary exists.

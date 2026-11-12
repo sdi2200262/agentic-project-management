@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Follow these instructions only when the User requests a Worker Handoff or an APM instruction directs you here. Otherwise, stop.
 
-This Handoff transfers your work to a new conversation of the same Worker. You write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in your bus folder's `handoff.md`, tells the next conversation what to read and where to resume. The next conversation acts on them per `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
+A Worker Handoff continues assigned work in a new conversation of the same Worker within the same session. As the outgoing Worker, write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in your bus folder's `handoff.md`, tells the next conversation what to read and where to resume. The next conversation acts on them per `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
 
 Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
 

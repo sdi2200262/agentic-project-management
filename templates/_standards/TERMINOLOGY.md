@@ -20,9 +20,9 @@ A term is defined when it names a part of the workflow an agent must find, or on
 
 | Term | Definition |
 |---|---|
-| **Planning Phase** | The Planner works with the User to define the work and plan it. |
-| **Implementation Phase** | The Manager and Workers carry out the planned work until it is complete or the User stops. |
-| **APM session** | One APM run of both phases on one body of work. It ends when the work is complete or the User stops early. The Spec states what the session builds, which may be one part of a larger goal. |
+| **Planning Phase** | The Planner works with the User to establish the session’s intended outcomes, requirements and approach, then prepares the approved Spec, Plan and session setup for implementation. |
+| **Implementation Phase** | After planning, the Manager coordinates the planned work, with Workers as needed. They carry out and validate the work, recording results and remaining limits until completion or the User stops. |
+| **APM session** | An agreed body of work taken through planning and implementation. It may address a larger goal in full or deliver a coherent part of it. It ends when the work is complete or the User stops early; later sessions can build on its results and findings. |
 
 ---
 
@@ -48,8 +48,8 @@ The Planner writes these during Work Breakdown, in this order.
 
 | Term | Definition | Location |
 |---|---|---|
-| **Spec** | What to build: design decisions and constraints. | `.apm/spec.md` |
-| **Plan** | How the work is divided, ordered and allocated between the Manager and Workers, with validation criteria and dependencies. | `.apm/plan.md` |
+| **Spec** | What the session is intended to achieve: outcomes, requirements, design decisions and constraints. | `.apm/spec.md` |
+| **Plan** | How to achieve the Spec’s intended outcomes: work divided into Stages and Tasks, ordered and assigned to the Manager or Workers, with dependencies and validation criteria. | `.apm/plan.md` |
 
 ---
 
@@ -132,7 +132,7 @@ These terms keep ordinary lowercase but have a fixed meaning in APM templates.
 
 | Term | Definition |
 |---|---|
-| **conversation** | One chat with a Manager, Worker or the Planner. It continues through compaction and recovery; only a Handoff starts the role's next numbered conversation. |
+| **conversation** | One chat with the Planner, Manager or a particular Worker within a session. Each agent has its own conversation; Manager and Worker Handoffs start that agent’s next numbered conversation in the same session. Compaction and recovery preserve its conversation and number. |
 | **recovery** | Rebuilding a Manager's or Worker's working context after compaction or a lost conversation. It keeps the role's conversation number. |
 | **follow-up Task** | Another Worker attempt at a Task after review, delivered through a revised Task Prompt. It keeps its Task ID and stays Active. |
 | **archive** | A snapshot of an APM session's `.apm/` files, stored in `.apm/archives/`. Archiving is optional; later sessions can use archives as context. |
