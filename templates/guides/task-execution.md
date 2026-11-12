@@ -13,7 +13,7 @@ A Task Prompt has these sections:
 - **Output:** the deliverables.
 - **Validation:** the checks the work must pass.
 
-The Objective and Output are authoritative. Check questionable instructions, prerequisites or assumptions against the codebase or other relevant sources, then use the findings and clarification guidance below to proceed.
+The Objective and Output define the required result; Validation defines the checks it must pass. Check questionable instructions, prerequisites or assumptions against the codebase or other relevant sources, then use the findings and clarification guidance below to proceed.
 
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.

@@ -32,7 +32,7 @@ Read these files in full:
 - `{GUIDE_PATH:task-review}`: how to review Worker results, align planning, integrate work and complete Stages.
 - `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
 
-Execution and Logging are also read by Workers, so they describe work without assuming your broader coordination context. Receiving Task Prompts, executing batches and sending Task Reports guide Workers through their assignments. For your Tasks, use the Spec, Plan and implementation context built through coordination and review. Develop the Task detail needed to direct subagent workers, review their outputs and write one concluding Task Log.
+Execution and Logging are shared with Workers; Task receipt, batches and reports describe Worker assignments. For your Tasks, use the Spec, Plan and implementation context built through coordination and review. Refine execution detail within approved requirements and Task boundaries to direct subagent workers, review their outputs and write one concluding Task Log.
 
 Also read any User documents the Spec names as authoritative. Read other APM files only when these files point you to them.
 
