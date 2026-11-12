@@ -1,6 +1,6 @@
 # APM Structure Standards
 
-These standards define runtime file layout, navigation and artifact contracts. `WRITING.md` covers prose; `TERMINOLOGY.md` defines APM terms.
+These standards define runtime file layout, navigation and artifact contracts for template authors and maintainers. `WRITING.md` covers prose; `TERMINOLOGY.md` defines APM terms.
 
 ## 1. Organize for Use
 
@@ -53,9 +53,11 @@ Define each artifact's location, naming, schema, allowed values, required and co
 - `<value>` marks a value to fill; `[optional]` marks conditional content; `...` marks continuation.
 - `<N>` and `<M>` are integers; `<NN>` and `<MM>` are zero-padded path identifiers.
 - Task IDs use `N.M` in prose, integers in YAML (`stage: 2`, `task: 3`) and zero padding in paths (`stage-02/task-02-03.log.md`).
-- Artifact names use kebab-case with `.log.md` for logs and `.summary.md` for summaries, including `session.summary.md`.
+- APM artifact names use kebab-case; logs end in `.log.md` and summaries in `.summary.md`, including `session.summary.md`.
 
-Root APM artifact paths at `.apm/`. Preserve field names, values, separators and identity rules used by the CLI and other roles. Distinguish literal content from fill-in values in format examples. Optional supporting documents' agreed structure and purpose are defined in the session's Spec, with implementation instructions in the Plan.
+Root APM artifact paths at `.apm/`. Preserve field names, values, separators and identity rules used by the CLI and other roles. Distinguish literal content from fill-in values in format examples.
+
+Optional supporting documents use the session-specific paths and structures agreed in the Spec. Plan Tasks carry their implementation instructions. Their use follows `WORKFLOW.md` §3.6.
 
 ## 5. Build Placeholders and Checks
 

@@ -1,10 +1,10 @@
 # APM Writing Standards
 
-Write runtime instructions for the agent that must act on them. Apply these standards to both the instructions and the output they request. `WORKFLOW.md` defines behavior, `TERMINOLOGY.md` defines terms and `STRUCTURE.md` defines file structure and formats.
+These standards guide template authors and maintainers in writing runtime instructions and specifying their outputs. `WORKFLOW.md` defines behavior, `TERMINOLOGY.md` defines terms and `STRUCTURE.md` defines file structure and formats.
 
 ## 1. Write for the Reader
 
-State what the reader needs to do, with the context needed to do it. Runtime instructions address the reading agent as "you" and use third person for other roles. Standards address template authors and maintainers.
+State what the reader needs to do, with the context needed to do it. Runtime instructions address the reading agent as "you" and use third person for other roles. Workflow descriptions state what each role does; authoring guidance addresses template authors and maintainers.
 
 Explain an unfamiliar APM concept when the agent first needs it. Use the terms in `TERMINOLOGY.md` consistently and ordinary English elsewhere.
 
@@ -16,13 +16,13 @@ Use the same wording for equivalent instructions and workflow branches. Vary onl
 
 Open with the substance. Use concrete subjects, active verbs and familiar words. Keep each sentence to one main thought and say each point once. Keep related words together and prerequisites before the actions that need them.
 
-Write casually formal chat replies and match documents to their reader and purpose. State claims at the certainty the evidence supports; name consequential uncertainty and its cause.
+Runtime chat guidance calls for a casually formal tone; document guidance follows the reader and purpose. State claims at the certainty the evidence supports; name consequential uncertainty and its cause.
 
 ## 4. Make Procedures Actionable
 
 State the trigger, required inputs, action and completion condition. Use numbered steps for sequences and lists for independent items. Put each rule where the agent applies it. Explain a rule's reason only when it helps the agent use it.
 
-Write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. Reserve action-specific approval clauses for required workflow approvals and substantive User decisions. Ordinary actions follow the shared approval-request guidance in `apm-communication`. For approval gates, state what needs approval, when to wait and how to handle corrections.
+In runtime instructions, write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. Reserve action-specific approval clauses for required workflow approvals and substantive User decisions. Ordinary actions follow the shared approval-request guidance in `apm-communication`. For approval gates, state what needs approval, when to wait and how to handle corrections.
 
 Keep ordinary transitions in sequence; use section references for other branches. Describe what agents should communicate rather than prescribing exact replies. Include examples only when they resolve ambiguity, and present them as illustrations. Preserve role boundaries, approvals and artifact contracts.
 
@@ -30,7 +30,7 @@ Keep ordinary transitions in sequence; use section references for other branches
 
 | Reader | Output needs |
 |---|---|
-| User | Answer, outcome, finding, proposal or question first; then the evidence, limits and next action needed. Follow the shared reply lengths unless the User asks otherwise. |
+| User | Answer, outcome, finding, proposal or question first; then the evidence, limits and next action needed. Shared reply lengths apply unless the User asks otherwise. |
 | Other agents | Self-contained outcomes, decisions with reasons, evidence, open issues and source paths. The reader has the workspace, not the writer's conversation. |
 | System | Exact schemas, field names, values, paths and bus separators. |
 
