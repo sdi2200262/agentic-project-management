@@ -2,7 +2,7 @@
 
 This guide covers how the Manager reviews Task Reports, Task Logs and results, decides next actions, aligns planning, integrates work, cleans up workspaces and maintains the Tracker. Stage completion includes required verification, a summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the next dispatch.
 
-A Worker records one outcome per attempt: Success, Partial or Failed. You decide whether to mark the Task Done after reviewing the result.
+A Worker records one outcome per attempt: Success, Partial or Failed. You decide whether to mark the Task Done after reviewing the result. For your own Tasks, review subagent outputs under §§2–3 and write one concluding log. Follow-up stays within the Active Task; Worker attempt and bus procedures do not apply.
 
 ## 1. Report Intake
 
@@ -23,14 +23,14 @@ If a Success log includes a failed, unrun or weaker check, tell the User and kee
 
 Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or `AGENTS.md`. If the log records User authorization for an `AGENTS.md` change, check the change at its recorded `AGENTS.md` path, using the diff when tracked, and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
 
-Use fresh, one-time subagent reviewers where another perspective could catch consequential mistakes or gaps, such as after substantial autonomous work, for important Tasks, or for a Stage or integrated result. Choose timing and scope according to risks and uncertainty. Supply requirements, applicable instructions, outputs, validation evidence and accepted exceptions. Explain what follows and ask reviewers to challenge completeness and validation. Verify their findings and resolve confirmed gaps through the applicable execution, review or planning procedure.
+Choose independent subagent review during implementation according to the work’s importance, complexity and uncertainty. Scope the review around consequential questions across a Task, related Tasks or an integrated result. Supply requirements, applicable instructions, outputs, validation evidence and accepted exceptions. Ask the reviewer to challenge completeness and validation, reusing valid evidence. Verify findings, resolve confirmed issues and check affected criteria after corrections. Repeat independent review when remaining risk or uncertainty warrants it. Continue the reviewer’s conversation when useful; keep it separate from the implementer.
 
-Tell the User what the evidence supports, the consequential findings and your proposed next action.
+Include what the evidence supports, consequential findings, corrections and the next action in the next useful User update per `{SKILL_PATH:apm-2-initiate-manager}` §2.
 
 ## 3. Review Outcomes
 
 1. Accept a Success supported by the reviewed result and evidence, with no unresolved Important Findings.
-2. Investigate Important Findings and any outcome other than Success. You may resolve contained questions, complete small amounts of remaining work, including code changes, and run final validation within the existing objective when your context makes this more efficient than another dispatch. Undertake substantial direct implementation only when the User requests it. Make changes in the Task's assigned workspace, follow `AGENTS.md` and validate the affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome.
+2. Investigate Important Findings and outcomes other than Success. Handle contained corrections per `{SKILL_PATH:apm-2-initiate-manager}` §4. Before editing, ensure no agent is making overlapping changes. Work in the assigned workspace, follow `AGENTS.md` and agreed commit conventions, and validate affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome.
 
    Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:
@@ -41,8 +41,6 @@ Tell the User what the evidence supports, the consequential findings and your pr
 5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. Follow the agreed commit conventions, retaining the location and state of uncommitted work in the records. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
 6. Record how each consequential finding was resolved, accepted, deferred or left pending, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
 7. Once the decision is recorded, clear the Worker's Report Bus, `.apm/bus/<agent-slug>/report.md`, then send any follow-up per `{GUIDE_PATH:task-assignment}` §5. Update the Tracker per §8.1 and §8.2, in one edit with the integration and dispatch changes that follow.
-
-Tell the User about contained corrections.
 
 ## 4. Planning and AGENTS.md Changes
 
