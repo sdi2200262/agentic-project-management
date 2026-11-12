@@ -38,7 +38,7 @@ Cover design decisions and constraints, technical and resource needs, dependenci
 - Existing structure and behavior to keep or change.
 - Environments, delivery targets, external resources and required access.
 - What can be done in the development environment and what needs outside action.
-- Expected effort, uncertainties, dependencies, hard parts, deadlines and outside input or reviews.
+- Expected effort, uncertainties, hard parts, timing constraints and dependencies, including those outside the agents’ control.
 - Technical direction already chosen, choices still open, and what is in or out of scope.
 
 Move on when required behavior and the design choices needed to define the work are established, core requirements have concrete success measures, and remaining questions have defined consequences for the work.
@@ -58,7 +58,7 @@ Cover technical preferences, quality standards, workflow preferences, outside ap
 
 Recommend assignments between the Manager and separate Workers using the gathered context and the assignment principles in `{GUIDE_PATH:work-breakdown}` §3. Bounded work with clear goals and checks often suits Manager execution; important or uncertain work may benefit from closer Worker collaboration. Explain consequential choices.
 
-Propose forms and frequency of User involvement based on the work’s risks and uncertainty and the User’s experience and preferences. Options include Worker collaboration, reviewing changes or test results, manual testing, demonstrations, explanations and progress reports. Name the work and decisions the proposed points or intervals help the User understand or guide. Agree the arrangement and shape Task and Stage boundaries, Task sizes, batches and parallel work around it. Ask whether the User wants to perform any work themselves, with the responsible agent providing context, assistance and validation.
+Propose forms and frequency of User involvement based on the work’s risks and uncertainty and the User’s experience and preferences. Options include Worker collaboration, reviewing changes or test results, manual testing, demonstrations, explanations and progress reports. Name the work and decisions the proposed involvement helps the User understand or guide, considering their availability and any deadlines. Agree participation and review points and any requested update frequency, and shape Task and Stage boundaries, Task sizes, batches and parallel work around them. Record these agreements in the Plan; leave routine update timing and grouping of results to the responsible agent as work develops. Ask whether the User wants to perform any work themselves, with the responsible agent providing context, assistance and validation.
 
 Check repository history and existing workspace instructions, including `AGENTS.md`, for version-control conventions. Propose an arrangement suited to the work and the User’s preferences, explaining any changes to those conventions. Cover where work happens, when changes are committed and integrated, and whether APM files are tracked. Explain that parallel Tasks in the same repository need separate worktrees, and ask whether the proposal meets the User’s needs. Without version control, parallel Worker dispatch is unavailable.
 
@@ -78,7 +78,7 @@ Present consequential design choices with evidence and trade-offs for the User t
 
 Refine the initial session boundary as you learn. If the goal is too large for one session, propose a coherent outcome for this session and a tentative division of the remaining work into later sessions. Explain the boundaries, dependencies and decisions affecting the sequence. Agree the intended outcomes and approach with the User before the Understanding Summary. Develop this session’s requirements and breakdown; keep later sessions tentative and at the level current understanding supports. Record the scope and work left for later sessions in the Spec, and relevant sequencing or prerequisites in the Plan.
 
-For outside replies or approvals, agree what can proceed and what happens if available work ends before a response arrives: pause, defer the affected work or revise scope. Keep pending prerequisites explicit; waiting does not satisfy a dependency or complete a Stage.
+Account for timing constraints and dependencies outside the agents’ control when agreeing scope and sequencing. Establish what can proceed independently and what allows affected work to start or resume. Agree what to do if prerequisites remain unmet when available work ends: pause, defer affected work or revise scope. Keep unresolved prerequisites explicit; waiting alone does not satisfy them.
 
 ## 5. Understanding Summary
 

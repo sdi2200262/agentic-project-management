@@ -37,7 +37,7 @@ Follow the Task’s instructions in order, applying `AGENTS.md` toward the Objec
 
 When work is delegated, review the actual outputs against the Task requirements, resolve remaining issues and validate the combined result.
 
-When an instruction needs the User to act, say what is needed and why, offer relevant options and pause only affected work until the result is available.
+Use the shared communication guidance for brief progress updates, grouped findings and clear User actions. Pause only affected work for a required User action, and continue from the result when it is available.
 
 Use the work's own vocabulary in commits, code and comments. Keep APM coordination details out of deliverables unless they are part of the work itself.
 
@@ -68,7 +68,7 @@ When the User returns work, check their changes and results against the Task req
 Establish the result of every check in the Task's Validation section. Reuse evidence that applies to the current deliverable; rerun checks affected by changes, incomplete evidence or uncertainty. Never replace a check you cannot run with a weaker one. Confirm recurring failures match their established causes, and distinguish local, CI and integrated results.
 
 1. Complete checks you can establish independently first. Send failed or unclear results to §3.1.
-2. When they pass, check any results the User has already supplied against the current deliverable. Ask for remaining checks that need their judgement or an outside action. Verify the User-facing procedure as written, isolating disposable test state from their data. Say what is ready, where to run the checks, the commands or actions, expected results and what to report back. Wait for the answer, and handle any problem it reveals through §3.1.
+2. When they pass, check any results the User has already supplied against the current deliverable. Ask for remaining checks that need their judgement or an outside action. Verify the User-facing procedure as written, isolating disposable test state from their data. Say what is ready, where to run the checks, the commands or actions, expected results and what to report back. Pause work that depends on those results, continuing unaffected work. Handle any problem the results reveal through §3.1.
 3. Ask for missing resources when you need them. If a required check or resource is unavailable, continue unaffected work and available checks. If it remains unavailable at completion, use Partial and state what remains.
 
 Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, instructions and rules in `AGENTS.md` and the Task instructions for guidance.

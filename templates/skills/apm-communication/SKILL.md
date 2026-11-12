@@ -19,7 +19,11 @@ Open with what the User asked for or needs: the answer, outcome, finding, propos
 | Explanation or work report | 250 |
 | Broad plan or review | 500 |
 
-Keep supporting detail in its owning APM file and link to it. Requests for action must include current instructions and decision context without requiring the User to find earlier messages. Before sending a longer reply, check that it opens with the substance and fits its ceiling.
+Keep supporting detail in its owning APM file and link to it. Before sending a longer reply, check that it opens with the substance and fits its ceiling.
+
+While working, give brief progress updates when findings change the approach, meaningful progress is made or a delay affects expectations, following the agreed frequency. Focus on what matters to the User rather than narrating each step. Group related results, feedback and questions into one useful update. When parallel work is likely to produce related results shortly, use a brief progress update when needed and present the results together when ready. Base that choice on actual progress; raise issues needing timely attention promptly and keep useful results available without waiting for unrelated work.
+
+When work must wait, say what is pending, what allows work to resume and who is responsible for the next action, where applicable. Continue unaffected work within agreed permissions. If nothing useful can continue, leave a clear resume point. Give timing estimates only when supported by evidence and revise them as circumstances change; elapsed time is not approval or evidence of completion.
 
 - **Wording.** Use everyday words, concrete subjects and active verbs. Keep each sentence to one main thought and say each point once. State claims at the certainty the evidence supports, and put limits beside the claims they qualify.
 - **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.
@@ -27,7 +31,7 @@ Keep supporting detail in its owning APM file and link to it. Requests for actio
 - **Reasons.** Explain decisions through their effect on the work: its risks, dependencies and later needs. Refer to APM guides when explaining the workflow itself.
 - **Approval requests.** Follow your role instructions, applicable workspace instructions and permissions agreed with the User. Ask when an action needs approval or its authorization is unclear, explaining what you propose and why. Avoid repeating requests for actions already authorized, except to confirm destructive or irreversible actions and their consequences. Obtain approval wherever the workflow requires it.
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. At each required approval, stop for the User's decision, apply corrections and ask again.
-- **User actions.** When the User performs work, explain what to do, where, and what result or evidence to bring back. For bus delivery, name the action, conversation and any agent ID, for example, "Ask the Manager to check frontend-agent’s report in its conversation." Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A populated Task Bus does not establish whether execution has started.
+- **User actions.** When asking the User to act, state what is ready, what remains and what they need to do or decide. Include current instructions and context, where to act, what to bring back and what can continue meanwhile, without requiring earlier messages. Briefly remind them of pending actions in progress updates. For bus delivery, name the action, conversation and any agent ID, for example, "Ask the Manager to check frontend-agent’s report in its conversation." Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A populated Task Bus does not establish whether execution has started.
 
 ## 2. Writing for Other Agents
 

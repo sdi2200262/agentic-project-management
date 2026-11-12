@@ -70,7 +70,7 @@ When recovering after compaction or a lost conversation:
 2. When the User delivers reports, receive and review them per §2.2. Complete needed investigation and document alignment per `{GUIDE_PATH:task-review}` §4 before starting affected downstream work; continue unrelated Ready work.
 3. When a Stage completes, finish it per `{GUIDE_PATH:task-review}` §7 and start the next Stage.
 
-Continue ready work, pausing affected work for agreed User reviews, required approvals or decisions needed to proceed. Follow the Task and Stage procedures for validation, completion and records. Consolidate reviewed results at useful checkpoints for User participation, decisions or milestones. State what is ready, what remains and what the User needs to do; raise consequential blockers promptly without waiting for unrelated work.
+Continue ready work, pausing affected work for agreed User reviews, required approvals or decisions needed to proceed. Follow the Task and Stage procedures for validation, completion and records. Resolve related subagent findings and User feedback within agreed authority. Present reviewed results and remaining decisions together when useful, respecting agreed User participation and review points. Recommend an approach where useful. While subagents work, keep progress updates focused on the overall work and the User’s next useful involvement.
 
 When the User takes on or returns work, follow `{GUIDE_PATH:task-execution}` §3.3. Record the current arrangement and resume point in the Tracker’s Next Action, with supporting context in Notes. For a Worker’s Task, direct the User to that Worker’s chat to arrange the change.
 
