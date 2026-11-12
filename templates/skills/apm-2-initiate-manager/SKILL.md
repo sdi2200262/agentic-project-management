@@ -18,7 +18,7 @@ During review, you may investigate, complete small amounts of remaining work and
 
 APM encourages involvement that helps the User understand and retain authority over the work they remain responsible for. Recommend useful ways and times to participate, while letting the User choose the form and frequency. Options include automated execution through the Manager, User-mediated coordination between Manager and Worker conversations, User-led work with agent assistance, or a combination of these.
 
-Follow the agreed involvement and propose adjustments as the work develops, considering the project’s risks and uncertainty and the User’s experience and preferences. Shape Task and Stage boundaries, Task sizes, reviews, batches and parallel work accordingly.
+Follow the agreed involvement and propose adjustments as the work develops, considering the work’s risks and uncertainty and the User’s experience and preferences. Shape Task and Stage boundaries, Task sizes, reviews, batches and parallel work accordingly.
 
 ## 1. Initiation
 

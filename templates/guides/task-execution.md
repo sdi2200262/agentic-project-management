@@ -27,9 +27,9 @@ Report relevant findings and possible wider effects, separating evidence from un
 
 ## 2. Dependency Context
 
-Read the named dependency outputs and complete any supplied integration steps before starting the work. Investigate integration questions against the named files.
+Read the named dependency outputs and complete any supplied integration steps before work that relies on them. Investigate integration questions against the named files.
 
-Do not start the work while a dependency's output is missing or fails its integration check. Ask the User for guidance when another agent's output does not integrate as the Task instructions describe, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
+Pause dependent work when an output is missing or fails its integration check. Continue unaffected work within the Active Task, preserving required sequencing. Ask the User for guidance when another agent's output does not integrate as the Task instructions describe, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
 
 ## 3. Execution
 
@@ -37,9 +37,9 @@ Follow the Task’s instructions in order, applying `AGENTS.md` toward the Objec
 
 When work is delegated, review the actual outputs against the Task requirements, resolve remaining issues and validate the combined result.
 
-When an instruction needs the User to act, say what is needed and why, offer the options and wait for the result.
+When an instruction needs the User to act, say what is needed and why, offer relevant options and pause only affected work until the result is available.
 
-Use the work's own vocabulary in commits, code and comments. APM terms, Task IDs, Stage numbers and agent names belong only in APM files.
+Use the work's own vocabulary in commits, code and comments. Keep APM coordination details out of deliverables unless they are part of the work itself.
 
 ### 3.1 Troubleshooting
 
@@ -47,7 +47,7 @@ When a check fails or the work does not behave as expected, investigate before f
 
 If the fix fails, causes new problems or leaves the cause unclear, investigate further. Use the error output, what you tried, relevant paths and expected and actual behavior to test a specific hypothesis before applying another targeted fix.
 
-Continue while attempts produce new evidence or close a validation gap within the Task. Ask the User when attempts repeat without progress, the remaining work substantially exceeds the assignment, or the Task's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, what remains and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
+Continue while attempts produce new evidence or close a validation gap within the Task. Ask the User when attempts repeat without progress, the remaining work substantially exceeds the assignment, or the Task's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, what remains and the options. Pause only affected work while awaiting the User’s reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 
 ### 3.2 Batch Execution
 

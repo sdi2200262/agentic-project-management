@@ -6,7 +6,7 @@ Establish the session's intended outcomes, requirements, design choices, constra
 
 ## 1. Preparation
 
-1. Use earlier results and findings to inform this session’s intended outcomes. Read relevant archives’ session summaries when present, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when states matter, and `metadata.json` for dates. Follow Stage-summary and log links as needed. Identify relevant scope, decisions, completed work, known issues and what may have changed. Verify findings you will use against current code, retaining source paths or verification commands.
+1. Use earlier results and findings to inform this session’s intended outcomes. Read relevant archives’ session summaries when present, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when states matter, and `metadata.json` for dates. Follow Stage-summary and log links as needed. Identify relevant scope, decisions, completed work, known issues and what may have changed. Verify findings you will use against current sources and workspace state, retaining source paths or verification commands.
 2. Explore every codebase relevant to the work, per §3.
 3. Read preexisting `AGENTS.md` content, applicable scoped instructions and referenced guidance.{CLAUDE_ONLY: Read preexisting workspace `CLAUDE.md` content too.} Summarize what affects planning and check it against the workspace. Note gaps and inconsistencies to inform proposed additions or corrections during §4 of Work Breakdown. If `AGENTS.md` is missing, ask whether instructions exist elsewhere.
 
@@ -22,7 +22,7 @@ In each round:
 
 1. State what you know from the request and exploration, and ask about missing requirements, decisions or constraints the round needs to establish.
 2. Apply each answer and do the preparation it calls for per §3 before asking dependent questions. Bring back findings, resolve consequential choices with the User and resume the rounds with updated questions. Distinguish the User's statements from assumptions and confirm consequential inferences. Clarify vague or incomplete answers, point out contradictions neutrally and establish concrete success measures.
-3. Follow up until the round's relevant requirements and choices are clear through answers or verified findings. Confirm with the User when a topic does not apply. Resolve gaps needed to define the work before moving on; handle remaining research per §3.
+3. Follow up until the round's relevant requirements and choices are clear through answers or verified findings. Ask when a topic’s relevance is unclear. Resolve gaps needed to define the work before moving on; handle remaining research per §3.
 4. End the round with a short summary of what it established and what remains open, and an open question about anything the focused questions missed. The User may answer that question together with the next round's questions.
 
 Initial context and intermediate work do not skip the remaining rounds. Carry established answers forward; silence is not approval.
@@ -58,7 +58,7 @@ Cover technical preferences, quality standards, workflow preferences, outside ap
 
 Recommend assignments between the Manager and separate Workers using the gathered context and the assignment principles in `{GUIDE_PATH:work-breakdown}` §3. Bounded work with clear goals and checks often suits Manager execution; important or uncertain work may benefit from closer Worker collaboration. Explain consequential choices.
 
-Propose forms and frequency of User involvement based on the project’s risks and uncertainty and the User’s experience and preferences. Options include Worker collaboration, reviewing changes or test results, manual testing, demonstrations, explanations and progress reports. Name the work and decisions the proposed points or intervals help the User understand or guide. Agree the arrangement and shape Task and Stage boundaries, Task sizes, batches and parallel work around it. Ask whether the User wants to perform any work themselves, with the responsible agent providing context, assistance and validation.
+Propose forms and frequency of User involvement based on the work’s risks and uncertainty and the User’s experience and preferences. Options include Worker collaboration, reviewing changes or test results, manual testing, demonstrations, explanations and progress reports. Name the work and decisions the proposed points or intervals help the User understand or guide. Agree the arrangement and shape Task and Stage boundaries, Task sizes, batches and parallel work around it. Ask whether the User wants to perform any work themselves, with the responsible agent providing context, assistance and validation.
 
 Check repository history and existing workspace instructions, including `AGENTS.md`, for version-control conventions. Propose an arrangement suited to the work and the User’s preferences, explaining any changes to those conventions. Cover where work happens, when changes are committed and integrated, and whether APM files are tracked. Explain that parallel Tasks in the same repository need separate worktrees, and ask whether the proposal meets the User’s needs. Without version control, parallel Worker dispatch is unavailable.
 
@@ -66,13 +66,13 @@ Move on when the proposed Stages, Tasks, assignments, participation, quality sta
 
 ## 3. Research
 
-When answers or materials raise a code question needed for planning, investigate it before asking dependent questions. If the User asks you to defer research, do so and note the resulting limits in your summary.
+When answers or materials raise a question needed for planning, investigate it before asking dependent questions. If the User asks you to defer research, do so and note the resulting limits in your summary.
 
 Research specific questions against relevant files, history, branches or other sources. Verify findings against cited files or commands and investigate contradictions or consequential gaps. Show the User what you verified before relying on it.
 
 Complete the preparation needed to define the agreed work before writing the Spec and Plan. Investigation within defined work may be a Task: identify its questions, required evidence, completion criteria and dependent decisions or work. Define dependent work to the extent those answers allow, and make the remaining planning limits clear to the User. If findings show the agreed work is too large for one session, revisit its scope per §4.
 
-When research reveals a consequential design choice, present the evidence and trade-offs for the User to decide, recommending an approach where useful. When one approach is clearly best, explain the evidence and continue unless the User redirects you.
+Present consequential design choices with evidence and trade-offs for the User to decide, recommending an approach where useful. Continue independently on details within agreed decisions.
 
 ## 4. Session Scope
 

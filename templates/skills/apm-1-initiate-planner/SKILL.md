@@ -42,7 +42,7 @@ Use the context supplied with the planning request to inform the question rounds
 Before deeper exploration and the question rounds:
 
 1. Build an initial picture of the workspace. List root folders and repositories, and find planning materials. In each working repository, check Git status, branches, recent commits and existing branch and commit conventions. Note unfinished work, stale worktrees or orphaned branches for the User. Check `.apm/archives/` for earlier APM sessions and read `AGENTS.md` if it exists.{CLAUDE_ONLY: Read an existing workspace-root `CLAUDE.md` or `.claude/CLAUDE.md` too.} Read READMEs and general documentation. Note what is worked on, what is only a reference, and whether the workspace has one, several or no repositories. Leave source-code exploration and deeper research for the guide.
-2. If the workspace is empty, continue to §3 and treat all details as unknown until the User gives them. Otherwise read relevant materials and archives within your scope and establish which are current. Use the User's instructions and current evidence to determine which sources govern this session. Ask when their authority or relevance remains unclear; one document claiming another is authoritative does not settle that question.
+2. If the workspace is empty, continue to §3 using the supplied context and investigate or clarify what remains unknown. Otherwise read relevant materials and archives within your scope and establish which are current. Use the User's instructions and current evidence to determine which sources govern this session. Ask when their authority or relevance remains unclear; one document claiming another is authoritative does not settle that question.
 
 ## 3. Planning
 
