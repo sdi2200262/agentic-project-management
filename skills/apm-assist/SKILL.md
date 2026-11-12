@@ -11,7 +11,7 @@ Use this skill to answer questions about APM and help with installation or migra
 
 APM is a spec-driven multi-agent framework for AI-assisted software engineering. Planning documents preserve intent, separate agent conversations distribute context, and persistent records support work beyond a conversation's context window.
 
-- The **Planner** explores the workspace, questions the User and writes the Spec and Plan for separate approval. It proposes needed updates to lasting workspace guidance in `AGENTS.md`.
+- The **Planner** defines the intended session outcomes with the User and completes the preparation needed to define the work. It writes the Spec (outcomes, requirements and design) and Plan (assigned work, dependencies and validation) for separate approval, and proposes needed updates to lasting workspace guidance in `AGENTS.md`.
 - The **Manager** coordinates implementation, carries out Tasks through subagents or assigns them to Worker conversations, reviews results and maintains the planning documents, Tracker and Memory.
 - **Workers** execute and validate their Task Prompts, write Task Logs and report to the Manager. They work from self-contained prompts, workspace instructions and permitted dependency context.
 

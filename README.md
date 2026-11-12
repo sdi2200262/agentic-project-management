@@ -11,15 +11,15 @@ You remain responsible for the software your agents build. APM encourages you to
 
 ## Overview
 
-An APM session runs in two phases.
+An APM session takes an agreed body of work through planning, then implementation. It may cover a larger goal in full or a coherent part.
 
-During **planning**, the **Planner** explores your codebase and questions you about purpose, requirements, and constraints. Once you approve its understanding, it writes the **Spec** (what to build) and the **Plan** (how the work is divided), each for your review and approval. It also proposes any needed updates to lasting workspace guidance in `AGENTS.md`, creating the file if it's missing.
+During **planning**, the **Planner** explores the workspace and works with you to define the intended outcomes, requirements and design. It writes the **Spec** (outcomes, requirements and design) and **Plan** (assigned work, dependencies and validation). You approve its understanding, then each document separately. It also proposes any needed updates to lasting workspace guidance in `AGENTS.md`, creating the file if it's missing.
 
-During **implementation**, the **Manager** coordinates the work, reviews results, and records the session's progress. **Workers** carry out the Tasks, either as the Manager's subagents or in separate conversations, then validate the work and report back. Each Task's outcome is logged in the session's work history.
+During **implementation**, the **Manager** coordinates the work, reviews results, and records progress. It carries out Tasks through subagents or assigns them to **Workers** in separate conversations. The responsible agent validates each Task and records its outcome in the session's work history.
 
 The Planner and Manager recommend how you stay involved, based on the nature of the work and your experience and preferences. You decide the arrangement: automated execution through the Manager, Worker conversations you coordinate by passing on their assignments and reports, work you carry out yourself with agent assistance, or any mix. You also choose what to review and when, and can change the arrangement as the work goes.
 
-The session's state lives in shared files outside any conversation: the planning documents, the **Tracker** (the session's progress), and **Memory** (its work history). When an agent's context fills, a **Handoff** moves its role to a fresh conversation that resumes from these files. When the session ends, you can archive them for the next session's Planner to build on.
+The session's state lives in shared files outside any conversation: the planning documents, the **Tracker** (the session's progress), and **Memory** (its work history). When a Manager or Worker’s context fills, a **Handoff** continues that agent’s work in a fresh conversation using these files. When the session ends, you can archive them for the next session's Planner to build on.
 
 ## Getting started
 

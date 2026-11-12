@@ -14,6 +14,7 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 * **Manager execution and User-led work.** The Manager can carry out Tasks through subagents, alongside separate Worker conversations. You can also do any Task, or part of one, yourself with agent assistance, within APM’s workflow. These changes bring the benefits of APM Auto and APM Semi into APM's core.
 * The Manager now may use fresh subagents to review important work or long stretches of autonomous iterations.
 * `agents-single-skill` and `claude-single-skill` targets (research preview) provide the same workflow through one `apm` skill. Choose one format for `agents` and one for `claude`; the two can differ.
+* Optional documents can be added for use within an APM session, such as research under `.apm/research/`. Their purpose, structure and ownership are agreed for that session and referenced from its work records.
 
 ### Changed
 
@@ -22,6 +23,10 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 * Worker batches now stop at partly done Tasks. Agreed User reviews happen before the Worker reports.
 * Handoffs, recovery, and early closure account for work you do yourself and any running subagents. Current files and Git state take precedence over older records.
 * CLI v1.0.4 shows each release's startup steps and rejects incompatible targets, such as both formats for `claude`, before changing files.
+
+### Fixed
+
+* Stronger planning and review safeguards reinforce work definition during planning, evidence-based acceptance and continued progress on unaffected work while checks or decisions are pending.
 
 ## CLI v1.0.3 + Templates v1.1.0 - 2026-10-29
 
