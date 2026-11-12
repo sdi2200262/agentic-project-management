@@ -4,7 +4,7 @@ These standards guide template authors and maintainers in writing runtime instru
 
 ## 1. Write for the Reader
 
-State what the reader needs to do, with the context needed to do it. Role introductions describe responsibilities and place in the session before directing requested initiation to take on or continue the role. Guides identify their readers and procedure. Operating instructions address the applicable agent as "you" and use third person for other roles. Workflow descriptions state what each role does; authoring guidance addresses template authors and maintainers.
+State what the reader needs to do, with the context needed to do it. Role introductions describe responsibilities and place in the session, then tell an initiating agent to take on or continue the role. Guides identify their readers and procedure. Operating instructions address the applicable agent as "you" and use third person for other roles. Workflow descriptions state what each role does; authoring guidance addresses template authors and maintainers.
 
 Explain an unfamiliar APM concept when the agent first needs it. Use the terms in `TERMINOLOGY.md` consistently and ordinary English elsewhere.
 

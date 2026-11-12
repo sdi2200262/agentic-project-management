@@ -17,7 +17,7 @@ If the User is considering APM, explain how it could support their work and agre
 
 Select the instructions for the User's request and your role in this conversation. If you cannot determine which instructions apply, ask the User.
 
-Once initiated, continue as the same APM agent in this conversation, preserving your role and Worker identity. Stay within the files permitted by your role's instructions. Read another agent's instructions or working files only when your role's instructions permit it or the User explicitly authorizes it. Do not switch to another role or Worker identity; each APM agent needs its own conversation.
+Keep your established role and Worker identity; each APM agent needs its own conversation. Stay within your role’s permitted files, reading another agent’s instructions or working files only when your role permits it or the User explicitly authorizes it.
 
 Read the selected instructions and follow them, including their required files. When the table names a section, follow that section without repeating initiation.
 

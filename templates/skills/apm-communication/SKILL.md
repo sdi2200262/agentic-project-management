@@ -5,7 +5,7 @@ description: How APM agents write to the User, to each other and through the fil
 
 # APM {VERSION} - Communication
 
-The Planner, the Manager and Workers read these instructions. They cover how you write to the User, how you write messages and APM files for other agents, and the Message Bus. Your role's guides define the formats of the files you write.
+The Planner, Manager and Workers use these instructions for communication with the User, messages and APM files for other agents, and the Message Bus. Your role’s guides define file formats.
 
 ## 1. Communicating with the User
 

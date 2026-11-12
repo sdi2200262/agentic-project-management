@@ -43,7 +43,7 @@ Then read `.apm/bus/manager/handoff.md`. If it has content, continue with §1.2;
 ### 1.1 First Start
 
 1. Explore the working codebases identified in `AGENTS.md` and covered by the Spec to understand the planned work and resolve gaps in your context. Raise any contradiction between the workspace and the approved documents before affected work begins.
-2. Present your understanding of the work: the scope, key decisions and constraints, relevant instructions and rules in `AGENTS.md` and agreed version control, Workers, work you will carry out, Stages and Task count, agreed User participation and review points, what can run in parallel and which Stages may need verification as a whole. Use the Spec's and Plan's Notes and what you found in the codebases.
+2. Present your understanding: scope, key decisions and constraints; applicable `AGENTS.md` instructions and agreed version control; Workers and your own work; Stages and Task count; agreed User participation and review points; parallel work and Stages that may need verification as a whole. Use Spec and Plan Notes and codebase findings.
 3. Wait for approval, apply corrections and ask again. Align affected documents per `{GUIDE_PATH:task-review}` §4, then write Stage 1's Tasks in the Tracker per its §8.1.
 4. Start ready work per `{GUIDE_PATH:task-assignment}` §1, following repository conventions in `AGENTS.md` and session-specific Git setup and constraints in the Spec.
 

@@ -1,6 +1,6 @@
 # APM {VERSION} - Task Review Guide
 
-This guide covers the Manager’s Task Review: reading Task Reports and Task Logs, deciding what happens next, aligning planning documents, integrating completed work, cleaning up workspaces and keeping the Tracker current. It ends each Stage with verification, a Stage summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the dispatch that follows.
+This guide covers how the Manager reviews Task Reports, Task Logs and results, decides next actions, aligns planning, integrates work, cleans up workspaces and maintains the Tracker. Stage completion includes verification, a summary and an Index entry. `{GUIDE_PATH:task-assignment}` covers the next dispatch.
 
 A Worker records one outcome per attempt: Success, Partial or Failed. You decide whether to mark the Task Done after reviewing the result.
 
@@ -23,7 +23,7 @@ If a Success log includes a failed, unrun or weaker check, tell the User and kee
 
 Important Findings can affect other work, reveal missing validation, record a User correction or point to a problem in the Spec, Plan or `AGENTS.md`. If the log records User authorization for an `AGENTS.md` change, check the change at its recorded `AGENTS.md` path, using the diff when tracked, and keep it. If the User declined, do not add it without asking. If a finding contradicts a planning document, correct the document per §4, even when the Worker already handled the local issue.
 
-Use independent subagent review where another perspective would help catch consequential mistakes or gaps. Consider it after substantial autonomous work, for important Tasks, or when checking a Stage or integrated result. Choose the timing and scope according to the work’s risks and uncertainty. Give fresh, one-time subagent reviewers the requirements, applicable instructions, outputs, validation evidence and accepted exceptions. Explain what follows their review and ask them to challenge completeness and validation. Verify their findings and resolve confirmed gaps through the applicable execution, review or planning procedure.
+Use fresh, one-time subagent reviewers where another perspective could catch consequential mistakes or gaps, such as after substantial autonomous work, for important Tasks, or for a Stage or integrated result. Choose timing and scope according to risks and uncertainty. Supply requirements, applicable instructions, outputs, validation evidence and accepted exceptions. Explain what follows and ask reviewers to challenge completeness and validation. Verify their findings and resolve confirmed gaps through the applicable execution, review or planning procedure.
 
 Tell the User what the evidence supports, the consequential findings and your proposed next action.
 

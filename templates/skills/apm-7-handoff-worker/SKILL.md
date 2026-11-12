@@ -25,7 +25,7 @@ Use the checked state in both files, including unresolved contract questions and
 
 ## 2. Handoff Log
 
-Write the Handoff Log per §5.1. Record in past tense what this conversation did: the Tasks you completed, and the patterns, conventions, decisions with their reasons and environment notes that the Task Logs do not hold. For a Handoff in the middle of a Task, include the steps already done. If your context was compacted or recovered in this conversation, say which parts you rebuilt from a summary or from files, and from where.
+Write the Handoff Log per §5.1. Record in past tense what this conversation did: completed Tasks, completed steps in unfinished Tasks, and patterns, conventions, decisions with reasons and environment notes absent from Task Logs. If context was compacted or recovered, identify the parts rebuilt from summaries or files and their sources.
 
 ## 3. Handoff Prompt
 

@@ -25,7 +25,7 @@ Check the continuation details in §3 and bring the Tracker up to date before wr
 
 ## 2. Handoff Log
 
-Write the Handoff Log per §5.1. Record in past tense what this conversation did: the Stages, Tasks and reviews you handled, decisions with their reasons, User preferences, dispatch patterns and coordination observations that the Tracker, the Index and the Task Logs do not hold. If your context was compacted or recovered in this conversation, say which parts you rebuilt from a summary or from files, and from where.
+Write the Handoff Log per §5.1. Record in past tense what this conversation did: Stages, Tasks and reviews handled, decisions with reasons, User preferences, dispatch patterns and coordination observations absent from the Tracker, Index and Task Logs. If context was compacted or recovered, identify the parts rebuilt from summaries or files and their sources.
 
 ## 3. Handoff Prompt
 

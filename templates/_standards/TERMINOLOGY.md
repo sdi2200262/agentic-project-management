@@ -57,7 +57,7 @@ The Planner writes these during Work Breakdown, in this order.
 
 | Term | Definition |
 |---|---|
-| **Task** | A bounded unit of work in the Plan, with the Manager or one Worker responsible for it, with an objective, deliverables, validation criteria and dependencies. Its ordered steps share the Task's validation. |
+| **Task** | A bounded unit of work in the Plan, assigned to the Manager or one Worker, with an objective, deliverables, validation criteria and dependencies. Its ordered steps share the Task's validation. |
 | **Stage** | A group of related Tasks that delivers a coherent part of the work. Stages run in order. |
 
 ### Task dependencies
