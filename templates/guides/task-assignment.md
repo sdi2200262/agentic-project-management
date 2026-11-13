@@ -1,6 +1,6 @@
 # APM {VERSION} - Task Assignment Guide
 
-This guide covers how the Manager selects and assigns Ready Tasks, prepares context and workspaces, and sends Worker Task Prompts through the Message Bus. `{GUIDE_PATH:task-review}` covers incoming reports.
+The Manager uses this guide to select and assign Ready Tasks, prepare workspaces and send Worker Task Prompts. Workers use only §1.1 for optional native subagent assignments. `{GUIDE_PATH:task-review}` covers incoming reports.
 
 A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
 
@@ -8,9 +8,9 @@ A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each
 
 Select Ready Tasks using their dependencies, available agents, the Plan’s coordination preferences and current User instructions. Follow the agreed forms and frequency of involvement, including review points. When findings or changes make an adjustment useful, explain why and recommend how and when to involve the User.
 
-Before starting either Manager or Worker work, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependency context and prepare the workspace per §3. For a Task marked `manager`, mark it Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. You may coordinate your Tasks sequentially or concurrently as dependencies, workspace isolation and agreed User involvement allow.
+Before starting either Manager or Worker work, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependency context and prepare the workspace per §3. For Tasks marked `manager`, mark the selected Ready Tasks Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. You may coordinate your Tasks sequentially or concurrently as dependencies, workspace isolation and agreed User involvement allow.
 
-Give implementing subagents the validation requirements in `{GUIDE_PATH:task-execution}` §4 and conditions for seeking guidance in its §3.1, scoped to their contribution.
+For your own Tasks, group related work or split it into coherent contributions where shared context, expertise, resources, isolation or useful parallelism justify it. Sequence dependent work and keep each Task’s outputs and validation traceable. Prepare native assignments per §1.1.
 
 For Worker assignments:
 
@@ -22,6 +22,12 @@ For Worker assignments:
 3. Wait for a pending report only when it is the only one outstanding and would make a Waiting Task Ready for a Worker you are about to dispatch. Otherwise dispatch what is Ready.
 4. If nothing is Ready while Workers are busy, tell the User what you are waiting for and which report to bring next, preferring one that unblocks other work.
 5. Prepare each Task per §2.
+
+### 1.1 Native Subagent Assignments
+
+Follow your role’s delegation policy. Give each subagent the objective or question, relevant requirements, workspace instructions, paths, dependency context, accepted exceptions, permitted changes, agreed commit timing and approvals, and expected outputs and evidence. Include applicable validation requirements and conditions for seeking guidance from `{GUIDE_PATH:task-execution}` §§3.1 and 4, scoped to the contribution.
+
+Keep delegated work within your scope and concurrent changes separate. Reuse a subagent’s conversation when retained context helps; otherwise supply the context a new one needs. Verify findings before relying on them and review contributions and the combined result per `{GUIDE_PATH:task-execution}` §§3–4. Native subagents are separate from APM Workers; bus messages still go through the User.
 
 ## 2. Task Context
 

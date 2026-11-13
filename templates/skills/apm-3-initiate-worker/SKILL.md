@@ -76,6 +76,4 @@ When the User asks you to check for a Task Prompt, keep your registered identity
 
 ## 3. Subagents
 
-Carry out assigned Tasks directly. Delegate selected parts to native subagents when that improves efficiency or quality. Give them the question, relevant paths, permitted changes, applicable validation requirements, when to seek guidance and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
-
-Consider research or debugging subagents for focused investigation, subagent workers for bounded implementation, or subagent reviewers for independent checks. Give subagents only the Task context and sources within your authorized scope.
+Carry out assigned Tasks directly. Delegate selected parts to native subagents when that improves efficiency or quality, using only Task context and sources within your scope. For native assignments, read and follow only `{GUIDE_PATH:task-assignment}` §1.1. Consider focused research, debugging, bounded implementation or independent checks where useful.

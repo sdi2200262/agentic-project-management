@@ -48,7 +48,7 @@ Break the work down by these principles:
 - **User actions.** Agents work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
 - **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the assigned agent can run alone from those that need the User, and tell that agent to pause affected work for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
 
-Identify what can run independently and what depends on earlier results or external prerequisites. Record the agreed handling of unresolved prerequisites. Label required validation and User or outside review points clearly, including relevant timing constraints and agreed update frequency. Dispatch opportunities are suggestions; the Manager chooses actual coordination within the agreed constraints.
+Identify what can run independently and what depends on earlier results or external prerequisites. Record the agreed handling of unresolved prerequisites. Label required validation and User or outside review points clearly, including relevant timing constraints and agreed update frequency. Dispatch opportunities are suggestions; the Manager chooses actual coordination within the agreed constraints. Leave routine subagent and independent review arrangements to the implementation roles.
 
 ## 4. AGENTS.md
 

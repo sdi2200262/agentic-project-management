@@ -20,7 +20,7 @@ Runtime chat guidance calls for a casually formal tone; document guidance follow
 
 ## 4. Make Procedures Actionable
 
-State the trigger, required inputs, action and completion condition. Use numbered steps for sequences and lists for independent items. Put each rule where the agent applies it. Explain a rule's reason only when it helps the agent use it.
+State the trigger, required inputs, action and completion condition. Use numbered steps for sequences and lists for independent items. Keep role responsibilities and scope in role files; put procedural details in their owning guides and link to them. Explain a rule's reason only when it helps the agent use it.
 
 In runtime instructions, write required actions as imperatives. Use "may" for options. For choices, give criteria the agent can check. Reserve action-specific approval clauses for required workflow approvals and substantive User decisions. Ordinary actions follow the shared approval-request guidance in `apm-communication`. For approval gates, state what needs approval, when to wait and how to handle corrections.
 
@@ -42,7 +42,7 @@ Shared writing rules belong in `apm-communication`; procedures add only what the
 
 Runtime directions name the action, conversation and any agent ID. Conversations may use different assistants and APM formats, so the sender’s installation does not determine how the receiver is invoked. Keep concrete invocation examples in installation and startup guidance; shared runtime prose describes the requested action.
 
-Describe assistant actions in plain English. Each role's instructions own its general delegation guidance; procedure steps specify the work and evidence needed. Keep assistant-specific instructions in the supported placeholders defined in `STRUCTURE.md`.
+Describe assistant actions in plain English. Role instructions define delegation policy; procedure guides specify the work and evidence needed. Keep assistant-specific instructions in the supported placeholders defined in `STRUCTURE.md`.
 
 ## 7. Formatting
 
