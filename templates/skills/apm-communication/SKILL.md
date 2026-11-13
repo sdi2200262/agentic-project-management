@@ -21,9 +21,11 @@ Open with what the User needs: the answer, outcome, finding, proposal or questio
 
 Keep supporting detail in its owning file and link to it, but include essential decision and action context in chat. Do not require the User to consult files or earlier messages to understand what is ready or act.
 
-During authorized work, use brief progress updates for meaningful progress, changed expectations or consequential findings, following agreed frequency. Say what is underway and when the User is next needed; omit routine steps.
+In chat work reports and useful progress updates, lead with the relevant Stage, Task or other APM position and connect it to actual work. Use only your known context: the Manager covers session progress; Workers explain their assignment and known effects.
 
-Present related results together at an agreed review, when a User decision or action is needed, or when authorized work reaches a stopping point. In chat work reports and useful progress updates, lead with the relevant Stage, Task or other APM position and immediately connect it to actual work. Use only your known context: the Manager covers session progress; Workers explain their assignment and known effects. Then explain what was done, the evidence, consequential findings or limits, and next actions. Between these points, continue work and review, collecting outcomes, feedback and questions rather than reporting each step or intermediate result separately. Group by actual progress without delaying useful results for unrelated work, and raise urgent issues promptly. Required approvals and reporting procedures remain in force.
+During authorized work, give brief progress updates for meaningful progress, changed expectations or consequential findings, following agreed frequency. State the change and when the User is next needed; omit routine steps.
+
+Present related results together at an agreed review, when a User decision or action is needed, or when authorized work reaches a stopping point. These reports explain what was done, the evidence, consequential findings or limits, and next actions. Between these points, continue work and review, collecting related results rather than reporting each operation separately. Do not delay useful results for unrelated work, and raise urgent issues promptly. Required approvals and reporting procedures remain in force.
 
 When waiting, state what is pending, what allows work to resume and who acts next, where applicable. Continue unaffected authorized work; otherwise leave a clear resume point. Base timing estimates on evidence and revise them as circumstances change. Elapsed time is neither approval nor evidence of completion.
 

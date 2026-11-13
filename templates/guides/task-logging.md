@@ -33,7 +33,7 @@ Separate evidence from uncertainty about possible wider effects. Record User agr
 
 ## 3. Logging
 
-Write Task Logs for current and later Managers, and for Workers continuing or building on the Task’s work. They can consult permitted records and referenced evidence, but do not share this conversation. Write from your available context, using §5.1 and the assigned `log_path`. Aim for one short Summary paragraph; keep supporting detail in its section or linked source.
+Write Task Logs for current and later Managers, and for Workers continuing or building on the Task’s work. They can consult permitted records and referenced evidence, but do not share this conversation. Use §5.1: Workers use their prompt's `log_path`; the Manager derives its concluding path from the Task's Stage and number using the original-log naming convention. Write from your available context. Aim for one short Summary paragraph; keep supporting detail in its section or linked source.
 
 - Describe results, checked evidence and consequential decisions, naming contributions by the User or other agents. Include changes in who performed the work when they explain the result, validation or remaining work; omit routine execution narration.
 - Link deliverables, supporting documents and evidence by stable paths, not temporary Tracker notes. Include code or diagnostic output only when it explains a consequential finding.

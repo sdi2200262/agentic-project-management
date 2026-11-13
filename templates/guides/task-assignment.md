@@ -29,7 +29,7 @@ Follow your role's delegation policy. Delegate where focused work, expertise or 
 
 Give each subagent an objective, necessary requirements and sources, workspace instructions, dependencies, accepted exceptions, permitted changes, commit timing and approvals, and expected outputs and evidence. For implementation, carry applicable validation and conditions for seeking guidance from Task Execution §§3.1 and 4 into the brief. Other roles specify the evidence and escalation conditions their contribution needs. Keep Task outputs and checks traceable when grouping implementation work; other roles scope the brief to their research or preparation.
 
-Stay within your permitted scope and separate concurrent writes and shared resources. With Git, parallel Tasks in one repository use separate worktrees. Without Git, briefs explicitly identify independent writable scopes, shared resources, stable inputs and when to coordinate or pause; sequence overlapping operations. Recommend Git for safer isolation and broader parallel options. Keep these limits in each no-Git parallel brief.
+Stay within your permitted scope. Recommend Git when arranging parallel work for safer isolation and broader parallel options. With Git, parallel Tasks in one repository use separate worktrees; these do not isolate shared external resources. Without Git, assignments must be independent, with disjoint writable files, directories and resources and no changes to inputs another assignment needs. Sequence overlapping changes, broad formatting, generation and shared test/service operations unless isolated. Each no-Git parallel assignment must state that Git isolation is unavailable and identify writable boundaries, shared resources and when to coordinate or pause.
 
 Verify findings and actual outputs before relying on them, checking combined behavior where contributions interact. Collect useful results without waiting for unrelated work; preserve valid progress when updating briefs. Native subagents are not APM Workers and do not use Worker bus, attempt or Handoff procedures.
 
@@ -55,12 +55,11 @@ Reread the Spec at the first dispatch of a Stage and after any change to it.
 Prepare each Task’s workspace under the version-control arrangement agreed in the Spec and applicable repository conventions in `AGENTS.md`.
 
 1. Make sure required dependency outputs are available and usable in the workspace. Arrange access to needed uncommitted and untracked files; a new worktree does not automatically contain them.
-2. Recommend Git when arranging parallel work, explaining its safer isolation and broader parallel options. With Git, give parallel Tasks in the same repository separate worktrees, including your own; keep APM-managed worktrees under the session root's `.apm/worktrees/`. Worktrees do not isolate shared external resources.
-3. Without Git, run only independent assignments with disjoint writable files, directories and resources and no changes to inputs another assignment needs. Sequence overlapping changes, broad formatting, generation and shared test/service operations unless isolated. Explicitly put the no-Git arrangement, writable boundaries, shared resources and coordination/pause conditions in each Worker prompt and native brief.
-4. Record the branch, any worktree and Next Action in the Tracker. Several Tasks may share a branch or workspace when the arrangement allows it.
-5. In each Worker prompt, give the working directory, branch or worktree, applicable commit instructions and the session workspace root for every `.apm/` path.
+2. Apply the parallel-isolation rules in §1.1 to your Tasks, native contributions and Worker dispatches. Keep APM-managed worktrees under the session root's `.apm/worktrees/`.
+3. Record the branch, any worktree and Next Action in the Tracker. Several Tasks may share a branch or workspace when the arrangement allows it.
+4. In each Worker prompt, give the working directory, branch or worktree, applicable commit instructions and the session root for every `.apm/` path. Put any no-Git parallel arrangement and its constraints in Workspace per §7.1.
 
-You prepare workspaces and handle integration and cleanup; Workers use the assigned workspace and commit instructions. Follow the agreed timing for commits and integration, revisiting the arrangement with the User when needed. If version control is enabled later, agree and apply the setup, recording session choices in the Spec and lasting conventions in `AGENTS.md`. Without Git, retain the agreed isolation limits; do not imply that all Git-isolated parallel work is safe in a shared directory.
+You prepare workspaces and handle integration and cleanup; Workers use the assigned workspace and commit instructions. Follow agreed commit and integration timing, revisiting it with the User when needed. If Git is enabled later, agree and apply the setup, recording session choices in the Spec and lasting conventions in `AGENTS.md`.
 
 ## 4. Delivery
 
