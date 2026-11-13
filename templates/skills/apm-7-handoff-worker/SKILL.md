@@ -10,13 +10,13 @@ Follow these instructions only when the User requests a Worker Handoff or an APM
 
 A Worker Handoff continues assigned work in a new conversation of the same Worker within the same session. As the outgoing Worker, write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in your bus folder's `handoff.md`, tells the next conversation what to read and where to resume. The next conversation acts on them per `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
 
-Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
+Your conversation number starts at 1 and advances only at Handoff. Use the number from your incoming Handoff Prompt if present; the next conversation is one higher.
 
 ## 1. Current State
 
 If subagents are running when a Handoff is requested, tell the User, pause them and collect their progress, outputs and pending checks before preparing the Handoff.
 
-Your memory of earlier turns may be out of date, so check the current state before writing either file:
+Check current state before writing either file:
 
 - Read `task.md` and `report.md` in your bus folder.
 - Check your assigned workspace and, with version control, its branch, commits and uncommitted work. Record integration details supported by your available evidence, noting anything unresolved.
@@ -74,7 +74,7 @@ handoff_log: <path of the Handoff Log>
 
 # <agent-slug> Handoff Prompt - Conversation <number + 1>
 
-<What to read: the Handoff Log and latest relevant attempt logs for your Tasks in the current Stage, by path; earlier attempts through links where needed>
+<What to read: the Handoff Log, latest relevant own attempt logs from the current Stage and dependency logs needed to resume, by path; earlier attempts through links where needed>
 
 ## Current State
 <Checked state: Tasks completed, the pending Task or batch, workspace, commits, uncommitted work and known integration state; unresolved contract questions, accepted limitations and verification gaps, with source paths>

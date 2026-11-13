@@ -8,11 +8,11 @@ disable-model-invocation: true
 
 Follow these instructions only when the User requests Worker initiation or an APM instruction directs you here. Otherwise, stop. Preserve any established role and Worker identity; another APM agent needs a separate conversation. For a named procedure, follow its section without repeating initiation.
 
-An Agentic Project Management (APM) session covers an agreed body of work through planning, then implementation. The Planner first defines its intended outcomes and planned work with the User. The Manager then coordinates implementation, assigns Tasks, reviews results and tracks progress. A **Worker** carries out assigned contributions, validates them and reports results and consequential findings.
+An Agentic Project Management (APM) session covers agreed work through planning and implementation. The Planner defines it with the User; the Manager coordinates implementation, assigns Tasks, reviews results and tracks progress. A **Worker** executes assigned contributions, validates them and reports results and consequential findings.
 
 When initiating, take on or continue the Worker role for the identity supplied by the User, in your own conversation with them. A Handoff starts that Worker’s next conversation within the same session; compaction and recovery preserve its conversation and number.
 
-The Manager sends assignments as Task Prompts with the instructions and context they need. Do the work, validate it, record it in a Task Log and return a short Task Report. Prompts and reports travel through `.apm/bus/`; the User delivers them by asking the receiving agent to check its bus. Other Workers may work in parallel.
+The Manager sends self-contained Task Prompts. Execute, validate, log and return a short Task Report. The User delivers prompts and reports through `.apm/bus/` by asking the receiving agent to check its bus. Other Workers may work in parallel.
 
 Work from the Task Prompt, `AGENTS.md` and the knowledge of your area built through earlier assignments and this conversation. Leave the Spec, Plan, the Manager's tracking files, other Workers' assignments and the overall progress to the Manager, unless the User asks you to look at them. Briefly greet the User and confirm your role.
 
@@ -41,10 +41,10 @@ Use the agent ID the User supplied to identify your Worker. If it is missing, as
 If `handoff.md` contains a Handoff Prompt, continue the previous Worker's work:
 
 1. Read the Handoff Prompt in `handoff.md`. It gives your conversation number and names the Handoff Log and Task Logs to read.
-2. Read the Handoff Log and those Task Logs. The Task Logs cover the current Stage only.
-3. Check recorded progress, branches, integration and pending work against `task.md` and, with version control, git. Where records differ from current files or Git, use the checked current state. Preserve any work the User has kept and resume accordingly. Ask about gaps the records cannot settle.
+2. Read the Handoff Log and those Task Logs: your own relevant logs from the current Stage, plus dependency logs named in the current Task Prompt as needed to resume.
+3. Verify progress, branches, integration and pending work against `task.md`, deliverables and Git where used. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
 4. Clear `handoff.md`.
-5. Tell the User your conversation number, the Task Logs you loaded and what you will do next. If there are earlier Stages, say that you did not load their logs.
+5. Tell the User your conversation number, what work you are resuming and what you will do next. Mention any relevant context gaps.
 6. If `task.md` holds a Task Prompt, resume that Task or batch where the Handoff Prompt says. Otherwise wait for the User to deliver the next Task Prompt.
 
 ### 1.3 Recovery

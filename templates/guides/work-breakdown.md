@@ -1,6 +1,6 @@
 # APM {VERSION} - Work Breakdown Guide
 
-This guide covers the Planner’s Work Breakdown: developing the work structure during Context Gathering, turning the approved understanding into the Spec and Plan, and reviewing needed additions or changes to `AGENTS.md`. `{SKILL_PATH:apm-1-initiate-planner}` §4 covers what follows.
+The Planner uses this guide to develop the breakdown during Context Gathering, turn the approved understanding into the Spec and Plan, and resolve `AGENTS.md` changes. `{SKILL_PATH:apm-1-initiate-planner}` §4 covers completion.
 
 Write the Spec and Plan for the Manager and later Manager conversations, with User review and approval. They can consult `AGENTS.md` and referenced sources; keep agreed requirements and decisions explicit and link supporting detail. The Manager supplies self-contained Worker Task Prompts. Requirements and design belong in the Spec, work structure in the Plan, and lasting guidance in `AGENTS.md`.
 
@@ -10,7 +10,7 @@ The Manager keeps the Spec and Plan current during implementation.
 
 Write one document at a time: the Spec, then the Plan. For each:
 
-1. Present your proposal with its consequential choices and reasons.
+1. Present the proposed organization and consequential choices, reasons and assumptions.
 2. In the same turn, read the target file and write the document. Check that it defines the agreed outcomes and the work needed to deliver them. Check consistency with the other documents and place each detail in its owning document or field.
 3. Stop and ask the User to review it, saying what comes next. Apply corrections, check their effects on earlier documents and ask again.
 
@@ -18,17 +18,17 @@ Start the next document only after approval, so a problem in one document is cau
 
 ## 2. Spec
 
-The Spec defines what the session is intended to achieve and why, with the requirements, design decisions and constraints that shape the work. State these in the work’s own terms. The Plan explains how to achieve those outcomes through assigned work and validation.
+The Spec states intended outcomes, requirements, design and constraints with their reasons, in the work’s own terms. The Plan assigns work and validation to achieve them.
 
-1. Present how you will organize the agreed requirements, design decisions, constraints and sources. Explain consequential choices and assumptions.
-2. Write `.apm/spec.md` per §5.1:
-   - **Opening:** the session’s goal, scope and success criteria, directly below the title.
-   - **Notes:** unresolved questions and assumptions. If later sessions were discussed, briefly record the work left for them and why.
-   - **Design sections:** session requirements, policies, design decisions and constraints, with their reasons and authoritative source paths and sections, organized so the Manager can find them and copy them into Task Prompts. Name working targets and references where they define this session's scope. Record the agreed version-control arrangement, including work locations, commit and integration timing, and APM file tracking.
+Write `.apm/spec.md` per §5.1, following the review cycle in §1:
+
+- **Opening:** the session’s goal, scope and success criteria, directly below the title.
+- **Notes:** unresolved questions and assumptions. If later sessions were discussed, briefly record the work left for them and why.
+- **Design sections:** session requirements, policies, design decisions and constraints, with their reasons and authoritative source paths and sections, organized so the Manager can find them and copy them into Task Prompts. Name working targets and references where they define this session's scope. Record the agreed version-control arrangement, including work locations, commit and integration timing, and APM file tracking.
 
 System behavior, output formats, schemas and interface contracts belong in the Spec. Implementation approach that leaves a design decision unchanged goes in a Task's Guidance, operations go in steps, and durable workspace conventions go in `AGENTS.md`.
 
-Keep requirements in the Spec, planned work in the Plan, live coordination in the Tracker, and work history in Memory. Add supporting documents only for retained material outside those responsibilities. Propose their purpose, paths under `.apm/`, structure, maintenance responsibility and intended readers to the User. Choose a structure readers can navigate as the session grows, reusing existing documents and conventions where suitable. Refine the proposal with their feedback and record the agreed arrangement in the Spec for this session only. Put any implementation work to create, use or maintain them in the relevant Plan Tasks.
+Keep requirements in the Spec, work in the Plan, live coordination in the Tracker and history in Memory. Supporting documents hold only retained material outside these responsibilities. Agree their purpose, paths under `.apm/`, structure, maintainer and readers with the User, reusing existing documents and conventions and keeping them navigable as the session grows. Record the arrangement in this session’s Spec and any implementation work in Plan Tasks.
 
 ## 3. Plan
 
@@ -36,7 +36,7 @@ The Plan divides the work into ordered Stages and Tasks for the Manager or Worke
 
 1. Refine the breakdown developed during Context Gathering: Worker areas, Stage deliverables and Tasks. Explain consequential boundaries, order and dependencies.
 2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.
-3. Check the breakdown against the approved Spec: every agreed outcome is covered by Tasks whose assigned agents can undertake and validate the work. Check assignments, dependencies, Task sizes and review points against the principles below and agreed User involvement. Keep workspace preparation, integration and pushing with the Manager; Worker steps use the prepared workspace and agreed commit instructions. Same-Worker means both Tasks are assigned to the same agent; Cross-Worker means they are assigned to different agents, including the Manager. Fix what you find.
+3. Check that Tasks cover every Spec outcome and that their assigned agents can execute and validate them. Check assignments, dependencies, sizes and review points against the principles below and agreed involvement. Keep workspace preparation, integration and pushing with the Manager; Workers use prepared workspaces and agreed commit instructions. Same-Worker dependencies have the same assigned agent; Cross-Worker dependencies have different agents, including the Manager. Correct any mismatch.
 4. Write `.apm/plan.md` per §5.2. Keep Notes to necessary coordination across Tasks: shared constraints, participation or review arrangements, dispatch opportunities and Stage verification. Name affected work and checks. Keep Task-specific dependencies and validation in their fields, and refer to Spec questions. If later sessions were discussed, briefly record relevant sequencing or prerequisites, referring to the Spec for scope.
 5. When you ask for review, give a short overview of the Workers, Stages, Task counts and what can run in parallel.
 
@@ -44,7 +44,7 @@ Break the work down by these principles:
 
 - **Assignments** group Tasks between Manager and Worker conversations by the expertise, shared context and User involvement the planned work is likely to need. Keep related work together where familiarity should help, weighing the expected context and coordination demands.
 - **Stages** are ordered milestones: Stage N+1 starts after Stage N is complete. Choose boundaries around coherent outcomes or meaningful review. Keep independent Tasks together when no useful milestone requires a barrier.
-- **Tasks** define work the Manager or one Worker is responsible for completing, with a clear output and validation. Choose boundaries according to size, complexity, uncertainty, dependencies and expertise. Research, implementation and validation may share a Task or need separate Tasks. Explain the boundaries that affect how the work proceeds. Investigate consequential uncertainty before work that depends on it. For research Tasks, state specific questions, required evidence and completion criteria, and identify dependent decisions or work. Define dependent Tasks to the extent the answers allow; the assigned agent organizes execution according to its role.
+- **Tasks** give one responsible agent a clear output and validation. Boundaries reflect size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share or span Tasks. Explain consequential boundaries. Investigate consequential uncertainty before dependent work; research Tasks need questions, evidence, completion criteria and dependent decisions identified. Define dependent Tasks as far as answers allow; assigned agents organize execution within their roles.
 - **User actions.** Agents work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
 - **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the assigned agent can run alone from those that need the User, and tell that agent to pause affected work for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
 
@@ -52,7 +52,7 @@ Identify what can run independently and what depends on earlier results or exter
 
 ## 4. AGENTS.md
 
-Keep `AGENTS.md` useful across sessions, with brief project orientation, repository paths, working and read-only reference boundaries, and applicable workspace conventions. Every Worker reads the whole file; its instructions must stand alone without requiring the Spec or Plan. The Manager and Workers maintain it under User authorization as the project develops.
+Keep `AGENTS.md` useful across sessions: brief orientation, repository paths, working and read-only boundaries and workspace conventions. Workers read it in full, so it must stand alone without access to the Spec or Plan. The Manager and Workers maintain it under User authorization.
 
 1. Review existing `AGENTS.md` and any applicable guidance. Propose concise additions or corrections that help future work, extending or replacing existing guidance where possible. Explain the evidence for changes, or why existing guidance is sufficient. If the file is missing, propose one with the project context and workspace instructions established during discovery.
 2. Resolve decisions needing User agreement. Create or update `AGENTS.md` where needed, then check it. Use clear sections, respecting existing organization and unrelated content where present. State orientation as facts and rules as direct instructions, with conditions where needed.{CLAUDE_ONLY: Add an import to an existing workspace `CLAUDE.md` unless it already has one: `@AGENTS.md` at the workspace root, or `@../AGENTS.md` in `.claude/CLAUDE.md`. Keep it outside code blocks and preserve preexisting content. If references would form a cycle, include its correction in the proposal.}

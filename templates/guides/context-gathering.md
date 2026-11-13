@@ -1,6 +1,6 @@
 # APM {VERSION} - Context Gathering Guide
 
-This guide covers the Planner’s Context Gathering: exploring the workspace, questioning the User in three rounds, settling how much of the User's goal this APM session covers, and getting the User's approval of your understanding. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
+The Planner uses this guide to explore, hold three question rounds, agree session scope and obtain understanding approval. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
 
 Establish the session's intended outcomes, requirements, design choices, constraints and concrete success criteria. Develop the breakdown alongside them. Your findings feed the Spec, Plan and any needed `AGENTS.md` updates. Agree coordination and version control preferences with the User.
 
@@ -21,15 +21,15 @@ Ask questions that resolve gaps in the intended work. Recommend an approach when
 In each round:
 
 1. Briefly introduce the round’s purpose and what you know from the request and exploration, then ask about missing requirements, decisions or constraints it needs to establish.
-2. Apply each answer and do the preparation it calls for per §3 before asking dependent questions. Bring back findings, resolve consequential choices with the User and resume the rounds with updated questions. Distinguish the User's statements from assumptions and confirm consequential inferences. Clarify vague or incomplete answers, point out contradictions neutrally and establish concrete success measures.
-3. Follow up until the round's relevant requirements and choices are clear through answers or verified findings. Ask when a topic’s relevance is unclear. Resolve gaps needed to define the work before moving on; handle remaining research per §3.
+2. Apply answers and complete needed preparation per §3 before dependent questions. Bring back findings, resolve consequential choices with the User and resume with updated questions. Distinguish statements from assumptions, confirm consequential inferences, clarify incomplete answers and contradictions neutrally, and establish concrete success measures.
+3. Resolve the round’s requirements and choices through answers or verified findings before advancing. Clarify uncertain topic relevance and handle remaining research per §3.
 4. End the round with a short summary of what it established and what remains open, and an open question about anything the focused questions missed. The User may answer that question together with the next round's questions.
 
 Initial context and intermediate work do not skip the remaining rounds. Carry established answers forward; silence is not approval.
 
 ### 2.1 Round 1: Existing Materials and Vision
 
-Establish what the User wants this session to deliver, the problem it addresses, essential features, existing materials, skills needed and prior work. Identify what you need to investigate or develop during planning to define the implementation work. For a larger goal, propose a session boundary per §4. Move on when the intended outcome, initial scope and necessary preparation are clear.
+Establish what the User wants this session to deliver, the problem it addresses, essential features, existing materials, skills needed and prior work. Identify what you need to investigate or develop during planning to define the implementation work. If the goal is too large for one session, propose a session boundary per §4. Move on when the intended outcome, initial scope and necessary preparation are clear.
 
 ### 2.2 Round 2: Technical Requirements
 
@@ -60,7 +60,7 @@ Recommend assignments between the Manager and separate Workers using the gathere
 
 Propose involvement suited to risk, uncertainty, User experience, preferences, availability and deadlines. Options include Worker collaboration, reviews, manual tests, demonstrations, explanations and progress reports. Explain which work and decisions they help the User understand or guide. Agree participation and review points and any requested update frequency; shape boundaries, Task sizes, batches and parallel work accordingly. Record agreements in the Plan; execution agents choose routine update timing and grouping under the shared communication guidance. Ask whether the User wants to perform work with the responsible agent’s context, assistance and validation.
 
-Check repository history and existing workspace instructions, including `AGENTS.md`, for version-control conventions. Propose an arrangement suited to the work and the User’s preferences, explaining any changes to those conventions. Cover where work happens, when changes are committed and integrated, and whether APM files are tracked. Explain that parallel Tasks in the same repository need separate worktrees, and ask whether the proposal meets the User’s needs. Without version control, parallel Worker dispatch is unavailable.
+Check repository history and workspace instructions for version-control conventions. Propose Git use, work locations, commit and integration timing and APM file tracking suited to the work and User preferences, explaining changes to conventions. Explain separate worktrees for parallel Tasks in one repository and agree the arrangement. Without version control, parallel Worker dispatch is unavailable.
 
 Move on when the proposed Stages, Tasks, assignments, participation, quality standards and approvals describe how the agreed work will proceed.
 
@@ -70,13 +70,13 @@ When answers or materials raise a question needed for planning, investigate it b
 
 Research specific questions against relevant files, history, branches or other sources. Match inspection depth to the claim: check relevant implementation, changes or behavior before asserting completeness or compatibility. Investigate contradictions, cite supporting files or commands, and show the User consequential findings and limits, distinguishing verification from inference.
 
-Complete the preparation needed to define the agreed work before writing the Spec and Plan. Investigation within defined work may be a Task: identify its questions, required evidence, completion criteria and dependent decisions or work. Define dependent work to the extent those answers allow, and make the remaining planning limits clear to the User. If findings show the agreed work is too large for one session, revisit its scope per §4.
+Complete preparation needed to define work before writing the Spec and Plan. Investigation within defined work may be a Task with questions, evidence, completion criteria and dependent decisions identified. Define dependent work as far as answers allow and explain remaining planning limits. Revisit scope per §4 if the work is too large.
 
 Present consequential design choices with evidence and trade-offs for the User to decide, recommending an approach where useful. Continue independently on details within agreed decisions.
 
 ## 4. Session Scope
 
-Refine the initial session boundary as you learn. If the goal is too large for one session, propose a coherent outcome for this session and a tentative division of the remaining work into later sessions. Explain the boundaries, dependencies and decisions affecting the sequence. Agree the intended outcomes and approach with the User before the Understanding Summary. Develop this session’s requirements and breakdown; keep later sessions tentative and at the level current understanding supports. Record the scope and work left for later sessions in the Spec, and relevant sequencing or prerequisites in the Plan.
+Refine scope as you learn. If the goal is too large for one session, propose a coherent session outcome and tentative later sessions, explaining boundaries, dependencies and consequential sequencing choices. Agree scope and approach before the Understanding Summary. Detail this session’s work; keep later sessions at the level current evidence supports. Put scope and later-session work in the Spec, sequencing and prerequisites in the Plan.
 
 Account for timing constraints and dependencies outside the agents’ control when agreeing scope and sequencing. Establish what can proceed independently and what allows affected work to start or resume. Agree what to do if prerequisites remain unmet when available work ends: pause, defer affected work or revise scope. Keep unresolved prerequisites explicit; waiting alone does not satisfy them.
 

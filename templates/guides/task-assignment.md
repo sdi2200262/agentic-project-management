@@ -6,7 +6,7 @@ A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each
 
 ## 1. Dispatch
 
-Select Ready Tasks using their dependencies, available agents, the Plan’s coordination preferences and current User instructions. Follow the agreed forms and frequency of involvement, including review points. When findings or changes make an adjustment useful, explain why and recommend how and when to involve the User.
+Select Ready Tasks from dependencies, available agents, Plan preferences and current User instructions. Follow agreed involvement and review points; explain and recommend adjustments when findings warrant them.
 
 Before starting either Manager or Worker work, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependency context and prepare the workspace per §3. For Tasks marked `manager`, mark the selected Ready Tasks Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. You may coordinate your Tasks sequentially or concurrently as dependencies, workspace isolation and agreed User involvement allow.
 
@@ -69,7 +69,7 @@ You prepare workspaces and handle integration and cleanup; Workers use the assig
 
 A follow-up Task sends a Task back to the same Worker after review, with a revised Task Prompt. It keeps its Task ID and stays Active.
 
-1. Write the revised prompt per §7.3. Describe what remains, what review established and how completion will be checked. Use the Worker's established context and include the detail it still needs, restoring context lost through Handoff or recovery.
+1. Write the revised prompt per §7.3: review findings, remaining work and completion checks. Use retained Worker context and restore missing detail after Handoff or recovery.
 2. Choose the next unused follow-up number for this Task, starting at 01, and set its new `log_path` per `{GUIDE_PATH:task-logging}` §5.1. This applies per Task even after a batch. In Follow-Up Context, link the original log and previous follow-up, if any. Earlier logs stay unchanged.
 3. Deliver it per §4.
 
@@ -79,7 +79,7 @@ When a planning change affects an active Task whose attempt has not been reporte
 
 1. Coordinate the correction through the User, checking progress and arranging a pause if needed. Align the planning documents per `{GUIDE_PATH:task-review}` §4.
 2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and worktree. In Instructions, explain what changed, what completed work remains valid and what to do next. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
-3. Record the correction and next action in the Tracker, then deliver the revised prompt per §4. Tell the User to ask the Worker to check its tasks in its conversation. This updates the current dispatch; do not create a new branch or worktree.
+3. Record the correction and next action in the Tracker and deliver per §4. This revises the current dispatch, preserving its branch and worktree.
 
 After a reported attempt, review it and use a follow-up Task per §5 instead.
 

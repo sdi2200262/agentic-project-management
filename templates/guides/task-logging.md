@@ -1,8 +1,8 @@
 # APM {VERSION} - Task Logging Guide
 
-This guide covers recording Task outcomes in a Task Log and delivering its outcome through a Task Report when required by your role. Later conversations, including your own after a Handoff, continue from these records.
+Use this guide to record outcomes and evidence in Task Logs for later conversations. Workers log each attempt and send a Task Report for Manager review.
 
-Workers write a Task Log for each attempt and report the outcome for Manager review. The Manager writes one concluding log for each Task it carries out, after reviewing the work, resolving outstanding decisions and validating the result. It keeps the Task Active while work or a decision remains pending, and marks it Done when requirements are met or the User agrees to accept remaining limitations. It records that agreement and the limits in the concluding log and links it from the Tracker. Later fixes to Done work need a new Task.
+The Manager writes one concluding log for each of its Tasks after review, validation and resolution of outstanding decisions. It keeps the Task Active until requirements are met or the User accepts remaining limits, then marks it Done and links the log from the Tracker. Its log preserves any agreement and the limits it covers. Later fixes to Done work need a new Task.
 
 ## 1. Outcome
 
@@ -14,9 +14,9 @@ Choose the Task's status from the validation results per `{GUIDE_PATH:task-execu
 
 The outcome assesses the whole Task, including earlier evidence and any unresolved criteria.
 
-A Partial outcome can mean a check was unclear or unavailable, a failure keeps recurring, or the remaining problem is outside the Task.
+Partial covers unclear or unavailable checks, recurring failures or remaining problems outside the Task.
 
-When you are unsure which status applies, choose Partial and state what remains. A deliverable can exist while a required check is unmet or unverified; a deliberate deviation does not make that check pass. Keep Success when all its criteria passed, and record any findings per §2.
+When unsure, choose Partial and state what remains. An existing deliverable or deliberate deviation does not satisfy an unmet check. Keep Success when all criteria pass, recording findings per §2.
 
 ## 2. Important Findings
 

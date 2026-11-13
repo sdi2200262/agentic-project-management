@@ -13,7 +13,7 @@ A Task Prompt has these sections:
 - **Output:** the deliverables.
 - **Validation:** the checks the work must pass.
 
-The Objective and Output define the required result; Validation defines the checks it must pass. Check questionable instructions, prerequisites or assumptions against the codebase or other relevant sources, then use the findings and clarification guidance below to proceed.
+Objective and Output define the result; Validation defines its checks. Verify questionable instructions, prerequisites or assumptions against relevant sources and use the clarification guidance below.
 
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
@@ -21,7 +21,7 @@ The Objective and Output define the required result; Validation defines the chec
 4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the workspace root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
-If the User delivers corrected instructions for your current Task, keep the same Task identity, branch and worktree. Check what changed and what the prompt says to do next. Preserve valid completed work and batch progress; do not restart logged Tasks. If the stated progress conflicts with your checked workspace, ask the User to resolve it before proceeding with affected work.
+For corrected instructions, keep Task identity, branch, worktree and valid progress, including batch progress; do not restart logged Tasks. Check what changed and what comes next. Ask the User to resolve conflicts with your checked workspace before affected work proceeds.
 
 Report relevant findings and possible wider effects, separating evidence from uncertainty. When the Task Prompt and available context leave an issue unclear, ask the User how to proceed and recommend a local resolution or Manager involvement if broader context or coordination is likely needed. Pause only affected work, and record the decision and result for Manager review.
 
@@ -45,9 +45,9 @@ Use the work's own vocabulary in commits, code and comments. Keep APM coordinati
 
 When a check fails or the work does not behave as expected, investigate before fixing: read the error, trace where it comes from and identify the cause. Make one targeted fix, then validate again.
 
-If the fix fails, causes new problems or leaves the cause unclear, investigate further. Use the error output, what you tried, relevant paths and expected and actual behavior to test a specific hypothesis before applying another targeted fix.
+If a fix fails, causes problems or leaves the cause unclear, use errors, prior attempts, relevant paths and expected and actual behavior to test a specific hypothesis before another fix.
 
-Continue while attempts produce new evidence or close a validation gap within the Task. Ask the User when attempts repeat without progress, the remaining work substantially exceeds the assignment, or the Task's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, what remains and the options. Pause only affected work while awaiting the User’s reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
+Continue while attempts produce new evidence or close validation gaps within the Task. Ask the User when attempts repeat without progress, work substantially exceeds scope or instructions conflict with Objective, Output or Validation. Explain the likely cause or uncertainty, attempts, remaining work and options. Pause only affected work while awaiting the User’s reply. Then follow their guidance or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 
 ### 3.2 Batch Execution
 

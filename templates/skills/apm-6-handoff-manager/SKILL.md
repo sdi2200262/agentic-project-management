@@ -10,13 +10,13 @@ Follow these instructions only when the User requests a Manager Handoff or an AP
 
 A Manager Handoff continues coordination in a new Manager conversation within the same session. As the outgoing Manager, write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in `.apm/bus/manager/handoff.md`, tells the next conversation what to read and where to resume. The next conversation also reads the planning documents, the Tracker and the Index at initiation, per `{SKILL_PATH:apm-2-initiate-manager}`.
 
-Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
+Your conversation number starts at 1 and advances only at Handoff. Use the number from your incoming Handoff Prompt if present; the next conversation is one higher.
 
 ## 1. Current State
 
 If subagents are running when a Handoff is requested, tell the User, pause them and collect their progress, outputs and pending checks before preparing the Handoff.
 
-Your memory of earlier turns may be out of date, so check the current state before writing either file:
+Check current state before writing either file:
 
 - Read the Tracker and each Worker’s bus files. Check progress, outputs and pending validation for your active Tasks, including subagent contributions.
 - With version control, use git to check branches, worktrees and merges.
@@ -29,7 +29,7 @@ Write the Handoff Log per §5.1. Record in past tense what this conversation did
 
 ## 3. Handoff Prompt
 
-Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the latest relevant attempt logs for Tasks in the current Stage and earlier Tasks that pending reviews or upcoming dependencies rely on. Earlier attempts can be followed through links where needed. In Current State, list your active Tasks and where to resume, reports awaiting review, Workers with dispatched Tasks, and branches, worktrees and pending integration or cleanup. Include pending alignment decisions and verification gaps with source paths.
+Write `.apm/bus/manager/handoff.md` per §5.2. Name the latest relevant attempt logs for current Tasks and earlier work needed by pending reviews or dependencies; earlier attempts remain accessible through links. Include resume points and sources for pending alignment or verification gaps.
 
 Record what work the User holds, any assistance needed, where to resume and what allows work to resume. Carry forward agreed review points, pending decisions and accepted limits with evidence links.
 

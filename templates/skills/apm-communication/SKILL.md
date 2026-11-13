@@ -41,7 +41,7 @@ Write APM files for the readers and purpose named in their guides. They can cons
 
 - **Content.** Be concise, direct and to the point. Use plain English; remove fluff, unnecessary detail, repetition and routine execution narration. Keep what the reader needs to understand the work, decide, act or resume.
 - **Structure.** Follow prescribed headings, fields, labels and formats so agents and the CLI can parse the record reliably. Keep each section on one subject; use compact lists or tables where they make information easier to find.
-- **Sources.** Give each fact one authoritative home. State essential requirements, decisions, results and limits directly; summarize supporting detail and link its source instead of copying it. Preserve required contracts, validation counts and unrun checks. Exceed suggested lengths only when required information needs the space.
+- **Sources.** Keep the authoritative account in its owning file. State essential requirements, decisions, results and limits directly. Include essential context in self-contained prompts and consequential findings in reports and summaries; summarize supporting detail and link its source instead of copying it. Preserve required contracts, validation counts and unrun checks. Exceed suggested lengths only when required information needs the space.
 - **Accuracy.** Distinguish proposals from User decisions, recording what was agreed, its scope and why. Check claims against sources and separate verified facts from assumptions.
 - **Updates.** Keep records current at consequential decisions and pauses, independently of User reports. Combine related updates where practical; follow required logging and message steps.
 
@@ -49,7 +49,7 @@ Before saving, remove redundant text and check that required information, source
 
 ## 3. Message Bus
 
-The Message Bus is a set of files in `.apm/bus/`, one folder per agent. The Planner creates it at the end of planning. Each folder is named by the agent's slug, lowercase and hyphenated, such as `frontend-agent`; the Plan names every Worker by its slug, and a Worker's folder is its identity. A Worker's folder holds `task.md` for Task Prompts, `report.md` for Task Reports and `handoff.md` for a Handoff Prompt; the Manager's folder, `manager/`, holds only `handoff.md`.
+The Message Bus uses `.apm/bus/`, created by the Planner at planning completion. Each Worker has a folder named by its lowercase, hyphenated slug (such as `frontend-agent`), also used in the Plan. This folder identifies the Worker. It holds `task.md`, `report.md` and `handoff.md` for Task Prompts, Task Reports and Handoff Prompts, respectively. The Manager’s folder, `manager/`, holds only `handoff.md`.
 
 A bus file is either empty or holds one temporary message. After you process an incoming message, clear its file before you write your outgoing one. Keep a Task Prompt throughout execution and clear it when reporting. A Worker may record User participation and the resume point in its current prompt’s Instructions, preserving the assignment; this updates the current prompt without a new delivery. Read a bus file before writing it, compose the new message from the current assignment and findings, and verify the written content before announcing it. The previous message may already have been cleared.
 
