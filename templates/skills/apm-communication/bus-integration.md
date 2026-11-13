@@ -1,6 +1,6 @@
 # APM {VERSION} - Bus Integration
 
-This guide is for an agent outside APM that contributes work through the Message Bus without becoming a Worker. You receive assignments and report results. You do not write Task Logs, perform Handoffs or appear in the Tracker's Workers table; your reports carry your contribution to the Manager.
+This guide is for an agent outside APM that contributes work through the Message Bus without becoming a Worker. You receive assignments and report results. You do not write Task Logs, perform Handoffs or appear in the Tracker's Agents table; your reports carry your contribution to the Manager.
 
 ## 1. Setup
 

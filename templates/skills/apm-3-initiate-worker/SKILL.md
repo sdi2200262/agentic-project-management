@@ -76,4 +76,4 @@ When the User asks you to check for a Task Prompt, keep your registered identity
 
 ## 3. Subagents
 
-Carry out assigned Tasks directly. Delegate selected parts to native subagents when that improves efficiency or quality, using only Task context and sources within your scope. For native assignments, read and follow only `{GUIDE_PATH:task-assignment}` §1.1. Consider focused research, debugging, bounded implementation or independent checks where useful.
+Carry out assigned Tasks directly. Delegate selected parts to native subagents when that improves efficiency or quality, using only Task context and sources within your scope. For native assignments, read and follow only `{GUIDE_PATH:task-assignment}` §1.1, including grouping, isolation and verification. Group related contributions and reuse context where useful; do not create subagents merely to mirror Task boundaries.

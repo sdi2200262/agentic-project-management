@@ -8,14 +8,18 @@ Open each file with its purpose, intended reader and result. Distinguish role in
 
 | File | Content |
 |---|---|
-| Initiation skill | Role description and place in the session, directions to take on or continue it, inputs, outputs, scope, file loading, identity, first start, continuation, recovery, message receipt and duties. The Planner has no Handoff. |
+| Initiation skill | Role, place in APM, scope, required reading and responsibilities for first start, continuation, recovery, receipt and ongoing work. Frame role-specific actions as responsibilities; reference shared procedures instead of repeating them. The Planner has no Handoff. |
 | Utility or recovery skill | Purpose, applicability, arguments, procedure or route to the owning role procedure, and completion. |
 | Handoff skill | Role, transfer procedure, Handoff Log and Prompt formats. |
 | Guide | Procedure context, ordered steps and branches, then Formats for its artifacts. End where the next guide begins and point to it. |
-| Shared skill | Reading roles, purpose and shared protocol. Role-specific behavior belongs in the role's files. |
+| Shared skill or guide | Named readers, purpose and genuinely shared instructions. Communication serves all roles; execution and logging serve Manager and Workers. |
 | Single-skill entry | Briefly explains APM so an agent can assess its suitability, then directs requested actions to the owning role or procedure. Keep workflow procedures in the shared sources. |
 
 Keep artifact contracts in a final Formats section of their owning file, one subsection per artifact.
+
+Give each instruction and kind of information one authoritative home. Repeat essential context only where the reader cannot access its owner. References and summaries do not create another source of requirements. Use `WORKFLOW.md` for the document admission rules and `WRITING.md` for how to express them.
+
+Keep a procedure shared when its actions and meaning match. A short reading note may explain different inputs or applicability. If authority, actions or sequence differ substantially, state the role's responsibilities in its initiation file instead of scattering exceptions through shared text. Keep the six guides mapped to the defined procedures. Use role files for contextual responsibilities and their guide references for shared procedures.
 
 ## 2. Sources and Frontmatter
 
@@ -36,7 +40,7 @@ Use kebab-case names; each skill's `name` matches its directory. Descriptions id
 Build targets select an assistant family (`agents` or `claude`) and format (`multi-skill` or `single-skill`). The family determines assistant-specific text; configured directories determine installation paths.
 
 - Multi-skill targets install numbered and shared skills under `skills/`, with guides under `apm-guides/`, rooted at `.claude/` or `.agents/`.
-- Single-skill targets are a research preview. They install one `skills/apm/SKILL.md` entry. Shared initiation sources become `roles/{planner,manager,worker}.md`. The six guides and Handoff, recovery and summary instructions go under `guides/`; communication and bus support go under `communication/`. Reference documents have no skill frontmatter. Check Tasks/Reports wrappers are omitted; the entry routes to role-owned receipt instructions.
+- Single-skill targets are a research preview. They install one `skills/apm/SKILL.md` entry. Initiation sources become `roles/{planner,manager,worker}.md`. The six guides and Handoff, recovery and summary instructions go under `guides/`; communication and bus support go under `communication/`. Reference documents have no skill frontmatter. Check Tasks/Reports wrappers are omitted; the entry routes to the owning receipt procedure.
 
 All targets use the same workflow sources, workspace-root `AGENTS.md` and initial `.apm/` artifacts. The build maps paths and strips reference frontmatter without rewriting workflow prose.
 

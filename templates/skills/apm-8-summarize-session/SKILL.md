@@ -16,19 +16,17 @@ Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md`.
 2. Check the recorded state of active Tasks, including subagent and User-performed work. Use the Manager’s or User’s confirmation that active work has stopped when it is still current. Otherwise ask the User to pause affected work and collect its current state before continuing.
-3. Check planning documents, Tracker and Stage summaries against latest relevant Task Logs and Handoff Logs, deliverables and Git, including unfinished worktrees. Follow earlier-attempt links as needed. Record material differences and validation gaps with sources. Count Task IDs, not attempts, and ignore copied APM records in worktrees.
+3. Check planning documents, Tracker and Stage summaries against latest relevant Task Logs and Handoff Logs, deliverables and Git, including unfinished worktrees. Follow earlier-attempt links as needed. Record material differences and validation gaps with sources, preserving uncertainty from any reconstructed context. Count Task IDs, not attempts, and ignore copied APM records in worktrees. Use each section for its stated purpose; summarize conclusions and link evidence rather than copying logs or repeating the same account across sections.
 4. Write `.apm/session.summary.md` per §2.1. Say which work you remember from this chat and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
 5. Present the summary and apply the User's corrections.
-6. Ask whether to archive. This preserves `.apm/` in `.apm/archives/` for later sessions and clears active files and installed APM instructions; `apm init` reinstalls them. If the User declines, stop.
-7. Ask for an archive name, or use the default dated name. Explain that remaining APM-managed worktrees move with their uncommitted contents and stay attached to their source repositories; ordinary project-directory changes remain in place. Tasks and branches keep their current state. Run `apm archive --force`, or `apm archive --force --name <name>`. Continue only after the CLI confirms preservation and archival succeeded. If it reports a failure, show the obstacle and current paths, and follow its recovery guidance.
+6. Propose archival: it preserves `.apm/` in `.apm/archives/` for later sessions and clears active files and installed instructions; `apm init` reinstalls them. Remaining APM-managed worktrees move with uncommitted contents and remain attached to their source repositories. Ordinary project-directory changes stay in place; Task and branch states remain unchanged. Ask explicitly whether to proceed. If the User declines, stop.
+7. Ask for an archive name, or use the default dated name. Run `apm archive --force`, or `apm archive --force --name <name>`. Continue only after the CLI confirms preservation and archival succeeded. If it reports a failure, show the obstacle and current paths, and follow its recovery guidance.
 8. Read `.apm/archives/index.md`, creating it per §2.2 if it is missing or malformed, and add the new archive at the top of its table.
 9. Tell the User the archive's path and any relocated worktrees the CLI reported. To start a new session, the User runs `apm init` (or `apm custom`) and then starts a new Planner conversation; the next Planner can use the archives.
 
 ### 1.1 Subagents
 
-Use native subagents when focused delegation would improve the work. Give them the question, relevant paths, permitted changes and expected evidence. Keep them within your role's scope and verify their findings before using them. Native subagents are separate from APM Workers; bus messages still go through the User.
-
-Consider delegation for broad source review or an independent check of deliverables and Git state. You verify the evidence and write the summary, preserving consequential findings and limits.
+You may delegate useful source review or independent checks of deliverables and workspace state. Read only `{GUIDE_PATH:task-assignment}` §1.1 for shared native assignment guidance. Stay within the permitted summary sources, verify findings and write the final account yourself.
 
 ## 2. Formats
 
@@ -57,7 +55,7 @@ outcome: <complete | partial | incomplete>
 <Which planned deliverables exist, which are partial or missing, where the code differs from the Spec and Plan, and unfinished outputs, branches, worktrees and uncommitted changes>
 
 ## Notable Findings
-<Findings and decisions affecting acceptance, future work, compatibility, reproduction or unresolved risk, with reasons and source links>
+<Consequential findings and decisions, their implications and reasons, with sources; put remaining problems in Known Issues rather than repeating them>
 
 ## Known Issues
 <Unresolved problems, accepted limitations and required checks not run, with source links; None only when supported by the sources>

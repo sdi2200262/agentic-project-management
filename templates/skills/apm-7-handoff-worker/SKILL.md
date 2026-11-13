@@ -25,7 +25,7 @@ Use the checked state in both files, including unresolved contract questions and
 
 ## 2. Handoff Log
 
-Write the Handoff Log per §5.1. Record in past tense what this conversation did: completed Tasks, completed steps in unfinished Tasks, and patterns, conventions, decisions with reasons and environment notes absent from Task Logs. If context was compacted or recovered, identify the parts rebuilt from summaries or files and their sources.
+Write the Handoff Log per §5.1. Record in past tense what this conversation did: completed Tasks, completed steps in unfinished Tasks, and patterns, conventions, decisions with reasons and environment notes absent from Task Logs. If context was compacted or recovered, identify the parts rebuilt from summaries or files, their sources and any resulting uncertainty or unverified claims.
 
 ## 3. Handoff Prompt
 
@@ -37,9 +37,11 @@ Write the Handoff Prompt per §5.2 to `.apm/bus/<agent-slug>/handoff.md`. Its Ne
 
 Record what work the User holds, any assistance needed, where to resume and what allows work to resume. Carry forward agreed review points, pending decisions and accepted limits with evidence links.
 
-## 4. User Review
+## 4. Continuation Instructions
 
-Give the User both file paths and ask them to review the two files. Apply their corrections and ask again. After they approve, tell them to start a new Worker conversation with your agent ID; it finds the Handoff Prompt on its own. Your work in this conversation then ends.
+Give a small chat recap of the work and context being passed on, pending decisions or checks, and the next action. Explain how the User starts a new Worker conversation with your agent ID; it finds the Handoff Prompt. You may link the files for optional review, but do not require inspection or approval.
+
+By default your preparation ends here: wait while the User completes delivery to the new conversation. Do not claim to transfer yourself. Follow a different coordination mechanism only when explicitly agreed with the User.
 
 ## 5. Formats
 

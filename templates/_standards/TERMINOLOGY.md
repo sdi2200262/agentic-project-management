@@ -32,13 +32,13 @@ Each procedure is a part of the workflow. The first six each have their own guid
 
 | Term | Performed by | Definition |
 |---|---|---|
-| **Context Gathering** | Planner | Defining the session's work through three question rounds with exploration, research, analysis and design as needed throughout, settling scope and a proposed breakdown, and ending with a summary that the User approves. |
+| **Context Gathering** | Planner | Defining the session's work through User exchanges on three discovery topics, with research, analysis, design and preparation as needed, ending with approval of the complete understanding. |
 | **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec and Plan, each approved separately, and proposing needed updates to `AGENTS.md`. |
 | **Task Assignment** | Manager | Choosing which work to start next, assigning it to a Worker or undertaking it itself, and preparing its context. |
 | **Task Execution** | Manager, Worker | Carrying out assigned work, validating it and fixing what fails. |
 | **Task Logging** | Manager, Worker | Recording a Task's outcome; Workers also report each attempt to the Manager. |
 | **Task Review** | Manager | Reviewing reported work, deciding the next action and updating the APM files. |
-| **Handoff** | Manager, Worker | Moving a role from its current conversation to a new one when context runs low or the User asks. The outgoing agent records what the incoming agent needs to continue. Each role's conversations are numbered, so a Handoff goes from Manager conversation 1 to Manager conversation 2. |
+| **Handoff** | Manager, Worker | Preparing continuation in a new conversation when context runs low or the User asks. The outgoing agent records the context and explains how to continue; by default the User starts the incoming conversation. Each role's conversations are numbered. |
 
 ---
 
@@ -58,7 +58,7 @@ The Planner writes these during Work Breakdown, in this order.
 | Term | Definition |
 |---|---|
 | **Task** | A bounded unit of work in the Plan, assigned to the Manager or one Worker, with an objective, deliverables, validation criteria and dependencies. Its ordered steps share the Task's validation. |
-| **Stage** | A group of related Tasks that delivers a coherent part of the work. Stages run in order. |
+| **Stage** | A group of related Tasks that delivers a coherent part of the work. Stages run in order, with a User pause before advancing unless explicitly agreed otherwise. |
 
 ### Task dependencies
 
@@ -108,7 +108,7 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 | **Handoff Log** | The record a Manager or Worker conversation writes at its Handoff: what it did and the working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md` |
 | **Index** | The overview of the APM session's history: lasting findings with sources and a table of Stage outcomes linking to their summaries. | `.apm/memory/index.md` |
 | **Memory** | The APM session's work history and continuation context: Task outcomes, lasting findings, Stage summaries and Handoff Logs. | `.apm/memory/` |
-| **Tracker** | The Manager's live record: coordination context and decisions awaiting durable recording, Task states and next actions with branches and worktrees, and each Worker's conversation and context. | `.apm/tracker.md` |
+| **Tracker** | The Manager's current coordination: Task states, next actions and work locations; pending decisions and blockers; Manager and Worker conversation numbers and context gaps. Resolved history belongs in Memory. | `.apm/tracker.md` |
 
 ---
 
@@ -116,7 +116,7 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 
 | Term | Definition | Location |
 |---|---|---|
-| **Message Bus** | The file-based system through which agents exchange messages. Each agent has its own folder, each file holds at most one message, and the User delivers every message. | `.apm/bus/` |
+| **Message Bus** | The file-based system through which agents exchange messages. Each agent has its own folder, each file holds at most one message, and the User delivers messages by default unless another coordination arrangement is explicitly agreed. | `.apm/bus/` |
 | **Task Prompt** | The Manager's message giving a Worker everything needed to execute and validate a Task or batch. | |
 | **Task Report** | The Worker's short message to the Manager with a Task's outcome and the path to its Task Log, or with the outcomes of a batch. | |
 | **Handoff Prompt** | The outgoing agent's message telling the incoming agent the current state, what to read and what to do next. | |

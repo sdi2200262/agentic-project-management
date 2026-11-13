@@ -1,68 +1,57 @@
 # APM {VERSION} - Context Gathering Guide
 
-The Planner uses this guide to explore, hold three question rounds, agree session scope and obtain understanding approval. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
+The Planner uses this guide to explore three discovery topics with the User, agree session scope and obtain understanding approval. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
 
 Establish the session's intended outcomes, requirements, design choices, constraints and concrete success criteria. Develop the breakdown alongside them. Your findings feed the Spec, Plan and any needed `AGENTS.md` updates. Agree coordination and version control preferences with the User.
 
 ## 1. Preparation
 
+Continue from the startup survey in Planner Initiation §2.
+
 1. Use earlier results and findings to inform this session’s intended outcomes. Read relevant archives’ session summaries when present, then `spec.md` and `plan.md` for decisions and work structure, `memory/index.md` for outcomes and patterns, `tracker.md` when states matter, and `metadata.json` for dates. Follow Stage-summary and log links as needed. Identify relevant scope, decisions, completed work, known issues and what may have changed. Verify findings you will use against current sources and workspace state, retaining source paths or verification commands.
 2. Explore every codebase relevant to the work, per §3.
 3. Read preexisting `AGENTS.md` content, applicable scoped instructions and referenced guidance.{CLAUDE_ONLY: Read preexisting workspace `CLAUDE.md` content too.} Summarize what affects planning and check it against the workspace. Note gaps and inconsistencies to inform proposed additions or corrections during §4 of Work Breakdown. If `AGENTS.md` is missing, ask whether instructions exist elsewhere.
 
-Present what you found with the first round's questions, keeping to what the User needs to answer them.
+Present relevant findings with the first discovery exchange, keeping to what the User needs to answer.
 
-## 2. Question Rounds
+## 2. Discovery Topics
 
-Hold the three rounds in order, each with at least one exchange with the User. The rounds organize discussion; exploration, research, analysis and design continue throughout planning. Scale their depth to the agreed scope, complexity and uncertainty. Use the User's and the domain's own language. Develop proposed Stages, Tasks and assignments as you learn, explaining consequential boundaries and trade-offs. Write the Spec and Plan after understanding approval.
+Cover all three topics below. Their order is recommended, not mandatory; revisit earlier topics when findings or answers affect them. Each requires a User exchange. Where context is sufficient, briefly confirm your understanding and ask whether anything should be added or corrected. Do not skip an exchange because materials already contain answers.
 
-Ask questions that resolve gaps in the intended work. Recommend an approach when evidence, trade-offs or the User's uncertainty make it useful; establish unclear intent before proposing a preferred solution.
+Ask substantive questions that resolve missing requirements, choices or constraints. After asking, end the message and wait for the User. Apply answers, verify consequential inferences and resolve contradictions neutrally. Research, analysis, design, processing and preparation may happen between exchanges; complete what is needed before asking dependent questions. Use the User's and domain's language and carry established answers forward without repetition.
 
-In each round:
+Develop tentative Stages, Tasks and assignments as understanding grows. Explain consequential boundaries and trade-offs. Recommend an approach when evidence or uncertainty makes it useful, after establishing unclear intent. Confirm each topic's conclusions and invite additions before requesting complete understanding approval.
 
-1. Briefly introduce the round’s purpose and what you know from the request and exploration, then ask about missing requirements, decisions or constraints it needs to establish.
-2. Apply answers and complete needed preparation per §3 before dependent questions. Bring back findings, resolve consequential choices with the User and resume with updated questions. Distinguish statements from assumptions, confirm consequential inferences, clarify incomplete answers and contradictions neutrally, and establish concrete success measures.
-3. Resolve the round’s requirements and choices through answers or verified findings before advancing. Clarify uncertain topic relevance and handle remaining research per §3.
-4. End the round with a short summary of what it established and what remains open, and an open question about anything the focused questions missed. The User may answer that question together with the next round's questions.
+### 2.1 Vision and Existing Materials
 
-Initial context and intermediate work do not skip the remaining rounds. Carry established answers forward; silence is not approval.
+Establish the intended session outcome, problem, essential features, existing materials, relevant expertise and prior work. Identify preparation needed to define implementation and propose a coherent session boundary when needed (§4).
 
-### 2.1 Round 1: Existing Materials and Vision
+### 2.2 Requirements and Constraints
 
-Establish what the User wants this session to deliver, the problem it addresses, essential features, existing materials, skills needed and prior work. Identify what you need to investigate or develop during planning to define the implementation work. If the goal is too large for one session, propose a session boundary per §4. Move on when the intended outcome, initial scope and necessary preparation are clear.
-
-### 2.2 Round 2: Technical Requirements
-
-Cover design decisions and constraints, technical and resource needs, dependencies, complexity, risks and validation. Establish:
+Establish required behavior, design choices, dependencies and concrete success measures:
 
 - Existing structure and behavior to keep or change.
-- Environments, delivery targets, external resources and required access.
-- What can be done in the development environment and what needs outside action.
-- Expected effort, uncertainties, hard parts, timing constraints and dependencies, including those outside the agents’ control.
-- Technical direction already chosen, choices still open, and what is in or out of scope.
+- Environments, delivery targets, technical resources and required access.
+- What agents can do in their environment and what needs outside action.
+- Complexity, risks, effort, timing and external prerequisites.
+- Chosen technical direction, unresolved alternatives and scope boundaries.
 
-Move on when required behavior and the design choices needed to define the work are established, core requirements have concrete success measures, and remaining questions have defined consequences for the work.
+### 2.3 Implementation Approach, Quality and Coordination
 
-### 2.3 Round 3: Implementation Approach and Quality
+Establish how the defined work will proceed:
 
-Cover technical preferences, quality standards, workflow preferences, outside approvals, domain characteristics and documentation. Establish:
+- Tools, languages, platforms, security, performance and compatibility needs.
+- Setup, delivery and validation actions requiring accounts or outside access.
+- Required validation, User or outside reviews, acceptance and documentation.
+- Conventions, formats and reference material.
+- Expertise, available agents, Stages, Tasks, assignments and useful parallelism.
+- User involvement, coordination, timing constraints and version control.
 
-- Required or ruled-out tools, languages and platforms; security, performance and compatibility needs.
-- Account or environment actions needed for setup, delivery or validation.
-- Required validation, User or outside reviews, sign-offs and acceptance requirements.
-- Consistency standards, formats, examples and reference material.
-- Areas of expertise, natural boundaries, available agents, parallelism, preferred Task size and review points.
-- Proposed Stages, Tasks and assignments, and coordination preferences that affect the plan.
-- Version control for each working repository, including whether to use Git and how it supports the planned work.
-- Chosen approaches and their reasons, including what ruled alternatives out.
+Use Work Breakdown §3 to recommend assignments based on expertise, shared context and useful User involvement. Manager execution through subagents can support automation; separate Workers support close collaboration. Recommend participation suited to risk, uncertainty, experience, availability and deadlines: collaboration, tests, demonstrations, explanations, reviews or reports. The User chooses its form and frequency. Ask whether they want to perform any portion with the responsible agent's assistance and validation, confirming an existing answer rather than asking again.
 
-Recommend assignments between the Manager and separate Workers using the gathered context and the assignment principles in `{GUIDE_PATH:work-breakdown}` §3. Bounded work with clear goals and checks often suits Manager execution; important or uncertain work may benefit from closer Worker collaboration. Explain consequential choices.
+Tie participation to actual work and decisions. Record agreed involvement, reviews, timing and update frequency in the Plan. Stages remain ordered pause points unless the User explicitly agrees otherwise; routine reporting and grouping can vary within that structure.
 
-Propose involvement suited to risk, uncertainty, User experience, preferences, availability and deadlines. Options include Worker collaboration, reviews, manual tests, demonstrations, explanations and progress reports. Explain which work and decisions they help the User understand or guide. Agree participation and review points and any requested update frequency; shape boundaries, Task sizes, batches and parallel work accordingly. Record agreements in the Plan; execution agents choose routine update timing and grouping under the shared communication guidance. Ask whether the User wants to perform work with the responsible agent’s context, assistance and validation.
-
-Check repository history and workspace instructions for version-control conventions. Propose Git use, work locations, commit and integration timing and APM file tracking suited to the work and User preferences, explaining changes to conventions. Explain separate worktrees for parallel Tasks in one repository and agree the arrangement. Without version control, parallel Worker dispatch is unavailable.
-
-Move on when the proposed Stages, Tasks, assignments, participation, quality standards and approvals describe how the agreed work will proceed.
+Check repository history and instructions before proposing Git use, work locations, commit/integration timing and APM-file tracking. Explain changes to existing conventions. Recommend Git for safer isolation and broader parallel options. With Git, parallel Tasks in one repository use separate worktrees. Without it, agree independent assignments with disjoint writable scopes and isolated shared resources; sequence work that could overlap. Account for these limits in the Plan.
 
 ## 3. Research
 
@@ -70,19 +59,19 @@ When answers or materials raise a question needed for planning, investigate it b
 
 Research specific questions against relevant files, history, branches or other sources. Match inspection depth to the claim: check relevant implementation, changes or behavior before asserting completeness or compatibility. Investigate contradictions, cite supporting files or commands, and show the User consequential findings and limits, distinguishing verification from inference.
 
-Complete preparation needed to define work before writing the Spec and Plan. Investigation within defined work may be a Task with questions, evidence, completion criteria and dependent decisions identified. Define dependent work as far as answers allow and explain remaining planning limits. Revisit scope per §4 if the work is too large.
+Complete preparation needed to define work before writing the Spec and Plan. A bounded technical investigation within defined implementation may be a Task with questions, evidence and completion checks. It must not postpone requirements, design or preparation needed to define the work. If later planning depends on actual implementation results, prefer a later session from that evidence rather than an implementation Task for unfinished planning. Revisit scope per §4 if the work is too large.
 
 Present consequential design choices with evidence and trade-offs for the User to decide, recommending an approach where useful. Continue independently on details within agreed decisions.
 
 ## 4. Session Scope
 
-Refine scope as you learn. If the goal is too large for one session, propose a coherent session outcome and tentative later sessions, explaining boundaries, dependencies and consequential sequencing choices. Agree scope and approach before the Understanding Summary. Detail this session’s work; keep later sessions at the level current evidence supports. Put scope and later-session work in the Spec, sequencing and prerequisites in the Plan.
+Refine scope as you learn. If the goal is too large for one session, propose a coherent session outcome and tentative later sessions, explaining boundaries, dependencies and consequential sequencing choices. Agree scope and approach before understanding approval. Detail this session’s work; keep later sessions at the level current evidence supports. Put scope and later-session work in the Spec, sequencing and prerequisites in the Plan.
 
 Account for timing constraints and dependencies outside the agents’ control when agreeing scope and sequencing. Establish what can proceed independently and what allows affected work to start or resume. Agree what to do if prerequisites remain unmet when available work ends: pause, defer affected work or revise scope. Keep unresolved prerequisites explicit; waiting alone does not satisfy them.
 
 ## 5. Understanding Summary
 
-1. After Round 3, present your understanding per §6.1, including any limits that are still unresolved. Briefly distinguish what will become Spec outcomes, requirements and design from Plan assignments, sequencing and coordination.
+1. After an exchange on every discovery topic and sufficient preparation, present your complete understanding per §6.1, including any limits that are still unresolved. Briefly distinguish what will become Spec outcomes, requirements and design from Plan assignments, sequencing and coordination.
 2. Ask the User to review and approve it. Apply corrections, update the summary and ask again.
 3. Once approved, continue with `{GUIDE_PATH:work-breakdown}`.
 

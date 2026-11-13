@@ -6,7 +6,7 @@ The Manager writes one concluding log for each of its Tasks after review, valida
 
 ## 1. Outcome
 
-Choose the Task's status from the validation results per `{GUIDE_PATH:task-execution}` §4:
+Choose the Task's outcome from the validation results per `{GUIDE_PATH:task-execution}` §4:
 
 - **Success:** the objective is achieved and every validation criterion passed.
 - **Partial:** some work or required validation remains.
@@ -20,7 +20,7 @@ When unsure, choose Partial and state what remains. An existing deliverable or d
 
 ## 2. Important Findings
 
-Set `important_findings: true` when the status is Partial or Failed, or when a finding affects acceptance or may matter to later work beyond the Task’s result:
+Set `important_findings: true` when the outcome is Partial or Failed, or when a finding affects acceptance or may matter to later work beyond the Task’s result:
 
 - remaining work, blockers or unmet criteria
 - a deviation from the Task instructions, or a choice it left open that affects the result, with your reason
@@ -37,7 +37,7 @@ Write Task Logs for current and later Managers, and for Workers continuing or bu
 
 - Describe results, checked evidence and consequential decisions, naming contributions by the User or other agents. Include changes in who performed the work when they explain the result, validation or remaining work; omit routine execution narration.
 - Link deliverables, supporting documents and evidence by stable paths, not temporary Tracker notes. Include code or diagnostic output only when it explains a consequential finding.
-- Record Task-specific checks and results separately from unverified claims. Preserve comparison counts and distinguish checks run live, run in isolation and not run. For example, 45 of 47 matching responses plus 13 matching probes is not full parity.
+- Record Task-specific checks and results separately from unverified claims. Preserve comparison counts and distinguish checks run live, run in isolation and not run. Do not describe partial comparisons or isolated checks as complete validation.
 - For a follow-up, leave earlier logs unchanged. Link the original log and previous follow-up, if any. Record the new work and checks, which earlier findings were resolved and which remain. Refer to earlier evidence that still applies rather than repeating it.
 - If your context was compacted or recovered during the Task, say in the Summary which parts you rebuilt from files.
 

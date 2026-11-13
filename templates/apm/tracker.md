@@ -9,7 +9,7 @@
 | Task | Agent | Status | Branch | Worktree | Next Action |
 |------|-------|--------|--------|----------|-------------|
 
-## Workers
+## Agents
 
-| Agent | Conversation | Not Read Since Handoff | Context |
-|-------|--------------|------------------------|---------|
+| Agent | Conversation | Context |
+|-------|--------------|---------|
