@@ -2,7 +2,7 @@
 
 This guide covers the Planner’s Work Breakdown: developing the work structure during Context Gathering, turning the approved understanding into the Spec and Plan, and reviewing needed additions or changes to `AGENTS.md`. `{SKILL_PATH:apm-1-initiate-planner}` §4 covers what follows.
 
-The Manager prepares self-contained Worker Task Prompts from the Spec and Plan; Workers read those prompts and `AGENTS.md`. Match detail to the work’s complexity: requirements and design belong in the Spec, work structure in the Plan, and lasting workspace guidance in `AGENTS.md`.
+Write the Spec and Plan for the Manager and later Manager conversations, with User review and approval. They can consult `AGENTS.md` and referenced sources; keep agreed requirements and decisions explicit and link supporting detail. The Manager supplies self-contained Worker Task Prompts. Requirements and design belong in the Spec, work structure in the Plan, and lasting guidance in `AGENTS.md`.
 
 The Manager keeps the Spec and Plan current during implementation.
 

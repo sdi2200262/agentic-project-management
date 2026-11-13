@@ -35,7 +35,7 @@ Write the Handoff Prompt per §5.2 to `.apm/bus/<agent-slug>/handoff.md`. Its Ne
 - In the middle of a batch: the batch Task Prompt stays in `task.md`. Say which Tasks are done and logged, how far the current one got and where to resume.
 - Between Tasks: `task.md` is empty. The next conversation waits for the User to deliver the next Task Prompt.
 
-If the User is performing part of the work, record what they are doing, any assistance they may need, and when the agent should resume. Carry forward agreed review points, pending decisions and accepted limitations, with links to their evidence.
+Record what work the User holds, any assistance needed, where to resume and what allows work to resume. Carry forward agreed review points, pending decisions and accepted limits with evidence links.
 
 ## 4. User Review
 

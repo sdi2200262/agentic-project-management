@@ -31,10 +31,10 @@ Keep ordinary transitions in sequence; use section references for other branches
 | Reader | Output needs |
 |---|---|
 | User | Work reports begin with brief APM position, purpose and state from the role’s context, then results, evidence, limits and next action. Other replies lead with the answer, finding, proposal or question. Shared reply lengths apply unless the User asks otherwise. |
-| Other agents | Self-contained outcomes, decisions with reasons, evidence, open issues and source paths. The reader has the workspace, not the writer's conversation. |
+| Other agents | Concise, structured requirements, outcomes, decisions with reasons, evidence, open issues and source paths. Named readers can consult permitted sources, but do not share the writer’s conversation. |
 | System | Exact schemas, field names, values, paths and bus separators. |
 
-Give each fact one authoritative home. Reports and summaries preserve consequential findings with source paths. Keep validation counts, accepted deviations and unrun checks visible; acceptance does not make an unmet check pass.
+Name each document’s readers and the sources they can consult. Require plain, direct records without fluff, unnecessary detail or repeated explanations, using prescribed structure for reliable parsing. Give concise section defaults rather than whole-file limits, allowing the detail required for decisions and validation. Give each fact one authoritative home. Reports and summaries preserve consequential findings with source paths. Keep validation counts, accepted deviations and unrun checks visible; acceptance does not make an unmet check pass.
 
 Shared writing rules belong in `apm-communication`; procedures add only what their own outputs need.
 

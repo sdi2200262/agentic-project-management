@@ -27,7 +27,7 @@ Report relevant findings and possible wider effects, separating evidence from un
 
 ## 2. Dependency Context
 
-Read the named dependency outputs and complete any supplied integration steps before work that relies on them. Investigate integration questions against the named files.
+Read the dependency Task Logs and outputs named in the prompt, following earlier-attempt links where needed. Complete supplied integration steps before work that relies on them. Investigate integration questions against the named files.
 
 Pause dependent work when an output is missing or fails its integration check. Continue unaffected work within the Active Task, preserving required sequencing. Ask the User for guidance when another agent's output does not integrate as the Task instructions describe, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
 

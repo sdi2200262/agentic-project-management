@@ -31,7 +31,7 @@ Write the Handoff Log per §5.1. Record in past tense what this conversation did
 
 Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the latest relevant attempt logs for Tasks in the current Stage and earlier Tasks that pending reviews or upcoming dependencies rely on. Earlier attempts can be followed through links where needed. In Current State, list your active Tasks and where to resume, reports awaiting review, Workers with dispatched Tasks, and branches, worktrees and pending integration or cleanup. Include pending alignment decisions and verification gaps with source paths.
 
-If the User is performing part of the work, record what they are doing, any assistance they may need, and when the agent should resume. Carry forward agreed review points, pending decisions and accepted limitations, with links to their evidence.
+Record what work the User holds, any assistance needed, where to resume and what allows work to resume. Carry forward agreed review points, pending decisions and accepted limits with evidence links.
 
 ## 4. User Review
 

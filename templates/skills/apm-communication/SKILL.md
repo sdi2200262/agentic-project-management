@@ -37,12 +37,15 @@ When waiting, state what is pending, what allows work to resume and who acts nex
 
 ## 2. Writing for Other Agents
 
-Task Prompts, Task Reports, Handoff Prompts, logs and planning documents are read by an agent that has the files and the workspace, but not your conversation. Write them so they make sense on their own:
+Write APM files for the readers and purpose named in their guides. They can consult permitted workspace files and referenced sources, but do not share your conversation:
 
-- Follow their formats exactly. Other agents and the CLI rely on the field names, values, paths and sections.
-- Record what was done, evidence, open issues and the paths the reader needs. Distinguish proposals from User decisions, stating what was agreed, its scope and why.
-- Give each fact one authoritative home; reports and summaries carry its consequential findings with source paths. Check claims against their source. Separate what you verified from what you assume.
-- Keep free text short and use plain words; follow the format where it requires specific labels.
+- **Content.** Be concise, direct and to the point. Use plain English; remove fluff, unnecessary detail, repetition and routine execution narration. Keep what the reader needs to understand the work, decide, act or resume.
+- **Structure.** Follow prescribed headings, fields, labels and formats so agents and the CLI can parse the record reliably. Keep each section on one subject; use compact lists or tables where they make information easier to find.
+- **Sources.** Give each fact one authoritative home. State essential requirements, decisions, results and limits directly; summarize supporting detail and link its source instead of copying it. Preserve required contracts, validation counts and unrun checks. Exceed suggested lengths only when required information needs the space.
+- **Accuracy.** Distinguish proposals from User decisions, recording what was agreed, its scope and why. Check claims against sources and separate verified facts from assumptions.
+- **Updates.** Keep records current at consequential decisions and pauses, independently of User reports. Combine related updates where practical; follow required logging and message steps.
+
+Before saving, remove redundant text and check that required information, source links and the format are intact.
 
 ## 3. Message Bus
 

@@ -52,7 +52,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Worker's work:
 When recovering after compaction or a lost conversation:
 
 1. Reload the files required by §1. Keep your registered identity and conversation number; resume from the checked current state without repeating initiation.
-2. Use your current Task Prompt, bus files, latest relevant own attempt logs and Handoff Log, following earlier-attempt links where needed. Check progress against your deliverables and workspace, including Git state, pending decisions, accepted limitations and verification gaps. Preserve User-held work and record any assistance needed and where to resume. Keep the prompt's `log_path`; ask the User about gaps the records cannot settle.
+2. Use your current Task Prompt, bus files, latest relevant own attempt logs and Handoff Log, following earlier-attempt links where needed. Check progress against your deliverables and workspace, including Git state, pending decisions, accepted limitations and verification gaps. Preserve User-held work and record any assistance needed, where to resume and what allows work to resume. Keep the prompt's `log_path`; ask the User about gaps the records cannot settle.
 3. Mention the recovery in your next Task Report. In any later Handoff Log, identify the files or summary used to rebuild earlier work.
 4. Tell the User what you rebuilt and your next action, then continue per §2.
 

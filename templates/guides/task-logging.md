@@ -33,9 +33,9 @@ Separate evidence from uncertainty about possible wider effects. Record User agr
 
 ## 3. Logging
 
-Write the Task Log per §5.1, using the assigned `log_path` when provided. Write from your role's perspective and the context available to you. The log must make sense to a later reader with access to the workspace and files.
+Write Task Logs for current and later Managers, and for Workers continuing or building on the Task’s work. They can consult permitted records and referenced evidence, but do not share this conversation. Write from your available context, using §5.1 and the assigned `log_path`. Aim for one short Summary paragraph; keep supporting detail in its section or linked source.
 
-- Describe the result and the evidence you checked, identifying contributions made by the User or other agents. Include changes in who performed the work and coordination decisions when they explain the result, validation or remaining work.
+- Describe results, checked evidence and consequential decisions, naming contributions by the User or other agents. Include changes in who performed the work when they explain the result, validation or remaining work; omit routine execution narration.
 - Link deliverables, supporting documents and evidence by stable paths, not temporary Tracker notes. Include code or diagnostic output only when it explains a consequential finding.
 - Record Task-specific checks and results separately from unverified claims. Preserve comparison counts and distinguish checks run live, run in isolation and not run. For example, 45 of 47 matching responses plus 13 matching probes is not full parity.
 - For a follow-up, leave earlier logs unchanged. Link the original log and previous follow-up, if any. Record the new work and checks, which earlier findings were resolved and which remain. Refer to earlier evidence that still applies rather than repeating it.

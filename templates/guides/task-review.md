@@ -30,7 +30,7 @@ In the next useful User update, briefly recall the relevant Stage and Tasks, exp
 ## 3. Review Outcomes
 
 1. Accept a Success supported by the reviewed result and evidence, with no unresolved Important Findings.
-2. Investigate Important Findings and outcomes other than Success. Handle contained corrections per `{SKILL_PATH:apm-2-initiate-manager}` §4. Before editing, ensure no agent is making overlapping changes. Work in the assigned workspace, follow `AGENTS.md` and agreed commit conventions, and validate affected criteria. Record your work and validation with evidence in the Tracker's Notes, preserving the Worker's outcome.
+2. Investigate Important Findings and outcomes other than Success. Handle contained corrections per `{SKILL_PATH:apm-2-initiate-manager}` §4. Before editing, ensure no agent is making overlapping changes. Work in the assigned workspace, follow `AGENTS.md` and agreed commit conventions, and validate affected criteria. Record a brief account of your corrections and validation in Tracker Notes, linking detailed evidence and preserving the Worker’s outcome.
 
    Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:
@@ -76,13 +76,15 @@ When every Task in a Stage is Done and no follow-up Task is pending:
 
 1. Decide whether the Stage needs verification as a whole. Verify when the User asked for it, the Plan's Notes call for it, or any of its Tasks needed a follow-up Task or recorded Important Findings. Otherwise you may skip it and say so in the Stage summary.
 2. To verify, use relevant checks on the Stage's combined result, examine the deliverables and exercise integration and edge cases at the validation level the work already uses. Keep reference inputs separate from generated results and preserve usable evidence paths through cleanup. Resolve contained verification questions yourself. Add a new Task for fixes to Done work, or ask the User when the required scope is unclear.
-3. Account for every consequential Important Finding: its resolution or acceptance, effects on other work, and source. Preserve unresolved or accepted limitations and unrun checks. Sort the Tracker's Notes: move findings with lasting value to the Index's Notes with sources, put Stage-specific findings and decisions into its summary, and keep notes the next Stage still needs, including workspace locations and pending integration or cleanup.
-4. Write the Stage summary per §8.4 and add its row to the Index per §8.3, with any lasting notes in the same edit. Then remove Tracker notes whose context is preserved there and no longer needed for ongoing work, updating references to their lasting location. Use the reviewed logs still in your context, and reread logs that changed or that you no longer have.
+3. Account for consequential Important Findings: resolution or acceptance, wider effects and sources, including limits and unrun checks. Move lasting Tracker findings to Index Notes, Stage-specific findings and decisions to the summary, and retain coordination needed next Stage, including workspaces and pending integration or cleanup.
+4. Write the Stage summary (§8.4) and its Index row (§8.3), adding lasting notes in the same edit. Remove Tracker notes only once preserved and no longer needed; update references to their lasting locations. Reuse reviewed logs in context, rereading any that changed or are no longer in context.
 5. Once all Tasks are Done and required integration and Stage verification are complete, replace the Stage's rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. Completion records accepted work; the summary preserves accepted Partial outcomes and limits.
 
 Then add the next Stage's Tasks to the Tracker per §8.1 and dispatch them per `{GUIDE_PATH:task-assignment}` §1. When every Stage is complete, continue with `{SKILL_PATH:apm-2-initiate-manager}` §3.
 
 ## 8. Formats
+
+Write the Tracker, Index and Stage summaries for current and later Managers. They can consult the Spec, Plan and linked logs; retain the coordination or findings each record needs and link supporting detail.
 
 ### 8.1 Tasks Section Format
 
@@ -115,7 +117,7 @@ Link each Task ID to the latest reported Worker attempt or completed Manager log
 
 Next Action names what happens next and who must act when that is unclear: execute, await a report, review, resolve a decision, follow up, integrate or clean up. Leave it empty when nothing remains. Keep the explanation of a broader blocker or decision in Notes rather than duplicating it here.
 
-Combine state and next-action updates at the end of a review and dispatch cycle. Record consequential decisions, blockers, dispatches and progress needed for recovery before waiting or handing off; omit transient intermediate states. A Task unblocked and dispatched in the same turn goes straight from Waiting to Active. A Task whose responsible agent is still busy, or that waits for a better dispatch, stays Ready.
+Update the Tracker when assignments, responsibilities, outcomes, blockers or decisions change, or progress must be preserved to resume. Combine related state and next-action changes at the end of a coordination cycle, before dependent work, a wait or a Handoff. Omit routine execution detail and transient states. A Task unblocked and dispatched in the same turn goes straight from Waiting to Active. A Task whose responsible agent is still busy, or that waits for a better dispatch, stays Ready.
 
 ### 8.2 Tracker Format
 
@@ -138,7 +140,7 @@ The Tracker is `.apm/tracker.md`:
 | backend-agent | 1 | | Recovered during Task 2.2 |
 ```
 
-Add a Worker's row at its first dispatch. Not Read Since Handoff lists the Worker's Tasks from earlier Stages whose logs its current conversation has not read. Context records recoveries and remaining context gaps that affect later Task Prompts; update it as context is rebuilt. Keep top-level Notes as self-contained bullets for current coordination and pending decisions, including findings awaiting durable recording. Link actions to lasting findings in Memory rather than repeating their account. Link supporting documents used for coordination from the relevant Notes or Next Action. Retain and distill notes at Stage completion per §7.
+Add Workers at first dispatch. Not Read Since Handoff lists each Worker’s earlier-Stage Tasks whose logs its current conversation has not read. Context records recoveries and remaining gaps; update it as context is rebuilt. Keep Notes to current coordination, pending decisions and findings awaiting durable recording, usually one compact bullet of 1–3 sentences per issue. Revise superseded notes in the same update so the current state is clear. Preserve consequential history in Memory before removing its only record. Link lasting findings and supporting documents from Notes or Next Action rather than repeating them. Distill Notes at Stage completion per §7.
 
 ### 8.3 Memory Index Format
 
