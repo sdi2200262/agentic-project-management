@@ -30,7 +30,7 @@ Keep ordinary transitions in sequence; use section references for other branches
 
 | Reader | Output needs |
 |---|---|
-| User | Answer, outcome, finding, proposal or question first; then the evidence, limits and next action needed. Shared reply lengths apply unless the User asks otherwise. |
+| User | Work reports begin with brief APM position, purpose and state from the role’s context, then results, evidence, limits and next action. Other replies lead with the answer, finding, proposal or question. Shared reply lengths apply unless the User asks otherwise. |
 | Other agents | Self-contained outcomes, decisions with reasons, evidence, open issues and source paths. The reader has the workspace, not the writer's conversation. |
 | System | Exact schemas, field names, values, paths and bus separators. |
 

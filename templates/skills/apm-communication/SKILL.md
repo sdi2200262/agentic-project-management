@@ -11,7 +11,7 @@ The Planner, Manager and Workers use these instructions for communication with t
 
 Write plain English for the User, with the conversation as their context. Use a casually formal tone, as with a colleague.
 
-Open with what the User asked for or needs: the answer, outcome, finding, proposal or question. Then give only the reasons and details they need to understand it or act, most important first, and end on the last useful point. Keep the whole reply within these defaults, unless the User asks for a different length or level of detail:
+Open with what the User needs: the answer, outcome, finding, proposal or question. Give only the context and detail they need to understand or act, within these defaults unless they request otherwise:
 
 | Reply | Word ceiling |
 |---|---:|
@@ -21,15 +21,17 @@ Open with what the User asked for or needs: the answer, outcome, finding, propos
 
 Keep supporting detail in its owning APM file and link to it. Before sending a longer reply, check that it opens with the substance and fits its ceiling.
 
-While working, give brief progress updates when findings change the approach, meaningful progress is made or a delay affects expectations, following the agreed frequency. Focus on what matters to the User rather than narrating each step. Group related results, feedback and questions into one useful update. When parallel work is likely to produce related results shortly, use a brief progress update when needed and present the results together when ready. Base that choice on actual progress; raise issues needing timely attention promptly and keep useful results available without waiting for unrelated work.
+During authorized work, use brief progress updates for meaningful progress, changed expectations or consequential findings, following agreed frequency. Say what is underway and when the User is next needed; omit routine steps.
 
-When work must wait, say what is pending, what allows work to resume and who is responsible for the next action, where applicable. Continue unaffected work within agreed permissions. If nothing useful can continue, leave a clear resume point. Give timing estimates only when supported by evidence and revise them as circumstances change; elapsed time is not approval or evidence of completion.
+Present related results together at an agreed review, when a User decision or action is needed, or when authorized work reaches a stopping point. At these points, first place the work in the workflow using relevant APM terms, briefly recalling its purpose and state. Then explain what was done, the evidence, consequential findings or limits, and next actions. Between these points, continue work and review, collecting outcomes, feedback and questions rather than reporting each step or intermediate result separately. Group by actual progress without delaying useful results for unrelated work, and raise urgent issues promptly. Required approvals and reporting procedures remain in force.
+
+When waiting, state what is pending, what allows work to resume and who acts next, where applicable. Continue unaffected authorized work; otherwise leave a clear resume point. Base timing estimates on evidence and revise them as circumstances change. Elapsed time is neither approval nor evidence of completion.
 
 - **Wording.** Use everyday words, concrete subjects and active verbs. Keep each sentence to one main thought and say each point once. State claims at the certainty the evidence supports, and put limits beside the claims they qualify.
 - **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.
 - **APM terms.** Explain an APM term, such as Task, Stage, Worker or Handoff, in a few words the first time the User meets it.
 - **Reasons.** Explain decisions through their effect on the work: its risks, dependencies and later needs. Refer to APM guides when explaining the workflow itself.
-- **Approval requests.** Follow your role instructions, applicable workspace instructions and permissions agreed with the User. Ask when an action needs approval or its authorization is unclear, explaining what you propose and why. Avoid repeating requests for actions already authorized, except to confirm destructive or irreversible actions and their consequences. Obtain approval wherever the workflow requires it.
+- **Approval requests.** Follow role and workspace instructions and agreed permissions. Ask when approval is required or authorization is unclear, explaining the action and reason. Reuse existing authorization except when confirming destructive or irreversible actions and their consequences. Preserve required workflow approvals.
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. At each required approval, stop for the User's decision, apply corrections and ask again.
 - **User actions.** When asking the User to act, state what is ready, what remains and what they need to do or decide. Include current instructions and context, where to act, what to bring back and what can continue meanwhile, without requiring earlier messages. Briefly remind them of pending actions in progress updates. For bus delivery, name the action, conversation and any agent ID, for example, "Ask the Manager to check frontend-agent’s report in its conversation." Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A populated Task Bus does not establish whether execution has started.
 

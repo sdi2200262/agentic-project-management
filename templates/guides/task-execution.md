@@ -81,7 +81,7 @@ Before editing, reread the file. Under User authorization, extend or replace rel
 
 ## 6. Completion
 
-1. Present the outcome, deliverables, validation and important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. When work or required validation remains, explain the limits and available options. Offer an acceptance recommendation when the User asks for guidance or evidence clarifies a consequential trade-off. When proposing acceptance, explain remaining limits and their effects within your available context, and why acceptance is preferable to further work or a planning change. Record any User agreement with the Partial outcome.
+1. Briefly recall the Task or batch and its purpose, then present the outcome, deliverables, validation and important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. When work or required validation remains, explain the limits and available options. Offer an acceptance recommendation when the User asks for guidance or evidence clarifies a consequential trade-off. When proposing acceptance, explain remaining limits and their effects within your available context, and why acceptance is preferable to further work or a planning change. Record any User agreement with the Partial outcome.
 2. Complete agreed User review and resulting changes before writing the Task Log and Task Report. Resolve any workspace-guidance updates per §5.
 3. Follow the agreed commit conventions. Record relevant commits and any uncommitted work in the Task Log.
 

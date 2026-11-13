@@ -25,7 +25,7 @@ Important Findings can affect other work, reveal missing validation, record a Us
 
 Choose independent subagent review during implementation according to the work’s importance, complexity and uncertainty. Scope the review around consequential questions across a Task, related Tasks or an integrated result. Supply requirements, applicable instructions, outputs, validation evidence and accepted exceptions. Ask the reviewer to challenge completeness and validation, reusing valid evidence. Verify findings, resolve confirmed issues and check affected criteria after corrections. Repeat independent review when remaining risk or uncertainty warrants it. Continue the reviewer’s conversation when useful; keep it separate from the implementer.
 
-Include what the evidence supports, consequential findings, corrections and the next action in the next useful User update per `{SKILL_PATH:apm-2-initiate-manager}` §2.
+In the next useful User update, briefly recall the relevant Stage and Tasks, explain what review established and what it means for the next work, with evidence, findings, corrections, remaining decisions and the next action, per `{SKILL_PATH:apm-2-initiate-manager}` §2.
 
 ## 3. Review Outcomes
 
