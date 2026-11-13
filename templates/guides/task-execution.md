@@ -65,9 +65,9 @@ When the User returns work, check their changes and results against the Task req
 
 ## 4. Validation
 
-Establish the result of every check in the Task's Validation section. Reuse evidence that applies to the current deliverable; rerun checks affected by changes, incomplete evidence or uncertainty. Never replace a check you cannot run with a weaker one. Confirm recurring failures match their established causes, and distinguish local, CI and integrated results.
+Validate actual deliverables against the Objective, Output and every Validation criterion, including required documentation and affected behavior. Inspect outputs and use focused checks to resolve gaps in the evidence. Reuse evidence that applies to the current deliverable; rerun checks affected by changes, incomplete evidence or uncertainty. Never replace a check you cannot run with a weaker one. Confirm recurring failures match their established causes, and distinguish local, CI and integrated results.
 
-1. Complete checks you can establish independently first. Send failed or unclear results to §3.1.
+1. Run available checks, resolve failures or unclear results per §3.1, and recheck corrections. Do not finalize a Task Log or Task Report while known issues or validation gaps remain that you can resolve within scope and permission.
 2. When they pass, check any results the User has already supplied against the current deliverable. Ask for remaining checks that need their judgement or an outside action. Verify the User-facing procedure as written, isolating disposable test state from their data. Say what is ready, where to run the checks, the commands or actions, expected results and what to report back. Pause work that depends on those results, continuing unaffected work. Handle any problem the results reveal through §3.1.
 3. Ask for missing resources when you need them. If a required check or resource is unavailable, continue unaffected work and available checks. If it remains unavailable at completion, use Partial and state what remains.
 
@@ -81,8 +81,8 @@ Before editing, reread the file. Under User authorization, extend or replace rel
 
 ## 6. Completion
 
-1. Briefly recall the Task or batch and its purpose, then present the outcome, deliverables, validation and important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. When work or required validation remains, explain the limits and available options. Offer an acceptance recommendation when the User asks for guidance or evidence clarifies a consequential trade-off. When proposing acceptance, explain remaining limits and their effects within your available context, and why acceptance is preferable to further work or a planning change. Record any User agreement with the Partial outcome.
-2. Complete agreed User review and resulting changes before writing the Task Log and Task Report. Resolve any workspace-guidance updates per §5.
-3. Follow the agreed commit conventions. Record relevant commits and any uncommitted work in the Task Log.
+1. Briefly recall the Task or batch and its purpose, then present the outcome, deliverables, validation and important findings or limits per `{GUIDE_PATH:task-logging}` §1. Explain remaining limits and options. Recommend acceptance when requested or when evidence clarifies a consequential trade-off. When proposing acceptance of remaining limits, explain their effects within your context and why accepting them is preferable to further work or a planning change. Record any User agreement and the limits it covers.
+2. Complete agreed User review and resulting changes before writing the Task Log and Task Report. Resolve workspace-guidance updates per §5.
+3. Follow agreed commit conventions. Record relevant commits and uncommitted work in the Task Log.
 
 Then record the result per `{GUIDE_PATH:task-logging}`.

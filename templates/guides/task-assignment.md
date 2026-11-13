@@ -10,6 +10,8 @@ Select Ready Tasks using their dependencies, available agents, the Plan’s coor
 
 Before starting either Manager or Worker work, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependency context and prepare the workspace per §3. For a Task marked `manager`, mark it Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. You may coordinate your Tasks sequentially or concurrently as dependencies, workspace isolation and agreed User involvement allow.
 
+Give implementing subagents the validation requirements in `{GUIDE_PATH:task-execution}` §4 and conditions for seeking guidance in its §3.1, scoped to their contribution.
+
 For Worker assignments:
 
 1. Check the Tracker and the Plan’s Dependencies fields for the selected Tasks.

@@ -32,7 +32,7 @@ Keep requirements in the Spec, planned work in the Plan, live coordination in th
 
 ## 3. Plan
 
-The Plan divides the work into ordered Stages and Tasks for the Manager or Workers, using the fields in §5.2. A Task’s assignment identifies its responsible agent and APM conversation. Workers execute their Tasks and may use native subagents; the Manager uses subagent workers for substantial implementation and may handle small corrections and final checks directly.
+The Plan divides the work into ordered Stages and Tasks for the Manager or Workers, using the fields in §5.2. A Task’s assignment identifies its responsible agent and APM conversation. Workers carry out their Tasks directly, delegating selected parts where useful; the Manager uses subagent workers for substantial implementation and may handle small corrections and final checks directly.
 
 1. Refine the breakdown developed during Context Gathering: Worker areas, Stage deliverables and Tasks. Explain consequential boundaries, order and dependencies.
 2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.

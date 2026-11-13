@@ -6,7 +6,7 @@ Workers write a Task Log for each attempt and report the outcome for Manager rev
 
 ## 1. Outcome
 
-Choose the Task's status:
+Choose the Task's status from the validation results per `{GUIDE_PATH:task-execution}` §4:
 
 - **Success:** the objective is achieved and every validation criterion passed.
 - **Partial:** some work or required validation remains.
@@ -46,9 +46,9 @@ Write Task Logs for current and later Managers, and for Workers continuing or bu
 When your role requires a Task Report, send it after the Task or whole batch has ended:
 
 1. Clear `.apm/bus/<agent-slug>/task.md`.
-2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Include deviations, unmet checks, any User agreement about their limits and decisions still needed; keep the detail in the Task Logs.
+2. Write the Task Report to `.apm/bus/<agent-slug>/report.md` per §5.2, or one batch Task Report per §5.3. Include deviations, unmet checks, any User agreement about their limits and decisions still needed. When work remains, explain what prevents completion and what is needed next; keep detail in the Task Logs.
 3. Tell the User the report is ready. In the Manager's conversation, they can ask it to check your report, giving your agent ID, or to check all pending reports.
-4. Tell the User you are ready for the next Task; they can ask you to check your tasks in this conversation. Wait for their next delivery or a Handoff.
+4. Wait for the next Task Prompt or User instructions. They can ask you to check tasks in this conversation or prepare a Handoff.
 
 ## 5. Formats
 
