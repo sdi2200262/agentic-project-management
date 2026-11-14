@@ -29,7 +29,7 @@ Keep reviewers separate from implementers. Give them requirements, instructions,
 
 For a Worker follow-up or corrections, choose direct verification or subagent review according to size, complexity and remaining uncertainty. A contained fix usually suits direct checks; broader changes may benefit from the previous reviewer or different expertise.
 
-In the next useful User update, briefly recall the relevant Stage and Tasks, explain what review established and what it means for the next work, with evidence, findings, corrections, remaining decisions and the next action, using the shared communication guidance.
+At an agreed review or the next useful chat reporting point, briefly recall the relevant Stage and Tasks, explain what review established and what it means for the next work, with evidence, findings, corrections, remaining decisions and the next action, using the shared communication guidance.
 
 ## 3. Review Outcomes
 
