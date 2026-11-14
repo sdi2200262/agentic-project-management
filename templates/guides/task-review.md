@@ -29,7 +29,7 @@ Keep reviewers separate from implementers. Give them requirements, instructions,
 
 For a Worker follow-up or corrections, choose direct verification or subagent review according to size, complexity and remaining uncertainty. A contained fix usually suits direct checks; broader changes may benefit from the previous reviewer or different expertise.
 
-At an agreed review or the next useful chat reporting point, briefly recall the relevant Stage and Tasks, explain what review established and what it means for the next work, with evidence, findings, corrections, remaining decisions and the next action, using the shared communication guidance.
+At an agreed review or the next useful chat reporting point, briefly identify the relevant Stage and Tasks. Explain what review established and what it means for the next work, including evidence, findings, corrections, remaining decisions and the next action. Follow the shared communication guidance.
 
 ## 3. Review Outcomes
 
@@ -80,8 +80,10 @@ When every Task in a Stage is Done and no follow-up Task is pending:
 
 1. Perform required User and Plan checks and identify combined behavior, integration or uncertainty not already established by Task validation and reviews. Verify those gaps; a follow-up or Important Finding alone does not require another full review. Record what was checked or skipped and why.
 2. For those checks and gaps, verify combined deliverables at the work's validation level. Keep reference inputs separate from generated results and preserve usable evidence through cleanup. Resolve questions within scope; add Tasks for fixes to Done work or ask where scope is unclear.
-3. Use Task Logs and current coordination to account for consequential findings, decisions, accepted limits and unrun checks with their sources. Preserve Stage-specific decisions and evidence in the summary and brief implications for later work in Index Notes. Retain only coordination still needed in the Tracker.
-4. Write the Stage summary (§8.4), retaining decisions already recorded there, and Index row (§8.3). Link lasting findings to their sources rather than copying Tracker prose. Remove obsolete notes after preserving their consequential history and update references. Reuse reviewed logs still in context; reread those changed or no longer available.
+3. Use Task Logs and current coordination to account for consequential findings, decisions, accepted limits and unrun checks, with their sources.
+4. Write the Stage summary (§8.4), retaining decisions already recorded there, and Index row (§8.3). Preserve Stage-specific decisions and evidence in the summary and brief lasting implications for later work with source links in Index Notes.
+
+   Retain only coordination still needed in the Tracker; remove obsolete notes after preserving their consequential history, and update references. Link findings to their sources rather than copying Tracker prose. Reuse reviewed logs still in context; reread those changed or no longer available.
 5. Once all Tasks are Done and required integration and verification are complete, replace their rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. The summary retains accepted Partial outcomes and limits.
 6. Briefly report the Stage and actual result, verification, remaining limits and consequential carryover. Explain the next Stage's work and ask explicitly before starting it, unless a different arrangement was explicitly agreed. Do not infer permission from approval of the overall Plan. Resolve acceptance of remaining limits separately where needed.
 

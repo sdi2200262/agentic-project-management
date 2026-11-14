@@ -27,9 +27,17 @@ For Worker assignments:
 
 Follow your role's delegation policy. Delegate where focused work, expertise or useful parallelism justifies the context and coordination. Group related questions or contributions; split for a concrete benefit, not merely a Task boundary. Reuse agents where retained context helps.
 
-Give each subagent an objective, necessary requirements and sources, workspace instructions, dependencies, accepted exceptions, permitted changes, commit timing and approvals, and expected outputs and evidence. For implementation, carry applicable validation and conditions for seeking guidance from Task Execution §§3.1 and 4 into the brief. Other roles specify the evidence and escalation conditions their contribution needs. Keep Task outputs and checks traceable when grouping implementation work; other roles scope the brief to their research or preparation.
+Give each subagent an objective, necessary requirements and sources, workspace instructions, dependencies, accepted exceptions, permitted changes, commit timing and approvals, and expected outputs and evidence.
 
-Stay within your permitted scope. Recommend Git when arranging parallel work for safer isolation and broader parallel options. With Git, parallel Tasks in one repository use separate worktrees; these do not isolate shared external resources. Without Git, assignments must be independent, with disjoint writable files, directories and resources and no changes to inputs another assignment needs. Sequence overlapping changes, broad formatting, generation and shared test/service operations unless isolated. Each no-Git parallel assignment must state that Git isolation is unavailable and identify writable boundaries, shared resources and when to coordinate or pause.
+- For implementation, carry applicable validation and conditions for seeking guidance from Task Execution §§3.1 and 4 into the brief. Keep Task outputs and checks traceable when grouping implementation work.
+- Other roles scope the brief to their research or preparation and specify the evidence and escalation conditions their contribution needs.
+
+Stay within your permitted scope. Recommend Git when arranging parallel work for safer isolation and broader parallel options.
+
+- With Git, parallel Tasks in one repository use separate worktrees. Worktrees do not isolate shared external resources.
+- Without Git, assignments must be independent, with disjoint writable files, directories and resources. They must not change inputs another assignment needs. Each no-Git parallel assignment must state that Git isolation is unavailable and identify writable boundaries, shared resources and when to coordinate or pause.
+
+Sequence overlapping changes, broad formatting, generation and shared test/service operations unless isolated.
 
 Verify findings and actual outputs before relying on them, checking combined behavior where contributions interact. Collect useful results without waiting for unrelated work; preserve valid progress when updating briefs. Native subagents are not APM Workers and do not use Worker bus, attempt or Handoff procedures.
 
@@ -39,7 +47,9 @@ Include prerequisite versions, configuration constraints and accepted exceptions
 
 Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's Task entry:
 
-1. Turn the Task’s steps and Guidance into Instructions the Worker can act on, preserving agreed User participation and review points. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker or Index. Supply dependency logs per step 4. Workers read `AGENTS.md` directly.
+1. Turn the Task’s steps and Guidance into actionable Instructions, preserving agreed User participation and review points. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks.
+
+   Never refer the Worker to the Spec, Plan, Tracker or Index. Supply dependency logs per step 4. Workers read `AGENTS.md` directly.
 2. For code and supporting documents, name relevant paths or sections and how to use them. For supporting documents, include the relevant agreed structure and permitted updates directly in the prompt.
 3. Keep the instructions on the Task. Supply enough purpose and participation context for the Worker to explain its Task, without copying the wider Stage structure or unrelated coordination. Include other Task IDs only where they identify dependencies.
 4. If the Plan lists dependencies, write Context from Dependencies. Same-Worker means both Tasks are assigned to the same agent; Cross-Worker means different agents, including you:

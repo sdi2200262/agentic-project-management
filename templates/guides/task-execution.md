@@ -81,7 +81,9 @@ Before editing, reread the file. Under User authorization, extend or replace rel
 
 ## 6. Completion
 
-1. At an agreed review or the next useful chat reporting point, briefly identify the Task or batch and its actual result, with evidence and consequential limits. Do not require a separate chat report for every intermediate Task completion. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. Explain remaining limits and options. Recommend acceptance when requested or when evidence clarifies a consequential trade-off. When proposing acceptance of remaining limits, explain their effects within your context and why accepting them is preferable to further work or a planning change. Record any User agreement and the limits it covers.
+1. At an agreed review or the next useful chat reporting point, briefly identify the Task or batch and its actual result, with evidence and consequential limits. Do not require a separate chat report for every intermediate Task completion. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. Explain remaining limits and options.
+
+   Recommend acceptance when requested or when evidence clarifies a consequential trade-off. When proposing acceptance of remaining limits, explain their effects within your context and why accepting them is preferable to further work or a planning change. Record any User agreement and the limits it covers.
 2. Complete agreed User review and resulting changes before recording or reporting the result. Resolve workspace-guidance updates per §5.
 3. Follow agreed commit conventions. Record relevant commits and uncommitted work in the Task Log.
 
