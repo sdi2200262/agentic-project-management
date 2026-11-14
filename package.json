@@ -23,6 +23,7 @@
   "files": [
     "src/",
     "CHANGELOG.md",
+    "CONTRIBUTING.md",
     "SECURITY.md"
   ],
   "bin": {
