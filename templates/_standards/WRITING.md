@@ -10,7 +10,9 @@ Write for the sources, authority and responsibilities each reader actually has. 
 
 ## 2. Keep Instructions Aligned
 
-Use parallel wording for equivalent triggers, actions, waits, approvals and completion conditions, varying only actual role, input or action differences. Keep the shared APM explanation aligned and add each role's place and responsibilities. Do not make one role translate another's instructions. When changing a rule or contract, check its counterparts and update affected standards, runtime files, formats and examples together.
+Use parallel wording for equivalent triggers, actions, waits, approvals and completion conditions, varying only actual role, input or action differences. Keep the shared APM explanation aligned and add each role's place and responsibilities. When changing a rule or contract, check its counterparts and update affected standards, runtime files, formats and examples together.
+
+Shared instructions must be directly usable by every intended reader, without assuming another role's knowledge, authority or place in the workflow. Put brief application notes beside role-specific references when only context differs; keep different responsibilities in their role-specific instructions.
 
 ## 3. Use Plain Language
 
@@ -30,7 +32,7 @@ Keep ordinary transitions in sequence; use section references for other branches
 
 | Reader | Output needs |
 |---|---|
-| User | Chat work reports and useful progress updates briefly name the relevant APM position and connect it to actual work. Progress updates state a meaningful change and when the User is next needed; reports give results, evidence, consequential limits and next action. Other replies lead with the answer, finding, proposal or question. Role explanations are plain and relevant to the current action. |
+| User | Work reports, recaps and useful progress updates connect the agent's current APM activity to the actual work and its progress. They name the work alongside any APM labels, within the agent's role and known context. Progress updates state a meaningful change and when the User is next needed; reports give results, evidence, consequential limits and next action. Other replies lead with the answer, finding, proposal or question. Role explanations are plain and relevant to the current action. |
 | Other agents | Concise, structured requirements, outcomes, decisions with reasons, evidence, open issues and source paths. Named readers can consult permitted sources, but do not share the writer’s conversation. |
 | System | Exact schemas, field names, values, paths and bus separators. |
 

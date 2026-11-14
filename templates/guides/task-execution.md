@@ -13,7 +13,7 @@ For a Worker, the Task Prompt has these sections:
 - **Output:** the deliverables.
 - **Validation:** the checks the work must pass.
 
-Objective and Output define the result; Validation defines its checks. Verify questionable instructions, prerequisites or assumptions against relevant sources and use the clarification guidance below.
+Objective and Output define the result; Validation defines its checks. Verify questionable instructions, prerequisites or assumptions against relevant sources and clarify unresolved questions per §3.
 
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
@@ -23,17 +23,17 @@ Objective and Output define the result; Validation defines its checks. Verify qu
 
 For corrected instructions, keep Task identity, branch, worktree and valid progress, including batch progress; do not restart logged Tasks. Check what changed and what comes next. Ask the User to resolve conflicts with your checked workspace before affected work proceeds.
 
-Report consequential findings and possible wider effects, distinguishing evidence from uncertainty. Ask the User when your available context or authority cannot settle a decision. Workers should recommend local resolution or Manager involvement where broader context is needed. Pause only affected work and retain the decision and result for review.
-
 ## 2. Dependency Context
 
 Use your dependency context: a Worker reads the logs and outputs named in its prompt; the Manager uses the Plan, Spec and accepted dependency evidence. Follow earlier-attempt links as needed and complete required integration before dependent work. Investigate questions against the actual outputs.
 
-Pause dependent work when an output is missing or fails its integration check. Continue unaffected work within the Active Task, preserving required sequencing. Ask the User for guidance when another agent's output does not integrate as the Task instructions describe, or when expected earlier outputs are missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
+Pause dependent work when an output is missing or fails its integration check. Continue unaffected work within the Active Task, preserving required sequencing. Handle unresolved questions per §3. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
 
 ## 3. Execution
 
 Follow the Task's defined steps and guidance in order, applying `AGENTS.md` toward its objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
+
+Report consequential findings and possible wider effects, distinguishing evidence from uncertainty. Ask the User when your available context or authority cannot settle a decision. Pause only affected work and retain the decision and result for review.
 
 When work is delegated, review the actual outputs against the Task requirements, resolve remaining issues and validate the combined result.
 
@@ -82,7 +82,7 @@ Before editing, reread the file. Under User authorization, extend or replace rel
 ## 6. Completion
 
 1. At an agreed review or the next useful chat reporting point, briefly identify the Task or batch and its actual result, with evidence and consequential limits. Do not require a separate chat report for every intermediate Task completion. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. Explain remaining limits and options. Recommend acceptance when requested or when evidence clarifies a consequential trade-off. When proposing acceptance of remaining limits, explain their effects within your context and why accepting them is preferable to further work or a planning change. Record any User agreement and the limits it covers.
-2. Complete agreed User review and resulting changes before writing the Task Log and Task Report. Resolve workspace-guidance updates per §5.
+2. Complete agreed User review and resulting changes before recording or reporting the result. Resolve workspace-guidance updates per §5.
 3. Follow agreed commit conventions. Record relevant commits and uncommitted work in the Task Log.
 
 Then record the result per `{GUIDE_PATH:task-logging}`.

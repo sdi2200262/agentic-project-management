@@ -21,7 +21,7 @@ Open with what the User needs: the answer, outcome, finding, proposal or questio
 
 Keep supporting detail in its owning file and link to it, but include essential decision and action context in chat. Do not require the User to consult files or earlier messages to understand what is ready or act.
 
-In chat work reports and useful progress updates, lead with the relevant Stage, Task or other APM position and connect it to actual work. Use only your known context: the Manager covers session progress; Workers explain their assignment and known effects.
+In work reports, recaps and useful progress updates, connect the APM activity you are handling to the actual work and its progress. Name the work alongside any APM labels, using only context within your role.
 
 During authorized work, give brief progress updates for meaningful progress, changed expectations or consequential findings, following agreed frequency. State the change and when the User is next needed; omit routine steps.
 
@@ -53,7 +53,7 @@ Before saving, remove redundant text and check that required information, source
 
 The Message Bus uses `.apm/bus/`, created by the Planner at planning completion. The User delivers messages by default; change that mechanism only under an explicit coordination agreement. Each Worker has a folder named by its lowercase, hyphenated slug (such as `frontend-agent`), also used in the Plan. This folder identifies the Worker. It holds `task.md`, `report.md` and `handoff.md` for Task Prompts, Task Reports and Handoff Prompts, respectively. The Manager’s folder, `manager/`, holds only `handoff.md`.
 
-A bus file is either empty or holds one temporary message. After you process an incoming message, clear its file before you write your outgoing one. Keep a Task Prompt throughout execution and clear it when reporting. A Worker may record User participation and the resume point in its current prompt’s Instructions, preserving the assignment; this updates the current prompt without a new delivery. Read a bus file before writing it, compose the new message from the current assignment and findings, and verify the written content before announcing it. The previous message may already have been cleared.
+A bus file is either empty or holds one temporary message. After you process an incoming message, clear its file before you write your outgoing one. Workers keep their Task Prompt throughout execution and clear it when reporting. A Worker may record User participation and the resume point in its current prompt’s Instructions, preserving the assignment; this updates the current prompt without a new delivery. Read a bus file before writing it, compose the new message from the current assignment and findings, and verify the written content before announcing it. The previous message may already have been cleared.
 
 An agent outside APM can join the Message Bus without joining the workflow; `{SKILL_DIR:apm-communication}/bus-integration.md` describes how.
 

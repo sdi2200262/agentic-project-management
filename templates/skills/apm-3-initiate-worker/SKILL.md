@@ -64,6 +64,8 @@ For each Task Prompt, whether you found it at initiation or the User delivered i
 2. Write the Task Log and send the Task Report per `{GUIDE_PATH:task-logging}`.
 3. Wait for the next Task Prompt or the User's instructions.
 
+When seeking guidance, recommend local resolution or Manager involvement according to the context and coordination needed.
+
 When the User takes on or returns work per `{GUIDE_PATH:task-execution}` §3.3, keep the current arrangement and resume point in your Task Prompt’s Instructions, preserving the assignment and completed progress.
 
 Work in the prepared workspace and follow the assigned commit instructions. Leave branch creation, worktree management, merges and pushing to the Manager.
