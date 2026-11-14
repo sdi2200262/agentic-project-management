@@ -10,7 +10,7 @@ Follow these instructions only when the User requests Manager initiation or an A
 
 An Agentic Project Management (APM) session takes agreed work through planning and implementation. The **Manager** takes over after planning to coordinate implementation, review results and keep the session documents current. The Spec defines intended outcomes, requirements and design; the Plan organizes their delivery into Stages and Tasks.
 
-Your responsibilities are to carry out Manager Tasks, send self-contained Task Prompts to separate Workers, review their results and maintain the Tracker and Memory. Workers do not read the Spec or Plan. Prompts and reports use `.apm/bus/`; the User delivers them by default. The assigned agent retains assistance, validation and recording responsibility when the User performs work.
+Your responsibilities are to carry out Manager Tasks, send self-contained Task Prompts to separate Workers, review their results and maintain the Tracker and Memory. Workers do not read the Spec or Plan. Prompts and reports use the Message Bus in `.apm/bus/`; the User delivers them by default. The assigned agent retains assistance, validation and recording responsibility when the User performs work.
 
 Coordinate execution, grouping and reporting within agreed involvement while preserving the work structure and required Stage pauses. Recommend adjustments when evidence or feedback warrants them, explaining effects on progress and understanding. Carry agreed changes into the Plan and assignments per `{GUIDE_PATH:task-review}` §4.
 
@@ -28,7 +28,7 @@ Read these files in full:
 - `{GUIDE_PATH:task-execution}`: how to execute, troubleshoot and validate work.
 - `{GUIDE_PATH:task-logging}`: how to record outcomes and evidence.
 - `{GUIDE_PATH:task-review}`: how to review Worker results, align planning, integrate work and complete Stages.
-- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
+- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus.
 
 Also read any User documents the Spec names as authoritative. Read other APM files only when these files point you to them.
 
@@ -47,7 +47,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 
 1. Use the Handoff Prompt's conversation number and its paths to the Handoff Log and Task Logs.
 2. Read the Handoff Log and those Task Logs.
-3. Verify recorded progress, branches, integration, Worker buses and pending reviews against the Tracker, bus files and Git where used. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
+3. Verify recorded progress, branches, integration, Worker messages and pending reviews against the Tracker, Message Bus files and Git where used. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
 4. Update your Agents row with the conversation number and remaining context gaps, then clear `handoff.md`.
 5. Tell the User your conversation number, the current Stage, open issues, accepted limitations, pending alignment and verification gaps, and your next action, then continue per §2.
 
@@ -101,7 +101,7 @@ Offer a session summary and an archive. Both are optional. A summary records the
 - Here, with your current context: read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
 - In a new chat with more room: the User asks for an APM session summary there.
 
-The User may also archive directly with `apm archive`, or keep the paused session in place. Archiving preserves session records and APM-managed worktrees with their uncommitted contents at new paths, which the CLI reports. Branches stay intact and ordinary project-directory changes remain in place. Explain that the worktrees stay attached to their source repositories; the archive is local session context, not a standalone Git backup.
+The User may also archive directly with `apm archive`, or keep the paused session in place. Archiving preserves session records and worktrees under `.apm/worktrees/` with their uncommitted contents at new paths, which the CLI reports. Branches stay intact and ordinary project-directory changes remain in place. Explain that the worktrees stay attached to their source repositories; the archive is local session context, not a standalone Git backup.
 
 ## 4. Subagents
 

@@ -37,7 +37,7 @@ When waiting, state what is pending, what allows work to resume and who acts nex
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. Separate distinct decisions, including acceptance of a limit and permission to advance. At a required approval, pause affected work, apply corrections and obtain an explicit decision.
 - **User actions.** When asking the User to act, say what is ready, what remains, where to act, what to do or decide, what to bring back and what can continue meanwhile. Supply current instructions and context so the User need not consult earlier messages. Remind them of pending actions when it helps them act, without repeating routine delivery instructions.
 
-  For bus delivery, name the action, conversation and any agent ID, for example, "Ask the Manager to check frontend-agent’s report in its conversation." Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A populated Task Bus does not establish whether execution has started.
+  For Message Bus delivery, name the action, conversation and any agent ID, for example, "Ask the Manager to check frontend-agent’s report in its conversation." Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A Task Prompt still present in `task.md` does not establish whether execution has started.
 
 ## 2. Writing for Other Agents
 

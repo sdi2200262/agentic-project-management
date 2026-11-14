@@ -42,7 +42,7 @@ At an agreed review or the next useful chat reporting point, briefly identify th
    - **Follow-up Task:** concrete work remains for the Worker, with an approach and a clear completion check. Preserve any uncommitted work for that attempt.
    - **Planning change:** a planning document is wrong. Change it per §4.
 4. Investigate broader design or scope questions enough to present viable options. Follow §4 for contained corrections and broader approvals. Options include revising the Plan or pausing to summarize per `{SKILL_PATH:apm-8-summarize-session}`, archive and replan.
-5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. Follow the agreed commit conventions, retaining the location and state of uncommitted work in the records. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
+5. Keep a Task Active while investigation, a follow-up Task or a decision is pending. Follow the agreed commit conventions, retaining the location and state of uncommitted work in the Tracker. Mark it Done once you accept the outcome or restructure the work. Done is final: if Done work later needs a fix, add a new Task through a Plan change that refers to the original.
 6. Record how each consequential finding was resolved, accepted, deferred or left pending, with its source and reason. Keep pending decisions in the Tracker; preserve consequential decisions in the Stage summary.
 7. For Worker results, once the decision is recorded, clear the Report Bus, `.apm/bus/<agent-slug>/report.md`, then send any follow-up per `{GUIDE_PATH:task-assignment}` §5. Update the Tracker per §8.1 and §8.2, in one edit with the integration and dispatch changes that follow.
 
@@ -152,7 +152,7 @@ Register the Manager at startup and Workers at first dispatch. Agents holds conv
 
 Each Notes entry must affect a current coordination action or reliable continuation: a blocker, pending decision, necessary cross-Task arrangement or resume condition. Use a compact statement of its present consequence and source. Do not copy Plan arrangements, historical diagnoses, completed checks, PR histories or entire instructions; link the owning source when needed.
 
-Every Tracker update replaces superseded information and removes resolved notes and gaps. Preserve consequential history in its log or summary before removing its only account. Keep a short link only if a present coordination need remains. Do this during ordinary updates, not only at Stage boundaries. Task and log evidence, rather than accumulated Notes, supports Stage distillation.
+Every Tracker update replaces superseded information and removes resolved notes and gaps. Preserve consequential history in its log or summary before removing its only account. Keep a short link only if a present coordination need remains. Do this during ordinary updates, not only at Stage boundaries. Use Task evidence and logs when writing the Stage summary and updating the Index, rather than copying accumulated Notes.
 
 ### 8.3 Memory Index Format
 

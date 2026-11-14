@@ -31,7 +31,7 @@ Read these files in full:
 
 - `{GUIDE_PATH:context-gathering}`: how to explore, prepare and cover the discovery topics with the User.
 - `{GUIDE_PATH:work-breakdown}`: how to write the Spec and Plan and maintain `AGENTS.md`.
-- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
+- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus.
 
 Read other APM files only when these files point you to them. Use both guides during Context Gathering; write the Spec and Plan after understanding approval.
 

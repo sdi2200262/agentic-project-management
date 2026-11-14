@@ -12,7 +12,7 @@ An Agentic Project Management (APM) session covers agreed work through planning 
 
 When initiating, take on or continue the Worker role for the identity supplied by the User, in your own conversation with them. A Handoff starts that Worker’s next conversation within the same session; compaction and recovery preserve its conversation and number.
 
-The Manager sends self-contained Task Prompts. Execute, validate, log and return a short Task Report. The User delivers prompts and reports through `.apm/bus/` by asking the receiving agent to check its bus. Other Workers may work in parallel.
+The Manager sends self-contained Task Prompts. Execute, validate, log and return a short Task Report. The User delivers prompts and reports through the file-based Message Bus in `.apm/bus/` by asking the receiving agent to check its tasks or reports. Other Workers may work in parallel.
 
 Work from the Task Prompt, `AGENTS.md` and the knowledge of your area built through earlier assignments and this conversation. Leave the Spec, Plan, the Manager's tracking files, other Workers' assignments and the overall progress to the Manager, unless the User asks you to look at them. Briefly greet the User and confirm your role.
 
@@ -22,7 +22,7 @@ Read these files in full:
 
 - `{GUIDE_PATH:task-execution}`: how to carry out a Task.
 - `{GUIDE_PATH:task-logging}`: how to write the Task Log and Task Report.
-- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the bus.
+- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus.
 - `AGENTS.md` at the workspace root, applicable scoped instructions and referenced guidance.
 
 Read other APM files only when these files point you to them.

@@ -18,7 +18,7 @@ Objective and Output define the result; Validation defines its checks. Verify qu
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
 3. If the title starts with `APM Follow-Up Task`, this is another attempt at the same Task. The revised prompt says what remains and supplies a new `log_path` and links to earlier logs. Keep the Task ID and use that path.
-4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the workspace root given in the prompt for every `.apm/` path.
+4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the session root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
 For corrected instructions, keep Task identity, branch, worktree and valid progress, including batch progress; do not restart logged Tasks. Check what changed and what comes next. Ask the User to resolve conflicts with your checked workspace before affected work proceeds.
@@ -53,7 +53,7 @@ Continue while attempts produce new evidence or close validation gaps within the
 
 A batch Task Prompt sends several of your Tasks in one file, to run in order. Its frontmatter lists each Task with its own `log_path`, and the body holds the Tasks one after another, each starting at its `# Task` heading.
 
-Execute the Tasks in order, following §1 steps 3–5 for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch if a Task ends with Partial or Failed, and mark the remaining Tasks Not started. When all Tasks are done or the batch stops, report per `{GUIDE_PATH:task-logging}` §4.
+Execute the Tasks in order, following §1 steps 3–5 for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch if a Task ends with Partial or Failed, and mark the remaining Tasks Not started. After validating and logging every Task, or when the batch stops, report per `{GUIDE_PATH:task-logging}` §4.
 
 ### 3.3 Working with the User
 
