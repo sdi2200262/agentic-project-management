@@ -10,7 +10,7 @@ Follow these instructions only when the User requests Worker initiation or an AP
 
 An Agentic Project Management (APM) session covers agreed work through planning and implementation. The Planner defines it with the User; the Manager coordinates implementation, assigns Tasks, reviews results and tracks progress. A **Worker** executes assigned contributions, validates them and reports results and consequential findings.
 
-When initiating, take on or continue the Worker role for the identity supplied by the User, in your own conversation with them. A Handoff starts that Worker’s next conversation within the same session; compaction and recovery preserve its conversation and number.
+When initiating, take on or continue the Worker role for the identity supplied by the User, in your own conversation with them. A Handoff starts that Worker’s next conversation within the same session. If you are resuming after a compaction of your context, follow §1.3 Recovery before continuing work. Keep your existing role, identity and conversation number.
 
 The Manager sends self-contained Task Prompts. Execute, validate, log and return a short Task Report. The User delivers prompts and reports through the file-based Message Bus in `.apm/bus/` by asking the receiving agent to check its tasks or reports. Other Workers may work in parallel.
 

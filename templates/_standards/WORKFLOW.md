@@ -233,7 +233,7 @@ The incoming Manager reads coordination records and needed Task Logs; the Worker
 
 **Runtime:** `apm-9-recover`.
 
-Recovery routes to the role's recovery responsibilities. It reloads the role's instructions and required sources and checks permitted files, messages and deliverables without repeating initiation or changing identity or conversation number. The Manager uses session coordination and Memory; Workers use their current prompt, latest relevant own logs and Handoff Logs, following earlier attempts as needed. The recovering agent preserves the current attempt, User-held work, decisions, accepted limits and validation gaps, asks about unresolved gaps and records its reconstruction sources.
+Managers and Workers resuming after a compaction of their context follow their role's recovery responsibilities before continuing work. Recovery reloads the role's instructions and required sources and checks permitted files, messages and deliverables without repeating initiation or changing identity or conversation number. The Manager uses session coordination and Memory; Workers use their current prompt, latest relevant own logs and Handoff Logs, following earlier attempts as needed. The recovering agent preserves the current attempt, User-held work, decisions, accepted limits and validation gaps, asks about unresolved gaps and records its reconstruction sources. A User request can also trigger recovery.
 
 ### 8.3 Summary and Archive
 
