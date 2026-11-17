@@ -47,7 +47,7 @@ Write APM files for the readers and purpose named in their guides. They can cons
 - **Structure.** Follow prescribed headings, fields, labels and formats so agents and the CLI can parse the record reliably. Keep each section on one subject; use compact lists or tables where they make information easier to find.
 - **Sources.** Keep each kind of information in one authoritative home; do not restate it in competing documents. State essential requirements, decisions, results and limits directly. Include essential context in self-contained prompts and consequential findings in reports and summaries; summarize supporting detail and link its source instead of copying it. Preserve required contracts, validation counts and unrun checks. Exceed suggested lengths only when required information needs the space.
 - **Accuracy.** Distinguish proposals from User decisions, recording what was agreed, its scope and why. Check claims against sources and separate verified facts from assumptions.
-- **Updates.** Keep records current at consequential decisions and pauses, independently of User reports. Combine related updates where practical; follow required logging and message steps.
+- **Updates.** Keep current instructions and records aligned with checked progress and the latest agreed decisions. Revise affected content within your scope at consequential changes and pauses, before dependent work or Handoff. Combine related updates where practical, follow required logging and message steps, and pass changes outside your scope through the agreed coordination mechanism.
 
 Before saving, remove redundant text and check that required information, source links and the format are intact.
 

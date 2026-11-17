@@ -19,6 +19,8 @@ For Worker results, read the whole Task Log named in the report, following origi
 
 Check the delivered result and each validation criterion against the Task requirements and evidence, including counts, scope, deviations and unrun paths. Inspect outputs or run focused checks where evidence is incomplete or uncertain. Revisit relevant Spec and Plan sections when findings question the requirements or assumptions. A deliberate difference is an unmet criterion; record accepted exceptions as limitations.
 
+For continued work, use relevant earlier logs and outputs to establish what was addressed and what still applies to the current result. Preserve consequential findings, remaining limits and their implications with supporting evidence in the Task Log or Stage summary.
+
 If a Success log includes a failed, unrun or weaker check, tell the User and keep the Task Active. Resolve the gap per §3; incorrect requirements or proposed exceptions go through §4.
 
 For an authorized `AGENTS.md` change, check the change at its recorded path, using the diff when tracked, and retain it. If the User declined, ask before adding it. Correct planning documents contradicted by findings per §4, even if the Worker resolved the local issue.
@@ -54,7 +56,7 @@ You may correct one Task, add a dependency or an isolated Spec point, or propose
 
 1. Identify the change, its evidence, affected documents and dependent or active work. Check how the change affects ongoing work and coordinate any needed adjustment with whoever is performing it. Preserve valid progress, Task identity, current attempt and workspace.
 2. Carry forward decisions already agreed with the User and resolve any further approval needed. If further approval is needed, record the pending decision in the Tracker, present the proposal and wait; unrelated work may continue.
-3. Update Spec requirements, Plan tables, Task fields and dependencies, and authorized workspace guidance. Keep Notes within their document’s purpose. Use existing Task formats with concrete work, outputs and checks; preserve agreed involvement through responsibility, size and review points. Reassign with regard to progress, retained knowledge and coordination demands. Extend or replace guidance concisely, preserving unrelated content.
+3. Update Spec requirements, Plan tables, Task fields and dependencies, and authorized workspace guidance. Keep Notes within their document’s purpose. Use the prescribed Task fields and steps for new and revised Tasks, with concrete work, outputs and checks; preserve agreed involvement through responsibility, size and review points. Reassign with regard to progress, retained knowledge and coordination demands. Extend or replace guidance concisely, preserving unrelated content.
 4. Update affected instructions and record what should happen next, the change and its reason in the Tracker. Update your subagents directly; ask the User to deliver Worker corrections per `{GUIDE_PATH:task-assignment}` §5.1, or use a follow-up for a reported attempt. Coordinate User-performed portions with the User. Preserve consequential decisions in the Stage summary.
 
 For work cancelled, superseded or deferred beyond the session, retain its ID, disposition, reason and any replacement. Reconcile requirements, tables, dependencies and instructions so obsolete work is no longer actionable. After scope agreement, mark it Done and record its disposition in the Tracker and Stage summary, distinct from delivery. Preserve existing logs; do not invent execution logs for unperformed work.
@@ -150,9 +152,9 @@ The Tracker is `.apm/tracker.md`:
 
 Register the Manager at startup and Workers at first dispatch. Agents holds conversation numbers and unresolved continuation or recovery gaps, not Task states, workspaces, next actions or a list of temporary subagents. Clear gaps when restored; recovery does not change the number.
 
-Each Notes entry must affect a current coordination action or reliable continuation: a blocker, pending decision, necessary cross-Task arrangement or resume condition. Use a compact statement of its present consequence and source. Do not copy Plan arrangements, historical diagnoses, completed checks, PR histories or entire instructions; link the owning source when needed.
+Use Notes for context needed to coordinate current work or resume reliably: blockers, pending decisions, cross-Task arrangements and resume conditions. State each note's present consequence and link its owning source. Earlier events may remain where they still affect coordination; distinguish what happened then from what applies now, using dates, Task IDs or source links where needed for the current and next Manager.
 
-Every Tracker update replaces superseded information and removes resolved notes and gaps. Preserve consequential history in its log or summary before removing its only account. Keep a short link only if a present coordination need remains. Do this during ordinary updates, not only at Stage boundaries. Use Task evidence and logs when writing the Stage summary and updating the Index, rather than copying accumulated Notes.
+When updating the Tracker, revise affected Task rows and Notes together to describe current state. Replace superseded information and remove resolved notes and context gaps during ordinary updates. Preserve consequential history in its Task Log or Stage summary before removing its only account; keep a short reference where coordination still needs it. Use Task evidence and logs to write Stage summaries and Index findings.
 
 ### 8.3 Memory Index Format
 

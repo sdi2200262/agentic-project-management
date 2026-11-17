@@ -96,7 +96,7 @@ If the User ends early, pause active Tasks: stop your subagents and ask the User
 
 Present the intended outcomes and actual results, Stages and Tasks, participating agents, consequential findings and deliverables, and anything unfinished, accepted limitations and verification gaps. Say which Stages you coordinated and which you know from Handoff Logs, Stage summaries or a compaction summary.
 
-Offer a session summary and an archive. Both are optional. A summary records the session’s results for the User and later sessions. Let the User choose where to write it:
+Offer a session summary and an archive. Both are optional. `.apm/session.summary.md` is a dated account of results for the User and later sessions; current coordination stays in the Tracker. Let the User choose where to write it:
 
 - Here, with your current context: read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
 - In a new chat with more room: the User asks for an APM session summary there.
