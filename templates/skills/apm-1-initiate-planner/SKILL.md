@@ -55,7 +55,8 @@ After the Spec and Plan are approved and any proposed updates to `AGENTS.md` are
 
 1. Apply the repository setup and APM file tracking agreed in the Spec, following repository conventions in `AGENTS.md`.
 2. Read the Agent column of the Plan's Workers table. Create `.apm/bus/<agent-slug>/` for each listed Worker with empty `task.md`, `report.md` and `handoff.md`, and `.apm/bus/manager/` with only an empty `handoff.md`.
-3. Tell the User the documents and Message Bus are ready and state the result of the `AGENTS.md` review, including why existing guidance suffices if unchanged. Direct them to start a new Manager conversation to coordinate the approved session, selecting next work after orientation.
+3. State the result of the `AGENTS.md` review and why changes were needed or existing guidance suffices.
+4. Tell the User the documents and Message Bus are ready. Direct them to start a new Manager conversation to coordinate the approved session, selecting next work after orientation.
 
 ## 5. Subagents
 

@@ -133,6 +133,8 @@ The Planner surveys repositories, instructions and existing materials within its
 
 This order is recommended, not mandatory. Every topic requires a User exchange; sufficient supplied context calls for confirmation and an invitation to add or correct information, not omission of the exchange. Topics can be revisited. Research, exploration, analysis, design, processing and substantial preparation continue between exchanges as needed. Their depth follows scope, complexity and uncertainty. Preparation precedes dependent questions; unclear intent is established before recommending a solution. Questions resolve substantive gaps, while recommendations explain consequential evidence, trade-offs or uncertainty. The User decides consequential design choices and agents handle details within them.
 
+When proposing to continue earlier work or reuse earlier planning documents or arrangements, the Planner explains what fits this session, what needs to change and why. It explicitly asks the User what to retain or change during discovery, building on answers already given.
+
 The Planner develops tentative Stages, Tasks and assignments during questioning, revising them as it learns. Manager execution through subagent workers supports automation and higher-level collaboration; separate Workers support close implementation collaboration. The Planner asks whether the User wants to perform any portion, with the responsible agent’s assistance.
 
 The User chooses the form and frequency of involvement. The Planner recommends options suited to risk, uncertainty, experience and preferences, explaining how they support understanding and authority: automated Manager execution, User-mediated coordination with Workers, User-led work with assistance, or a combination. Participation may include collaboration, reviews, tests, demonstrations, explanations or progress reports. The Plan records required validation, User or outside review points, timing constraints and agreed update frequency. Task and Stage boundaries, sizes, batches and parallelism support these agreements. Routine update timing and grouping remain execution choices; the Manager proposes adjustments as findings or feedback warrant.
@@ -143,7 +145,7 @@ Scope and sequencing account for timing and prerequisites outside agents' contro
 
 ### 6.2 Work Breakdown
 
-Document approvals follow §2.1; corrections carry into earlier documents. Task responsibility, size and review points reflect agreed involvement, and User-performed work keeps its responsible agent.
+Document approvals follow §2.1; corrections carry into earlier documents. The required formats express this session's agreed work and decisions, reusing earlier material where it fits and is verified against current sources. Task responsibility, size and review points reflect agreed involvement, and User-performed work keeps its responsible agent.
 
 Assignments balance expertise, shared context and User involvement, keeping related work together where familiarity helps. Stages group coherent outcomes around dependencies and meaningful review. Tasks have clear outputs and checks, with boundaries shaped by size, complexity, uncertainty, dependencies and expertise. Research, implementation and validation may share or span Tasks. Parallelism follows dependencies and constraints. Steps give Task-specific actions and refer to shared procedures for common details.
 

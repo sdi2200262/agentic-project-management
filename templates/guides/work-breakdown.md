@@ -4,6 +4,8 @@ The Planner uses this guide to develop the breakdown during Context Gathering, t
 
 Write the Spec and Plan for the Manager and later Manager conversations, with User review and approval. They can consult `AGENTS.md` and referenced sources; keep agreed requirements and decisions explicit and link supporting detail. The Manager supplies self-contained Worker Task Prompts. Requirements and design belong in the Spec, work structure in the Plan, and lasting guidance in `AGENTS.md`.
 
+Use the required formats to express this session's agreed work and decisions. Reuse earlier material that fits, checking it against current sources and decisions. Put each detail in its owning document or field and refer to shared requirements and procedures for supporting detail.
+
 The Manager keeps the Spec and Plan current during implementation.
 
 ## 1. Review Cycle
@@ -37,7 +39,7 @@ The Plan divides the work into ordered Stages and Tasks for the Manager or Worke
 1. Refine the breakdown developed during Context Gathering: Worker areas, Stage deliverables and Tasks. Explain consequential boundaries, order and dependencies.
 2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.
 3. Check that Tasks cover every Spec outcome and that their assigned agents can execute and validate them. Check assignments, dependencies, sizes and review points against the principles below and agreed involvement. Keep workspace preparation, integration and pushing with the Manager; Workers use prepared workspaces and agreed commit instructions. Same-Worker dependencies have the same assigned agent; Cross-Worker dependencies have different agents, including the Manager. Correct any mismatch.
-4. Write `.apm/plan.md` per §5.2. Keep Notes to agreed User involvement and coordination arrangements across Tasks: shared constraints, participation or review points, timing, dispatch opportunities and Stage verification. Do not reproduce runtime procedures. Name affected work and checks. Keep Task-specific dependencies and validation in their fields, and refer to Spec questions. If later sessions were discussed, briefly record relevant sequencing or prerequisites, referring to the Spec for scope.
+4. Write `.apm/plan.md` per §5.2. Keep Notes to agreed User involvement and coordination arrangements across Tasks: shared constraints, participation or review points, timing, dispatch opportunities and Stage verification. Describe the session-specific work and checks, referring to the applicable procedures. Keep Task-specific dependencies and validation in their fields, and refer to Spec questions. If later sessions were discussed, briefly record relevant sequencing or prerequisites, referring to the Spec for scope.
 5. When you ask for review, give a short overview of the Workers, Stages, Task counts and what can run in parallel.
 
 Break the work down by these principles:

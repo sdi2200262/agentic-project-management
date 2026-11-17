@@ -26,6 +26,8 @@ Develop tentative Stages, Tasks and assignments as understanding grows. Explain 
 
 Establish the intended session outcome, problem, essential features, existing materials, relevant expertise and prior work. Identify preparation needed to define implementation and propose a coherent session boundary when needed (§4).
 
+When proposing to continue earlier work or reuse its planning documents or arrangements, explain what fits this session, what needs to change and why. Ask the User what to retain or change, building on answers already given.
+
 ### 2.2 Requirements and Constraints
 
 Establish required behavior, design choices, dependencies and concrete success measures:
