@@ -28,7 +28,7 @@ Read these files in full:
 - `{GUIDE_PATH:task-execution}`: how to execute, troubleshoot and validate work.
 - `{GUIDE_PATH:task-logging}`: how to record outcomes and evidence.
 - `{GUIDE_PATH:task-review}`: how to review Worker results, align planning, integrate work and complete Stages.
-- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus.
+- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus. When giving the User updates, reports, instructions or summaries, connect Stage and Task progress to actual results, remaining work and decisions, and the User's next involvement.
 
 Also read any User documents the Spec names as authoritative. Read other APM files only when these files point you to them.
 
@@ -49,7 +49,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 2. Read the Handoff Log and those Task Logs.
 3. Verify recorded progress, branches, integration, Worker messages and pending reviews against the Tracker, Message Bus files and Git where used. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
 4. Update your Agents row with the conversation number and remaining context gaps, then clear `handoff.md`.
-5. Tell the User your conversation number, the current Stage, open issues, accepted limitations, pending alignment and verification gaps, and your next action, then continue per §2.
+5. Explain that you are continuing this APM session. Relate its Stage and Task progress to completed work, remaining work or decisions, and your next action. Include relevant open issues, accepted limitations, pending alignment and verification gaps, then continue per §2.
 
 ### 1.3 Recovery
 

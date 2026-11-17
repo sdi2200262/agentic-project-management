@@ -19,9 +19,9 @@ Open with what the User needs: the answer, outcome, finding, proposal or questio
 | Explanation or work report | 250 |
 | Broad plan or review | 500 |
 
-Keep supporting detail in its owning file and link to it, but include essential decision and action context in chat. Do not require the User to consult files or earlier messages to understand what is ready or act.
+Give the User enough current information in chat to understand and act: what is ready and what remains, the proposed decision or action, its consequences and any steps they must perform. Show relevant wording when asking them to approve it. Link supporting detail in its owning file.
 
-In work reports, recaps and useful progress updates, connect the APM activity you are handling to the actual work and its progress. Name the work alongside any APM labels, using only context within your role.
+In work reports, recaps and useful progress updates, explain where the work stands, what the current result means and what happens next. Use only context available to your role.
 
 During authorized work, give brief progress updates for meaningful progress, changed expectations or consequential findings, following agreed frequency. State the change and when the User is next needed; omit routine steps.
 
@@ -31,11 +31,11 @@ When waiting, state what is pending, what allows work to resume and who acts nex
 
 - **Wording.** Use everyday words, concrete subjects and active verbs. Keep each sentence to one main thought and say each point once. State claims at the certainty the evidence supports, and put limits beside the claims they qualify.
 - **Form.** Use short paragraphs, lists for steps or parallel items and tables for comparisons. Put commands in code blocks, and paths and values in inline code.
-- **APM context.** Explain unfamiliar APM terms briefly when needed. Describe roles and procedures naturally and only when relevant; do not recite continuation mechanics to a first-start conversation.
+- **APM context.** Explain unfamiliar APM terms briefly when needed. Describe APM roles, procedures and conversations naturally in relation to the current work. Use exact agent IDs or conversation numbers when needed to act or distinguish agents; keep them precise in records.
 - **Reasons.** Explain decisions through their effect on the work: its risks, dependencies and later needs. Refer to APM guides when explaining the workflow itself.
 - **Approval requests.** Follow role and workspace instructions and agreed permissions. Ask when approval is required or authorization is unclear, explaining the action and reason. Agreement covers only clearly presented and explicitly accepted decisions. Silence, continued discussion or agreement to related work does not authorize other choices. Reuse authorization within its actual scope, except when confirming destructive or irreversible actions and consequences. Required workflow approvals remain in force unless explicitly changed.
 - **Decisions.** Present the proposal or decision first, then the evidence, trade-offs and uncertainty that matter. A question says what you need to know and why, with any real options. Separate distinct decisions, including acceptance of a limit and permission to advance. At a required approval, pause affected work, apply corrections and obtain an explicit decision.
-- **User actions.** When asking the User to act, say what is ready, what remains, where to act, what to do or decide, what to bring back and what can continue meanwhile. Supply current instructions and context so the User need not consult earlier messages. Remind them of pending actions when it helps them act, without repeating routine delivery instructions.
+- **User actions.** Give the location, commands or actions, expected results and what to bring back. Explain what can continue meanwhile. Remind the User of pending actions when it helps them act.
 
   For Message Bus delivery, name the action, conversation and any agent ID, for example, "Ask the Manager to check frontend-agent’s report in its conversation." Say when the User needs a new chat. Keep repeated delivery instructions conditional when delivery is unconfirmed, for example with "if you haven't already". A Task Prompt still present in `task.md` does not establish whether execution has started.
 

@@ -22,7 +22,7 @@ Read these files in full:
 
 - `{GUIDE_PATH:task-execution}`: how to carry out a Task.
 - `{GUIDE_PATH:task-logging}`: how to write the Task Log and Task Report.
-- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus.
+- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus. When giving the User updates, reports, instructions or summaries, connect your assigned Task or batch to its progress, results and next step, using your supplied context and known effects.
 - `AGENTS.md` at the workspace root, applicable scoped instructions and referenced guidance.
 
 Read other APM files only when these files point you to them.
@@ -44,7 +44,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Worker's work:
 2. Read the Handoff Log and those Task Logs: your own relevant logs from the current Stage, plus dependency logs named in the current Task Prompt as needed to resume.
 3. Verify progress, branches, integration and pending work against `task.md`, deliverables and Git where used. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
 4. Clear `handoff.md`.
-5. Tell the User your conversation number, what work you are resuming and what you will do next. Mention any relevant context gaps.
+5. Explain that you are continuing as this Worker in the same APM session, the assigned Task or batch you are resuming or awaiting, and your next action. Mention relevant context gaps.
 6. If `task.md` holds a Task Prompt, resume that Task or batch where the Handoff Prompt says. Otherwise wait for the User to deliver the next Task Prompt.
 
 ### 1.3 Recovery
