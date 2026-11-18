@@ -5,25 +5,25 @@
 
 [![License: MPL-2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![npm](https://img.shields.io/npm/v/agentic-pm)](https://www.npmjs.com/package/agentic-pm) [![GitHub Release](https://img.shields.io/github/v/release/sdi2200262/agentic-project-management)](https://github.com/sdi2200262/agentic-project-management/releases)
 
-APM is an open-source framework for managing ambitious software projects with AI assistants. On long tasks, the LLM behind your agent suffers from context decay and context pressure as its conversation grows. APM counters the first by recording the project's intent in planning documents, and the second by splitting the work among agents in separate conversations.
+APM is an open-source framework for AI-assisted software development. As an agent's conversation grows, its LLM suffers from context decay and context pressure. APM counters the first by recording the project's intent in planning documents, and the second by splitting the work among agents in separate conversations.
 
-You remain responsible for the software your agents build, so APM aims to keep you engaged. A few approvals are built in, the agents recommend where else the work should pause for you, and you decide how often and where. We call these pauses productive friction.
+The workflow is flexible: you choose where and how you take part in development. You can let the agents carry most of the work, or add points of productive friction that help you keep authority over, and understanding of, the software being built.
 
 ## Overview
 
 An APM session takes an agreed body of work through planning, then implementation. It may cover a larger goal in full or a coherent part.
 
-During **planning**, the **Planner** explores the workspace and works with you to define the intended outcomes, requirements and design. It writes the **Spec** (outcomes, requirements and design) and **Plan** (assigned work, dependencies and validation). You approve its understanding, then each document separately. It also proposes any needed updates to lasting workspace guidance in `AGENTS.md`, creating the file if it's missing.
+During **planning**, the **Planner** explores the workspace and works with you to define what the session should achieve. It writes the **Spec** (outcomes, requirements and design) and **Plan** (assigned work, dependencies and validation). You approve its understanding, then each document separately. It also proposes updates to lasting workspace guidance in `AGENTS.md`, creating the file if it's missing.
 
 During **implementation**, the **Manager** coordinates the work, reviews results, and records progress. It carries out Tasks through subagents or assigns them to **Workers** in separate conversations. The responsible agent validates each Task and records its outcome in the session's work history.
 
-The Planner and Manager recommend how you stay involved, based on the nature of the work and your experience and preferences. You decide the arrangement: automated execution through the Manager, Worker conversations you coordinate by passing on their assignments and reports, work you carry out yourself with agent assistance, or any mix. You also choose what to review and when, and can change the arrangement as the work goes.
+The Planner and Manager recommend how you take part, based on the work and your experience. You decide who does the work: the Manager's subagents, Workers whose assignments and reports you pass on, you, or a mix. You also choose what to review and when, and can change either as the work goes.
 
-The session's state lives in shared files outside any conversation: the planning documents, the **Tracker** (the session's progress), and **Memory** (its work history). When a Manager or Worker’s context fills, a **Handoff** continues that agent’s work in a fresh conversation using these files. When the session ends, you can archive them for the next session's Planner to build on.
+The session's state lives in shared files outside any conversation: the planning documents, the **Tracker** (the session's progress), and **Memory** (its work history). When a Manager's or Worker's context fills, a **Handoff** moves its role to a fresh conversation that resumes from these files. When the session ends, you can archive them for the next session's Planner to build on.
 
 ## Getting started
 
-APM works with Claude Code and any agents that use `AGENTS.md` and `.agents/skills/`, such as Codex, Cursor and GitHub Copilot. Install the `agentic-pm` CLI with Node.js 18 or later:
+APM works with Claude Code and any agents that use `AGENTS.md` and `.agents/skills/`, such as Codex, OpenCode and Cursor. Install the `agentic-pm` CLI with Node.js 18 or later:
 
 ```bash
 npm install -g agentic-pm
@@ -34,7 +34,7 @@ Run `apm init` in your project folder. Choose `claude` for Claude Code or `agent
 To start planning, invoke `apm-1-initiate-planner` in a new chat and describe what you want to build or change. For example, in Claude Code:
 
 ```text
-/apm-1-initiate-planner Let's plan this Jira ticket I had to deliver yesterday.
+/apm-1-initiate-planner Plan the Jira ticket I owe.
 ```
 
 The agents will guide you through the workflow's steps. See [Getting Started](https://agentic-project-management.dev/docs/getting-started) for the full walkthrough. The rest of the [documentation](https://agentic-project-management.dev) describes the workflow and agent roles in more detail, explains APM's prompt and context engineering, and includes other practical guides.
@@ -47,7 +47,7 @@ The agents will guide you through the workflow's steps. See [Getting Started](ht
 > To start planning, invoke `apm` in a new chat. For example, in Claude Code:
 >
 > ```text
-> /apm Let's plan this Jira ticket I had to deliver yesterday.
+> /apm Plan the Jira ticket I owe.
 > ```
 
 ### Updating
