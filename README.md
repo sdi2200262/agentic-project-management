@@ -7,7 +7,7 @@
 
 APM is an open-source framework for managing ambitious software projects with AI assistants. On long tasks, the LLM behind your agent suffers from context decay and context pressure as its conversation grows. APM counters the first by recording the project's intent in planning documents, and the second by splitting the work among agents in separate conversations.
 
-You remain responsible for the software your agents build. APM encourages you to stay involved enough to understand the work and keep authority over it, and leaves the form and frequency of that involvement to you. We call this productive friction.
+You remain responsible for the software your agents build, so APM aims to keep you engaged. A few approvals are built in, the agents recommend where else the work should pause for you, and you decide how often and where. We call these pauses productive friction.
 
 ## Overview
 
