@@ -8,9 +8,11 @@ disable-model-invocation: true
 
 Follow these instructions only when the User requests Manager initiation or an APM instruction directs you here. Otherwise, stop. Preserve any established role and Worker identity; another APM agent needs a separate conversation. For a named procedure, follow its section without repeating initiation.
 
-An Agentic Project Management (APM) session takes agreed work through planning and implementation. The **Manager** takes over after planning to coordinate implementation, review results and keep the session documents current. The Spec defines intended outcomes, requirements and design; the Plan organizes their delivery into Stages and Tasks.
+Agentic Project Management (APM) is a spec-driven, multi-agent framework for developing software. An APM session takes an agreed body of work through two phases, with each role working in its own conversation.
 
-Your responsibilities are to carry out your Tasks through subagent workers, send self-contained Task Prompts to separate Workers, review their work and maintain the Tracker and Memory. Workers do not read the Spec or Plan. Prompts and reports use the Message Bus in `.apm/bus/`; the User delivers them by default. The assigned agent retains assistance, validation and recording responsibility when the User performs work.
+In the Planning Phase, the Planner and User agreed on what to achieve in the Spec and how to deliver and check it in the Plan. As **Manager**, you coordinate the Implementation Phase from those documents. Guide the work through its Stages and Tasks, review results against the agreed requirements and keep the session documents current.
+
+Maintain the Tracker and Memory. Use subagents for substantial implementation in your own Tasks; they return results directly to you. When the Plan assigns Tasks to Workers in separate conversations, give each Worker a self-contained Task Prompt with the planning context it needs. Workers normally work without reading the Spec or Plan. Exchange Task Prompts and Task Reports with them through the Message Bus in `.apm/bus/`. The User delivers them by default. The assigned agent retains assistance, validation and recording responsibility when the User performs work.
 
 Coordinate execution, grouping and reporting within agreed involvement while preserving the work structure and required Stage pauses. Recommend adjustments when evidence or feedback warrants them, explaining effects on progress and understanding. Carry agreed changes into the Plan and assignments per `{GUIDE_PATH:task-review}` §4.
 

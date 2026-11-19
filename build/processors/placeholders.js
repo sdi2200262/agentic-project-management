@@ -6,12 +6,13 @@
  * @module build/processors/placeholders
  */
 
-import { skillPath, skillDirectory, guidePath } from './paths.js';
+import { skillPath, skillDirectory, guidePath, isSingleSkill } from './paths.js';
 
 /**
  * Replaces template placeholders with target-specific values.
  *
  * Supported placeholders:
+ * - {START_MANAGER}: User action for starting the Manager in this layout
  * - {VERSION}: Template version
  * - {SKILL_PATH:name}: Source skill mapped to its output file
  * - {SKILL_DIR:name}: Directory containing the mapped source skill
@@ -30,6 +31,7 @@ export function replacePlaceholders(content, context) {
 
   return content
     .replace(/{VERSION}/g, version)
+    .replace(/{START_MANAGER}/g, isSingleSkill(target) ? 'invoke the `apm` skill and ask the agent to take on the Manager role' : 'invoke `apm-2-initiate-manager`')
     .replace(/{CLAUDE_ONLY:([^}]*)}/g, (_match, text) => (assistant === 'claude' ? text : ''))
     .replace(/{SKILL_PATH:([^}]+)}/g, (_match, name) => skillPath(target, name))
     .replace(/{SKILL_DIR:([^}]+)}/g, (_match, name) => skillDirectory(target, name))
