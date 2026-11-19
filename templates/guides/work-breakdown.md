@@ -26,7 +26,7 @@ Write `.apm/spec.md` per §5.1, following the review cycle in §1:
 
 - **Opening:** the session’s goal, scope and success criteria, directly below the title.
 - **Notes:** record assumptions or open choices that affect several design sections, any supporting document specifications and relevant later-session scope. Use dedicated subsections where needed.
-- **Design sections:** group decisions by subject, with their rationale and relevant alternatives. Record any agreed version-control constraints on work locations, commits, integration, publication and APM file tracking. Put the steps and schedule for meeting those constraints in the Plan.
+- **Design sections:** group decisions by subject, with their rationale and relevant alternatives. Record the agreed Git conventions, including branch naming and commit message style, and any constraints on work locations, commits, integration, publication and APM file tracking. Put the steps and schedule for meeting those constraints in the Plan.
 
 System behavior, output formats, schemas and interface contracts belong in the Spec. Put implementation choices that leave the design unchanged in Task Guidance, operations in steps, and lasting workspace conventions in `AGENTS.md`.
 

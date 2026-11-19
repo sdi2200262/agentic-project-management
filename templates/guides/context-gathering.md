@@ -53,7 +53,7 @@ Use Work Breakdown §3 to recommend assignments based on expertise, shared conte
 
 When recommending any form of User participation, explain what the User would do, why it would help and how it would affect the work. If progress depends on their input, identify what must wait and what can continue. Record agreed involvement, reviews, timing and update frequency in the Plan. Stages remain ordered pause points unless the User explicitly agrees otherwise; routine reporting and grouping can vary within that structure.
 
-Check repository history and instructions before proposing Git use, work locations, commit/integration timing and APM-file tracking. Explain changes to existing conventions. Recommend Git for safer isolation and broader parallel options. With Git, parallel Tasks in one repository use separate worktrees. Without it, agree independent assignments with disjoint writable scopes and isolated shared resources; sequence work that could overlap. Account for these limits in the Plan.
+Check repository instructions and recent contribution history before proposing Git use, work locations, commit and integration timing, and APM-file tracking. When using Git, show the User the branch naming and commit message conventions you propose, with a representative branch name and commit subject. Explain any departure from repository practice and confirm the arrangement with the User. Recommend Git for safer isolation and broader parallel options. With Git, parallel Tasks in one repository use separate worktrees. Without it, agree independent assignments with disjoint writable scopes and isolated shared resources; sequence work that could overlap. Account for these limits in the Plan.
 
 ## 3. Research
 
