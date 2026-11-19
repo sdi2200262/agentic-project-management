@@ -62,10 +62,10 @@ Reread the Spec at the first dispatch of a Stage and after any change to it.
 
 ## 3. Version Control
 
-Prepare each Task’s workspace under the version-control arrangement agreed in the Spec and applicable repository conventions in `AGENTS.md`.
+When the session uses Git, apply the Spec’s agreements and repository conventions to the branches, worktrees and commits you manage. Consult `AGENTS.md` and recent repository history for conventions the Spec leaves open.
 
 1. Make sure required dependency outputs are available and usable in the workspace. Arrange access to needed uncommitted and untracked files; a new worktree does not automatically contain them.
-2. Apply the parallel-isolation rules in §1.1 to your Tasks, native contributions and Worker dispatches. Keep APM-managed worktrees under the session root's `.apm/worktrees/`.
+2. Apply the parallel-isolation rules in §1.1 to your Tasks, native contributions and Worker dispatches. When creating APM-managed worktrees, place them under the session root’s `.apm/worktrees/` so a future session archive can include them. For an agreed external worktree, record how its work will be preserved.
 3. Record the branch, any worktree and Next Action in the Tracker. Several Tasks may share a branch or workspace when the arrangement allows it.
 4. In each Worker prompt, give the working directory, branch or worktree, applicable commit instructions and the session root for every `.apm/` path. Put any no-Git parallel arrangement and its constraints in Workspace per §7.1.
 

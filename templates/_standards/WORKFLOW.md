@@ -68,7 +68,7 @@ The Planner checks repository history and workspace instructions, proposes a ver
 
 The Manager prepares workspaces and handles integration, pushing and cleanup under the agreement. The Planner and Manager recommend Git when arranging parallel work: it provides safer isolation and permits overlapping changes that cannot safely share one directory.
 
-- With Git, parallel Tasks in the same repository use separate worktrees, including Manager Tasks; APM-managed worktrees stay under `.apm/worktrees/`. Git worktrees do not isolate shared external resources.
+- With Git, parallel Tasks in the same repository use separate worktrees, including Manager Tasks; APM-managed worktrees stay under `.apm/worktrees/` for archival. For an agreed external worktree, the Manager records how its work will be preserved. Git worktrees do not isolate shared external resources.
 - Without Git, parallel assignments require independent work and clearly separated writable files, directories and other resources. Shared reading must not depend on inputs being changed by another assignment. Worker prompts and native briefs explicitly identify the no-Git parallel arrangement, writable scope, shared resources and when to coordinate or pause.
 
 Sequence overlapping changes, shared generated outputs and test or service operations unless isolated. Required dependency outputs, including uncommitted and untracked files, must actually be usable in the assigned workspace.
