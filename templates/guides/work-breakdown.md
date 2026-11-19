@@ -2,9 +2,9 @@
 
 The Planner uses this guide to develop the breakdown during Context Gathering, turn the approved understanding into the Spec and Plan, and resolve `AGENTS.md` changes. `{SKILL_PATH:apm-1-initiate-planner}` §4 covers completion.
 
-Write the Spec and Plan for the Manager and later Manager conversations, with User review and approval. They can consult `AGENTS.md` and referenced sources; keep agreed requirements and decisions explicit and link supporting detail. The Manager supplies self-contained Worker Task Prompts. Requirements and design belong in the Spec, work structure in the Plan, and lasting guidance in `AGENTS.md`.
+Write the Spec and Plan for the Manager and later Manager conversations, with User review and approval. The Manager can consult `AGENTS.md` and referenced sources when preparing self-contained Worker Task Prompts. Requirements and design belong in the Spec, work structure in the Plan, and lasting guidance in `AGENTS.md`.
 
-Use the required formats to express this session's agreed work and decisions. Reuse earlier material that fits, checking it against current sources and decisions. Put each detail in its owning document or field and refer to shared requirements and procedures for supporting detail.
+Use the required formats to express this session's agreed work and decisions. Reuse earlier material that fits, checking it against current sources and decisions. Use Notes for brief context that applies across sections. Distinguish agreements, recommendations and open decisions. Link to the section or source that owns the detail.
 
 The Manager keeps the Spec and Plan current during implementation.
 
@@ -14,19 +14,19 @@ Write one document at a time: the Spec, then the Plan. For each:
 
 1. Present the proposed organization and consequential choices, reasons and assumptions.
 2. In the same turn, read the target file and write the document. Check that it defines the agreed outcomes and the work needed to deliver them. Check consistency with the other documents and place each detail in its owning document or field.
-3. For Spec approval, summarize the outcomes, constraints, consequential design choices and success criteria in chat. For Plan approval, summarize the Stages, Tasks, assignments and agreed User involvement. State what the User is approving, link the document, explain what comes next and wait for their review. Apply corrections, check their effects on earlier documents and ask again.
+3. Present each document for approval in chat. For the Spec, explain the outcomes, constraints, consequential design choices and success criteria in terms the User can judge. Distinguish the decisions that need the User’s judgment from supporting detail the agents will use. For Plan approval, summarize the Stages, Tasks, assignments and agreed User involvement. State what the User is approving, link the document, explain what comes next and wait for their review. Apply corrections, check their effects on earlier documents and ask again.
 
 Start the next document only after approval, so a problem in one document is caught before the next is built on it. After Plan approval, review any needed changes to `AGENTS.md` per §4.
 
 ## 2. Spec
 
-The Spec states intended outcomes, requirements, design and constraints with their reasons, in the work’s own terms. The Plan assigns work and validation to achieve them.
+Write the Spec so a Manager who missed discovery can reconstruct the final understanding you reached with the User, coordinate implementation and brief contributors. In the work’s own terms, record agreed outcomes, requirements, policies, constraints, success criteria and consequential design and implementation decisions. Explain why those choices were made. Include considered alternatives where they explain a choice or remain relevant. Identify working targets and reference materials where they define scope. Cite the authoritative files, sections, examples or evidence the Manager needs. Identify any decision left open and who will settle it.
 
 Write `.apm/spec.md` per §5.1, following the review cycle in §1:
 
 - **Opening:** the session’s goal, scope and success criteria, directly below the title.
-- **Notes:** use dedicated subsections for optional session-document specifications, unresolved decisions, alternatives and assumptions. Include brief later-session scope when discussed. Keep settled requirements and design in their subject sections.
-- **Design sections:** session requirements, policies, design decisions and constraints, with their reasons and authoritative source paths and sections, organized so the Manager can find them and copy them into Task Prompts. Name working targets and references where they define this session's scope. Record the agreed version-control arrangement, including work locations, commit and integration timing, and APM file tracking.
+- **Notes:** record assumptions or open choices that affect several design sections, any supporting document specifications and relevant later-session scope. Use dedicated subsections where needed.
+- **Design sections:** group decisions by subject, with their rationale and relevant alternatives. Record any agreed version-control constraints on work locations, commits, integration, publication and APM file tracking. Put the steps and schedule for meeting those constraints in the Plan.
 
 System behavior, output formats, schemas and interface contracts belong in the Spec. Put implementation choices that leave the design unchanged in Task Guidance, operations in steps, and lasting workspace conventions in `AGENTS.md`.
 
@@ -39,14 +39,14 @@ The Plan divides the work into ordered Stages and Tasks for the Manager or Worke
 1. Refine the breakdown developed during Context Gathering: Worker areas, Stage deliverables and Tasks. Explain consequential boundaries, order and dependencies.
 2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.
 3. Check that Tasks cover every Spec outcome and that their assigned agents can execute and validate them. Check assignments, dependencies, sizes and review points against the principles below and agreed involvement. Keep workspace preparation, integration and pushing with the Manager; Workers use prepared workspaces and agreed commit instructions. Same-Worker dependencies have the same assigned agent; Cross-Worker dependencies have different agents, including the Manager. Correct any mismatch.
-4. Write `.apm/plan.md` per §5.2. Keep Notes to agreed User involvement and coordination arrangements across Tasks: shared constraints, participation or review points, timing, dispatch opportunities and Stage verification. Describe the session-specific work and checks, referring to the applicable procedures. Keep Task-specific dependencies and validation in their fields, and refer to Spec questions. If later sessions were discussed, briefly record relevant sequencing or prerequisites, referring to the Spec for scope.
+4. Write `.apm/plan.md` per §5.2. In Notes, name the affected Tasks and any agreed participation, review points, timing or shared constraints. Present useful coordination options as recommendations for the Manager. Link to Task fields or Spec sections for details. For later sessions, record relevant sequencing or prerequisites and refer to the Spec for scope.
 5. When you ask for review, give a short overview of the Workers, Stages, Task counts and what can run in parallel.
 
 Break the work down by these principles:
 
 - **Assignments** group Tasks between Manager and Worker conversations by the expertise, shared context and User involvement the planned work is likely to need. Keep related work together where familiarity should help, weighing the expected context and coordination demands.
-- **Stages** are ordered milestones in the work. Look across the whole Plan and group Tasks by the outcomes they deliver together. For each proposed boundary, consider what will be ready to assess, what the User gains from pausing there and which work would have to wait. Within a Stage, use Task dependencies and review points to coordinate progress. Stage N+1 starts after Stage N is complete and the User explicitly agrees to advance, unless a different arrangement is explicitly agreed.
-- **Tasks** give one responsible agent a clear output and validation. Boundaries reflect size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share or span Tasks. Explain consequential boundaries. Resolve planning uncertainty before implementation. Bounded technical investigation within defined work needs questions, evidence, completion checks and affected dependencies. Recommend another session when later planning needs actual implementation results; assigned agents organize execution within defined requirements.
+- **Tasks** give one responsible agent an identifiable result and include the checks that establish it. Group research, implementation and validation by the outcomes they serve. Give an activity its own Task when it delivers a distinct result, considering size, complexity, uncertainty, dependencies and expertise. Explain consequential boundaries. Resolve planning uncertainty before implementation. Bounded technical investigation within defined work needs questions, evidence, completion checks and affected dependencies. Recommend another session when later planning needs actual implementation results; assigned agents organize execution within defined requirements.
+- **Stages** are ordered milestones. Look across the whole Plan and group Tasks that can progress efficiently toward a coherent result. Use Task dependencies and review points to coordinate work within a Stage. Choose boundaries by weighing the value of completing or assessing each milestone against the work that would have to wait. Stage N+1 starts after Stage N is complete and the User explicitly agrees to advance, unless a different arrangement is explicitly agreed.
 - **User actions.** Agents work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
 - **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the assigned agent can run alone from those that need the User, and tell that agent to pause affected work for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
 
@@ -73,7 +73,7 @@ The Spec is `.apm/spec.md`:
 <In three to five sentences: this session’s intended outcomes, the problem it addresses, its scope and its success criteria>
 
 ## Notes
-<Dedicated subsections for session-document specifications, unresolved decisions, alternatives, assumptions and any later-session scope; include only those needed, per §2>
+<Brief context shared across design sections, supporting document specifications or relevant later-session scope, per §2>
 
 ## <Design Section>
 <Design decisions for one part of the work>
@@ -107,7 +107,7 @@ The Plan is `.apm/plan.md`.
 | 1 | <Name> | <Task IDs> | <Assigned agents> |
 
 ## Notes
-<Agreed User involvement and coordination across Tasks, including reviews, timing and any later-session sequencing per §3 step 4; refer to the Spec for requirements>
+<Affected Tasks, agreed User involvement or shared constraints, and coordination options for the Manager; link to details per §3 step 4>
 
 ## Stage 1: <Name>
 
