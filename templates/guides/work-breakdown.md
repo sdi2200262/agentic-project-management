@@ -14,7 +14,7 @@ Write one document at a time: the Spec, then the Plan. For each:
 
 1. Present the proposed organization and consequential choices, reasons and assumptions.
 2. In the same turn, read the target file and write the document. Check that it defines the agreed outcomes and the work needed to deliver them. Check consistency with the other documents and place each detail in its owning document or field.
-3. Stop and ask the User to review it, saying what comes next. Apply corrections, check their effects on earlier documents and ask again.
+3. For Spec approval, summarize the outcomes, constraints, consequential design choices and success criteria in chat. For Plan approval, summarize the Stages, Tasks, assignments and agreed User involvement. State what the User is approving, link the document, explain what comes next and wait for their review. Apply corrections, check their effects on earlier documents and ask again.
 
 Start the next document only after approval, so a problem in one document is caught before the next is built on it. After Plan approval, review any needed changes to `AGENTS.md` per §4.
 
@@ -45,12 +45,12 @@ The Plan divides the work into ordered Stages and Tasks for the Manager or Worke
 Break the work down by these principles:
 
 - **Assignments** group Tasks between Manager and Worker conversations by the expertise, shared context and User involvement the planned work is likely to need. Keep related work together where familiarity should help, weighing the expected context and coordination demands.
-- **Stages** are ordered milestones: Stage N+1 starts after Stage N is complete and the User explicitly agrees to advance, unless a different arrangement is explicitly agreed. Choose boundaries around coherent outcomes or meaningful review. Keep independent Tasks together when no useful milestone requires a barrier.
+- **Stages** are ordered milestones in the work. Look across the whole Plan and group Tasks by the outcomes they deliver together. For each proposed boundary, consider what will be ready to assess, what the User gains from pausing there and which work would have to wait. Within a Stage, use Task dependencies and review points to coordinate progress. Stage N+1 starts after Stage N is complete and the User explicitly agrees to advance, unless a different arrangement is explicitly agreed.
 - **Tasks** give one responsible agent a clear output and validation. Boundaries reflect size, complexity, uncertainty, dependencies and expertise; research, implementation and validation may share or span Tasks. Explain consequential boundaries. Resolve planning uncertainty before implementation. Bounded technical investigation within defined work needs questions, evidence, completion checks and affected dependencies. Recommend another session when later planning needs actual implementation results; assigned agents organize execution within defined requirements.
 - **User actions.** Agents work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
 - **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the assigned agent can run alone from those that need the User, and tell that agent to pause affected work for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
 
-Identify what can run independently and what depends on earlier results or external prerequisites. Record the agreed handling of unresolved prerequisites. Label required validation and User or outside review points clearly, including relevant timing constraints and agreed update frequency. Dispatch opportunities are suggestions; the Manager chooses actual coordination within the agreed constraints. Leave routine subagent and independent review arrangements to the implementation roles.
+Identify what can start together and which steps depend on earlier results or external prerequisites. Record the agreed handling of unresolved prerequisites. Label required validation and User or outside review points clearly, including relevant timing constraints and agreed update frequency. Dispatch opportunities are suggestions; the Manager chooses actual coordination within the agreed constraints. Leave routine subagent and independent review arrangements to the implementation roles.
 
 ## 4. AGENTS.md
 
