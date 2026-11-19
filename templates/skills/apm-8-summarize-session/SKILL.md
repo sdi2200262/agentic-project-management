@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Follow these instructions only when the User requests a session summary or an APM instruction directs you here. Otherwise, stop.
 
-Write a dated session summary for the User and later sessions, then offer an archive. Follow these instructions in a new chat without adopting an APM role, or as the Manager at completion or early stopping. If you are the Planner or a Worker, tell the User and stop.
+Write a dated session summary for the User and later sessions, then follow the User’s archive choice. Follow these instructions in a new chat without adopting an APM role, or as the Manager at completion or early stopping. If you are the Planner or a Worker, tell the User and stop.
 
 Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 
@@ -21,7 +21,7 @@ Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
    Count Task IDs, not attempts, and ignore copied APM records in worktrees. Use each section for its stated purpose; summarize conclusions and link evidence rather than copying logs or repeating the same account across sections.
 4. Write `.apm/session.summary.md` per §2.1. Say which work you remember from this chat and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
 5. Present the summary and apply the User's corrections.
-6. Propose archival: it preserves `.apm/` in `.apm/archives/` for later sessions and clears active files and installed instructions; `apm init` reinstalls them. Remaining worktrees under `.apm/worktrees/` move with uncommitted contents and remain attached to their source repositories. Ordinary project-directory changes stay in place; Task and branch states remain unchanged. Ask explicitly whether to proceed. If the User declines, stop.
+6. If the User chose a summary only, stop after reporting it. Otherwise, explain archival before proceeding: it preserves `.apm/` in `.apm/archives/` for later sessions and clears active files and installed instructions; `apm init` reinstalls them. Remaining worktrees under `.apm/worktrees/` move with uncommitted contents and remain attached to their source repositories. Ordinary project-directory changes stay in place; Task and branch states remain unchanged. If the User has not already chosen archival, ask explicitly whether to proceed. If the User declines, stop.
 7. Ask for an archive name, or use the default dated name. Run `apm archive --force`, or `apm archive --force --name <name>`. Continue only after the CLI confirms preservation and archival succeeded. If it reports a failure, show the obstacle and current paths, and follow its recovery guidance.
 8. Read `.apm/archives/index.md`, creating it per §2.2 if it is missing or malformed, and add the new archive at the top of its table.
 9. Tell the User the archive's path and any relocated worktrees the CLI reported. To start a new session, the User runs `apm init` (or `apm custom`) and then starts a new Planner conversation; the next Planner can use the archives.

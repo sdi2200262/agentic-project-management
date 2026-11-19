@@ -17,7 +17,7 @@ For each report the User delivers:
 
 For Worker results, read the whole Task Log named in the report, following original and previous-attempt links where needed to verify earlier evidence and unresolved findings. Check its `status` against the outcome definitions in `{GUIDE_PATH:task-logging}` §1, and its `important_findings` against the body and deliverables. For your own Tasks, use contribution outputs and validation evidence; the concluding Task Log is written after review.
 
-Check the delivered result and each validation criterion against the Task requirements and evidence, including counts, scope, deviations and unrun paths. Inspect outputs or run focused checks where evidence is incomplete or uncertain. Revisit relevant Spec and Plan sections when findings question the requirements or assumptions. A deliberate difference is an unmet criterion; record accepted exceptions as limitations.
+Check the delivered result and each validation criterion against the Task requirements and evidence, including counts, scope, deviations and unrun paths. Investigate findings that could change the decision. Where evidence is incomplete or uncertain, inspect outputs or run focused checks. Distinguish confirmed limits from open possibilities. Revisit relevant Spec and Plan sections when findings question the requirements or assumptions. A deliberate difference is an unmet criterion; record accepted exceptions as limitations.
 
 For continued work, use relevant earlier logs and outputs to establish what was addressed and what still applies to the current result. Preserve consequential findings, remaining limits and their implications with supporting evidence in the Task Log or Stage summary.
 
