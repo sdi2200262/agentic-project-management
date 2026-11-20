@@ -23,7 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          ref: ${{ github.ref_name || 'main' }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -33,11 +33,12 @@ jobs:
 
       - name: Determine Version
         id: version
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
         run: |
-          if [[ -n "${{ github.event.inputs.version }}" ]]; then
+          if [[ -n "$REQUESTED_VERSION" ]]; then
             # Use provided version override
-            VERSION="${{ github.event.inputs.version }}"
-            echo "Using version override: $VERSION"
+            VERSION="$REQUESTED_VERSION"
           else
             # Find latest stable release tag (vX.Y.Z without pre-release suffix)
             LATEST_TAG=$(git tag --list 'v[0-9]*.[0-9]*.[0-9]*' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
@@ -63,8 +64,13 @@ jobs:
             fi
           fi
 
-          # Determine if this is a pre-release
-          if [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+-.+$ ]]; then
+          if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+            echo "::error::Set the version to X.Y.Z or X.Y.Z-prerelease."
+            exit 1
+          fi
+
+          echo "Building version $VERSION"
+          if [[ "$VERSION" == *-* ]]; then
             echo "prerelease=true" >> $GITHUB_OUTPUT
           else
             echo "prerelease=false" >> $GITHUB_OUTPUT
@@ -72,27 +78,6 @@ jobs:
 
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "tag=v$VERSION" >> $GITHUB_OUTPUT
-
-      - name: Check Tag Exists
-        id: check_tag
-        env:
-          TAG: ${{ steps.version.outputs.tag }}
-        run: |
-          if git rev-parse "$TAG" >/dev/null 2>&1 || git ls-remote --tags origin "refs/tags/${TAG}" | grep -q "$TAG"; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Create and Push Tag
-        if: steps.check_tag.outputs.exists == 'false'
-        env:
-          TAG: ${{ steps.version.outputs.tag }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "$TAG" HEAD
-          git push origin "$TAG"
 
       - name: Install dependencies
         run: npm ci
@@ -106,10 +91,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.version.outputs.tag }}
-          VERSION: ${{ steps.version.outputs.version }}
           PRERELEASE: ${{ steps.version.outputs.prerelease }}
-          RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
+          RELEASE_NOTES: ${{ inputs.release_notes }}
         run: |
+          remote_tag=$(git ls-remote --refs origin "refs/tags/$TAG")
+          if [[ -n "$remote_tag" ]]; then
+            git fetch --no-tags origin "refs/tags/$TAG"
+            if [[ "$(git rev-parse 'FETCH_HEAD^{commit}')" != "$GITHUB_SHA" ]]; then
+              echo "::error::Tag $TAG points to a different commit than $GITHUB_SHA."
+              exit 1
+            fi
+          else
+            git push origin "$GITHUB_SHA:refs/tags/$TAG"
+          fi
+
           if [[ -n "$RELEASE_NOTES" ]]; then
             NOTES="$RELEASE_NOTES"
           else
@@ -126,11 +121,10 @@ jobs:
             gh release upload "$TAG" dist/*.zip dist/apm-release.json --clobber
           else
             echo "Creating release $TAG"
-            gh release create "$TAG" \
+            gh release create "$TAG" --verify-tag \
               dist/*.zip \
               dist/apm-release.json \
               --title "APM Release $TAG" \
               --notes "$NOTES" \
-              --target "$GITHUB_SHA" \
               $PRERELEASE_FLAG
           fi

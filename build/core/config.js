@@ -40,11 +40,18 @@ export function validateConfig(config) {
   } else if (config.targets.length === 0) {
     errors.push('"targets" array is empty');
   } else {
+    const bundleNames = new Set();
     config.targets.forEach((target, index) => {
       const prefix = `targets[${index}]`;
       if (!target.id) errors.push(`${prefix}: missing "id"`);
       if (!target.name) errors.push(`${prefix}: missing "name"`);
-      if (!target.bundleName) errors.push(`${prefix}: missing "bundleName"`);
+      if (!target.bundleName) {
+        errors.push(`${prefix}: missing "bundleName"`);
+      } else if (bundleNames.has(target.bundleName)) {
+        errors.push(`${prefix}: duplicate "bundleName" "${target.bundleName}"`);
+      } else {
+        bundleNames.add(target.bundleName);
+      }
       if (target.format !== undefined && !['multi-skill', 'single-skill'].includes(target.format)) {
         errors.push(`${prefix}: "format" must be "multi-skill" or "single-skill"`);
       }
