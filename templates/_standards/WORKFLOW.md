@@ -79,7 +79,9 @@ Commits follow agreed conventions and timing and may span Tasks. Delegated instr
 
 ### 3.5 Planning Changes
 
-The Manager aligns the Spec, Plan, `AGENTS.md` and affected assignments before dependent work proceeds. Revisions preserve agreed User involvement through responsibility, size and review points, considering progress, retained knowledge and coordination demands. Work cancelled, superseded or deferred beyond the session retains its ID, reason and any replacement. The Manager reconciles requirements, tables, dependencies and instructions to withdraw obsolete work. It marks the Task Done only after scope agreement, distinguishing it from delivery in the Tracker and Stage summary. Existing logs remain; unperformed work gets no execution log. Pending decisions belong in the Tracker; consequential decisions and reasons remain in Memory.
+The Manager aligns the planning documents, `AGENTS.md` and affected assignments before affected work proceeds. When the User agrees to change ongoing involvement or another arrangement that belongs in the Plan, the Manager records the current agreement there and replaces any previous wording in place. Revisions reflect agreed User involvement through responsibility, size and review points, considering progress, retained knowledge and coordination demands.
+
+Work cancelled, superseded or deferred beyond the session retains its ID, reason and any replacement. The Manager reconciles requirements, tables, dependencies and instructions to withdraw obsolete work. It marks the Task Done only after scope agreement, distinguishing it from delivery in the Tracker and Stage summary. Existing logs remain; unperformed work gets no execution log. Pending decisions belong in the Tracker; consequential decisions and reasons remain in Memory.
 
 Contained corrections to a Task, dependency or Spec point may proceed without approval. Workspace convention changes follow User authorization. Changes to several Tasks, design direction, scope, Stages or overall structure need the User. Several small changes together can also need approval. When new design decisions are needed or repeated follow-ups cannot resolve the issue, the Manager presents options for continuing or stopping to replan; the User decides.
 
@@ -117,15 +119,19 @@ Workers are identified by their bus-folder slugs. Skills resolve supplied IDs to
 
 ## 5. State and Memory
 
+The Tracker and Memory, including the Index, Stage summaries and logs, are the coordination documents. Keep current content in the planning and coordination documents aligned with the latest agreed decisions and verified state. Update affected sections in place and align related Task instructions before affected work starts or resumes, and before waiting or handing off. Preserve earlier outcomes and consequential decisions in their logs or summaries.
+
+When a note points to a consequential document update, briefly state what the document recorded before and what it records now. Give the reason and effect on the work, and link to the updated section.
+
 Each document has one authoritative purpose. The Tracker holds current coordination.
 
 - Tasks lists states, next actions and work locations. It links each Task to the latest reported Worker attempt or concluding Manager log.
 - Agents lists the Manager and separate Workers, their conversation numbers and unresolved continuation or recovery gaps.
-- Notes explains current blockers, pending decisions, cross-Task arrangements and resume conditions. It gives their present consequences and source links. Earlier events stay only while they explain current coordination, with dates, Task IDs or sources to distinguish them as needed.
+- Notes explains current blockers, pending decisions, cross-Task arrangements and resume conditions. It also holds tentative observations about User preferences and coordination proposals while they affect current work. State the conditions, present consequences and sources. Earlier events stay only while they explain current coordination, with dates, Task IDs or sources to distinguish them as needed.
 
-The Manager updates material changes in assignments, states, blockers, decisions, locations and next actions, consolidating related changes before dependent work, waits or Handoffs. It revises affected Task rows and Notes together, replaces superseded accounts and removes resolved notes and context gaps during ordinary updates. Consequential history stays in its owning log or Stage summary before its only account is removed, with a brief reference retained where coordination still needs it. Consequential decisions are preserved before context is lost.
+The Manager consolidates related Tracker updates when assignments, states, blockers, decisions, locations or next actions change. It revises affected Task rows and Notes together, replaces superseded accounts and removes resolved notes and context gaps during ordinary updates. Consequential history stays in its owning log or Stage summary before its only account is removed, with a brief reference retained where coordination still needs it. Consequential decisions are preserved before context is lost.
 
-Memory preserves outcomes, consequential evidence, decisions and continuation context. Index Notes admit brief findings or limits later work needs, their implications and stable source links; they do not duplicate logs, session summaries, requirements, conventions or live PR status. Retained observations preserve their conditions and evidence rather than becoming universal instructions. At Stage completion, the Manager uses both the Tracker and Task Logs: Stage decisions go to the summary, lasting implications to Index Notes, and current coordination remains in the Tracker. It does not transfer accumulated Tracker prose wholesale into Memory.
+Memory preserves outcomes, consequential evidence, decisions and continuation context. Index Notes hold brief findings, limits, established User preferences and agreed changes that later work needs. State their scope and implications with source links, preserving the conditions and evidence of observations. Revise the notes when their implications for later work change. Keep the current agreement in its owning document and live status in the Tracker. At Stage completion, the Manager uses the Tracker and Task Logs to record Stage decisions in the summary and lasting implications in Index Notes. The Index's Stage outcome table summarizes results and material limits.
 
 A session summary is a dated account of results for the User and later sessions.
 

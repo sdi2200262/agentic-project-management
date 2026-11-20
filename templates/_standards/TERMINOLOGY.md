@@ -100,13 +100,15 @@ Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of t
 
 ---
 
-## Memory and state
+## Coordination documents
+
+The Tracker and Memory, including the Index, Stage summaries and logs, make up the coordination documents.
 
 | Term | Definition | Location |
 |---|---|---|
 | **Task Log** | The responsible agent's record of the work: outcome, validation, deliverables and findings. The Manager writes one log when concluding its Task; Worker follow-ups have separate numbered logs linked to earlier attempts. | `.apm/memory/stage-<NN>/`; filenames in Task Logging §5.1 |
 | **Handoff Log** | The record a Manager or Worker conversation writes at its Handoff: what it did and the working knowledge that the Task Logs do not hold. | `.apm/memory/handoffs/<agent-slug>/handoff-<NN>.log.md` |
-| **Index** | The overview of the APM session's history: lasting findings with sources and a table of Stage outcomes linking to their summaries. | `.apm/memory/index.md` |
+| **Index** | Brief findings, limits, established User preferences and agreed changes useful to later work, with sources and a table of Stage outcomes linking to their summaries. | `.apm/memory/index.md` |
 | **Memory** | The APM session's work history and continuation context: Task outcomes, lasting findings, Stage summaries and Handoff Logs. | `.apm/memory/` |
 | **Tracker** | The Manager's current coordination: Task states, next actions and work locations; pending decisions and blockers; Manager and Worker conversation numbers and context gaps. Resolved history belongs in Memory. | `.apm/tracker.md` |
 

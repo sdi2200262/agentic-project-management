@@ -21,7 +21,7 @@ Check current state before writing either file:
 - Read the Tracker and each Worker’s bus files. Check progress, outputs and pending validation for your active Tasks, including subagent contributions.
 - If using version control, verify branches and integration. For Git, check worktrees as well.
 
-Check the continuation details in §3 and bring the Tracker up to date before writing the two files.
+Check the continuation details in §3. Before writing the Handoff files, use verified state and agreed changes to update the Tracker and any affected planning documents, Index Notes and Task instructions. Record pending Task actions in the Tracker’s Next Action.
 
 ## 2. Handoff Log
 

@@ -52,14 +52,14 @@ At an agreed review or the next useful chat reporting point, briefly identify th
 
 ## 4. Planning and AGENTS.md Changes
 
-When a finding, correction or decision changes the Spec, Plan or `AGENTS.md`, update the related content and Task instructions.
+When a finding, correction or decision changes the planning documents (the Spec and Plan) or `AGENTS.md`, update the related content and Task instructions.
 
 You may correct one Task, add a dependency or an isolated Spec point, or propose an `AGENTS.md` update. Follow existing User authorization for changes to workspace conventions. Changes to several Tasks, design direction, scope, Stages or overall structure need the User's approval. Consider their combined effect when several small changes are involved.
 
 1. Identify the change, its evidence, affected documents and dependent or active work. Check how the change affects ongoing work and coordinate any needed adjustment with whoever is performing it. Preserve valid progress, Task identity, current attempt and workspace.
 2. Carry forward decisions already agreed with the User and resolve any further approval needed. If further approval is needed, record the pending decision in the Tracker, present the proposal and wait; unrelated work may continue.
-3. Update Spec requirements, Plan tables, Task fields and dependencies, and authorized workspace guidance. Keep Notes within their document’s purpose. Use the prescribed Task fields and steps for new and revised Tasks, with concrete work, outputs and checks; preserve agreed involvement through responsibility, size and review points. Reassign with regard to progress, retained knowledge and coordination demands. Extend or replace guidance concisely, preserving unrelated content.
-4. Update affected instructions and record what should happen next, the change and its reason in the Tracker. Update your subagents directly; ask the User to deliver Worker corrections per `{GUIDE_PATH:task-assignment}` §5.1, or use a follow-up for a reported attempt. Coordinate User-performed portions with the User. Preserve consequential decisions in the Stage summary.
+3. Update affected Spec and Plan sections and authorized workspace guidance. Record agreed changes to ongoing User involvement and other arrangements owned by the Plan in place, replacing superseded wording. For new or revised Tasks, follow the prescribed format and give concrete work, outputs and checks. Reflect agreed involvement in responsibilities, Task size and review points. When reassigning, consider progress, retained knowledge and coordination demands. Preserve unrelated content.
+4. Align affected instructions and coordination documents (the Tracker and Memory) before affected work continues, and before waiting or handing off. Update your subagents directly. Ask the User to deliver Worker corrections per `{GUIDE_PATH:task-assignment}` §5.1, or use a follow-up for a reported attempt. Coordinate User-performed portions with the User. Keep next actions current in the Tracker and record the change and its reason where they affect current coordination (§8.2). Preserve consequential decisions in the Stage summary and update the Index when a change matters to later work (§8.3).
 
 For work cancelled, superseded or deferred beyond the session, retain its ID, disposition, reason and any replacement. Reconcile requirements, tables, dependencies and instructions so obsolete work is no longer actionable. After scope agreement, mark it Done and record its disposition in the Tracker and Stage summary, distinct from delivery. Preserve existing logs; do not invent execution logs for unperformed work.
 
@@ -94,6 +94,8 @@ After agreement to advance, add the next Stage's Tasks per §8.1 and dispatch pe
 ## 8. Formats
 
 Write the Tracker, Index and Stage summaries for current and later Managers. They can consult the Spec, Plan and linked logs; retain the coordination or findings each record needs and link supporting detail.
+
+When a note points to a consequential document update, briefly state what the document recorded before and what it records now. Give the reason and effect on the work, and link to the updated section.
 
 ### 8.1 Tasks Section Format
 
@@ -136,7 +138,7 @@ The Tracker is `.apm/tracker.md`:
 # APM Tracker
 
 ## Notes
-<Blockers, pending decisions and context needed to coordinate the current Stage, with sources and reasons. Keep notes across Stage boundaries while they still require attention.>
+<Blockers, pending decisions and other context that affects current coordination, with sources and reasons. Keep notes across Stage boundaries while they still require attention.>
 
 ## Tasks
 <Per §8.1>
@@ -152,7 +154,7 @@ The Tracker is `.apm/tracker.md`:
 
 Register the Manager at startup and Workers at first dispatch. Agents holds conversation numbers and unresolved continuation or recovery gaps, not Task states, workspaces, next actions or a list of temporary subagents. Clear gaps when restored; recovery does not change the number.
 
-Use Notes for context needed to coordinate current work or resume reliably: blockers, pending decisions, cross-Task arrangements and resume conditions. State each note's present consequence and link its owning source. Earlier events may remain where they still affect coordination; distinguish what happened then from what applies now, using dates, Task IDs or source links where needed for the current and next Manager.
+Use Notes for context needed to coordinate or resume work, including blockers, pending decisions, cross-Task arrangements and resume conditions. Include tentative observations about User preferences and coordination proposals only when they affect current work. Describe what you observed and under what conditions, or what remains open. Give the effect on the next action or decision and cite the source. Distinguish earlier events from what applies now where it matters.
 
 Revise affected Task rows and Notes together. Replace superseded information, update references and clear resolved notes and context gaps during ordinary updates. Before removing the only record of a consequential event, preserve it in its Task Log or Stage summary. Keep a short reference while coordination still needs it.
 
@@ -164,7 +166,7 @@ The Index is `.apm/memory/index.md`:
 # APM Memory Index
 
 ## Notes
-<Lasting findings and accepted or unresolved limits: their implications for later work, with source links>
+<Findings, limits, established User preferences and agreed changes that matter to later work, with their scope, implications and sources>
 
 ## Stage Summaries
 
@@ -173,7 +175,7 @@ The Index is `.apm/memory/index.md`:
 | 1 - <Stage Name> | <Accepted result and material limits, in brief> | [Stage 1](stage-01/stage-01.summary.md) |
 ```
 
-Admit an Index note only when later work needs its finding or limitation: give the implication briefly and link the supporting log or summary. Preserve the conditions and evidence of historical observations; do not turn them into permanent rules. Omit live PR status, routine history and duplicated requirements, arrangements or conventions. Pending decisions belong in the Tracker; accepted limits relevant to later work remain here. Session requirements stay in the Spec, work structure in the Plan and workspace conventions in `AGENTS.md`; Stage summaries preserve the decisions and evidence.
+Keep Index Notes brief and limited to what later work needs. State the scope and implications and link the supporting log or summary. Preserve the conditions and evidence of observations and revise notes when their implications for later work change. Current requirements, arrangements and conventions stay in their owning documents. Use the Stage outcome table for results and material limits. Keep pending decisions and live status in the Tracker.
 
 ### 8.4 Stage Summary Format
 
