@@ -16,7 +16,7 @@ Write one document at a time: the Spec, then the Plan. For each:
 
 1. Present the proposed organization and consequential choices, reasons and assumptions.
 2. In the same turn, read the target file and write the document. Check it against the approved understanding. When writing the Plan, check that its Tasks can deliver and verify the approved Spec. Check consistency with the other documents and place each detail in its owning document or field.
-3. Present each document for approval in chat. For the Spec, explain the outcomes, constraints, consequential design choices and success criteria in terms the User can judge. Distinguish the decisions that need the User’s judgment from supporting detail the agents will use. For Plan approval, summarize the Stages, Tasks, assignments and agreed User involvement. State what the User is approving, link the document, explain what comes next and wait for their review. Apply corrections, check their effects on earlier documents and ask again.
+3. Present each document for approval in chat. For the Spec, explain the outcomes, constraints, consequential design choices and success criteria in terms the User can judge. Distinguish the decisions that need the User’s judgment from supporting detail the agents will use. For Plan approval, summarize the Stages, Tasks, assignments and agreed User involvement. State what the User is approving, link the document, explain what comes next and wait for their review. Apply corrections to all affected documents, including earlier ones, and ask again.
 
 Start the next document only after approval, so a problem in one document is caught before the next is built on it. After Plan approval, review any needed changes to `AGENTS.md` per §4.
 

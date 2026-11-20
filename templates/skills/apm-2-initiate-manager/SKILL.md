@@ -98,12 +98,12 @@ If the User ends early, pause active Tasks. Stop your subagents and ask the User
 
 First recap the session in chat. Present the intended outcomes and actual results, Stages and Tasks, participating agents, consequential findings and deliverables, and anything unfinished, accepted limitations and verification gaps. Say which Stages you coordinated and which you know from Handoff Logs, Stage summaries or a compaction summary.
 
-Then ask whether the User wants a saved Session Summary, an archive, both or neither. `.apm/session.summary.md` is a dated account of results for the User and later sessions; current coordination stays in the Tracker. If they choose a saved summary, offer these options:
+Explain the effects of archival described below, then ask whether the User wants a saved Session Summary, an archive, both or neither. `.apm/session.summary.md` is a dated account of results for the User and later sessions; current coordination stays in the Tracker. If they choose a saved summary, offer these options:
 
 - Here, with your current context: read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
 - In a new chat with more room: the User asks for an APM session summary there.
 
-The User may also archive directly with `apm archive`, or keep the paused session in place. Archiving preserves session records and linked Git worktrees under `.apm/worktrees/` with their uncommitted contents. The CLI reports their new paths. They stay attached to their source repositories and rely on them for Git history. Branches stay intact. Other working copies outside `.apm/` and ordinary project-directory changes stay in place.
+Archiving preserves session records and moves linked Git worktrees under `.apm/worktrees/` with their uncommitted work, then clears active APM files and installed instructions. Moved worktrees stay attached to their source repositories, and the CLI reports their new paths. Archival preserves branches, working copies outside `.apm/` and ordinary project-directory changes. The User may also run `apm archive` directly or keep the paused session in place.
 
 ## 4. Subagents
 

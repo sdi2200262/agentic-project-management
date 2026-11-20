@@ -19,12 +19,12 @@ Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 3. Check the planning documents, Tracker and Stage summaries against the latest relevant Task Logs, Handoff Logs, deliverables and any version control state. Include unfinished worktrees where present. Follow earlier-attempt links as needed. Record material differences, validation gaps and any uncertainty from reconstructed context, with sources.
 4. Write `.apm/session.summary.md` per §2.1. Count unique Task IDs from the session records and ignore copies in worktrees. Summarize conclusions where they belong and link the evidence. Say which work you remember and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
 5. Present the summary and apply the User's corrections.
-6. If the User chose a summary only, stop after reporting it. Otherwise, explain the effects of archival:
+6. If the User chose a summary only, stop after reporting it. If they have not agreed to archival with its effects explained, explain these effects and ask whether to proceed:
    - The session's `.apm/` records move to `.apm/archives/` for later sessions. Archival clears active APM files and installed instructions. `apm init` reinstalls them.
    - Remaining linked Git worktrees under `.apm/worktrees/` move with uncommitted contents and stay attached to their source repositories.
    - Other working copies outside `.apm/` and ordinary project-directory changes stay in place. Task and branch states remain unchanged.
 
-   If the User has yet to choose archival, ask explicitly whether to proceed. Stop if they decline.
+   Proceed only with the User's explicit agreement.
 7. Ask for an archive name, or use the default dated name. Run `apm archive --force`, or `apm archive --force --name <name>`. Continue only after the CLI confirms preservation and archival succeeded. If it reports a failure, show the obstacle and current paths, and follow its recovery guidance.
 8. Read `.apm/archives/index.md`, creating it per §2.2 if it is missing or malformed, and add the new archive at the top of its table.
 9. Tell the User the archive's path and any relocated worktrees the CLI reported. To start a new session, the User runs `apm init` (or `apm custom`) and then starts a new Planner conversation; the next Planner can use the archives.

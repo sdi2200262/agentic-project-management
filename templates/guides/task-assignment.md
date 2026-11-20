@@ -8,7 +8,7 @@ A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each
 
 Select Ready Tasks from dependencies, available agents, Plan preferences and current User instructions. Follow agreed involvement and review points; explain and recommend adjustments when findings warrant them.
 
-Before starting any Task, resolve conflicting objectives, instructions and checks in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependencies and prepare the workspace per §3.
+Before starting any Task, resolve conflicting objectives, instructions and checks in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check Task dependencies and any external prerequisites for starting the work. Prepare the workspace per §3.
 
 Mark selected `manager` Tasks Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. Choose sequential or parallel work based on dependencies, workspace isolation and agreed User involvement.
 

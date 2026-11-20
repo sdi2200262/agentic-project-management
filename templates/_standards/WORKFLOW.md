@@ -10,9 +10,9 @@ Work structure and interaction are distinct. The Spec, ordered Stages, Tasks, de
 
 | Role | Responsibility | Working context |
 |---|---|---|
-| Planner | Define and plan the work with the User. | Workspace research and planning conversation. |
-| Manager | Assign Tasks to Workers or undertake them, review results and maintain the APM files. | Spec, Plan, `AGENTS.md`, Tracker and Memory. |
-| Worker | Execute, validate and report assigned Tasks. | Task Prompts, `AGENTS.md` and its own conversation. |
+| Planner | Defines and plans the work with the User. | Workspace research and planning conversation. |
+| Manager | Assigns Tasks to Workers or undertakes them, reviews results and maintains the APM files. | Spec, Plan, `AGENTS.md`, Tracker and Memory. |
+| Worker | Executes, validates and reports assigned Tasks. | Task Prompts, `AGENTS.md` and its own conversation. |
 
 Workers do not read the Spec, Plan, Tracker or Index unless the User widens their scope. The Manager supplies relevant requirements, involvement arrangements and dependency context in self-contained Task Prompts. Native subagents remain within their parent's scope and are distinct from APM Workers and bus delivery. Task Assignment's native-assignment subsection supplies shared delegation guidance to the roles that need it; role files state delegation policy and the relevant procedure supplies its particular context.
 
@@ -50,7 +50,7 @@ Implementation ends when all Stages complete or the User stops early; closure fo
 
 ### 3.1 Spec
 
-`.apm/spec.md` defines intended outcomes, scope, required behavior, design, constraints and acceptance criteria. Its opening states the session goal and success criteria; subject sections keep settled requirements, decisions, reasons and authoritative sources together. Notes hold brief context that matters across subjects, such as assumptions, open choices, relevant alternatives or later-session scope. Use dedicated subsections for specifications of optional session documents. Notes do not duplicate subject sections or hold live coordination. The Manager maintains the Spec and supplies relevant content to Workers.
+`.apm/spec.md` defines intended outcomes, scope, required behavior, design, constraints and acceptance criteria. Its opening states the session goal and success criteria; subject sections keep settled requirements, decisions, reasons and authoritative sources together. Notes hold brief context that matters across subjects, such as assumptions, open choices, relevant alternatives or later-session scope. Specifications for optional session documents have dedicated subsections in Notes. Notes do not duplicate subject sections or hold live coordination. The Manager maintains the Spec and supplies relevant content to Workers.
 
 ### 3.2 Plan
 
@@ -68,12 +68,12 @@ The Planner checks repository history and workspace instructions. During the coo
 
 When the session uses version control, the Manager explains the proposed setup in its first understanding (§2.2) and applies it after approval, including agreed APM file tracking. The Manager prepares workspaces and handles integration, pushing and cleanup.
 
-- For parallel Tasks in one repository, including Manager Tasks, use separate working copies when the agreed tools support them, such as Git worktrees. Check for interference through shared repository state and external resources.
-- In a shared working directory, run only independent Tasks in parallel, with disjoint writable paths. Shared reads use stable inputs. Worker prompts and native briefs name the shared directory, writable boundaries, shared resources and when to coordinate or pause.
+- Parallel Tasks in one repository, including Manager Tasks, use separate working copies when the agreed tools support them, such as Git worktrees. Isolation checks cover interference through shared repository state and external resources.
+- Tasks running in parallel in a shared working directory must be independent and have disjoint writable paths. Shared reads use stable inputs. Worker prompts and native briefs name the shared directory, writable boundaries, shared resources and when to coordinate or pause.
 
-Sequence overlapping changes, shared generated outputs and test or service operations unless isolated. Required dependency outputs, including uncommitted and untracked files, must actually be usable in the assigned workspace.
+Overlapping changes, shared generated outputs and test or service operations run in sequence unless isolated. Required dependency outputs, including uncommitted and untracked files, must actually be usable in the assigned workspace.
 
-The CLI relocates linked Git worktrees under `.apm/worktrees/` during archival. Keep other working copies outside `.apm/` and record how their work will be preserved.
+The CLI relocates linked Git worktrees under `.apm/worktrees/` during archival. Other working copies stay outside `.apm/`, with a record of how their work will be preserved.
 
 Commits follow agreed conventions and timing and may span Tasks. Delegated instructions preserve commit timing and approvals. Logs record commits and uncommitted work. Branches and working copies may span Tasks or Stages. The Manager removes them only when their work is preserved and they are no longer needed. Acceptance is independent of their lifecycle. The Tracker locates work in Branch and Worktree, keeps Next Action current, and records shared arrangements, remaining limitations and pending integration or cleanup in Notes, including for Done Tasks.
 
@@ -111,27 +111,27 @@ The Planner creates `.apm/bus/<worker>/` with `task.md`, `report.md` and `handof
 
 | Message | Sender → receiver | User delivery |
 |---|---|---|
-| Task Prompt | Manager → Worker | Start a Worker conversation with its agent ID, or ask an existing Worker to check its tasks |
-| Task Report | Worker → Manager | Ask the Manager to check the named agents’ reports or all pending reports |
-| Handoff Prompt | Outgoing → incoming conversation | Start a new conversation of the same role, supplying the Worker ID when applicable |
+| Task Prompt | Manager → Worker | The User starts a Worker conversation with its agent ID or asks an existing Worker to check its tasks. |
+| Task Report | Worker → Manager | The User asks the Manager to check the named agents’ reports or all pending reports. |
+| Handoff Prompt | Outgoing → incoming conversation | The User starts a new conversation for the same role and supplies the Worker ID when applicable. |
 
 Workers are identified by their bus-folder slugs. Skills resolve supplied IDs to those folders. An outside agent can contribute through the bus without becoming a Worker, writing Task Logs or joining Handoffs; its report carries its evidence to the Manager.
 
 ## 5. State and Memory
 
-The Tracker and Memory, including the Index, Stage summaries and logs, are the coordination documents. Keep current content in the planning and coordination documents aligned with the latest agreed decisions and verified state. Update affected sections in place and align related Task instructions before affected work starts or resumes, and before waiting or handing off. Preserve earlier outcomes and consequential decisions in their logs or summaries.
+The Tracker and Memory, including the Index, Stage summaries and logs, are the coordination documents. The planning and coordination documents reflect the latest agreed decisions and verified state. Agents update affected sections in place and align related Task instructions before affected work starts or resumes, and before a wait or Handoff. Logs and summaries preserve earlier outcomes and consequential decisions.
 
-When a note points to a consequential document update, briefly state what the document recorded before and what it records now. Give the reason and effect on the work, and link to the updated section.
+A note about a consequential document update briefly records what the document said before, what it says now, why it changed and what the change means for the work. The note links to the updated section.
 
 Each document has one authoritative purpose. The Tracker holds current coordination.
 
 - Tasks lists states, next actions and work locations. It links each Task to the latest reported Worker attempt or concluding Manager log.
 - Agents lists the Manager and separate Workers, their conversation numbers and unresolved continuation or recovery gaps.
-- Notes explains current blockers, pending decisions, cross-Task arrangements and resume conditions. It also holds tentative observations about User preferences and coordination proposals while they affect current work. State the conditions, present consequences and sources. Earlier events stay only while they explain current coordination, with dates, Task IDs or sources to distinguish them as needed.
+- Notes explains current blockers, pending decisions, cross-Task arrangements and resume conditions. It also holds tentative observations about User preferences and coordination proposals while they affect current work. Each note gives its conditions, present consequences and sources. Earlier events stay only while they explain current coordination, with dates, Task IDs or sources to distinguish them as needed.
 
 The Manager consolidates related Tracker updates when assignments, states, blockers, decisions, locations or next actions change. It revises affected Task rows and Notes together, replaces superseded accounts and removes resolved notes and context gaps during ordinary updates. Consequential history stays in its owning log or Stage summary before its only account is removed, with a brief reference retained where coordination still needs it. Consequential decisions are preserved before context is lost.
 
-Memory preserves outcomes, consequential evidence, decisions and continuation context. Index Notes hold brief findings, limits, established User preferences and agreed changes that later work needs. State their scope and implications with source links, preserving the conditions and evidence of observations. Revise the notes when their implications for later work change. Keep the current agreement in its owning document and live status in the Tracker. At Stage completion, the Manager uses the Tracker and Task Logs to record Stage decisions in the summary and lasting implications in Index Notes. The Index's Stage outcome table summarizes results and material limits.
+Memory preserves outcomes, consequential evidence, decisions and continuation context. Index Notes hold brief findings, limits, established User preferences and agreed changes that later work needs. They give scope and implications with source links and preserve the conditions and evidence of observations. The Manager revises the notes when their implications for later work change. Current agreements stay in their owning documents. Live status stays in the Tracker. At Stage completion, the Manager uses the Tracker and Task Logs to record Stage decisions in the summary and lasting implications in Index Notes. The Index's Stage outcome table summarizes results and material limits.
 
 A session summary is a dated account of results for the User and later sessions.
 
@@ -189,9 +189,9 @@ Before approval, the Spec must define the agreed outcomes and behavior, and each
 
 **Runtime:** `task-assignment.md` and `apm-4-check-tasks`.
 
-The Manager selects Ready work and grouping from dependencies, current state, Plan arrangements and User instructions. It respects ordered Stages and required pauses while choosing execution and reporting within them. Manager Tasks may be divided into coherent native contributions, including individual Tasks, related batches or work spanning Tasks; results return directly without a Message Bus or whole-batch reporting barrier. Contributions retain Task-level outputs and validation. Grouping follows shared context, expertise, isolation and useful parallelism. Related agents can be reused; new agents receive sufficient context.
+The Manager selects Ready work and grouping from dependencies, current state, Plan arrangements and User instructions. It checks any external prerequisites for starting the work. It respects ordered Stages and required pauses while choosing execution and reporting within them. Manager Tasks may be divided into coherent native contributions, including individual Tasks, related batches or work spanning Tasks; results return directly without a Message Bus or whole-batch reporting barrier. Contributions retain Task-level outputs and validation. Grouping follows shared context, expertise, isolation and useful parallelism. Related agents can be reused; new agents receive sufficient context.
 
-Separate Worker assignments use Task Prompts and the Message Bus. A single dispatch sends one Task. A batch sends 2–3 independent Ready Tasks or a Same-Worker chain whose other dependencies are complete. Dispatch chains one Task at a time when another Worker needs intermediate results. Parallel assignments meet §3.4 regardless of whether they use separate Workers or native subagents.
+Separate Worker assignments use Task Prompts and the Message Bus. A single dispatch sends one Task. A batch sends 2–3 independent Ready Tasks or a Same-Worker chain whose other dependencies are complete. The Manager dispatches chains one Task at a time when another Worker needs intermediate results. Parallel assignments meet §3.4 regardless of whether they use separate Workers or native subagents.
 
 Each Worker takes one dispatch at a time. The Manager reviews incoming reports and dispatches newly Ready work without waiting for unrelated reports. It waits only when the sole pending report would make a Waiting Task Ready for the Worker about to receive work.
 
@@ -209,7 +209,7 @@ Manager Tasks remain Active through implementation, corrections, review and pend
 
 The Worker confirms its identity, handles any Handoff and starts its waiting prompt. Role instructions own Task and Report receipt; delivery commands route there. An established Worker retains its identity when checking Tasks.
 
-The Manager reads the requested reports, or all pending reports when none are specified, and returns to coordination if none are waiting.
+The Manager reads the requested reports, or all pending reports when none are specified, and returns to coordination if none are waiting. It matches Worker reports to the expected dispatch and attempt before applying outcomes.
 
 The Worker uses its Task Prompt, workspace instructions and knowledge of its area built through earlier assignments and its conversation. It integrates dependencies, follows instructions, validates the work and investigates failures before making targeted fixes. Session coordination details stay in APM files unless they are part of the work itself.
 
@@ -271,6 +271,6 @@ Managers and Workers resuming after a compaction of their context follow their r
 
 A new conversation may summarize without adopting a role; the Manager may summarize at completion or early stopping. Normal completion reports results. Early closure pauses Tasks and subagents, asks the User to pause other active work, and records checked unfinished state without changing Task states. Summary and archive preparation uses current stop confirmation or collects missing state from the User. The optional summary checks outcomes, findings, decisions, limits and attribution against sources and deliverables. Completion counts describe workflow progress, not universal validation success.
 
-Archiving is optional and needs User approval. It preserves session records and remaining linked Git worktrees under `.apm/worktrees/` with their uncommitted contents, verifies preservation, then clears active APM files and installed instructions. Worktrees remain attached to source repositories. Other working copies outside `.apm/` stay in place, as do ordinary project-directory changes. Failure preserves recoverable state and reports the paths needing attention. Completing Tasks, committing and merging are separate decisions.
+Archiving is optional and requires the User's approval. The agent explains the effects before requesting approval and reuses prior approval that covered those effects. Archival preserves session records and remaining linked Git worktrees under `.apm/worktrees/` with their uncommitted contents, verifies preservation, then clears active APM files and installed instructions. Worktrees remain attached to source repositories. Other working copies outside `.apm/` stay in place, as do ordinary project-directory changes. Failure preserves recoverable state and reports the paths needing attention. Completing Tasks, committing and merging are separate decisions.
 
 The archive index links to summaries. A new installation starts another session; its Planner can use relevant archives after checking current evidence. Archive deletion asks for confirmation describing the files, worktrees and uncommitted work to be deleted; `-f` skips that confirmation. A failed deletion stops and warns that cleanup may be partial.
