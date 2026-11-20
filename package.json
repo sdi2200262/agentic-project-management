@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/sdi2200262/agentic-project-management#readme",
   "engines": {
-    "node": ">=18"
+    "node": "^18.17.0 || >=20.5.0"
   },
   "publishConfig": {
     "access": "public"

@@ -18,6 +18,7 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 
 ### Changed
 
+* CLI package metadata now matches the Node.js range declared by its existing dependencies. The range is Node.js 18.17 or newer in the 18.x series, or Node.js 20.5 or later.
 * The Planner and Manager suggest how you stay involved, instead of involvement being hardwired through user-mediated coordination. You choose the arrangement of how work gets reviewed and can change it later.
 * You and the Planner agree how to use version control. The Manager explains its setup before starting and makes earlier Task outputs available, including uncommitted work. Parallel work can use separate working copies such as Git worktrees.
 * Worker batches now stop at partly done Tasks. Agreed User reviews happen before the Worker reports.
@@ -27,6 +28,7 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 ### Fixed
 
 * Stronger planning and review safeguards reinforce work definition during planning, evidence-based acceptance and continued progress on unaffected work while checks or decisions are pending.
+* A failed bundle download during an update leaves the active session intact. Bundle extraction refuses to write through existing symbolic links inside the project.
 
 ## CLI v1.0.3 + Templates v1.1.0 - 2026-10-29
 

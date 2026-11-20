@@ -151,7 +151,7 @@ export async function initCommand(options = {}) {
   logger.success('APM initialized!');
   logger.showInstallationNotes(manifest, assistantIds);
   console.log('');
-  logger.info('New to APM? The apm-assist skill lets your assistant explain how APM works: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
+  logger.info('New to APM? The apm-assist skill lets your assistant explain how APM works: https://github.com/sdi2200262/agentic-project-management/tree/main/skills/apm-assist');
 }
 
 export default initCommand;

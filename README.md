@@ -23,7 +23,7 @@ The session's state lives in shared files outside any conversation: the planning
 
 ## Getting started
 
-APM works with Claude Code and any agents that use `AGENTS.md` and `.agents/skills/`, such as Codex, OpenCode and Cursor. Install the `agentic-pm` CLI with Node.js 18 or later:
+APM works with Claude Code and any agents that use `AGENTS.md` and `.agents/skills/`, such as Codex, OpenCode and Cursor. Install the `agentic-pm` CLI with Node.js 18.17 or newer in the 18.x series, or Node.js 20.5 or later:
 
 ```bash
 npm install -g agentic-pm
@@ -60,7 +60,7 @@ Before updating, check the [changelog](CHANGELOG.md) for migration notes, upgrad
 |---------|-------------|
 | `apm init` | Install an official release |
 | `apm custom` | Install from a custom repository |
-| `apm update` | Archive the current session and install the newest stable release |
+| `apm update` | Archive the session and install an available update from its source |
 | `apm archive` | Archive a session or manage archives |
 | `apm add` / `apm remove` | Add or remove installation targets |
 | `apm status` | Show installation state |

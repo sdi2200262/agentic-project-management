@@ -4,7 +4,7 @@
 
 The CLI extracts release ZIPs into your project. Bundles can overwrite any project file at a path they contain, including source code and configuration. Installed instructions can direct an AI assistant to run commands, access data or change files when used.
 
-Installation extracts files without running bundle scripts. The CLI rejects entries whose paths resolve outside the project and skips entries under `.apm/archives/`. It does not scan file contents or verify release signatures.
+Installation extracts files without running bundle scripts. The CLI checks archive-entry paths against the project root, skips entries under `.apm/archives/` and refuses extraction through existing symbolic links within the project. It does not scan file contents or verify release signatures.
 
 ## Custom repositories
 
