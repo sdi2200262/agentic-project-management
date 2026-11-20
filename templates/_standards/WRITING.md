@@ -4,7 +4,7 @@ These standards guide template authors and maintainers in writing complete, conc
 
 ## 1. Write for the Reader
 
-State what the reader needs to do, with the context needed to do it. Role introductions describe responsibilities and place in the session, then tell an initiating agent to take on or continue the role. Guides identify their readers and procedure. Operating instructions address the applicable agent as "you" and use third person for other roles. Workflow descriptions state what each role does; authoring guidance addresses template authors and maintainers.
+State what the reader needs to do and give the context to do it. Introduce each role's responsibilities and place in the session, then say how to take it on or continue it. Guides identify their readers and procedure. Address the acting agent as "you" and other roles in the third person. Describe workflow behavior by role and address authoring guidance to maintainers.
 
 Write for the sources, authority and responsibilities each reader actually has. Explain an unfamiliar APM concept when the agent first needs it. Use the terms in `TERMINOLOGY.md` consistently and ordinary English elsewhere; do not introduce shorthand as an undefined workflow concept. Distinguish Task state from Task outcome even where both schemas use `status`.
 

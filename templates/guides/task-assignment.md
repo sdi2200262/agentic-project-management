@@ -8,9 +8,11 @@ A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each
 
 Select Ready Tasks from dependencies, available agents, Plan preferences and current User instructions. Follow agreed involvement and review points; explain and recommend adjustments when findings warrant them.
 
-Before starting either Manager or Worker work, resolve conflicting objectives, instructions and validation in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependency context and prepare the workspace per §3. For Tasks marked `manager`, mark the selected Ready Tasks Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. You may coordinate your Tasks sequentially or concurrently as dependencies, workspace isolation and agreed User involvement allow.
+Before starting any Task, resolve conflicting objectives, instructions and checks in the Spec, Plan and `AGENTS.md` per `{GUIDE_PATH:task-review}` §4. Check dependencies and prepare the workspace per §3.
 
-For your own Tasks, group related work or split it into coherent contributions where shared context, expertise, resources, isolation or useful parallelism justify it. Sequence dependent work and keep each Task’s outputs and validation traceable. Prepare native assignments per §1.1. Results return directly; review useful results and continue newly unblocked work without waiting for an entire group. Worker batch-report and attempt rules do not apply to native contributions.
+Mark selected `manager` Tasks Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. Choose sequential or parallel work based on dependencies, workspace isolation and agreed User involvement.
+
+Group related work or split it into contributions based on shared context, expertise, resources, isolation and useful parallelism. Sequence dependent work and keep each Task's outputs and validation traceable. Prepare native assignments per §1.1. Review results as they return and continue newly unblocked work without waiting for the entire group.
 
 For Worker assignments:
 
@@ -32,10 +34,10 @@ Give each subagent an objective, necessary requirements and sources, workspace i
 - For implementation, carry applicable validation and conditions for seeking guidance from Task Execution §§3.1 and 4 into the brief. Keep Task outputs and checks traceable when grouping implementation work.
 - Other roles scope the brief to their research or preparation and specify the evidence and escalation conditions their contribution needs.
 
-Stay within your permitted scope. Recommend Git when arranging parallel work for safer isolation and broader parallel options.
+Stay within your permitted scope. Choose how to isolate parallel assignments according to the agreed tools and workspace.
 
-- With Git, parallel Tasks in one repository use separate worktrees. Worktrees do not isolate shared external resources.
-- Without Git, assignments must be independent, with disjoint writable files, directories and resources. They must not change inputs another assignment needs. Each no-Git parallel assignment must state that Git isolation is unavailable and identify writable boundaries, shared resources and when to coordinate or pause.
+- For parallel Tasks in one repository, use separate working copies when supported, such as Git worktrees. Check what repository state and external resources the copies still share.
+- When Tasks share a working directory, run only independent assignments with disjoint writable files and directories. Keep inputs stable for readers. State the shared directory, writable boundaries, shared resources and when to coordinate or pause in each assignment.
 
 Sequence overlapping changes, broad formatting, generation and shared test/service operations unless isolated.
 
@@ -54,22 +56,24 @@ Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's 
 3. Keep the instructions on the Task. Supply enough purpose and participation context for the Worker to explain its Task, without copying the wider Stage structure or unrelated coordination. Include other Task IDs only where they identify dependencies.
 4. If the Plan lists dependencies, write Context from Dependencies. Same-Worker means both Tasks are assigned to the same agent; Cross-Worker means different agents, including you:
    - Name each earlier Task, its outputs and paths, and how to use them.
-   - For Cross-Worker dependencies, read the producer’s latest accepted attempt log, following earlier-attempt links where needed. Name that log in the prompt for the Worker to read before using its outputs. Provide numbered reading and integration steps, preserving interfaces and constraints. Do the same for Same-Worker dependencies when earlier context is missing after Handoff or recovery from a lost, corrupted or compacted conversation. Use the Agents table's context gaps to identify what needs restoring.
+   - Read the producer's latest accepted attempt log for Cross-Worker dependencies. Do the same for Same-Worker dependencies when earlier context is missing after Handoff or recovery from a lost, corrupted or compacted conversation. Check the Agents table for gaps and follow earlier-attempt links as needed.
+   - For each dependency that needs its log, name the log in the prompt. Give numbered steps to read it before using the outputs and to integrate the outputs, preserving interfaces and constraints.
    - Trace upstream when earlier Tasks set patterns or contracts this Task relies on. Stop where an intermediate output fully captures them.
 5. Add execution, validation or logging guidance only when it is specific to this Task. The Worker's guides already cover the general rules.
 
 Reread the Spec at the first dispatch of a Stage and after any change to it.
 
-## 3. Version Control
+## 3. Workspace Preparation
 
-When the session uses Git, apply the Spec’s agreements and repository conventions to the branches, worktrees and commits you manage. Consult `AGENTS.md` and recent repository history for conventions the Spec leaves open.
+Prepare workspaces for your Tasks and Worker assignments. You handle integration and cleanup. Workers use the assigned workspace and commit instructions.
 
-1. Make sure required dependency outputs are available and usable in the workspace. Arrange access to needed uncommitted and untracked files; a new worktree does not automatically contain them.
-2. Apply the parallel-isolation rules in §1.1 to your Tasks, native contributions and Worker dispatches. When creating APM-managed worktrees, place them under the session root’s `.apm/worktrees/` so a future session archive can include them. For an agreed external worktree, record how its work will be preserved.
-3. Record the branch, any worktree and Next Action in the Tracker. Several Tasks may share a branch or workspace when the arrangement allows it.
-4. In each Worker prompt, give the working directory, branch or worktree, applicable commit instructions and the session root for every `.apm/` path. Put any no-Git parallel arrangement and its constraints in Workspace per §7.1.
+1. Apply §1.1's isolation rules to parallel Tasks, native contributions and Worker dispatches.
+2. If using version control, follow the Spec's agreements for work locations, branches, commits and integration. Consult `AGENTS.md` and recent repository history for conventions the Spec leaves open. Put APM-managed, linked Git worktrees in the session root's `.apm/worktrees/`. Keep other working copies outside `.apm/` and record how their work will be preserved.
+3. Make sure required dependency outputs are usable in the assigned workspace. Provide any needed uncommitted or untracked files when the working copy lacks them.
+4. Record the Next Action, any branch and any separate working copy in the Tracker. Tasks may share a branch or workspace when the arrangement allows.
+5. In each Worker prompt, give the working directory and the session root for `.apm/` paths. Include branch and commit instructions where applicable. For parallel work in a shared directory, describe the isolation constraints in Workspace per §7.1.
 
-You prepare workspaces and handle integration and cleanup; Workers use the assigned workspace and commit instructions. Follow agreed commit and integration timing, revisiting it with the User when needed. If Git is enabled later, agree and apply the setup, recording session choices in the Spec and lasting conventions in `AGENTS.md`.
+Revisit commit and integration timing with the User when needed. If adding version control later, agree on the setup with the User, then apply it. Record session choices in the Spec and lasting conventions in `AGENTS.md`.
 
 ## 4. Delivery
 
@@ -92,8 +96,8 @@ A follow-up Task sends a Task back to the same Worker after review, with a revis
 When a planning change affects an active Task whose attempt has not been reported, correct the existing dispatch:
 
 1. Coordinate the correction through the User, checking progress and arranging a pause if needed. Align the planning documents per `{GUIDE_PATH:task-review}` §4.
-2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and worktree. In Instructions, explain what changed, what completed work remains valid and what to do next. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
-3. Record the correction and next action in the Tracker and deliver per §4. This revises the current dispatch, preserving its branch and worktree.
+2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and workspace. In Instructions, explain what changed, what completed work remains valid and what to do next. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
+3. Record the correction and next action in the Tracker and deliver per §4.
 
 After a reported attempt, review it and use a follow-up Task per §5 instead.
 
@@ -125,7 +129,7 @@ log_path: ".apm/memory/stage-<NN>/task-<NN>-<MM>.log.md"
 <Only when the Task has dependencies, per §2 step 4>
 
 ## Workspace
-<Working directory, branch/worktree and commit instructions where applicable, and the session root for `.apm/` paths. For no-Git parallel work: explicit writable scope, shared resources and coordination/pause conditions per §3>
+<Working directory, branch and commit instructions where applicable, and the session root for `.apm/` paths. For parallel work in a shared directory: writable scope, shared resources and when to coordinate or pause per §3>
 
 ## Output
 <The deliverables from the Plan's Output field>

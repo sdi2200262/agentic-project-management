@@ -5,7 +5,7 @@ description: Explain APM, answer documentation questions, inspect installations 
 
 # APM Assist
 
-Use this skill to answer questions about APM and help with installation or migration. Planner, Manager and Worker duties run in their own dedicated chats. To start a session, follow the [Getting Started](https://agentic-project-management.dev/docs/getting-started) guide and direct the User to a new Planner chat.
+Answer APM questions and help with installation or migration. Each Planner, Manager and Worker has its own chat. For a new session, follow [Getting Started](https://agentic-project-management.dev/docs/getting-started) and direct the User to a new Planner chat.
 
 ## 1. APM Overview
 
@@ -53,10 +53,10 @@ Paths use `https://agentic-project-management.dev`. Source documentation is in [
 
 ## 3. Installation State
 
-When the setup matters to the answer:
+When the answer depends on the installation:
 
 1. Read `.apm/metadata.json` for `source`, `repository`, `releaseVersion`, `cliVersion`, `assistants` (installed target IDs) and `installedFiles`.
-2. Run `apm --version` for the current CLI version; metadata records the CLI used at installation.
+2. Run `apm --version` for the current CLI version. Metadata records the version used at installation.
 3. Inspect relevant installed files and session records. Missing or unfamiliar metadata needs investigation against the installed release's source before choosing an update procedure.
 4. If APM is not installed, guide the User through `apm init` or `apm custom` as appropriate.
 

@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Follow these instructions only when the User requests a Manager Handoff or an APM instruction directs you here. Otherwise, stop.
 
-A Manager Handoff continues coordination in a new Manager conversation within the same session. As the outgoing Manager, write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in `.apm/bus/manager/handoff.md`, tells the next conversation what to read and where to resume. The next conversation also reads the planning documents, the Tracker and the Index at initiation, per `{SKILL_PATH:apm-2-initiate-manager}`.
+A Manager Handoff continues coordination in a new Manager conversation in the same session. Write a Handoff Log to preserve your working context and a Handoff Prompt to direct the incoming Manager. It also reads the planning documents, Tracker and Index per `{SKILL_PATH:apm-2-initiate-manager}`.
 
 Your conversation number starts at 1 and advances only at Handoff. Use the number from your incoming Handoff Prompt if present; the next conversation is one higher.
 
@@ -19,13 +19,13 @@ If subagents are running when a Handoff is requested, tell the User, pause them 
 Check current state before writing either file:
 
 - Read the Tracker and each Worker’s bus files. Check progress, outputs and pending validation for your active Tasks, including subagent contributions.
-- With version control, use git to check branches, worktrees and merges.
+- If using version control, verify branches and integration. For Git, check worktrees as well.
 
 Check the continuation details in §3 and bring the Tracker up to date before writing the two files.
 
 ## 2. Handoff Log
 
-Write the Handoff Log per §5.1. Record in past tense what this conversation did: Stages, Tasks and reviews handled, decisions with reasons, User preferences, dispatch patterns and coordination observations absent from the Tracker, Index and Task Logs. If context was compacted or recovered, identify the parts rebuilt from summaries or files, their sources and any resulting uncertainty or unverified claims.
+Write the Handoff Log in past tense per §5.1. If context was compacted or recovered, identify what you rebuilt from summaries or files. Name the sources and any uncertainty or unverified claims that remain.
 
 ## 3. Handoff Prompt
 

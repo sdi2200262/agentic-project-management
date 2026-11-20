@@ -19,7 +19,7 @@ Keep artifact contracts in a final Formats section of their owning file, one sub
 
 Give each instruction and kind of information one authoritative home. Repeat essential context only where the reader cannot access its owner. References and summaries do not create another source of requirements. Use `WORKFLOW.md` for the document admission rules and `WRITING.md` for how to express them.
 
-Keep a procedure shared when its actions and meaning match. A short reading note may explain different inputs or applicability. If authority, actions or sequence differ substantially, state the role's responsibilities in its initiation file instead of scattering exceptions through shared text. Keep the six guides mapped to the defined procedures. Use role files for contextual responsibilities and their guide references for shared procedures.
+Share a procedure when its actions and meaning match across roles. Use a short reading note for differences in inputs or applicability. Give each role its own instructions in its initiation file when authority, actions or sequence differ substantially. Keep the six guides mapped to their procedures.
 
 ## 2. Sources and Frontmatter
 
@@ -73,6 +73,7 @@ Supported placeholders resolve through `build/processors/placeholders.js` and th
 | `{SKILL_PATH:name}` | The source skill's output file: a skill, role or procedure reference, depending on the target |
 | `{SKILL_DIR:name}` | The mapped file's directory, for support files |
 | `{GUIDE_PATH:name}` | `<configured guides directory>/<name>.md` |
+| `{START_MANAGER}` | How the User starts the Manager in this layout |
 | `{CLAUDE_ONLY:text}` | Text kept only for the Claude assistant family; start with a space when following a sentence |
 
 Build all four targets after changes. Check schemas, formats, initial artifacts, references, summary links and resolved paths and placeholders. Single-skill bundles contain exactly one `SKILL.md`; existing multi-skill output must remain equivalent to its sources. Unmapped single-skill references fail the build.

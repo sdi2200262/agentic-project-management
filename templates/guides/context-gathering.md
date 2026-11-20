@@ -16,7 +16,7 @@ Present relevant findings with the first discovery exchange, keeping to what the
 
 ## 2. Discovery Topics
 
-Cover all three topics below. Their order is recommended, not mandatory; revisit earlier topics when findings or answers affect them. Each requires a User exchange. Where context is sufficient, briefly confirm your understanding and ask whether anything should be added or corrected. Do not skip an exchange because materials already contain answers.
+Give each of the three topics its own exchange with the User. Use the order below when useful and revisit topics as findings or answers warrant. If the materials already answer your questions, confirm your understanding and invite additions or corrections.
 
 Ask substantive questions that resolve missing requirements, choices or constraints. After asking, end the message and wait for the User. Apply answers, verify consequential inferences and resolve contradictions neutrally. Research, analysis, design, processing and preparation may happen between exchanges; complete what is needed before asking dependent questions. Use the User's and domain's language and carry established answers forward without repetition.
 
@@ -53,13 +53,15 @@ Use Work Breakdown §3 to recommend assignments based on expertise, shared conte
 
 When recommending any form of User participation, explain what the User would do, why it would help and how it would affect the work. If progress depends on their input, identify what must wait and what can continue. Record agreed involvement, reviews, timing and update frequency in the Plan. Stages remain ordered pause points unless the User explicitly agrees otherwise; routine reporting and grouping can vary within that structure.
 
-Check repository instructions and recent contribution history before proposing Git use, work locations, commit and integration timing, and APM-file tracking. When using Git, show the User the branch naming and commit message conventions you propose, with a representative branch name and commit subject. Explain any departure from repository practice and confirm the arrangement with the User. Recommend Git for safer isolation and broader parallel options. With Git, parallel Tasks in one repository use separate worktrees. Without it, agree independent assignments with disjoint writable scopes and isolated shared resources; sequence work that could overlap. Account for these limits in the Plan.
+Check repository instructions and recent contribution history. Agree with the User on whether and how to use version control. If using it, propose applicable branch and commit conventions with a sample branch name and commit subject. Explain departures from repository practice. Agree on constraints for work locations, commit and integration timing, and APM file tracking. The Manager prepares the workspaces.
+
+For parallel Tasks in one repository, prefer separate working copies supported by the agreed tools, such as Git worktrees. If Tasks must share a working directory, agree on independent assignments with separate writable scopes. Account for shared resources and work that must run in sequence in the Plan.
 
 ## 3. Research
 
 When answers or materials raise a question needed for planning, investigate it before asking dependent questions. If the User asks you to defer research, do so and note the resulting limits in your summary.
 
-Research specific questions against relevant files, history, branches or other sources. Match inspection depth to the claim: check relevant implementation, changes or behavior before asserting completeness or compatibility. Investigate contradictions, cite supporting files or commands, and show the User consequential findings and limits, distinguishing verification from inference.
+Research specific questions using relevant files, history, branches or other sources. Inspect the implementation, changes or behavior closely enough to support your claims about completeness or compatibility. Investigate contradictions. Show the User findings and limits that affect decisions, with supporting files or commands. Distinguish what you verified from what you inferred.
 
 Complete preparation needed to define work before writing the Spec and Plan. A bounded technical investigation within defined implementation may be a Task with questions, evidence and completion checks. It must not postpone requirements, design or preparation needed to define the work. If later planning depends on actual implementation results, prefer a later session from that evidence rather than an implementation Task for unfinished planning. Revisit scope per §4 if the work is too large.
 

@@ -44,7 +44,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Worker's work:
 
 1. Read the Handoff Prompt in `handoff.md`. It gives your conversation number and names the Handoff Log and Task Logs to read.
 2. Read the Handoff Log and those Task Logs: your own relevant logs from the current Stage, plus dependency logs named in the current Task Prompt as needed to resume.
-3. Verify progress, branches, integration and pending work against `task.md`, deliverables and Git where used. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
+3. Verify progress, branches, integration and pending work against `task.md`, deliverables and any version control state. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
 4. Clear `handoff.md`.
 5. Explain that you are continuing as this Worker in the same APM session, the assigned Task or batch you are resuming or awaiting, and your next action. Mention relevant context gaps.
 6. If `task.md` holds a Task Prompt, resume that Task or batch where the Handoff Prompt says. Otherwise wait for the User to deliver the next Task Prompt.
@@ -54,7 +54,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Worker's work:
 When recovering after compaction or a lost conversation:
 
 1. Reload the files required by §1. Keep your registered identity and conversation number; resume from the checked current state without repeating initiation.
-2. Use your current Task Prompt, bus files, latest relevant own attempt logs and Handoff Log, following earlier-attempt links where needed. Check progress against your deliverables and workspace, including Git state, pending decisions, accepted limitations and verification gaps.
+2. Use your current Task Prompt, bus files, latest relevant own attempt logs and Handoff Log, following earlier-attempt links where needed. Check progress against your deliverables and workspace, including any version control state, pending decisions, accepted limitations and verification gaps.
 
    Preserve User-held work and record any assistance needed, where to resume and what allows work to resume. Keep the prompt's `log_path`; ask the User about gaps the records cannot settle.
 3. Mention the recovery in your next Task Report. In any later Handoff Log, identify the files or summary used to rebuild earlier work.
@@ -78,7 +78,7 @@ If the User asks you for a Handoff, follow `{SKILL_PATH:apm-7-handoff-worker}`.
 
 ### 2.1 Receiving Tasks
 
-When the User asks you to check for a Task Prompt, keep your registered identity; an additional agent ID does not change it. Read `.apm/bus/<agent-slug>/task.md`. If it is empty, say so and wait for the User’s next delivery. Otherwise execute it per `{GUIDE_PATH:task-execution}`.
+When the User asks you to check for a Task Prompt, use your registered identity even if they supply another ID. Read `.apm/bus/<agent-slug>/task.md`. If it is empty, say so and wait for delivery. Otherwise follow the Task Cycle in §2.
 
 ## 3. Subagents
 

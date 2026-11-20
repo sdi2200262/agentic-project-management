@@ -18,10 +18,10 @@ Objective and Output define the result; Validation defines its checks. Verify qu
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
 3. If the title starts with `APM Follow-Up Task`, this is another attempt at the same Task. The revised prompt says what remains and supplies a new `log_path` and links to earlier logs. Keep the Task ID and use that path.
-4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the session root given in the prompt for every `.apm/` path.
+4. Work in the directory and on any branch specified in Workspace. Use the session root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
-For corrected instructions, keep Task identity, branch, worktree and valid progress, including batch progress; do not restart logged Tasks. Check what changed and what comes next. Ask the User to resolve conflicts with your checked workspace before affected work proceeds.
+For corrected instructions, keep Task identity, branch, workspace and valid progress, including batch progress. Leave already logged Tasks as they are. Check what changed and what comes next. Ask the User to resolve conflicts with your checked workspace before affected work proceeds.
 
 ## 2. Dependency Context
 
@@ -65,10 +65,12 @@ When the User returns work, check their changes and results against the Task req
 
 ## 4. Validation
 
-Validate actual deliverables against the Task objective, required outputs and every validation criterion, including required documentation and affected behavior. Inspect outputs and use focused checks to resolve gaps in the evidence. Use evidence tied to the actual deliverable and environment, checking that reused outputs and results still apply. Rerun checks affected by changes, incomplete evidence or uncertainty. Never replace a check you cannot run with a weaker one. Confirm recurring failures match their established causes, and distinguish local, CI and integrated results.
+Check the actual deliverables against the Task objective, required outputs and every validation criterion, including required documentation and affected behavior. Use evidence from the relevant deliverable and environment. Verify that reused evidence still applies. Inspect outputs and use focused checks to fill evidence gaps. Rerun checks affected by changes, incomplete evidence or uncertainty. Confirm recurring failures still have the same cause. Distinguish local, CI and integrated results. Keep unavailable checks outstanding, even when other evidence helps.
 
 1. Run available checks, resolve failures or unclear results per §3.1, and recheck corrections. Do not finalize a Task Log or Task Report while known issues or validation gaps remain that you can resolve within scope and permission.
-2. When they pass, check any results the User has already supplied against the current deliverable. Explain what validation has established and ask for the remaining checks that need their judgement or an outside action. Verify the User-facing procedure as written, isolating disposable test state from their data. Say what is ready, where to run the checks, the commands or actions, expected results and what to report back. Pause work that depends on those results, continuing unaffected work. Handle any problem the results reveal through §3.1.
+2. When the available checks pass, verify any results the User supplied against the current deliverable.
+
+   For remaining checks that need User judgement or outside action, explain what validation established and ask for those checks. Verify the procedure as written and keep disposable test state separate from User data. Say what is ready, where to run the checks, what to do and expect, and what to report back. Pause dependent work and continue unaffected work. Investigate problems per §3.1.
 3. Ask for missing resources when you need them. If a required check or resource is unavailable, continue unaffected work and available checks. If it remains unavailable at completion, use Partial and state what remains.
 
 Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, instructions and rules in `AGENTS.md` and the Task instructions for guidance.
@@ -77,7 +79,7 @@ Success requires every check to pass, including required live checks and exact m
 
 Apply User corrections immediately. At completion, resolve whether corrections to workspace practices should be retained in `AGENTS.md`, using the User’s existing instructions or asking if the decision remains open. You may also propose guidance that will help future work, including corrections to outdated instructions. Keep Task-specific requirements in Task instructions.
 
-Before editing, reread the file. Under User authorization, extend or replace relevant guidance concisely, state its scope and preserve unrelated content. If tracked in the Task’s repository, edit the assigned branch or worktree copy; otherwise use the shared file’s actual path. Follow agreed commit conventions. Record the change, path, User decision, reasons and observed or possible effects under Important Findings.
+Before editing, reread the file. Under User authorization, extend or replace relevant guidance concisely, state its scope and preserve unrelated content. If tracked in the Task's repository, edit it in the assigned workspace and branch where applicable. Otherwise use the shared file's actual path. Follow agreed commit conventions. Record the change, path, User decision, reasons and observed or possible effects under Important Findings.
 
 ## 6. Completion
 

@@ -2,7 +2,7 @@
 
 Use this guide to record outcomes and evidence in Task Logs for later conversations. Workers log each attempt and send a Task Report for Manager review.
 
-The Manager writes one concluding log for each of its Tasks after review, validation and resolution of outstanding decisions. It keeps the Task Active until requirements are met or the User accepts remaining limits, then marks it Done and links the log from the Tracker. Its log preserves any agreement and the limits it covers. Later fixes to Done work need a new Task.
+As Manager, write one concluding log for each of your Tasks after review, validation and any remaining decisions. Keep the Task Active until requirements are met or the User accepts the limits. Record any agreement and its scope in the log, then mark the Task Done and link the log in the Tracker. Later fixes need a new Task.
 
 ## 1. Outcome
 
@@ -12,11 +12,7 @@ Choose the Task's outcome from the validation results per `{GUIDE_PATH:task-exec
 - **Partial:** some work or required validation remains.
 - **Failed:** the objective was not achieved despite attempts to fix the problem.
 
-The outcome assesses the whole Task, including earlier evidence and any unresolved criteria.
-
-Partial covers unclear or unavailable checks, recurring failures or remaining problems outside the Task.
-
-When unsure, choose Partial and state what remains. An existing deliverable or deliberate deviation does not satisfy an unmet check. Keep Success when all criteria pass, recording findings per §2.
+Assess the whole Task, including earlier evidence and unresolved criteria. Use Partial when checks are unclear or unavailable, failures recur, or problems outside the Task remain. When unsure, choose Partial and state what remains. A deliverable or deliberate deviation leaves any unmet check outstanding. Use Success when all criteria pass and record any findings per §2.
 
 ## 2. Important Findings
 
@@ -33,7 +29,7 @@ Separate evidence from uncertainty about possible wider effects. Record User agr
 
 ## 3. Logging
 
-Write Task Logs for current and later Managers, and for Workers continuing or building on the Task’s work. They can consult permitted records and referenced evidence, but do not share this conversation. Use the required frontmatter and sections in §5.1: Workers use their prompt's `log_path`; the Manager derives its concluding path from the Task's Stage and number using the original-log naming convention. Write from your available context. Aim for one short Summary paragraph; keep supporting detail in its section or linked source.
+Write for current and later Managers and for Workers who continue or build on the Task. Use your available context and link to evidence the reader can consult. Follow §5.1 for frontmatter and sections. Workers use the Task Prompt's `log_path`. The Manager uses the original-log path for the Task's Stage and number. Aim for one short Summary paragraph and put supporting detail in its section or linked source.
 
 - Describe results, checked evidence and consequential decisions, naming contributions by the User or other agents. Include changes in who performed the work when they explain the result, validation or remaining work; omit routine execution narration.
 - Link deliverables, supporting documents and evidence by stable paths, not temporary Tracker notes. Include code or diagnostic output only when it explains a consequential finding.

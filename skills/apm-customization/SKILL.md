@@ -35,7 +35,7 @@ Describe assistant actions in plain English. All targets share the workflow sour
 - `agents` and `claude` install numbered and shared skills under `.agents/skills/` or `.claude/skills/`, with guides under the corresponding `apm-guides/` directory.
 - `agents-single-skill` and `claude-single-skill` install one `skills/apm/SKILL.md`, with role, guide and communication references beneath `skills/apm/`.
 
-`build/processors/paths.js` maps shared sources to both layouts. The build strips skill frontmatter from reference documents without rewriting prose. Keep the single-skill entry explanatory and navigational, and keep the workflow in one source tree. When adding a shared skill, extend its single-skill mapping.
+`build/processors/paths.js` maps shared sources to both layouts. The build leaves the prose intact and strips skill frontmatter from reference documents. Use the single-skill entry to explain APM and route actions. Keep workflow instructions in the shared sources. Extend the single-skill mapping when adding a shared skill.
 
 Use the placeholders defined in `build/processors/placeholders.js`:
 
@@ -45,6 +45,7 @@ Use the placeholders defined in `build/processors/placeholders.js`:
 | `{SKILL_PATH:name}` | Source skill mapped to its output skill, role or procedure file |
 | `{SKILL_DIR:name}` | Directory containing that mapped file, for support references |
 | `{GUIDE_PATH:name}` | `<configured guides directory>/<name>.md` |
+| `{START_MANAGER}` | How the User starts the Manager in this layout |
 | `{CLAUDE_ONLY:text}` | Text kept for both Claude formats |
 
 ### Release Manifest

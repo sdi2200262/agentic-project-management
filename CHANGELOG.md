@@ -19,9 +19,9 @@ APM versions its CLI (npm) and templates (GitHub Releases) separately using [Sem
 ### Changed
 
 * The Planner and Manager suggest how you stay involved, instead of involvement being hardwired through user-mediated coordination. You choose the arrangement of how work gets reviewed and can change it later.
-* You and the Planner agree how Git is used, replacing the fixed branch per dispatch and merge before each Stage. The Manager makes sure each Task has the earlier work it depends on, committed or not.
+* You and the Planner agree how to use version control. The Manager explains its setup before starting and makes earlier Task outputs available, including uncommitted work. Parallel work can use separate working copies such as Git worktrees.
 * Worker batches now stop at partly done Tasks. Agreed User reviews happen before the Worker reports.
-* Handoffs, recovery, and early closure account for work you do yourself and any running subagents. Current files and Git state take precedence over older records.
+* Handoffs, recovery, and early closure account for work you do yourself and any running subagents. Current files and version control state take precedence over older records.
 * CLI v1.0.4 shows each release's startup steps and rejects incompatible targets, such as both formats for `claude`, before changing files.
 
 ### Fixed

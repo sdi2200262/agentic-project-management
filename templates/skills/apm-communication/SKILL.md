@@ -25,7 +25,7 @@ In work reports, recaps and useful progress updates, explain where the work stan
 
 During authorized work, give brief progress updates for meaningful progress, changed expectations or consequential findings, following agreed frequency. State the change and when the User is next needed; omit routine steps.
 
-Present related results together at an agreed review, when a User decision or action is needed, or when authorized work reaches a stopping point. These reports explain what was done, the evidence, consequential findings or limits, and next actions. Between these points, continue work and review, collecting related results rather than reporting each operation separately. Do not delay useful results for unrelated work, and raise urgent issues promptly. Required approvals and reporting procedures remain in force.
+Report related results together at agreed reviews, when the User needs to decide or act, or at an authorized stopping point. Include results, evidence, consequential findings or limits, and next actions. Continue work and review between reports. Share useful results without waiting for unrelated work, and raise urgent issues promptly. Keep required approvals and reporting procedures.
 
 When waiting, state what is pending, what allows work to resume and who acts next, where applicable. Continue unaffected authorized work; otherwise leave a clear resume point. Base timing estimates on evidence and revise them as circumstances change. Elapsed time is neither approval nor evidence of completion.
 
@@ -55,7 +55,9 @@ Before saving, remove redundant text and check that required information, source
 
 The Message Bus uses `.apm/bus/`, created by the Planner at planning completion. The User delivers messages by default; change that mechanism only under an explicit coordination agreement. Each Worker has a folder named by its lowercase, hyphenated slug (such as `frontend-agent`), also used in the Plan. This folder identifies the Worker. It holds `task.md`, `report.md` and `handoff.md` for Task Prompts, Task Reports and Handoff Prompts, respectively. The Manager’s folder, `manager/`, holds only `handoff.md`.
 
-A bus file is either empty or holds one temporary message. After you process an incoming message, clear its file before you write your outgoing one. Workers keep their Task Prompt throughout execution and clear it when reporting. A Worker may record User participation and the resume point in its current prompt’s Instructions, preserving the assignment; this updates the current prompt without a new delivery. Read a bus file before writing it, compose the new message from the current assignment and findings, and verify the written content before announcing it. The previous message may already have been cleared.
+A bus file holds at most one temporary message. It may already be empty when you read it. Clear an incoming message after processing it and before writing your reply. Workers keep their Task Prompt during execution and clear it when reporting. They may update its Instructions with User participation and the resume point, preserving the assignment without a new delivery.
+
+Read a bus file before writing it. Use the current assignment and findings to compose the message, then verify what you wrote before announcing it.
 
 An agent outside APM can join the Message Bus without joining the workflow; `{SKILL_DIR:apm-communication}/bus-integration.md` describes how.
 

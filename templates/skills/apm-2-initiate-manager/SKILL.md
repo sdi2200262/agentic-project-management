@@ -39,9 +39,9 @@ Then read `.apm/bus/manager/handoff.md`. If it has content, continue with §1.2;
 ### 1.1 First Start
 
 1. Explore the working codebases covered by the Spec and identified in `AGENTS.md`. Resolve context gaps and raise contradictions with approved documents before affected work begins.
-2. Present a concise understanding combining actual outcomes and constraints with Stages and assignments, relevant workspace/Git instructions, and agreed coordination and involvement. Explain immediate execution or dispatch. Distinguish proposed adjustments from arrangements already approved with the Planner.
+2. Present a concise understanding of the intended outcomes and constraints, Stages and assignments, agreed involvement and coordination, and how you will start. If the session uses version control, explain the setup for the first Task or group of Tasks and the conventions you will follow for branches, commits and worktrees where applicable. Distinguish new proposals from decisions already agreed with the User.
 3. Ask explicitly for approval of the understanding and separately identify any new decisions. Wait, apply corrections and ask again. Align affected documents per `{GUIDE_PATH:task-review}` §4, then register yourself as conversation 1 in Agents and write Stage 1's Tasks in the Tracker per its §8.
-4. Start ready work per `{GUIDE_PATH:task-assignment}` §1, following repository conventions in `AGENTS.md` and session-specific Git setup and constraints in the Spec.
+4. If using version control, apply the agreed setup, including APM file tracking, following the Spec and repository conventions in `AGENTS.md`. Start ready work per `{GUIDE_PATH:task-assignment}` §1.
 
 ### 1.2 Initiation After Handoff
 
@@ -49,7 +49,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 
 1. Use the Handoff Prompt's conversation number and its paths to the Handoff Log and Task Logs.
 2. Read the Handoff Log and those Task Logs.
-3. Verify recorded progress, branches, integration, Worker messages and pending reviews against the Tracker, Message Bus files and Git where used. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
+3. Verify recorded progress, branches, integration, Worker messages and pending reviews against the Tracker, Message Bus files and any version control state. Resume from checked current state, preserving User-held work. Ask about gaps the records cannot settle.
 4. Update your Agents row with the conversation number and remaining context gaps, then clear `handoff.md`.
 5. Explain that you are continuing this APM session. Relate its Stage and Task progress to completed work, remaining work or decisions, and your next action. Include relevant open issues, accepted limitations, pending alignment and verification gaps, then continue per §2.
 
@@ -58,7 +58,7 @@ If `handoff.md` contains a Handoff Prompt, continue the previous Manager's work:
 When recovering after compaction or a lost conversation:
 
 1. Reload the files required by §1. Keep your identity and conversation number; resume from the checked current state without repeating initiation.
-2. Rebuild progress from the planning documents, Tracker, Memory, bus files and deliverables. Check who is performing active work, subagent contributions, workspaces and Git state, pending decisions, accepted limitations and verification gaps.
+2. Rebuild progress from the planning documents, Tracker, Memory, bus files and deliverables. Check who is performing active work, subagent contributions, workspaces and any version control state, pending decisions, accepted limitations and verification gaps.
 
    Preserve User-held work and record any assistance needed, where to resume and what allows work to resume. Ask the User about gaps the records cannot settle.
 3. Record unresolved reconstruction gaps in your Agents row, keeping Task state and next actions in Tasks. Clear resolved gaps rather than adding a recovery narrative to Notes. In any later Handoff Log or summary, identify the files or summary used to rebuild earlier work.
@@ -70,7 +70,7 @@ When recovering after compaction or a lost conversation:
 2. When the User delivers reports, receive and review them per §2.2. Complete needed investigation and document alignment per `{GUIDE_PATH:task-review}` §4 before starting affected downstream work; continue unrelated Ready work.
 3. When a Stage completes, follow `{GUIDE_PATH:task-review}` §7, including the explicit User pause before starting the next unless agreed otherwise.
 
-Continue ready work, pausing affected work for agreed reviews, required approvals or needed decisions. Resolve related subagent findings and User feedback within agreed authority. Present reviewed results and remaining decisions together when useful, respecting participation and review points. Recommend an approach where useful. While subagents work, focus progress updates on overall progress and the User’s next useful involvement.
+Continue ready work and pause affected work for agreed reviews, required approvals or needed decisions. Resolve subagent findings and User feedback within agreed authority. Group reviewed results and decisions when useful, respecting agreed review points. Recommend an approach when it helps the User decide. In updates during subagent work, focus on overall progress and when the User is next needed.
 
 When the User takes on or returns work, follow `{GUIDE_PATH:task-execution}` §3.3. Record the current arrangement and resume point in the Tracker’s Next Action, with supporting context in Notes. For a Worker’s Task, direct the User to that Worker’s chat to arrange the change.
 
@@ -94,7 +94,7 @@ When the User asks you to check reports, they may specify one or more agent IDs:
 
 When every Stage is complete, present results as described below.
 
-If the User ends early, pause active Tasks: stop your subagents and ask the User to pause Worker and User-performed work. Collect progress, unfinished outputs and checks; wait for stop confirmation and verify it against buses, deliverables and Git. Record unfinished Tasks, reports, integration, workspaces and uncommitted work in the Tracker, preserving Task states.
+If the User ends early, pause active Tasks. Stop your subagents and ask the User to pause Worker and User-performed work. Collect progress, unfinished outputs and checks. Wait for confirmation that work has stopped, then check the bus files, deliverables and any version control state. Record unfinished Tasks, reports, integration, workspaces and uncommitted work in the Tracker, preserving Task states.
 
 First recap the session in chat. Present the intended outcomes and actual results, Stages and Tasks, participating agents, consequential findings and deliverables, and anything unfinished, accepted limitations and verification gaps. Say which Stages you coordinated and which you know from Handoff Logs, Stage summaries or a compaction summary.
 
@@ -103,7 +103,7 @@ Then ask whether the User wants a saved Session Summary, an archive, both or nei
 - Here, with your current context: read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
 - In a new chat with more room: the User asks for an APM session summary there.
 
-The User may also archive directly with `apm archive`, or keep the paused session in place. Archiving preserves session records and worktrees under `.apm/worktrees/` with their uncommitted contents at new paths, which the CLI reports. Branches stay intact and ordinary project-directory changes remain in place. Explain that the worktrees stay attached to their source repositories; the archive is local session context, not a standalone Git backup.
+The User may also archive directly with `apm archive`, or keep the paused session in place. Archiving preserves session records and linked Git worktrees under `.apm/worktrees/` with their uncommitted contents. The CLI reports their new paths. They stay attached to their source repositories and rely on them for Git history. Branches stay intact. Other working copies outside `.apm/` and ordinary project-directory changes stay in place.
 
 ## 4. Subagents
 

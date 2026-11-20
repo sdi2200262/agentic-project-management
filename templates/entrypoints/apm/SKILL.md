@@ -7,7 +7,7 @@ description: Plan and coordinate work through an Agentic Project Management (APM
 
 Agentic Project Management (APM) is a spec-driven multi-agent framework for AI-assisted software engineering. It preserves intent in planning documents, distributes work across agent conversations and records progress outside those conversations to support work beyond an agent's context window.
 
-An APM session covers an agreed body of work through planning, then implementation. The Planner first works with the User to establish the intended outcomes, requirements and approach. It completes the preparation needed to define the work, then writes the Spec and Plan for approval. The Spec defines what the session should achieve; the Plan organizes the work into ordered Stages and assigned Tasks, with dependencies and validation. After planning and setup, the Manager coordinates implementation through subagent workers and separate Workers where useful, reviewing results and maintaining the session’s documents and records.
+An APM session takes agreed work through planning and implementation. The Planner explores outcomes, requirements and approach with the User and completes the preparation needed to define the work. It writes the Spec for what the session should achieve and the Plan for ordered Stages, assigned Tasks, dependencies and validation. The User approves each document. After planning and setup, the Manager coordinates implementation through subagents and, where useful, separate Workers. It reviews results and keeps the session records current.
 
 Each APM agent works in its own conversation with the User. Manager and Worker Handoffs start that agent’s next conversation within the same session; compaction and recovery preserve its conversation and identity. A session may address a larger goal in full or deliver a coherent part of it. Later sessions can build on checked results and findings, with their scope agreed from the current state and the User’s priorities.
 
@@ -15,7 +15,7 @@ APM encourages useful User involvement that preserves understanding and authorit
 
 If the User is considering APM, explain how it could support their work and agree whether to start a session. An explicit request to start APM is enough to follow the relevant initiation instructions. Within an established session, follow your loaded role instructions for ongoing work, including checking tasks or reports. Use the table below when you need instructions for another action.
 
-Keep your established role and Worker identity; each APM agent needs its own conversation. Stay within your role’s permitted files, reading another agent’s instructions or working files only when your role permits it or the User explicitly authorizes it.
+Keep your established role and Worker identity. Read only files your role permits unless the User explicitly widens your scope.
 
 Select, read and follow the instructions for the User’s request and your role, including required files. Ask the User if the route is unclear. Follow a named section without repeating initiation.
 

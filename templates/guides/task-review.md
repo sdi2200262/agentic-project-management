@@ -17,7 +17,7 @@ For each report the User delivers:
 
 For Worker results, read the whole Task Log named in the report, following original and previous-attempt links where needed to verify earlier evidence and unresolved findings. Check its `status` against the outcome definitions in `{GUIDE_PATH:task-logging}` §1, and its `important_findings` against the body and deliverables. For your own Tasks, use contribution outputs and validation evidence; the concluding Task Log is written after review.
 
-Check the delivered result and each validation criterion against the Task requirements and evidence, including counts, scope, deviations and unrun paths. Investigate findings that could change the decision. Where evidence is incomplete or uncertain, inspect outputs or run focused checks. Distinguish confirmed limits from open possibilities. Revisit relevant Spec and Plan sections when findings question the requirements or assumptions. A deliberate difference is an unmet criterion; record accepted exceptions as limitations.
+Check the result and each validation criterion against the Task requirements and evidence. Check counts, scope, deviations and unrun paths. Investigate findings that could change the decision. Inspect outputs or run focused checks where evidence is incomplete or uncertain. Distinguish confirmed limits from possibilities. Revisit Spec and Plan sections whose requirements or assumptions the findings call into question. A deliberate deviation leaves the criterion unmet. Record accepted exceptions as limits.
 
 For continued work, use relevant earlier logs and outputs to establish what was addressed and what still applies to the current result. Preserve consequential findings, remaining limits and their implications with supporting evidence in the Task Log or Stage summary.
 
@@ -25,7 +25,7 @@ If a Success log includes a failed, unrun or weaker check, tell the User and kee
 
 For an authorized `AGENTS.md` change, check the change at its recorded path, using the diff when tracked, and retain it. If the User declined, ask before adding it. Correct planning documents contradicted by findings per §4, even if the Worker resolved the local issue.
 
-Default to independent review for substantial implementation or consequential uncertainty, preserving required reviews. Choose coverage by importance, complexity, existing evidence and remaining uncertainty, not one reviewer per contribution. Normally one reviewer covers related Tasks or combined outputs; use more for distinct consequential questions or expertise. Small, well-understood changes with adequate validation usually need no independent reviewer.
+Default to independent review for substantial implementation or consequential uncertainty. Preserve required reviews. Choose coverage by importance, complexity, existing evidence and remaining uncertainty. Normally one reviewer covers related Tasks or combined outputs. Use more for distinct consequential questions or expertise. Small, well-understood changes with adequate validation usually need no independent reviewer.
 
 Keep reviewers separate from implementers. Give them requirements, instructions, changes, evidence, accepted exceptions and scope; ask them to challenge completeness and validation. Complete required review before dependent work relies on the result. Verify findings, resolve confirmed issues and check affected criteria. Reuse valid evidence and reviewer context; repeat broad review only when changed work or remaining uncertainty warrants it.
 
@@ -40,7 +40,9 @@ At an agreed review or the next useful chat reporting point, briefly identify th
 
    Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:
-   - **Accept:** the work is complete, including corrections validated during review, or the User agrees to accept remaining limits. Check whether any recorded agreement covers those limits and their effects on other Tasks; ask only about new consequences or unclear decisions. Follow `{GUIDE_PATH:task-execution}` §6 for acceptance proposals, considering effects on the session and dependent work. Preserve reported outcomes and evidence. Record remaining coordination in the Tracker and the acceptance decision and its basis in the Stage summary, preserving it before context is lost. Acceptance does not turn unmet checks into passes.
+   - **Accept:** the work is complete, including validated corrections, or the User accepts the remaining limits. Check whether recorded agreement covers those limits and their effects on other Tasks. Ask only about new consequences or unclear decisions. For acceptance proposals, follow `{GUIDE_PATH:task-execution}` §6 and consider effects on the session and dependent work.
+
+     Preserve reported outcomes and evidence. Keep unmet checks marked as unmet after acceptance. Record remaining coordination in the Tracker and the acceptance and its basis in the Stage summary before context is lost.
    - **Follow-up Task:** concrete work remains for the Worker, with an approach and a clear completion check. Preserve any uncommitted work for that attempt.
    - **Planning change:** a planning document is wrong. Change it per §4.
 4. Investigate broader design or scope questions enough to present viable options. Follow §4 for contained corrections and broader approvals. Options include revising the Plan or pausing to summarize per `{SKILL_PATH:apm-8-summarize-session}`, archive and replan.
@@ -70,7 +72,7 @@ Integrate completed work according to the agreed version-control arrangement. Be
 1. Integrate into the agreed branch or workspace and check the combined result.
 2. Resolve conflicts from the Task objectives and the Spec. Investigate complex conflicts against affected contracts, or ask the User when a decision is needed.
 3. If branch protection blocks a direct merge, use a pull request, an intermediate branch or the User’s guidance, and record the constraint in the Tracker’s Notes.
-4. Remove branches and worktrees only when no longer needed and their work is preserved. Remove worktrees before deleting their branches. Clear obsolete locations from the Tracker. Record pending integration, cleanup and shared workspace use in Notes, and keep the affected Tasks’ Next Action current.
+4. Remove branches and working copies only when their work is preserved and they are no longer needed. Follow the agreed tools' cleanup procedures. For Git, remove worktrees before deleting their branches. Clear obsolete locations from the Tracker. Record pending integration, cleanup and shared workspace use in Notes, and keep the affected Tasks' Next Action current.
 
 ## 6. Next Dispatch
 
@@ -82,10 +84,8 @@ When every Task in a Stage is Done and no follow-up Task is pending:
 
 1. Perform required User and Plan checks and identify combined behavior, integration or uncertainty not already established by Task validation and reviews. Verify those gaps; a follow-up or Important Finding alone does not require another full review. Record what was checked or skipped and why.
 2. For those checks and gaps, verify combined deliverables at the work's validation level. Keep reference inputs separate from generated results and preserve usable evidence through cleanup. Resolve questions within scope; add Tasks for fixes to Done work or ask where scope is unclear.
-3. Use Task Logs and current coordination to account for consequential findings, decisions, accepted limits and unrun checks, with their sources.
-4. Write the Stage summary (§8.4), retaining decisions already recorded there, and Index row (§8.3). Preserve Stage-specific decisions and evidence in the summary and brief lasting implications for later work with source links in Index Notes.
-
-   Retain only coordination still needed in the Tracker; remove obsolete notes after preserving their consequential history, and update references. Link findings to their sources rather than copying Tracker prose. Reuse reviewed logs still in context; reread those changed or no longer available.
+3. Use Task Logs and the Tracker to account for consequential findings, decisions, accepted limits and unrun checks. Cite their sources. Reuse reviewed logs still in context and reread those that changed or are no longer available.
+4. Write the Stage summary per §8.4, keeping decisions already recorded there. Update the Index per §8.3 and bring the Tracker's Notes up to date per §8.2.
 5. Once all Tasks are Done and required integration and verification are complete, replace their rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. The summary retains accepted Partial outcomes and limits.
 6. Briefly report the Stage and actual result, verification, remaining limits and consequential carryover. Explain the next Stage's work and ask explicitly before starting it, unless a different arrangement was explicitly agreed. Do not infer permission from approval of the overall Plan. Resolve acceptance of remaining limits separately where needed.
 
@@ -120,7 +120,7 @@ Status values:
 - `Active`: started by the Manager, dispatched to a Worker, under review or awaiting a follow-up Task.
 - `Done`: final decision made, including any explicitly accepted Partial outcome. Keep pending integration or cleanup in Next Action, with only necessary supporting coordination in Notes. Accepted limits and their evidence belong in Memory; link those that affect current coordination.
 
-The Agent column uses the Plan’s Worker slug or `manager`. Record each Task’s branch and any worktree; several Tasks may share these values. Use Notes for arrangements affecting several Tasks.
+The Agent column uses the Plan's Worker slug or `manager`. Record each Task's branch where applicable and put any separate working-copy path in Worktree. Several Tasks may share these values. Use Notes for arrangements affecting several Tasks.
 
 Link each Task ID to the latest reported Worker attempt or completed Manager log; use a plain ID before either exists or when work was removed without execution. A pending Worker follow-up's destination stays in its Task Prompt until reported.
 
@@ -154,7 +154,7 @@ Register the Manager at startup and Workers at first dispatch. Agents holds conv
 
 Use Notes for context needed to coordinate current work or resume reliably: blockers, pending decisions, cross-Task arrangements and resume conditions. State each note's present consequence and link its owning source. Earlier events may remain where they still affect coordination; distinguish what happened then from what applies now, using dates, Task IDs or source links where needed for the current and next Manager.
 
-When updating the Tracker, revise affected Task rows and Notes together to describe current state. Replace superseded information and remove resolved notes and context gaps during ordinary updates. Preserve consequential history in its Task Log or Stage summary before removing its only account; keep a short reference where coordination still needs it. Use Task evidence and logs to write Stage summaries and Index findings.
+Revise affected Task rows and Notes together. Replace superseded information, update references and clear resolved notes and context gaps during ordinary updates. Before removing the only record of a consequential event, preserve it in its Task Log or Stage summary. Keep a short reference while coordination still needs it.
 
 ### 8.3 Memory Index Format
 

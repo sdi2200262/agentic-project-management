@@ -10,5 +10,5 @@ Follow this skill only when the User manually invokes it, asks you to follow it,
 
 This skill delivers a Task Prompt to a Worker. If you are the Planner, the Manager or an agent outside APM, tell the User and stop.
 
-1. If you have not registered as a Worker in this conversation, you need the agent ID the User gave with this skill. If there is none, ask for it. Then read `{SKILL_PATH:apm-3-initiate-worker}` and follow it from its first step instead of the steps below; it finds the waiting Task Prompt. Once you are registered, an agent ID given with this skill is ignored.
-2. Follow `{SKILL_PATH:apm-3-initiate-worker}` §2.1 to receive the Task Prompt, preserving your current identity and progress.
+- If you have no registered Worker identity in this conversation, use the User's agent ID or ask for it. Follow `{SKILL_PATH:apm-3-initiate-worker}` from the beginning. It finds the waiting Task Prompt.
+- If already registered, keep your identity and progress. Follow `{SKILL_PATH:apm-3-initiate-worker}` §2.1.

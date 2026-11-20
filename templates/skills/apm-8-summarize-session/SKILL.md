@@ -16,12 +16,15 @@ Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 
 1. Read `.apm/spec.md`, `.apm/plan.md`, `.apm/tracker.md` and `.apm/memory/index.md`.
 2. Check the recorded state of active Tasks, including subagent and User-performed work. Use the Manager’s or User’s confirmation that active work has stopped when it is still current. Otherwise ask the User to pause affected work and collect its current state before continuing.
-3. Check planning documents, Tracker and Stage summaries against latest relevant Task Logs and Handoff Logs, deliverables and Git, including unfinished worktrees. Follow earlier-attempt links as needed. Record material differences and validation gaps with sources, preserving uncertainty from any reconstructed context.
-
-   Count Task IDs, not attempts, and ignore copied APM records in worktrees. Use each section for its stated purpose; summarize conclusions and link evidence rather than copying logs or repeating the same account across sections.
-4. Write `.apm/session.summary.md` per §2.1. Say which work you remember from this chat and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
+3. Check the planning documents, Tracker and Stage summaries against the latest relevant Task Logs, Handoff Logs, deliverables and any version control state. Include unfinished worktrees where present. Follow earlier-attempt links as needed. Record material differences, validation gaps and any uncertainty from reconstructed context, with sources.
+4. Write `.apm/session.summary.md` per §2.1. Count unique Task IDs from the session records and ignore copies in worktrees. Summarize conclusions where they belong and link the evidence. Say which work you remember and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
 5. Present the summary and apply the User's corrections.
-6. If the User chose a summary only, stop after reporting it. Otherwise, explain archival before proceeding: it preserves `.apm/` in `.apm/archives/` for later sessions and clears active files and installed instructions; `apm init` reinstalls them. Remaining worktrees under `.apm/worktrees/` move with uncommitted contents and remain attached to their source repositories. Ordinary project-directory changes stay in place; Task and branch states remain unchanged. If the User has not already chosen archival, ask explicitly whether to proceed. If the User declines, stop.
+6. If the User chose a summary only, stop after reporting it. Otherwise, explain the effects of archival:
+   - The session's `.apm/` records move to `.apm/archives/` for later sessions. Archival clears active APM files and installed instructions. `apm init` reinstalls them.
+   - Remaining linked Git worktrees under `.apm/worktrees/` move with uncommitted contents and stay attached to their source repositories.
+   - Other working copies outside `.apm/` and ordinary project-directory changes stay in place. Task and branch states remain unchanged.
+
+   If the User has yet to choose archival, ask explicitly whether to proceed. Stop if they decline.
 7. Ask for an archive name, or use the default dated name. Run `apm archive --force`, or `apm archive --force --name <name>`. Continue only after the CLI confirms preservation and archival succeeded. If it reports a failure, show the obstacle and current paths, and follow its recovery guidance.
 8. Read `.apm/archives/index.md`, creating it per §2.2 if it is missing or malformed, and add the new archive at the top of its table.
 9. Tell the User the archive's path and any relocated worktrees the CLI reported. To start a new session, the User runs `apm init` (or `apm custom`) and then starts a new Planner conversation; the next Planner can use the archives.
