@@ -7,7 +7,7 @@
 
 APM is an open-source framework for AI-assisted software development. As an agent's conversation grows, its LLM suffers from context decay and context pressure. APM counters the first by recording the project's intent in planning documents, and the second by splitting the work among agents in separate conversations.
 
-The workflow is flexible: you choose where and how you take part in development. You can let the agents carry most of the work, or add points of productive friction that help you keep authority over, and understanding of, the software being built.
+The workflow is flexible. You can let the agents carry most of the work, or step in wherever and however you see fit, as productive friction that helps you keep authority over, and understanding of, the software being built.
 
 ## Overview
 
