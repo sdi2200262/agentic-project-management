@@ -2,7 +2,7 @@
 
 The Planner uses this guide to explore three discovery topics with the User, agree session scope and obtain understanding approval. `{GUIDE_PATH:work-breakdown}` covers the documents that follow.
 
-Establish the session's intended outcomes, requirements, design choices, constraints and concrete success criteria. Develop the breakdown alongside them. Your findings feed the Spec, Plan and any needed `AGENTS.md` updates. Agree coordination and version control preferences with the User.
+Establish the session's intended outcomes, requirements, design choices, constraints and concrete success criteria. Your findings feed the Spec, Plan and any needed `AGENTS.md` updates. Agree coordination and version control preferences with the User.
 
 ## 1. Preparation
 
@@ -16,15 +16,15 @@ Present relevant findings with the first discovery exchange, keeping to what the
 
 ## 2. Discovery Topics
 
-Give each of the three topics its own exchange with the User. Use the order below when useful and revisit topics as findings or answers warrant. If the materials already answer your questions, confirm your understanding and invite additions or corrections.
+Give each discovery topic at least one exchange with the User. Continue a topic for as many exchanges as it needs. Use the order below when useful and revisit topics as findings or answers warrant. When you have enough context on a topic, summarize your understanding and invite corrections or additions. Signal changes of topic naturally by connecting what you settled to what you’ll discuss next.
 
 Ask substantive questions that resolve missing requirements, choices or constraints. After asking, end the message and wait for the User. Apply answers, verify consequential inferences and resolve contradictions neutrally. Research, analysis, design, processing and preparation may happen between exchanges; complete what is needed before asking dependent questions. Use the User's and domain's language and carry established answers forward without repetition.
 
-Develop tentative Stages, Tasks and assignments as understanding grows. Explain consequential boundaries and trade-offs. Recommend an approach when evidence or uncertainty makes it useful, after establishing unclear intent. Confirm each topic's conclusions and invite additions before requesting complete understanding approval.
+Explain consequential dependencies and trade-offs. Recommend an approach when evidence or uncertainty makes it useful, after establishing unclear intent. Confirm each topic's conclusions and invite additions before requesting complete understanding approval.
 
 ### 2.1 Vision and Existing Materials
 
-Establish the intended session outcome, problem, essential features, existing materials, relevant expertise and prior work. Identify preparation needed to define implementation and propose a coherent session boundary when needed (§4).
+Establish the intended session outcome, problem, essential features, existing materials, relevant expertise and prior work. Learn what the User is familiar with and wants to be able to judge. Identify preparation needed to define implementation and propose a coherent session boundary when needed (§4).
 
 When proposing to continue earlier work or reuse its planning documents or arrangements, explain what fits this session, what needs to change and why. Ask the User what to retain or change, building on answers already given.
 
@@ -46,22 +46,24 @@ Establish how the defined work will proceed:
 - Setup, delivery and validation actions requiring accounts or outside access.
 - Required validation, User or outside reviews, acceptance and documentation.
 - Conventions, formats and reference material.
-- Expertise, available agents, Stages, Tasks, assignments and useful parallelism.
+- Expertise, available agents and how they could work together.
 - User involvement, coordination, timing constraints and version control.
 
-Use Work Breakdown §3 to recommend assignments based on expertise, shared context and useful User involvement. Manager execution through subagents can support automation; separate Workers support close collaboration. Recommend participation suited to risk, uncertainty, experience, availability and deadlines: collaboration, tests, demonstrations, explanations, reviews or reports. The User chooses its form and frequency. Ask whether they want to perform any portion with the responsible agent's assistance and validation, confirming an existing answer rather than asking again.
+Discuss possible responsibilities based on expertise, shared context and useful User involvement. Manager execution through subagents can support automation; separate Workers support close collaboration. Recommend participation suited to risk, uncertainty, experience, availability and deadlines: collaboration, tests, demonstrations, explanations, reviews or reports. The User chooses its form and frequency. Ask whether they want to perform any portion with the responsible agent's assistance and validation, confirming an existing answer rather than asking again.
 
-When recommending any form of User participation, explain what the User would do, why it would help and how it would affect the work. If progress depends on their input, identify what must wait and what can continue. Record agreed involvement, reviews, timing and update frequency in the Plan. Stages remain ordered pause points unless the User explicitly agrees otherwise; routine reporting and grouping can vary within that structure.
+When recommending any form of User participation, explain what the User would do, why it would help and how it would affect the work. If progress depends on their input, identify what must wait and what can continue.
 
 Check repository instructions and recent contribution history. Agree with the User on whether and how to use version control. If using it, propose applicable branch and commit conventions with a sample branch name and commit subject. Explain departures from repository practice. Agree on constraints for work locations, commit and integration timing, and APM file tracking. The Manager prepares the workspaces.
 
-For parallel Tasks in one repository, prefer separate working copies supported by the agreed tools, such as Git worktrees. If Tasks must share a working directory, agree on independent assignments with separate writable scopes. Account for shared resources and work that must run in sequence in the Plan.
+For parallel work in one repository, prefer separate working copies supported by the agreed tools, such as Git worktrees. In a shared working directory, agree on independent work with separate writable scopes. Account for shared resources and work that must run in sequence in the Plan.
 
 ## 3. Research
 
 When answers or materials raise a question needed for planning, investigate it before asking dependent questions. If the User asks you to defer research, do so and note the resulting limits in your summary.
 
-Research specific questions using relevant files, history, branches or other sources. Inspect the implementation, changes or behavior closely enough to support your claims about completeness or compatibility. Investigate contradictions. Show the User findings and limits that affect decisions, with supporting files or commands. Distinguish what you verified from what you inferred.
+Research specific questions using relevant files, history, branches or other sources. Inspect the implementation, changes or behavior closely enough to support your claims about completeness or compatibility. Explore deeply enough to settle consequential choices, define executable work and identify meaningful checks. Investigate contradictions.
+
+Match what you present to the User's expertise and desired involvement. Show the User findings and limits that affect decisions, with supporting files or commands. Distinguish what you verified from what you inferred.
 
 Complete preparation needed to define work before writing the Spec and Plan. A bounded technical investigation within defined implementation may be a Task with questions, evidence and completion checks. It must not postpone requirements, design or preparation needed to define the work. If later planning depends on actual implementation results, prefer a later session from that evidence rather than an implementation Task for unfinished planning. Revisit scope per §4 if the work is too large.
 
@@ -75,25 +77,16 @@ Account for timing constraints and dependencies outside the agents’ control wh
 
 ## 5. Understanding Summary
 
-1. After an exchange on every discovery topic and sufficient preparation, present your complete understanding per §6.1, including any limits that are still unresolved. Briefly distinguish what will become Spec outcomes, requirements and design from Plan assignments, sequencing and coordination.
-2. Ask the User to review and approve it. Apply corrections, update the summary and ask again.
+Before presenting the summary, confirm the User's involvement. Point out useful opportunities for work to proceed independently or overlap, and for one agent to carry related work through in sequence. Explain the relevant dependencies, isolation or shared context in terms of the work itself. Develop Stages, Tasks and assignments during Work Breakdown.
+
+1. After an exchange on every discovery topic and sufficient preparation, present your complete understanding per §6.1, including any limits that are still unresolved.
+2. End with an explicit request for approval. Apply corrections where they affect the agreement, update the summary and ask again.
 3. Once approved, continue with `{GUIDE_PATH:work-breakdown}`.
 
 ## 6. Formats
 
 ### 6.1 Understanding Summary Format
 
-Use Markdown suited to the work, with enough detail for the User to judge whether you understood it and to catch errors. Cover what applies:
+Group the summary by what you and the User have agreed the session will deliver, covering its goal, scope, requirements, design and acceptance criteria, and how the work will be delivered, covering responsibilities, sequencing, dependencies, checks and coordination. Use the first group to prepare the Spec and the second to prepare the Plan, following Work Breakdown §§2–3 for where details belong. Present the summary in a form that fits the conversation.
 
-- This session's agreed outcomes and scope, and any proposed later sessions.
-- Requirements, deliverables and success criteria.
-- Design decisions and their reasons; constraints.
-- Domains, dependencies and complexity you observed.
-- Environments, resources and access.
-- Process, quality and approval needs.
-- Conventions and existing `AGENTS.md` content.
-- Proposed Stages, Tasks and assignments between the Manager and Workers, with reasons for consequential choices.
-- Agreed User participation and review points tied to that work.
-- Version control.
-
-End with an explicit request for approval.
+Include the constraints, reasons and sources needed to review the agreement, including relevant environments, resources and access. Cover agreed User involvement and version control. Note any lasting workspace guidance that needs attention and any later-session scope that you discussed. Identify open choices and prerequisites, who can resolve them and their effect on the work.

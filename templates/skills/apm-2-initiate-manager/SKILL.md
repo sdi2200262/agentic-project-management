@@ -38,7 +38,7 @@ Then read `.apm/bus/manager/handoff.md`. If it has content, continue with §1.2;
 
 ### 1.1 First Start
 
-1. Explore the working codebases covered by the Spec and identified in `AGENTS.md`. Resolve context gaps and raise contradictions with approved documents before affected work begins.
+1. Explore the working codebases covered by the Spec and identified in `AGENTS.md`. Use the planning documents, their sources and the current code to establish the technical context you need. Resolve context gaps and raise contradictions with approved documents before affected work begins.
 2. Present a concise understanding of the intended outcomes and constraints, Stages and assignments, agreed involvement and coordination, and how you will start. If the session uses version control, explain the setup for the first Task or group of Tasks and the conventions you will follow for branches, commits and worktrees where applicable. Distinguish new proposals from decisions already agreed with the User.
 3. Ask explicitly for approval of the understanding and separately identify any new decisions. Wait, apply corrections and ask again. Align affected documents per `{GUIDE_PATH:task-review}` §4, then register yourself as conversation 1 in Agents and write Stage 1's Tasks in the Tracker per its §8.
 4. If using version control, apply the agreed setup, including APM file tracking, following the Spec and repository conventions in `AGENTS.md`. Start ready work per `{GUIDE_PATH:task-assignment}` §1.

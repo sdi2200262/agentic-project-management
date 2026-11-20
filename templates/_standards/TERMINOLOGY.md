@@ -32,8 +32,8 @@ Each procedure is a part of the workflow. The first six each have their own guid
 
 | Term | Performed by | Definition |
 |---|---|---|
-| **Context Gathering** | Planner | Defining the session's work through User exchanges on three discovery topics, with research, analysis, design and preparation as needed, ending with approval of the complete understanding. |
-| **Work Breakdown** | Planner | Developing how the work is divided as context is gathered, then turning the approved understanding into the Spec and Plan, each approved separately, and proposing needed updates to `AGENTS.md`. |
+| **Context Gathering** | Planner | Defining the session's work through at least one User exchange on each of three discovery topics, with research, analysis, design and preparation as needed, ending with approval of the complete understanding. |
+| **Work Breakdown** | Planner | Turning the approved understanding into the Spec and then the Plan, each approved separately, and proposing needed updates to `AGENTS.md`. |
 | **Task Assignment** | Manager | Choosing which work to start next, assigning it to a Worker or undertaking it itself, and preparing its context. |
 | **Task Execution** | Manager, Worker | Carrying out assigned work, validating it and fixing what fails. |
 | **Task Logging** | Manager, Worker | Recording a Task's outcome; Workers also report each attempt to the Manager. |
@@ -48,8 +48,8 @@ The Planner writes these during Work Breakdown, in this order.
 
 | Term | Definition | Location |
 |---|---|---|
-| **Spec** | What the session is intended to achieve: outcomes, requirements, design decisions and constraints. | `.apm/spec.md` |
-| **Plan** | How to achieve the Spec’s intended outcomes: work divided into Stages and Tasks, ordered and assigned to the Manager or Workers, with dependencies and validation criteria. | `.apm/plan.md` |
+| **Spec** | What the session must deliver: outcomes, scope, required behavior, design decisions, constraints and acceptance criteria. | `.apm/spec.md` |
+| **Plan** | How to deliver and verify the work: ordered Stages and Tasks assigned to the Manager or Workers, with dependencies, checks and agreed coordination. | `.apm/plan.md` |
 
 ---
 
