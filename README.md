@@ -11,15 +11,15 @@ The workflow is flexible. You can let the agents carry most of the work, or step
 
 ## Overview
 
-An APM session takes an agreed body of work through planning, then implementation. It may cover a larger goal in full or a coherent part.
+An APM session starts with a conversation where a **Planner** gathers context from your workspace and other relevant sources, then works with you to define what the session should achieve. Once you approve its understanding, it writes a **Spec** for what to build and a **Plan** for how to build it, each for your review.
 
-During **planning**, the **Planner** explores the workspace and works with you to define what the session should achieve. It writes the **Spec** (outcomes, requirements and design) and **Plan** (assigned work, dependencies and validation). You approve its understanding, then each document separately. It also proposes updates to lasting workspace guidance in `AGENTS.md`, creating the file if it's missing.
+Afterwards, in a new conversation, a **Manager** sends assignments to its subagents or to **Workers** in separate conversations, reviews their work, and records the session's progress. It also maintains the Spec and Plan as the session progresses. Larger changes need your agreement.
 
-During **implementation**, the **Manager** coordinates the work, reviews results, and records progress. It carries out Tasks through subagents or assigns them to **Workers** in separate conversations. The responsible agent validates each Task and records its outcome in the session's work history.
+Each Worker takes the assignments of one area of the project, completes and validates them, logs the outcome, and reports back. Worker conversations and the Manager's communicate through a file-based **Message Bus**, where you mediate each exchange.
 
-The Planner and Manager recommend how you take part, based on the work and your experience. You decide who does the work: the Manager's subagents, Workers whose assignments and reports you pass on, you, or a mix. You also choose what to review and when, and can change either as the work goes.
+The session's state lives in shared files that outlast any conversation. The planning documents hold the session's intent, a **Tracker** holds its progress, and file-based **Memory** accumulates its history. When an agent's context fills, a **Handoff** moves its role to a fresh conversation that resumes from these files. When the session ends, you can archive it and use its documents as context for the next session's Planner.
 
-The session's state lives in shared files outside any conversation: the planning documents, the **Tracker** (the session's progress), and **Memory** (its work history). When a Manager's or Worker's context fills, a **Handoff** moves its role to a fresh conversation that resumes from these files. When the session ends, you can archive them for the next session's Planner to build on.
+You decide with the Planner how you take part in implementation and how the work is carried out: the Manager uses subagents for more automation, you mediate coordination with Workers for more control, you take on assignments yourself, or any mix of these. You can change this agreement with the Manager at any time.
 
 ## Getting started
 
@@ -40,7 +40,7 @@ To start planning, invoke `apm-1-initiate-planner` in a new chat and describe wh
 The agents will guide you through the workflow's steps. See [Getting Started](https://agentic-project-management.dev/docs/getting-started) for the full walkthrough. The rest of the [documentation](https://agentic-project-management.dev) describes the workflow and agent roles in more detail, explains APM's prompt and context engineering, and includes other practical guides.
 
 > [!NOTE]
-> Two additional research-preview targets, `claude-single-skill` and `agents-single-skill`, provide the same workflow through one `apm` skill. The preview explores whether a single skill makes the workflow more flexible.
+> Two additional research-preview installation targets, `claude-single-skill` and `agents-single-skill`, provide the same workflow through one `apm` skill. The preview explores whether a single skill makes the workflow more flexible.
 >
 > Choose one format for each assistant you use. You can mix formats: `apm init -a agents claude-single-skill`.
 >
