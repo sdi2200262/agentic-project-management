@@ -66,8 +66,8 @@ A Task depends on another when it needs that Task's output.
 
 | Term | Definition |
 |---|---|
-| **Same-Worker dependency** | Both Tasks are assigned to the same agent. |
-| **Cross-Worker dependency** | The Tasks are assigned to different agents, including the Manager. |
+| **Same-Agent dependency** | Both Tasks are assigned to the same agent. |
+| **Cross-Agent dependency** | The Tasks are assigned to different agents, including the Manager. |
 
 ### Task states
 

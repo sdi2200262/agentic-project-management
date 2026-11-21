@@ -40,9 +40,9 @@ The Plan divides the work into ordered Stages and Tasks for the Manager or Worke
 
 1. Turn the approved delivery approach into a breakdown. Use what you learned about dependencies, independent progress and shared context to choose assignments, Task results and Stage milestones. Explain boundaries and ordering that affect delivery.
 2. Define each Task per §5.2, setting its Agent field to `manager` or a Worker slug per the agreed approach. In Guidance, refer to the relevant Spec or source sections and add Task-specific context, any work the User wants to perform, and agreed review points. The assigned agent remains responsible when the User performs all or part of the work.
-3. Check that Tasks cover every Spec outcome and that their assigned agents can execute and validate them. Check assignments, dependencies, sizes and review points against the principles below and agreed involvement. Keep workspace preparation, integration and pushing with the Manager; Workers use prepared workspaces and agreed commit instructions. Same-Worker dependencies have the same assigned agent; Cross-Worker dependencies have different agents, including the Manager. Correct any mismatch.
+3. Check that Tasks cover every Spec outcome and that their assigned agents can execute and validate them. Check assignments, dependencies, sizes and review points against the principles below and agreed involvement. Keep workspace preparation, integration and pushing with the Manager; Workers use prepared workspaces and agreed commit instructions. Label dependencies Same-Agent when both Tasks have the same assignee and Cross-Agent when they have different assignees. Correct any mismatch.
 4. Write `.apm/plan.md` per §5.2. Use brief prose in Notes for arrangements spanning Tasks. Name the affected Tasks and any agreed participation, review points, timing or shared constraints. Describe when suggested coordination options would help. Link to Task fields or Spec sections for details. For later sessions, record relevant sequencing or prerequisites and refer to the Spec for scope.
-5. When you ask for review, give a short overview of the Workers, Stages, Task counts and what can run in parallel.
+5. When you ask for review, give a short overview of the assigned agents, Stages, Task counts and what can run in parallel.
 
 Break the work down by these principles:
 
@@ -96,10 +96,11 @@ The Plan is `.apm/plan.md`.
 
 <One or two sentences on how the work described in the Spec is divided, ordered and assigned, with a reference to the Spec>
 
-## Workers
+## Agents
 
 | Agent | Domain | Description |
 |-------|--------|-------------|
+| manager | <Domain> | <What it works on> |
 | <worker-slug> | <Domain> | <What it works on> |
 
 ## Stages
@@ -117,7 +118,7 @@ The Plan is `.apm/plan.md`.
 
 - **Agent:** <worker-slug or manager responsible for the Task>
 - **Objective:** <What the Task must achieve>
-- **Dependencies:** <Task N.M (Same-Worker); Task N.M by <worker-slug or manager> (Cross-Worker); or None>
+- **Dependencies:** <Task N.M (Same-Agent); Task N.M by <worker-slug or manager> (Cross-Agent); or None>
 - **Output:** <Concrete deliverables and paths>
 - **Validation:** <Checks and expected results that establish completion, including checks requiring the User>
 - **Guidance:** <Task-specific approach, relevant context and references, and agreed User participation or review points>
@@ -126,7 +127,7 @@ The Plan is `.apm/plan.md`.
 2. <Step>
 ```
 
-- The Workers table lists only Workers with separate conversations; omit its rows when none are needed.
+- List `manager` and any Workers with separate conversations in the Agents table.
 - Name each Stage for its main result. List only direct dependencies.
 - Write ordered, Task-specific actions that produce and validate the deliverables, referencing shared procedures for common details. Shared coordination belongs in Notes. A research step states its question, sources and required evidence.
 - Put each detail in the field or step it serves. Refer to relevant Spec sections for requirements and design decisions.

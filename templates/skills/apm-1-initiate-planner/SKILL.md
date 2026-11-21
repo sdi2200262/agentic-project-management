@@ -51,7 +51,7 @@ Your startup responsibilities are:
 
 After the Spec and Plan are approved and any proposed updates to `AGENTS.md` are resolved:
 
-1. For each agent in the Plan's Workers table, create `.apm/bus/<agent-slug>/` with empty `task.md`, `report.md` and `handoff.md`. Create `.apm/bus/manager/` with only an empty `handoff.md`.
+1. For each Worker listed in the Plan, create `.apm/bus/<agent-slug>/` with empty `task.md`, `report.md` and `handoff.md`. Create `.apm/bus/manager/` with only an empty `handoff.md`.
 2. Report the result of the `AGENTS.md` review and why you changed or kept the guidance.
 3. Tell the User the documents and Message Bus are ready. Ask them to open a new conversation and {START_MANAGER} for the Implementation Phase.
 

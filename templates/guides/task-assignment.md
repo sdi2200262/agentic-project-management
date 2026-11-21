@@ -54,9 +54,9 @@ Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's 
    Never refer the Worker to the Spec, Plan, Tracker or Index. Supply dependency logs per step 4. Workers read `AGENTS.md` directly.
 2. For code and supporting documents, name relevant paths or sections and how to use them. For supporting documents, include the relevant agreed structure and permitted updates directly in the prompt.
 3. Keep the instructions on the Task. Supply enough purpose and participation context for the Worker to explain its Task, without copying the wider Stage structure or unrelated coordination. Include other Task IDs only where they identify dependencies.
-4. If the Plan lists dependencies, write Context from Dependencies. Same-Worker means both Tasks are assigned to the same agent; Cross-Worker means different agents, including you:
+4. If the Plan lists dependencies, write Context from Dependencies. A dependency is Same-Agent when both Tasks have the same assignee and Cross-Agent when they have different assignees.
    - Name each earlier Task, its outputs and paths, and how to use them.
-   - Read the producer's latest accepted attempt log for Cross-Worker dependencies. Do the same for Same-Worker dependencies when earlier context is missing after Handoff or recovery from a lost, corrupted or compacted conversation. Check the Agents table for gaps and follow earlier-attempt links as needed.
+   - Read the producer's latest accepted attempt log for Cross-Agent dependencies. Do the same for Same-Agent dependencies when earlier context is missing after Handoff or recovery from a lost, corrupted or compacted conversation. Check the Tracker's Agents table for gaps and follow earlier-attempt links as needed.
    - For each dependency that needs its log, name the log in the prompt. Give numbered steps to read it before using the outputs and to integrate the outputs, preserving interfaces and constraints.
    - Trace upstream when earlier Tasks set patterns or contracts this Task relies on. Stop where an intermediate output fully captures them.
 5. Add execution, validation or logging guidance only when it is specific to this Task. The Worker's guides already cover the general rules.

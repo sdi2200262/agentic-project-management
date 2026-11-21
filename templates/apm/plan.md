@@ -1,6 +1,6 @@
 # APM Plan
 
-## Workers
+## Agents
 
 ## Stages
 
