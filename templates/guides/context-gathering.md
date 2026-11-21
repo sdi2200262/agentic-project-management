@@ -16,7 +16,7 @@ Present relevant findings with the first discovery exchange, keeping to what the
 
 ## 2. Discovery Topics
 
-Give each discovery topic at least one exchange with the User. Continue a topic for as many exchanges as it needs. Use the order below when useful and revisit topics as findings or answers warrant. When you have enough context on a topic, summarize your understanding and invite corrections or additions. Signal changes of topic naturally by connecting what you settled to what you’ll discuss next.
+Give each discovery topic at least one exchange with the User. Continue a topic for as many exchanges as it needs. Use the order below when useful and revisit topics as findings or answers warrant. When you have enough context on a topic, summarize your understanding and invite corrections or additions. Signal changes of topic naturally by connecting what you settled to what you’ll discuss next. Discuss the work in its own terms during discovery. Develop Stages, Tasks and assignments during Work Breakdown.
 
 Ask substantive questions that resolve missing requirements, choices or constraints. After asking, end the message and wait for the User. Apply answers, verify consequential inferences and resolve contradictions neutrally. Research, analysis, design, processing and preparation may happen between exchanges; complete what is needed before asking dependent questions. Use the User's and domain's language and carry established answers forward without repetition.
 
@@ -55,7 +55,7 @@ When recommending any form of User participation, explain what the User would do
 
 Check repository instructions and recent contribution history. Agree with the User on whether and how to use version control. If using it, propose applicable branch and commit conventions with a sample branch name and commit subject. Explain departures from repository practice. Agree on constraints for work locations, commit and integration timing, and APM file tracking. The Manager prepares the workspaces.
 
-For parallel work in one repository, prefer separate working copies supported by the agreed tools, such as Git worktrees. In a shared working directory, agree on independent work with separate writable scopes. Account for shared resources and work that must run in sequence in the Plan.
+Discuss what can run together, what needs to happen in order, and when it helps for one agent to carry related work through. Explain why those choices fit the work. For parallel work in one repository, prefer separate working copies supported by the agreed tools, such as Git worktrees. In a shared working directory, agree on independent work with separate writable scopes. Account for shared resources and work that must run in sequence in the Plan.
 
 ## 3. Research
 
@@ -77,16 +77,21 @@ Account for timing constraints and dependencies outside the agents’ control wh
 
 ## 5. Understanding Summary
 
-Before presenting the summary, confirm the User's involvement. Point out useful opportunities for work to proceed independently or overlap, and for one agent to carry related work through in sequence. Explain the relevant dependencies, isolation or shared context in terms of the work itself. Develop Stages, Tasks and assignments during Work Breakdown.
+Before presenting the summary, confirm the User's involvement.
 
-1. After an exchange on every discovery topic and sufficient preparation, present your complete understanding per §6.1, including any limits that are still unresolved.
-2. End with an explicit request for approval. Apply corrections where they affect the agreement, update the summary and ask again.
+1. After an exchange on every discovery topic and sufficient preparation, present a summary of your understanding per §6.1, including any unresolved limits.
+2. End with an explicit request for approval. If the User makes corrections, revise the summary per §6.1, then present it in full and ask again.
 3. Once approved, continue with `{GUIDE_PATH:work-breakdown}`.
 
 ## 6. Formats
 
 ### 6.1 Understanding Summary Format
 
-Group the summary by what you and the User have agreed the session will deliver, covering its goal, scope, requirements, design and acceptance criteria, and how the work will be delivered, covering responsibilities, sequencing, dependencies, checks and coordination. Use the first group to prepare the Spec and the second to prepare the Plan, following Work Breakdown §§2–3 for where details belong. Present the summary in a form that fits the conversation.
+Organize the summary in a way that fits the work and is easy to follow. Give the User enough detail to review what you’ll build and how you’ll build it before approving.
 
-Include the constraints, reasons and sources needed to review the agreement, including relevant environments, resources and access. Cover agreed User involvement and version control. Note any lasting workspace guidance that needs attention and any later-session scope that you discussed. Identify open choices and prerequisites, who can resolve them and their effect on the work.
+- For what you’ll build, explain the goal, scope, requirements, design choices and what makes the result acceptable. Use this to write the Spec.
+- For how you’ll build it, explain the agreed approach in terms of the work. Say who will do what, what can run together, what has to wait and why, and how you’ll check the results. Include how the User will take part and when their input is needed. Use this to write the Plan.
+
+Include the constraints, reasons and sources needed to review the agreement, including relevant environments, resources and access. Cover agreed version control. Note any lasting workspace guidance that needs attention and any later-session scope that you discussed. Identify open choices and prerequisites, who can resolve them and their effect on the work. Follow Work Breakdown §§2–3 for where the details belong.
+
+Acknowledge the User’s corrections. Ask follow-up questions if the meaning or effect of a correction is unclear. Update what you’ll build, how you’ll build it, or both, as the correction requires.
