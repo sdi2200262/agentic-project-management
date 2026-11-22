@@ -119,7 +119,7 @@ Workers are identified by their bus-folder slugs. Skills resolve supplied IDs to
 
 ## 5. State and Memory
 
-The Tracker and Memory, including the Index, Stage summaries and logs, are the coordination documents. The planning and coordination documents reflect the latest agreed decisions and verified state. Agents update affected sections in place and align related Task instructions before affected work starts or resumes, and before a wait or Handoff. Logs and summaries preserve earlier outcomes and consequential decisions.
+The Tracker and Memory, including the Index, Stage summaries and logs, are the coordination documents. The planning documents and Tracker reflect the latest agreements and verified state. Agents update affected content in place and align related Task instructions before affected work starts or resumes, and before a wait or Handoff. Memory preserves the session's results, decisions, evidence and context for later work.
 
 A note about a consequential document update briefly records what the document said before, what it says now, why it changed and what the change means for the work. The note links to the updated section.
 
@@ -131,13 +131,13 @@ Each document has one authoritative purpose. The Tracker holds current coordinat
 
 The Manager consolidates related Tracker updates when assignments, states, blockers, decisions, locations or next actions change. It revises affected Task rows and Notes together, replaces superseded accounts and removes resolved notes and context gaps during ordinary updates. Consequential history stays in its owning log or Stage summary before its only account is removed, with a brief reference retained where coordination still needs it. Consequential decisions are preserved before context is lost.
 
-Memory preserves outcomes, consequential evidence, decisions and continuation context. Index Notes hold brief findings, limits, established User preferences and agreed changes that later work needs. They give scope and implications with source links and preserve the conditions and evidence of observations. The Manager revises the notes when their implications for later work change. Current agreements stay in their owning documents. Live status stays in the Tracker. At Stage completion, the Manager uses the Tracker and Task Logs to record Stage decisions in the summary and lasting implications in Index Notes. The Index's Stage outcome table summarizes results and material limits.
+Index Notes hold brief findings, limits, established User preferences and agreed changes that later work needs. They give scope and implications with source links and preserve the conditions and evidence of observations. The Manager revises the notes when their implications for later work change. Current agreements stay in their owning documents. Live status stays in the Tracker. At Stage completion, the Manager uses the Tracker and Task Logs to record Stage decisions in the summary and lasting implications in Index Notes. The Index's Stage outcome table summarizes results and material limits.
 
 A session summary is a dated account of results for the User and later sessions.
 
 The responsible agent logs Success, Partial or Failed; the Manager decides whether the Task becomes Done. Tasks stay Active during investigation, follow-up or pending decisions. Done is final: later fixes need new Tasks referring to the original work.
 
-A Stage completes when its Tasks are Done and its required integration and verification are complete. Accepted Partial outcomes and unrun checks remain qualified in summaries.
+A Stage completes when its Tasks are Done and its required integration and verification are complete. The Manager keeps its summary current until the next Stage starts or the session closes, revising affected results and checks in place and preserving earlier decisions. The Manager records changes made in a later Stage in that Stage's summary and links to the earlier work. Accepted Partial outcomes and unrun checks remain qualified in summaries.
 
 Agents flag Important Findings that affect acceptance or may matter to later work, separating evidence from uncertainty. Partial and Failed outcomes always have Important Findings. The Manager resolves their effects on planning and records the decision. Summaries preserve consequential findings, decisions, evidence and limitations with source links.
 
@@ -267,9 +267,11 @@ Managers and Workers resuming after a compaction of their context follow their r
 
 ### 8.3 Summary and Archive
 
-**Runtime:** `apm-8-summarize-session`.
+**Runtime:** `apm-2-initiate-manager` and `apm-8-summarize-session`.
 
 A new conversation may summarize without adopting a role; the Manager may summarize at completion or early stopping. Normal completion reports results. Early closure pauses Tasks and subagents, asks the User to pause other active work, and records checked unfinished state without changing Task states. Summary and archive preparation uses current stop confirmation or collects missing state from the User. The optional summary checks outcomes, findings, decisions, limits and attribution against sources and deliverables. Completion counts describe workflow progress, not universal validation success.
+
+At session close, the Manager updates Index Notes with any remaining information that may help in a later session and links to the evidence. The Manager then clears obsolete coordination notes and context from the Tracker, keeping the checked final state and what is needed to resume unfinished work.
 
 Archiving is optional and requires the User's approval. The agent explains the effects before requesting approval and reuses prior approval that covered those effects. Archival preserves session records and remaining linked Git worktrees under `.apm/worktrees/` with their uncommitted contents, verifies preservation, then clears active APM files and installed instructions. Worktrees remain attached to source repositories. Other working copies outside `.apm/` stay in place, as do ordinary project-directory changes. Failure preserves recoverable state and reports the paths needing attention. Completing Tasks, committing and merging are separate decisions.
 

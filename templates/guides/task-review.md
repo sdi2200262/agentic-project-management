@@ -60,7 +60,7 @@ You may correct one Task, add a dependency or an isolated Spec point, or propose
 1. Identify the change, its evidence, affected documents and dependent or active work. Check how the change affects ongoing work and coordinate any needed adjustment with whoever is performing it. Preserve valid progress, Task identity, current attempt and workspace.
 2. Carry forward decisions already agreed with the User and resolve any further approval needed. If further approval is needed, record the pending decision in the Tracker, present the proposal and wait; unrelated work may continue.
 3. Revise affected Spec and Plan sections in place, replacing superseded wording. Check related sections in both documents and update any the change affects. Record agreed changes to ongoing User involvement and coordination in the Plan, and update authorized workspace guidance. For new or revised Tasks, follow the prescribed format and give concrete work, outputs and checks. Reflect agreed involvement in responsibilities, Task size and review points. When reassigning, consider progress, retained knowledge and coordination demands. Preserve unrelated content.
-4. Align Task instructions with the updated documents. Bring affected Tracker and Memory entries up to date before sending those instructions, continuing affected work, waiting or handing off. Update your subagents directly. Ask the User to deliver Worker corrections per `{GUIDE_PATH:task-assignment}` §5.1, or use a follow-up for a reported attempt. Coordinate User-performed portions with the User. Keep next actions current in the Tracker and record the change and its reason where they affect current coordination (§8.2). Preserve consequential decisions in the Stage summary and update the Index when a change matters to later work (§8.3).
+4. Align Task instructions with the updated documents. Update affected Tracker entries in place, including next actions and the reason for changes that affect coordination (§8.2). Preserve consequential decisions in the Stage summary (§8.4) and update the Index when a change matters to later work (§8.3). Complete these updates before sending revised instructions, continuing affected work, waiting or handing off. Update your subagents directly. Ask the User to deliver Worker corrections per `{GUIDE_PATH:task-assignment}` §5.1, or use a follow-up for a reported attempt. Coordinate User-performed portions with the User.
 
 For work cancelled, superseded or deferred beyond the session, retain its ID, disposition, reason and any replacement. Reconcile requirements, tables, dependencies and instructions so obsolete work is no longer actionable. After scope agreement, mark it Done and record its disposition in the Tracker and Stage summary, distinct from delivery. Preserve existing logs; do not invent execution logs for unperformed work.
 
@@ -86,7 +86,7 @@ When every Task in a Stage is Done and no follow-up Task is pending:
 1. Perform required User and Plan checks. Reuse Task validation and review evidence that still applies. Focus further review on gaps that could affect acceptance. Record what you checked or skipped and why.
 2. For those checks and gaps, verify combined deliverables at the work's validation level. Keep reference inputs separate from generated results and preserve usable evidence through cleanup. Resolve questions within scope; add Tasks for fixes to Done work or ask where scope is unclear.
 3. Use Task Logs and the Tracker to account for consequential findings, decisions, accepted limits and unrun checks. Cite their sources. Reuse reviewed logs still in context and reread those that changed or are no longer available.
-4. Write the Stage summary per §8.4, keeping decisions already recorded there. Update the Index per §8.3 and bring the Tracker's Notes up to date per §8.2.
+4. Write or update the Stage summary per §8.4. Record the Stage outcome in the Index. Update Index Notes with what later work needs (§8.3). Keep Tracker Notes current for any coordination that carries forward (§8.2).
 5. Once all Tasks are Done and required integration and verification are complete, replace their rows with `**Stage N:** Complete — [Summary](memory/stage-<NN>/stage-<NN>.summary.md)`. The summary retains accepted Partial outcomes and limits.
 6. Briefly report the Stage and actual result, verification, remaining limits and consequential carryover. Explain the next Stage's work and ask explicitly before starting it, unless a different arrangement was explicitly agreed. Do not infer permission from approval of the overall Plan. Resolve acceptance of remaining limits separately where needed.
 
@@ -186,7 +186,7 @@ Each Stage summary is `.apm/memory/stage-<NN>/stage-<NN>.summary.md`, beside its
 # Stage <N> - <Stage Name>
 
 ## Outcome
-<Final decision for each Task and agents involved, relevant commits and uncommitted work, accepted Partial outcomes and what remains>
+<Current Stage results, Task decisions and agents involved, relevant commits and uncommitted work, accepted Partial outcomes and what remains>
 
 ## Findings and Decisions
 <Consequential discoveries, their resolution or acceptance, reasons, and changes to the Spec, Plan or `AGENTS.md`, with source links>
@@ -200,3 +200,5 @@ Each Stage summary is `.apm/memory/stage-<NN>/stage-<NN>.summary.md`, beside its
 ```
 
 Group original and follow-up logs by Task and identify the final reviewed attempt. Preserve findings affecting future work, acceptance, compatibility, reproduction or unresolved risk. Keep implementation details in logs; the Index provides lasting context and navigation, the summary decisions and evidence.
+
+Keep the Stage summary current until the next Stage starts or the session closes. Revise affected results and checks in place. Keep earlier decisions under Findings and Decisions. When a later Stage changes an earlier result, record the change in that Stage’s summary and link to the earlier work.
