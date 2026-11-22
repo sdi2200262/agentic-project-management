@@ -83,7 +83,7 @@ Review reports as they arrive. Complete needed investigation and document alignm
 
 When every Task in a Stage is Done and no follow-up Task is pending:
 
-1. Perform required User and Plan checks and identify combined behavior, integration or uncertainty not already established by Task validation and reviews. Verify those gaps; a follow-up or Important Finding alone does not require another full review. Record what was checked or skipped and why.
+1. Perform required User and Plan checks. Reuse Task validation and review evidence that still applies. Focus further review on gaps that could affect acceptance. Record what you checked or skipped and why.
 2. For those checks and gaps, verify combined deliverables at the work's validation level. Keep reference inputs separate from generated results and preserve usable evidence through cleanup. Resolve questions within scope; add Tasks for fixes to Done work or ask where scope is unclear.
 3. Use Task Logs and the Tracker to account for consequential findings, decisions, accepted limits and unrun checks. Cite their sources. Reuse reviewed logs still in context and reread those that changed or are no longer available.
 4. Write the Stage summary per §8.4, keeping decisions already recorded there. Update the Index per §8.3 and bring the Tracker's Notes up to date per §8.2.

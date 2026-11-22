@@ -245,7 +245,7 @@ For corrections and Worker follow-ups, the Manager chooses direct verification o
 
 Broader design or scope questions need viable options and approval per §3.5. Review leads to acceptance, follow-up or planning change. Pending Tasks stay Active. The Manager consolidates Tracker updates per §5, preserving decisions and recovery state, and resolves investigation and alignment before dependent work; unrelated Ready work continues. Integration and cleanup remain independent of acceptance (§3.4).
 
-Stage verification preserves required User and Plan checks and addresses combined behavior, integration or uncertainty not established by Task validation and review. A follow-up or Important Finding alone does not require another full review. The Manager records checks performed or skipped and why, separates reference inputs from generated results, preserves evidence through cleanup and resolves findings. Fixes to Done work need new Tasks. After writing the Stage summary and updating the Index, the Manager reports the Stage result and consequential carryover and pauses before the next Stage per §2.2.
+Stage verification includes required User and Plan checks and uses Task validation and review evidence that still applies. Further review focuses on gaps that could affect acceptance. The Manager records checks performed or skipped and why, separates reference inputs from generated results, preserves evidence through cleanup and resolves findings. Fixes to Done work need new Tasks. After writing the Stage summary and updating the Index, the Manager reports the Stage result and consequential carryover and pauses before the next Stage per §2.2.
 
 ## 8. Continuity and Closure
 
