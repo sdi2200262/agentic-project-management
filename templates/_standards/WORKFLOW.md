@@ -173,7 +173,9 @@ The Understanding Summary explains what the session will deliver and how the wor
 
 ### 6.2 Work Breakdown
 
-Document approvals follow §2.1; corrections carry into earlier documents. The required formats express this session's agreed work and decisions, reusing earlier material where it fits and is verified against current sources. Task responsibility, size and review points reflect agreed involvement, and User-performed work keeps its responsible agent.
+Document approvals follow §2.1. The Planner checks each saved document against its required format and the approved understanding. For approval, it links the file and briefly summarizes its contents and the reasons for consequential choices. At Spec review, it names the delivery agreements from the approved understanding reserved for the Plan. It checks that the relevant Tasks or Notes carry those agreements forward. At Plan review, it explains how the work and checks cover the approved Spec outcomes. Corrections carry into affected documents and revisions follow the same review.
+
+The Planner reuses earlier material where it fits and is verified against current sources. Task responsibility, size and review points reflect agreed involvement, and User-performed work keeps its responsible agent.
 
 Both documents use language the User can review. They record the technical choices and constraints the User specifies, and describe approaches at the depth the User wants to review. Where the User leaves choices open, the documents state required results, constraints and checks. They preserve consequential decisions and findings with brief reasons and sources where useful. The Manager uses the documents, their sources and the current workspace to establish the technical context needed for implementation. The implementing agents decide details left open within the agreed boundaries.
 

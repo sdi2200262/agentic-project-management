@@ -8,13 +8,15 @@ Use language the User can review. Record the technical choices and constraints t
 
 ## 1. Review Cycle
 
-Write and obtain approval for the Spec, then do the same for the Plan. Use this cycle for each document.
+Before drafting, review the approved understanding. Put agreed outcomes, requirements, design, constraints and acceptance criteria in the Spec. Reserve assignments, sequencing, coordination and how the work will be checked for the Plan. When an agreement affects both, record each part where it belongs.
+
+Use this cycle for the Spec, then the Plan.
 
 1. Present the proposed organization and consequential choices, reasons and assumptions.
-2. In the same turn, read the target file and write the draft. Reuse material that fits after checking it against current sources and decisions. Distinguish agreements, recommendations and open choices.
-3. Check the draft against the approved understanding and any document already approved for this session. Use the checks in §2 or §3 and put each detail in the field or document it serves.
-4. Present the document in chat as described in §2 or §3. Link it, explain what the User is approving and what comes next, then ask for explicit approval and wait.
-5. Apply corrections to all affected documents, including earlier ones. Check the changes, present the revised document and obtain explicit approval before continuing.
+2. In the same turn, read the target file and write the draft using its format in §5. Reuse material that fits after checking it against current sources and decisions. Distinguish agreements, recommendations and open choices.
+3. Check the saved file's section order and required fields against its format. Use §2 or §3 to check the content against the approved understanding and any document already approved for this session.
+4. Link the file. Briefly summarize its contents per §2 or §3 and explain the reasons for consequential choices. Say what comes next, ask for explicit approval and wait.
+5. Apply corrections to all affected documents, including earlier ones. Repeat steps 3 and 4 for revisions.
 
 After Plan approval, resolve any `AGENTS.md` changes per §4.
 
@@ -32,7 +34,7 @@ Use supporting documents for retained material with a purpose outside the Spec, 
 
 Check that the Spec defines the agreed outcomes and makes clear how to judge the result.
 
-Present the expected behavior and what counts as success. Call out the design choices and constraints the User is approving. Separate decisions that need their judgment from supporting detail the agents will use.
+Summarize the expected behavior, what counts as success and the choices or constraints that need the User's judgment. Name the delivery agreements from the approved understanding that you will carry into the Plan, such as how the User will take part, when reviews will happen and how the work will be coordinated.
 
 ## 3. Plan
 
@@ -52,9 +54,9 @@ Use Notes to record arrangements spanning Tasks in brief prose. Name the affecte
 
 Present options such as parallel work or batching as recommendations and say when they would help. Describe potential blockers as observations. Say when they could arise and what work they could affect. The Manager decides how to dispatch when the work is ready, within the agreed Plan.
 
-Check that the Tasks deliver and verify every approved Spec outcome and that each assigned agent can carry out and check its work. Check assignments, dependencies, sizes and review points against the agreed approach.
+Check that the Tasks deliver and verify every approved Spec outcome and that each assigned agent can carry out and check its work. Check assignments, dependencies and sizes against the agreed approach. Verify that the relevant Tasks or Notes carry forward the agreed delivery and review arrangements.
 
-Present the Stages, Task counts, assignments, parallel work and agreed User involvement. Explain what each Stage lets the User assess and what work waits at its boundary.
+Summarize how the planned work and checks cover the approved Spec outcomes. Give the Stages, Task counts, assignments, parallel work and agreed User involvement. Explain what each Stage lets the User assess and what work waits at its boundary.
 
 ## 4. AGENTS.md
 
