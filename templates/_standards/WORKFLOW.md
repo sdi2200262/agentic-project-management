@@ -227,6 +227,8 @@ Success requires the objective and every validation criterion to pass, including
 
 Agents explain what validation has established and ask for the remaining checks that need the User's judgement or an outside action. User-facing test procedures are checked as written and isolate disposable test state from User data. If required validation or resources are unavailable, unaffected work and available checks continue. If the limits remain at completion, the outcome is Partial.
 
+When the agreement requires explicit User acceptance, the responsible agent shows the result with any requested changes and waits for the User to accept it before continuing.
+
 In a Worker batch, each Task is validated and logged before the next; Partial or Failed stops the batch, with remaining Tasks reported as Not started.
 
 Workers apply User corrections immediately and resolve their retention in `AGENTS.md` at completion under existing authorization or a User decision. Other findings may justify guidance updates. Tracked changes use the assigned branch or working copy and agreed commit timing. Important Findings retain changes and paths.
