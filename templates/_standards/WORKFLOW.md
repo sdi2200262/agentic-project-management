@@ -219,6 +219,8 @@ Missing dependencies, unresolved instruction conflicts, repeated attempts withou
 
 Workers report relevant findings and possible wider effects from their available context. When that context leaves an issue unclear, they ask the User and recommend local resolution or Manager involvement if broader context or coordination is likely needed, pausing only affected work.
 
+When a User review or action is required, the responsible agent explains what to look for or do, what response it needs and what happens next.
+
 The User may take on or return any portion. The responsible agent briefs and supports them, stops overlapping work, checks returned work and retains validation and logging responsibility. Limited help does not transfer the rest of the work. The arrangement and resume point stay in the Tracker or Worker prompt, with consequential contributions in the log. Assignment, state and attempt are preserved.
 
 Success requires the objective and every validation criterion to pass, including required documentation and affected behavior. Agents resolve known issues and validation gaps within scope and permission before final logs or reports; implementation subagent briefs carry the same validation and guidance requirements. A deliberate deviation or unrun check is not a pass. Agents use evidence tied to the actual deliverable and environment, checking that reused outputs and results still apply. They rerun checks when changes, incomplete evidence or uncertainty warrant it, confirm recurring failures match their established causes and distinguish local, CI and integrated results.

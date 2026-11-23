@@ -37,7 +37,7 @@ Report consequential findings and possible wider effects, distinguishing evidenc
 
 When work is delegated, review the actual outputs against the Task requirements, resolve remaining issues and validate the combined result.
 
-Use the shared communication guidance for brief progress updates, grouped findings and clear User actions. Pause only affected work for a required User action, and continue from the result when it is available.
+Use the shared communication guidance for brief progress updates, grouped findings and clear User actions. When a User review or action is required, explain what to look for or do, what response you need and what happens next. Pause only affected work for a required User action, and continue from the result when it is available.
 
 Use the work's own vocabulary in commits, code and comments. Keep APM coordination details out of deliverables unless they are part of the work itself.
 
