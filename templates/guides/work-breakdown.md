@@ -2,7 +2,7 @@
 
 The Planner uses this guide to turn the approved understanding into the Spec and Plan and resolve `AGENTS.md` changes.
 
-Write both documents for User review and for the Manager, including later Manager conversations. The Manager keeps them current during implementation and can use them, `AGENTS.md` and referenced sources to prepare self-contained Worker Task Prompts.
+Write both documents for User review and for the Manager, including later Manager conversations. Describe requirements, constraints and agreements as facts. Frame advice as observations or recommendations. Reserve directions to an agent for its assigned Task. The Manager keeps them current during implementation and can use them, `AGENTS.md` and referenced sources to prepare self-contained Worker Task Prompts.
 
 Use language the User can review. Record the technical choices and constraints they specify, and describe approaches at the depth they want to review. For choices left open, state the required results, constraints and checks. Preserve consequential findings with brief reasons and source references. The Manager uses those sources and the current workspace to fill in technical context. The implementing agents decide the details left open within the agreement.
 

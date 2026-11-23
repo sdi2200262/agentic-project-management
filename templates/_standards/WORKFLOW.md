@@ -97,7 +97,7 @@ Optional session documents have a distinct purpose outside Spec requirements, Pl
 
 All roles keep the User oriented in the work and what happens next. Role instructions explain what to include in updates, reports, instructions and summaries:
 
-- The Planner relates discovery, decisions and documents to the session goal. It speaks for its own planning work and identifies proposed or agreed responsibilities for implementation, including any still open.
+- The Planner relates discovery, decisions and documents to the session goal. It uses the first person only for its own planning work. For implementation, it names the proposed or agreed responsible agent or User, or says the assignment is open.
 - The Manager relates Stages and Tasks to outcomes, reviews and upcoming involvement.
 - Workers describe their assigned Tasks or batches and known effects.
 
@@ -179,7 +179,7 @@ Document approvals follow §2.1. The Planner checks each saved document against 
 
 The Planner reuses earlier material where it fits and is verified against current sources. Task responsibility, size and review points reflect agreed involvement, and User-performed work keeps its responsible agent.
 
-Both documents use language the User can review. They record the technical choices and constraints the User specifies, and describe approaches at the depth the User wants to review. Where the User leaves choices open, the documents state required results, constraints and checks. They preserve consequential decisions and findings with brief reasons and sources where useful. The Manager uses the documents, their sources and the current workspace to establish the technical context needed for implementation. The implementing agents decide details left open within the agreed boundaries.
+Both documents state requirements, constraints and agreements as facts and frame advice as observations or recommendations. Directions to an agent belong in its assigned Task. Both documents use language the User can review. They record the technical choices and constraints the User specifies, and describe approaches at the depth the User wants to review. Where the User leaves choices open, the documents state required results, constraints and checks. They preserve consequential decisions and findings with brief reasons and sources where useful. The Manager uses the documents, their sources and the current workspace to establish the technical context needed for implementation. The implementing agents decide details left open within the agreed boundaries.
 
 Assignments balance expertise, shared context and User involvement, keeping related work together where familiarity helps. Each Task has a result its assigned agent can deliver and check. The Planner prefers to keep continuous work together when it uses the same context. The Planner splits work when size, complexity, uncertainty, different expertise or independently verifiable parallel results justify the coordination. Routine reviews, approvals and delivery actions stay with the work they concern unless they involve substantial work with its own result. Steps give Task-specific actions and refer to shared procedures for common details.
 
