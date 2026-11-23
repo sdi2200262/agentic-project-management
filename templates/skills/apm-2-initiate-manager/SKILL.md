@@ -103,12 +103,16 @@ At session close, update Index Notes per `{GUIDE_PATH:task-review}` §8.3 with a
 
 Recap the session in chat. Present the intended outcomes and actual results, Stages and Tasks, participating agents, consequential findings and deliverables, and anything unfinished, accepted limitations and verification gaps. Say which Stages you coordinated and which you know from Handoff Logs, Stage summaries or a compaction summary.
 
-Explain the effects of archival described below, then ask whether the User wants a saved Session Summary, an archive, both or neither. `.apm/session.summary.md` is a dated account of results for the User and later sessions. If they choose a saved summary, offer these options:
+Ask whether the User wants a saved Session Summary. Explain that `.apm/session.summary.md` is a short account of the whole session and links to relevant files; useful for future Planners gathering context from older archived sessions. For a small session, the archived records may be easy to follow on their own without a summary.
+
+In the same message, ask whether they want to archive the session, with or without a saved summary. Explain how archiving would preserve this session for later reference and make room for a new APM session. The CLI copies active session records from `.apm/` to the same relative paths under `.apm/archives/<name>/`. It moves linked Git worktrees from `.apm/worktrees/` to the archive’s `worktrees/` directory at the same relative paths. It verifies the moves before clearing active APM files and installed instructions. Worktrees keep their uncommitted changes and links to their source repositories. The CLI reports their new paths. Archival preserves branches, working copies outside `.apm/` and ordinary project-directory changes.
+
+If they choose a saved summary, offer these options:
 
 - Here, with your current context: read `{SKILL_PATH:apm-8-summarize-session}` and follow it from its first step.
-- In a new chat with more room: the User asks for an APM session summary there.
+- In a new chat with fresh context: the User asks for an APM session summary there.
 
-Archiving preserves session records and moves linked Git worktrees under `.apm/worktrees/` with their uncommitted work, then clears active APM files and installed instructions. Moved worktrees stay attached to their source repositories, and the CLI reports their new paths. Archival preserves branches, working copies outside `.apm/` and ordinary project-directory changes. The User may also run `apm archive` directly or keep the paused session in place.
+For archival alone, follow `{SKILL_PATH:apm-8-summarize-session}` §1 from step 6. The User may also run `apm archive` directly or keep the session in place.
 
 ## 4. Subagents
 

@@ -8,7 +8,9 @@ disable-model-invocation: true
 
 Follow these instructions only when the User requests a session summary or an APM instruction directs you here. Otherwise, stop.
 
-Write a dated session summary for the User and later sessions, then follow the User’s archive choice. Follow these instructions in a new chat without adopting an APM role, or as the Manager at completion or early stopping. If you are the Planner or a Worker, tell the User and stop.
+When requested, write a short, dated account of the whole session and link the files a future Planner may need when consulting the archive. Follow the User’s archive choice.
+
+Use these instructions in a new chat without adopting an APM role, or as the Manager at completion or early stopping. If you are the Planner or a Worker, tell the User and stop.
 
 Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 
@@ -18,10 +20,11 @@ Read `{SKILL_PATH:apm-communication}` if it is not already loaded.
 2. Check the recorded state of active Tasks, including subagent and User-performed work. Use the Manager’s or User’s confirmation that active work has stopped when it is still current. Otherwise ask the User to pause affected work and collect its current state before continuing.
 3. Check the planning documents, Tracker and Stage summaries against the latest relevant Task Logs, Handoff Logs, deliverables and any version control state. Include unfinished worktrees where present. Follow earlier-attempt links as needed. Record material differences, validation gaps and any uncertainty from reconstructed context, with sources.
 4. Write `.apm/session.summary.md` per §2.1. Count unique Task IDs from the session records and ignore copies in worktrees. Summarize conclusions where they belong and link the evidence. Say which work you remember and which you reconstructed from files or a compaction summary. In a new chat, all of it comes from the files.
-5. Present the summary and apply the User's corrections.
-6. If the User chose a summary only, stop after reporting it. If they have not agreed to archival with its effects explained, explain these effects and ask whether to proceed:
-   - The session's `.apm/` records move to `.apm/archives/` for later sessions. Archival clears active APM files and installed instructions. `apm init` reinstalls them.
-   - Remaining linked Git worktrees under `.apm/worktrees/` move with uncommitted contents and stay attached to their source repositories.
+5. Link the saved summary, briefly state its conclusions and invite corrections. Apply any corrections the User gives.
+6. If the User chose a summary only, stop after reporting it. If they have not agreed to archival with its effects explained, explain what it would do in this session and ask whether to proceed:
+   - The CLI copies active session records from `.apm/` to the same relative paths under `.apm/archives/<name>/`.
+   - Any linked Git worktrees under `.apm/worktrees/` move to the archive’s `worktrees/` directory at the same relative paths. They keep their uncommitted changes and links to their source repositories.
+   - The CLI verifies the moves before clearing active APM files and installed instructions. `apm init` reinstalls the instructions.
    - Other working copies outside `.apm/` and ordinary project-directory changes stay in place. Task and branch states remain unchanged.
 
    Proceed only with the User's explicit agreement.
