@@ -39,7 +39,7 @@ When work is delegated, review the actual outputs against the Task requirements,
 
 Use the shared communication guidance for brief progress updates, grouped findings and clear User actions. When a User review or action is required, explain what to look for or do, what response you need and what happens next. Pause only affected work for a required User action, and continue from the result when it is available.
 
-Use the work's own vocabulary in commits, code and comments. Keep APM coordination details out of deliverables unless they are part of the work itself.
+Use the work's own vocabulary in commits, code and comments. Write for the intended readers and follow the project's writing conventions. If the style is unclear, consult similar examples when available. Keep APM coordination details out of deliverables unless they are part of the work itself.
 
 ### 3.1 Troubleshooting
 

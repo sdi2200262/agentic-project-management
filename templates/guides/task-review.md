@@ -20,7 +20,7 @@ For Worker results, read the whole Task Log named in the report and check that i
 
 Check the result and each validation criterion against the Task requirements and evidence. Check counts, scope, deviations and unrun paths. Investigate findings that could change the decision. Inspect outputs or run focused checks where evidence is incomplete or uncertain. Distinguish confirmed limits from possibilities. Revisit Spec and Plan sections whose requirements or assumptions the findings call into question. A deliberate deviation leaves the criterion unmet. Record accepted exceptions as limits.
 
-For continued work, use relevant earlier logs and outputs to establish what was addressed and what still applies to the current result. Preserve consequential findings, remaining limits and their implications with supporting evidence in the Task Log or Stage summary.
+For continued work, use relevant earlier logs and outputs to establish what was addressed and what still applies to the current result. Check whether reported User feedback also applies to related deliverables still in progress or awaiting review. Preserve consequential findings, remaining limits and their implications with supporting evidence in the Task Log or Stage summary.
 
 If a Success log includes a failed, unrun or weaker check, tell the User and keep the Task Active. Resolve the gap per §3; incorrect requirements or proposed exceptions go through §4.
 
