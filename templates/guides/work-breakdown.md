@@ -2,7 +2,11 @@
 
 The Planner uses this guide to turn the approved understanding into the Spec and Plan and resolve `AGENTS.md` changes.
 
-Write both documents for User review and for the Manager, including later Manager conversations. Describe requirements, constraints and agreements as facts. Frame advice as observations or recommendations. Reserve directions to an agent for its assigned Task. The Manager keeps them current during implementation and can use them, `AGENTS.md` and referenced sources to prepare self-contained Worker Task Prompts.
+Write both documents for User review and for the Manager, including later Manager conversations. The Manager keeps them current during implementation and can use them, `AGENTS.md` and referenced sources to prepare self-contained Worker Task Prompts.
+
+Describe what the deliverable must do and which constraints and agreements apply. Outside assigned Task instructions, do not use imperative language to tell the Manager, a Worker or the User what to do. State who is responsible and frame advice as observations or recommendations. Give direct instructions only in the Task that assigns the work.
+
+Assume the Manager knows the APM workflow. Do not restate standard APM procedures or explain the usual purpose of APM documents. Record the decision, constraint or change that applies to this session. Link the relevant document or procedure when the reader needs it.
 
 Use language the User can review. Record the technical choices and constraints they specify, and describe approaches at the depth they want to review. For choices left open, state the required results, constraints and checks. Preserve consequential findings with brief reasons and source references. The Manager uses those sources and the current workspace to fill in technical context. The implementing agents decide the details left open within the agreement.
 
@@ -28,7 +32,7 @@ Group requirements and design choices by subject. Draw on the full range of Mark
 
 Record the session's version control agreement, including branch and commit conventions and constraints on work locations, commits, integration, publication and APM file tracking. Carry its effects on work and sequencing into the Plan.
 
-Write each note as a separate list item. Frame notes as observations, not instructions. Include context that applies across design subjects, such as shared assumptions, reasons, open choices or later-session scope. For a relevant alternative, explain why it still matters, when it applies and whether the choice is open or settled. Link a procedure only when it explains a design decision or constraint.
+Write each note as a separate list item. Frame notes as observations, not instructions. Include context that applies across design subjects, such as shared assumptions, reasons, open choices or later-session scope. For a relevant alternative, explain why it still matters, when it applies and whether the choice is open or settled.
 
 Use supporting documents for retained material with a purpose outside the Spec, Plan, Tracker and Memory. Agree each document's purpose, path under `.apm/`, structure, maintainer and readers with the User. Reuse suitable documents and conventions and keep them easy to navigate as they grow. When supporting documents are needed, place a Supporting Documents section immediately after Notes. Give each document its own subsection and put its implementation work in Plan Tasks.
 
@@ -48,7 +52,7 @@ Record the agreed delivery approach. The Manager prepares workspaces, integrates
 
 Identify what can start together, what needs an earlier result or outside prerequisite, and what lets affected work resume. Record the agreed response if prerequisites remain unresolved. Give each Task observable checks for its own result, with expected results, timing and who runs them. Identify required User or outside reviews, actions and credentials. Say when affected work pauses for their input.
 
-Write each note as a separate list item. Frame notes as observations and recommendations, not instructions to the Manager. State agreed involvement, review points, timing, update frequency, shared constraints and additional Stage checks as facts when they span Tasks. Keep Task instructions in their fields and link to those fields or the Spec for details. Refer to a shared procedure only when it explains a session agreement. For later sessions, record relevant sequencing and prerequisites and refer to the Spec for scope.
+Write each note as a separate list item. Frame notes as observations and recommendations, not instructions to the Manager. State agreed involvement, review points, timing, update frequency, shared constraints and additional Stage checks as facts when they span Tasks. Keep Task instructions in their fields and link to those fields or the Spec for details. For later sessions, record relevant sequencing and prerequisites and refer to the Spec for scope.
 
 Note which Tasks could run in parallel or be batched and what makes that possible. For a potential blocker, say when it could arise and what work it could affect. If you recommend an option, explain when it would help. The Manager decides how to dispatch ready work within the agreed Plan.
 
