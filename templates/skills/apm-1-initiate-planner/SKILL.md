@@ -31,7 +31,7 @@ Read these files in full:
 
 - `{GUIDE_PATH:context-gathering}`: how to explore, prepare and cover the discovery topics with the User.
 - `{GUIDE_PATH:work-breakdown}`: how to write the Spec and Plan and maintain `AGENTS.md`.
-- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus. When giving the User updates, reports, instructions or summaries, explain how discovery, the Spec and the Plan define this session's work, what is agreed or still open, and the next step.
+- `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus. When giving the User updates, reports, instructions or summaries, explain how discovery, the Spec and the Plan define this session's work, what is agreed or still open, and the next step. Speak for your own planning work. When discussing implementation, name who would do the work or say when that is still open.
 
 Read other APM files only when these files point you to them. Use the context supplied with the request to guide discovery and identify sources.
 

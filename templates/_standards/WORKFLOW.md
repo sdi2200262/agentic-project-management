@@ -97,7 +97,7 @@ Optional session documents have a distinct purpose outside Spec requirements, Pl
 
 All roles keep the User oriented in the work and what happens next. Role instructions explain what to include in updates, reports, instructions and summaries:
 
-- The Planner relates discovery, decisions and documents to the session goal.
+- The Planner relates discovery, decisions and documents to the session goal. It speaks for its own planning work and identifies proposed or agreed responsibilities for implementation, including any still open.
 - The Manager relates Stages and Tasks to outcomes, reviews and upcoming involvement.
 - Workers describe their assigned Tasks or batches and known effects.
 
@@ -155,7 +155,7 @@ The Planner surveys repositories, instructions and existing materials within its
 2. Requirements and constraints.
 3. Implementation approach, quality and coordination.
 
-This order is recommended, not mandatory. Each topic requires at least one User exchange and can continue or recur as needed. Sufficient context calls for confirmation and an invitation to add or correct information. The Planner signals topic changes naturally. Research, exploration, analysis, design, processing and substantial preparation continue between exchanges as needed. Their depth follows scope, complexity and uncertainty. The User's expertise and desired involvement guide how the Planner presents its findings. Preparation precedes dependent questions; unclear intent is established before recommending a solution. Questions resolve substantive gaps, while recommendations explain consequential evidence, trade-offs or uncertainty. The User decides consequential design choices and agents handle details within them.
+This order is recommended, not mandatory. Each topic requires at least one User exchange and can continue or recur as needed. When a topic is settled, the Planner briefly confirms the agreement and invites corrections or additions. On moving to another topic, it connects that agreement to what it still needs to learn and explains the purpose of the next question. Research, exploration, analysis, design, processing and substantial preparation continue between exchanges as needed. Their depth follows scope, complexity and uncertainty. The User's expertise and desired involvement guide how the Planner presents its findings. Preparation precedes dependent questions; unclear intent is established before recommending a solution. Questions resolve substantive gaps, while recommendations explain consequential evidence, trade-offs or uncertainty. The User decides consequential design choices and agents handle details within them.
 
 When proposing to continue earlier work or reuse earlier planning documents or arrangements, the Planner explains what fits this session, what needs to change and why. It explicitly asks the User what to retain or change during discovery, building on answers already given.
 
@@ -163,7 +163,7 @@ When discussing how the work will proceed, the Planner agrees on version control
 
 The User chooses the form and frequency of involvement. The Planner recommends options suited to risk, uncertainty, experience and preferences, explaining how they support understanding and authority: automated Manager execution, User-mediated coordination with Workers, User-led work with assistance, or a combination. Participation may include collaboration, reviews, tests, demonstrations, explanations or progress reports. The Plan records required validation, User or outside review points, timing constraints and agreed update frequency. Routine update timing and grouping remain execution choices; the Manager proposes adjustments as findings or feedback warrant.
 
-The Planner explains what can run together, what needs to happen in order, and when it helps for one agent to carry related work through. Dependencies, shared context and safe isolation shape those choices. The Planner confirms the User's involvement before presenting its understanding. It develops Stages, Tasks and assignments during Work Breakdown.
+The Planner explains what can run together, what needs to happen in order, and when it helps for one agent to carry related work through. Dependencies, shared context and safe isolation shape those choices. The Planner agrees with the User on what must wait for their input and what can continue. It clarifies timing when a review or approval could hold up independent work. It confirms the User's involvement before presenting its understanding. It develops Stages, Tasks and assignments during Work Breakdown.
 
 The Planner establishes and refines a coherent session outcome through discovery. It completes preparation needed to define implementation before requesting understanding approval, rather than deferring unfinished requirements, design or planning into implementation Tasks. When later planning depends on future events or implementation results, it preferably recommends a later session from that evidence. Bounded implementation investigation may resolve technical details within defined work, with questions, evidence and completion criteria, rather than substitute for initial planning.
 
