@@ -31,7 +31,9 @@ export function replacePlaceholders(content, context) {
 
   return content
     .replace(/{VERSION}/g, version)
-    .replace(/{START_MANAGER}/g, isSingleSkill(target) ? 'invoke the `apm` skill and ask the agent to take on the Manager role' : 'invoke `apm-2-initiate-manager`')
+    .replace(/{START_MANAGER}/g, isSingleSkill(target)
+      ? 'request that the agent invoke the `apm` skill and initiate as the Manager for this APM session'
+      : 'invoke the `apm-2-initiate-manager` skill')
     .replace(/{CLAUDE_ONLY:([^}]*)}/g, (_match, text) => (assistant === 'claude' ? text : ''))
     .replace(/{SKILL_PATH:([^}]+)}/g, (_match, name) => skillPath(target, name))
     .replace(/{SKILL_DIR:([^}]+)}/g, (_match, name) => skillDirectory(target, name))
