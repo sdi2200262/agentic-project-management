@@ -60,7 +60,7 @@ Summarize how the planned work and checks cover the approved Spec outcomes. Give
 
 Keep `AGENTS.md` useful across sessions. Include brief orientation, repository paths, working and read-only boundaries and workspace conventions. The Manager and Workers read it in full and maintain it under User authorization. Write it as a standalone reference for Workers.
 
-1. Review existing `AGENTS.md` and any applicable guidance. Propose concise additions or corrections that help future work, extending or replacing existing guidance where possible. Explain the evidence for changes, or why existing guidance is sufficient. If the file is missing, propose one with the project context and workspace instructions established during discovery.
+1. Review existing `AGENTS.md` and any applicable guidance. Propose concise additions or corrections that help future work, extending or replacing existing guidance where possible. Explain the evidence for changes, or why existing guidance is sufficient. If `AGENTS.md` is missing, propose its contents from discovery and ask the User whether to create it.
 2. Resolve decisions needing User agreement. Create or update `AGENTS.md` where needed, then check it. Use clear sections, respecting existing organization and unrelated content where present. State orientation as facts and rules as direct instructions, with conditions where needed.{CLAUDE_ONLY: Add an import to an existing workspace `CLAUDE.md` unless it already has one: `@AGENTS.md` at the workspace root, or `@../AGENTS.md` in `.claude/CLAUDE.md`. Keep it outside code blocks and preserve preexisting content. If references would form a cycle, include its correction in the proposal.}
 
 Continue with `{SKILL_PATH:apm-1-initiate-planner}` §4.
