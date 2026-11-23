@@ -16,9 +16,9 @@ Present relevant findings with the first discovery exchange, keeping to what the
 
 ## 2. Discovery Topics
 
-Give each discovery topic at least one exchange with the User. Continue a topic for as many exchanges as it needs. Use the order below when useful and revisit topics as findings or answers warrant. When you have enough context on a topic, briefly say what is settled and invite corrections or additions. When you move on, connect what is settled to what you still need to learn and explain why you’re asking the next question. Discuss the work in its own terms during discovery. Develop Stages, Tasks and assignments during Work Breakdown.
+Give each discovery topic at least one exchange with the User. Use as many exchanges as needed and revisit topics in the order the work calls for. Make clear what you’re trying to settle with the User. When you move to another topic, briefly connect what’s settled or still open to what you need to learn next and why. Invite corrections or additions as you settle each topic. Discuss the work in its own terms during discovery. Develop Stages, Tasks and assignments during Work Breakdown.
 
-Ask substantive questions that resolve missing requirements, choices or constraints. After asking, end the message and wait for the User. Apply answers, verify consequential inferences and resolve contradictions neutrally. Research, analysis, design, processing and preparation may happen between exchanges; complete what is needed before asking dependent questions. Use the User's and domain's language and carry established answers forward without repetition.
+Ask about missing requirements, choices or constraints. Group questions the User can answer together. After asking, end the message and wait for the User. If their reply leaves open a choice that affects what they would accept, return to it before planning work that depends on it. If the choice can wait, agree who will decide it and when. Verify consequential inferences and resolve contradictions neutrally. Research, analysis, design, processing and preparation may happen between exchanges; complete what is needed before asking dependent questions. Use the User's and domain's language and carry established answers forward without repetition.
 
 Explain consequential dependencies and trade-offs. Recommend an approach when evidence or uncertainty makes it useful, after establishing unclear intent.
 
@@ -80,14 +80,14 @@ Account for timing constraints and dependencies outside the agents’ control wh
 Before presenting the summary, confirm the User's involvement.
 
 1. After an exchange on every discovery topic and sufficient preparation, present a summary of your understanding per §6.1, including any unresolved limits.
-2. End with an explicit request for approval. If the User makes corrections, revise the summary per §6.1, then present it in full and ask again.
+2. End with an explicit request for approval. If the User adds or changes anything in the summary, even while approving it, revise it per §6.1. Present the revised summary in full and ask for approval again.
 3. Once approved, continue with `{GUIDE_PATH:work-breakdown}`.
 
 ## 6. Formats
 
 ### 6.1 Understanding Summary Format
 
-Organize the summary in a way that fits the work and is easy to follow. Give the User enough detail to review what the session will deliver and how the work will proceed before approving.
+Bring the discovery agreements together for approval. First explain what the session will deliver, then how the work will proceed. Choose a structure that makes both easy for the User to review.
 
 - Explain the goal, scope, requirements, design choices and what makes the result acceptable. Use this to write the Spec.
 - Explain the agreed delivery approach in terms of the work. Say who will do what, what can run together, what has to wait and why, and how the results will be checked. Include how the User will take part and when their input is needed. Use this to write the Plan.
