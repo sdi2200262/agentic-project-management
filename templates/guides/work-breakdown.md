@@ -28,7 +28,7 @@ Organize requirements and design choices by subject. Name the working targets an
 
 Record the session's version control agreement, including branch and commit conventions and constraints on work locations, commits, integration, publication and APM file tracking. Carry its effects on work and sequencing into the Plan.
 
-Use Notes for brief context that applies across subjects, such as assumptions, reasons, open choices or later-session scope. When an alternative still matters, explain why and say whether the choice is open or settled.
+Write Notes as observations, not instructions. Include context that applies across design subjects, such as shared assumptions, reasons, open choices or later-session scope. For a relevant alternative, explain why it still matters, when it applies and whether the choice is open or settled. Link a procedure only when it explains a design decision or constraint.
 
 Use supporting documents for retained material with a purpose outside the Spec, Plan, Tracker and Memory. Agree each document's purpose, path under `.apm/`, structure, maintainer and readers with the User. Reuse suitable documents and conventions and keep them easy to navigate as they grow. Put each specification in a dedicated Spec Notes subsection and its implementation work in Plan Tasks.
 
@@ -50,9 +50,9 @@ Record the agreed delivery approach. The Manager prepares workspaces, integrates
 
 Identify what can start together, what needs an earlier result or outside prerequisite, and what lets affected work resume. Record the agreed response if prerequisites remain unresolved. Give each Task observable checks for its own result, with expected results, timing and who runs them. Identify required User or outside reviews, actions and credentials. Say when affected work pauses for their input.
 
-Use Notes to record arrangements spanning Tasks in brief prose. Name the affected work and agreed involvement, review points, timing, update frequency, shared constraints and additional Stage checks. Link to Task fields, Spec sections or shared procedures for details. For later sessions, record relevant sequencing and prerequisites and refer to the Spec for scope.
+Write Notes as observations and recommendations, not instructions to the Manager. State agreed involvement, review points, timing, update frequency, shared constraints and additional Stage checks as facts when they span Tasks. Keep Task instructions in their fields and link to those fields or the Spec for details. Refer to a shared procedure only when it explains a session agreement. For later sessions, record relevant sequencing and prerequisites and refer to the Spec for scope.
 
-Present options such as parallel work or batching as recommendations and say when they would help. Describe potential blockers as observations. Say when they could arise and what work they could affect. The Manager decides how to dispatch when the work is ready, within the agreed Plan.
+Note which Tasks could run in parallel or be batched and what makes that possible. For a potential blocker, say when it could arise and what work it could affect. If you recommend an option, explain when it would help. The Manager decides how to dispatch ready work within the agreed Plan.
 
 Check that the Tasks deliver and verify every approved Spec outcome and that each assigned agent can carry out and check its work. Check assignments, dependencies and sizes against the agreed approach. Verify that the relevant Tasks or Notes carry forward the agreed delivery and review arrangements.
 
@@ -115,7 +115,7 @@ The Plan is `.apm/plan.md`.
 
 ## Notes
 
-<Arrangements spanning Tasks per §3>
+<Agreements, observations and recommendations that span Tasks per §3>
 
 ## Stage 1: <Name>
 
