@@ -24,13 +24,13 @@ After Plan approval, resolve any `AGENTS.md` changes per §4.
 
 Write `.apm/spec.md` per §5.1 from the approved understanding of what the session will deliver. Reserve delivery arrangements for the Plan (§1).
 
-Organize requirements and design choices by subject. Name the working targets and authoritative sources. Record agreed behavior, output formats, schemas, interface contracts, constraints and acceptance criteria with the decisions they concern. Include brief reasons and relevant alternatives. Name who will settle open choices.
+Group requirements and design choices by subject. Draw on the full range of Markdown, including headings, paragraphs, lists and tables. Choose the forms that make each subject easy for the User to review and the Manager to find during implementation. Name the working targets and authoritative sources. Record agreed behavior, output formats, schemas, interface contracts, constraints and acceptance criteria with the decisions they concern. Include brief reasons and relevant alternatives. Name who will settle open choices.
 
 Record the session's version control agreement, including branch and commit conventions and constraints on work locations, commits, integration, publication and APM file tracking. Carry its effects on work and sequencing into the Plan.
 
-Write Notes as observations, not instructions. Include context that applies across design subjects, such as shared assumptions, reasons, open choices or later-session scope. For a relevant alternative, explain why it still matters, when it applies and whether the choice is open or settled. Link a procedure only when it explains a design decision or constraint.
+Write each note as a separate list item. Frame notes as observations, not instructions. Include context that applies across design subjects, such as shared assumptions, reasons, open choices or later-session scope. For a relevant alternative, explain why it still matters, when it applies and whether the choice is open or settled. Link a procedure only when it explains a design decision or constraint.
 
-Use supporting documents for retained material with a purpose outside the Spec, Plan, Tracker and Memory. Agree each document's purpose, path under `.apm/`, structure, maintainer and readers with the User. Reuse suitable documents and conventions and keep them easy to navigate as they grow. Put each specification in a dedicated Spec Notes subsection and its implementation work in Plan Tasks.
+Use supporting documents for retained material with a purpose outside the Spec, Plan, Tracker and Memory. Agree each document's purpose, path under `.apm/`, structure, maintainer and readers with the User. Reuse suitable documents and conventions and keep them easy to navigate as they grow. When supporting documents are needed, place a Supporting Documents section immediately after Notes. Give each document its own subsection and put its implementation work in Plan Tasks.
 
 Summarize the expected behavior, what counts as success and the choices or constraints that need the User's judgment. Name the delivery agreements from the approved understanding that you will carry into the Plan, such as how the User will take part, when reviews will happen and how the work will be coordinated.
 
@@ -48,7 +48,7 @@ Record the agreed delivery approach. The Manager prepares workspaces, integrates
 
 Identify what can start together, what needs an earlier result or outside prerequisite, and what lets affected work resume. Record the agreed response if prerequisites remain unresolved. Give each Task observable checks for its own result, with expected results, timing and who runs them. Identify required User or outside reviews, actions and credentials. Say when affected work pauses for their input.
 
-Write Notes as observations and recommendations, not instructions to the Manager. State agreed involvement, review points, timing, update frequency, shared constraints and additional Stage checks as facts when they span Tasks. Keep Task instructions in their fields and link to those fields or the Spec for details. Refer to a shared procedure only when it explains a session agreement. For later sessions, record relevant sequencing and prerequisites and refer to the Spec for scope.
+Write each note as a separate list item. Frame notes as observations and recommendations, not instructions to the Manager. State agreed involvement, review points, timing, update frequency, shared constraints and additional Stage checks as facts when they span Tasks. Keep Task instructions in their fields and link to those fields or the Spec for details. Refer to a shared procedure only when it explains a session agreement. For later sessions, record relevant sequencing and prerequisites and refer to the Spec for scope.
 
 Note which Tasks could run in parallel or be batched and what makes that possible. For a potential blocker, say when it could arise and what work it could affect. If you recommend an option, explain when it would help. The Manager decides how to dispatch ready work within the agreed Plan.
 
@@ -78,7 +78,13 @@ The Spec is `.apm/spec.md`.
 
 ## Notes
 
-<Context that applies across subjects and any supporting document specifications per §2>
+- <Observation that applies across subjects per §2>
+
+## Supporting Documents
+
+### <Document name>
+
+<Agreed purpose, path under `.apm/`, structure, maintainer and readers>
 
 ## <Design Section>
 
@@ -86,8 +92,8 @@ The Spec is `.apm/spec.md`.
 ...
 ```
 
+- Include Supporting Documents only when the session needs them.
 - Refer to User documents by path and section.
-- Use tables for enumerated values, code blocks for schemas and prose for reasons.
 
 ### 5.2 Plan Format
 
@@ -113,7 +119,7 @@ The Plan is `.apm/plan.md`.
 
 ## Notes
 
-<Agreements, observations and recommendations that span Tasks per §3>
+- <Agreement, observation or recommendation that spans Tasks per §3>
 
 ## Stage 1: <Name>
 
