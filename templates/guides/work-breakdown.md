@@ -8,7 +8,7 @@ Use language the User can review. Record the technical choices and constraints t
 
 ## 1. Review Cycle
 
-Before drafting, review the approved understanding. Put agreed outcomes, requirements, design, constraints and acceptance criteria in the Spec. Reserve assignments, sequencing, coordination and how the work will be checked for the Plan. When an agreement affects both, record each part where it belongs.
+Before drafting, review the approved understanding. Put agreed outcomes, requirements, design, constraints and acceptance criteria in the Spec. Explicitly reserve assignments, sequencing, coordination and arrangements for verification, User involvement and review for the Plan. When an agreement affects both documents, keep the requirement in the Spec and carry the arrangements for meeting it into the Plan.
 
 Use this cycle for the Spec, then the Plan.
 
@@ -22,7 +22,7 @@ After Plan approval, resolve any `AGENTS.md` changes per §4.
 
 ## 2. Spec
 
-Write `.apm/spec.md` per §5.1 from the approved understanding of what the session will deliver.
+Write `.apm/spec.md` per §5.1 from the approved understanding of what the session will deliver. Reserve delivery arrangements for the Plan (§1).
 
 Organize requirements and design choices by subject. Name the working targets and authoritative sources. Record agreed behavior, output formats, schemas, interface contracts, constraints and acceptance criteria with the decisions they concern. Include brief reasons and relevant alternatives. Name who will settle open choices.
 
@@ -31,8 +31,6 @@ Record the session's version control agreement, including branch and commit conv
 Write Notes as observations, not instructions. Include context that applies across design subjects, such as shared assumptions, reasons, open choices or later-session scope. For a relevant alternative, explain why it still matters, when it applies and whether the choice is open or settled. Link a procedure only when it explains a design decision or constraint.
 
 Use supporting documents for retained material with a purpose outside the Spec, Plan, Tracker and Memory. Agree each document's purpose, path under `.apm/`, structure, maintainer and readers with the User. Reuse suitable documents and conventions and keep them easy to navigate as they grow. Put each specification in a dedicated Spec Notes subsection and its implementation work in Plan Tasks.
-
-Check that the Spec defines the agreed outcomes and makes clear how to judge the result.
 
 Summarize the expected behavior, what counts as success and the choices or constraints that need the User's judgment. Name the delivery agreements from the approved understanding that you will carry into the Plan, such as how the User will take part, when reviews will happen and how the work will be coordinated.
 

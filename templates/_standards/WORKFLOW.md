@@ -173,6 +173,8 @@ The Understanding Summary brings the discovery agreements together for approval 
 
 ### 6.2 Work Breakdown
 
+Before drafting, the Planner identifies which parts of the approved understanding belong in the Spec and which belong in the Plan per §§3.1–3.2.
+
 Document approvals follow §2.1. The Planner checks each saved document against its required format and the approved understanding. For approval, it links the file and briefly summarizes its contents and the reasons for consequential choices. At Spec review, it names the delivery agreements from the approved understanding reserved for the Plan. It checks that the relevant Tasks or Notes carry those agreements forward. At Plan review, it explains how the work and checks cover the approved Spec outcomes. Corrections carry into affected documents and revisions follow the same review.
 
 The Planner reuses earlier material where it fits and is verified against current sources. Task responsibility, size and review points reflect agreed involvement, and User-performed work keeps its responsible agent.
