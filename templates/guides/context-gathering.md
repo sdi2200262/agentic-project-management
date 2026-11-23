@@ -40,6 +40,8 @@ Establish required behavior, design choices, dependencies and concrete success m
 
 ### 2.3 Implementation Approach, Quality and Coordination
 
+When you have enough technical context to discuss how the work will proceed, briefly tell the User what is settled and which delivery decision you need their input on next.
+
 Establish how the defined work will proceed:
 
 - Tools, languages, platforms, security, performance and compatibility needs.
