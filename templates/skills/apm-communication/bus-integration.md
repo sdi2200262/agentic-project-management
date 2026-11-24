@@ -1,6 +1,6 @@
 # APM {VERSION} - Bus Integration
 
-This guide is for an agent outside APM that contributes work through the Message Bus without becoming a Worker. You receive assignments and report results. You do not write Task Logs, perform Handoffs or appear in the Manager's Tracker; your reports carry your contribution to the Manager.
+Use this guide to receive assignments and report results through the Message Bus as an outside agent. Your report carries your contribution to the Manager. Worker Task Logs, Handoffs and Tracker registration do not apply.
 
 ## 1. Setup
 
@@ -9,7 +9,7 @@ Choose a lowercase, hyphenated slug that no folder in `.apm/bus/` already uses. 
 ## 2. Reporting
 
 1. Write your report to `.apm/bus/<your-slug>/report.md`. In your first report, say who you are, what the work is and why you are contributing. Give the outcome, the evidence, what it changes and its limits, so the Manager can decide what to do with it.
-2. Tell the User to invoke `apm-5-check-reports <your-slug>` in the Manager's chat.
+2. Tell the User to ask the Manager to check your report in its conversation, giving your agent ID.
 
 ## 3. Further Assignments
 

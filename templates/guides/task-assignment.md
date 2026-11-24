@@ -1,65 +1,93 @@
 # APM {VERSION} - Task Assignment Guide
 
-This guide covers Task Assignment: choosing which Ready Tasks to send and how, writing their Task Prompts, preparing branches and worktrees, and delivering the prompts through the Message Bus. `{GUIDE_PATH:task-review}` covers the reports that come back.
+The Manager uses this guide to select and assign Ready Tasks, prepare workspaces and send Worker Task Prompts. The Planner, Workers and session summarizer use only §1.1 when making native subagent assignments. `{GUIDE_PATH:task-review}` covers incoming reports.
 
-A Worker works from its Task Prompts, the Rules and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
+A Worker works from its Task Prompts, applicable workspace instructions and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
 
 ## 1. Dispatch
 
-1. Find the Ready Tasks from the Tracker and the Plan's Dependencies fields.
+Select Ready Tasks from dependencies, available agents, Plan preferences and current User instructions. Follow agreed involvement and review points; explain and recommend adjustments when findings warrant them.
+
+Before starting a Task, check that its listed dependencies match the results it needs. Follow `{GUIDE_PATH:task-review}` §4 to resolve dependency mismatches in the Plan and Tracker and conflicts among the Spec, Plan and `AGENTS.md`. Check external prerequisites, then prepare the workspace per §3.
+
+Mark selected `manager` Tasks Active and continue per `{SKILL_PATH:apm-2-initiate-manager}` §2.1. Choose sequential or parallel work based on dependencies, workspace isolation and agreed User involvement.
+
+Group related work or split it into contributions based on shared context, expertise, resources, isolation and useful parallelism. Sequence dependent work and keep each Task's outputs and validation traceable. Prepare native assignments per §1.1. Review results as they return and continue newly unblocked work without waiting for the entire group.
+
+For Worker assignments:
+
+1. Check the Tracker and the Plan’s Dependencies fields for the selected Tasks.
 2. Group them by Worker. A Worker takes one dispatch at a time: send it a new dispatch only after its current Task or batch has been reviewed. Corrections to an active Task use §5.1 instead. Then choose the dispatch:
    - **Single dispatch:** one Task to one Worker.
    - **Batch dispatch:** several Tasks to the same Worker, executed in order. A batch may be a chain whose dependencies are inside the batch or already Done, or independent Tasks that are all Ready. Keep batches to 2–3 Tasks. Send a chain's Tasks one at a time when other Workers wait on its intermediate results.
-   - **Parallel dispatch:** Tasks or batches to different Workers at the same time, when no unresolved Cross-Worker dependency links them and version control gives each Worker its own worktree. Suggest tool approvals that keep parallel Workers from waiting on the User.
+   - **Parallel dispatch:** Tasks or batches to different Workers at the same time, when no unresolved dependency links them and their workspaces and shared resources are safely separated per §3.
 3. Wait for a pending report only when it is the only one outstanding and would make a Waiting Task Ready for a Worker you are about to dispatch. Otherwise dispatch what is Ready.
 4. If nothing is Ready while Workers are busy, tell the User what you are waiting for and which report to bring next, preferring one that unblocks other work.
 5. Prepare each Task per §2.
 
+### 1.1 Native Subagent Assignments
+
+Follow your role's delegation policy. Delegate where focused work, expertise or useful parallelism justifies the context and coordination. Group related questions or contributions; split for a concrete benefit, not merely a Task boundary. Reuse agents where retained context helps.
+
+Give each subagent an objective, necessary requirements and sources, workspace instructions, dependencies, accepted exceptions, permitted changes, commit timing and approvals, and expected outputs and evidence.
+
+- For implementation, carry applicable validation and conditions for seeking guidance from Task Execution §§3.1 and 4 into the brief. Keep Task outputs and checks traceable when grouping implementation work.
+- Other roles scope the brief to their research or preparation and specify the evidence and escalation conditions their contribution needs.
+
+Stay within your permitted scope. Choose how to isolate parallel assignments according to the agreed tools and workspace.
+
+- For parallel Tasks in one repository, use separate working copies when supported, such as Git worktrees. Check what repository state and external resources the copies still share.
+- When Tasks share a working directory, run only independent assignments with disjoint writable files and directories. Keep inputs stable for readers. State the shared directory, writable boundaries, shared resources and when to coordinate or pause in each assignment.
+
+Sequence overlapping changes, broad formatting, generation and shared test/service operations unless isolated.
+
+Verify findings and actual outputs before relying on them, checking combined behavior where contributions interact. Collect useful results without waiting for unrelated work; preserve valid progress when updating briefs. Native subagents are not APM Workers and do not use Worker bus, attempt or Handoff procedures.
+
 ## 2. Task Context
 
-Before writing a prompt, resolve conflicting objectives, instructions and validation in the Spec, Plan and Rules per `{GUIDE_PATH:task-review}` §4. Include prerequisite versions, configuration constraints and accepted exceptions where they affect the Task.
+Include prerequisite versions, configuration constraints and accepted exceptions where they affect the Task.
 
 Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's Task entry:
 
-1. Turn the Task's steps and Guidance into Instructions the Worker can act on. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks. Never refer the Worker to the Spec, Plan, Tracker, Index or other Workers' logs. Workers read the Rules directly.
-2. For code, name the path and what to do with it, such as "Read `src/api/routes.py` and use its error response schema."
-3. Keep the instructions on the Task. Leave out Stage structure, other Task IDs and coordination concepts, except a producer Task's ID where it identifies dependency context.
-4. If the Plan lists dependencies, write Context from Dependencies:
-   - **Same-Worker dependency:** the Worker remembers its own work. Name the earlier Task, its key outputs and paths, and how to build on them, with more detail for complex work.
-   - **Cross-Worker dependency:** the Worker has not seen this work. Read the producer's latest accepted attempt log, following earlier-attempt links where needed, then give numbered reading steps, the producer's outputs, interfaces and constraints, and how to integrate them, however simple the work seems.
-   - Tasks listed under Not Read Since Handoff in the Tracker's Workers table count as Cross-Worker. A Worker that recovered after compaction may need more detail; the table's Context says so.
+1. Turn the Task’s steps and Guidance into actionable Instructions, preserving agreed User participation and review points. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks.
+
+   Never refer the Worker to the Spec, Plan, Tracker or Index. Supply dependency logs per step 4. Workers read applicable workspace instructions directly.
+2. For code and supporting documents, name relevant paths or sections and how to use them. For supporting documents, include the relevant agreed structure and permitted updates directly in the prompt.
+3. Keep the instructions on the Task. Supply enough purpose and participation context for the Worker to explain its Task, without copying the wider Stage structure or unrelated coordination. Include other Task IDs only where they identify dependencies.
+4. If the Plan lists dependencies, write Context from Dependencies. A dependency is Same-Agent when both Tasks have the same assignee and Cross-Agent when they have different assignees.
+   - Name each earlier Task, its outputs and paths, and how to use them.
+   - Read the producer's latest accepted attempt log for Cross-Agent dependencies. Do the same for Same-Agent dependencies when earlier context is missing after Handoff or recovery from a lost, corrupted or compacted conversation. Check the Tracker's Agents table for gaps and follow earlier-attempt links as needed.
+   - For each dependency that needs its log, name the log in the prompt. Give numbered steps to read it before using the outputs and to integrate the outputs, preserving interfaces and constraints.
    - Trace upstream when earlier Tasks set patterns or contracts this Task relies on. Stop where an intermediate output fully captures them.
 5. Add execution, validation or logging guidance only when it is specific to this Task. The Worker's guides already cover the general rules.
 
 Reread the Spec at the first dispatch of a Stage and after any change to it.
 
-## 3. Version Control
+## 3. Workspace Preparation
 
-With version control, follow the base branches and branch naming in the Spec's Workspace section and commit conventions in the Rules. Name a repository's conventions in the Task Prompt when they differ from the others.
+Prepare workspaces for your Tasks and Worker assignments. You handle integration and cleanup. Workers use the assigned workspace and commit instructions.
 
-1. Merge any producer branch the Task needs before you create its branch.
-2. Create one branch per single or batch dispatch, from the repository's base branch. A batch shares one branch.
-3. For sequential work, use the main working directory. For parallel dispatch, give each Worker its own worktree: `git worktree add .apm/worktrees/<branch-slug> -b <branch-name>`, with `<branch-slug>` the branch name with `/` replaced by `-`. Keep the main directory on the base branch and run at most four worktrees at once. A worktree holds tracked files only, so name any untracked files the Worker needs.
-4. Name branches after the actual work.
-5. Record the branch, any worktree and Next Action in the Task's row in the Tracker.
+1. Apply §1.1's isolation rules to parallel Tasks, native contributions and Worker dispatches.
+2. If using version control, follow the Spec's agreements for work locations, branches, commits and integration. Consult applicable workspace instructions and recent repository history for conventions the Spec leaves open. Put APM-managed, linked Git worktrees in the session root's `.apm/worktrees/`. Keep other working copies outside `.apm/` and record how their work will be preserved.
+3. Make sure required dependency outputs are usable in the assigned workspace. Provide any needed uncommitted or untracked files when the working copy lacks them.
+4. Record the Next Action, any branch and any separate working copy in the Tracker. Tasks may share a branch or workspace when the arrangement allows.
+5. In each Worker prompt, give the working directory and the session root for `.apm/` paths. Include branch and commit instructions where applicable. For parallel work in a shared directory, describe the isolation constraints in Workspace per §7.1.
 
-Workers commit; you create branches and worktrees, merge them and clean up. Push only when the User asks. Do not commit generated build files; update `.gitignore` when needed. In a worktree, every `.apm/` path still points to the workspace root, so the prompt's Workspace section says so.
-
-If the User enables version control later, agree Git setup and record it in the Spec's Workspace section, with commit conventions in the Rules. Initialize missing repositories with approval. Without version control, parallel dispatch is unavailable.
+Revisit commit and integration timing with the User when needed. If adding version control later, agree on the setup with the User, then apply it. Record session choices in the Spec and lasting conventions in `AGENTS.md`.
 
 ## 4. Delivery
 
 1. Read the Worker's Task Bus, `.apm/bus/<agent-slug>/task.md`, then write the Task Prompt to it.
 2. In one message, tell the User what you are sending, to whom, any dependency or isolation point that shaped the choice, and how to deliver it:
-   - A Worker that has not started: invoke `apm-3-initiate-worker <agent-slug>` in a new chat. It finds the waiting prompt.
-   - A Worker already running: invoke `apm-4-check-tasks` in its chat.
+   - A Worker that has not started: start a new Worker conversation with its agent ID. It finds the waiting prompt.
+   - A Worker already running: ask it to check its tasks in its conversation.
    - For a batch, give the number of Tasks and their order; for parallel dispatch, give each Worker's action.
 
 ## 5. Follow-Up Tasks
 
 A follow-up Task sends a Task back to the same Worker after review, with a revised Task Prompt. It keeps its Task ID and stays Active.
 
-1. Write the revised prompt per §7.3. Describe what remains, what review established and how completion will be checked. Use the Worker's established context and include the detail it still needs, restoring context lost through Handoff or recovery.
+1. Write the revised prompt per §7.3: review findings, remaining work and completion checks. Use retained Worker context and restore missing detail after Handoff or recovery.
 2. Choose the next unused follow-up number for this Task, starting at 01, and set its new `log_path` per `{GUIDE_PATH:task-logging}` §5.1. This applies per Task even after a batch. In Follow-Up Context, link the original log and previous follow-up, if any. Earlier logs stay unchanged.
 3. Deliver it per §4.
 
@@ -67,15 +95,15 @@ A follow-up Task sends a Task back to the same Worker after review, with a revis
 
 When a planning change affects an active Task whose attempt has not been reported, correct the existing dispatch:
 
-1. Ask the User to pause the affected Worker and confirm its current progress. Align the planning documents per `{GUIDE_PATH:task-review}` §4.
-2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and worktree. In Instructions, explain what changed, what completed work remains valid and where to resume. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
-3. Record the correction and next action in the Tracker, then deliver the revised prompt per §4. Tell the User to invoke `apm-4-check-tasks` in the paused Worker's chat. This updates the current dispatch; do not create a new branch or worktree.
+1. Coordinate the correction through the User, checking progress and arranging a pause if needed. Align the planning documents per `{GUIDE_PATH:task-review}` §4.
+2. Revise the current Task Prompt per §2, keeping its Task ID, `log_path`, branch and workspace. In Instructions, explain what changed, what completed work remains valid and what to do next. For a batch, preserve the Task list and recorded progress, changing only affected current or unstarted Tasks. Work already marked Done needs a new Task per `{GUIDE_PATH:task-review}` §3.
+3. Record the correction and next action in the Tracker and deliver per §4.
 
 After a reported attempt, review it and use a follow-up Task per §5 instead.
 
 ## 6. Agents Outside APM
 
-An agent outside APM can join the Message Bus with its own bus folder. Write it a plain assignment in its Task Bus with the objective, the expected output and how to report back. Leave out Task Log paths, Handoff details and the Tracker's Workers table. Tell the User to ask that agent to read `.apm/bus/<slug>/task.md`.
+An agent outside APM can join the Message Bus with its own bus folder. Write it a plain assignment in its Task Bus with the objective, the expected output and how to report back. Leave out Task Log paths, Handoff details and the Tracker's Agents table. Tell the User to ask that agent to read `.apm/bus/<slug>/task.md`.
 
 ## 7. Formats
 
@@ -101,7 +129,7 @@ log_path: ".apm/memory/stage-<NN>/task-<NN>-<MM>.log.md"
 <Only when the Task has dependencies, per §2 step 4>
 
 ## Workspace
-<The working directory; with version control, the branch, and for parallel dispatch the worktree and the workspace root for every `.apm/` path>
+<Working directory, branch and commit instructions where applicable, and the session root for `.apm/` paths. For parallel work in a shared directory: writable scope, shared resources and when to coordinate or pause per §3>
 
 ## Output
 <The deliverables from the Plan's Output field>

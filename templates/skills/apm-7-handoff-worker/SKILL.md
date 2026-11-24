@@ -6,24 +6,28 @@ disable-model-invocation: true
 
 # APM {VERSION} - Worker Handoff
 
-Follow this skill only when the User manually invokes it, asks you to follow it, or an APM instruction directs you here. Otherwise, stop.
+Only the Worker whose work is continuing can prepare this handoff. If the User gives you this file or requests a handoff in another conversation, tell them to ask in that Worker’s current conversation and stop.
 
-This skill hands your work to a new conversation of the same Worker. You write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in your bus folder's `handoff.md`, tells the next conversation what to read and where to resume. The next conversation acts on them per `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
+Begin when the User requests a Worker Handoff or an APM instruction directs you here.
 
-Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
+A Worker Handoff continues your assigned work in a new conversation in the same session. Write a Handoff Log to preserve your working context and a Handoff Prompt to direct the incoming conversation. It follows `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
+
+Your conversation number starts at 1 and advances only at Handoff. Use the number from your incoming Handoff Prompt if present; the next conversation is one higher.
 
 ## 1. Current State
 
-Your memory of earlier turns may be out of date, so check the current state before writing either file:
+If subagents are running when a Handoff is requested, tell the User, pause them and collect their progress, outputs and pending checks before preparing the Handoff.
+
+Check current state before writing either file:
 
 - Read `task.md` and `report.md` in your bus folder.
-- With version control, use git to check your branch, its commits and whether the Manager has merged it.
+- Check your assigned workspace, including its branch, commits and uncommitted work where applicable. Record integration details supported by your available evidence, noting anything unresolved.
 
-Use the checked state in both files, including unresolved contract questions, accepted limitations and verification gaps with source paths.
+Use the checked state in both files, including unresolved contract questions and verification gaps with source paths.
 
 ## 2. Handoff Log
 
-Write the Handoff Log per §5.1. Record in past tense what this conversation did: the Tasks you completed, and the patterns, conventions, decisions with their reasons and environment notes that the Task Logs do not hold. For a Handoff in the middle of a Task, include the steps already done. If your context was compacted or recovered in this conversation, say which parts you rebuilt from a summary or from files, and from where.
+Write the Handoff Log in past tense per §5.1. If context was compacted or recovered, identify what you rebuilt from summaries or files. Name the sources and any uncertainty or unverified claims that remain.
 
 ## 3. Handoff Prompt
 
@@ -31,11 +35,15 @@ Write the Handoff Prompt per §5.2 to `.apm/bus/<agent-slug>/handoff.md`. Its Ne
 
 - In the middle of a Task: the Task Prompt stays in `task.md`. Say what is done and where to resume, keeping its current `log_path` even during a follow-up.
 - In the middle of a batch: the batch Task Prompt stays in `task.md`. Say which Tasks are done and logged, how far the current one got and where to resume.
-- Between Tasks: `task.md` is empty. The next conversation waits for the User to invoke `apm-4-check-tasks`.
+- Between Tasks: `task.md` is empty. The next conversation waits for the User to deliver the next Task Prompt.
 
-## 4. User Review
+Record what work the User holds, any assistance needed, where to resume and what allows work to resume. Carry forward agreed review points, pending decisions and accepted limits with evidence links.
 
-Give the User both file paths and ask them to review the two files. Apply their corrections and ask again. After they approve, tell them to invoke `apm-3-initiate-worker <agent-id>` in a new chat; it finds the Handoff Prompt on its own. Your work in this conversation then ends.
+## 4. Continuation Instructions
+
+Give a small chat recap of the work and context being passed on, pending decisions or checks, and the next action. Explain how the User starts a new Worker conversation with your agent ID; it finds the Handoff Prompt. You may link the files for optional review, but do not require inspection or approval.
+
+By default your preparation ends here: wait while the User completes delivery to the new conversation. Do not claim to transfer yourself. Follow a different coordination mechanism only when explicitly agreed with the User.
 
 ## 5. Formats
 
@@ -53,7 +61,7 @@ stage: <N>
 # <agent-slug> Handoff Log - Conversation <number>
 
 ## Summary
-<The Tasks completed in this conversation and the Stage's progress>
+<The Tasks completed in this conversation and progress on unfinished work>
 
 ## Working Context
 <Patterns, conventions, decisions with reasons and environment notes that the Task Logs do not hold; for a Handoff in the middle of a Task, the steps already done>
@@ -70,13 +78,13 @@ handoff_log: <path of the Handoff Log>
 
 # <agent-slug> Handoff Prompt - Conversation <number + 1>
 
-<What to read: the Handoff Log and latest relevant attempt logs for your Tasks in the current Stage, by path; earlier attempts through links where needed>
+<What to read: the Handoff Log, latest relevant own attempt logs from the current Stage and dependency logs needed to resume, by path; earlier attempts through links where needed>
 
 ## Current State
-<Checked state: Tasks completed, the pending Task or batch, branches and merges; unresolved contract questions, accepted limitations and verification gaps, with source paths>
+<Checked state: Tasks completed, the pending Task or batch, workspace, commits, uncommitted work and known integration state; unresolved contract questions, accepted limitations and verification gaps, with source paths>
 
 ## Next Action
-<Where to resume the Task or batch, or wait for the User to invoke apm-4-check-tasks>
+<Where to resume the Task or batch, or wait for the User to deliver the next Task Prompt>
 ```
 
 `conversation` is the next conversation's number, which it writes in every Task Log and Task Report.

@@ -11,9 +11,9 @@ import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION } from '../core/constants
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
 import { fetchOfficialReleases, findReleaseByTag, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion } from '../services/releases.js';
-import { downloadAndExtract } from '../services/extractor.js';
+import { downloadBundles, installBundles } from '../services/extractor.js';
 import { selectAssistant } from '../ui/prompts.js';
-import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
+import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -107,26 +107,11 @@ export async function initCommand(options = {}) {
     assistantIds = [selected];
   }
 
+  assertCompatibleTargets(manifest, assistantIds);
   const bundles = getRequiredBundles(release, manifest, assistantIds);
 
-  const installedFiles = {};
-  let apmExtracted = false;
-
-  for (const { assistant, asset } of bundles) {
-    const id = assistant.id;
-    stop = logger.progress(`Downloading ${assistant.bundle}`);
-    const writtenFiles = await downloadAndExtract(
-      asset.browser_download_url,
-      process.cwd(),
-      { skipApm: apmExtracted }
-    );
-    stop();
-    installedFiles[id] = writtenFiles.filter(f => !f.startsWith('.apm/'));
-    if (!apmExtracted) {
-      installedFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
-    }
-    apmExtracted = true;
-  }
+  const downloaded = await downloadBundles(bundles);
+  const installedFiles = await installBundles(downloaded, process.cwd());
 
   // Write metadata
   const metadata = createMetadata({
@@ -147,14 +132,10 @@ export async function initCommand(options = {}) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (installedFiles[id]) logger.success(`Installed ${formatAssistant(id, assistant.name)}`);
   }
-  for (const id of assistantIds) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
-  }
   logger.success('APM initialized!');
-  logger.info('To start planning, invoke the apm-1-initiate-planner skill in a new chat with your assistant.');
+  logger.showInstallationNotes(manifest, assistantIds);
   console.log('');
-  logger.info('New to APM? The apm-assist skill lets your assistant explain how APM works: https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist');
+  logger.info('New to APM? The apm-assist skill lets your assistant explain how APM works: https://github.com/sdi2200262/agentic-project-management/tree/main/skills/apm-assist');
 }
 
 export default initCommand;

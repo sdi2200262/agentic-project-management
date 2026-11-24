@@ -7,6 +7,7 @@
  */
 
 import chalk from 'chalk';
+import { formatAssistant } from '../core/assistants.js';
 
 const LOG_LEVELS = {
   INFO: chalk.white,
@@ -234,7 +235,19 @@ export function list(names) {
   return names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names.join('');
 }
 
+/** Displays release-provided guidance for successfully installed targets. */
+export function showInstallationNotes(manifest, ids) {
+  for (const id of ids) {
+    const target = manifest.assistants.find(assistant => assistant.id === id);
+    const note = target.postInstallNote?.trim()
+      || "To get started, follow this release's setup documentation.";
+    const label = ids.length > 1 ? `${formatAssistant(id, target.name)}: ` : '';
+    info(label + note);
+  }
+}
+
 export default {
+  showInstallationNotes,
   plural,
   list,
   info,

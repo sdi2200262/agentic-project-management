@@ -3,13 +3,15 @@
     "sourceDir": "templates",
     "outputDir": "dist",
     "cleanOutput": true,
-    "minCliVersion": "1.0.3"
+    "minCliVersion": "1.0.4"
   },
   "targets": [
     {
       "id": "agents",
       "name": "Agents supporting .agents/skills/ and AGENTS.md",
       "bundleName": "agents.zip",
+      "assistant": "agents",
+      "format": "multi-skill",
       "directories": {
         "skills": ".agents/skills",
         "guides": ".agents/apm-guides"
@@ -21,17 +23,55 @@
         "antigravity",
         "opencode"
       ],
-      "postInstallNote": null
+      "conflictsWith": [
+        "agents-single-skill"
+      ],
+      "postInstallNote": "To start planning, invoke the apm-1-initiate-planner skill in a new chat."
     },
     {
       "id": "claude",
       "name": "Claude Code",
       "bundleName": "claude.zip",
+      "assistant": "claude",
+      "format": "multi-skill",
       "directories": {
         "skills": ".claude/skills",
         "guides": ".claude/apm-guides"
       },
-      "postInstallNote": null
+      "conflictsWith": [
+        "claude-single-skill"
+      ],
+      "postInstallNote": "To start planning, invoke the apm-1-initiate-planner skill in a new chat."
+    },
+    {
+      "id": "agents-single-skill",
+      "name": "Agents supporting .agents/skills/ and AGENTS.md \u2014 single skill",
+      "bundleName": "agents-single-skill.zip",
+      "assistant": "agents",
+      "format": "single-skill",
+      "directories": {
+        "skills": ".agents/skills",
+        "guides": ".agents/skills/apm/guides"
+      },
+      "conflictsWith": [
+        "agents"
+      ],
+      "postInstallNote": "[RESEARCH PREVIEW] To start planning, invoke the apm skill in a new chat and ask it to start the planning phase."
+    },
+    {
+      "id": "claude-single-skill",
+      "name": "Claude Code \u2014 single skill",
+      "bundleName": "claude-single-skill.zip",
+      "assistant": "claude",
+      "format": "single-skill",
+      "directories": {
+        "skills": ".claude/skills",
+        "guides": ".claude/skills/apm/guides"
+      },
+      "conflictsWith": [
+        "claude"
+      ],
+      "postInstallNote": "[RESEARCH PREVIEW] To start planning, invoke the apm skill in a new chat and ask it to start the planning phase."
     }
   ]
 }

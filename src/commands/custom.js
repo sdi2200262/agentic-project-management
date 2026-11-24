@@ -11,9 +11,9 @@ import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
 import { getCustomRepos, addCustomRepo, removeCustomRepo, getRepoSettings, updateRepoSettings } from '../core/config.js';
 import { fetchCustomReleases, findReleaseByTag, fetchReleaseManifest, getRequiredBundles } from '../services/releases.js';
-import { downloadAndExtract } from '../services/extractor.js';
+import { downloadBundles, installBundles } from '../services/extractor.js';
 import { selectAssistant, selectRelease, selectCustomRepo, inputRepository, confirmAction, confirmDestructiveAction, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
-import { formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
+import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import logger from '../ui/logger.js';
 
 /**
@@ -147,26 +147,11 @@ export async function customCommand(options = {}) {
     assistantIds = [selected];
   }
 
+  assertCompatibleTargets(manifest, assistantIds);
   const bundles = getRequiredBundles(release, manifest, assistantIds);
 
-  const installedFiles = {};
-  let apmExtracted = false;
-
-  for (const { assistant, asset } of bundles) {
-    const id = assistant.id;
-    stop = logger.progress(`Downloading ${assistant.bundle}`);
-    const writtenFiles = await downloadAndExtract(
-      asset.browser_download_url,
-      process.cwd(),
-      { skipApm: apmExtracted }
-    );
-    stop();
-    installedFiles[id] = writtenFiles.filter(f => !f.startsWith('.apm/'));
-    if (!apmExtracted) {
-      installedFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
-    }
-    apmExtracted = true;
-  }
+  const downloaded = await downloadBundles(bundles);
+  const installedFiles = await installBundles(downloaded, process.cwd());
 
   // Write metadata
   const metadata = createMetadata({
@@ -205,12 +190,9 @@ export async function customCommand(options = {}) {
     const assistant = manifest.assistants.find(a => a.id === id);
     if (installedFiles[id]) logger.success(`Installed ${formatAssistant(id, assistant.name)}`);
   }
-  for (const id of assistantIds) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
-  }
   logger.success(`APM initialized from ${repoString}!`);
   if (repoSaved) logger.info('Repository saved.');
+  logger.showInstallationNotes(manifest, assistantIds);
 }
 
 // --- Repo management handlers ---

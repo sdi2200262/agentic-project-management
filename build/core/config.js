@@ -40,16 +40,35 @@ export function validateConfig(config) {
   } else if (config.targets.length === 0) {
     errors.push('"targets" array is empty');
   } else {
+    const bundleNames = new Set();
     config.targets.forEach((target, index) => {
       const prefix = `targets[${index}]`;
       if (!target.id) errors.push(`${prefix}: missing "id"`);
       if (!target.name) errors.push(`${prefix}: missing "name"`);
-      if (!target.bundleName) errors.push(`${prefix}: missing "bundleName"`);
+      if (!target.bundleName) {
+        errors.push(`${prefix}: missing "bundleName"`);
+      } else if (bundleNames.has(target.bundleName)) {
+        errors.push(`${prefix}: duplicate "bundleName" "${target.bundleName}"`);
+      } else {
+        bundleNames.add(target.bundleName);
+      }
+      if (target.format !== undefined && !['multi-skill', 'single-skill'].includes(target.format)) {
+        errors.push(`${prefix}: "format" must be "multi-skill" or "single-skill"`);
+      }
+      if (target.assistant !== undefined && !['agents', 'claude'].includes(target.assistant)) {
+        errors.push(`${prefix}: "assistant" must be "agents" or "claude"`);
+      }
+      if (target.format === 'single-skill' && !target.assistant) {
+        errors.push(`${prefix}: single-skill targets require "assistant"`);
+      }
       if (!target.directories) {
         errors.push(`${prefix}: missing "directories"`);
       } else {
         if (!target.directories.skills) errors.push(`${prefix}: missing "directories.skills"`);
         if (!target.directories.guides) errors.push(`${prefix}: missing "directories.guides"`);
+        if (target.format === 'single-skill' && target.directories.guides !== `${target.directories.skills}/apm/guides`) {
+          errors.push(`${prefix}: single-skill guides must be under "directories.skills" at apm/guides`);
+        }
       }
     });
   }

@@ -1,8 +1,10 @@
 # APM {VERSION} - Task Execution Guide
 
-This guide covers Task Execution, from receiving a Task Prompt through integrating its dependencies, doing the work, validating it and fixing failures. `{GUIDE_PATH:task-logging}` covers the Task Log and Task Report that follow.
+The Manager and Workers use this guide to integrate dependencies, carry out Tasks, validate results and fix failures. Worker receipt and batch procedures are §§1 and 3.2; the Manager uses the Spec, Plan and dependency evidence as its inputs and starts at §2. `{GUIDE_PATH:task-logging}` covers recording results and Worker reports.
 
-A Task Prompt has these sections:
+## 1. Task Receipt
+
+For a Worker, the Task Prompt has these sections:
 
 - **Objective:** the Task's goal.
 - **Instructions:** the steps to take.
@@ -11,67 +13,80 @@ A Task Prompt has these sections:
 - **Output:** the deliverables.
 - **Validation:** the checks the work must pass.
 
-The Objective and Output are authoritative. When an instruction, prerequisite or assumption in the prompt looks wrong, check it against the codebase or other relevant sources, such as documentation. If that does not settle it, ask the User for direction. Then use what you learn to reach the Objective.
-
-## 1. Task Receipt
+Objective and Output define the result; Validation defines its checks. Verify questionable instructions, prerequisites or assumptions against relevant sources and clarify unresolved questions per §3.
 
 1. Check that the prompt's `agent` matches your registered identity and bus folder. If it does not, reject the prompt and tell the User which Worker it is for.
 2. If the frontmatter lists `tasks`, the prompt is a batch: execute its Tasks per §3.2.
 3. If the title starts with `APM Follow-Up Task`, this is another attempt at the same Task. The revised prompt says what remains and supplies a new `log_path` and links to earlier logs. Keep the Task ID and use that path.
-4. Work where the Workspace section says. With version control, switch to its branch or worktree. In a worktree, do the work there but use the workspace root given in the prompt for every `.apm/` path.
+4. Work in the directory and on any branch specified in Workspace. Use the session root given in the prompt for every `.apm/` path.
 5. If the prompt has a Context from Dependencies section, integrate it per §2. Otherwise start the work per §3.
 
-If the User delivers corrected instructions for your paused current Task, keep the same Task identity, branch and worktree. Check what changed and where the prompt says to resume. Preserve valid completed work and batch progress; do not restart logged Tasks. If the stated progress conflicts with your checked workspace, ask the User to resolve it before resuming.
+For corrected instructions, keep Task identity, branch, workspace and valid progress, including batch progress. Leave already logged Tasks as they are. Check what changed and what comes next. Ask the User to resolve conflicts with your checked workspace before affected work proceeds.
 
 ## 2. Dependency Context
 
-Some Tasks build on the output of earlier Tasks. The prompt's Context from Dependencies section names that output and says how to use it. It treats each dependency in one of two ways:
+Use your dependency context: a Worker reads the logs and outputs named in its prompt; the Manager uses the Plan, Spec and accepted dependency evidence. Follow earlier-attempt links as needed and complete required integration before dependent work. Investigate questions against the actual outputs.
 
-- **Same-Worker dependency:** your own earlier work, which you remember. The prompt points to its output; refresh what you need from the named paths.
-- **Cross-Worker dependency:** work you have not seen, by another Worker or by you before a Handoff. The prompt gives reading and integration steps. Complete them all before you start the work. Read the named files and investigate any integration questions before proceeding.
-
-Do not start the work while a dependency's output is missing or fails its integration check. Ask the User for guidance when another Worker's output does not integrate as the prompt describes, or when an expected file from your own earlier work is missing. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
+Pause dependent work when an output is missing or fails its integration check. Continue unaffected work within the Active Task, preserving required sequencing. Handle unresolved questions per §3. For a minor ambiguity in your own earlier work, continue with the best-supported reading and note the uncertainty in the Task Log.
 
 ## 3. Execution
 
-Follow the Instructions in order, applying the Rules toward the Objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
+Follow the Task's defined steps and guidance in order, applying workspace instructions toward its objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
 
-When an instruction needs the User to act, say what is needed and why, offer the options and wait for the result.
+Report consequential findings and possible wider effects, distinguishing evidence from uncertainty. Ask the User when your available context or authority cannot settle a decision. Pause only affected work and retain the decision and result for review.
 
-Use the work's own vocabulary in commits, code and comments. APM terms, Task IDs, Stage numbers and agent names belong only in APM files.
+When work is delegated, review the actual outputs against the Task requirements, resolve remaining issues and validate the combined result.
+
+Use the shared communication guidance for brief progress updates, grouped findings and clear User actions. When a User review or action is required, explain what to look for or do, what response you need and what happens next. Pause only affected work for a required User action, and continue from the result when it is available.
+
+Use the work's own vocabulary in commits, code and comments. Write for the intended readers and follow the project's writing conventions. If the style is unclear, consult similar examples when available. Keep APM coordination details out of deliverables unless they are part of the work itself.
 
 ### 3.1 Troubleshooting
 
 When a check fails or the work does not behave as expected, investigate before fixing: read the error, trace where it comes from and identify the cause. Make one targeted fix, then validate again.
 
-If the fix fails, causes new problems or leaves the cause unclear, investigate further. Use the error output, what you tried, relevant paths and expected and actual behavior to test a specific hypothesis before applying another targeted fix.
+If a fix fails, causes problems or leaves the cause unclear, use errors, prior attempts, relevant paths and expected and actual behavior to test a specific hypothesis before another fix.
 
-Continue while attempts produce new evidence or close a validation gap within the Task. Ask the User when attempts repeat without progress, the remaining work substantially exceeds the assignment, or the prompt's instructions conflict with its Objective, Output or required validation. Lead with the likely cause, or say that it is still unclear, then give what you tried, what remains and the options, and wait for the User's reply. Then continue under their guidance, or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
+Continue while attempts produce new evidence or close validation gaps within the Task. Ask the User when attempts repeat without progress, work substantially exceeds scope or instructions conflict with Objective, Output or Validation. Explain the likely cause or uncertainty, attempts, remaining work and options. Pause only affected work while awaiting the User’s reply. Then follow their guidance or choose the outcome per `{GUIDE_PATH:task-logging}` §1.
 
 ### 3.2 Batch Execution
 
 A batch Task Prompt sends several of your Tasks in one file, to run in order. Its frontmatter lists each Task with its own `log_path`, and the body holds the Tasks one after another, each starting at its `# Task` heading.
 
-Execute the Tasks in order, following §1 steps 3–5 for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch at the first Failed outcome. When all Tasks are done or the batch stops, report per `{GUIDE_PATH:task-logging}` §4.
+Execute the Tasks in order, following §1 steps 3–5 for each, except that you send one report for the whole batch. Validate each Task and write its Task Log before starting the next. Stop the batch if a Task ends with Partial or Failed, and mark the remaining Tasks Not started. After validating and logging every Task, or when the batch stops, report per `{GUIDE_PATH:task-logging}` §4.
+
+### 3.3 Working with the User
+
+The User may perform a Task or part of it, take over while work is underway, or ask you to continue or finish it. You remain responsible for supporting them, validating the result and logging the Task.
+
+When the User takes over, stop your own and any subagents' overlapping work and preserve progress. Brief them on progress and pending checks. Stay available for help without taking over work they have kept.
+
+When the User returns work, check their changes and results against the Task requirements, then continue from the current state. Keep the same Task and attempt throughout these changes.
 
 ## 4. Validation
 
-Run every check in the prompt's Validation section. Never replace a check you cannot run with a weaker one.
+Check the actual deliverables against the Task objective, required outputs and every validation criterion, including required documentation and affected behavior. Use evidence from the relevant deliverable and environment. Verify that reused evidence still applies. Inspect outputs and use focused checks to fill evidence gaps. Rerun checks affected by changes, incomplete evidence or uncertainty. Confirm recurring failures still have the same cause. Distinguish local, CI and integrated results. Keep unavailable checks outstanding, even when other evidence helps.
 
-1. Run all checks you can do on your own first. A failed or unclear result goes to §3.1.
-2. When they pass, ask the User for any check that needs their judgement or an outside action. Say what the result is, where the deliverable is, what to check and what to report back. Wait for the answer, and handle any problem it reveals through §3.1.
-3. Ask for missing resources when you need them. If the User says a required check or resource is not available, the outcome is Partial; state what remains.
+1. Run available checks, resolve failures or unclear results per §3.1, and recheck corrections. Do not finalize a Task Log or Task Report while known issues or validation gaps remain that you can resolve within scope and permission.
+2. When the available checks pass, verify any results the User supplied against the current deliverable.
 
-Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, Rules and prompt instructions for guidance.
+   For remaining checks that need User judgement or outside action, explain what validation established and ask for those checks. Verify the procedure as written and keep disposable test state separate from User data. Say what is ready, where to run the checks, what to do and expect, and what to report back. Pause dependent work and continue unaffected work. Investigate problems per §3.1.
+3. Ask for missing resources when you need them. If a required check or resource is unavailable, continue unaffected work and available checks. If it remains unavailable at completion, use Partial and state what remains.
 
-## 5. Rules Updates
+Success requires every check to pass, including required live checks and exact matches. Raise conflicts between the required behavior, instructions and rules in `AGENTS.md` and the Task instructions for guidance.
 
-Apply User corrections immediately. At completion, ask whether corrections to shared execution practices should become Rules, and wait for the answer. Add approved corrections inside `APM_RULES` in the workspace-root `AGENTS.md` you read at initiation. If that file is tracked in the Task's repository, update its copy on your assigned branch or worktree and commit it with the Task; otherwise update the shared file at its actual path. Reread it before editing and preserve other content. Log the correction, file path and User's decision under Important Findings.
+## 5. AGENTS.md Updates
+
+Apply User corrections immediately. At completion, resolve whether corrections to workspace practices should be retained in `AGENTS.md`, using the User’s existing instructions or asking if the decision remains open. You may also propose guidance that will help future work, including corrections to outdated instructions. Keep Task-specific requirements in Task instructions.
+
+Before editing, reread the file. Under User authorization, extend or replace relevant guidance concisely, state its scope and preserve unrelated content. If tracked in the Task's repository, edit it in the assigned workspace and branch where applicable. Otherwise use the shared file's actual path. Follow agreed commit conventions. Record the change, path, User decision, reasons and observed or possible effects under Important Findings.
 
 ## 6. Completion
 
-1. Tell the User the outcome, the deliverables, how you validated them, and any important findings or limits. Choose the outcome per `{GUIDE_PATH:task-logging}` §1.
-2. For corrections that apply to later Tasks, follow §5.
-3. With version control, commit your work on the assigned branch, following the commit conventions in the Rules. A large Task may also have intermediate commits, each a coherent change. Do not create branches, manage worktrees, merge or push; the Manager does that.
+1. At an agreed review or the next useful chat reporting point, briefly identify the Task or batch and its actual result, with evidence and consequential limits. Do not require a separate chat report for every intermediate Task completion. Choose the outcome per `{GUIDE_PATH:task-logging}` §1. Explain remaining limits and options.
 
-Then write the Task Log and Task Report per `{GUIDE_PATH:task-logging}`.
+   Recommend acceptance when requested or when evidence clarifies a consequential trade-off. When proposing acceptance of remaining limits, explain their effects within your context and why accepting them is preferable to further work or a planning change. Record any User agreement and the limits it covers.
+2. Complete agreed User review and resulting changes before recording or reporting the result. When the agreement requires explicit User acceptance, show the result with any requested changes and wait for the User to accept it before continuing. Resolve workspace-guidance updates per §5.
+3. Follow agreed commit conventions. Record relevant commits and uncommitted work in the Task Log.
+
+Then record the result per `{GUIDE_PATH:task-logging}`.

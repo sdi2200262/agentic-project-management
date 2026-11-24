@@ -6,32 +6,40 @@ disable-model-invocation: true
 
 # APM {VERSION} - Manager Handoff
 
-Follow this skill only when the User manually invokes it, asks you to follow it, or an APM instruction directs you here. Otherwise, stop.
+Only the current Manager can prepare this handoff. If the User gives you this file or requests a handoff in another conversation, tell them to ask in the current Manager conversation and stop.
 
-This skill hands your coordination to a new Manager conversation. You write two files. The Handoff Log preserves this conversation's working context. The Handoff Prompt, in `.apm/bus/manager/handoff.md`, tells the next conversation what to read and where to resume. The next conversation also reads the planning documents, the Tracker and the Index at initiation, per `{SKILL_PATH:apm-2-initiate-manager}`.
+Begin when the User requests a Manager Handoff or an APM instruction directs you here.
 
-Your conversation number is 1 if you started from initiation, or the number the Handoff Prompt gave you. The next conversation's number is one higher.
+A Manager Handoff continues coordination in a new Manager conversation in the same session. Write a Handoff Log to preserve your working context and a Handoff Prompt to direct the incoming Manager. It also reads the planning documents, Tracker and Index per `{SKILL_PATH:apm-2-initiate-manager}`.
+
+Your conversation number starts at 1 and advances only at Handoff. Use the number from your incoming Handoff Prompt if present; the next conversation is one higher.
 
 ## 1. Current State
 
-Your memory of earlier turns may be out of date, so check the current state before writing either file:
+If subagents are running when a Handoff is requested, tell the User, pause them and collect their progress, outputs and pending checks before preparing the Handoff.
 
-- Read the Tracker and each Worker's bus files.
-- With version control, use git to check branches, worktrees and merges.
+Check current state before writing either file:
 
-Bring the Tracker up to date with the checked state before writing the two files, including pending alignment decisions, accepted limitations and verification gaps with source paths.
+- Read the Tracker and each Worker’s bus files. Check progress, outputs and pending validation for your active Tasks, including subagent contributions.
+- If using version control, verify branches and integration. For Git, check worktrees as well.
+
+Check the continuation details in §3. Before writing the Handoff files, use verified state and agreed changes to update the Tracker and any affected planning documents, Index Notes and Task instructions. Record pending Task actions in the Tracker’s Next Action.
 
 ## 2. Handoff Log
 
-Write the Handoff Log per §5.1. Record in past tense what this conversation did: the Stages and reviews you handled, decisions with their reasons, User preferences, dispatch patterns and coordination observations that the Tracker, the Index and the Task Logs do not hold. If your context was compacted or recovered in this conversation, say which parts you rebuilt from a summary or from files, and from where.
+Write the Handoff Log in past tense per §5.1. If context was compacted or recovered, identify what you rebuilt from summaries or files. Name the sources and any uncertainty or unverified claims that remain.
 
 ## 3. Handoff Prompt
 
-Write the Handoff Prompt per §5.2 to `.apm/bus/manager/handoff.md`. Name the latest relevant attempt logs for Tasks in the current Stage and earlier Tasks that pending reviews or upcoming dependencies rely on. Earlier attempts can be followed through links where needed. In Current State, list the reports awaiting review, the Workers with dispatched Tasks, and branches, worktrees and merges still pending. Include pending alignment decisions, accepted limitations and verification gaps with source paths.
+Write `.apm/bus/manager/handoff.md` per §5.2. Name the latest relevant attempt logs for current Tasks and earlier work needed by pending reviews or dependencies; earlier attempts remain accessible through links. Include resume points and sources for pending alignment or verification gaps.
 
-## 4. User Review
+Record what work the User holds, any assistance needed, where to resume and what allows work to resume. Carry forward agreed review points, pending decisions and accepted limits with evidence links.
 
-Give the User both file paths and ask them to review the two files. Apply their corrections and ask again. After they approve, tell them to invoke `apm-2-initiate-manager` in a new chat; it finds the Handoff Prompt on its own. Your work in this conversation then ends.
+## 4. Continuation Instructions
+
+Give a small chat recap of the work and context being passed on, pending decisions or checks, and the next action. Explain how the User starts a new Manager conversation; it finds the Handoff Prompt. You may link the files for optional review, but do not require inspection or approval.
+
+By default your preparation ends here: wait while the User completes delivery to the new conversation. Do not claim to transfer yourself. Follow a different coordination mechanism only when explicitly agreed with the User.
 
 ## 5. Formats
 
@@ -49,7 +57,7 @@ stage: <N>
 # Manager Handoff Log - Conversation <number>
 
 ## Summary
-<The Stages, reviews and dispatches handled in this conversation>
+<The Stages, Tasks, reviews and dispatches handled in this conversation>
 
 ## Working Context
 <Decisions with reasons, User preferences, dispatch patterns and coordination observations that the Tracker, the Index and the Task Logs do not hold>
@@ -69,7 +77,7 @@ handoff_log: <path of the Handoff Log>
 <What to read: the Handoff Log and the Task Logs the next conversation needs, by path>
 
 ## Current State
-<Checked state: reports awaiting review, Workers with dispatched Tasks, pending branches, worktrees and merges; pending alignment decisions, accepted limitations and verification gaps, with source paths>
+<Checked state: your active Tasks and progress, reports awaiting review, Workers with dispatched Tasks, work locations and pending integration or cleanup; pending alignment decisions, accepted limitations and verification gaps, with source paths>
 
 ## Next Action
 <The coordination step to resume with>

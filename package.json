@@ -1,6 +1,6 @@
 {
   "name": "agentic-pm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Agentic Project Management CLI",
   "scripts": {
     "build": "node build/index.js",
@@ -23,8 +23,8 @@
   "files": [
     "src/",
     "CHANGELOG.md",
-    "SECURITY.md",
-    "VERSIONING.md"
+    "CONTRIBUTING.md",
+    "SECURITY.md"
   ],
   "bin": {
     "apm": "src/index.js",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/sdi2200262/agentic-project-management#readme",
   "engines": {
-    "node": ">=18"
+    "node": "^18.17.0 || >=20.5.0"
   },
   "publishConfig": {
     "access": "public"

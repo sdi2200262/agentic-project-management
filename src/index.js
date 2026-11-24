@@ -46,7 +46,7 @@ function displayHelp() {
   console.log(chalk.cyan.bold('Commands:'));
   console.log(`  ${chalk.bold('init')}              Initialize APM with official releases`);
   console.log(`  ${chalk.bold('custom')}            Install from a custom repository`);
-  console.log(`  ${chalk.bold('update')}            Archive the session, then install the newest stable release`);
+  console.log(`  ${chalk.bold('update')}            Archive the session, then install an update from the installed source`);
   console.log(`  ${chalk.bold('archive')}           Archive the current session or manage archives`);
   console.log(`  ${chalk.bold('add')}               Add installation target(s) to existing installation`);
   console.log(`  ${chalk.bold('remove')}            Remove installation target(s) from installation`);
@@ -90,7 +90,7 @@ function displayHelp() {
   console.log(chalk.gray('Learn more:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management'));
   console.log(chalk.gray('New to APM? The apm-assist skill gives your AI assistant full knowledge of'));
   console.log(chalk.gray('the framework so it can answer questions and help with migration.'));
-  console.log(chalk.gray('See:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management/tree/main/skills#apm-assist'));
+  console.log(chalk.gray('See:') + ' ' + chalk.blue.underline('https://github.com/sdi2200262/agentic-project-management/tree/main/skills/apm-assist'));
   console.log('');
 }
 
@@ -167,7 +167,7 @@ program
 
 program
   .command('update')
-  .description('Archive the session, then install the newest stable release')
+  .description('Archive the session, then install an update from the installed source')
   .option('-f, --force', 'Skip destructive action confirmations')
   .option('-n, --name <name>', 'Custom archive name')
   .action(async (options) => {

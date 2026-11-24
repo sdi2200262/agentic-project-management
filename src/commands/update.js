@@ -10,11 +10,11 @@
 import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION, ARCHIVES_DIR } from '../core/constants.js';
 import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, createMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
-import { formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
+import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
 import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion, isStableRelease } from '../services/releases.js';
-import { downloadAndExtract } from '../services/extractor.js';
+import { downloadBundles, installBundles } from '../services/extractor.js';
 import { createArchive, generateArchiveName, archivePathFor } from '../services/archive.js';
-import { removeInstalledFiles } from '../services/cleanup.js';
+import { removeInstalledFiles, validateInstalledFileRemoval } from '../services/cleanup.js';
 import { confirmDestructiveAction, confirmAction, selectRelease, selectPrompt, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
 import { getRepoSettings, addCustomRepo, updateRepoSettings } from '../core/config.js';
 import logger from '../ui/logger.js';
@@ -58,7 +58,7 @@ export async function updateCommand(options = {}) {
   const names = { ...getAssistantNames(metadata), ...assistantNamesFromManifest(manifest) };
 
   // Check if any current assistants exist in the target release
-  const { ids: survivingAssistants, dropped: droppedAssistants, migrations } = resolveUpdateTargets(metadata.assistants, manifest);
+  const { ids: survivingAssistants, dropped: droppedAssistants, migrations, sources } = resolveUpdateTargets(metadata.assistants, manifest);
   if (!survivingAssistants.length) {
     const available = formatAssistantList(manifest.assistants.map(a => a.id), names);
     logger.error(`None of your installation targets (${formatAssistantList(metadata.assistants, names)}) are available in ${release.tag_name}.`);
@@ -67,6 +67,7 @@ export async function updateCommand(options = {}) {
     return;
   }
 
+  assertCompatibleTargets(manifest, survivingAssistants, { sources });
   const bundles = getRequiredBundles(release, manifest, survivingAssistants);
 
   // Pre-compute archive name for confirmation message
@@ -84,7 +85,7 @@ export async function updateCommand(options = {}) {
       `Snapshot session records into .apm/archives/${resolvedName} and move worktrees there with Git`,
       `Agents must have stopped writing before archival starts`,
       `Remove active session files and installed templates for: ${currentList}`,
-      `Download and install ${release.tag_name} for: ${survivingList}`
+      `Install ${release.tag_name} for: ${survivingList}`
     ];
     if (migrations.length) {
       bullets.push(`Consolidate ${formatAssistantList(migrations.map(m => m.from), names)} into ${formatAssistantList([...new Set(migrations.map(m => m.to))], names)}`);
@@ -104,34 +105,21 @@ export async function updateCommand(options = {}) {
     }
   }
 
-  // Archive current state
+  const readyBundles = await downloadBundles(bundles);
+
+  // Archive only after all required downloads succeed.
+  const installedFiles = getInstalledFiles(metadata);
+  await validateInstalledFileRemoval(cwd, installedFiles);
   const archiveStop = logger.progress('Archiving current session');
   const archived = await createArchive(cwd, { reason: 'update', name: archiveName });
   archiveStop();
 
   try {
     // Clean all tracked files
-    const installedFiles = getInstalledFiles(metadata);
     await removeInstalledFiles(cwd, installedFiles);
 
-    // Download new bundles for all assistants
-    const newInstalledFiles = {};
-    let apmExtracted = false;
-    for (const { assistant, asset } of bundles) {
-      const assistantId = assistant.id;
-      stop = logger.progress(`Downloading ${assistant.bundle}`);
-      const writtenFiles = await downloadAndExtract(
-        asset.browser_download_url,
-        cwd,
-        { skipApm: apmExtracted }
-      );
-      stop();
-      newInstalledFiles[assistantId] = writtenFiles.filter(f => !f.startsWith('.apm/'));
-      if (!apmExtracted) {
-        newInstalledFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
-      }
-      apmExtracted = true;
-    }
+    // Extract new bundles for all assistants
+    const newInstalledFiles = await installBundles(readyBundles, cwd);
 
     // Write fresh metadata
     const newMetadata = createMetadata({
@@ -179,16 +167,13 @@ export async function updateCommand(options = {}) {
   for (const id of survivingAssistants) {
     logger.success(`Updated ${formatAssistant(id, names[id])}`);
   }
-  for (const id of survivingAssistants) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    if (assistant?.postInstallNote) logger.info(assistant.postInstallNote);
-  }
   logger.success(`Updated to ${release.tag_name} (${logger.plural(survivingAssistants.length, 'installation target')})!`);
   if (archived.worktrees.length) {
     logger.info(`Preserved ${logger.plural(archived.worktrees.length, 'worktree')}; they remain attached to their source repositories.`);
     for (const worktree of archived.worktrees) logger.info(`${worktree.from} -> ${worktree.to}${worktree.unfinished ? ' (unfinished work)' : ''}`);
   }
-  logger.info(`Your previous session is in ${path.relative(cwd, archived.archivePath)}. To start a new session, invoke apm-1-initiate-planner in a new chat.`);
+  logger.info(`Your previous session is in ${path.relative(cwd, archived.archivePath)}.`);
+  logger.showInstallationNotes(manifest, survivingAssistants);
 }
 
 /**

@@ -1,6 +1,36 @@
 # Changelog
 
-APM versions its CLI (npm) and templates (GitHub Releases) separately using [Semantic Versioning](https://semver.org/). Entries follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). See [VERSIONING.md](VERSIONING.md) for release rules.
+APM versions its CLI (npm) and templates (GitHub Releases) separately using [Semantic Versioning](https://semver.org/). Entries follow [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). See [CONTRIBUTING.md](CONTRIBUTING.md#releases) for release rules.
+
+## CLI v1.0.4 + Templates v1.2.0 - 2026-11-24
+
+### Breaking Changes
+
+* **CLI v1.0.4 required.** Run `npm install -g agentic-pm@latest`, then `apm update`. Older CLIs may show a manifest error for this release.
+* **Rules removed.** The Planner no longer writes Rules in an `APM_RULES` block. `AGENTS.md` holds ordinary workspace instructions that the Manager and Workers maintain across sessions. If the file is missing, the Planner proposes its contents and asks whether to create it. When updating, keep useful rules as ordinary instructions and delete the `APM_RULES` markers; the CLI does not change `AGENTS.md`.
+
+### Added
+
+* **Manager execution and User-led work.** The Manager can carry out Tasks through subagents, alongside separate Worker conversations. You can also do any Task, or part of one, yourself with agent assistance, within APM’s workflow. These changes bring the benefits of APM Auto and APM Semi into APM's core.
+* Independent review is the default for substantial implementation or consequential uncertainty. Related results can share a review, and useful reviewer context can be reused.
+* `agents-single-skill` and `claude-single-skill` targets (research preview) provide the same workflow through one `apm` skill. Choose one format for `agents` and one for `claude`; the two can differ.
+* Optional documents can be added for use within an APM session, such as research under `.apm/research/`. The Planner or Manager agrees their purpose, location, structure and ownership with you. The Spec describes them in a Supporting Documents section, and the Plan assigns any work needed to create them.
+
+### Changed
+
+* CLI package metadata now matches the Node.js range declared by its existing dependencies. The range is Node.js 18.17 or newer in the 18.x series, or Node.js 20.5 or later.
+* The Planner and Manager suggest how you stay involved, instead of involvement being hardwired through user-mediated coordination. You choose the arrangement of how work gets reviewed and can change it later.
+* You and the Planner agree how to use version control. The Manager explains its setup before starting and makes earlier Task outputs available, including uncommitted work. Parallel work can use separate working copies such as Git worktrees.
+* Worker batches now stop at partly done Tasks. Agreed User reviews happen before the Worker reports.
+* Handoffs, recovery, and early closure account for work you do yourself and any running subagents. Current files and version control state take precedence over older records. At session close, the Manager explains the options to save a summary, archive the session, or do both.
+* CLI v1.0.4 shows each release's startup steps and rejects incompatible targets, such as both formats for `claude`, before changing files.
+
+### Fixed
+
+* Stronger planning and review safeguards reinforce work definition during planning, evidence-based acceptance and continued progress on unaffected work while checks or decisions are pending.
+* The CLI downloads all selected bundles before changing project files during installation, target addition or update. Bundle extraction refuses to write through existing symbolic links inside the project.
+* The CLI reports unreadable installation metadata and stops before cleanup if a recorded file path is unsafe to remove.
+* The template release workflow builds the selected commit and stops if the requested tag already points elsewhere.
 
 ## CLI v1.0.3 + Templates v1.1.0 - 2026-10-29
 

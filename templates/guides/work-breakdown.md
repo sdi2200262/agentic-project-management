@@ -1,141 +1,145 @@
 # APM {VERSION} - Work Breakdown Guide
 
-This guide covers Work Breakdown: developing the work structure during Context Gathering, then turning the approved understanding into the Spec, the Plan and the Rules, in that order. `{SKILL_PATH:apm-1-initiate-planner}` §4 covers what follows.
+The Planner uses this guide to turn the approved understanding into the Spec and Plan and resolve `AGENTS.md` changes.
 
-The Manager reads the Spec and Plan and copies what each Task needs into a self-contained Task Prompt. Workers read only their Task Prompts and the Rules. Put requirements, design decisions and constraints in the Spec, work structure and Task detail in the Plan, and shared Worker execution conventions in the Rules. Preserve the context each assignment needs, with detail matched to the work's complexity. APM coordination procedures live in the role guides.
+Write both documents for User review and for the Manager, including later Manager conversations. The Manager keeps them current during implementation and can use them, `AGENTS.md` and referenced sources to prepare self-contained Worker Task Prompts.
 
-Both the Spec and the Plan place Notes after their introductory and reference material, before the main body. Spec Notes explain design assumptions and context; Plan Notes explain coordination choices for the Manager, which keeps both current during implementation. Settled requirements, constraints, dependencies and conventions belong in their authoritative sections; remove Notes made redundant by those sections.
+Describe what the deliverable must do and which constraints and agreements apply. Outside assigned Task instructions, do not use imperative language to tell the Manager, a Worker or the User what to do. State who is responsible and frame advice as observations or recommendations. Give direct instructions only in the Task that assigns the work.
+
+Assume the Manager knows the APM workflow. Do not restate standard APM procedures or explain the usual purpose of APM documents. Record the decision, constraint or change that applies to this session. Link the relevant document or procedure when the reader needs it.
+
+Use language the User can review. Record the technical choices and constraints they specify, and describe approaches at the depth they want to review. For choices left open, state the required results, constraints and checks. Preserve consequential findings with brief reasons and source references. The Manager uses those sources and the current workspace to fill in technical context. The implementing agents decide the details left open within the agreement.
 
 ## 1. Review Cycle
 
-Write one document at a time: the Spec, then the Plan, then the Rules. For each:
+Before drafting, review the approved understanding. Put agreed outcomes, requirements, design, constraints and acceptance criteria in the Spec. Explicitly reserve assignments, sequencing, coordination and arrangements for verification, User involvement and review for the Plan. When an agreement affects both documents, keep the requirement in the Spec and carry the arrangements for meeting it into the Plan.
 
-1. Present your proposal with its consequential choices and reasons.
-2. In the same turn, read the target file and write the document. Check coverage of the agreed work, consistency with the other documents and whether content belongs in this document.
-3. Stop and ask the User to review it, saying what comes next. Apply corrections, check their effects on earlier documents and ask again.
+Use this cycle for the Spec, then the Plan.
 
-Start the next document only after approval, so a problem in one document is caught before the next is built on it.
+1. Present the proposed organization and consequential choices, reasons and assumptions.
+2. In the same turn, read the target file and write the draft using its format in §5. Reuse material that fits after checking it against current sources and decisions. Distinguish agreements, recommendations and open choices.
+3. Check the saved file's section order and required fields against its format. Use §2 or §3 to check the content against the approved understanding and any document already approved for this session.
+4. Link the file. Briefly summarize its contents per §2 or §3 and explain the reasons for consequential choices. Say what comes next, ask for explicit approval and wait.
+5. Apply corrections to all affected documents, including earlier ones. Repeat steps 3 and 4 for revisions.
+
+After Plan approval, resolve any `AGENTS.md` changes per §4.
 
 ## 2. Spec
 
-The Spec says what is built and why: decisions where alternatives existed, and the constraints and requirements that shape the work. State these in the work's own terms. The Plan must implement every decision in it.
+Write `.apm/spec.md` per §5.1 from the approved understanding of what the session will deliver. Reserve delivery arrangements for the Plan (§1).
 
-1. Propose the design decisions, constraints, references to source documents and how you will organize them. Explain the choices and assumptions that matter.
-2. Write `.apm/spec.md` per §5.1:
-   - **Overview:** what this APM session builds.
-   - **Workspace:** working targets and read-only references, agreed Git use, base branches, branch naming and APM file tracking, authoritative documents with paths and sections, and existing `AGENTS.md` content.
-   - **Notes:** design assumptions, open questions, reasons behind constraints and context for work left to later sessions.
-   - **Design sections:** settled design decisions and constraints, organized so the Manager can find them and copy them into Task Prompts.
+Group requirements and design choices by subject. Draw on the full range of Markdown, including headings, paragraphs, lists and tables. Choose the forms that make each subject easy for the User to review and the Manager to find during implementation. Name the working targets and authoritative sources. Record agreed behavior, output formats, schemas, interface contracts, constraints and acceptance criteria with the decisions they concern. Include brief reasons and relevant alternatives. Name who will settle open choices.
 
-Implementation detail that leaves a design decision unchanged goes in a Task's Guidance, and shared Worker execution conventions go in the Rules.
+Record the session's version control agreement, including branch and commit conventions and constraints on work locations, commits, integration, publication and APM file tracking. Carry its effects on work and sequencing into the Plan.
+
+Write each note as a separate list item. Frame notes as observations, not instructions. Include context that applies across design subjects, such as shared assumptions, reasons, open choices or later-session scope. For a relevant alternative, explain why it still matters, when it applies and whether the choice is open or settled.
+
+Use supporting documents for retained material with a purpose outside the Spec, Plan, Tracker and Memory. Agree each document's purpose, path under `.apm/`, structure, maintainer and readers with the User. Reuse suitable documents and conventions and keep them easy to navigate as they grow. When supporting documents are needed, place a Supporting Documents section immediately after Notes. Give each document its own subsection and put its implementation work in Plan Tasks.
+
+Summarize the expected behavior, what counts as success and the choices or constraints that need the User's judgment. Name the delivery agreements from the approved understanding that you will carry into the Plan, such as how the User will take part, when reviews will happen and how the work will be coordinated.
 
 ## 3. Plan
 
-The Plan divides the work into Workers, Stages and Tasks, with dependencies, guidance, steps, output and validation, so the Manager can build self-contained Task Prompts from it.
+Write `.apm/plan.md` per §5.2 from the approved understanding of how the work will proceed and the approved Spec.
 
-1. Carry forward the breakdown developed during Context Gathering. Propose or refine the Workers and their areas, the Stages and their deliverables, and the Tasks in each. Explain the boundaries, order and dependencies that matter.
-2. Define each Task per §5.2, including any User involvement. In Guidance, refer to the relevant Spec or source sections and add Task-specific context.
-3. Check the breakdown against the gathered context and the approved Spec: every decision has work, each Task's output has clear validation, assignments match each Worker's domain and dependencies are consistent. A dependency on a Task with a different Worker is Cross-Worker. Fix what you find.
-4. Write `.apm/plan.md` per §5.2, with Notes explaining project-specific dispatch choices, shared-resource constraints, likely blockers, integration points and Stage verification. Name the Stages and checks involved. Keep explicit dependencies and validation criteria in Task fields.
-5. When you ask for review, give a short overview of the Workers, Stages, Task counts and what can run in parallel.
+Organize the work by assignment, Task result and Stage milestone.
 
-Break the work down by these principles:
+- **Assignments.** Assign each Task to the Manager or one Worker. Weigh expertise, shared context and agreed User involvement. Keep related work together when familiarity helps, accounting for context and coordination costs. The assigned agent remains responsible when the User performs any part of the work.
+- **Tasks.** Give each Task a result its assigned agent can deliver and check. Prefer to keep continuous work together when it uses the same context. Split work when its size, complexity, uncertainty, need for different expertise or opportunity to deliver and check separate results in parallel justifies the coordination. Keep routine reviews, approvals and delivery actions with the work they concern. Give them a separate Task when they involve substantial work with its own result. For bounded technical investigation, follow `{GUIDE_PATH:context-gathering}` §3 and state the completion checks and affected dependencies.
+- **Stages.** Group Tasks around a result the User can assess. Prefer fewer Stages for small sessions. Add a Stage boundary when the result guides what happens next or the User wants to assess it before further work starts. Weigh that benefit against the work that would have to wait. Within a Stage, use a Task dependency when one Task needs another’s result. Each new Stage starts after the previous one is complete and the User explicitly agrees to advance, unless a different arrangement was explicitly agreed.
 
-- **Workers** follow expertise and context. Weigh the benefit of specialization against the context sharing and coordination it requires.
-- **Stages** are milestones in order: Stage N+1 starts after Stage N is complete. Choose milestones around dependencies and meaningful review points. Parallel work belongs in Tasks within a Stage.
-- **Tasks** define work one Worker can carry out and report for review, with a clear output and validation. Choose boundaries according to size, complexity, uncertainty, dependencies and expertise. Research, implementation and validation may share a Task or need separate Tasks. Explain the boundaries that affect how the work proceeds. Where investigation or research is needed, state the question and required evidence; the executing agent chooses whether to delegate.
-- **Steps** are ordered operations toward the Task's output. Their checks contribute to validating that deliverable.
-- **User actions.** Workers work in the development environment. Name outside actions, credentials or human judgement as explicit points where the User is needed.
-- **Validation** gives observable checks and expected results for each Task's output, including research or testing results. Separate checks the Worker can run alone from those that need the User, and tell the Worker to pause for them. Keep checks within the assigned work; put additional Stage verification in the Plan's Notes.
+Record the agreed delivery approach. The Manager prepares workspaces, integrates work and pushes changes. Workers carry out their Tasks in prepared workspaces, follow agreed commit instructions and may delegate selected parts. The Manager uses subagents for substantial implementation and reviews their results. The Manager may carry out substantial work directly when the User explicitly agrees and the Plan records that arrangement. The Manager may handle contained investigation, small corrections and final checks directly. Let the implementation roles choose and group subagents and arrange routine independent reviews.
 
-Identify what can run independently and what must wait for earlier results. The Manager chooses dispatches during implementation within the agreed constraints.
+Identify what can start together, what needs an earlier result or outside prerequisite, and what lets affected work resume. Record the agreed response if prerequisites remain unresolved. Give each Task observable checks for its own result, with expected results, timing and who runs them. Identify required User or outside reviews, actions and credentials. Say when affected work pauses for their input.
 
-## 4. Rules
+Write each note as a separate list item. Frame notes as observations and recommendations, not instructions to the Manager. State agreed involvement, review points, timing, update frequency, shared constraints and additional Stage checks as facts when they span Tasks. Keep Task instructions in their fields and link to those fields or the Spec for details. For later sessions, record relevant sequencing and prerequisites and refer to the Spec for scope.
 
-The Rules hold shared Worker execution conventions. Every Worker reads the whole of `AGENTS.md`, including content outside the `APM_RULES` block. Rules give each Worker enough context to apply these conventions without reading the Spec or Plan.
+Note which Tasks could run in parallel or be batched and what makes that possible. For a potential blocker, say when it could arise and what work it could affect. If you recommend an option, explain when it would help. The Manager decides how to dispatch ready work within the agreed Plan.
 
-1. Propose the conventions, drawn from the approved documents and the gathered context, including the agreed commit conventions for each working repository. Explain what you include or leave out, and which existing standards you refer to.
-2. Read `AGENTS.md`, or confirm it does not exist, and write the `APM_RULES` block per §5.3. Keep content outside the block unless the User asks for changes. If you create the file, write only the block.{CLAUDE_ONLY: If the workspace has an existing `CLAUDE.md`, add an import of the workspace-root `AGENTS.md` unless it already has one. Use `@AGENTS.md` in a workspace-root `CLAUDE.md`, or `@../AGENTS.md` in `.claude/CLAUDE.md`. Preserve existing content and keep the import outside code blocks.}
-3. After approval, apply the repository setup and APM file tracking agreed in the Spec's Workspace section. Initialize missing repositories only where approved. Then continue with `{SKILL_PATH:apm-1-initiate-planner}` §4.
+Check that the Tasks deliver and verify every approved Spec outcome and that each assigned agent can carry out and check its work. Check assignments, dependencies and sizes against the agreed approach. Verify that the relevant Tasks or Notes carry forward the agreed delivery and review arrangements.
 
-Each Rule states when it applies and the execution practice to follow, standing alone without references to the Spec or Plan. System behavior, output formats, schemas and interface contracts belong in the Spec; Task-specific implementation approach belongs in Guidance.
+Summarize how the planned work and checks cover the approved Spec outcomes. Give the Stages, Task counts, assignments, parallel work and agreed User involvement. Explain what each Stage lets the User assess and what work waits at its boundary.
+
+## 4. AGENTS.md
+
+Keep `AGENTS.md` useful across sessions. Include brief orientation, repository paths, working and read-only boundaries and workspace conventions. The Manager and Workers read it in full and maintain it under User authorization. Write it as a standalone reference for Workers.
+
+1. Review existing `AGENTS.md` and any applicable guidance. Propose concise additions or corrections that help future work, extending or replacing existing guidance where possible. Explain the evidence for changes, or why existing guidance is sufficient. If `AGENTS.md` is missing, propose its contents from discovery and ask the User whether to create it.
+2. Resolve decisions needing User agreement. Make and check the agreed changes to `AGENTS.md`. Use clear sections, respecting existing organization and unrelated content where present. State orientation as facts and rules as direct instructions, with conditions where needed.{CLAUDE_ONLY: If `AGENTS.md` exists, add its import to an existing workspace `CLAUDE.md` unless it already has one: `@AGENTS.md` at the workspace root, or `@../AGENTS.md` in `.claude/CLAUDE.md`. Keep it outside code blocks and preserve preexisting content. If references would form a cycle, include its correction in the proposal.}
+
+Continue with `{SKILL_PATH:apm-1-initiate-planner}` §4.
 
 ## 5. Formats
 
 ### 5.1 Spec Format
 
-The Spec is `.apm/spec.md`:
+The Spec is `.apm/spec.md`.
 
 ```markdown
 # APM Spec
 
-## Overview
-<In three to five sentences: what this APM session builds, the problem it solves, its scope and its success criteria>
-
-## Workspace
-<The folder structure, working and reference repositories, agreed Git use, base branches, branch naming and APM file tracking, authoritative documents and existing `AGENTS.md` content>
+<In three to five sentences: this session’s intended outcomes, the problem it addresses, its scope and its success criteria>
 
 ## Notes
-<Assumptions and context for the Manager per §2>
+
+- <Observation that applies across subjects per §2>
+
+## Supporting Documents
+
+### <Document name>
+
+<Agreed purpose, path under `.apm/`, structure, maintainer and readers>
 
 ## <Design Section>
-<Design decisions for one part of the work>
+
+<Agreed requirements and design for this subject per §2>
 ...
 ```
 
-After Notes, organize the decisions into sections that follow the work's natural structure: its areas, components, boundaries or technical concerns. Related decisions share a section; cross-cutting choices get their own. Make each decision concrete. Refer to User documents by path and section. Use tables for enumerated values, code blocks for schemas and prose for reasons.
+- Include Supporting Documents only when the session needs them.
+- Refer to User documents by path and section.
 
 ### 5.2 Plan Format
 
-The Plan is `.apm/plan.md`. Name Workers by agent slug, such as `frontend-agent`, everywhere in it.
+The Plan is `.apm/plan.md`.
 
 ```markdown
 # APM Plan
 
-<One or two sentences on what this APM session builds>
+<One or two sentences on how the work described in the Spec is divided, ordered and assigned, with a reference to the Spec>
 
-## Workers
+## Agents
 
 | Agent | Domain | Description |
 |-------|--------|-------------|
-| frontend-agent | <Domain> | <What it works on> |
+| manager | <Domain> | <What it works on> |
+| <worker-slug> | <Domain> | <What it works on> |
 
 ## Stages
 
 | Stage | Name | Tasks | Agents |
 |-------|------|-------|--------|
-| 1 | <Name> | 1.1–1.3 | frontend-agent, backend-agent |
+| 1 | <Name> | <Task IDs> | <Assigned agents> |
 
 ## Notes
-<Observations for the Manager per §3 step 4, and work left for later sessions>
+
+- <Agreement, observation or recommendation that spans Tasks per §3>
 
 ## Stage 1: <Name>
 
 ### Task 1.1: <Title>
 
-- **Agent:** <agent-slug>
-- **Objective:** <The Task's goal in one sentence>
-- **Dependencies:** <Task N.M (Same-Worker); Task N.M by <agent-slug> (Cross-Worker); or None>
-- **Output:** <Concrete deliverables and paths>
-- **Validation:** <Observable checks and expected results for this output, and where the User is needed>
-- **Guidance:** <Task-specific constraints and approach, relevant findings, and Spec or source references>
+- **Agent:** <worker-slug or manager responsible for the Task>
+- **Objective:** <What the Task must achieve>
+- **Dependencies:** <Task N.M (Same-Agent); Task N.M by <worker-slug or manager> (Cross-Agent); or None>
+- **Output:** <Concrete deliverables and their paths at Task completion>
+- **Validation:** <Checks and expected results that establish completion, including checks requiring the User>
+- **Guidance:** <Task-specific approach and context, relevant Spec or source sections, and agreed User work or review points>
 
 1. <Step>
 2. <Step>
 ```
 
-Stage names reflect the Stage's areas and main deliverables. List only direct dependencies.
-
-Each step is one operation a Worker can carry out directly, in order, referring to patterns, files or earlier work where relevant. Guidance states technical context and approach in the work's own terms. Use short lists when several checks or findings need separate treatment. A research step states its question, sources and required evidence, such as "Verify the current API authentication patterns against the route handlers and tests."
-
-### 5.3 APM_RULES Block
-
-```text
-APM_RULES {
-
-[Shared Worker execution conventions]
-
-} //APM_RULES
-```
-
-Write inside the block only, with `##` headings for categories. Each Rule is concrete and actionable, and covers shared Worker execution conventions. Refer to relevant existing standards outside the block.
+- List `manager` and each Worker in the Agents table. Name each Stage for its main result.
+- List only direct dependencies and name the earlier result needed from each. Use Same-Agent when both Tasks have the same assignee and Cross-Agent when they have different assignees.
+- Refer to the Spec for requirements and design decisions. Use as many ordered, Task-specific steps as the work needs to produce and check the result. Refer to shared procedures for common details. State the question, sources and required evidence for any research step.

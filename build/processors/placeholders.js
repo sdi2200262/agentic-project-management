@@ -6,15 +6,19 @@
  * @module build/processors/placeholders
  */
 
+import { skillPath, skillDirectory, guidePath, isSingleSkill } from './paths.js';
+
 /**
  * Replaces template placeholders with target-specific values.
  *
  * Supported placeholders:
+ * - {START_MANAGER}: User action for starting the Manager in this layout
+ * - {OTHER_SKILLS_DIR}: Skills directory for the other assistant
  * - {VERSION}: Template version
- * - {SKILL_PATH:name}: Skill file (<skills dir>/<name>/SKILL.md)
- * - {SKILL_DIR:name}: Skill folder (<skills dir>/<name>)
+ * - {SKILL_PATH:name}: Source skill mapped to its output file
+ * - {SKILL_DIR:name}: Directory containing the mapped source skill
  * - {GUIDE_PATH:name}: Guide file (<guides dir>/<name>.md)
- * - {CLAUDE_ONLY:text}: Text kept for the claude target and removed for the others
+ * - {CLAUDE_ONLY:text}: Text kept for Claude Code targets and removed for the others
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
@@ -24,12 +28,16 @@
  */
 export function replacePlaceholders(content, context) {
   const { version, target } = context;
-  const { directories, id } = target;
+  const assistant = target.assistant ?? target.id;
 
   return content
     .replace(/{VERSION}/g, version)
-    .replace(/{CLAUDE_ONLY:([^}]*)}/g, (_match, text) => (id === 'claude' ? text : ''))
-    .replace(/{SKILL_PATH:([^}]+)}/g, (_match, name) => `${directories.skills}/${name}/SKILL.md`)
-    .replace(/{SKILL_DIR:([^}]+)}/g, (_match, name) => `${directories.skills}/${name}`)
-    .replace(/{GUIDE_PATH:([^}]+)}/g, (_match, name) => `${directories.guides}/${name}.md`);
+    .replace(/{OTHER_SKILLS_DIR}/g, assistant === 'claude' ? '.agents/skills/' : '.claude/skills/')
+    .replace(/{START_MANAGER}/g, isSingleSkill(target)
+      ? 'request that the agent invoke the `apm` skill and initiate as the Manager for this APM session'
+      : 'invoke the `apm-2-initiate-manager` skill')
+    .replace(/{CLAUDE_ONLY:([^}]*)}/g, (_match, text) => (assistant === 'claude' ? text : ''))
+    .replace(/{SKILL_PATH:([^}]+)}/g, (_match, name) => skillPath(target, name))
+    .replace(/{SKILL_DIR:([^}]+)}/g, (_match, name) => skillDirectory(target, name))
+    .replace(/{GUIDE_PATH:([^}]+)}/g, (_match, name) => guidePath(target, name));
 }

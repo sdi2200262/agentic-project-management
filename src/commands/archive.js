@@ -13,7 +13,7 @@ import { CLIError } from '../core/errors.js';
 import { readMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
 import { formatAssistantList } from '../core/assistants.js';
 import { createArchive, listArchivesWithInfo, inspectArchiveDeletion, inspectArchiveDeletions, removeArchive, clearArchives, generateArchiveName, archivePathFor } from '../services/archive.js';
-import { removeInstalledFiles } from '../services/cleanup.js';
+import { removeInstalledFiles, validateInstalledFileRemoval } from '../services/cleanup.js';
 import { confirmDestructiveAction } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
 
@@ -174,11 +174,12 @@ async function createMode(force, archiveName) {
       return;
     }
   }
+  const installedFiles = getInstalledFiles(metadata);
+  await validateInstalledFileRemoval(cwd, installedFiles);
   const { archivePath, worktrees } = await createArchive(cwd, archiveOpts);
 
   try {
     // Clean tracked files
-    const installedFiles = getInstalledFiles(metadata);
     await removeInstalledFiles(cwd, installedFiles);
 
     // Delete metadata
@@ -196,7 +197,7 @@ async function createMode(force, archiveName) {
     logger.info(`Preserved ${logger.plural(worktrees.length, 'worktree')}; they remain attached to their source repositories.`);
     for (const worktree of worktrees) logger.info(`${worktree.from} -> ${worktree.to}${worktree.unfinished ? ' (unfinished work)' : ''}`);
   }
-  logger.info('To start a new session, run "apm init" (or "apm custom"), then invoke apm-1-initiate-planner in a new chat.');
+  logger.info('To start a new session, run "apm init" (or "apm custom") and follow the installation guidance.');
 }
 
 export default archiveCommand;
