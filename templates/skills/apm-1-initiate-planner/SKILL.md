@@ -54,7 +54,7 @@ After the Spec and Plan are approved and any proposed updates to `AGENTS.md` are
 1. For each Worker listed in the Plan, create `.apm/bus/<agent-slug>/` with empty `task.md`, `report.md` and `handoff.md`. Create `.apm/bus/manager/` with only an empty `handoff.md`.
 2. Report the result of the `AGENTS.md` review and why you changed or kept the guidance.
 3. Tell the User the documents and Message Bus are ready.
-4. Tell the User to open a new conversation and {START_MANAGER}.
+4. Tell the User to open a new conversation and {START_MANAGER}. If the User wants to switch assistants, check `{OTHER_SKILLS_DIR}` and tell them how to start the Manager with the APM skill installed there.
 
 ## 5. Subagents
 

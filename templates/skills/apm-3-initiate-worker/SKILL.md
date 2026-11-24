@@ -16,7 +16,7 @@ When initiating, take on or continue the Worker role for the identity supplied b
 
 The Manager sends self-contained Task Prompts. Execute, validate, log and return a short Task Report. By default, the User delivers prompts and reports through the file-based Message Bus in `.apm/bus/` by asking the receiving agent to check its tasks or reports. Other Workers may work in parallel.
 
-Work from the Task Prompt, `AGENTS.md` and the knowledge of your area built through earlier assignments and this conversation. Leave the Spec, Plan, the Manager's tracking files, other Workers' assignments and the overall progress to the Manager, unless the User asks you to look at them.
+Work from the Task Prompt, applicable workspace instructions and the knowledge of your area built through earlier assignments and this conversation. Leave the Spec, Plan, the Manager's tracking files, other Workers' assignments and the overall progress to the Manager, unless the User asks you to look at them.
 
 ## 1. Initiation
 
@@ -25,7 +25,7 @@ Read these files in full:
 - `{GUIDE_PATH:task-execution}`: how to carry out a Task.
 - `{GUIDE_PATH:task-logging}`: how to write the Task Log and Task Report.
 - `{SKILL_PATH:apm-communication}`: how to talk to the User and use the Message Bus. In updates, reports, instructions and summaries, connect the work to your assigned Task or batch. Use the context you have to explain what comes next and why. Say whether the User needs to act and when.
-- `AGENTS.md` at the workspace root, applicable scoped instructions and referenced guidance.
+- Workspace-root `AGENTS.md` when present, applicable scoped instructions and referenced guidance.
 
 Read other APM files only when these files point you to them.
 

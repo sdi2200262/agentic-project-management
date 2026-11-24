@@ -28,7 +28,7 @@ For behavior changes, update `templates/_standards/WORKFLOW.md` first, then the 
 
 Command skills have `name`, `description` and `disable-model-invocation: true` frontmatter. Shared skills and the single-skill entry have `name` and `description`; guides have no frontmatter. When adding a file, update the reading instructions and references that lead to it.
 
-Describe assistant actions in plain English. All targets share the workflow sources and initial `.apm/` artifacts. Lasting workspace guidance lives in `AGENTS.md`; for Claude Code, the Planner adds an import to an existing workspace `CLAUDE.md` or `.claude/CLAUDE.md`.
+Describe assistant actions in plain English. All targets share the workflow sources and initial `.apm/` artifacts. Lasting workspace guidance lives in `AGENTS.md`. When it exists, the Planner adds its import to an existing workspace `CLAUDE.md` or `.claude/CLAUDE.md` for Claude Code.
 
 `build/build-config.json` gives each target an `assistant` (`agents` or `claude`) and a `format` (`multi-skill` or `single-skill`). `assistant` controls Claude-specific text; `format` and the configured directories control layout.
 
@@ -45,6 +45,7 @@ Use the placeholders defined in `build/processors/placeholders.js`:
 | `{SKILL_PATH:name}` | Source skill mapped to its output skill, role or procedure file |
 | `{SKILL_DIR:name}` | Directory containing that mapped file, for support references |
 | `{GUIDE_PATH:name}` | `<configured guides directory>/<name>.md` |
+| `{OTHER_SKILLS_DIR}` | Where to check which APM skills are installed for the other assistant |
 | `{START_MANAGER}` | How the User starts the Manager in this layout |
 | `{CLAUDE_ONLY:text}` | Text kept for both Claude formats |
 

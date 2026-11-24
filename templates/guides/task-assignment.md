@@ -2,7 +2,7 @@
 
 The Manager uses this guide to select and assign Ready Tasks, prepare workspaces and send Worker Task Prompts. The Planner, Workers and session summarizer use only §1.1 when making native subagent assignments. `{GUIDE_PATH:task-review}` covers incoming reports.
 
-A Worker works from its Task Prompts, `AGENTS.md` and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
+A Worker works from its Task Prompts, applicable workspace instructions and its own conversation. Each Task Prompt must carry everything its Task needs; keep coordination files within the Manager's scope.
 
 ## 1. Dispatch
 
@@ -51,7 +51,7 @@ Write each Task Prompt per §7.1, or §7.2 for a batch, from the aligned Plan's 
 
 1. Turn the Task’s steps and Guidance into actionable Instructions, preserving agreed User participation and review points. Include each needed Spec decision, constraint and authoritative User-document detail once, as direct content, preserving exact contracts. Include relevant Tracker context, lasting Index findings and corrections from earlier Tasks.
 
-   Never refer the Worker to the Spec, Plan, Tracker or Index. Supply dependency logs per step 4. Workers read `AGENTS.md` directly.
+   Never refer the Worker to the Spec, Plan, Tracker or Index. Supply dependency logs per step 4. Workers read applicable workspace instructions directly.
 2. For code and supporting documents, name relevant paths or sections and how to use them. For supporting documents, include the relevant agreed structure and permitted updates directly in the prompt.
 3. Keep the instructions on the Task. Supply enough purpose and participation context for the Worker to explain its Task, without copying the wider Stage structure or unrelated coordination. Include other Task IDs only where they identify dependencies.
 4. If the Plan lists dependencies, write Context from Dependencies. A dependency is Same-Agent when both Tasks have the same assignee and Cross-Agent when they have different assignees.
@@ -68,7 +68,7 @@ Reread the Spec at the first dispatch of a Stage and after any change to it.
 Prepare workspaces for your Tasks and Worker assignments. You handle integration and cleanup. Workers use the assigned workspace and commit instructions.
 
 1. Apply §1.1's isolation rules to parallel Tasks, native contributions and Worker dispatches.
-2. If using version control, follow the Spec's agreements for work locations, branches, commits and integration. Consult `AGENTS.md` and recent repository history for conventions the Spec leaves open. Put APM-managed, linked Git worktrees in the session root's `.apm/worktrees/`. Keep other working copies outside `.apm/` and record how their work will be preserved.
+2. If using version control, follow the Spec's agreements for work locations, branches, commits and integration. Consult applicable workspace instructions and recent repository history for conventions the Spec leaves open. Put APM-managed, linked Git worktrees in the session root's `.apm/worktrees/`. Keep other working copies outside `.apm/` and record how their work will be preserved.
 3. Make sure required dependency outputs are usable in the assigned workspace. Provide any needed uncommitted or untracked files when the working copy lacks them.
 4. Record the Next Action, any branch and any separate working copy in the Tracker. Tasks may share a branch or workspace when the arrangement allows.
 5. In each Worker prompt, give the working directory and the session root for `.apm/` paths. Include branch and commit instructions where applicable. For parallel work in a shared directory, describe the isolation constraints in Workspace per §7.1.

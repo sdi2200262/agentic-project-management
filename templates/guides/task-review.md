@@ -37,7 +37,7 @@ At an agreed review or the next useful chat reporting point, briefly identify th
 ## 3. Review Outcomes
 
 1. Accept a Success supported by the reviewed result and evidence, with no unresolved Important Findings.
-2. Investigate Important Findings and outcomes other than Success. Handle contained corrections per `{SKILL_PATH:apm-2-initiate-manager}` §4. Before editing, ensure no agent is making overlapping changes. Work in the assigned workspace, follow `AGENTS.md` and agreed commit conventions, and validate affected criteria. For Worker results, preserve the reported outcome. Retain consequential corrections and validation with evidence for the Stage summary; Tracker Notes hold only their current coordination effects or decisions awaiting resolution.
+2. Investigate Important Findings and outcomes other than Success. Handle contained corrections per `{SKILL_PATH:apm-2-initiate-manager}` §4. Before editing, ensure no agent is making overlapping changes. Work in the assigned workspace, follow applicable workspace instructions and agreed commit conventions, and validate affected criteria. For Worker results, preserve the reported outcome. Retain consequential corrections and validation with evidence for the Stage summary; Tracker Notes hold only their current coordination effects or decisions awaiting resolution.
 
    Compare follow-up results with the previous attempt. If another attempt has no supported approach, or remaining work substantially exceeds the assignment, present the options to the User before dispatching again.
 3. Decide:

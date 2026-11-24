@@ -6,7 +6,9 @@ disable-model-invocation: true
 
 # APM {VERSION} - Manager Handoff
 
-Follow these instructions only when the User requests a Manager Handoff or an APM instruction directs you here. Otherwise, stop.
+Only the current Manager can prepare this handoff. If the User gives you this file or requests a handoff in another conversation, tell them to ask in the current Manager conversation and stop.
+
+Begin when the User requests a Manager Handoff or an APM instruction directs you here.
 
 A Manager Handoff continues coordination in a new Manager conversation in the same session. Write a Handoff Log to preserve your working context and a Handoff Prompt to direct the incoming Manager. It also reads the planning documents, Tracker and Index per `{SKILL_PATH:apm-2-initiate-manager}`.
 

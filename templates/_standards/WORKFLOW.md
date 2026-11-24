@@ -36,7 +36,7 @@ The Planner starts first; the Manager begins after planning, and Workers start a
 
 ### 2.1 Planning
 
-Planning follows §6. The Planner reads both guides and defines the work with the User. It obtains approval of its understanding, Spec and Plan in order, resolves workspace guidance and sets up the Message Bus. It reports why guidance changed or remained sufficient, then directs the User to a new Manager conversation.
+Planning follows §6. The Planner reads both guides and defines the work with the User. It obtains approval of its understanding, Spec and Plan in order, resolves workspace guidance and sets up the Message Bus. It reports why guidance changed or remained sufficient, then explains how to start a new Manager conversation in the receiving assistant's APM format.
 
 ### 2.2 Implementation
 
@@ -58,9 +58,9 @@ Implementation ends when all Stages complete or the User stops early; closure fo
 
 ### 3.3 AGENTS.md
 
-`AGENTS.md` holds lasting project orientation, working and read-only repository boundaries and workspace conventions. All roles read it. The Planner proposes needed additions or corrections; the Manager and Workers maintain it under User authorization. Changes extend or replace existing guidance concisely and preserve unrelated content. Orientation states facts; instructions state their scope.
+`AGENTS.md` holds lasting project orientation, working and read-only repository boundaries and workspace conventions. All roles read it when present. The Planner proposes needed changes to existing guidance or asks the User whether to create a missing file with the proposed contents. The Manager and Workers maintain it under User authorization. Changes extend or replace existing guidance concisely and preserve unrelated content. Orientation states facts; instructions state their scope.
 
-For Claude, existing workspace `CLAUDE.md` files import `AGENTS.md` outside code blocks, preserving preexisting content and avoiding circular references.
+For Claude, when both workspace files exist, `CLAUDE.md` imports `AGENTS.md` outside code blocks, preserving preexisting content and avoiding circular references.
 
 ### 3.4 Version Control
 
@@ -185,7 +185,7 @@ Assignments balance expertise, shared context and User involvement, keeping rela
 
 Stages group Tasks around a result the User can assess. The Planner prefers fewer Stages for small sessions. A boundary is useful when the result guides what happens next or the User wants to assess it before further work starts. The Planner weighs that benefit against the work that would have to wait. Within a Stage, one Task depends on another when it needs its result. Stage advancement follows §2.2.
 
-Before approval, the Spec must define the agreed outcomes and behavior, and each Plan Task must describe work its assigned agent can undertake and validate. Bounded technical investigation within defined implementation identifies its questions, evidence, completion checks and dependent work. It does not postpone requirements, design or preparation needed to define that work; later planning dependent on implementation results follows §6.1. Participation and review points identify the work and decisions they concern. Validation names observable checks and expected results, including required User actions. Routine subagent and independent review arrangements remain execution choices within agreed requirements. Updates to `AGENTS.md` preserve preexisting content except for authorized changes; existing workspace `CLAUDE.md` files import `AGENTS.md`.
+Before approval, the Spec must define the agreed outcomes and behavior, and each Plan Task must describe work its assigned agent can undertake and validate. Bounded technical investigation within defined implementation identifies its questions, evidence, completion checks and dependent work. It does not postpone requirements, design or preparation needed to define that work; later planning dependent on implementation results follows §6.1. Participation and review points identify the work and decisions they concern. Validation names observable checks and expected results, including required User actions. Routine subagent and independent review arrangements remain execution choices within agreed requirements. Workspace guidance follows §3.3.
 
 ## 7. Implementation
 
@@ -261,7 +261,7 @@ Stage verification includes required User and Plan checks and uses Task validati
 
 **Runtime:** `apm-6-handoff-manager` and `apm-7-handoff-worker`.
 
-At the User's request, the outgoing agent checks files and any version control state, pauses running subagents and collects progress, outputs and pending checks. It writes a Handoff Log and Prompt that preserve User-held work, required assistance, reviews, accepted limits and resume conditions. The Prompt identifies the next conversation, checked state, pending decisions, validation gaps, sources and next action. The records identify any compaction or recovery and name reconstruction sources and the specific uncertainty or unverified claims that remain. Workers use workspace evidence for claims about integration.
+The current Manager or the registered Worker prepares its own Handoff in its outgoing conversation. At the User's request, it checks files and any version control state, pauses running subagents and collects progress, outputs and pending checks. It writes a Handoff Log and Prompt that preserve User-held work, required assistance, reviews, accepted limits and resume conditions. The Prompt identifies the next conversation, checked state, pending decisions, validation gaps, sources and next action. The records identify any compaction or recovery and name reconstruction sources and the specific uncertainty or unverified claims that remain. Workers use workspace evidence for claims about integration.
 
 The outgoing agent gives a small chat recap of what passes on and how the User starts the next conversation. File links are optional; there is no mandatory file inspection or approval. By default it then waits and the User completes delivery. An alternative mechanism requires an explicit coordination agreement.
 
@@ -285,4 +285,4 @@ The Manager asks first about a saved Session Summary and then, in the same messa
 
 Archiving is optional and requires the User's approval. The agent explains what archival would do in this session before requesting approval and reuses prior approval that covered those effects. The CLI copies active session records from `.apm/` to the same relative paths under `.apm/archives/<name>/`. It moves linked Git worktrees from `.apm/worktrees/` to the archive’s `worktrees/` directory at the same relative paths and verifies the moves before clearing active APM files and installed instructions. Worktrees keep their uncommitted changes and links to their source repositories. Other working copies outside `.apm/` stay in place, as do ordinary project-directory changes. Failure preserves recoverable state and reports the paths needing attention. Completing Tasks, committing and merging are separate decisions.
 
-The archive index links to each saved summary or to the archive folder when there is no summary. A new installation starts another session; its Planner can use relevant archives after checking current evidence. Archive deletion asks for confirmation describing the files, worktrees and uncommitted work to be deleted; `-f` skips that confirmation. A failed deletion stops and warns that cleanup may be partial.
+When an agent archives a session, it adds an archive index entry linking to the saved summary or, without a summary, to the archive folder. The CLI lists archives from their metadata. A new installation starts another session; its Planner can use relevant archives after checking current evidence. Archive deletion asks for confirmation describing the files, worktrees and uncommitted work to be deleted; `-f` skips that confirmation. A failed deletion stops and warns that cleanup may be partial.

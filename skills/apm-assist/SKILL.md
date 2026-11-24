@@ -26,7 +26,7 @@ Install or upgrade the CLI with `npm install -g agentic-pm@latest`, and compare 
 | `agents`, `claude` | Separate skills; invoke `apm-1-initiate-planner` in a new chat. |
 | `agents-single-skill`, `claude-single-skill` | Single skill (research preview); invoke `apm` in a new chat and ask it to start planning. |
 
-`agents` targets use `.agents/skills/` and `AGENTS.md`; `claude` targets support Claude Code. Both formats give agents the same workflow and `.apm/` records. Install one format for `agents` and one for `claude`, for example `apm init -a agents claude-single-skill`. With the single skill installed, an agent may suggest APM and starts a session only with the User's request or agreement.
+`agents` targets use `.agents/skills/` and `AGENTS.md`; `claude` targets support Claude Code. Both formats give agents the same workflow and `.apm/` records. You can choose different formats for `agents` and `claude`, for example `apm init -a agents claude-single-skill`. With the single skill installed, an agent may suggest APM and starts a session only with the User's request or agreement.
 
 ## 2. Documentation
 
@@ -35,7 +35,7 @@ Fetch the page relevant to the question and match it to the installed release. U
 | Page | URL path |
 |---|---|
 | Introduction | `/docs/introduction` |
-| Getting Started | `/docs/getting-started` |
+| Getting Started and model choice | `/docs/getting-started` |
 | Quick Reference | `/docs/quick-reference` |
 | Agent Roles | `/docs/agent-roles` |
 | Agent Orchestration | `/docs/agent-orchestration` |
@@ -46,7 +46,6 @@ Fetch the page relevant to the question and match it to the installed release. U
 | Troubleshooting and migration | `/docs/troubleshooting-guide` |
 | Customisation | `/docs/customisation-guide` |
 | Security | `/docs/security` |
-| Model choice, cost and workflow tips | `/docs/tips-and-tricks` |
 | Research | `/research` |
 
 Paths use `https://agentic-project-management.dev`. Source documentation is in [apm-website](https://github.com/sdi2200262/apm-website/tree/main/docs); framework source and releases are in [agentic-project-management](https://github.com/sdi2200262/agentic-project-management).
@@ -56,7 +55,7 @@ Paths use `https://agentic-project-management.dev`. Source documentation is in [
 When the answer depends on the installation:
 
 1. Read `.apm/metadata.json` for `source`, `repository`, `releaseVersion`, `cliVersion`, `assistants` (installed target IDs) and `installedFiles`.
-2. Run `apm --version` for the current CLI version. Metadata records the version used at installation.
+2. Run `apm --version` for the current CLI version. Metadata records the CLI version that most recently installed or updated the templates, or added or removed a target.
 3. Inspect relevant installed files and session records. Missing or unfamiliar metadata needs investigation against the installed release's source before choosing an update procedure.
 4. If APM is not installed, guide the User through `apm init` or `apm custom` as appropriate.
 

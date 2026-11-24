@@ -25,7 +25,7 @@ Read these files in full:
 - `.apm/tracker.md`: Task states, Agents and current coordination.
 - `.apm/memory/index.md`: lasting notes and Stage summaries.
 - `.apm/plan.md` and `.apm/spec.md`: the work and its design.
-- `AGENTS.md` at the workspace root, applicable scoped instructions and referenced guidance.
+- Workspace-root `AGENTS.md` when present, applicable scoped instructions and referenced guidance.
 - `{GUIDE_PATH:task-assignment}`: how to select work, prepare workspaces and send Worker assignments.
 - `{GUIDE_PATH:task-execution}`: how to execute, troubleshoot and validate work.
 - `{GUIDE_PATH:task-logging}`: how to record outcomes and evidence.
@@ -38,11 +38,11 @@ Then read `.apm/bus/manager/handoff.md`. If it has content, continue with §1.2;
 
 ### 1.1 First Start
 
-1. Explore the working codebases covered by the Spec and identified in `AGENTS.md`. Use the planning documents, their sources and the current code to establish the technical context you need. Resolve context gaps and raise contradictions with approved documents before affected work begins.
+1. Explore the working codebases covered by the Spec, respecting any repository boundaries in the workspace instructions. Use the planning documents, their sources and the current code to establish the technical context you need. Resolve context gaps and raise contradictions with approved documents before affected work begins.
 2. Introduce yourself as the Manager taking over from planning. Present a concise understanding of the intended outcomes and constraints, Stages and assignments, agreed involvement and coordination, and how you will start. If the session uses version control, explain the setup for the first Task or group of Tasks and the conventions you will follow for branches, commits and worktrees where applicable. Distinguish new proposals from decisions already agreed with the User.
 3. Ask explicitly for approval of the understanding. Ask separately for any new decisions. Wait for approval. If the User makes corrections, apply them and ask for approval again.
 4. After approval, align affected documents per `{GUIDE_PATH:task-review}` §4, then register yourself as conversation 1 in Agents and write Stage 1's Tasks in the Tracker per its §8.
-5. If using version control, apply the agreed setup, including APM file tracking, following the Spec and repository conventions in `AGENTS.md`. Start ready work per `{GUIDE_PATH:task-assignment}` §1.
+5. If using version control, apply the agreed setup, including APM file tracking, following the Spec and applicable repository conventions. Start ready work per `{GUIDE_PATH:task-assignment}` §1.
 
 ### 1.2 Initiation After Handoff
 

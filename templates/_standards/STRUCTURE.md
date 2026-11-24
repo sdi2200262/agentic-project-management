@@ -37,7 +37,7 @@ Sources live under `templates/`:
 
 Use kebab-case names; each skill's `name` matches its directory. Descriptions identify purpose and activation. Valid YAML frontmatter starts on the first line between `---` delimiters.
 
-Build targets select an assistant family (`agents` or `claude`) and format (`multi-skill` or `single-skill`). The family determines assistant-specific text; configured directories determine installation paths.
+Build targets select an assistant (`agents` or `claude`) and format (`multi-skill` or `single-skill`). The assistant determines assistant-specific text; configured directories determine installation paths.
 
 - Multi-skill targets install numbered and shared skills under `skills/`, with guides under `apm-guides/`, rooted at `.claude/` or `.agents/`.
 - Single-skill targets are a research preview. They install one `skills/apm/SKILL.md` entry. Initiation sources become `roles/{planner,manager,worker}.md`. The six guides and Handoff, recovery and summary instructions go under `guides/`; communication and bus support go under `communication/`. Reference documents have no skill frontmatter. Check Tasks/Reports wrappers are omitted; the entry routes to the owning receipt procedure.
@@ -73,7 +73,8 @@ Supported placeholders resolve through `build/processors/placeholders.js` and th
 | `{SKILL_PATH:name}` | The source skill's output file: a skill, role or procedure reference, depending on the target |
 | `{SKILL_DIR:name}` | The mapped file's directory, for support files |
 | `{GUIDE_PATH:name}` | `<configured guides directory>/<name>.md` |
+| `{OTHER_SKILLS_DIR}` | Where to check which APM skills are installed for the other assistant |
 | `{START_MANAGER}` | How the User starts the Manager in this layout |
-| `{CLAUDE_ONLY:text}` | Text kept only for the Claude assistant family; start with a space when following a sentence |
+| `{CLAUDE_ONLY:text}` | Text kept only for Claude Code targets; start with a space when following a sentence |
 
 Build all four targets after changes. Check schemas, formats, initial artifacts, references, summary links and resolved paths and placeholders. Single-skill bundles contain exactly one `SKILL.md`; existing multi-skill output must remain equivalent to its sources. Unmapped single-skill references fail the build.

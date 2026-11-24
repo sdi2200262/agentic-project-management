@@ -13,11 +13,12 @@ import { skillPath, skillDirectory, guidePath, isSingleSkill } from './paths.js'
  *
  * Supported placeholders:
  * - {START_MANAGER}: User action for starting the Manager in this layout
+ * - {OTHER_SKILLS_DIR}: Skills directory for the other assistant
  * - {VERSION}: Template version
  * - {SKILL_PATH:name}: Source skill mapped to its output file
  * - {SKILL_DIR:name}: Directory containing the mapped source skill
  * - {GUIDE_PATH:name}: Guide file (<guides dir>/<name>.md)
- * - {CLAUDE_ONLY:text}: Text kept for the claude assistant family and removed for the others
+ * - {CLAUDE_ONLY:text}: Text kept for Claude Code targets and removed for the others
  *
  * @param {string} content - Template content with placeholders.
  * @param {Object} context - Replacement context.
@@ -31,6 +32,7 @@ export function replacePlaceholders(content, context) {
 
   return content
     .replace(/{VERSION}/g, version)
+    .replace(/{OTHER_SKILLS_DIR}/g, assistant === 'claude' ? '.agents/skills/' : '.claude/skills/')
     .replace(/{START_MANAGER}/g, isSingleSkill(target)
       ? 'request that the agent invoke the `apm` skill and initiate as the Manager for this APM session'
       : 'invoke the `apm-2-initiate-manager` skill')

@@ -90,12 +90,12 @@ The Manager records an outcome when concluding its Task; a Worker records one fo
 
 ### Task Dispatch
 
-Task Dispatch is how the Manager sends Ready Tasks to Workers. It takes one of three forms.
+Task Dispatch is how the Manager sends Tasks to Workers. It takes one of three forms.
 
 | Term | Definition |
 |---|---|
 | **Single dispatch** | One Task sent to one Worker. |
-| **Batch dispatch** | Several Tasks sent to the same Worker together, executed in order. |
+| **Batch dispatch** | Two or three Tasks sent to the same Worker together, executed in order. Dependencies may be Done or come earlier in the batch. |
 | **Parallel dispatch** | Tasks or batches sent to different Workers at the same time. |
 
 ---

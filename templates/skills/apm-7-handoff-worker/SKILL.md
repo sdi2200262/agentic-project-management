@@ -6,7 +6,9 @@ disable-model-invocation: true
 
 # APM {VERSION} - Worker Handoff
 
-Follow these instructions only when the User requests a Worker Handoff or an APM instruction directs you here. Otherwise, stop.
+Only the Worker whose work is continuing can prepare this handoff. If the User gives you this file or requests a handoff in another conversation, tell them to ask in that Worker’s current conversation and stop.
+
+Begin when the User requests a Worker Handoff or an APM instruction directs you here.
 
 A Worker Handoff continues your assigned work in a new conversation in the same session. Write a Handoff Log to preserve your working context and a Handoff Prompt to direct the incoming conversation. It follows `{SKILL_PATH:apm-3-initiate-worker}` §1.2.
 

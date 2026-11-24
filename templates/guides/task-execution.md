@@ -31,7 +31,7 @@ Pause dependent work when an output is missing or fails its integration check. C
 
 ## 3. Execution
 
-Follow the Task's defined steps and guidance in order, applying `AGENTS.md` toward its objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
+Follow the Task's defined steps and guidance in order, applying workspace instructions toward its objective. Where neither covers something, follow the codebase's existing conventions, use descriptive names and comment non-obvious behavior. Build in small increments and check each meaningful change.
 
 Report consequential findings and possible wider effects, distinguishing evidence from uncertainty. Ask the User when your available context or authority cannot settle a decision. Pause only affected work and retain the decision and result for review.
 
