@@ -11,7 +11,7 @@ import { OFFICIAL_REPO, CLI_VERSION, CLI_MAJOR_VERSION } from '../core/constants
 import { CLIError } from '../core/errors.js';
 import { createMetadata, writeMetadata, readMetadata } from '../core/metadata.js';
 import { fetchOfficialReleases, findReleaseByTag, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion } from '../services/releases.js';
-import { downloadAndExtract } from '../services/extractor.js';
+import { downloadBundles, installBundles } from '../services/extractor.js';
 import { selectAssistant } from '../ui/prompts.js';
 import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import logger from '../ui/logger.js';
@@ -110,24 +110,8 @@ export async function initCommand(options = {}) {
   assertCompatibleTargets(manifest, assistantIds);
   const bundles = getRequiredBundles(release, manifest, assistantIds);
 
-  const installedFiles = {};
-  let apmExtracted = false;
-
-  for (const { assistant, asset } of bundles) {
-    const id = assistant.id;
-    stop = logger.progress(`Downloading ${assistant.bundle}`);
-    const writtenFiles = await downloadAndExtract(
-      asset.browser_download_url,
-      process.cwd(),
-      { skipApm: apmExtracted }
-    );
-    stop();
-    installedFiles[id] = writtenFiles.filter(f => !f.startsWith('.apm/'));
-    if (!apmExtracted) {
-      installedFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
-    }
-    apmExtracted = true;
-  }
+  const downloaded = await downloadBundles(bundles);
+  const installedFiles = await installBundles(downloaded, process.cwd());
 
   // Write metadata
   const metadata = createMetadata({

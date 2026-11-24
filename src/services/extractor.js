@@ -9,18 +9,24 @@
 import fs from 'fs-extra';
 import path from 'path';
 import AdmZip from 'adm-zip';
+import { isSessionPath, sameFile } from './cleanup.js';
 import { fetchAsset } from './github.js';
 import { CLIError } from '../core/errors.js';
 import logger from '../ui/logger.js';
 
-/**
- * Downloads a bundle from a URL.
- *
- * @param {string} url - Download URL.
- * @returns {Promise<Buffer>} Bundle contents as buffer.
- */
-export async function downloadBundle(url) {
-  return fetchAsset(url);
+/** Download every selected bundle before any project files change. */
+export async function downloadBundles(bundles) {
+  const downloaded = [];
+  for (const { assistant, asset } of bundles) {
+    const stop = logger.progress(`Downloading ${assistant.bundle}`);
+    try {
+      const buffer = await fetchAsset(asset.browser_download_url);
+      downloaded.push({ assistant, buffer });
+    } finally {
+      stop();
+    }
+  }
+  return downloaded;
 }
 
 async function checkDestination(root, relativePath) {
@@ -68,10 +74,19 @@ export async function extractBundle(zipBuffer, destPath, options = {}) {
         continue;
       }
 
-      const normalized = entryPath.toLowerCase();
-      if (normalized === '.apm/archives' || normalized.startsWith('.apm/archives/')) continue;
-      const inApm = normalized.startsWith('.apm/');
-      if ((skipApm && inApm) || (onlyApm && !inApm)) continue;
+      const [directory, child] = entryPath.split('/');
+      if (directory.toLowerCase() === '.apm' && child?.toLowerCase() === 'archives') {
+        if (directory === '.apm' && child === 'archives') continue;
+        // Resolve ambiguous casing against the archive directory on this volume.
+        const archiveDir = path.join(root, '.apm', 'archives');
+        await checkDestination(root, path.relative(root, archiveDir));
+        await fs.ensureDir(archiveDir);
+        if (await sameFile(archiveDir, path.join(root, directory, child))) continue;
+      }
+      if (skipApm || onlyApm) {
+        const inApm = await isSessionPath(root, entryPath);
+        if ((skipApm && inApm) || (onlyApm && !inApm)) continue;
+      }
 
       await checkDestination(root, relativePath);
       destinations.push({ entry, fullPath, entryPath });
@@ -91,21 +106,18 @@ export async function extractBundle(zipBuffer, destPath, options = {}) {
   }
 }
 
-/**
- * Downloads and extracts a bundle in one operation.
- *
- * @param {string} url - Download URL.
- * @param {string} destPath - Destination directory.
- * @param {Object} [options={}] - Extraction options.
- * @returns {Promise<string[]>} Array of written file paths.
- */
-export async function downloadAndExtract(url, destPath, options = {}) {
-  const buffer = await downloadBundle(url);
-  return extractBundle(buffer, destPath, options);
+/** Install shared session files once and record each target's installed paths. */
+export async function installBundles(bundles, cwd, { skipApm = false } = {}) {
+  const installedFiles = {};
+  for (const { assistant, buffer } of bundles) {
+    const files = await extractBundle(buffer, cwd, { skipApm });
+    installedFiles[assistant.id] = [];
+    if (!skipApm) installedFiles._apm = [];
+    for (const file of files) {
+      const owner = await isSessionPath(cwd, file) ? '_apm' : assistant.id;
+      installedFiles[owner].push(file);
+    }
+    skipApm = true;
+  }
+  return installedFiles;
 }
-
-export default {
-  downloadBundle,
-  extractBundle,
-  downloadAndExtract
-};

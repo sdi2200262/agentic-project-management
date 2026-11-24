@@ -9,7 +9,6 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { METADATA_FILE } from './constants.js';
-import logger from '../ui/logger.js';
 
 /**
  * Reads the workspace metadata file.
@@ -21,14 +20,28 @@ export async function readMetadata(cwd = process.cwd()) {
   const metadataPath = path.join(cwd, METADATA_FILE);
 
   try {
-    if (await fs.pathExists(metadataPath)) {
-      return await fs.readJson(metadataPath);
+    if (!(await fs.lstat(path.dirname(metadataPath))).isDirectory()) {
+      throw new Error('Expected .apm to be a directory in the workspace');
     }
+    if (!(await fs.lstat(metadataPath)).isFile()) {
+      throw new Error('Expected a regular metadata file');
+    }
+    const metadata = await fs.readJson(metadataPath);
+    if (!Array.isArray(metadata?.assistants) || !metadata.assistants.every(id => typeof id === 'string')
+      || !['source', 'repository', 'releaseVersion'].every(key => typeof metadata[key] === 'string' && metadata[key])) {
+      throw new Error('Missing or invalid installation fields');
+    }
+    // Older installations may predate installedFiles.
+    const files = metadata.installedFiles;
+    if (files !== undefined && (!files || typeof files !== 'object' || Array.isArray(files)
+      || !Object.values(files).every(list => Array.isArray(list) && list.every(file => typeof file === 'string')))) {
+      throw new Error('Invalid installedFiles list');
+    }
+    return metadata;
   } catch (err) {
-    logger.debug(`Failed to read metadata: ${err.message}`);
+    if (err.code === 'ENOENT') return null;
+    throw new Error(`Cannot read installation metadata at ${metadataPath}: ${err.message}`, { cause: err });
   }
-
-  return null;
 }
 
 /**

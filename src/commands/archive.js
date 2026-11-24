@@ -13,7 +13,7 @@ import { CLIError } from '../core/errors.js';
 import { readMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
 import { formatAssistantList } from '../core/assistants.js';
 import { createArchive, listArchivesWithInfo, inspectArchiveDeletion, inspectArchiveDeletions, removeArchive, clearArchives, generateArchiveName, archivePathFor } from '../services/archive.js';
-import { removeInstalledFiles } from '../services/cleanup.js';
+import { removeInstalledFiles, validateInstalledFileRemoval } from '../services/cleanup.js';
 import { confirmDestructiveAction } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
 
@@ -174,11 +174,12 @@ async function createMode(force, archiveName) {
       return;
     }
   }
+  const installedFiles = getInstalledFiles(metadata);
+  await validateInstalledFileRemoval(cwd, installedFiles);
   const { archivePath, worktrees } = await createArchive(cwd, archiveOpts);
 
   try {
     // Clean tracked files
-    const installedFiles = getInstalledFiles(metadata);
     await removeInstalledFiles(cwd, installedFiles);
 
     // Delete metadata

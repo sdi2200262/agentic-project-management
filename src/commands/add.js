@@ -11,8 +11,8 @@ import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
 import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest } from '../core/assistants.js';
 import { getRepoSettings } from '../core/config.js';
-import { fetchReleaseByTag, fetchReleaseManifest, findBundleAsset } from '../services/releases.js';
-import { downloadAndExtract } from '../services/extractor.js';
+import { fetchReleaseByTag, fetchReleaseManifest, getRequiredBundles } from '../services/releases.js';
+import { downloadBundles, installBundles } from '../services/extractor.js';
 import { selectAssistant, confirmSecurityDisclaimer } from '../ui/prompts.js';
 import logger from '../ui/logger.js';
 
@@ -92,42 +92,21 @@ export async function addCommand(options = {}) {
 
   assertCompatibleTargets(manifest, [...metadata.assistants, ...assistantIds], { installedIds: metadata.assistants });
 
-  // Download and install each assistant
-  const installedFiles = getInstalledFiles(metadata);
-  const newAssistants = [...metadata.assistants];
-  const added = [];
+  const bundles = getRequiredBundles(release, manifest, assistantIds);
+  const downloaded = await downloadBundles(bundles);
+  const addedFiles = await installBundles(downloaded, process.cwd(), { skipApm: true });
 
-  for (const id of assistantIds) {
-    const assistant = manifest.assistants.find(a => a.id === id);
-    const bundleAsset = findBundleAsset(release, assistant.bundle);
-
-    if (!bundleAsset) {
-      warnings.push({ level: 'error', msg: `Bundle '${assistant.bundle}' for ${formatAssistant(id, assistant.name)} not found in release, skipping.` });
-      continue;
-    }
-
-    const dlStop = logger.progress(`Downloading ${assistant.bundle}`);
-    const writtenFiles = await downloadAndExtract(bundleAsset.browser_download_url, process.cwd(), { skipApm: true });
-    dlStop();
-    installedFiles[id] = writtenFiles.filter(f => !f.startsWith('.apm/'));
-    newAssistants.push(id);
-    added.push(id);
-  }
-
-  // Update metadata
-  metadata.assistants = newAssistants;
-  metadata.assistantNames = { ...getAssistantNames(metadata), ...assistantNamesFromManifest(manifest, added) };
-  metadata.installedFiles = installedFiles;
+  metadata.assistants = [...metadata.assistants, ...assistantIds];
+  metadata.assistantNames = { ...getAssistantNames(metadata), ...assistantNamesFromManifest(manifest, assistantIds) };
+  metadata.installedFiles = { ...getInstalledFiles(metadata), ...addedFiles };
   metadata.cliVersion = CLI_VERSION;
   await writeMetadata(metadata);
 
   // Clear content for final output
   logger.clearAndBanner();
   for (const w of warnings) logger[w.level](w.msg);
-  if (added.length) {
-    logger.success(`Added ${formatAssistantList(added, names)} to installation.`);
-    logger.showInstallationNotes(manifest, added);
-  }
+  logger.success(`Added ${formatAssistantList(assistantIds, names)} to installation.`);
+  logger.showInstallationNotes(manifest, assistantIds);
 }
 
 export default addCommand;

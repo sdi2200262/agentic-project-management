@@ -12,9 +12,9 @@ import { CLIError } from '../core/errors.js';
 import { readMetadata, writeMetadata, createMetadata, getInstalledFiles, getAssistantNames } from '../core/metadata.js';
 import { assertCompatibleTargets, formatAssistant, formatAssistantList, assistantNamesFromManifest, resolveUpdateTargets } from '../core/assistants.js';
 import { fetchOfficialReleases, fetchCustomReleases, getLatestRelease, fetchReleaseManifest, getRequiredBundles, parseVersion, isStableRelease } from '../services/releases.js';
-import { downloadBundle, extractBundle } from '../services/extractor.js';
+import { downloadBundles, installBundles } from '../services/extractor.js';
 import { createArchive, generateArchiveName, archivePathFor } from '../services/archive.js';
-import { removeInstalledFiles } from '../services/cleanup.js';
+import { removeInstalledFiles, validateInstalledFileRemoval } from '../services/cleanup.js';
 import { confirmDestructiveAction, confirmAction, selectRelease, selectPrompt, confirmSecurityDisclaimer, isInteractive } from '../ui/prompts.js';
 import { getRepoSettings, addCustomRepo, updateRepoSettings } from '../core/config.js';
 import logger from '../ui/logger.js';
@@ -105,39 +105,21 @@ export async function updateCommand(options = {}) {
     }
   }
 
-  const readyBundles = [];
-  for (const { assistant, asset } of bundles) {
-    stop = logger.progress(`Downloading ${assistant.bundle}`);
-    try {
-      const buffer = await downloadBundle(asset.browser_download_url);
-      readyBundles.push({ assistant, buffer });
-    } finally {
-      stop();
-    }
-  }
+  const readyBundles = await downloadBundles(bundles);
 
   // Archive only after all required downloads succeed.
+  const installedFiles = getInstalledFiles(metadata);
+  await validateInstalledFileRemoval(cwd, installedFiles);
   const archiveStop = logger.progress('Archiving current session');
   const archived = await createArchive(cwd, { reason: 'update', name: archiveName });
   archiveStop();
 
   try {
     // Clean all tracked files
-    const installedFiles = getInstalledFiles(metadata);
     await removeInstalledFiles(cwd, installedFiles);
 
     // Extract new bundles for all assistants
-    const newInstalledFiles = {};
-    let apmExtracted = false;
-    for (const { assistant, buffer } of readyBundles) {
-      const assistantId = assistant.id;
-      const writtenFiles = await extractBundle(buffer, cwd, { skipApm: apmExtracted });
-      newInstalledFiles[assistantId] = writtenFiles.filter(f => !f.startsWith('.apm/'));
-      if (!apmExtracted) {
-        newInstalledFiles._apm = writtenFiles.filter(f => f.startsWith('.apm/') && !f.startsWith('.apm/archives/'));
-      }
-      apmExtracted = true;
-    }
+    const newInstalledFiles = await installBundles(readyBundles, cwd);
 
     // Write fresh metadata
     const newMetadata = createMetadata({
