@@ -73,6 +73,8 @@ You can adapt APM's workflow through a custom repository. Fork this repository t
 
 The [Customisation Guide](https://agentic-project-management.dev/docs/customisation-guide) explains the process. The [customisation skill](skills/apm-customization/) guides your assistant through the repository's structure, conventions, build, and release steps.
 
+For a working example, see [apm-atlassian](https://github.com/sdi2200262/apm-atlassian).
+
 ## Help
 
 The [apm-assist skill](skills/apm-assist/) helps with APM questions, installation checks and migration. See the [skills README](skills/README.md) for installation instructions.
